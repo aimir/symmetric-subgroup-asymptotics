@@ -54,38 +54,77 @@ For $n=2R+\eps$,
 In particular $c_{R-1}/c_R=\rho(1+O(R^{-1}))$.
 \end{theorem}
 \begin{proof}
-Apply Cauchy's coefficient formula on $y=\rho e^{i\theta}$ to
-$(1+y/6)^\eps e^{P(y)}$. After taking out the displayed main factor,
-the phase is
+Put $\lambda_1=\rho/2$, $\lambda_2=\rho^2/6$ and
+$\lambda_4=\rho^4/384$, so that
+$R=\sum_k k\lambda_k$ and $b=\sum_k k^2\lambda_k$ satisfy
+$R\leq b\leq4R$. Here and below $k\in\{1,2,4\}$. Define
 \[
- P(\rho e^{i\theta})-P(\rho)-iR\theta
- =-b\theta^2/2-i\kappa_3\theta^3/6
-                   +\kappa_4\theta^4/24+O(R|\theta|^5),
+ A(\theta)=\sum_k\lambda_k(1-\cos k\theta),\qquad
+ B(\theta)=\sum_k\lambda_k(\sin k\theta-k\theta).
 \]
-where $\kappa_j=\sum_{k\in\{1,2,4\}}k^j[y^k]P(y)\rho^k=O(R)$.
-The saddle equation cancels the linear term. For $\eps=1$ the
-normalized amplitude is $1+d(e^{i\theta}-1)$ with
-$d=\rho/(6+\rho)\in[0,1]$; for $\eps=0$ it is one.
-
-On $|\theta|\leq R^{-2/5}$, expand the cubic and quartic corrections
-against $e^{-b\theta^2/2}$. Odd imaginary terms integrate to zero.
-The possible leading errors have Gaussian averages bounded by
+Then $P(\rho e^{i\theta})-P(\rho)-iR\theta=-A+iB$.
+For any $d\in[0,1]$, set
 \[
- O(b^{-1})+O(Rb^{-2})+O(R^2b^{-3})=O(R^{-1}).
+ F_d(\theta)=(1-d)\cos B(\theta)+d\cos(\theta+B(\theta)),\qquad
+ H_d(\theta)=e^{-A(\theta)}F_d(\theta).
 \]
-The first term includes the amplitude, and its product with the cubic
-phase is covered by the second. Taylor remainders are smaller; for
-example $R\mathbb E|\theta|^5=O(R^{-3/2})$, and
-$R|\theta|^3=o(1)$ uniformly on the chosen central arc.
+Taking real parts in Cauchy's formula on $y=\rho e^{i\theta}$ gives
+\[
+ \frac{\rho^R[y^R](1+y/6)^\eps e^{P(y)}}
+      {(1+\rho/6)^\eps e^{P(\rho)}}
+ =\frac1{2\pi}\int_{-\pi}^{\pi}H_d(\theta)\,d\theta,
+ \qquad d=\begin{cases}0,&\eps=0,\\ \rho/(6+\rho),&\eps=1.\end{cases}
+\]
+We estimate this integral uniformly for all $d\in[0,1]$.
 
-Outside arcs of radius $R^{-2/5}$ about the fourth roots of unity, the
-quartic term loses at least $cR^{1/5}$ in real part. Near $-1$ the
-linear term loses at least $c\rho$; near $i$ and $-i$ the quadratic
-term loses at least $c\rho^2$. All coefficient terms are positive,
-so these losses are not cancelled by another term. These arcs are
-superpolynomially small relative to the central Gaussian integral.
-This proves \eqref{eq:saddle-formula}. The same argument with
-amplitude $y/\rho=e^{i\theta}$ gives the coefficient-ratio assertion.
+Use the fixed central interval $|\theta|\leq\alpha=\pi/4$ and write
+$Q=b\theta^2/2$. The inequalities
+$u^2/8\leq1-\cos u\leq u^2/2$ for $|u|\leq\pi$, applied to each
+$k\theta$, give
+\[
+ R\theta^2/8\leq A\leq Q,\qquad
+ 0\leq Q-A=O(R\theta^4),\qquad |B|=O(R|\theta|^3).
+\]
+The last two bounds follow from the fourth-order cosine and third-order
+sine remainders; their constants are absolute. Since $F_d$ is a convex
+combination of cosines,
+\[
+ |F_d|\leq1,\qquad
+ 0\leq1-F_d\leq B^2/2+|\theta B|+\theta^2/2.
+\]
+Together with
+$0\leq e^{-A}-e^{-Q}\leq e^{-A}(Q-A)$, this yields
+\[
+ |H_d(\theta)-e^{-b\theta^2/2}|
+ \leq C e^{-R\theta^2/8}
+       \bigl(\theta^2+R\theta^4+R^2\theta^6\bigr).
+\]
+Integrating this bound gives $O(R^{-3/2})$, by the change of variable
+$u=\sqrt R\,\theta$. This argument requires no smallness assumption on $B$.
+
+On the entire complement $\alpha\leq|\theta|\leq\pi$, the linear term
+alone gives
+\[
+ A(\theta)\geq\frac\rho2(1-\cos\alpha)\geq\frac\rho{16},\qquad
+ |H_d(\theta)|\leq e^{-\rho/16}.
+\]
+Because $\rho\asymp R^{1/4}$, these tails are smaller than every fixed
+inverse power of $R$. The Gaussian tails outside $[-\alpha,\alpha]$
+are $O(e^{-cR})$ for an absolute $c>0$. Thus, uniformly in $d$,
+\[
+ \int_{-\pi}^{\pi}H_d(\theta)\,d\theta
+ =\sqrt{\frac{2\pi}{b}}+O(R^{-3/2})
+ =\sqrt{\frac{2\pi}{b}}\bigl(1+O(R^{-1})\bigr),
+\]
+which proves \eqref{eq:saddle-formula}.
+Finally, Cauchy's formula with amplitude $y/\rho$ gives $H_1$, at the
+same saddle $\rho_R$. Comparing it with $H_0$ gives
+\[
+ \frac{c_{R-1}}{\rho c_R}
+ =\frac{\int_{-\pi}^{\pi}H_1(\theta)\,d\theta}
+        {\int_{-\pi}^{\pi}H_0(\theta)\,d\theta}
+ =1+O(R^{-1}).\qedhere
+\]
 \end{proof}
 
 \subsection{An elementary four-periodic expression}

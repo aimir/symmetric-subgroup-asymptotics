@@ -61,22 +61,38 @@ infinity. Cauchy's coefficient integral gives, for epsilon in {0,1},
       = (1+rho/6)^epsilon exp(P(rho))
           / (rho^R sqrt(2*pi*b)) * (1+O(1/R)).
 
-On |theta|<=R^(-2/5), the exponent is
--b*theta^2/2-i*k3*theta^3/6+k4*theta^4/24+O(R|theta|^5), with kj=O(R).
-The normalized odd amplitude is 1+d0(exp(i theta)-1), where
-0<=d0=rho/(rho+6)<=1. The first imaginary odd terms integrate to zero;
-the Gaussian expectations of theta^2, R theta^4 and R^2 theta^6 are O(1/R).
-The remainder estimate uses uniform bounds on the Taylor remainders and
-the truncated Gaussian tail.
+Put lambda_1=rho/2, lambda_2=rho^2/6 and lambda_4=rho^4/384. The centered
+exponent is exactly -A+iB, where
 
-For the complementary arcs use the exact real-part loss
+    A = sum_k lambda_k (1-cos(k theta)),
+    B = sum_k lambda_k (sin(k theta)-k theta),    k in {1,2,4}.
 
-    -sum_(d in {1,2,4}) a_d rho^d (1-cos(d theta)).
+The normalized real kernel is
 
-Away from the four quartic root directions, the quartic term gives loss
-c R^(1/5). Near -1, the linear term gives c rho; near i and -i, the quadratic
-term gives c rho^2. This suppresses all nonprincipal arcs faster than any
-negative power of R. Positivity of the lower-degree terms is essential.
+    H_d = exp(-A) [(1-d) cos B + d cos(theta+B)].
+
+Even parity uses d=0, odd parity uses d=rho/(rho+6). Treating all d in [0,1]
+also retains d=1 for the shifted coefficient ratio. On the fixed central
+interval |theta|<=pi/4, every harmonic satisfies the elementary cosine lower
+bound. With Q=b*theta^2/2, this gives
+
+    R*theta^2/8 <= A <= Q,
+    Q-A = O(R*theta^4),    |B| = O(R*|theta|^3).
+
+The convex cosine amplitude satisfies
+0<=1-[(1-d)cos B+d cos(theta+B)]<=B^2/2+|theta*B|+theta^2/2.
+Consequently the central error is bounded by
+
+    C exp(-R*theta^2/8) (theta^2+R*theta^4+R^2*theta^6).
+
+Its integral is O(R^(-3/2)), without assuming that B is uniformly small.
+On all of pi/4<=|theta|<=pi, the linear term alone gives A>=rho/16.
+Thus every outer arc, including the other quartic peaks, contributes at most
+2*pi*exp(-rho/16). The Gaussian complement is exponentially small in R.
+Combining the three integrals and using R<=b<=4R gives relative error O(1/R),
+uniformly in d. The d=1 integral divided by the d=0 integral is
+c_(R-1)/(rho*c_R), proving the stated shifted coefficient ratio at the same
+saddle rho_R.
 
 Keeping rho exact therefore yields the O(n^(-1)) saddle expression in SPEC.
 Replacing rho prematurely by a truncated series can introduce a larger error.
