@@ -75,6 +75,13 @@ definition obligations as conclusions, not hypotheses.
 | [GaussianEstimates](SymmetricSubgroupAsymptotics/GaussianEstimates.lean) | Explicit geometric errors for Euler products and normalized Gaussian coefficients. |
 | [GaussianAsymptotics](SymmetricSubgroupAsymptotics/GaussianAsymptotics.lean) | Full even- and odd-rank Gaussian/theta asymptotics with explicit absolute and relative errors. |
 | [SaddleEstimates](SymmetricSubgroupAsymptotics/SaddleEstimates.lean) | Quantitative radius and variance bounds, a two-correction saddle expansion, and ratio limits. |
+| [AnalyticGeneratingFunction](SymmetricSubgroupAsymptotics/AnalyticGeneratingFunction.lean) | The convergent complex coefficient series equals the actual exponential, including the guarded parity coefficient. |
+| [CoefficientIntegral](SymmetricSubgroupAsymptotics/CoefficientIntegral.lean) | Exact Cauchy, angular and real saddle integral identities for both parities. |
+| [SaddleKernel](SymmetricSubgroupAsymptotics/SaddleKernel.lean), [SaddleKernelComplex](SymmetricSubgroupAsymptotics/SaddleKernelComplex.lean) | The decay, centered phase and parity amplitude, with an exact bridge to the complex integrand. |
+| [SaddleCentral](SymmetricSubgroupAsymptotics/SaddleCentral.lean) | A uniform central-arc error bounded by `2^27/(r sqrt r)` at every positive rank. |
+| [SaddleTails](SymmetricSubgroupAsymptotics/SaddleTails.lean) | Both outer arcs and the full Gaussian complement have proved uniform `O(r^(-3/2))` bounds. |
+| [SaddleAssembly](SymmetricSubgroupAsymptotics/SaddleAssembly.lean) | Complete integral partition, Gaussian normalization and uniform relative `O(1/r)` error. |
+| [SaddleBenchmarkEstimates](SymmetricSubgroupAsymptotics/SaddleBenchmarkEstimates.lean) | The unconditional `SaddleBenchmarkEstimate` and the implication `T2_of_T1`. |
 | [AsymptoticTransfer](SymmetricSubgroupAsymptotics/AsymptoticTransfer.lean) | T1 transfers the independently stated analytic benchmark estimates to T2 and T3; exponential absorption and correction bounds are proved. |
 | [BinaryConstruction](SymmetricSubgroupAsymptotics/BinaryConstruction.lean) | An explicit injective map from binary subspaces to labelled pair-action subgroups gives `G_(n/2) ≤ subgroupCount n` in both parities. |
 
@@ -89,10 +96,22 @@ The saddle expansion, with `x = (96r)^(1/4)`, is the explicit inequality
 
     abs(rho_r - (x - 8/x - 12/x^2)) <= 2048/x^3     (r >= 683).
 
-The formal generating-function identity and absolute convergence are separate
-results; this does not yet establish the saddle-point coefficient estimate.
-`SaddleBenchmarkEstimate` and `ElementaryBenchmarkEstimate` state the remaining
-analytic bounds for `L_n`. The transfer theorems require these bounds and T1.
+The full saddle coefficient estimate is proved, uniformly across both parities:
+
+    exists K > 0, exists N >= 2, forall n >= N, abs(L_n / Q_n - 1) <= K/n.
+
+Here `L_n = exactBenchmark n` and `Q_n = saddleBenchmark n`, with the approved
+explicit Gaussian factor and full parity coefficient unchanged. Analytic
+evaluation and Cauchy extraction identify their ratio with the normalized
+real integral. The fixed central arc is `[-pi/4, pi/4]`; the linear term
+controls all of its complement, including the other quartic peaks.
+The real-part estimate retains phase cancellation and is uniform in the
+normalized parity amplitude `d` throughout `[0,1]`. Constants are not optimized.
+
+Consequently `T2_of_T1` proves `T1 -> T2` with no further analytic hypothesis.
+`ElementaryBenchmarkEstimate` remains an independent obligation for the
+transfer to T3: it needs the exponent/log expansion and Stirling assembly
+with the prescribed first correction.
 The pair-action construction counts a single fixed system of pairs and does
 not establish the full critical-family lower bound.
 
