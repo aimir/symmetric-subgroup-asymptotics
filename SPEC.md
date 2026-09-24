@@ -13,8 +13,15 @@ isomorphism types, or only transitive subgroups.
 Put R = floor(n/2), epsilon = n mod 2, and
 
     P(y) = y/2 + y^2/6 + y^4/384,
-    G_R = number of all vector subspaces of F_2^R,
+    G_R = sum_(k=0)^R product_(i=0)^(k-1) (2^R - 2^i)/(2^k - 2^i),
     L_n = n! G_R [y^R] (1+y/6)^epsilon exp(P(y)).
+
+The finite sum defining G_R is evaluated in the rationals, with the empty
+product at k=0 equal to one. Every denominator is positive because i<k;
+subtraction and division here are rational operations. In particular G_0=1.
+A separate counting theorem identifies this expression with the number of
+all vector subspaces of F_2^R. That identity is a required proof bridge, not
+the definition of the factor in L_n or Q_n.
 
 All exponential functions written exp or e use base e. Powers of 2 are literal
 powers of 2. All factorials and occurrence multiplicities are retained.
@@ -179,11 +186,22 @@ The definitions and bridges required by these statements are:
 
 * s_n is the finite cardinality of the subgroups of the permutation group on
   the labelled n-element set. It is not a sum over representatives up to
-  conjugacy. G_R is the finite cardinality of all subspaces of F_2^R.
+  conjugacy.
+* G_R is the explicit finite rational expression
+  `sum_(k=0)^R product_(i=0)^(k-1) (((2:ℚ)^R - (2:ℚ)^i) / ((2:ℚ)^k - (2:ℚ)^i))`,
+  with empty product one and positive denominators on every included factor.
+  It is `binaryGaussianSum R` in Lean. The separate obligation
+  `DefinitionChecks.subspace_formula` requires a proof of
+  `(binarySubspaceCount R : ℚ) = binaryGaussianSum R`, where
+  `binarySubspaceCount R` counts all subspaces of F_2^R. The benchmarks use
+  the rational expression, not the cardinality definition.
 * R=floor(n/2), epsilon=n mod 2 and j=n mod 4 are natural indices. Factorials,
-  these counts and c_R's finite rational sum are coerced to real numbers
-  before analytic arithmetic. Every fractional or negative exponent in the
-  asymptotic formulas is a real exponent; divisions such as n/8, n^2/16 and
+  s_n, the rational G_R and c_R's finite rational sum are coerced to real
+  numbers before analytic arithmetic. In particular the exact benchmark is
+  `(n! : ℝ) * (binaryGaussianSum R : ℝ) * (parityCoefficient n : ℝ)`;
+  the saddle benchmark uses the same cast `(binaryGaussianSum R : ℝ)`.
+  Every fractional or negative exponent in the asymptotic formulas is a real
+  exponent; divisions such as n/8, n^2/16 and
   1/4 in such expressions are real divisions.
 * Negative coefficient indices contribute zero. An implementation using
   natural indices must guard c_(R-1) when R=0 and every analogous shifted

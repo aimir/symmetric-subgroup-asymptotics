@@ -21,9 +21,18 @@ namespace SymmetricSubgroupAsymptotics
 def subgroupCount (n : ℕ) : ℕ :=
   Nat.card (Subgroup (Equiv.Perm (Fin n)))
 
-/-- The number of all binary subspaces, summed over every dimension. -/
+/-- The combinatorial count used in the proof, not in the benchmarks. -/
 def binarySubspaceCount (r : ℕ) : ℕ :=
   Nat.card (Submodule (ZMod 2) (Fin r → ZMod 2))
+
+/-- The explicit binary Gaussian coefficient, evaluated in the rationals. -/
+def binaryGaussianCoefficient (r k : ℕ) : ℚ :=
+  ∏ i ∈ Finset.range k, ((2 : ℚ) ^ r - 2 ^ i) / ((2 : ℚ) ^ k - 2 ^ i)
+
+/-- The explicit finite factor `G_r` in both coefficient and saddle benchmarks.
+The empty product at `k = 0` is one. -/
+def binaryGaussianSum (r : ℕ) : ℚ :=
+  ∑ k ∈ Finset.range (r + 1), binaryGaussianCoefficient r k
 
 def halfDegree (n : ℕ) : ℕ := n / 2
 
@@ -49,7 +58,7 @@ def parityCoefficient (n : ℕ) : ℚ :=
 
 /-- The exact coefficient benchmark `L_n`. -/
 def exactBenchmark (n : ℕ) : ℝ :=
-  (Nat.factorial n : ℝ) * (binarySubspaceCount (halfDegree n) : ℝ) *
+  (Nat.factorial n : ℝ) * (binaryGaussianSum (halfDegree n) : ℝ) *
     (parityCoefficient n : ℝ)
 
 def criticalPolynomial (x : ℝ) : ℝ := x / 2 + x ^ 2 / 6 + x ^ 4 / 384
@@ -69,7 +78,7 @@ def saddleBenchmark (n : ℕ) : ℝ :=
   if n < 2 then 1 else
     let r := halfDegree n
     let ρ := saddleRadius r
-    ((Nat.factorial n : ℝ) * (binarySubspaceCount r : ℝ) *
+    ((Nat.factorial n : ℝ) * (binaryGaussianSum r : ℝ) *
       (1 + ρ / 6) ^ parity n * Real.exp (criticalPolynomial ρ)) /
       (ρ ^ r * Real.sqrt (2 * Real.pi * saddleVariance ρ))
 
@@ -117,6 +126,7 @@ or products. The finite-cardinality fields identify actual finite counts. -/
 structure DefinitionChecks : Prop where
   subgroup_finite : ∀ n : ℕ, Finite (Subgroup (Equiv.Perm (Fin n)))
   subspace_finite : ∀ r : ℕ, Finite (Submodule (ZMod 2) (Fin r → ZMod 2))
+  subspace_formula : ∀ r : ℕ, (binarySubspaceCount r : ℚ) = binaryGaussianSum r
   exact_positive : ∀ n : ℕ, 0 < exactBenchmark n
   exact_zero : exactBenchmark 0 = 1
   exact_one : exactBenchmark 1 = 1
