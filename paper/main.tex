@@ -1,0 +1,100 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Precise asymptotics for subgroups of the symmetric group},
+ pdfsubject={Precise subgroup asymptotics, complete weighted counting, and finite certificates}}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Epi}{\operatorname{Epi}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Soc}{\operatorname{Soc}}
+\newcommand{\Ann}{\operatorname{Ann}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\Sub}{\operatorname{Sub}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\gauss}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\crit}{\mathrm{crit}}
+\DeclareMathOperator{\lpp}{lpp}
+\title{Precise asymptotics for subgroups of the symmetric group\\
+\large The critical model, section capacity, and global reduction}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $s_n$ be the number of actual subgroups of $S_n$, and let
+$G_r$ count the subspaces of $\F_2^r$. We prove
+\[
+ s_n=n!G_{\lfloor n/2\rfloor}[y^{\lfloor n/2\rfloor}]
+ (1+y/6)^{n\bmod2}\exp(y/2+y^2/6+y^4/384)
+ \bigl(1+O(2^{-cn})\bigr)
+\]
+for a constant $c>0$, common to both parities. The critical family includes
+all central lifts and the two odd-degree markers. The upper bound uses an
+annihilator-aware section capacity theorem, joint-source quotient moments,
+and complete weighted recurrences that establish boundedness before using
+it. We prove the necessary orbit-action exhaustion and give explicit
+finite certificates for its bounded cases. The split $c=1$ case is a
+separate application and a check on the retained joint data. A saddle-point
+formula has relative error $O(n^{-1})$; an elementary expression has four
+residue-class constants and a first correction of order $n^{-1/4}$.
+\end{abstract}
+\tableofcontents
+\input{sections/introduction}
+\input{sections/critical}
+\input{sections/terminal}
+\input{sections/small_support}
+\input{sections/capacity}
+\input{sections/fusion}
+\input{sections/general_transfer}
+\input{sections/characters}
+\input{sections/relative_ranks}
+\input{sections/chief_fibres}
+\input{sections/affine_capacity}
+\input{sections/block_capacities}
+\input{sections/primitive_compression}
+\input{sections/primitive_consumers}
+\input{sections/bounded_ternary}
+\input{sections/finite_affine_frames}
+\input{sections/exceptional_pair_lifts}
+\input{sections/sixteen_pair_lifts}
+\input{sections/small_pair_heads}
+\input{sections/local_five}
+\input{sections/small_pair_actions}
+\input{sections/zero_ternary_frames}
+\input{sections/nonbinary_alphabet}
+\input{sections/binary_capacity}
+\input{sections/transport}
+\input{sections/carrier_mixture}
+\input{sections/binary_complete}
+\input{sections/cyclic_moment}
+\input{sections/markers}
+\input{sections/marker_complete}
+\input{sections/first_c1}
+\input{sections/macro_a4}
+\input{sections/packet_transfer}
+\input{sections/assembly}
+\input{sections/analysis}
+\appendix
+\input{sections/certificates}
+\input{sections/carrier_cones}
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}

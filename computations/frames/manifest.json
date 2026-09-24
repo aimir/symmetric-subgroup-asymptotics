@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "scope": "Complete zero-ternary eight- and sixteen-block frame certificates",
+  "classification_premise": {
+    "library": "PrimGrp",
+    "degrees": [
+      8,
+      16
+    ],
+    "counts": [
+      7,
+      22
+    ],
+    "reference_gap_version": "4.13.1",
+    "reference_primgrp_version": "3.4.4",
+    "completeness": "Published primitive classification, not inferred from these computations"
+  },
+  "validation": {
+    "eight_tops": 24,
+    "eight_eligible_frames": 30,
+    "eight_invariant_modules": 812,
+    "eight_vector_orbits": 21892,
+    "eight_cyclic_sum_cells": 39449,
+    "constructed_sixteen_tops": 29,
+    "constructed_kernel_closure_cells": 854,
+    "constructed_module_complement_interfaces": 20,
+    "constructed_actual_certificates": 48,
+    "primitive_sixteen_tops": 22,
+    "sixteen_eligible_frames": 38,
+    "primitive_eight_local_menus": 7,
+    "normalizer_witnesses_include_actual_sylow_subgroups": true,
+    "all_literal_bindings_verified": true,
+    "all_constructed_tops_matched_by_S16_conjugacy": true,
+    "negative_controls": [
+      "omitted invariant module rejected",
+      "false fixed-space dimension rejected"
+    ]
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5659,
+      "sha256": "9fabc09776be09eaf8525f5cb324e040f296b827fe77fa80054368566f854c03"
+    },
+    {
+      "path": "SCHEMA.md",
+      "bytes": 3240,
+      "sha256": "147c93f942c453c4b73f6f53e3e0a0af98a6e9fb607b5b4cca86c2bf86d7dc36"
+    },
+    {
+      "path": "frames8.json",
+      "bytes": 64415,
+      "sha256": "f57e814e457b4c66b724e33028fea8d46c1a633738cb00a0abcb59cf663dfe78"
+    },
+    {
+      "path": "bindings8.g",
+      "bytes": 32484,
+      "sha256": "d5a3ef513faa40a10f666478628f5f23f0a156db58e75d8a7be4068c3c2fa3fa"
+    },
+    {
+      "path": "tops16.g",
+      "bytes": 7392,
+      "sha256": "f32542292875f55a7573d128dab1cf89a09d2d082e766d0f853ce42a22767a9b"
+    },
+    {
+      "path": "frames16.g",
+      "bytes": 11363,
+      "sha256": "86836e4fb593c64bbf7204d43e6072c6af5e8fa3f91a978c6e3f245c669c9dc2"
+    },
+    {
+      "path": "run_frames.py",
+      "bytes": 2703,
+      "sha256": "6ea812b4bf28b5307794994f2378083a86c0ebc16b07b37a9e1ce56d622bd81f"
+    },
+    {
+      "path": "verify_frames.g",
+      "bytes": 7171,
+      "sha256": "6e6328c00b03b828a580705b0b21702185e15075ff62cfcdb41aa49361b71d6d"
+    },
+    {
+      "path": "verify_modules8.py",
+      "bytes": 3366,
+      "sha256": "c46eca7d5d4c8dc65c7489d8ba42e11ce3e2dceab4c17a10fb510cdd10122146"
+    },
+    {
+      "path": "negative_controls.py",
+      "bytes": 2100,
+      "sha256": "7ba9d6574d087b8297d0c743d93f6064c766e6da56541386e3999e2500eada83"
+    },
+    {
+      "path": "produce_frames8.g",
+      "bytes": 5837,
+      "sha256": "05327d325c35301be0e63ed70a3d898f2716e76cc7ab96fbdce5947ccd564516"
+    },
+    {
+      "path": "produce_frames16.g",
+      "bytes": 6635,
+      "sha256": "3ea4c23d338d8db2fa3e59b160b8c2ca7a8b4ed58ff40eeb11a7f4f86de52652"
+    },
+    {
+      "path": "construct_tops16.g",
+      "bytes": 7220,
+      "sha256": "9439133f44ed6a4f481fb7f0dd811fd2d600a61a6c77725c16cd6a6c3a6e1697"
+    }
+  ]
+}
