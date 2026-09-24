@@ -1,0 +1,183 @@
+\section{Binary sections and joint character incidence}
+\label{sec:binary-capacity}
+The nonbinary hypothesis in Lemma~\ref{lem:unipotent} is essential.
+For binary tops it is replaced by a joint budget indexed by actual
+character kernels. Write $B_a=\binom a{\lfloor a/2\rfloor}$, including
+$B_0=1$.
+
+\begin{lemma}[Locally dependent maps over $\F_2$]\label{lem:locally-dependent}
+Let $\mathcal M\leq\Hom(V,W)$ have dimension at least two, and suppose
+that $\dim\mathcal M(v)\leq1$ for every $v\in V$. All maps in
+$\mathcal M$ have image in one common line of $W$.
+\end{lemma}
+\begin{proof}
+If $f\in\mathcal M$ has rank at least two, then for every
+$g\in\mathcal M$ one has $\ker f\leq\ker g$. To see this, take
+$u\in\ker f$ and two vectors with independent $f$-images. Applying
+pointwise dependence to each vector and its translate by $u$ forces
+$g(u)$ to lie in both independent lines. Thus $g$ induces a map on
+$\operatorname{im}f$ taking each $x$ to either $0$ or $x$.
+Linearity on independent pairs forces this map to be zero or the
+identity. Hence $g=0$ or $f$, contradicting $\dim\mathcal M\geq2$.
+All nonzero maps therefore have rank one. Two maps with distinct image
+lines have the form $u\alpha$ and $v\beta$ for independent $u,v$.
+There is an input on which both nonzero functionals $\alpha,\beta$
+are one, contradicting pointwise dependence.
+\end{proof}
+
+\begin{lemma}[A deterministic separator]\label{lem:separator}
+Let $\mathcal L\leq H\otimes S$ have dimension $\ell$, and put
+\[
+ j_0=\max_{0\ne\lambda\in H}
+       \dim(\mathcal L\cap(\lambda\otimes S)),
+\]
+with empty maximum zero. There are $q$ independent functionals on $S$
+whose simultaneous evaluation is injective on $\mathcal L$, where
+\begin{equation}\label{eq:separator}
+ q\leq\left\lfloor\frac{\ell+\max(1,j_0)}2\right\rfloor.
+\end{equation}
+For $\mathcal L=0$ take $q=0$.
+\end{lemma}
+\begin{proof}
+View tensors as maps $S^*\to H$. On the current common kernel,
+select an evaluation of rank at least two whenever one exists. Each
+step removes at least two dimensions, and its functional is independent
+of those already selected. If a remainder of dimension $r\geq2$
+has only evaluations of rank at most one, Lemma~\ref{lem:locally-dependent}
+puts it in one character line, so $r\leq j_0$. Separate its support
+with $r$ more functionals. A remainder of dimension one requires only
+one functional. If $k$ first-stage steps occurred, then
+$\ell\geq2k+r$ and $q=k+r$, proving \eqref{eq:separator} in all cases.
+The final functionals remain independent: earlier ones vanish on the
+remaining support.
+\end{proof}
+
+Let $T\leq S_{2^a}$ be transitive and binary and $A$ a section of its
+permutation module whose action factors through $B$. Set
+\[
+ S=A^B,\quad t=\dim S,\quad H=H^1(B,\F_2),\quad
+ \mathcal L=\ker(H^1(B,S)\to H^1(B,A)),\quad\ell=\dim\mathcal L.
+\]
+The soluble module bound gives $t,\ell\leq B_a$, by applying it
+to $A^B$ and the actual section $(A/S)^B\cong\mathcal L$.
+
+\begin{lemma}[Joint character-kernel budget]\label{lem:joint-budget}
+Inflate $H$ into $\Hom(T,C_2)$ and fix a point $x$. Let
+$H_0=\{\chi\in H:\chi(T_x)=0\}$. For $W\leq H$ put
+$j=\dim(W\cap H_0)$. Then
+\begin{equation}\label{eq:joint-budget}
+ t+\dim(\mathcal L\cap(W\otimes S))\leq2^jB_{a-j}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $K_W=\bigcap_{\chi\in W}\ker\chi$ in $T$. Its number of orbits
+is $[T:K_WT_x]=2^j$, since the annihilator of the image of $T_x$ in
+$T/K_W$ is $W\cap H_0$. The orbit lengths are $2^{a-j}$.
+The preimage in $A$ of the connecting-map slice
+$\mathcal L\cap(W\otimes S)$ has dimension equal to the left side
+of \eqref{eq:joint-budget}. The group $K_W$ fixes it: the corresponding
+cocycles into the trivial module $S$ vanish on $K_W$.
+Filter this actual trivial section by the $K_W$-orbit modules and
+apply the soluble bound $B_{a-j}$ to each. This proves the inequality.
+\end{proof}
+
+\begin{theorem}[Binary capacity from degree $64$]\label{thm:binary-large-capacity}
+For $a\geq5$ there is $C\leq S$ with
+\begin{equation}\label{eq:binary-capacity}
+ 2\dim C+4\dim(A/C)^B\leq2B_a+2B_{a-1}.
+\end{equation}
+For $a\geq6$ the right side is at most $15\cdot2^a/16$.
+\end{theorem}
+\begin{proof}
+A nonzero character has one or two kernel orbits, so
+Lemma~\ref{lem:joint-budget} gives
+$j_0\leq J=2B_{a-1}-t$, using $B_a\leq2B_{a-1}$.
+Apply Lemma~\ref{lem:separator} and let $C$ be the common kernel in
+$S$ of the selected functionals. Then $\dim C=t-q$ and
+$\mathcal L\cap(H\otimes C)=0$. Equation~\eqref{eq:fixed-quotient}
+gives $\dim(A/C)^B=q$, so the cost is $2t+2q$.
+If $J\geq1$, this is at most
+$2t+\ell+J=t+\ell+2B_{a-1}\leq2B_a+2B_{a-1}$.
+If $J=0$, then $t=2B_{a-1}\leq B_a$. The binomial identities imply
+$a$ even and $t=B_a=2B_{a-1}$; this central binomial coefficient is
+even. Therefore $q\leq\lceil\ell/2\rceil\leq B_a/2$, giving the
+same result. Finally, for $a\geq6$, both central-binomial proportions
+$B_a/2^a$ and $B_{a-1}/2^{a-1}$ are at most $5/16$.
+\end{proof}
+
+\begin{theorem}[The degree-$32$ boundary]\label{thm:binary32-capacity}
+If $a=5$, there is $C\leq S$ with
+$2\dim C+4\dim(A/C)^B\leq30$.
+\end{theorem}
+\begin{proof}
+Here $t,\ell\leq10$ and $j_0\leq12-t$. The separator gives cost at
+most $t+\ell+12\leq32$. Unless $t=\ell=10$, it is at most $31$
+and hence at most $30$, since the cost is even.
+
+Assume $t=\ell=10$. Put $H_0$ as in Lemma~\ref{lem:joint-budget}
+and choose a complement $H=H_0\oplus H_1$. For
+\[
+ (M_0,M_1,M_2,M_3,M_4,M_5)=(10,12,12,16,16,32)
+\]
+the joint budget is $\dim(\mathcal L\cap(W\otimes S))\leq M_j-10$.
+In particular $\mathcal L\cap(H_1\otimes S)=0$, so projection embeds
+$\mathcal L$ into a ten-dimensional space
+$\overline{\mathcal L}\leq H_0\otimes S$. For $W_0\leq H_0$,
+\[
+ \dim(\overline{\mathcal L}\cap(W_0\otimes S))
+ \leq M_{\dim W_0}-10.
+\]
+We have $\dim H_0\leq5$ from the orbit count; taking $W_0=H_0$
+forces equality, because $M_j-10\leq6$ for $j\leq4$.
+
+Let $R_q$ be the number of nonzero tensors of rank $q$ in
+$\overline{\mathcal L}$, $1\leq q\leq5$. Double count containment
+of their row support in $r$-spaces of $H_0$. The instances $r=2,4$
+give the simultaneous constraints
+\begin{equation}\label{eq:rank-moments}
+ \begin{split}
+ 15R_1+R_2&\leq465,\\
+ 15R_1+7R_2+3R_3+R_4&\leq1953,\\
+ R_1+R_2+R_3+R_4+R_5&=1023.
+ \end{split}
+\end{equation}
+Indeed the exact double count is
+$\sum_{\dim W=r}(2^{\dim(\overline{\mathcal L}\cap(W\otimes S))}-1)
+=\sum_qR_q\gauss{5-q}{r-q}2$.
+
+For a uniform five-space $C\leq S=\F_2^{10}$, the probability of
+containing a fixed $q$-dimensional image is
+\[
+ p_q=\frac{\gauss{10-q}{5-q}2}{\gauss{10}52},\qquad
+ (p_1,\ldots,p_5)=
+ \left(\frac1{33},\frac5{5621},\frac1{40953},
+       \frac1{1733677},\frac1{109221651}\right).
+\]
+Set $z=p_5$, $y=(p_3-p_5)/3$, and $x=(p_1-15y-z)/15$.
+These are positive, and the coefficient vector of $x$ times the first
+row of \eqref{eq:rank-moments}, $y$ times the second, and $z$ times
+the third dominates $(p_1,\ldots,p_5)$ coordinatewise. The slacks in
+coordinates two and four are respectively
+$1932416/1638324765$ and $2480/327664953$; the other three are equalities.
+Consequently
+\begin{equation}\label{eq:positive-dual}
+ \sum_qp_qR_q\leq465x+1953y+1023z
+ =\frac{103925485}{109221651}<1.
+\end{equation}
+Projection from $H$ to $H_0$ never increases tensor rank, and is
+injective on $\mathcal L$. Since containment probability decreases
+with rank, the expected number of nonzero tensors of the original
+$\mathcal L$ contained in $H\otimes C$ is also less than one.
+This number is an integer, so some $C$ has zero intersection.
+Equation~\eqref{eq:fixed-quotient} then gives
+$\dim(A/C)^B=10-5=5$, of cost $10+20=30$.
+\end{proof}
+
+Every simple binary module for a $2$-group is trivial. Hence these
+costs are precisely $2\dim C+4r(A/C)$. A binary transitive pair
+action of width $2s\geq64$ therefore has an entry certificate for
+every normal axis, with $g\geq s/16$, by
+Proposition~\ref{prop:prefix}. To sum over all widths one must also
+bound the number of actions, axes, pair systems, cuts, and constants
+$D_C$ uniformly. The finite-menu theorem alone does not perform that
+unbounded sum.

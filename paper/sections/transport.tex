@@ -1,0 +1,106 @@
+\section{Reversible simultaneous quotient transport}\label{sec:transport}
+The construction below permits nonabelian common quotients and proper
+subdirect replacement groups. These are actual group maps, rather than
+identifications of abstract quotient types.
+
+\begin{proposition}[Simultaneous reconstruction]\label{prop:transport}
+Let $H\leq\prod_iU_i$ be full subdirect. For selected coordinates let
+$N_i=H\cap U_i$ be the exact embedded coordinate axis, and specify maps
+\[
+ \alpha_i:U_i\twoheadrightarrow Q_i=U_i/N_i,\qquad
+ \beta_i:P_i\twoheadrightarrow Q_i,
+ \qquad P_i\leq\prod_{V\in W_i}V
+\]
+with $P_i$ full on the displayed word $W_i$. Use identity maps on the
+untouched coordinates. Set $\alpha=\prod_i\alpha_i$,
+$\beta=\prod_i\beta_i$, and
+\begin{equation}\label{eq:transport}
+ \overline H=\alpha(H),\qquad H_{\rm new}=\beta^{-1}(\overline H).
+\end{equation}
+Then $H_{\rm new}$ is full on every replacement factor. The decorated
+map is injective, with inverse
+\begin{equation}\label{eq:transport-inverse}
+ H=\alpha^{-1}(\beta(H_{\rm new})).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The embedded $N_i$ commute and each is contained in $H$. Hence
+$\ker\alpha=\prod_iN_i\leq H$, proving $H=\alpha^{-1}(\overline H)$.
+The projection of $\overline H$ onto each $Q_i$ is full. Any element
+of $P_i$ has an image appearing in some element of $\overline H$;
+surjectivity of the other $\beta_j$ permits a simultaneous lift. Thus
+the projection of $H_{\rm new}$ onto the whole $P_i$ is full, which
+implies fullness on its displayed factors. Surjectivity of $\beta$
+gives $\beta(H_{\rm new})=\overline H$, proving the inverse formula.
+No step replaces $P_i$ by the full product of its projections.
+\end{proof}
+
+\begin{proposition}[Bounded decoration fibre]\label{prop:decoration}
+Suppose the original actions, words, and maps range over fixed finite
+menus of bounded degree, each replacement has the same physical degree
+as its original coordinate, and original critical coordinates are
+untouched. If the original noncritical support has degree $b$, the
+number of decorated preimages of any target subgroup on $n$ points is
+at most $(n+2)^{K b}$ for a menu-dependent constant $K$.
+\end{proposition}
+\begin{proof}
+Realize each replacement on the same labelled points as its original
+orbit. To reconstruct the decorated block structure, select and group
+the target orbits into the changed bounded blocks, and record the
+finitely many local action types, coordinate bijections, normal axes,
+and map choices. There are $O(b)$ selected orbits, grouping slots, and
+finite labels. Allowing $n+2$ choices at each slot bounds all these
+possibilities by $(n+2)^{K b}$. For fixed decorations the original
+subgroup is unique by \eqref{eq:transport-inverse}.
+This counts labelled groups directly, so division by $n!$ retains
+the original action-normalizer weights and occurrence factorials.
+\end{proof}
+
+Here is the quantitative form needed to use such a transport. Suppose
+a target binary word has critical rank $R$, $a$ regular $C_4$ factors,
+and noncritical carrier support of half-degree $4T$, so
+$N=R+2a+4T$. Put $C_{\rm new}=2a+4T$ and write the original
+noncritical support as $2C_{\rm old}$. Assume each replacement retains
+at least a fixed proportion $\delta>0$ of noncritical points. Then
+\begin{equation}\label{eq:support-transport}
+ \delta C_{\rm old}\leq C_{\rm new}\leq C_{\rm old}.
+\end{equation}
+
+\begin{proposition}[Absorbing decorations]\label{prop:absorb-decorations}
+Assume the complete normalized target mass at each profile satisfies
+the two uniform estimates
+\begin{align}\label{eq:mixture-envelopes}
+ T\leq a/140,\quad a\geq1:\quad&
+ 2^{-aN/25+O(a\log(N+2))},\notag\\
+ T>a/140:\quad&
+ 2^{-(29/656)TN+O(N\log(N+2))}.
+\end{align}
+With the finite-menu assumptions of Proposition~\ref{prop:decoration}
+and \eqref{eq:support-transport}, the full original family with a
+noncritical orbit has normalized mass $2^{-\Omega(N)}$.
+\end{proposition}
+\begin{proof}
+First remove the original range $0<C_{\rm old}\leq\sqrt N/4$ by
+Theorem~\ref{thm:small-support}, before charging any decorations.
+Indeed its noncritical degree is at most $\sqrt N/2$, and its critical
+degree is at least $N$ for large $N$. The remaining range satisfies
+$C_{\rm new}>\delta\sqrt N/4$. By
+Proposition~\ref{prop:decoration}, after summing over original supports
+the additional factor is $2^{O_\delta(C_{\rm new}\log(N+2))}$.
+
+If $T\leq a/140$, then $C_{\rm new}<3a$. This factor is absorbed by
+the first error in \eqref{eq:mixture-envelopes}, and the negative term
+is at most $-N/25$ before the smaller error. If $T>a/140$, then
+$C_{\rm new}<284T$, so $T>\delta\sqrt N/1136$. The negative term
+in the second envelope has order at least $N^{3/2}$ and absorbs both
+the displayed error and the decoration cost. There are only polynomially
+many profiles and support sizes. Their sum retains the exponential gain.
+\end{proof}
+
+The inequalities \eqref{eq:mixture-envelopes} are the stronger profile
+bounds proved for the full twelve-carrier mixture in
+Theorem~\ref{thm:binary-mixture}.
+Multiplying only a final $2^{-\gamma N}$ mixture bound by the decoration
+factor would be insufficient. An all-critical replacement also fails
+\eqref{eq:support-transport}, and is outside the negligible-mass
+conclusion even though the reconstruction map remains valid.

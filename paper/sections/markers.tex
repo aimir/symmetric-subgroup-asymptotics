@@ -1,0 +1,177 @@
+\section{Markers, binary moments, and the one-triple audit}
+\label{sec:markers}
+\subsection{Exact natural-\texorpdfstring{$S_3$}{S3} transport}
+\begin{proposition}\label{prop:marker-transport}
+Let $X\leq T\times S_3^g$ be full on $T$ and every marker. Put
+$K_X=X\cap C_3^g$, let $\overline X$ be its image in
+$T\times C_2^g$, and let $L=\overline X\cap C_2^g$, of dimension
+$\ell$. Then
+\[
+ \overline X\cong T\times L,\qquad
+ X/O^2(X)\cong(T/O^2(T))\times C_2^\ell,
+ \qquad d_2(X)=d_2(T)+\ell,\qquad \tau_2(X)=\tau_2(T).
+\]
+For one marker the numbers of possible $X$ with $\ell=1,0$ are
+respectively $1$ and $2^{d_2(T)}-1+|\Epi(T,S_3)|$.
+\end{proposition}
+\begin{proof}
+The graph map $T\to C_2^g/L$ factors through $A_2(T)$ and has a
+linear lift, proving the first isomorphism. The kernel $K_X$ has odd
+order, so inflation is an isomorphism in binary cohomology. The maximal
+binary quotient is therefore that of $T\times L$. K\"unneth and the
+identical elementary factor show that the kernel defining $\tau_2$
+is unchanged. For one marker Goursat's lemma gives: the full product;
+one common-$C_2$ graph for each nonzero binary character of $T$; and
+one literal graph for each epimorphism $T\to S_3$. These are disjoint.
+\end{proof}
+
+If $p_{T,g,\ell}$ counts the actual marker subgroups with this value of
+$\ell$, their exact attachment to a critical product $D$, with $f$
+fixed points, has weight
+\begin{equation}\label{eq:marker-terminal}
+ \frac{1}{6^gg!f!}\sum_\ell p_{T,g,\ell}
+             N_D((T/O^2(T))\times C_2^\ell).
+\end{equation}
+This identity does not license replacing an arbitrary complete exterior
+projection by its unmarked count.
+
+\subsection{A character moment on the complete binary error}
+Let $\mathcal E_N$ be all fixed-point-free $2$-subgroups of $S_{2N}$
+with at least one actual orbit outside Table~\ref{tab:critical}, and put
+\[
+ E_N=\frac{|\mathcal E_N|}{L_{2N}},\qquad
+ pE_N=\frac1{L_{2N}}\sum_{Y\in\mathcal E_N}t(Y),
+\]
+where $t(Y)$ is the number of its actual two-point orbits.
+Set $E_0=pE_0=0$.
+
+\begin{proposition}[Complete binary pair moment]\label{prop:binary-moment}
+For $N\geq2$,
+\begin{equation}\label{eq:binary-moment}
+ pE_N\leq[7+(6N)^{1/4}]E_N+r_NE_{N-1},\qquad
+ r_N=\frac{N-1}{4}\frac{c_{N-1}G_{N-1}}{c_NG_N}.
+\end{equation}
+The same estimate holds for the family of all fixed-point-free binary
+subgroups, with its corresponding counts.
+\end{proposition}
+\begin{proof}
+Each pair orbit supplies a nonzero character of $Y$. Let $q(Y)$ be
+the number of distinct such characters, $D(Y)$ the number of unordered
+pairs of equal characters, and $I_4(Y)$ the number of unordered sets
+of four pair orbits with independent characters. Then
+\[
+ t(Y)-q(Y)\leq D(Y),\qquad
+ q(Y)\leq7+(24I_4(Y))^{1/4}.
+\]
+For the second inequality, when $q\geq7$ select distinct characters
+successively: there are at least $q,q-1,q-3,q-7$ choices. Divide by
+$4!$ and use $q(q-1)(q-3)(q-7)\geq(q-7)^4$. The case $q<7$ is immediate.
+
+There is an injection from groups $Y$ with four selected independent
+pair orbits to groups $H$ with one selected $E_8$ orbit, at the same
+degree. On the eight selected points their pair partition
+$\mathcal P$ determines an extraspecial group $E(\mathcal P)$.
+Explicitly, inside $C_2^4\rtimes S_4$, take the even flips semidirect
+the regular block $V_4$. Its centre has exactly these four pair orbits;
+its normalizer is $C_2^4\rtimes S_4$. Thus pair partitions correspond
+bijectively to the actual $E_8$ actions. Fix, once for each partition,
+an isomorphism $E(\mathcal P)/Z(E(\mathcal P))\cong C_2^4$.
+Replace $Y\leq C_2^4\times J$ by its full preimage in
+$E(\mathcal P)\times J$. Independence gives the full $E_8$ projection.
+The centre partition and the fixed isomorphism recover $Y$.
+The complete exterior projection is unchanged, so its noncritical
+orbit is retained. There are at most $\lfloor N/4\rfloor$ possible
+selected $E_8$ orbits. Consequently
+\[
+ \sum_{Y\in\mathcal E_N}I_4(Y)\leq (N/4)|\mathcal E_N|.
+\]
+Concavity of $x^{1/4}$ gives
+$\sum_Yq(Y)\leq[7+(6N)^{1/4}]|\mathcal E_N|$.
+
+Collapse two pair orbits carrying the same character to one pointed
+pair orbit. This operation and its inverse preserve a noncritical
+orbit. The exact labelled weight ratio is
+\[
+ \frac{1/(2^2\,2!)}{1/2}=\frac14.
+\]
+Thus
+\[
+ \frac1{(2N)!}\sum_{Y\in\mathcal E_N}D(Y)
+ =\frac{1}{4(2N-2)!}\sum_{Y\in\mathcal E_{N-1}}t(Y)
+ \leq\frac{N-1}{4(2N-2)!}|\mathcal E_{N-1}|.
+\]
+Divide by $c_NG_N$ and combine the two bounds.
+\end{proof}
+
+For $n=2j+1$, put $p_{2j+1}=c_j+c_{j-1}/6$ and
+\begin{equation}\label{eq:uv}
+ \alpha_j=\frac{c_j}{p_{2j+1}},\quad
+ \beta_j=\frac{c_j}{3p_{2j+1}},\quad
+ u_j=\alpha_j+\beta_j[7+(6j)^{1/4}],\quad v_j=\beta_jr_j.
+\end{equation}
+A single fixed point contributes $\alpha_jE_j$.
+Replacing a pointed pair by a natural $S_3$ orbit has weight ratio
+$(1/6)/(1/2)=1/3$ and contributes $\beta_jpE_j$.
+Thus their combined binary-error contribution is at most
+$u_jE_j+v_jE_{j-1}$. Section~\ref{sec:analysis} gives
+$c_{j-1}/c_j\sim(96j)^{1/4}$, so $u_j\to1$ and $v_j\to0$.
+In particular this is not a strict contraction on unrestricted complete
+counts. It will be applied only after $E_j$ has been estimated.
+
+\subsection{The split one-triple incidence}
+For a finite group $K$, a nonzero character $\chi:K\to C_3$ is split
+if it has a section. This is equivalent to being nonzero on an element
+of order three. The nonsplit characters, including zero, are therefore
+the annihilator of the span of the order-three elements in $A_3(K)$.
+They form a vector space. Write its dimension as $h_3(K)$ and set
+\begin{equation}\label{eq:sigma3}
+ \sigma_3(K)=3^{d_3(K)}-3^{h_3(K)}.
+\end{equation}
+This counts oriented split nonzero characters exactly.
+
+\begin{proposition}[Inverse-complement incidence]\label{prop:c1-incidence}
+For any collection $\mathcal P$ of pairs $(K,\chi)$ with $K\leq S_m$
+and $\chi$ split and nonzero, define
+\[
+ q(K,\chi)=|\{x\in K:|x|=3,\ \chi(x)=1\}|.
+\]
+Then
+\begin{equation}\label{eq:inverse-complement}
+ |\mathcal P|=\sum_{|x|=3}\ 
+ \sum_{\substack{N^x=N,\ N\cap\langle x\rangle=1\\
+          (N\langle x\rangle,\chi_{N,x})\in\mathcal P}}
+ \frac1{|\{y\in Nx:|y|=3\}|},
+\end{equation}
+where $\chi_{N,x}$ kills $N$ and sends $x$ to $1\in C_3$.
+Furthermore, if $P\lhd K$ is a $2$-group, inflation from $K/P$
+preserves $d_3$, $h_3$, and $\sigma_3$.
+\end{proposition}
+\begin{proof}
+For each $(K,\chi)$ insert the identity
+$1=\sum_{x:|x|=3,\chi(x)=1}q(K,\chi)^{-1}$.
+With $N=\ker\chi$, the pair $(N,x)$ determines both $K$ and $\chi$,
+and the denominator is precisely the one displayed in
+\eqref{eq:inverse-complement}. Every ternary character kills $P$.
+A split character upstairs has an order-three representative whose
+image is a representative downstairs. Conversely the preimage of a
+complement downstairs is an extension of a $2$-group by $C_3$ and
+contains a complement by Schur--Zassenhaus. This proves splitness
+in both directions and hence all three equalities.
+\end{proof}
+
+These identities are required tests for applying a counting estimate to
+the one-external-triple case, customarily denoted $c=1$. One must bound
+the sum of \eqref{eq:sigma3}, not an unmarked subgroup sum, and must
+retain the reciprocal in \eqref{eq:inverse-complement}. For example,
+on the shared-top group $J=\F_4^r\rtimes C_3$ and target
+$\F_4^m\rtimes C_3$, above the fixed top map the exact cocycle and
+onto-lift counts are
+\[
+ 4^{m(r+1)},\qquad 4^m\prod_{i=0}^{m-1}(4^r-4^i),
+\]
+respectively. Maschke's theorem gives $H^1(C_3,\F_4^m)=0$;
+$\Hom_{C_3}(\F_4^r,\F_4^m)$ has $4^{mr}$ elements, and the
+$4^m$ coboundaries are literal distinct graphs. A second mark on the
+same $J$ produces a joint moment on that source. It cannot be replaced
+by two independently chosen source groups. These exact tests do not
+themselves prove that the high-incidence $c=1$ domain has been exhausted.

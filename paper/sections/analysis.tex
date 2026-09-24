@@ -1,0 +1,173 @@
+\section{Evaluation of the benchmark}\label{sec:analysis}
+The results in this section estimate the explicit sequence $L_n$ in
+\eqref{eq:normalization}. Theorem~\ref{thm:main} transfers them to the subgroup count with an
+exponentially smaller relative error.
+
+\subsection{The binary Gaussian sum}
+Define
+\begin{equation}\label{eq:theta-constants}
+ \kappa_0=\phi^{-1}\sum_{j\in\Z}2^{-j^2},\qquad
+ \kappa_1=\phi^{-1}\sum_{j\in\Z}2^{-j(j-1)}.
+\end{equation}
+Both series converge absolutely.
+\begin{lemma}\label{lem:Gaussian-asymptotic}
+As $R\to\infty$,
+\[
+ G_R=\kappa_{R\bmod2}\,2^{\lfloor R^2/4\rfloor}
+            \bigl(1+O(R2^{-R/2})\bigr).
+\]
+\end{lemma}
+\begin{proof}
+The product formula reads
+\[
+ \gauss Rk2=2^{k(R-k)}
+ \frac{\prod_{i=R-k+1}^R(1-2^{-i})}
+      {\prod_{i=1}^k(1-2^{-i})}.
+\]
+For central $k$ the fraction is
+$\phi^{-1}(1+O(2^{-k}+2^{-(R-k)}))$.
+When $R=2m$, put $k=m+j$, giving exponent $m^2-j^2$.
+When $R=2m+1$, put $k=m+j$, giving exponent
+$m(m+1)-j(j-1)$. On $|j|\leq R/4$ the summable Gaussian weights
+times $2^{|j|}$ give error $O(2^{-R/2})$ up to an absolute parity
+constant. The remaining tails are $2^{-\Omega(R^2)}$ by
+\eqref{eq:gaussian-bounds}. The stated, slightly weaker, error follows.
+\end{proof}
+
+\subsection{One positive saddle}
+Let $\rho=\rho_R>0$ be the unique solution of
+\begin{equation}\label{eq:saddle}
+ R=\rho P'(\rho)=\frac\rho2+\frac{\rho^2}3+\frac{\rho^4}{96},
+ \qquad b(\rho)=\frac\rho2+\frac{2\rho^2}3+\frac{\rho^4}{24}.
+\end{equation}
+Existence and uniqueness follow from strict monotonicity on the positive
+axis. In particular $\rho\sim(96R)^{1/4}$ and $b(\rho)\sim4R$.
+
+\begin{theorem}[Saddle formula]\label{thm:saddle}
+For $n=2R+\eps$,
+\begin{equation}\label{eq:saddle-formula}
+ L_n=n!G_R\,
+ \frac{(1+\rho/6)^\eps e^{P(\rho)}}
+      {\rho^R\sqrt{2\pi b(\rho)}}
+       \left(1+O(R^{-1})\right).
+\end{equation}
+In particular $c_{R-1}/c_R=\rho(1+O(R^{-1}))$.
+\end{theorem}
+\begin{proof}
+Apply Cauchy's coefficient formula on $y=\rho e^{i\theta}$ to
+$(1+y/6)^\eps e^{P(y)}$. After taking out the displayed main factor,
+the phase is
+\[
+ P(\rho e^{i\theta})-P(\rho)-iR\theta
+ =-b\theta^2/2-i\kappa_3\theta^3/6
+                   +\kappa_4\theta^4/24+O(R|\theta|^5),
+\]
+where $\kappa_j=\sum_{k\in\{1,2,4\}}k^j[y^k]P(y)\rho^k=O(R)$.
+The saddle equation cancels the linear term. For $\eps=1$ the
+normalized amplitude is $1+d(e^{i\theta}-1)$ with
+$d=\rho/(6+\rho)\in[0,1]$; for $\eps=0$ it is one.
+
+On $|\theta|\leq R^{-2/5}$, expand the cubic and quartic corrections
+against $e^{-b\theta^2/2}$. Odd imaginary terms integrate to zero.
+The possible leading errors have Gaussian averages bounded by
+\[
+ O(b^{-1})+O(Rb^{-2})+O(R^2b^{-3})=O(R^{-1}).
+\]
+The first term includes the amplitude, and its product with the cubic
+phase is covered by the second. Taylor remainders are smaller; for
+example $R\mathbb E|\theta|^5=O(R^{-3/2})$, and
+$R|\theta|^3=o(1)$ uniformly on the chosen central arc.
+
+Outside arcs of radius $R^{-2/5}$ about the fourth roots of unity, the
+quartic term loses at least $cR^{1/5}$ in real part. Near $-1$ the
+linear term loses at least $c\rho$; near $i$ and $-i$ the quadratic
+term loses at least $c\rho^2$. All coefficient terms are positive,
+so these losses are not cancelled by another term. These arcs are
+superpolynomially small relative to the central Gaussian integral.
+This proves \eqref{eq:saddle-formula}. The same argument with
+amplitude $y/\rho=e^{i\theta}$ gives the coefficient-ratio assertion.
+\end{proof}
+
+\subsection{An elementary four-periodic expression}
+Set
+\begin{equation}\label{eq:four-constants}
+ \begin{aligned}
+ C_0&=e^{-4/3}\kappa_0/2^{1/2},&
+ C_2&=e^{-4/3}\kappa_1/2^{3/4},\\
+ C_1&=\frac{e^{-4/3}\kappa_0\,48^{3/8}}{6\cdot2^{7/16}},&
+ C_3&=\frac{e^{-4/3}\kappa_1\,48^{3/8}}{6\cdot2^{11/16}}.
+ \end{aligned}
+\end{equation}
+For $\eps=n\bmod2$ define
+\begin{equation}\label{eq:elementary-M}
+ M_n=C_{n\bmod4}\,n^{3\eps/8}\,2^{n^2/16}
+ \left(\frac{n^7}{48\cdot2^\eps e^7}\right)^{n/8}
+ \exp\left(2\sqrt{n/3}+\frac{(48n)^{1/4}}2\right).
+\end{equation}
+
+\begin{theorem}[Elementary expansion]\label{thm:elementary}
+The exact benchmark satisfies
+\begin{equation}\label{eq:elementary-error}
+ \frac{L_n}{M_n}=1+\frac{6\eps-4}{(48n)^{1/4}}+O(n^{-1/2}).
+\end{equation}
+By Theorem~\ref{thm:main}, the same formula
+holds with $s_n$ in place of $L_n$, and
+\eqref{eq:saddle-formula} holds with $s_n$ on the left.
+\end{theorem}
+\begin{proof}
+Put $x=(96R)^{1/4}$. Solving \eqref{eq:saddle} successively in powers
+of $x^{-1}$ gives
+\begin{equation}\label{eq:rho-expansion}
+ \rho=x-8x^{-1}-12x^{-2}+32x^{-3}+0x^{-4}
+                    +184x^{-5}+O(x^{-6}).
+\end{equation}
+This is a controlled expansion: after substitution, the residual in
+the saddle equation is $O(x^{-3})$, and its derivative near $x$ is
+of order $x^3$. The mean value theorem gives the indicated root error.
+Equivalently the analytic implicit-function theorem applies to
+$\rho/x$ as a function of $1/x$ near zero.
+
+Define
+\[
+ T_R=\frac{1}{\sqrt{8\pi R}}\exp\left(
+ -\frac R4\log_eR+\frac{1-\log_e96}{4}R
+ +\frac{2\sqrt6}{3}\sqrt R+\frac x2-\frac43\right).
+\]
+Taylor expansion using \eqref{eq:rho-expansion} in
+$P(\rho)-R\log_e\rho-\frac12\log_e(2\pi b(\rho))$ yields
+\begin{equation}\label{eq:log-coefficient-expansion}
+ \log_e\frac{c_R}{T_R}=-\frac4x+\frac{109}{9x^2}+O(x^{-3}).
+\end{equation}
+All Taylor arguments tend to zero; their next derivatives are bounded
+on a fixed neighborhood. The saddle error is $O(R^{-1})=O(x^{-4})$,
+so is smaller than the remainder displayed here. For the odd amplitude,
+\begin{equation}\label{eq:odd-amplitude-expansion}
+ \log_e\frac{1+\rho/6}{x/6}=\frac6x-\frac{26}{x^2}+O(x^{-3}).
+\end{equation}
+One can check the first terms without the full root expansion:
+\eqref{eq:saddle} also gives $P(\rho)=R/4+\rho^2/12+3\rho/8$,
+which removes the quartic term before expanding.
+
+Now apply Stirling's formula to $n!$, Lemma~\ref{lem:Gaussian-asymptotic}
+to $G_R$, and \eqref{eq:log-coefficient-expansion} to $c_R$, with
+\eqref{eq:odd-amplitude-expansion} when $\eps=1$.
+Substitute $R=(n-\eps)/2$. The quadratic Gaussian factor contributes
+the four-periodic constants in \eqref{eq:four-constants}; the odd
+amplitude and the shift from $R$ to $n/2$ give the power
+$n^{3\eps/8}$. Collecting the order-$x^{-1}$ terms gives
+\[
+ \log_e(L_n/M_n)=(6\eps-4)(48n)^{-1/4}+O(n^{-1/2}).
+\]
+Exponentiation proves \eqref{eq:elementary-error}. Finally the
+exponential relative error of Theorem~\ref{thm:main}
+is smaller than either polynomial error asserted here.
+\end{proof}
+
+\begin{remark}
+The relative errors refer to three different approximations. The
+complete counting theorem gives exponential error against the
+exact coefficient benchmark $L_n$. Replacing the coefficient by its
+single-saddle expression gives $O(n^{-1})$. Replacing the saddle by
+the elementary expression $M_n$ gives an explicit term of order
+$n^{-1/4}$ and a remainder $O(n^{-1/2})$.
+\end{remark}

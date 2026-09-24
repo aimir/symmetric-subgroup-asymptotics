@@ -1,0 +1,172 @@
+\section{The complete critical family}\label{sec:critical}
+The four even actions used in the model are listed below. The indicated
+kernel is trivial in the first two cases and is the centre in the last
+two. The resulting quotient is elementary abelian of the indicated rank.
+The extraspecial action is the faithful transitive action of plus type
+on eight points, denoted $E_8$.
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Action & Degree & Quotient rank & $a(U)$\\
+\midrule
+$C_2$ & 2 & 1 & 2\\
+regular $V_4$ & 4 & 2 & 24\\
+natural $D_8$ & 4 & 2 & 8\\
+$E_8\cong 2_+^{1+4}$ & 8 & 4 & 384\\
+\bottomrule
+\end{tabular}
+\caption{The critical even actions.}\label{tab:critical}
+\end{table}
+The normalizer and quadratic-form calculations are literal finite
+calculations; Appendix~\ref{sec:certificates} describes their witnesses.
+The theorem about this family does not require the additional assertion
+that these exhaust equality in a permutation-rank bound.
+
+For a fixed word $D$ in these actions, let $K$ be the product of the
+specified kernels and put $V=D/K=\F_2^R$. If $t=\dim K$, the squaring
+map is a vector-valued quadratic map $q:V\longrightarrow K$.
+Its polarization is the commutator map. Write
+\[
+ \phi=\prod_{i\geq1}(1-2^{-i})>0.
+\]
+The Gaussian product formula implies
+\begin{equation}\label{eq:gaussian-bounds}
+ 2^{k(R-k)}\leq\gauss Rk2\leq\phi^{-1}2^{k(R-k)},
+ \qquad G_R\asymp2^{\lfloor R^2/4\rfloor}.
+\end{equation}
+All constants in this section are absolute.
+
+\begin{lemma}[The canonical subgroups]\label{lem:canonical}
+Uniformly in the critical word, the number of full-projecting subspaces
+$U\leq V$ is $G_R(1+O(R2^{-R/2}))$.
+\end{lemma}
+\begin{proof}
+Failure to project onto a quotient coordinate of dimension at most four
+places $U$ in one of its at most $15$ pullback hyperplanes. There are at
+most $R$ coordinates. Each hyperplane contains $G_{R-1}$ subspaces, and
+\eqref{eq:gaussian-bounds} gives $G_{R-1}/G_R=O(2^{-R/2})$.
+The full preimage of a full-projecting $U$ projects onto each actual
+factor by Burnside's basis theorem. Different $U$ give different subgroups.
+\end{proof}
+
+\begin{lemma}[All lifts of a subspace]\label{lem:critical-lifts}
+Let $U\leq V$ have dimension $k$, and set
+$Q(U)=\langle q(u):u\in U\rangle\leq K$. Put
+$\mathcal A(U)=Q(U)^\perp\leq K^*$. The number of subgroups of $D$
+whose image is exactly $U$ is
+\begin{equation}\label{eq:critical-lifts}
+ \sum_{B\leq\mathcal A(U)}2^{k\dim B}
+ =\sum_{j=0}^{\dim\mathcal A(U)}
+       \gauss{\dim\mathcal A(U)}j2\,2^{kj}.
+\end{equation}
+If $U$ is full-projecting, all these subgroups project onto the factors.
+\end{lemma}
+\begin{proof}
+For such a subgroup $H$, put $W=H\cap K$. Necessarily $q(U)\subseteq W$.
+Conversely this condition makes $\pi^{-1}(U)/W$ elementary abelian:
+the square condition also kills every commutator by polarization.
+The subgroups with intersection $W$ are the complements to $K/W$ in
+this elementary abelian extension. They form a torsor under
+$\Hom(U,K/W)$ and number $2^{k\codim_K W}$. Annihilator duality
+$B=W^\perp$ gives \eqref{eq:critical-lifts}.
+Fullness follows again from Burnside's basis theorem on each factor.
+\end{proof}
+
+\begin{lemma}[Quadratic realization]\label{lem:quadratic}
+Fix a quadratic form $Q$ on a binary vector space. If $q_0$ is a
+nonsingular plus-type form of dimension $h\in\{2,4\}$, the surjections
+$f$ satisfying $q_0\circ f=Q$ form either the empty set or a torsor for
+$O^+(h,2)$. In particular there are at most $72$ such maps.
+\end{lemma}
+\begin{proof}
+If a map exists, the radical of the polar form of $Q$ is exactly
+$\ker f$, since the target polar form is nonsingular and $f$ is onto.
+Thus every such map has the same kernel and induces an isometry from
+the same quotient to the target. Any two differ by a unique target
+isometry. The elementary orders are $|O^+(2,2)|=2$ and
+$|O^+(4,2)|=72$.
+\end{proof}
+
+\begin{proposition}[Uniform exceptional-lift estimate]\label{prop:extra-lifts}
+Set $d=R/2-t\geq0$. For the fixed critical word, the total number of
+noncanonical full subgroups is $O(G_R2^{-d})$.
+\end{proposition}
+\begin{proof}
+Fix an $\ell$-space $B\leq K^*$, where $\ell\geq1$, and put its
+equations in row-echelon form in the coordinates of the nonabelian
+critical factors. Count ordered maps $\F_2^k\to V$ which are injective
+and full on each coordinate and which satisfy $B\leq\mathcal A(U)$.
+Once the nonpivot coordinate maps have been chosen, each pivot equation
+prescribes one quadratic form. Lemma~\ref{lem:quadratic} allows at most
+$72$ choices for its surjective coordinate map. Each pivot has target
+dimension at least two. Thus the ordered-map count is at most
+$72^\ell2^{(R-2\ell)k}$.
+
+Division by $|\GL(k,2)|$, compared with the unrestricted ordered
+injection count at least $\phi2^{Rk}$, gives
+\[
+ \#\{U:\dim U=k,\ B\leq\mathcal A(U),\ U\text{ full}\}
+ \leq\phi^{-1}\gauss Rk2\,72^\ell2^{-2\ell k}.
+\]
+There are at most $\phi^{-1}2^{\ell(t-\ell)}$ choices for $B$.
+Multiplying by its lift weight $2^{k\ell}$ in
+\eqref{eq:critical-lifts}, the exceptional mass at dimension $k$ is at
+most
+\begin{equation}\label{eq:exception-k}
+ \phi^{-2}\gauss Rk2\sum_{\ell\geq1}
+ 72^\ell2^{-\ell(k-t+\ell)}.
+\end{equation}
+Put $x=k-R/2$. Dividing by $G_R$ introduces a factor at most
+$C2^{-x^2}$ by \eqref{eq:gaussian-bounds}. The exponent depending on
+$x$ and $\ell$ becomes
+\[
+ -x^2-\ell x-\ell d-\ell^2
+ =-(x+\ell/2)^2-\ell d-3\ell^2/4.
+\]
+The Gaussian sum over either lattice is uniformly bounded. Also,
+\[
+ \sum_{\ell\geq1}72^\ell2^{-3\ell^2/4}<\infty.
+\]
+Since $d\geq0$, the result is $O(2^{-d})$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:critical-intro}]
+Summing \eqref{eq:weights} over critical profiles of rank $R$ gives
+$n!c_R$ in even degree, because the two rank-two actions have combined
+weight $1/24+1/8=1/6$. The canonical count therefore supplies the main
+term, with the uniform error of Lemma~\ref{lem:canonical}.
+
+For multiplicities $(a,v,b,e)$ of the four actions,
+\[
+ R=a+2v+2b+4e,\quad t=b+e,\quad d=a/2+v+e.
+\]
+Inserting the weight $2^{-d}$ of Proposition~\ref{prop:extra-lifts}
+changes the exponential generating polynomial to
+\begin{equation}\label{eq:tilde-P}
+ \widetilde P(y)=\frac{y}{2\sqrt2}+\frac{7y^2}{48}
+                         +\frac{y^4}{768}.
+\end{equation}
+For fixed $a_1,a_2,a_4>0$ one has
+\begin{equation}\label{eq:quartic-coefficient}
+ \log_e[y^R]\exp(a_1y+a_2y^2+a_4y^4)
+ =-\frac R4\log_e R+\frac R4(1+\log_e(4a_4))+O(\sqrt R).
+\end{equation}
+For completeness, the upper bound follows by substituting
+$y=(R/(4a_4))^{1/4}$ into the positive series. For the lower bound take
+$\lfloor R/4\rfloor$ quartic terms and at most three linear terms;
+Stirling's inequalities give the same two terms with error $O(\log R)$.
+Halving the quartic coefficient in \eqref{eq:tilde-P} therefore gives
+exceptional relative mass $2^{-R/4+O(\sqrt R)}$.
+
+In odd degree the fixed-point option contributes $c_R$. The natural
+$S_3$ option contributes $c_{R-1}/6$. Any subgroup full on its $S_3$
+coordinate and on the binary coordinates contains $A_3$ on the first
+coordinate alone: raise an element projecting to a $3$-cycle to a
+sufficiently large power of two. Quotienting this forced subgroup turns
+that coordinate into one elementary binary coordinate. Its full lift
+analysis is consequently the same one, with exceptional marker
+$y/(6\sqrt2)$. Formula~\eqref{eq:quartic-coefficient}, also after
+a fixed coefficient shift, gives the same exponential conclusion.
+The two options have different actual orbit profiles and are disjoint.
+\end{proof}

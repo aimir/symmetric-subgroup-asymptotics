@@ -1,0 +1,122 @@
+\section{The counting problem and its normalization}
+\label{sec:intro}
+We count subgroups as subsets of $S_n$, rather than conjugacy classes
+or abstract isomorphism classes. All unspecified logarithms in counting
+estimates are to base two; $\log_e$ denotes the natural logarithm.
+Roney-Dougal and Tracey~\cite{RoneyDougalTracey2025} prove
+\begin{equation}\label{eq:coarse}
+ s_n\leq 2^{n^2/16+O(n^{3/2})}.
+\end{equation}
+Together with the elementary binary construction, this identifies the
+quadratic exponential scale. The more precise benchmark considered here
+also records the labelled orbit decomposition.
+
+Put $R=\lfloor n/2\rfloor$ and $\eps=n-2R$, and define
+\begin{equation}\label{eq:normalization}
+ P(y)=\frac y2+\frac{y^2}6+\frac{y^4}{384},\qquad
+ c_R=[y^R]e^{P(y)},\qquad
+ p_n=c_R+\frac{\eps}{6}c_{R-1},\qquad L_n=n!G_Rp_n.
+\end{equation}
+Here $c_j=0$ for $j<0$, $G_R=\sum_k\gauss Rk2$, and $G_0=1$.
+In particular $p_n$ is a coefficient, whereas the normalized number of
+subgroups in the critical family will be denoted $C_n^{\crit}$.
+The identity $P'(y)e^{P(y)}=(e^{P(y)})'$ gives
+\begin{equation}\label{eq:coefficient-recurrence}
+ R c_R=\frac12c_{R-1}+\frac13c_{R-2}+\frac1{96}c_{R-4}.
+\end{equation}
+All coefficients are positive. Useful crude consequences include
+$c_{R-1}/c_R\leq2R$ and
+$c_{R-h}/c_R\leq(2R)^h$ for $0\leq h\leq R$.
+
+\begin{theorem}[Critical-family asymptotic]\label{thm:critical-intro}
+Consider the subgroups whose even orbits are the four actions in
+Table~\ref{tab:critical}. In odd degree allow, in addition, either one
+fixed point or one natural $S_3$ orbit. Require full projection onto
+each displayed action, and include every subgroup with these orbit
+projections. Their number is $L_n(1+O(2^{-a n}))$ for some $a>0$.
+Consequently $s_n\geq L_n(1-O(2^{-a n}))$.
+\end{theorem}
+
+\begin{theorem}[Section capacity]\label{thm:capacity-intro}
+Let $T\leq S_s$ be faithful, transitive, and not a $2$-group, where
+$s\geq24$ is even. Let $A$ be any section of its binary permutation
+module, with action factoring through a specified quotient $B$ of $T$.
+For a finite $\F_2B$-module $M$, put
+\[
+ r(M)=\max_X\frac{m_X(\Soc M)}{\dim_{\End_BX}X},\qquad r(0)=0,
+\]
+where $X$ runs over simple modules. There is a subspace $C\leq A^B$
+such that
+\begin{equation}\label{eq:capacity-intro}
+ 2\dim C+4r(A/C)\leq\frac{47s}{48}.
+\end{equation}
+The statement concerns the actual quotient $A/C$, including all socle
+constituents exposed by the quotient.
+\end{theorem}
+
+The critical model and the capacity estimate are proved in
+Sections~\ref{sec:critical} and~\ref{sec:capacity}. The complete counting
+argument gives the following theorem.
+
+\begin{theorem}[Precise subgroup asymptotic]\label{thm:main}
+There exist $c,C>0$ and $n_0$ such that
+\[
+ \left|\frac{s_n}{L_n}-1\right|\leq C2^{-cn}\qquad(n\geq n_0).
+\]
+The constants are common to both parities. No boundedness assumption
+on $s_n/L_n$ is needed.
+\end{theorem}
+
+We first prove complete counting estimates on one complementary source,
+with the normalizer of each original permutation action retained.
+Sections~\ref{sec:nonbinary-alphabet} and~\ref{sec:binary-complete}
+give the exhaustive nonbinary action reduction and the independent binary
+recurrence. The natural $C_3/A_4$ packets and exact marker collapse complete
+the disjoint partition in Section~\ref{sec:assembly}. Two successive
+boundedness inductions then prove Theorem~\ref{thm:main}.
+The split $c=1$ calculation in Section~\ref{sec:first-c1} is a required
+application of the joint-source method, with its shared-character and
+inverse-complement controls retained. Section~\ref{sec:analysis} evaluates
+$L_n$ and gives the saddle-point and elementary forms of the theorem.
+
+\subsection{Actual actions and recovered profiles}
+For a transitive action $U\leq S_w$ write
+$a(U)=|N_{S_w}(U)|$. If a profile contains $m_U$ copies of each action
+type, then the number of labelled orbit data is
+\begin{equation}\label{eq:weights}
+ \frac{n!}{\prod_U a(U)^{m_U}m_U!}.
+\end{equation}
+Indeed, partition the points into the prescribed unordered blocks and
+choose a conjugate of $U$ on each block. The factors $w!$ cancel.
+A subgroup full on each block recovers both its actual orbits and their
+permutation actions, so there is no further overcount.
+
+For later use, let $b=n-w$. Pointing an original orbit of type $U$
+has placement factor $n!/(b!a(U))$. If its complete complement is
+$J\leq S_b$, a fibre bound $z_U(J)$ therefore gives the normalized
+bound
+\begin{equation}\label{eq:pointing}
+ \frac{1}{b!a(U)p_nG_R}\sum_{J\leq S_b}z_U(J).
+\end{equation}
+In particular a uniform fibre envelope $z_U(b)$ produces the coefficient
+\begin{equation}\label{eq:delta}
+ \Delta(n,b)\frac{z_U(b)}{a(U)},\qquad
+ \Delta(n,b)=\frac{p_bG_{\lfloor b/2\rfloor}}{p_nG_R}
+\end{equation}
+on the complete normalized count $s_b/L_b$.
+An auxiliary quotient cover does not change $a(U)$.
+
+\subsection{Algebraic inputs}
+We use Gaussian coefficients, Goursat's lemma, Burnside's basis
+theorem, the inflation--restriction sequence, the degree-two
+K\"unneth formula, and classification of group extensions by $H^2$.
+For permutation groups we use the abelian-section bound of
+Kov\'acs and Praeger~\cite{KovacsPraeger1989}: an elementary abelian
+$p$-section of a subgroup of $S_b$ has rank at most $b/p$.
+Its form for $p$-groups is also recorded as
+\cite[Theorem 2.8]{RoneyDougalTracey2025}.
+The module-generator estimates used in Section~\ref{sec:capacity}
+come from \cite[Definition 1.5, Theorem 1.6 and Corollary 3.12]{Tracey2018}.
+The finite algebraic constants and the distinction between literal
+witness verification and exhaustive coverage are specified in
+Appendix~\ref{sec:certificates}.

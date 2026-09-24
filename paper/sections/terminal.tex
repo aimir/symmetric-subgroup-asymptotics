@@ -1,0 +1,134 @@
+\section{Exact terminal attachment}\label{sec:terminal}
+For a critical product $D$, let $N_D(T)$ count subgroups of $D\times T$
+full on $T$ and on each displayed critical factor. The group $T$ is
+the complete exterior projection, with all of its internal couplings.
+Write $d_2(T)=\dim\Hom(T,C_2)$ and
+$A_2(T)=T/(T'T^2)$.
+
+\begin{lemma}[Binary contraction]\label{lem:contraction}
+If $O^2(T)$ is the intersection of the normal subgroups of $T$ with
+$2$-group quotient, image and full preimage induce a bijection
+\[
+ N_D(T)=N_D(T/O^2(T)).
+\]
+\end{lemma}
+\begin{proof}
+Goursat's lemma expresses a subgroup above its two projections by a
+common quotient. The projection inside $D$ is a $2$-group, so the common
+quotient of $T$ is a $2$-group. Its kernel contains $O^2(T)$.
+Every subgroup being counted therefore contains $1\times O^2(T)$.
+\end{proof}
+
+\begin{lemma}[Central extension fibre]\label{lem:central-fibre}
+Let $1\to K\to X\to Y\to1$ be central with $K$ elementary abelian
+of exponent two, and let $\xi\in H^2(Y,K)$ be its class. Define
+\[
+ \Ann(\xi)=\{\lambda\in K^*: \lambda_*\xi=0\text{ in }H^2(Y,\F_2)\}.
+\]
+The number of subgroups of $X$ mapping onto $Y$ equals
+\begin{equation}\label{eq:central-fibre}
+ \sum_{L\leq\Ann(\xi)}2^{d_2(Y)\dim L}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fix $W=H\cap K$. The image of $H$ is a complement to $K/W$ in $X/W$.
+It exists exactly when the image of $\xi$ in $H^2(Y,K/W)$ vanishes.
+Since cohomology commutes with finite direct sums of coefficients, this
+is equivalent to $W^\perp\leq\Ann(\xi)$. When nonempty, the complement
+set is a torsor under $Z^1(Y,K/W)=\Hom(Y,K/W)$, of size
+$2^{d_2(Y)\codim W}$. Different intersections are disjoint.
+\end{proof}
+
+Let $V=D/K=\F_2^r$, $c=\dim K$ and $\delta=r/2-c$. For an arbitrary
+finite group $T$ define
+\begin{equation}\label{eq:tau}
+ d=d_2(T),\qquad
+ \tau=\dim\ker\bigl(H^2(A_2(T),\F_2)\longrightarrow H^2(T,\F_2)\bigr),
+ \qquad X_r(d)=\sum_j\gauss rj2\,2^{dj}.
+\end{equation}
+The kernel in this definition is retained as a subspace, not merely
+replaced by the number $\tau$, until a positive upper bound is taken.
+
+\begin{proposition}[Exact quotient records]\label{prop:terminal-record}
+For $0\leq u\leq r$, let $\mathcal P_u$ be the linear maps
+$p:\F_2^u\oplus A_2(T)\to V$ injective on the first summand and
+surjective onto each displayed critical quotient coordinate. Pull back
+the critical extension to $C_2^u\times T$, and call its class $\xi_p$.
+Then
+\begin{equation}\label{eq:terminal-record}
+ N_D(T)=\sum_{u=0}^r\frac{1}{|\GL(u,2)|2^{ud}}
+ \sum_{p\in\mathcal P_u}\ \sum_{L\leq\Ann(\xi_p)}2^{(u+d)\dim L}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The image $Y\leq V\times T$ of a subgroup being counted is onto $T$.
+Put $U=Y\cap V$. Its graph map $T\to V/U$ factors through $A_2(T)$.
+A linear lift of this map identifies $Y$ with $U\times T$.
+There are exactly $|\GL(u,2)|2^{ud}$ representations by a choice of
+ordered basis for $U$ and a linear lift. Lemma~\ref{lem:central-fibre}
+counts every subgroup above $Y$; surjectivity modulo the critical
+Frattini kernels gives the required full projections.
+\end{proof}
+
+\begin{proposition}[Uniform terminal bound]\label{prop:terminal-bound}
+With the notation above,
+\begin{equation}\label{eq:terminal-double}
+ N_D(T)\leq\phi^{-2}\sum_{j=0}^r\sum_{\ell=0}^c
+ \gauss c\ell2\,72^\ell 2^{\tau\ell}
+                    2^{(j-\ell)(r-j+d)}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:terminal-ratio}
+ \frac{N_D(T)}{X_r(d)}\leq (r+2)^{O(1)}
+ \left(1+\sum_{\ell\geq1}
+ 2^{-\ell(\delta+d/2-\tau-\log72)-3\ell^2/4}\right).
+\end{equation}
+In particular, if $\tau=0$ then
+$N_D(T)\leq C(r+2)^kX_r(d)$ for absolute $C,k$.
+\end{proposition}
+\begin{proof}
+Put $u=r-j$ and $k=u+d$. For an $\ell$-dimensional space of splitting
+characters in $K^*$ use row-echelon coordinates as in
+Proposition~\ref{prop:extra-lifts}. The degree-two K\"unneth formula
+on $U\times T$ gives three conditions for each scalar critical
+quadratic form $q_\lambda$:
+\[
+ q_\lambda|_U=0,\qquad
+ \beta_\lambda(U,f(A_2(T)))=0,\qquad
+ q_\lambda\circ f\in\ker\bigl(H^2(A_2(T))\to H^2(T)\bigr).
+\]
+The last condition has $2^\tau$ possible classes. For each pivot
+factor and each such class, Lemma~\ref{lem:quadratic} leaves at most
+$72$ surjective coordinate maps on the whole $k$-dimensional domain.
+Dropping the other restrictions leaves at most
+$72^\ell2^{\tau\ell}2^{(r-2\ell)k}$ ordered maps.
+The record divisor is at least $\phi2^{uk}$. Multiplication by the
+fibre size $2^{k\ell}$ and summation over $L$ prove
+\eqref{eq:terminal-double}, even with one fewer factor $\phi^{-1}$.
+
+Use $\gauss c\ell2\leq\phi^{-1}2^{\ell(c-\ell)}$ and write
+$A=r+d$. The exponent apart from this fixed constant is
+\[
+ j(A-j)+\ell(c+\tau+\log72-\ell-A+j).
+\]
+If $d\leq r$, its unconstrained maximum in $j$ is
+\[
+ A^2/4-\ell(\delta+d/2-\tau-\log72)-3\ell^2/4,
+\]
+whereas an integer $j$ nearest $A/2$ gives
+$X_r(d)\geq2^{A^2/4-O(1)}$. If $d\geq r$, the exponent is increasing
+on $0\leq j\leq r$; its maximum is at $j=r$. Divide by the literal
+term $2^{rd}\leq X_r(d)$. The remaining exponent is
+$\ell(r/2-\delta+\tau+\log72-d-\ell)$, which is smaller than the
+one in \eqref{eq:terminal-ratio} by
+$\ell(d-r)/2+\ell^2/4$. The $r+1$ choices of $j$ are a polynomial
+factor. Finally $\delta,d\geq0$, so at $\tau=0$ the series is bounded
+by $\sum_{\ell\geq0}72^\ell2^{-3\ell^2/4}<\infty$.
+\end{proof}
+
+\begin{remark}
+The module-extension annihilator used below is different from the
+group-extension annihilator in \eqref{eq:central-fibre}. No argument
+identifies the two. In particular a scalar quadratic form which is
+nonzero on $A_2(T)$ may become zero after inflation to $T$.
+\end{remark}

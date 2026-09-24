@@ -1,0 +1,115 @@
+\section{A complete small-support estimate}\label{sec:small-support}
+In even degree write $n=m+b$, with $m,b$ even. Let $M_{n,b}$ count
+subgroups whose union of noncritical orbits has degree exactly $b$;
+all other orbits are from Table~\ref{tab:critical}. This definition
+includes all couplings within the noncritical support, as well as
+every critical lift.
+
+\begin{lemma}\label{lem:permutation-terminal-parameters}
+For $J\leq S_b$ one has $\tau_2(J)\leq\lfloor b/2\rfloor$.
+If $b$ is even and some actual orbit of $J$ is noncritical, then
+$d_2(J)\leq b/2-1$.
+\end{lemma}
+\begin{proof}
+Let $U=J'J^2$. In the five-term sequence for $1\to U\to J\to A_2(J)\to1$,
+inflation on $H^1$ is an isomorphism. Thus transgression identifies
+the inflation kernel in degree two with
+\[
+ H^1(U,\F_2)^J\cong\Hom(U/(U'[J,U]U^2),\F_2).
+\]
+The latter is dual to an elementary abelian section of $U\leq S_b$,
+so has dimension at most $b/2$.
+
+The same abelian quotient bound gives $d_2(J)\leq b/2$.
+If equality holds, the moved-support equality theorem of
+\cite{KovacsPraeger1989} applies with the Sylow $2$-subgroup moving all
+$b$ points. Its transitive equality constituents are $C_2$, regular
+$C_4$, regular $V_4$, $D_8$, the degree-eight central product of two
+$D_8$ groups, and the stated odd affine constituents. The odd affine
+constituents have positive moved-point defect; the regular $C_4$ has
+elementary rank one instead of two. Equality in elementary rank therefore
+leaves precisely the four actions of Table~\ref{tab:critical} on every
+orbit. A noncritical orbit excludes equality, and integrality gives
+the claimed gap. This is a deduction from the equality classification,
+not an assertion of independent rank additivity for arbitrary subdirect
+products.
+\end{proof}
+
+\begin{theorem}[Square-root support]\label{thm:small-support}
+Fix $0<\eps<2$. Uniformly for even $b\geq2$ with
+$b\leq(2-\eps)\sqrt m$,
+\[
+ \frac{M_{n,b}}{L_n}\leq
+ 2^{-\eps(4-\eps)m/16+o_\eps(m)}.
+\]
+The sum over this entire range is exponentially small relative to $L_n$.
+\end{theorem}
+\begin{proof}
+Put $R=m/2$, $N=n/2$. For a critical word with multiplicities
+$(a,v,d,e)$ its central defect is $\delta=a/2+v+e$, and its weight is
+\[
+ W=\frac1{2^aa!24^vv!8^dd!384^ee!}.
+\]
+Let $c_R^{(<L)}$ be the sum of these weights with $\delta<L$.
+Then $a+2v+4e<4L$, so $d>R/2-2L$. There are at most $(R+1)^4$
+tuples and each weight is at most $1/d!$. Conversely one term in $c_N$
+uses $\lfloor N/4\rfloor$ extraspecial factors and at most one each
+of $C_2,D_8$ to fill the remainder. Hence
+\[
+ c_R^{(<L)}\leq\frac{(R+1)^4}{\max(0,\lfloor R/2-2L\rfloor)!},
+ \qquad
+ c_N\geq\frac1{16\cdot384^{\lfloor N/4\rfloor}\lfloor N/4\rfloor!}.
+\]
+Stirling's inequalities imply, for $L=o(R)$ and $N-R=o(R)$,
+\begin{equation}\label{eq:low-defect}
+ \log\frac{c_R^{(<L)}}{c_N}
+ \leq-\frac R4\log R+O(R+L\log(R+2)+(N-R)\log(R+2)).
+\end{equation}
+
+Let $Y_b$ count subgroups on $b$ points all of whose orbit projections
+are noncritical. Recovering the noncritical support and its complete
+projection gives
+\begin{equation}\label{eq:projection-first}
+ \frac{M_{n,b}}{n!}\leq\frac{Y_b}{b!}
+ \sum_{\gamma:\,\operatorname{rank}\gamma=R}W(\gamma)
+       \max_{J\in\mathcal Y_b}N_{D_\gamma}(J).
+\end{equation}
+Here $Y_b\leq s_b\leq2^{b^2/16+O(b^{3/2})}$ by \eqref{eq:coarse}.
+There is no extra support-choice factor: it is already in the exact
+labelled weights of \eqref{eq:projection-first}.
+
+Choose $L=b+\log72+\log(R+2)$. For $\delta\geq L$,
+Lemma~\ref{lem:permutation-terminal-parameters} and
+Proposition~\ref{prop:terminal-bound} give
+$N_D(J)\leq(R+2)^{O(1)}X_R(b/2-1)$.
+The quantity $X_R(t)$ counts subspaces of $\F_2^{R+t}$ transverse
+to a fixed $t$-space: choose the projection in $\F_2^R$ and its graph
+map. Thus
+\[
+ \frac{X_R(b/2-1)}{G_N}\leq\frac{G_{N-1}}{G_N}
+              \leq2^{-N/2+O(1)}.
+\]
+Also \eqref{eq:coefficient-recurrence} gives
+$c_R/c_N\leq(2N)^{b/2}$. The logarithm of the normalized large-defect
+part is consequently at most
+\[
+ -N/2+b^2/16+O(b^{3/2}+(b+1)\log(n+2)).
+\]
+Since $b\leq(2-\eps)\sqrt m$,
+$N/2-b^2/16\geq\eps(4-\eps)m/16+b/4$.
+The error is uniformly $o_\eps(m)$.
+
+For $\delta<L$, maximize the $\ell$ exponent in
+\eqref{eq:terminal-ratio} using $\tau\leq b/2$. The additional factor is
+\[
+ 2^{b^2/12+O(b+\log(R+2))}.
+\]
+The remaining term satisfies $X_R(b/2-1)\leq G_N$.
+Equation~\eqref{eq:low-defect} bounds its normalized contribution by
+\[
+ 2^{-R\log R/4+O(R+b^2+b^{3/2}+(b+\log(R+2))\log(R+2))}.
+\]
+For $b=O(\sqrt R)$ this is $2^{-\Omega(R\log R)}$.
+Finally only $O(\sqrt n)$ support sizes occur, which changes the
+logarithm by $O(\log n)$.
+\end{proof}

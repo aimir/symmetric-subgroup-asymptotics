@@ -1,0 +1,189 @@
+\section{Same-source lifts and original-weight fusion}\label{sec:fusion}
+\subsection{The fractional Schur cost}
+The following lemma applies to nonsplit group extensions and to
+nonsemisimple modules.
+\begin{lemma}[Conditional cocycle bound]\label{lem:cocycle}
+Let $1\to A\to Q\to B\to1$, with $A$ elementary abelian of exponent
+$p$, and let
+$r(A)=\max_Xm_X(\Soc_B A)/\dim_{\End_BX}X$.
+For $J\leq S_b$ and a fixed epimorphism $\beta:J\to B$, the number
+of epimorphisms $J\to Q$ above $\beta$ is at most
+\begin{equation}\label{eq:cocycle}
+ |A|\,|H^1(B,A)|\,p^{(b/p)r(A)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+If a lift exists, choose one actual lift as origin. All homomorphic
+lifts are a torsor for $Z^1(J,A_\beta)$; onto lifts are a subset.
+Let $F=\ker\beta$. Inflation--restriction and the bound on
+coboundaries give
+\[
+ |Z^1(J,A_\beta)|\leq|A|\,|H^1(B,A)|\,|\Hom(F,A)^J|.
+\]
+Choose a Sylow $p$-subgroup $P\leq F$ and put $D=N_J(P)$.
+The Frattini argument gives $J=FD$, so $D\to B$ is onto.
+Restriction embeds
+\[
+ \Hom(F,A)^J\lhook\joinrel\longrightarrow
+ \Hom_D(P/\Phi(P),A).
+\]
+Indeed $P$ maps onto every $p$-group image of $F$.
+The source here has the actual $D$-action; an action of $B$ on it
+is not assumed. Filter $W=P/\Phi(P)$ by a composition series.
+Left exactness of $\Hom(-,A)$ gives
+\[
+ \dim\Hom_D(W,A)\leq
+ \sum_X[W:X]m_X\dim_{\F_p}\End_DX\leq r(A)\dim W.
+\]
+Types not inflated from $B$ contribute zero. Since $D\to B$ is onto,
+the remaining simple dimensions and endomorphism fields are precisely
+those used in $r(A)$. Finally $\dim W\leq b/p$ by the permutation
+$p$-group abelianization bound. This proves \eqref{eq:cocycle}.
+\end{proof}
+
+\begin{proposition}[Central cut and graph moment]\label{prop:prefix}
+Let $1\to A\to Q\to B\to1$ have elementary binary kernel and let
+$C\leq A^B$, $c=\dim C$. Suppose $T\leq S_s$ is a specified
+permutation cover $\pi:T\to B$. Put
+\[
+ D_C=|A/C|\,|H^1(B,A/C)|,\quad
+ \lambda=\tfrac12r(A/C),\quad v=s+2c,\quad
+ \Phi(J)=|\Epi(J,B)|2^{c d_2(J)}.
+\]
+For $A/C=0$ take $D_C=1$. Then, for every $b$ and integer $q\geq1$,
+\begin{equation}\label{eq:prefix}
+ |\Epi(J,Q)|\leq D_C2^{\lambda b}\Phi(J),\qquad
+ \sum_{J\leq S_b}\Phi(J)^q\leq s_{b+qv}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Since $C\leq Z(Q)$, each actual map $J\to Q/C$ has either no lift
+or a torsor of homomorphic lifts under $\Hom(J,C)$. Apply
+Lemma~\ref{lem:cocycle} to the actual extension
+$1\to A/C\to Q/C\to B\to1$ and sum over the same maps to $B$.
+
+A term $\Phi(J)^q$ selects $q$ pairs of literal maps
+$(\beta_i:J\twoheadrightarrow B,\chi_i:J\to C_2^c)$.
+Encode them by the subgroup
+\[
+ \{(t_1,e_1,\ldots,t_q,e_q,j):
+    \pi(t_i)=\beta_i(j),\ e_i=\chi_i(j)\text{ for all }i\}
+       \leq(T\times C_2^c)^q\times J.
+\]
+Realize each $C_2^c$ on $c$ disjoint pairs. Projection onto the fixed
+coordinate sets recovers $J$ and every selected map. Thus the encoding
+is injective into the subgroups of $S_{b+qv}$. Repeated maps, dependent
+characters, and proper joint subdirect images are allowed.
+\end{proof}
+
+\subsection{A complete finite-menu estimate}
+\begin{theorem}[Original-weight fusion]\label{thm:fusion}
+Fix a finite collection of pairs $(U,N)$, where $U\leq S_w$ is
+transitive, $w$ is even, and $N\lhd U$. For each pair suppose there
+are fixed $D,v,\lambda$ and a nonnegative function $\Phi$ such that
+\[
+ |\Epi(J,U/N)|\leq D2^{\lambda b}\Phi(J),\qquad
+ \sum_{J\leq S_b}\Phi(J)^q\leq s_{b+qv}\quad(q\geq1),
+ \qquad g=w-v-8\lambda>0.
+\]
+Let $\mathcal U_n$ be any family of actual subgroups of $S_n$ each
+having an orbit of type $U$ whose intersection axis is one of the
+specified $N$. Then
+\begin{equation}\label{eq:finite-fusion}
+ \frac{|\mathcal U_n|}{L_n}
+ \leq\eta(n)+\sum_{b<n}K(n,b)\frac{s_b}{L_b},
+ \qquad\eta(n)=O(2^{-a n^2}),\quad
+ \sum_bK(n,b)=O(2^{-a' n})
+\end{equation}
+for some $a,a'>0$. The weights are those of the original actions.
+The result is uniform in ambient parity, but its constants may depend
+on the fixed finite menu.
+\end{theorem}
+\begin{proof}
+On a pointed orbit the subgroup has exact Goursat form
+\[
+ \{(u,j)\in U\times J:uN=\beta(j)\}
+\]
+for a unique literal epimorphism $\beta:J\to U/N$, once the quotient
+map is fixed. This counts actual maps, so there is no additional
+division by $|\Aut(U/N)|$. For an entry put
+$e=g/16$, $a_0=v/8+e$, and call its complete source hot when
+$\Phi(J)>2^{a_0b}$.
+
+For a hot source and any integer $q\geq1$,
+\[
+ \sum_{J\ {m hot}}|\Epi(J,U/N)|
+ \leq D2^{\lambda b-(q-1)a_0b}s_{b+qv}.
+\]
+Choose $q=\max(1,\lceil8eb/v^2\rceil)$. The exact identity
+\begin{align}\label{eq:hot-square}
+ &\frac{(b+qv)^2}{16}-(q-1)a_0b+\lambda b
+              -\frac{(b+w)^2}{16}\notag\\
+ &\hspace{8mm}=-\frac{4e^2b^2}{v^2}-eb-\frac{w^2}{16}
+       +\frac{v^2}{16}\left(q-\frac{8eb}{v^2}\right)^2
+\end{align}
+has a strictly negative quadratic term. Equation~\eqref{eq:coarse}
+and the coefficient bounds in Section~\ref{sec:critical} contribute
+only $O(n^{3/2}+n\log(n+2))$ to the normalized logarithm.
+As all entry parameters are fixed, the complete finite hot union is
+$O(2^{-a n^2})$.
+
+On its complement,
+$|\Epi(J,U/N)|\leq D2^{(w/8-g/16)b}$. The cold kernel is bounded by
+the sum over entries of
+\begin{equation}\label{eq:cold-kernel}
+ \Delta(n,b)\frac{D}{a(U)}2^{(w/8-g/16)b},\qquad b=n-w.
+\end{equation}
+For fixed even $w$, \eqref{eq:coefficient-recurrence} and the Gaussian
+bounds give
+\[
+ \log\Delta(n,n-w)=-wb/8-w^2/16+O_w(\log(n+2)).
+\]
+The parity correction is $O_w(1)$ and is included here. Each summand
+in \eqref{eq:cold-kernel} is therefore
+$2^{-gb/16+O_w(\log(n+2))}$. The finite sum proves the row estimate.
+
+Use the event that any eligible entry is hot, then the complement of
+that event. Pointing may overcount, but only by a positive sum which
+has already been bounded. Restriction by any earlier disjoint family
+can only reduce this sum. The actual complement $J$ includes every
+later orbit and every terminal attachment, as required by
+\eqref{eq:pointing}.
+\end{proof}
+
+\begin{corollary}[Nonbinary pair actions]\label{cor:pair-fusion}
+Let $U$ be a transitive action on $2s$ points with an invariant pair
+system whose faithful top $T\leq S_s$ is nonbinary, with even $s\geq24$.
+For every $N\lhd U$, write $K$ for the pair kernel and set
+\[
+ A=KN/N\cong K/(K\cap N),\qquad B=U/(KN).
+\]
+This entry has the certificate of Theorem~\ref{thm:fusion}, with
+$g\geq s/48$. Hence every fixed finite menu of these entries admits
+\eqref{eq:finite-fusion}.
+\end{corollary}
+\begin{proof}
+The pair kernel is a submodule of $\F_2^s$; the action on its indicated
+section factors through $B$. Apply Theorem~\ref{thm:capacity-intro}
+and Proposition~\ref{prop:prefix}. With $c=\dim C$,
+\[
+ g=2s-(s+2c)-4r(A/C)\geq s/48.
+\]
+There was no assumption that $N\leq K$, nor that the common quotient
+or its subdirect cores are abelian. For labelled transport, fix one
+witness on each original-normalizer orbit of entries and fixed
+transporters before counting $J$. A normalizer-equivariant choice of
+an individual witness is not needed, and the witnesses are not counted
+as additional decorations.
+\end{proof}
+
+\begin{remark}[Scope of the positive enlargement]
+The original quotient, extension class, and restricted group
+transgression determine which lifts exist. The cocycle torsor bounds
+are applied after those data have been fixed. The capacity proof uses
+the distinct module annihilator in \eqref{eq:fixed-quotient}.
+The theorem does not grant bounds for arbitrary extra weights on the
+source groups, and a growing menu requires an additional uniform
+estimate for its size and the constants $D$. Only $\Phi$, not the
+cocycle tail $2^{\lambda b}$, is raised to the moment power.
+\end{remark}

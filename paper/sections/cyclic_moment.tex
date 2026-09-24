@@ -1,0 +1,247 @@
+\section{A joint cyclic-four character moment}\label{sec:cyclic-moment}
+For a finite group $J$, let $d(J),c(J)$ be the first two conjugate
+columns of the binary part of $J^{\rm ab}$, and put
+\[
+ q(J)=d(J)+c(J)=\log|\Hom(J,C_4)|,\qquad
+ M_4(b,r)=\sum_{J\leq S_b}2^{rq(J)},\qquad
+ F(b,r)=\frac{b^2}{16}+\frac{br}{4}+\frac{r^2}{2}.
+\]
+The two source columns must be retained jointly; the second column
+is not separately additive in an extension.
+
+\begin{theorem}\label{thm:C4-moment}
+As $b\to\infty$,
+\[
+ \log M_4(b,r)\leq F(b,r)+o((b+r)^2),
+\]
+uniformly for $r/b$ in any fixed bounded interval. The range $r\geq b/2$
+also satisfies the bound directly, without an upper restriction on $r/b$.
+Literal homomorphisms are counted, without a target automorphism divisor.
+\end{theorem}
+
+\subsection{The retained normal columns}
+We use the bounded-word counting construction of
+\cite[Sections 3--5 and Proposition 7.4]{RoneyDougalTracey2025}, specifying
+the changes needed for the character weight. Fix a physical orbit bound
+$C$. In its nonexcess case, let $Q_i$ be quotients of actual transitive
+binary groups of degrees $n_i<C$, such that every $Q_i$-normal subgroup
+has normal-generator number at most $n_i/4$. Put $n=\sum_i n_i$.
+For an efficiently ordered upper normal tableau write
+$N_i$ for its diagonal normal subgroup,
+$d_i=d_{Q_i}(N_i)$, and $c_i=\log|N_i|/n_i$. The efficient-generator
+division before the final maximization in that construction gives
+\begin{equation}\label{eq:tableau-input}
+ E=\sum_{j<i}(c_i-c_j)n_jd_i,
+ \quad 0\leq c_1\leq\cdots\leq c_t\leq1,
+ \quad d_i\leq\min(n_i/4,c_in_i)
+\end{equation}
+as an upper bound on the logarithm of the number of groups with a
+fixed tableau. All tableau and ordering choices cost
+$O_C(n\log(n+2))$ by its normal-chain bound.
+
+\begin{lemma}\label{lem:two-columns}
+For a full subgroup $L$ with this tableau,
+\[
+ d(L)\leq D:=\sum_i d_i,\qquad
+ d(L)+c(L)\leq S:=\sum_i\min(2d_i,c_in_i).
+\]
+\end{lemma}
+\begin{proof}
+Filter $L$ by the kernels of successive tail projections. The $i$th
+quotient is $N_i$ with conjugation action supplied by the onto
+projection to $Q_i$. Restrict global characters $L\to C_4$ along
+this filtration. Two characters with the same previous restriction
+differ on the next term by an invariant character of $N_i$, hence
+by a character of $N_i/[N_i,Q_i]$. The latter abelian group has at
+most $d_i$ generators and order at most $2^{c_in_i}$, so contributes
+at most $2^{\min(2d_i,c_in_i)}$ maps. Multiplying the fibre bounds proves
+the second inequality. The same argument with $C_2$ proves the first.
+It bounds extendable global restrictions and does not presume that
+every invariant character extends.
+\end{proof}
+
+Put $T(t)=\sum_{c_i\geq t}n_i$, $0<t<1$. Layer-cake identities and
+\eqref{eq:tableau-input} imply
+\begin{equation}\label{eq:layer-cake}
+ E\leq\frac14\int_0^1T(t)(n-T(t))\,dt,\qquad
+ D\leq\int_0^{1/4}T(t)\,dt,\qquad
+ S\leq\int_0^{1/2}T(t)\,dt.
+\end{equation}
+For example the first integral before its factor $1/4$ is
+$\sum_{j<i}(c_i-c_j)n_in_j$. It follows already that
+$E+rq(L)\leq n^2/16+nr/4+r^2/2$, by maximizing separately on
+$0<t<1/2$ and $1/2<t<1$.
+
+\subsection{The abelian packet in the same tableau}
+Let $A$ be the product of the abelian physical coordinate quotients,
+on total support $a$, and put $B=A\times C_4^r$. The abelian quotient
+bound gives $\log|A|\leq a/2$. For a fixed remaining projection $L$,
+the exact number of subgroups of $B\times L$ onto $L$ is
+\begin{equation}\label{eq:abelian-packet}
+ X_B(L)=\sum_{D\leq B}|\Hom(L,B/D)|.
+\end{equation}
+This follows by taking the actual intersection $D$ and the literal
+graph map. Write $x_j$ for the conjugate columns of $L^{\rm ab}_2$.
+The Hall subgroup formula, after dropping only the monotonicity
+restriction on quotient columns, bounds its logarithm by
+\[
+ \sum_j\Psi(B_j,x_j)+O_C(\log(a+r+2)),\qquad
+ \Psi(v,x)=\max_{0\leq y\leq v}y(v-y+x)
+ =\begin{cases}vx&v\leq x,\\(v+x)^2/4&v\geq x.\end{cases}
+\]
+There are boundedly many columns since the physical degrees are bounded.
+The Gaussian factors and the number of column profiles give the stated
+logarithmic error.
+
+The derivative of $\Psi$ in its first argument increases in both
+arguments. Since $B_1\geq B_j$ and $x_1\geq x_j$, moving each unit
+of the original $A$-column mass into the first column can only increase
+the bound. Fill any remaining mass up to $a/2$. This gives
+\begin{equation}\label{eq:packet-columns}
+ \log X_B(L)\leq\Psi(a/2+r,d(L))+\Psi(r,c(L))
+                              +O_C(\log(a+r+2)).
+\end{equation}
+Let the two maximizing Hall ranks be $\alpha\geq\beta$; this ordering
+is possible because both the ambient and source columns are ordered.
+Lemma~\ref{lem:two-columns} gives the joint inequality
+\[
+ \alpha d(L)+\beta c(L)
+ \leq(\alpha-\beta)D+\beta S
+ \leq\alpha\int_0^{1/4}T(t)\,dt
+         +\beta\int_{1/4}^{1/2}T(t)\,dt.
+\]
+Define
+\[
+ g_n(x)=\max_{0\leq z\leq n}\{z(n-z)/4+xz\}
+ =\begin{cases}n^2/16+nx/2+x^2&x\leq n/4,\\nx&x\geq n/4.\end{cases}
+\]
+The tableau entropy and the full abelian fibre together are bounded by
+\[
+ \frac14g_n(\alpha)+\frac14g_n(\beta)+\frac12g_n(0)
+       +\alpha(a/2+r-\alpha)+\beta(r-\beta).
+\]
+Direct differentiation on the two branches proves
+\[
+ \max_{0\leq x\leq v}\{x(v-x)+g_n(x)/4\}
+       =(v+n/4)^2/4.
+\]
+The maximizer is $x=v$ when $v\leq n/4$, and
+$x=(v+n/4)/2$ otherwise. Relaxing the order between $\alpha,\beta$
+now gives the upper bound
+\begin{equation}\label{eq:joint-splice}
+ \frac{n^2}{32}
+ +\frac{(a/2+r+n/4)^2+(r+n/4)^2}{4}
+ =F(n+a,r)-\frac{na}{16}\leq F(n+a,r).
+\end{equation}
+This is the required abelian/nonabelian splice on one source.
+
+\subsection{Excessive quotients and bounded binary words}
+For a product $D$ of actual transitive binary actions of degree less
+than $C$, of total degree $b$, we claim
+\begin{equation}\label{eq:bounded-C4}
+ \log|\Sub(D\times C_4^r)|
+       \leq F(b,r)+O_C((b+r)\log(b+r+2)).
+\end{equation}
+First condition on coordinate projections, refining any intransitive
+projection into its actual orbits. This costs $2^{O_C(b)}$ and does
+not increase physical support. Follow the literal normal-intersection
+construction in \cite[Proposition 7.4]{RoneyDougalTracey2025} on the
+physical coordinates, keeping the auxiliary factor $C_4^r$ throughout.
+Quotienting the embedded axes is injective because their product lies
+in the subgroup. In particular those axes are already killed by every
+auxiliary graph coordinate; no character is lost by quotienting first.
+The nonexcess branch is \eqref{eq:joint-splice}.
+
+In the excessive branch choose the physical coordinate of degree $w$
+in the priority of cases (IIa)--(IIc) of that proof.
+Its nonabelian quotient $Q$ has, by
+\cite[Theorem 5.7]{RoneyDougalTracey2025}, a normal subgroup $F_0$ and
+parameters $e,z,g$ satisfying
+\[
+ z=\log|C_Q(F_0)|,\quad g=\log|[F_0,Q]|,
+ \qquad ez+g\leq w/2,\qquad z\leq w/4.
+\]
+The three values of $e$ are $3$ for the degree-eight excess-two case,
+$1$ for excess one, and $5/4$ for the remaining excess-two case;
+the excess-one branch retains the generator-equality hypothesis of
+that theorem.
+
+In the remaining nonabelian projection select a maximal fully
+independent tail. Let $b_3$ be the degree of its dependent physical
+coordinates, and $b_4$ the degree of the independent tail together
+with every abelian physical coordinate. Thus $b_3+b_4=b-w$.
+The normal filtration in
+\cite[Theorem 5.5]{RoneyDougalTracey2025} gives, on this same source,
+the bounds $eb_3/4+b_4/2+r$ for ordinary generators and $b_3/4$ for
+the derived-normal term in its epimorphism estimate. To check the
+auxiliary modification: the abelian-coordinate kernel contributes at
+most $b_4/2+r$ generators, whereas commutators have trivial abelian
+coordinates, so the derived group projects isomorphically onto the
+derived nonabelian projection. Passing to quotients does not increase
+the relative normal-generator caps. No faithful action of $Q$ at
+degree $w$ is assumed.
+
+The epimorphism estimate
+\cite[Theorem 4.6]{RoneyDougalTracey2025} consequently becomes
+\[
+ \log|\Epi(\text{source},Q)|
+       \leq\frac{w(b_3+b_4)}8+\frac{wr}{4}
+                                     +O_C(\log(b+r+2)).
+\]
+This is paid by the exact reserve
+$F(b,r)-F(b-w,r)=w(b-w)/8+wr/4+w^2/16$.
+Induct on the number of physical coordinates. The lower normal-tableau
+chains absorb the normal-axis sums exactly as in equation (7.1) of
+the cited proof; their count and the reorderings have logarithm
+$O_C(b\log(b+2))$. The accumulated epimorphism errors are
+$O_C(b\log(b+r+2))$. This proves \eqref{eq:bounded-C4}.
+
+\subsection{The weighted generation reduction}
+\begin{proof}[Proof of Theorem~\ref{thm:C4-moment}]
+If $G=\langle K,x_1,\ldots,x_l\rangle$, restriction and the displayed
+generator values determine a character. Thus
+\begin{equation}\label{eq:marked-generation}
+ |\Hom(G,C_4)|^r\leq4^{rl}|\Hom(K,C_4)|^r.
+\end{equation}
+Choose one encoding for each $G$ and bound by the sum of all encodings.
+This avoids requiring any unproved closure property of a marked family.
+
+For soluble groups in bounded orbit containers, the nilpotent generation
+theorem and the socle-length bound of
+\cite[Theorem 7 and Lemma 8.5]{RoneyDougalTracey2025} supply a
+nilpotent subgroup and $O_C(\sqrt b)$ additional generators. The ambient
+soluble group has order $2^{O(b)}$. The tuple choices and
+\eqref{eq:marked-generation} cost
+$2^{O_C(b^{3/2}+r\sqrt b)}$.
+For a bounded-orbit nilpotent group, the Cartesian Sylow orbit grids
+of \cite[Lemma 2.7]{RoneyDougalTracey2025} compress the binary and
+odd actions to degrees $m,d$ with $m+d\leq b$. The grid choices cost
+$2^{O_C(b\log(b+2))}$. The odd factor has no nontrivial $C_4$ character.
+Graph injection and \eqref{eq:bounded-C4} bound the binary moment by
+$2^{F(m,r)+o_C(b^2)}$ for $r=O(b)$; \eqref{eq:coarse} bounds the
+odd factor by $2^{d^2/16+O(d^{3/2})}$. Since
+$F(m,r)+d^2/16\leq F(b,r)$, the bounded soluble case follows.
+
+For the large-orbit step fix $\eta>0$. The soluble generator estimate
+\cite[Proposition 6.2]{RoneyDougalTracey2025} supplies a cutoff $C$
+such that the large-orbit projection requires at most
+$\eta b/\delta$ generators, where $\delta=(\log24)/3$ is the soluble
+order constant. Its kernel is an actual subgroup on the small support.
+Working in a product of maximal transitive soluble containers, the
+choices of lifts and their marked values cost at most
+$2^{\eta b^2+2\eta rb/\delta}$ by \eqref{eq:marked-generation}.
+The orbit partitions and container choices cost $2^{O(b\log b)}$
+by \cite[Theorem 8.6]{RoneyDougalTracey2025}. The bounded-source
+estimate is at most $F(b,r)$ since $F$ increases with physical degree.
+First take $b\to\infty$ with $\eta,C$ fixed, and then $\eta\to0$.
+This proves the soluble result uniformly for $0\leq r\leq K_0b$.
+It does not assert a uniform $O(b^{3/2})$ error as $C$ varies.
+
+Finally every finite group is generated by a soluble subgroup and one
+additional element by \cite[Theorem 8.4]{RoneyDougalTracey2025}.
+The additional costs $b!$ and $4^r$ are $2^{o(b^2)}$ in this range.
+For $r\geq b/2$, the direct bound $q(J)\leq b/2$ gives
+$\log M_4(b,r)\leq b^2/16+br/2+O(b^{3/2})$.
+Its leading expression is at most $F(b,r)$ because their difference
+is $r(2r-b)/4\geq0$.
+\end{proof}
