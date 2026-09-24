@@ -159,7 +159,9 @@ in order to establish a premise of T1.
 
 ## 5. Exact formal statement conventions
 
-The three final asymptotic targets are T1, T2 and T3 above. Their fully
+The [Lean statement module](formal/SymmetricSubgroupAsymptotics/Statements.lean)
+defines the three final targets T1, T2 and T3 above, together with their
+[definition obligations](formal/README.md). Their fully
 quantified joint form is: there exist real c,K1,K2,K3>0 and a natural N0>=2
 such that, for every natural n>=N0, all three inequalities hold:
 

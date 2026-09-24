@@ -14,7 +14,7 @@ Read the [statement and normalization](SPEC.md),
 | Path | Content |
 |---|---|
 | paper/ | Manuscript sources, appendices, bibliography and figures. |
-| formal/ | Formal proof sources. |
+| formal/ | Lean definitions and the three [formal theorem targets](formal/README.md). |
 | certificates/ | Literal finite witnesses and data contracts. |
 | computations/ | GAP/Python witness producers, independent checks and exact arithmetic. |
 | scripts/ | Local build and reproduction commands. |
