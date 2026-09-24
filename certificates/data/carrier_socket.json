@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "carriers": [
+    {
+      "action_id": "8T18",
+      "weight": 1,
+      "abelianization": [
+        2,
+        2,
+        2
+      ],
+      "d": 3,
+      "ell": 0,
+      "tau": 2,
+      "normalizer_order": 192
+    },
+    {
+      "action_id": "8T26",
+      "weight": 1,
+      "abelianization": [
+        2,
+        2,
+        2
+      ],
+      "d": 3,
+      "ell": 0,
+      "tau": 2,
+      "normalizer_order": 128
+    },
+    {
+      "action_id": "8T27",
+      "weight": 1,
+      "abelianization": [
+        2,
+        4
+      ],
+      "d": 2,
+      "ell": 1,
+      "tau": 2,
+      "normalizer_order": 128
+    },
+    {
+      "action_id": "8T28",
+      "weight": 1,
+      "abelianization": [
+        2,
+        4
+      ],
+      "d": 2,
+      "ell": 1,
+      "tau": 2,
+      "normalizer_order": 128
+    },
+    {
+      "action_id": "8T29",
+      "weight": 1,
+      "abelianization": [
+        2,
+        2,
+        2
+      ],
+      "d": 3,
+      "ell": 0,
+      "tau": 2,
+      "normalizer_order": 128
+    },
+    {
+      "action_id": "8T31",
+      "weight": 1,
+      "abelianization": [
+        2,
+        2,
+        2
+      ],
+      "d": 3,
+      "ell": 0,
+      "tau": 2,
+      "normalizer_order": 384
+    },
+    {
+      "action_id": "8T35",
+      "weight": 1,
+      "abelianization": [
+        2,
+        2,
+        2
+      ],
+      "d": 3,
+      "ell": 0,
+      "tau": 2,
+      "normalizer_order": 128
+    },
+    {
+      "action_id": "16T1082",
+      "weight": 2,
+      "abelianization": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "d": 6,
+      "ell": 0,
+      "tau": 3,
+      "normalizer_order": 344064
+    },
+    {
+      "action_id": "16T1083",
+      "weight": 2,
+      "abelianization": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "d": 6,
+      "ell": 0,
+      "tau": 3,
+      "normalizer_order": 49152
+    },
+    {
+      "action_id": "16T1084",
+      "weight": 2,
+      "abelianization": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "d": 6,
+      "ell": 0,
+      "tau": 3,
+      "normalizer_order": 49152
+    },
+    {
+      "action_id": "16T1332",
+      "weight": 2,
+      "abelianization": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "d": 5,
+      "ell": 0,
+      "tau": 4,
+      "normalizer_order": 24576
+    },
+    {
+      "action_id": "16T1547",
+      "weight": 2,
+      "abelianization": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "d": 6,
+      "ell": 0,
+      "tau": 3,
+      "normalizer_order": 98304
+    }
+  ]
+}
