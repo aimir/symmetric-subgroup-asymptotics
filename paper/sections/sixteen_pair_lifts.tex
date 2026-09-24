@@ -1,0 +1,418 @@
+\subsection{The sixteen-pair actions}
+
+\begin{lemma}[Paired eight-point tops]\label{lem:paired-eight}
+Suppose $U\to T\to S$ has degrees $32,16,8$, with both successive
+systems consisting of pairs and $S$ nonbinary. For every original
+normal subgroup, the relative socle in the direct quartet kernel has
+Schur demand at most four. Every quotient of $U$ therefore admits a
+two-character general prefix with binary joint kernel and four
+relative general positions.
+\end{lemma}
+\begin{proof}
+Write $F=\ker(U\to S)\leq D_8^8$. The three layers used in
+Lemma~\ref{lem:paired-six} are now sections of $M_8$. A nontrivial
+simple type has demand at most three by
+Lemma~\ref{lem:small-pair-data}(iii). We must improve the possible
+sum of three trivial heads from six to four using the original
+commutator denominator.
+
+For an invariant binary module $B$ put $d_S(B)=\dim B/[B,S]$.
+For invariant $K,W,L\leq M_8$ such that their coordinatewise product
+span $KW$ lies in $L$, we claim
+\begin{equation}\label{eq:coupled-eight}
+ d_S(K)+d_S(W)+\dim L/([L,S]+KW)\leq4.
+\end{equation}
+A Sylow binary subgroup of the actual transitive $S\leq S_8$ is
+transitive. Hence every nonzero invariant submodule contains the
+constant vector $\boldsymbol1$: a binary group has a nonzero fixed
+vector on every nonzero binary module, and $M_8^P$ consists of
+constants. Dually, every proper invariant submodule lies in the
+augmentation hyperplane $I$.
+If $K$ or $W$ is zero, the two remaining heads are at most two each.
+If both heads are at most one, the result is again immediate.
+If $d_S(K)=2$, $d_S(W)=1$, then $KW\supseteq K$ and the last term
+is at most one by the five-dimensional equality assertion in
+Lemma~\ref{lem:small-pair-data}. If both heads are two, $K=W$ is
+that five-dimensional submodule. It cannot be self-orthogonal in
+$\F_2^8$, so some product has odd coordinate sum. Thus $KW$ is an
+invariant submodule not in $I$, whence $KW=M_8$ and the last term
+vanishes. This proves \eqref{eq:coupled-eight}.
+
+Fix $N$ and put $A=FN/N$. Lift the trivial part of
+$\Soc(U/N)\cap A$ to $D\leq F$. Set $B=D\cap E$ and let
+$C\leq M_{16}$ be constant on the eight pairs of pair labels. The
+three binary coordinate modules are
+\[
+ K=\pi(D)\leq F/E\leq M_8,\quad
+ W=(B+C)/C\leq M_8,\quad L=B\cap C\leq M_8.
+\]
+Inside a single quartet the commutator of an internal pair flip and
+a pair interchange is their coordinate product. Therefore the
+original commutator relation is $[B,D]=KW\leq L\cap N$.
+Also $[L,S]\leq L\cap N$, since the lifted section is central in
+$U/N$. The exact three-step socle filtration consequently has total
+rank at most the left side of \eqref{eq:coupled-eight}, hence at most
+four. This uses the literal intersection with $N$ in the bottom
+layer; replacing it by an unrelated denominator would lose the
+improvement. The top cover is two by
+Lemma~\ref{lem:small-pair-data}(iii), so
+Lemma~\ref{lem:pair-relative} completes the proof, even when $A$ is
+nonabelian.
+\end{proof}
+
+\begin{lemma}[Quotients of an actual degree-eight group]
+\label{lem:eight-quotient-cover}
+Let $G\leq S_8$ be transitive. Every quotient which is nonbinary or
+nonabelian has faithful character cover at most two. An abelian
+binary quotient has at most four faithful binary linear positions.
+\end{lemma}
+\begin{proof}
+We use the following precise consequence of the excessive binary
+normal-pair classification
+\cite[Definition 5.1 and Proposition 5.3(i)]{RoneyDougalTracey2025}:
+if $P$ is transitive binary of degree eight and $S\lhd P$, then
+\[
+ d_P(S)>2\ \Longrightarrow\ [P:S]\leq2,
+ \qquad d(P)\leq4.
+\]
+Here $d_P(S)=\dim S/(S^2[S,P])$ by
+\cite[Lemma 2.5(i)]{RoneyDougalTracey2025}.
+Every Sylow binary subgroup of an actual transitive group of binary
+degree is transitive, by the orbit--stabilizer inequality.
+
+We first show that $\dim A/(A^2[A,G])\leq2$ whenever $G/A$ is
+nonbinary. Otherwise, with $S=A\cap P$, the displayed result gives
+$[G:A]_2\leq2$. The Frattini normalizer $L=N_G(S)$ satisfies $G=AL$
+and is transitive on the original eight points: $S$ is transitive on
+each original $A$-orbit, and $L$ is transitive on their labels.
+The group $L/S$ is nonbinary with binary part of order at most two.
+It has a nontrivial normal odd subgroup. Indeed this is immediate
+for odd order; for order twice an odd number use the kernel of the
+sign of its regular permutation action. This subgroup survives in
+$L/O_2(L)$.
+
+Here is the needed compression fact, with its original action
+specified. If a faithful transitive $L$ of degree $n$ has a nontrivial
+normal odd subgroup modulo $P_0=O_2(L)$, take an odd complement $K$
+in its full preimage. Every $L$-trivial elementary section of $P_0$
+is an image of a subgroup of $C_{P_0}(K)$, by coprime fixed lifting.
+This centralizer acts faithfully on the $K$-orbits: the kernel on
+each odd orbit centralizes a transitive odd group, hence is
+semiregular of odd order. If $K$ moves the $P_0$-orbit labels, its
+orbits cover at least three such labels, giving at most $n/3$ orbits.
+Otherwise its local action on every $P_0$-orbit is nontrivial, by
+transitivity and conjugacy of complements. On a binary orbit of
+size $d$, a prime-order odd element has at most $d/4$ fixed points.
+To verify this, its fixed points form one orbit of its binary
+centralizer, by complement conjugacy in the binary point stabilizer;
+thus their number is $2^c<d=2^a$. If its prime order is $q$, then
+$q\mid 2^a-2^c$, so $a-c\geq\operatorname{ord}_q(2)\geq2$.
+The element has at most $(d+(q-1)d/4)/q\leq d/2$ cycles.
+In either case $K$ has at most $n/2$ orbits. Applying the actual
+abelianization bound \cite[Theorem 2.8]{RoneyDougalTracey2025} to the
+faithful centralizer action bounds every such binary section by
+$n/4$. Apply this with $n=8$ to the image of $S$ in
+$A/(A^2[A,G])$, a trivial section of $O_2(L)$, to obtain the
+contradiction.
+
+For a nonbinary $Q=G/N$, take the preimage of
+$\Omega_1(Z(Q))_2$. The marked bound just proved gives central
+binary rank at most two. Every elementary binary socle section has
+rank at most four by the actual Sylow-preimage form of Theorem 2.8;
+a nontrivial simple binary type has dimension at least two and
+therefore multiplicity at most two. All odd primary ranks are at
+most $\lfloor8/p\rfloor\leq2$, again using actual preimages, so
+Theorem~\ref{thm:character-feasibility} gives cover two.
+For a nonabelian binary $Q$, the actual $P$ surjects onto $Q$.
+The preimage of $\Omega_1(Z(Q))$ has index at least four, since a
+group cyclic modulo its center is abelian. The excessive-index
+bound gives central rank at most two. Finally an abelian binary
+quotient needs $d(Q)\leq d(P)\leq4$ full-order linear characters.
+\end{proof}
+
+\begin{lemma}[Four ternary blocks and their top quotients]
+\label{lem:four-ternary-top}
+Let $R\leq S_3\wr B$ on twelve points, where $B$ is transitive of
+degree four, and $H=R\cap C_3^4\ne1$. Put
+$L=R\cap S_3^4$ and $A=L/H$. If $A=1$, every quotient of $R$ has
+cover at most two. In general every quotient retaining a nontrivial
+image of $H$ has cover at most two. In the exact-local-$S_3$ case,
+$R/H$ has a specified faithful transitive degree-eight sign action.
+\end{lemma}
+\begin{proof}
+The coordinates of $H$ are all nonzero, so $R$ is transitive on the
+original twelve points. Suppose $A\ne1$. Its nontrivial coordinate
+inversion characters form one $R$-orbit and have trivial common
+kernel. Maschke's theorem on this binary $A$ shows that every nonzero
+$R$-section of $H$ is faithful on $A$. Thus for a quotient retaining
+$\bar H\ne1$, $N\cap L\leq H$ and
+$C_{\bar L}(\bar H)=\bar H$. The whole binary socle, and every
+$p>3$ socle, consequently injects into a quotient of the actual
+four-point $B$. Their ranks are at most two and $\lfloor4/p\rfloor$.
+The total ternary socle rank is at most four from the original
+twelve-point Sylow preimage. A nonscalar ternary type therefore has
+Schur demand at most two. For a scalar type $\chi$, if
+$\chi|_A\ne1$ its top image is zero, since a normal ternary subgroup
+of the quotient by $\bar H$ centralizes the normal binary $A$.
+Its entire contribution is a homogeneous section of the transitive
+monomial $\F_3^4$, of dimension at most two by
+Lemma~\ref{lem:small-monomial}. If $\chi|_A=1$, its $H$ piece is
+zero by the inversion-character support, and it injects into a
+quotient of $B$, giving rank at most one.
+
+If $A=1$, all nonternary socles inject past $\bar H$ into a quotient
+of $B$, while nonscalar ternary types still have demand at most two.
+For a scalar ternary socle $X^m$, let $D$ be its preimage in $R$.
+For the trivial scalar, $D^3[D,R]\leq N$ and the degree-twelve
+relative bound of Theorem~\ref{thm:three-twentieths} gives $m\leq2$.
+For a nontrivial scalar put $K=\ker\chi$. Then $D,N,H\leq K$.
+The actual $K$ action is transitive of degree twelve or has two
+six-point orbits. Filtering the same relative head by those orbit
+kernels gives respectively the bounds $2$ or $1+1=2$ from that
+theorem. This includes every original normal subgroup, whether or
+not it retains $H$. The simultaneous socle criterion proves the
+claimed cover bounds. Finally the sign map on each local $S_3$
+has kernel exactly $H$ on $R$. The induced group in $C_2\wr B$
+is transitive on its eight points because each block stabilizer
+contains local inversion. This is the asserted faithful action.
+\end{proof}
+
+\begin{lemma}[Nonzero ternary four-point frames]
+\label{lem:four-point-relative}
+Suppose $T\leq L\wr B$ has four blocks of size four with exact
+primitive local $L=A_4$ or $S_4$. Put
+\[
+ E_0=T\cap V_4^4,\qquad R=T/E_0,\qquad H=R\cap C_3^4\ne1.
+\]
+Let $M_0$ be the full preimage of $E_0$ in any original pair lift $U$.
+For every original $N$, the relative socle in $M_0N/N$ has Schur
+demand at most four. In the $S_4$ case, its $H$-nontrivial types
+have demand at most two. If moreover $E_0=V_4^4$, the whole relative
+demand is at most two.
+\end{lemma}
+\begin{proof}
+The preimage $T_0$ of $H$ in $T$ has local image $A_4$: that image
+is normal in $L$ and maps onto $C_3$. Write a local binary
+permutation module as $W=\F_2[V_4]$, with flag
+$0<C=I^2<I<W$. The natural translation module $V_4$ is canonically
+$I/C$, via $v\mapsto v-1$ modulo $I^2$. Consequently, for each
+$H$-nontrivial simple type in the relative socle, its pair piece
+and its $E_0$ piece are sections of the \emph{same} natural module
+$V=\F_4^4$, with the same $R$ action and endomorphism field.
+This remains true for correlated $E_0$ and nonsplit extensions.
+Every nonzero $R$-section of $V$ is faithful on $H$: on restriction
+to $H$, the local nontrivial types form one orbit with trivial
+intersection of their kernels.
+
+In the $A_4$ case, a type of binary dimension at least four has
+multiplicity at most two in each copy of $V$; a type of dimension
+two with Schur dimension at least two has total demand at most
+$\lceil8/2\rceil=4$. In the remaining case, dimension two and
+Schur dimension one, faithfulness on $H$ implies $H=C_3$ and
+$[R,H]=1$. Orient the coordinates so that $H$ is the same scalar
+of $\F_4^*$ on all four coordinates. The actual $R$ action is now
+transitive monomial over $\F_4$. Lemma~\ref{lem:small-monomial}
+bounds the multiplicity in each copy by two, again giving total
+Schur demand four. This orientation is applied to the same frame;
+it does not merge distinct binary types.
+
+For $L=S_4$ no natural type has Schur dimension one: such an image
+would be scalar and abelian, whereas faithfulness on $H$ would then
+kill $[R,H]$, contrary to local inversion. A type of dimension at
+least four consequently has total demand at most two. For dimension
+two, faithfulness again gives $H=C_3$. After orienting $H$ globally,
+$R^+=C_R(H)$ is an index-two transitive monomial group over $\F_4$.
+It is transitive because every coordinate stabilizer contains an
+inverting element outside $R^+$. Restricting the homogeneous section
+to $R^+$ and applying Lemma~\ref{lem:small-monomial} bounds its
+multiplicity in each copy by two; division by Schur dimension two
+gives total demand at most two.
+
+An $H$-trivial type has no $E_0$ piece and lies entirely in the pair
+layer. It is trivial under $T_0$. The local $A_4$ module has trivial
+homogeneous sections of dimension at most one: its invariant
+submodules are $0,C,I,W$, and only $C$ and $W/I$ are trivial.
+Filter by the four coordinate kernels, with denominator the
+intersection of the original denominator with each kernel. Every
+factor is such a local section, so the whole dimension is at most
+four. This proves the general relative bound.
+
+If $E_0=V_4^4$, let $D/F$ be an $H$-trivial homogeneous section in
+the pair layer. The coordinate projections of $D$ are uniformly
+$0,C,I$, or $W$, by transitivity and the same local flag. If they
+are $W$, independent translations imply $I^4\leq[D,E_0]\leq F$;
+the section is then a section of the ordinary four-coordinate
+module. If they are $I$, independent translations give $C^4\leq F$,
+and the remaining natural layer has no $H$-trivial constituent,
+so the section vanishes. If they are $C$, it is again a section
+of the ordinary four-coordinate module. Its homogeneous multiplicity
+is at most two by Lemma~\ref{lem:small-monomial}. Together with the
+natural-type bound this proves the final assertion.
+\end{proof}
+
+\begin{lemma}[The rank-four sign boundary]\label{lem:four-sign-boundary}
+In the exact-local-$S_4$ situation of Lemma~\ref{lem:four-point-relative},
+if the actual sign group $K=R/H\leq C_2\wr B$ has an abelian binary
+quotient needing four generators, then $E_0=V_4^4$.
+\end{lemma}
+\begin{proof}
+Let $A=K\cap\F_2^4$. The elementary abelianization sequence gives
+$d_2(K)\leq\dim A/[A,B]+d_2(B)$. The five transitive groups of
+degree four are $C_4,V_4,D_8,A_4,S_4$. For $C_4,D_8,S_4$, an actual
+regular four-cycle makes every invariant base submodule have head
+at most one; their binary abelianizations have ranks $1,2,1$.
+For $A_4$ the corresponding bounds are one and zero. Thus only
+$B=V_4$ can reach four. Lemma~\ref{lem:small-monomial} then forces
+$A=I$, the regular augmentation ideal, and $B$ has rank two.
+Modulo $I$, the actual $K$ is the graph of a homomorphism
+$\phi:B\to C_2$. For a lift $(v,b)$ the square has image
+\[
+ (1+b)v=\phi(b)(b-1)\pmod{I^2}.
+\]
+If $\phi\ne0$ this kills a nonzero additional direction of the
+base head in the abelianization, giving at most three generators.
+Hence $\phi=0$ and $K=I:B$.
+
+The four coordinate inversion characters of $I$ are nontrivial and
+pairwise distinct. Over $\F_3$ their weight spaces are the four
+coordinate lines. The nonzero invariant $H\leq\F_3^4$, with full
+coordinate projections, must therefore be $C_3^4$. Its four natural
+binary coordinate types on $V_4^4$ are distinct. Each projection of
+$E_0$ is the full $V_4$, since the local derived subgroup of $T_0$
+is $V_4$. Semisimplicity under this $H$ now forces $E_0=V_4^4$.
+\end{proof}
+
+\begin{lemma}[The two primitive eight-point blocks]
+\label{lem:two-eight-blocks}
+If the sixteen-point top $T$ has two minimal eight-point blocks,
+every original pair lift has a general prefix of at most two and
+relative tail of at most four.
+\end{lemma}
+\begin{proof}
+The primitive degree-eight list is
+\[
+ 2^3:C_7,\quad 2^3:(C_7:C_3),\quad \operatorname{AGL}_3(2),\quad
+ \operatorname{PSL}_2(7),\quad\operatorname{PGL}_2(7),\quad A_8,\quad S_8.
+\]
+This is the actual action list supplied by the primitive classification
+cited in Lemma~\ref{lem:small-pair-data}. The first three local cases
+are covered by the complete fifteen-action graph-and-swap construction
+there, whose composition bounds imply the required homogeneous
+section bounds and whose top quotient cover is at most one.
+
+For the other four put $S=\Soc(L)$ for the local group. Then $S$ is
+simple, $L'=S$, and $L/S$ has order at most two. The block kernel
+projects onto $L$ on both blocks. Its derived group projects onto
+$S$ on both, so $P=T\cap S^2$ is, by Goursat's lemma, either $S^2$
+or the graph of an automorphism of $S$. It is perfect, centerless,
+and normal in $T$, with $T/P$ embedded in $D_8$. In any quotient
+of $T$, the image of $P$ is a product of nonabelian simple groups.
+The abelian socle meets it trivially and injects into a quotient
+of a subgroup of $D_8$, whose elementary ranks are at most two.
+The simultaneous criterion gives top cover at most two.
+
+For $S=A_8$, the natural binary module has two trivial composition
+factors and one simple factor of dimension six. For
+$S=\operatorname{PSL}_2(7)$, Lemma~\ref{lem:small-pair-data}(iv)
+gives two trivial and two inequivalent simple three-dimensional
+factors, each once. Thus the two-block module restricted to $P$
+has at most four trivial factors and at most two copies of any
+nontrivial simple type, whether $P$ is a product or a twisted graph.
+A simple $T$-module restricts semisimply to $P$: its $P$-socle is
+nonzero and $T$-invariant, and hence is the whole module. Its
+constituents form one orbit. A type with trivial $P$ action factors
+through the binary $T/P$ and is therefore trivial; every other type
+has multiplicity at most two by selecting any one of its nontrivial
+$P$-constituents. The original module composition multiplicities are
+therefore at most four, hence so are the Schur demands of all its
+homogeneous sections. Apply Lemma~\ref{lem:pair-relative}.
+\end{proof}
+
+\begin{lemma}[Natural alternating and symmetric tops]
+\label{lem:natural-pair-top}
+If $T=A_s$ or $S_s$ in its natural action, $s\geq5$, then every
+quotient of an original pair lift has either one faithful general
+character or at most two faithful full-order linear characters.
+\end{lemma}
+\begin{proof}
+The invariant submodules of $M_s$ are $0,C,I,M_s$, where $C$ is
+constant and $I$ is augmentation. Indeed from a nonconstant vector
+choose unequal coordinates $i,j$ and equal coordinates $k,l$ disjoint
+from them. Subtract its image under $(ij)(kl)$ to obtain $e_i+e_j$;
+these vectors span $I$. For odd $s$, $M_s=C\oplus I$ with $I$ simple;
+for even $s$, $0<C<I<M_s$ and $I/C$ is simple. In either case the
+socle of every subquotient has multiplicity at most one in each type.
+If $\pi(N)=1$, then $N\leq E$, and every abelian minimal normal of
+$Q=U/N$ lies in $E/N$, since its image in $T$ would be abelian normal.
+Their multiplicities are at most one; the nonabelian socle shares the
+same one position. Theorem~\ref{thm:character-feasibility} gives one
+faithful character. If $\pi(N)\ne1$, it contains $A_s$ and
+$[E,A_s]\leq E\cap N$, using actual lifts from $N$ in the commutator.
+From the displayed submodule list, $[E,A_s]$ has codimension at most
+one in $E$. Since $T/\pi(N)$ has order at most two, $|Q|\leq4$.
+This is abelian binary and needs at most two full-order linear
+characters. The original extension was never assumed split.
+\end{proof}
+
+\begin{theorem}[Complete sixteen-pair estimate]\label{thm:sixteen-pairs}
+All actual pair actions with sixteen pairs and nonbinary top have a
+complete exponentially small forward row, with their original action
+weights and zero additional scalar.
+\end{theorem}
+\begin{proof}
+First choose any pair system for $T$, if one exists, and apply
+Lemma~\ref{lem:paired-eight}. Otherwise a minimal proper block of
+$T$ has size four or eight. Its local action is primitive, since an
+internal nontrivial block system would give a smaller block of $T$.
+The size-eight case is Lemma~\ref{lem:two-eight-blocks}. The size-four
+case has exact local $A_4$ or $S_4$, and gives the actual transported
+wreath embedding in Lemma~\ref{lem:four-point-relative}. If $H=1$,
+Lemma~\ref{lem:small-pair-data}(iv) and Lemma~\ref{lem:pair-relative}
+give prefix two and tail four. If $H\ne1$ and the local action is
+$A_4$, Lemmas~\ref{lem:four-ternary-top} and
+\ref{lem:four-point-relative} give the same profile.
+
+For local $S_4$, put $A=M_0N/N$ for each original $N$ and
+$V=Q/A$. If $V$ retains $H$, its prefix has size two by
+Lemma~\ref{lem:four-ternary-top}. If it kills $H$ and is nonbinary
+or nonabelian, use its actual degree-eight sign action and
+Lemma~\ref{lem:eight-quotient-cover}. These give general prefix two
+and tail four; a binary $Q$ can count all six positions cheaply.
+If $V$ is abelian binary of rank at most three, use three
+binary-primary linear prefix positions and four relative positions.
+If its rank is four, Lemma~\ref{lem:four-sign-boundary} forces the
+full original translation base, and
+Lemma~\ref{lem:four-point-relative} improves the relative demand
+to two. Use four binary-primary linears and two relative positions.
+Both last cases have binary $Q$, since both $A$ and $V$ are binary.
+
+If $T$ is primitive, the classified list consists of the twenty
+affine degree-sixteen actions and natural $A_{16},S_{16}$.
+The former use the complete original module-composition and literal
+normal data in Lemma~\ref{lem:small-pair-data}(iv); the latter use
+Lemma~\ref{lem:natural-pair-top}. This exhausts the actual top, and
+all arguments apply to every original $N$ in its pair lift.
+
+At original width $32$ the possible slopes are
+\[
+ 2\gamma_5+4\beta,\quad6\beta,\quad\tfrac32+4\beta,
+ \quad2+2\beta,\quad\gamma_5,\quad\tfrac23\log_2 3.
+\]
+Each is less than $4-1/64$. Exact integer versions, with common
+right-hand binary exponent $765$, are
+\begin{align*}
+5^{128}38^{768}&<2^{765}25^{768},&
+38^{1152}&<2^{765}25^{1152},\\
+2^{288}38^{768}&<2^{765}25^{768},&
+2^{384}38^{384}&<2^{765}25^{384},\\
+5^{64}&<2^{765},&3^{128}&<2^{765}.
+\end{align*}
+Proposition~\ref{prop:anchor-count} and
+Corollary~\ref{cor:character-forward} now sum all original normals
+and all actual width-thirty-two actions. Their constants are finite;
+every character tuple is fixed in its target before the same complete
+source $J$ is chosen. Coordinate transports preserve
+$a(U)=|N_{S_{32}}(U)|$ and the original pointing weight. In particular
+no width-sixty-four estimate, quotient permutation degree, or
+six-ordinary-character estimate is used here.
+\end{proof}

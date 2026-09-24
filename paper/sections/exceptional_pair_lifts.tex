@@ -1,0 +1,409 @@
+\section{The exceptional small pair actions}
+\label{sec:exceptional-pairs}
+Put $\beta=\log_2(38/25)$ and $\gamma_5=\frac13\log_2 5$.
+Throughout this section, a pair action means an actual transitive group
+$U\leq C_2\wr S_s$ in its specified action on $2s$ points. Write
+$E=U\cap C_2^s$, $T=U/E$, and $M_s=\F_2^s$ with its actual $T$ action.
+Every normal subgroup mentioned below is a normal subgroup of this
+original $U$, unless another group is specified.
+
+\begin{lemma}[Relative socles and fixed prefixes]\label{lem:pair-relative}
+Let $F\lhd U$ be a binary group and $S=U/F$. Suppose that, for every
+$N\lhd U$, the multiplicity $m_X$ of each simple binary type $X$ in
+$\Soc(U/N)\cap FN/N$ satisfies $m_X\leq q e_X$, where
+$e_X=\dim_{\End_U X}X$. Suppose every quotient of $S$ has a faithful
+tuple of at most $k$ irreducible characters. Then every $Q=U/N$ has a
+faithful tuple consisting of a $k$-character prefix with joint binary
+kernel, followed by $q$ general characters. Consequently
+\[
+ |\Epi(J,Q)|\leq |\Aut Q|[Q:O_2(Q)]^q
+                   5^{kb/3}(38/25)^{qb}\qquad(J\leq S_b).
+\]
+If $Q$ is binary, the whole tuple can instead be counted in the known
+binary-source mode. If a specified top quotient has a faithful tuple of
+$r$ binary-primary linear characters, one may use those $r$ positions
+and the same $q$ relative general positions.
+For $F=E$, the relative hypothesis follows whenever every homogeneous
+section $X^m$ of $M_s$ satisfies $m\leq q e_X$.
+\end{lemma}
+\begin{proof}
+Put $A=FN/N$. A minimal normal subgroup of $Q$ contained in $A$ is
+central in $A$ and elementary abelian. Thus $V=\Soc(Q)\cap A$ is a
+semisimple binary $Q/A$-module. The dual $V^*$ has $q$ module generators:
+for $X^m$ the required number is $\lceil m/e_X\rceil$, and distinct
+simple types share positions. Induce each corresponding linear
+character of $V$ to $Q$ and choose an irreducible constituent. Its
+restriction to $V$ consists of conjugates of that linear character;
+hence the intersection of these $q$ kernels with $V$ is trivial.
+Inflate a faithful tuple of $Q/A$. The joint kernel of the resulting
+tuple is normal in $Q$, lies in $A$, and meets $\Soc(Q)$ trivially,
+so it is trivial. This does not extend a character to a nonabelian
+$A$ or split the original extension. Apply
+Proposition~\ref{prop:anchor-count} to the fixed prefix. When $F=E$,
+$V$ is a section of the original $M_s$. All choices depend on $Q$,
+not on the later complete source $J$.
+\end{proof}
+
+\begin{lemma}[Two elementary module bounds]\label{lem:small-monomial}
+A transitive monomial module of dimension $r>1$ over a field has no
+homogeneous section $X^m$ with $m>\lfloor r/2\rfloor$.
+For the regular binary $V_4$ module
+$W=\F_2[x,y]/(x^2,y^2)$, every submodule has head dimension at most two;
+the unique submodule attaining two is the augmentation ideal
+$I=(x,y)$, of dimension three. These statements also hold after a
+field extension.
+\end{lemma}
+\begin{proof}
+A transitive permutation group has a derangement: the average number
+of fixed points is one, and the identity fixes more than one point.
+Choose a monomial element whose permutation is a derangement. Its
+module over the principal ideal domain $k[t]$ is a sum of at most
+$\lfloor r/2\rfloor$ cyclic modules, one per cycle. A submodule of a
+$c$-generated torsion module over a principal ideal domain is
+$c$-generated: lift it to a submodule of a free module of rank $c$.
+The same holds for a quotient. On the other hand $X^m$, restricted
+to this element, requires at least $m$ generators, by any nonzero
+primary component and the invariant-factor theorem.
+For the second assertion a proper ideal lies in $I$, whose radical
+is $I^2=\langle xy\rangle$. A one-dimensional image in $I/I^2$
+generates a cyclic ideal, whereas a two-dimensional image forces
+the entire $I$. The whole ring has cyclic head. This proves the
+claim and its equality assertion over any field of characteristic two.
+\end{proof}
+
+\subsection{The finite inputs and what they certify}
+\label{subsec:pair-finite-input}
+We use the following finite input on \emph{top actions}, separately
+from the universal lifting arguments that follow. For a simple binary
+$T$-module $X$, write $\delta_X=\dim_{\F_2}X$. Define
+\[
+ \tau(T)=\max_{B\leq M_s,\ X}
+ \left\lceil\frac{\dim_{\F_2}\Hom_T(B,X)}{\delta_X}\right\rceil,
+ \qquad \kappa(T)=\max_{L\lhd T}c(T/L),
+\]
+where $c$ denotes the least size of a faithful irreducible character
+tuple. The formula for $\tau$ is exactly the largest Schur demand of a
+homogeneous section: the multiplicity of $X$ in the head of $B$ is
+$\dim\Hom_T(B,X)/\dim\End_T(X)$.
+
+\begin{lemma}[Certified top data]\label{lem:small-pair-data}
+The top-action certificates have the following properties.
+\begin{enumerate}[label=(\roman*)]
+\item Among the $301$ transitive degree-twelve actions, $283$ have
+$(\tau,\kappa)$ equal to
+\[
+ (1,1),(1,2),(1,3),(2,1),(2,2),(3,1),
+\]
+with respective multiplicities $71,102,19,33,56,2$.
+The remaining eighteen consist of eight binary-core actions with
+quotient $C_3$ or $S_3$ as in Lemma~\ref{lem:twelve-core}; eight actions
+with an elementary normal ternary group on four triples as in
+Lemma~\ref{lem:four-triple-compression}; and two paired actions with
+six-point tops as in Lemma~\ref{lem:paired-six}.
+\item For the two six-point groups
+\[
+ S_{36}=\langle(124),(24)(56),(13)(25)(46)\rangle,
+ \quad
+ S_{72}=\langle(124),(24),(13)(25)(46)\rangle,
+\]
+all homogeneous sections of $M_6$ have Schur demand at most one.
+Their only simple types have dimensions one and four, with commuting
+field $\F_2$. Every nontrivial quotient has a faithful irreducible
+character except $C_2^2$, which has two faithful binary linear positions.
+\item For all $24$ nonbinary transitive degree-eight groups $S$, every
+nontrivial homogeneous type in $M_8$ has Schur demand at most one,
+every trivial section has dimension at most two, and $\kappa(S)\leq2$.
+If an invariant submodule has trivial head dimension two, it is a
+unique five-dimensional submodule $B$. Every invariant $D\geq B$
+satisfies $\dim D/(B+[D,S])\leq1$.
+\item The $29$ zero-ternary minimal-four degree-sixteen tops have
+$\tau\leq4$, $\kappa\leq2$. The $15$ degree-sixteen tops with two
+primitive affine eight-point blocks have $\kappa\leq1$ and binary
+permutation composition Schur demand at most four. The $20$ primitive
+affine degree-sixteen tops have the respective bounds two and four.
+The two inequivalent nontrivial binary composition factors of the
+projective eight-point $\operatorname{PSL}_2(7)$ module have dimension
+three, commuting field $\F_2$, and each occurs once; the trivial factor
+occurs twice.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+These are the finite calculations recorded by the pair-top certificate
+contract in Appendix~\ref{sec:certificates}. We specify their mathematical
+coverage, since a list of tested module examples would not suffice.
+Starting with every vector, form its cyclic submodule and close the
+resulting list under sums. Every invariant subspace is the sum of
+cyclic submodules of its vectors, so this constructs the complete
+invariant-subspace lattice. Maximal intervals give the simple modules;
+intertwining linear equations on the same generators identify their
+isomorphism types, their endomorphism fields, and the displayed Hom
+spaces. A composition chain gives the separate composition bounds.
+Thus every numerator and every homogeneous quotient is covered.
+For normal subgroups start with kernels of all irreducible characters
+and close under intersections. Every normal subgroup occurs, since
+the regular representation of its quotient is faithful and decomposes
+into irreducibles. Literal kernels, not quotient isomorphism types,
+are retained. Searching these kernel intersections proves the asserted
+covers for all quotients.
+
+Completeness of the degree-twelve and primitive action lists is the
+published classification input
+\cite{Hulpke2005,HoltRoyle2020,RoneyDougal2005Primitive,TransGrp365,PrimGrp344}.
+The imprimitive degree-eight and two-affine-block constructions use
+all normal quotients of the local group, all graph isomorphisms between
+these quotients, and all block-swap cosets in their actual normalizers;
+Goursat's lemma and the order-two coset condition prove completeness.
+The four-pair constructions use the full invariant-kernel list and all
+lifts of fixed top generators. The zero-ternary list similarly uses
+all degree-four local subgroups, both induced binary linear frames,
+all invariant kernels, and every solution of the generator-relator
+cocycle equations. The computed cocycle-space dimension, modulo the
+coboundary-space dimension, verifies that every complement class occurs.
+Transporters identify actions in the stated lists. These procedures
+certify only the finite top data. In particular they make no assertion
+about unlisted normal subgroups of a subsequent pair lift.
+\end{proof}
+
+\subsection{The twelve-pair actions}
+
+\begin{lemma}[The binary-core twelve-point tops]\label{lem:twelve-core}
+Let $T$ be one of the eight binary-core actions in
+Lemma~\ref{lem:small-pair-data}(i). Put $P=O_2(T)$.
+For every pair lift $U$ and every $N\lhd U$, put $Q=U/N$.
+If $T/P=C_3$, $Q$ admits one binary-primary linear and four general
+faithful positions. If $Q$ is nonbinary, the linear position can be
+made an ordinary linear anchor with binary kernel.
+If $T/P=S_3$, every nonbinary $Q$ admits four general faithful positions,
+one of which has binary kernel. Every binary $Q$ admits one
+binary-primary linear and four general faithful positions.
+\end{lemma}
+\begin{proof}
+First suppose $T/P=C_3$ and choose $h$ of order three. There are three
+$P$-orbits of size four, and $h$ cycles them. Identify them by $h$.
+Then $P\leq L^3$ has full local projections, with
+$L=C_4,V_4$, or $D_8$. The simple binary types are $1$ and the
+natural $C_3$ type $X$ of binary dimension two and Schur dimension one.
+If $L=C_4$ or $D_8$, restrict each coordinate module to an actual
+regular $C_4$. Its module is $\F_2[t]/(t^4)$, with cyclic submodules.
+A three-coordinate filtration bounds every $P$-head by three; hence
+the homogeneous-section bounds are three for $1$ and one for $X$.
+If $L=V_4$, Lemma~\ref{lem:small-monomial} bounds a $P$-head by six.
+Equality forces dimension three in each coordinate filtration and
+rules out a full coordinate projection, since that would contribute
+only one generator. Thus the numerator is the sum of the three
+augmentation ideals. Its head, with $h$ cycling coordinates, is two
+regular $C_3$ modules, namely $1^2\oplus X^2$. It cannot contain
+$X^3$. Thus the $X$ bound is two.
+
+In this last case a trivial $T$-section of rank four is also impossible.
+Odd-order averaging $e=1+h+h^2$ would give, for its numerator $B$,
+$B^h=M_{12}^h$ and $([B,P])^h=0$. Hence $e(p-1)e=0$ for every
+$p=(p_1,p_2,p_3)\in P$, or on the regular four-point coordinate
+\[
+ R_{p_1}+R_{p_2}+R_{p_3}=I.
+\]
+The four regular permutation matrices are linearly independent.
+Therefore $p=0$ or $p$ is a rotation of $(x,x,0)$ for a nonzero
+$x\in V_4$. Rotation invariance and addition show that two independent
+values of $x$ would produce a tuple with three nonzero entries, a
+contradiction. The coordinate projections could not then be all $V_4$.
+The trivial section bound is three.
+
+Coprime centralizer lifting maps $C_P(h)$ onto the fixed subgroup in
+every quotient of $P$ by a $T$-normal subgroup. Evaluation on one
+coordinate embeds $C_P(h)$ in $L$. Consequently every quotient of
+$T$ has central binary rank at most two. Moreover
+$T'=[P,h]P'$ and the fixed part of $T'/P'$ is trivial, so
+$C_{T'}(h)=C_{P'}(h)$; evaluation embeds this in $L'$, of order at
+most two. Every quotient of $T$ therefore has derived central binary
+rank at most one. Its nontrivial binary-type multiplicity is at most
+two for $L=V_4$, and at most three otherwise: filter any elementary
+section of $P\leq L^3$ through the coordinates, each of rank at most two.
+
+For the whole $Q$, filter its binary socle by its intersection with
+$EN/N$ and its image in $Q/(EN/N)$. Both are modules for the same
+original $T$; same-type multiplicities add. The resulting central
+rank is at most $3+2=5$, the derived central rank at most $3+1=4$,
+and the nontrivial multiplicity at most $2+2=4$ or $1+3=4$.
+The odd socle is central of rank at most one and has zero intersection
+with $Q'$. There is no nonabelian socle. Theorem~\ref{thm:character-feasibility}
+gives the simultaneous profile $(r,l,t)=(1,0,4)$.
+If $Q$ is nonbinary, multiply the designated binary-primary linear
+character by a faithful cubic character of $Q/O_2(Q)$. Its kernel
+shrinks to its intersection with $O_2(Q)$, since a binary-power root
+and a nontrivial cube root cannot have product one. This gives the
+claimed ordinary linear anchor.
+
+Now suppose $T/P=S_3$. The certified actions have either six $P$-orbits
+of size two, with regular $S_3$ action on them, or three of size four,
+with natural $S_3$ action. For $h$ of order three, $T_0=P\langle h\rangle$
+has respectively two six-point orbits or one twelve-point orbit.
+The simple binary types are $1$ and the natural $S_3$ type $Y$, whose
+Schur dimension is two; restriction to $\langle h\rangle$ preserves
+its multiplicity. A nonbinary $Q$ has binary kernel $N$, since the
+odd part of $|U|$ is three. Its top quotient is $T/L$ for $L\leq P$.
+Any elementary section of the actual $P\leq S_{12}$ has rank at most
+six by \cite[Theorem 2.8]{RoneyDougalTracey2025}; its $Y$ multiplicity
+is therefore at most three.
+
+In the size-two case each local module is a cyclic regular $C_2$
+module. Thus the pair-module $Y$ multiplicity is at most three.
+Frattini's argument gives $T=P N_T(\langle h\rangle)$; take a binary
+element in this normalizer mapping to a reflection. It swaps the two
+triples of $P$-orbits and therefore acts without fixed points on the
+four $h$-orbits. It has at most two cycles on these four labels.
+Exact $h$-invariants and the cyclic module argument bound every trivial
+$T$-section by two. In the size-four case the preceding $C_3$ proof
+bounds pair-module trivial multiplicity by three and natural
+multiplicity by two.
+
+In both cases $C=C_P(h)$ acts faithfully on the four $h$-orbits:
+the kernel in the ambient centralizer is odd. Thus $C\leq S_4$ is
+binary, and every current top quotient has central binary rank at most
+two by coprime fixed lifting. If that rank is two, $C$ is noncyclic
+and contains a $V_4$. A faithful $V_4$ action on four points is regular
+or has two two-point orbits with distinct kernels; in either case its
+trivial module-section bound is two. Exact $h$-invariants therefore
+improve the pair bound to two in this same case. The whole central
+rank is at most four, and the whole natural Schur demand is at most
+$\lceil(3+3)/2\rceil=3$. The odd socle rank is at most one.
+Theorem~\ref{thm:character-feasibility} gives four general positions.
+One has binary kernel: otherwise all four normal kernels contain a
+Sylow three subgroup, hence all its conjugates, contradicting their
+trivial intersection.
+
+It remains to handle binary $Q$ in the $S_3$ case, for which the last
+argument about the top quotient was not asserted. An actual Sylow
+three element of $U$ is semiregular on the original twenty-four points,
+with eight three-cycles, and is killed by $N$. Frattini gives
+$U=N N_U(\langle h\rangle)$. In the ambient normalizer
+$C_3^8:(C_2\times S_8)$, the common inversion factor $C_2$ must be
+retained. The odd base of the actual normalizer is killed by $N$;
+its image $H\leq C_2\times S_8$ is binary and surjects onto $Q$.
+It has a faithful ten-point action, so all elementary sections have
+rank at most five by the same published abelianization bound.
+For a Sylow subgroup $P_8=C_2^4:D_8$ of $S_8$, one has
+$|P_8'|=2^4$: the base commutator has order eight and $|D_8'|=2$.
+Hence $|Q'|\leq16$. The central rank of $Q$ is at most five and its
+derived central rank at most four. The simultaneous feasibility
+criterion again gives one binary-primary linear and four general
+positions, now in the known binary-source mode.
+\end{proof}
+
+\begin{lemma}[Four ternary orbits]\label{lem:four-triple-compression}
+Suppose $T$ has an elementary normal ternary subgroup $C$ of rank at
+least two with four orbits of size three, $T/C$ binary, and
+$|O_2(T)|\leq2$. Every pair lift $U$ has a quotient $R$ with a
+specified faithful twenty-point action and a constant $D_U$ such that
+\[
+ Z_J(U)\leq Z_J(R)+D_U5^b\qquad(J\leq S_b).
+\]
+\end{lemma}
+\begin{proof}
+Averaging over $C$ gives the $T$-equivariant decomposition
+$M_{12}=M_0\oplus W$, with $\dim M_0=4$, $\dim W=8$.
+The map $(v,t)\mapsto(\operatorname{avg}_C(v),t)$ on the ambient
+semidirect product has kernel $W$. Restricted to $U$, its kernel is
+$E_1=E\cap W=[E,C]$; put $R=U/E_1$. The ambient $M_0:T$ acts
+faithfully on the disjoint union of the twelve pair labels and the
+eight $C$-orbit labels on the original twenty-four points. The first
+action detects $T$ and the second detects $M_0$, proving faithfulness
+of this twenty-point representation after restriction to $R$.
+
+Fix an original $N$ not containing $E_1$, and choose a minimal normal
+$S$ in the nonzero image of $E_1$ in $Q=U/N$. On restriction to $C$,
+$W$ consists of four nontrivial two-dimensional local types. Their
+kernels have trivial intersection, and they form one $T$-orbit.
+There are at least two distinct types, since $C$ has rank at least two;
+each has multiplicity at most two. Every nonzero $T$-section of $W$
+therefore acts faithfully on $C$. In particular if $L$ is the kernel
+of the action of $T$ on $S$, then $L\cap C=1$, so $L$ is normal binary
+and $L\leq O_2(T)$.
+
+Put $A=EN/N$. Since $A$ is abelian, there is an exact sequence
+\[
+ 1\longrightarrow A\longrightarrow C_Q(S)
+ \longrightarrow L/\pi(N)\longrightarrow1.
+\]
+Every minimal normal subgroup of $Q$ commutes with $S$, including
+$S$ itself. Thus the entire socle lies in this binary centralizer.
+Its image modulo $A$ has dimension at most one and is trivial.
+The trivial part in $A$ is a section of $M_0$, the ordinary permutation
+module on four blocks, so has rank at most two by
+Lemma~\ref{lem:small-monomial}. Every nontrivial type in $A$ lies in
+$W$ and has multiplicity at most two by restriction to $C$.
+The whole socle therefore has Schur demand at most three, and
+Theorem~\ref{thm:character-feasibility} supplies three general positions.
+Its epimorphisms cost at most $|\Aut Q|5^b$.
+Finally the interval $N\geq E_1$ is exactly the normal-subgroup lattice
+of $R$, with the same quotients and epimorphism sets. Summing that
+interval gives exactly $Z_J(R)$; summing the other normals gives
+the asserted constant $D_U=\sum_{N\not\supseteq E_1}|\Aut(U/N)|$.
+\end{proof}
+
+\begin{lemma}[The paired six-point tops]\label{lem:paired-six}
+Suppose $U\to T\to S$ has degrees $24,12,6$, with both successive
+systems consisting of pairs, and $S=S_{36}$ or $S_{72}$ from
+Lemma~\ref{lem:small-pair-data}. Every original quotient admits either
+one general anchor and three relative general positions, or two
+binary-primary linears and three relative general positions in the
+known binary-source mode. A binary quotient with no exceptional
+$C_2^2$ top needs at most four general positions.
+\end{lemma}
+\begin{proof}
+Let $F$ be the kernel of $U\to S$. On the six original four-point
+blocks, $F\leq D_8^6$, and $F/E$ is a submodule of $M_6$.
+Let $C_0\leq M_{12}$ be the vectors constant on the six pairs of
+pair labels. Both $C_0$ and $M_{12}/C_0$ are $M_6$.
+Fix $N$, put $A=FN/N$, and take a homogeneous component $X^m$ of
+$\Soc(U/N)\cap A$. Its preimage $D\leq F$ has the three successive
+factors obtained from
+\[
+ D\cap E\cap C_0,\qquad
+ (D\cap E+C_0)/C_0,\qquad \pi(D)\leq F/E.
+\]
+The denominators are the respective images of $D\cap N$; the last
+is $\pi(F\cap N)$, since $D$ contains $F\cap N$.
+Thus all three factors are homogeneous sections of the same $M_6$
+for the same original $S$ type. Their multiplicities add, and
+Lemma~\ref{lem:small-pair-data}(ii) gives $m\leq3e_X$.
+Apply Lemma~\ref{lem:pair-relative}. Except for top $C_2^2$, a
+nontrivial top quotient has a one-character prefix with binary joint
+kernel. For top $C_2^2$, $Q$ itself is binary and the prefix consists
+of two full-order binary linear characters. A trivial top needs only
+the three relative positions. No part of this proof assumes that
+$F$ or $A$ is abelian.
+\end{proof}
+
+\begin{theorem}[Complete twelve-pair estimate]\label{thm:twelve-pairs}
+The family of all actual pair actions with twelve pairs and nonbinary
+top has a complete exponentially small forward row and a
+quadratic-exponentially small scalar, with its original action weights.
+\end{theorem}
+\begin{proof}
+For the $283$ generic tops, Lemma~\ref{lem:pair-relative} gives slope
+$\kappa\gamma_5+\tau\beta$ and target-dependent finite constants.
+For each of the six pairs in Lemma~\ref{lem:small-pair-data}(i),
+\[
+ 5^{64\kappa}38^{192\tau}<2^{573}25^{192\tau},
+\]
+so the slope is less than $3-1/64$. The binary-core slopes are
+$\frac13\log_2 3+4\beta$, $\frac12+4\beta$, and
+$\gamma_5+3\beta$, all less than $3-1/64$. The paired-six slopes
+are $\gamma_5+3\beta$, $1+3\beta$, and $4\beta$, with the same
+strict margin. These inequalities follow, without rounding logarithms,
+by raising to the $192$nd power; the corresponding numerators are
+$3^{64}38^{768}$, $2^{96}38^{768}$, $5^{64}38^{576}$,
+$2^{192}38^{576}$, and $38^{768}$, against $2^{573}$ times the
+matching power of $25$. Proposition~\ref{prop:anchor-count} and
+Corollary~\ref{cor:character-forward} sum every literal normal in these
+finite original width-twenty-four actions. Constants such as
+$[Q:O_2(Q)]^q|\Aut Q|$ are fixed before choosing $J$.
+For the other eight tops, Lemma~\ref{lem:four-triple-compression}
+and Theorem~\ref{thm:finite-comparator} apply with $v=20<24$ and
+$\eta=\log_2 5<3$. This last assertion includes the entire normal
+interval of the quotient, rather than only its faithful target.
+There are finitely many subgroups of $S_{24}$, so the complete union
+is covered by one fusion, retaining the factor
+$1/(b!a(U)p_nG_{\lfloor n/2\rfloor})$ in each original hot sum.
+\end{proof}

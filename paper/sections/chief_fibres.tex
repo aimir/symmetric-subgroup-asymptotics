@@ -1,0 +1,220 @@
+\section{Complete chief-layer fibres on one source}
+\label{sec:chief-fibres}
+Throughout this section $Z_J(G)=\sum_{N\lhd G}|\Epi(J,G/N)|$
+retains every literal normal subgroup of the target. Put
+$h_b=b\log(b+1)$, with $h_0=0$.
+
+\begin{lemma}[Semisimple full fibre]\label{lem:semisimple-fibre}
+Let $E=S_1\times\cdots\times S_t$ be a normal subgroup of an
+arbitrary finite group $G$, with each $S_i$ nonabelian simple. Then,
+for every actual $J\leq S_b$,
+\[
+ Z_J(G)\leq Z_J(G/E)
+   \prod_{i=1}^t\left(1+\frac{|\Aut S_i|h_b}{\log|S_i|}\right).
+\]
+The empty product is one. No permutation representation of $G/E$
+or of a simple section is required.
+\end{lemma}
+\begin{proof}
+For an original $N\lhd G$, retain $I=N\cap E$ and $D=NE/E$.
+The subgroup $I$ is an invariant subproduct. In $G/I$, the group
+$N/I$ centralizes $E/I$ and intersects it trivially. Projection from
+$C_{G/I}(E/I)$ to $G/E$ is injective, since $E/I$ is centreless.
+Thus $I,D$ determine $N$ whenever it exists.
+
+Fix an onto map $\theta:J\to(G/E)/D$ and its actual kernel
+$F\leq S_b$. An onto lift restricts to an onto map $F\to E/I$.
+After that restriction is fixed, a lift is unique: two lifts have
+pointwise difference in $E/I$ centralizing the onto image of $F$,
+and hence have trivial difference.
+
+Distinct kernels of maps $F$ onto one nonabelian simple $S$ give
+a quotient $S^k$. Indeed, inductively a proper subdirect subgroup
+of $S^k\times S$ identifies the last coordinate with one of the
+preceding coordinates, and would give a repeated kernel. Therefore
+$k\log|S|\leq\log|F|\leq h_b$. Each kernel supports exactly
+$|\Aut S|$ epimorphisms. Bound the maps to $E/I$ by the product
+of these coordinate bounds, and then sum over the invariant
+subproducts $I$, enlarging to all subproducts. This gives the
+displayed product. All $D$ and $\theta$ remain in the single
+$Z_J(G/E)$; no independent normal-menu multiplier is added.
+\end{proof}
+
+Define the composition invariant
+\[
+ \kappa(G)=\sum_{C_p\text{ a composition factor of }G}\frac{\log p}{p},
+\]
+with multiplicity. Nonabelian composition factors have weight zero.
+
+\begin{theorem}[Fixed-target composition envelope]\label{thm:composition-fibre}
+For every fixed finite $G$ there are $C_G\geq1$ and an integer
+$D_G\geq0$ such that
+\[
+ Z_J(G)\leq C_G(1+h_b)^{D_G}2^{\kappa(G)b}\qquad(J\leq S_b).
+\]
+One may take $D_G$ to be the number of nonabelian composition
+factors. These constants are uniform on any fixed finite target menu.
+\end{theorem}
+\begin{proof}
+Induct along a chief series, starting with $C_1=1,D_1=0$.
+For an elementary abelian minimal normal subgroup $E=\F_p^a$
+put $Q=G/E$ and $q=\lfloor\log|Q|\rfloor$. For each original
+$N\lhd G$, put $I=N\cap E$, $D=NE/E$. A lift of an onto
+$\theta:J\to Q/D$ restricts on $F=\ker\theta$ to a map
+$F\to E/I$. There are at most
+$p^{a d_p(F)}\leq p^{ab/p}$ such restrictions. A fixed generating
+tuple of $Q/D$ has length at most $q$; choose its preimages in $J$.
+Their images, together with the restriction to $F$, determine the
+lift and have at most $|E|^q$ choices. Incompatible assignments
+contribute zero, so nonsplit extensions require no extra assertion.
+If $\nu(G)$ is the number of literal normal subgroups of $G$, then
+\[
+ Z_J(G)\leq\nu(G)|E|^q p^{ab/p}Z_J(Q).
+\]
+Thus take $C_G=\nu(G)|E|^qC_Q$ and $D_G=D_Q$.
+For a semisimple minimal normal $E=\prod_iS_i$, use
+Lemma~\ref{lem:semisimple-fibre}, taking
+$C_G=C_Q\prod_i(1+|\Aut S_i|)$ and $D_G=D_Q+t$.
+The abelian exponents add to $\kappa(G)$ by Jordan--H\"older.
+All permutation rank bounds were applied to the actual $F\leq S_b$.
+\end{proof}
+
+\begin{proposition}[Irreducible affine last layer]\label{prop:irreducible-affine}
+Let $U=V\rtimes R$ be a fixed primitive affine action of degree
+$w=p^d$, with $R\ne1$ faithful and irreducible on $V$.
+Write $\End_R(V)=\F_{p^f}$ and $A_U=|Z^1(R,V)|$. Then
+\[
+ Z_J(U)\leq(1+A_U)2^{fb\log p/(dp)}Z_J(R).
+\]
+If $R$ is nonabelian, then $f/d\leq1/2$. In particular this
+proposition and Theorem~\ref{thm:composition-fibre} give a direct
+contractive row for every fixed finite menu satisfying
+\[
+ \kappa(R)+\frac{f\log p}{dp}<\frac{w-(w\bmod2)}8.
+\]
+\end{proposition}
+\begin{proof}
+Since $C_U(V)=V$, a normal subgroup disjoint from $V$ is trivial;
+irreducibility makes every other normal subgroup contain $V$.
+Thus $Z_J(U)=Z_J(R)+|\Epi(J,U)|$ exactly. Fix an onto
+$\theta:J\to R$ and $F=\ker\theta$. If $V$ has multiplicity
+$m$ in the semisimple head of $H_1(F,\F_p)$, then
+$dm\leq d_p(F)\leq b/p$ and the space of equivariant
+restrictions to $V$ has size $p^{fm}$. Restriction of cocycles
+has kernel precisely the inflated $Z^1(R,V)$; each nonempty
+fibre therefore has size $A_U$. This proves the claimed bound,
+including every obstruction to a lift being onto.
+The integer $f$ divides $d$. If $f=d$, the action is scalar over
+its commuting field, so $R$ is abelian. Otherwise $f\leq d/2$.
+The last assertion follows from original-weight pointing and
+Lemma~\ref{lem:uniform-delta}; all target constants are fixed.
+\end{proof}
+
+\begin{theorem}[Entire affine block kernel]\label{thm:affine-chief}
+Let $U\leq S_w$ be transitive with $s\geq2$ blocks of size
+$r=p^a\geq2$, exact primitive affine component $L$, and faithful
+block action $T\leq S_s$. Put $w=rs$ and
+$g(w)=\lceil w/\sqrt{\log w}\rceil$. Choose a chief series
+$1=N_0<\cdots<N_e=L$ and write $K_i=U\cap N_i^s$.
+For each abelian local chief factor $\F_{p_i}^{a_i}$, let $H_i$
+bound the number of module generators of every submodule of its
+actual induced ambient module and its dual. Then
+\begin{equation}\label{eq:affine-chief-fibre}
+ Z_J(U)\leq2^{\eta_Ub+\beta_U}\Psi_U(b)Z_J(T),
+\end{equation}
+where
+\begin{align*}
+ \eta_U&=\sum_iH_i\log(p_i)/p_i,\\
+ \beta_U&=\sum_i\log(p_i)
+    [a_isH_i+H_iw/p_i+a_is(g(w)+1)],
+\end{align*}
+and $\Psi_U$ is the product in Lemma~\ref{lem:semisimple-fibre}
+over the simple factors of all actual nonabelian intersection layers.
+With $H_i\leq\lceil4a_is/\sqrt{\log s}\rceil$ these satisfy,
+uniformly as $rs\to\infty$,
+\[
+ \eta_U=o(w),\qquad \beta_U=o(w^2),\qquad
+ \log\Psi_U(b)\leq Cw\log^2(w+b+1).
+\]
+All proper, zero and full block kernels, and all original normal
+quotients, occur in this inequality.
+\end{theorem}
+\begin{proof}
+The endpoint of the local-chief filtration is the block kernel
+$K=U\cap L^s$, and the final quotient is $T$. Put
+$G_i=U/K_{i-1}$, $E_i=K_i/K_{i-1}$, $R_i=U/K_i$.
+For an abelian local factor, the ambient module
+$V_i=(\F_{p_i}^{a_i})^s$ factors through $R_i$: $K_i$
+centralizes the whole local abelian layer. It is induced from
+one block stabilizer of index $s$. The same is true of its dual.
+The local-chief construction is that of
+\cite[Lemma~5.8]{Tracey2018}, with this explicit endpoint.
+For a nonabelian local factor, coordinate projections of $E_i$
+are normal in the exact $L$ and hence are trivial or the full local
+chief factor. Transitivity makes the choice uniform. The subdirect
+description of products of nonabelian simple groups makes $E_i$
+semisimple, possibly trivial.
+
+For one abelian layer abbreviate $G,E,R,p,a,H$ accordingly.
+Duality gives, for any $R$-module $X$ and every subquotient $M$
+of $V_i$,
+\[
+ |\Hom_R(X,M)|=|\Hom_R(M^*,X^*)|\leq p^{H\dim X}.
+\]
+Indeed a subquotient is a quotient of a submodule, so its dual
+requires at most $H$ module generators. For $N\lhd G$ retain
+$I=N\cap E$ and $D=NE/E$. At most $p^{asH}$ invariant
+submodules $I$ occur, by padded generating tuples in $V_i$.
+For fixed $I,D$, put $M=E/I$. If a normal complement $N/I$
+exists, all others are its graphs of equivariant homomorphisms
+$D/[D,D]D^p\to M$. Here $D$ acts trivially on $M$: its normal
+lift centralizes $M$. Thus this is an exact torsor when nonempty.
+The actual preimage $\widetilde D\leq U\leq S_w$ gives
+$d_p(D)\leq d_p(\widetilde D)\leq w/p$, so the graph count
+is at most $p^{Hw/p}$.
+
+Fix now an onto $\theta:J\to R/D$ and its actual kernel
+$F\leq S_b$. Restrictions of compatible lifts to $F$ have at
+most $p^{Hb/p}$ choices. Once a restriction is fixed, differences
+descend to cocycles of $R/D$ on $M$. Every quotient of $U$ has
+at most $g(w)$ generators, by
+\cite[Theorem~1.1(1)]{Tracey2018}; hence the lift torsor has
+size at most $|M|^{g(w)}\leq p^{as g(w)}$.
+This argument uses no splitting or cohomology vanishing.
+Summing $I$, the normal graphs, and the lifts leaves all $D$ and
+$\theta$ in one $Z_J(R)$. It gives the stated abelian factor,
+even with the harmless extra $as\log p$ in $\beta_U$.
+Apply Lemma~\ref{lem:semisimple-fibre} at the other layers and
+iterate, always on the same literal $J$, to prove
+\eqref{eq:affine-chief-fibre}.
+
+For completeness the universal induced-module bound
+\cite[Corollary~4.27(iii)]{Tracey2018} gives
+$H_i=\lceil4a_is/\sqrt{\log s}\rceil$ for $s\geq1261$;
+below that threshold the dimension bound suffices since
+$\sqrt{\log s}<4$. Put $L_0=\log|L|$ and $q_s=\sqrt{\log s}$.
+The chief-order budget yields
+\begin{align*}
+ \eta_U&\leq2sL_0/q_s+L_0/2,\\
+ \beta_U&\leq4s^2L_0^2/q_s+2swL_0/q_s
+       +swL_0/\sqrt{\log w}+3sL_0+wL_0/2.
+\end{align*}
+Since $L$ is affine, $L_0\leq\log r+(\log r)^2$.
+Divide the displayed bounds by $rs$ and $r^2s^2$, respectively.
+For large $r$ their terms tend uniformly to zero; for bounded $r$
+they tend uniformly to zero as $s$ increases. This proves both
+two-variable little-oh estimates, including the ceiling costs.
+
+Every simple factor $S$ in these layers has
+$\log|\Aut S|\leq(\log|S|)^2$, since a generating tuple
+of length at most $\log|S|$ determines an automorphism.
+The total of $\log|S|$ is at most $sL_0$, and each such term
+is at most $L_0$. Therefore
+\[
+ \log\Psi_U(b)\leq sL_0^2+2sL_0\log(b+1)
+                    \leq Cw\log^2(w+b+1).
+\]
+The last bound follows since $L_0/r$ and $L_0^2/r$ are bounded
+for all $r\geq2$. No faithful action was assigned to a simple
+section in deriving this estimate.
+\end{proof}

@@ -1,0 +1,397 @@
+\section{Repeated natural heads and the smaller pair counts}
+\label{sec:small-pair-heads}
+For a finite group $J$, write $d_p(J)=\dim_{\F_p}J/(J'J^p)$.
+All head modules below come from an actual subgroup of the same complete
+$J\leq S_b$.
+
+\begin{proposition}[Repeated natural heads with central binary lifts]
+\label{prop:central-repeat}
+Let
+\[
+ R_d^A=\F_4^d:C_3,\qquad
+ R_d^S=(\F_2^2)^d:S_3,
+\]
+where the same scalar, respectively natural, action is used on all $d$
+copies. Suppose $Q$ has a specified central elementary binary subgroup
+$C$ of rank $c$ and $Q/C\cong R_d^A$ or $R_d^S$, with $d\geq1$.
+For every complete $J\leq S_b$,
+\[
+ |\Epi(J,Q)|\leq B_T(d)2^{\max(c,d)b/2},
+ \qquad B_A(d)=2\cdot4^d,\quad B_S(d)=6\cdot4^d.
+\]
+No factor $|\Aut Q|$ is required in this bound.
+\end{proposition}
+\begin{proof}
+Put $r=d_2(J)$. In the $A$ case let $F=J'$, and in the $S$ case let
+$F=J''$. In either case set $B=J/F$ and $D=H_1(F,\F_2)$, with its
+honest $B$ action. For every onto top map $\theta$ to $C_3$ or $S_3$,
+let $V_\theta$ be the natural two-dimensional binary module. In the
+first case the odd part of the abelian $B$ maps onto $C_3$; in the
+second case the odd part of the abelian $B'$ does so. This is a normal
+odd subgroup with zero invariants on $V_\theta$. Averaging and
+inflation--restriction therefore give
+\[
+ H^i(B,V_\theta)=0\quad(i\geq0),\qquad
+ H^1(J,V_\theta)\cong\Hom_B(D,V_\theta).
+\]
+The vanishing in degree two is what retains all restrictions even
+when the source extension is nonsplit.
+
+Let $a_I$ be the multiplicities of represented natural simple types
+in the one semisimple head of $D$, and put $A=\sum_Ia_I$.
+Their commuting fields are $\F_4$ in the $A$ case and $\F_2$ in
+the $S$ case. Each type corresponds to two, respectively six, concrete
+top maps. Onto restrictions onto $d$ identical copies are ordered
+independent rows over that field. Every cohomology class has exactly
+$4^d$ literal cocycles, since the module has no fixed vectors.
+The target's first, respectively second, derived group is precisely
+its repeated binary module. Thus a map is onto exactly when this
+restriction is onto, giving the exact formulas
+\begin{align}
+ |\Epi(J,R_d^A)|&=2\cdot4^d\sum_I\prod_{j=0}^{d-1}(4^{a_I}-4^j),
+ \label{eq:repeated-a}\\
+ |\Epi(J,R_d^S)|&=6\cdot4^d\sum_I\prod_{j=0}^{d-1}(2^{a_I}-2^j).
+ \label{eq:repeated-s}
+\end{align}
+A term is zero when $a_I<d$. No independent copy of the source is
+assigned to a repeated constituent.
+
+We need the simultaneous constraints
+\begin{equation}\label{eq:joint-natural-facets}
+ r+2A\leq\lfloor b/2\rfloor\quad(A\text{ case}),\qquad
+ r+A\leq\lfloor b/2\rfloor\quad(S\text{ case}).
+\end{equation}
+Choose bases of all the Hom spaces at once. Their evaluations give
+an onto map from $D$ to $V_{\rm all}=\bigoplus_I V_I^{a_I}$.
+Lift all its coordinates by the displayed cohomology isomorphism.
+The joint image is exactly $V_{\rm all}:R$, where $R$ is the joint
+image of the chosen top maps: the restriction of the same $F$ is
+onto $V_{\rm all}$, so the full inverse image of $R$ is obtained.
+In the $A$ case $R\leq C_3^I$ is odd and acts without trivial
+constituents on the binary module. This target has no binary quotient.
+Pair its quotient map with the maximal elementary binary quotient
+$C_2^r$ of $J$; Goursat's lemma gives the full product. The preimage
+of $V_{\rm all}\times C_2^r$ is an actual subgroup of $S_b$ with
+an elementary binary quotient of rank $2A+r$. The actual subgroup
+abelianization bound \cite[Theorem 2.8]{RoneyDougalTracey2025}
+proves the first inequality.
+
+In the $S$ case put $N=R\cap C_3^I$ and $K\cong R/N\leq C_2^I$.
+The coordinate sign characters on $N$ are nontrivial and have no
+trivial constituent; hence $[N,K]=N$. A complement to the normal odd Hall subgroup gives
+$R=N:K$ with elementary binary $K$. The maximal binary quotient
+of $V_{\rm all}:R$ is exactly $K$. Pairing with $C_2^r$ therefore
+gives $(V_{\rm all}:R)\times C_2^{r-u}$, where $u=\dim K$;
+it is the full fibre product over all $u$ binary characters.
+Pull back $(V_{\rm all}:K)\times C_2^{r-u}$. Each natural type
+restricted to $K$ is a nontrivial transvection module, so its
+coinvariant dimension is one. This actual subgroup has binary
+abelian quotient rank $A+u+r-u=A+r$, proving the second inequality.
+
+For $q=4$ or $2$,
+\[
+ \sum_I\prod_{j<d}(q^{a_I}-q^j)
+ \leq\sum_I(q^{a_I}-1)^d
+ \leq\left(\sum_I(q^{a_I}-1)\right)^d
+ \leq(q^A-1)^d<q^{dA}
+\]
+when the sum is nonempty, and it is zero otherwise.
+Above one fixed map to $Q/C$, homomorphic lifts to $Q$ are absent
+or a torsor under $\Hom(J,C)$, of size $2^{cr}$. Onto lifts are
+only a subset. Consequently the two exponents are bounded by
+$cr+2dA$ and $cr+dA$, respectively. Equations
+\eqref{eq:joint-natural-facets} bound both by
+$\max(c,d)\lfloor b/2\rfloor$. This proves the assertion while
+retaining every lift obstruction before the positive enlargement.
+\end{proof}
+
+\begin{corollary}[Finite menus with repeated-head entries]
+\label{cor:repeated-head-forward}
+Fix a finite menu of original transitive actions $U$ of width $w$.
+For every original $N\lhd U$, suppose its quotient has either a
+fixed mixed character tuple with slope less than $h(w)/8$, or a
+specified central repeated-head certificate as in
+Proposition~\ref{prop:central-repeat} with
+$\max(c,d)/2<h(w)/8$. Then the complete menu has one exponentially
+small forward row and zero scalar, with original action weights.
+\end{corollary}
+\begin{proof}
+Fix one choice at every original normal subgroup. The finite set has
+a common positive strict gap; sum the estimates of
+Propositions~\ref{prop:character-count} and~\ref{prop:central-repeat}
+on the same $J$, and apply Lemma~\ref{lem:uniform-delta} to
+$\Delta(n,b)Z_J(U)/a(U)$. Different original normals remain different
+summands. Repeated-head entries already count literal epimorphisms
+and do not receive an additional automorphism factor.
+\end{proof}
+
+\begin{lemma}[A binary rank tail on complete sources]
+\label{lem:complete-binary-rank-tail}
+For each fixed $\epsilon>0$,
+\[
+ \#\{J\leq S_b:d_2(J)>(1/4+\epsilon)b\}
+ \leq2^{b^2/16-\epsilon^2b^2+O_\epsilon(b^{3/2})}.
+\]
+The same estimate, with an additional $O(b\log(b+2))$ in the
+exponent, counts complete $J$ having a normal subgroup $F$ of index
+three with $d_2(F)>(1/4+\epsilon)b$.
+\end{lemma}
+\begin{proof}
+For any integer $t\geq0$, the graphs of all maps
+$J\to C_2^t$, with the latter on $t$ fixed disjoint pairs, are
+subgroups of $S_{b+2t}$. Projection recovers $J$ and its graph.
+There are $2^{td_2(J)}$ maps. Apply the coarse bound
+\eqref{eq:coarse} and take $t$ within one of $2\epsilon b$.
+The exact main exponent is
+\[
+ \frac{(b+2t)^2}{16}-(1/4+\epsilon)bt
+ =\frac{b^2}{16}-\epsilon^2b^2
+                       +\frac{(t-2\epsilon b)^2}{4}.
+\]
+For the second assertion, every index-three overgroup of a fixed
+$F\leq S_b$ is generated by $F$ and one permutation, so there are
+at most $b!$ possibilities. This is a positive union bound over
+all such actual kernels; no eligible kernel multiplicity is divided out.
+\end{proof}
+
+\begin{proposition}[All six-pair actions]\label{prop:six-pairs}
+Every transitive action on twelve points with six pairs has a complete
+exponentially small forward row and a quadratic-exponentially small
+scalar, with its original action weight.
+\end{proposition}
+\begin{proof}
+The six-block certificates in Appendix~\ref{sec:certificates} give
+$182$ physical action classes and $2476$ literal normal records.
+Here is the constructive coverage behind this finite premise.
+The $56$ subgroup representatives in $S_6$ contain the identity
+and are closed, up to explicit conjugacy, under adjoining every
+double-coset representative. If $x=h_1gh_2$, then
+$\langle H,x\rangle=\langle H,g\rangle$; induction on generators
+therefore proves completeness. Sixteen are transitive. The $2825$
+distinct subspaces of $\F_2^6$, the exact Gaussian sum, give all
+$112$ invariant-kernel interfaces. On each quotient module,
+evaluating a presentation on corrected generator lifts gives the
+linear cocycle equations. The number of base-conjugacy classes is
+exactly $2^{\dim Z^1-\dim M+\dim M^T}$, proving completeness of
+the listed complement graphs and their full preimages, including
+nonsplit original lifts. The $224$ transitive block certificates
+are identified by actual degree-twelve conjugacy into the $182$
+physical actions, with their original symmetric normalizers.
+
+Every original normal list is closed under adjoining the normal
+closure of each conjugacy-class representative and contains the
+identity. Since a normal subgroup is generated by its conjugacy
+classes, this proves exhaustive normal coverage. The certificate
+at each normal is either a faithful irreducible tuple consisting
+of at most one linear and one general character (two linears
+also allowed), or a literal onto map with exactly that kernel to
+one of the five fixed models
+\[
+ C_2^3,\qquad B_{32},\qquad C_2^e\times R_2^A\quad(0\leq e\leq2).
+\]
+On two four-point blocks, $B_{32}$ is generated by $V_4^2$ and
+$(23)(67)$, of order $32$. Kernel intersections of the character
+tuples and the explicit model maps verify these alternatives;
+labels or group orders alone are not used.
+
+Call the complete $J$ cold if $r=d_2(J)\leq13b/50$.
+Character entries cost at most $|\Aut Q|15^{b/3}$.
+Every map to a binary target factors through the canonical maximal
+binary quotient of $J$. That quotient has generator rank $r$,
+so the two binary models have at most $2^{5r}\leq2^{13b/10}$ maps.
+Proposition~\ref{prop:central-repeat} bounds each repeated-head
+model by $32\cdot2^b$. As $15<16$, summing every original normal
+gives a constant $C_U$ with
+\[
+ Z_J(U)\leq C_U2^{4b/3}\qquad(J\text{ cold}).
+\]
+This has strict margin $3/2-4/3=1/6$ at original width twelve.
+For arbitrary $J$, its generator number is at most $\log_2(b!)$;
+the fixed targets have orders at most $46080<2^{16}$. Thus
+$Z_J(U)\leq\nu(U)(b!)^{16}$, where $\nu(U)$ is its normal count.
+Lemma~\ref{lem:complete-binary-rank-tail} with $\epsilon=1/100$
+bounds the hot complete-source count by
+$2^{b^2/16-b^2/10000+O(b^{3/2})}$.
+The full hot fibre and original normalization are consequently at
+most
+\[
+ \sum_U\frac{\nu(U)(b!)^{16}}{b!a(U)p_nG_{\lfloor n/2\rfloor}}
+ 2^{b^2/16-b^2/10000+O(b^{3/2})}
+ =2^{-\Omega(n^2)},\qquad n=b+12.
+\]
+The factorials cost only $O(n\log(n+2))$. The cold sum is
+$\Delta(n,b)\sum_U C_U2^{4b/3}/a(U)$ and is exponentially small
+by Lemma~\ref{lem:uniform-delta}. Fuse the whole family once,
+using the existence of any hot accepted pointing and its cold
+complement. There is one complete terminal on the cold row.
+\end{proof}
+
+\begin{lemma}[A cyclic dual on a common derived source]
+\label{lem:binary-cyclic-dual}
+Let $X=V:R$, where $V$ is a binary vector space of dimension $d$,
+$R$ acts faithfully and $V^*$ is cyclic. Suppose, for $\ell=1$ or
+$2$, that $R^{(\ell)}=1$ and the odd part of $R^{(\ell-1)}$ has
+zero invariants on $V$. Then
+\[
+ |\Epi(J,X)|\leq2^d|\GL_d(2)|2^{b/2}.
+\]
+\end{lemma}
+\begin{proof}
+The hypotheses give $X^{(\ell)}=V$. Every map therefore sends the
+same $F=J^{(\ell)}$ onto $V$. Put $B=J/F$ and $D=H_1(F,\F_2)$.
+The odd part of $B^{(\ell-1)}$ maps onto the stipulated odd group
+under every onto top map, so averaging gives $H^i(B,V_\theta)=0$
+for all $i$. Onto restrictions $D\to V_\theta$ dualize to
+injections $V_\theta^*\to D^*$. Fix one cyclic vector in $V^*$.
+Its image $f$ determines its whole image module $\F_2[B]f$.
+For a fixed $f$, there are at most $|\GL_d(2)|$ linear
+identifications; faithfulness determines the top map from each
+identification. Thus every top map and onto restriction together
+has at most $|\GL_d(2)|2^{\dim D}$ possibilities. Each restriction
+has at most $|V|$ cocycle lifts, and the actual $F\leq S_b$ has
+$d_2(F)\leq b/2$. This proves the bound for reducible and
+nonsemisimple modules as well.
+\end{proof}
+
+\begin{proposition}[All four-pair actions]\label{prop:four-pairs}
+Every nonbinary transitive action on eight points with four pairs
+has a complete exponentially small forward row and a
+quadratic-exponentially small scalar, with its original action weight.
+\end{proposition}
+\begin{proof}
+Its top is $A_4$ or $S_4$. In $M=\F_2^4$, the invariant modules
+are exactly $0,C,I,M$, with $C$ constant and $I$ augmentation:
+weight-two vectors span $I$, weight-one or weight-three orbits
+span $M$, and weight four is constant. For each kernel, try all
+$256$ pairs of binary corrections to two fixed top generators,
+and require that the resulting whole kernel be the selected one.
+Every projecting subgroup contains such lifts, so this is exhaustive.
+The four-block certificates retain the ten transitive classes,
+their original normalizers and all $72$ original normals. Normal
+completeness follows from intersection closure of irreducible
+character kernels, as in Lemma~\ref{lem:small-pair-data}.
+Five classes are
+\[
+ C_2\times A_4,\quad\operatorname{SL}_2(3),\quad
+ S_4\text{ in degree eight},\quad C_2\times S_4,\quad
+ \operatorname{GL}_2(3).
+\]
+The other five, denoted here $Y_1,\ldots,Y_5$, have binary kernels
+$I,M,I,I,M$, respectively, with $A_4$ top in the first two cases
+and $S_4$ top in the last three. The two augmentation lifts over
+$S_4$ are the ordinary lift and the graph whose base parity equals
+the top sign; the latter need not split over $I$.
+
+For these five, $C$ is the unique minimal normal subgroup. The
+only minimal submodule of their binary kernel is $C$, and any
+normal subgroup disjoint from that kernel centralizes it. The
+top action on $I$ and $M$ is faithful, so such a subgroup is
+trivial. A character nontrivial on $C$, induced and then restricted
+to an irreducible constituent, is therefore faithful on $Y_i$.
+Thus $|\Epi(J,Y_i)|\leq|\Aut Y_i|5^{b/3}$. The exact central
+quotients recorded by the literal maps are
+\[
+ Y_1/C=R_2^A,\quad Y_2/C=X_c,\quad
+ Y_3/C=Y_4/C=X_g,\quad Y_5/C=X_s,
+\]
+where, on $V=\F_4^2$, $a$ is common multiplication by $\omega$,
+$t$ common Frobenius and $s$ coordinate swap, and
+\[
+ X_c=V:\langle a,s\rangle,\quad
+ X_g=V:\langle a,ts\rangle,\quad
+ X_s=V:\langle a,t,s\rangle.
+\]
+Because every nontrivial normal contains $C$, in each case
+$Z_J(Y_i)=|\Epi(J,Y_i)|+Z_J(Y_i/C)$ exactly.
+
+For $X_c,X_s$, the module is cyclic over $\F_4[s]$ with unique
+proper nonzero submodule the diagonal line. The invariant trace
+form $\operatorname{Tr}(x_1y_1^2+x_2y_2^2)$ identifies it with
+its binary dual. For $X_g$, the three invariant $\F_4$ lines are
+$y=cx$ with $c^3=1$; any two are complementary natural $S_3$
+modules. Their commuting field is $\F_2$, and the matrix algebra
+$\mathrm{Mat}_2(\F_2)$ shows that two natural copies have a
+cyclic dual (take components forming a basis). Thus
+Lemma~\ref{lem:binary-cyclic-dual} applies with $\ell=1$ for
+$X_c$ and $\ell=2$ for the other two, giving onto bounds
+$C_0 2^{b/2}$, $C_0=16|\GL_4(2)|$.
+Their exact full normal menus are
+\begin{align*}
+ Z_J(X_c)&=|\Epi(J,X_c)|+Z_J(C_2\times A_4),\\
+ Z_J(X_g)&=|\Epi(J,X_g)|+3|\Epi(J,S_4)|+Z_J(S_3),\\
+ Z_J(X_s)&=|\Epi(J,X_s)|+Z_J(C_2\times S_4).
+\end{align*}
+Indeed in the first and third case every nontrivial normal
+contains the diagonal line. In the second case the three line
+kernels give three $S_4$ quotients, and all other proper normals
+contain $V$. These yield faithful degree-six comparators
+$C_2\times A_4,S_4,C_2\times S_4$ (padding $S_4$), with
+multipliers $1,3,1$. Since both $1/2$ and $\gamma_5$ are less than
+one, Theorem~\ref{thm:finite-comparator} handles $Y_2,\ldots,Y_5$.
+
+For $C_2\times T$, $T=A_4,S_4$, normals not containing the
+natural $V_4$ lie in the central $C_2$. Put $z=2^{d_2(J)}$.
+The complete remaining normal sum is $z|\Epi(J,A_4)|$ in the
+alternating case and $(z-1)|\Epi(J,S_4)|$ in the symmetric case:
+in the latter, the central binary row must be independent of the
+existing sign. The joint facets in
+Proposition~\ref{prop:central-repeat}, with $d=1$, bound these
+sums by $8\cdot2^{b/2}$ and $24\cdot2^{b/2}$ respectively.
+Their complete quotient intervals are exactly
+$Z_J(C_2\times C_3)$ or $Z_J(C_2\times S_3)$, with faithful
+five-point representations. This proves the finite comparator
+estimate for these two classes. For $\operatorname{SL}_2(3)$
+and $\operatorname{GL}_2(3)$ the center $C_2$ is unique minimal
+normal, so the same faithful-character argument and exact normal
+interval give comparators $A_4,S_4$ of degree four, with slope
+$\gamma_5<1$. The nonnatural $S_4$ itself has that comparator with
+zero error. This handles all classes except $Y_1$.
+
+For $Y=Y_1$, the repeated quotient has five distinct $\F_4$-line
+kernels and therefore
+\begin{equation}\label{eq:y-one-full}
+ Z_J(Y)=|\Epi(J,Y)|+|\Epi(J,R_2^A)|
+                  +5|\Epi(J,A_4)|+Z_J(C_3).
+\end{equation}
+The first-derived proof of Proposition~\ref{prop:central-repeat}
+gives one common head with natural multiplicities $a_I$ and
+$r=d_2(J)$. For each corresponding $\theta:J\to C_3$, put
+$H=\ker\theta$. Averaging on $J/H=C_3$ gives
+\[
+ H^1(J,\F_2)=H^1(H,\F_2)^{C_3},\qquad
+ H^1(J,V_\theta)=\Hom_{C_3}(H_1(H,\F_2),V_\theta).
+\]
+Comparing the latter with the same common-head Hom space shows
+that $H_1(H,\F_2)$ has trivial multiplicity $r$ and natural
+multiplicity $a_I$. Thus
+\begin{equation}\label{eq:index-three-head}
+ d_2(\ker\theta)=r+2a_I.
+\end{equation}
+There are at most $b/4$ represented types, since
+$2\sum_Ia_I\leq d_2(J')\leq b/2$.
+
+Declare $J$ hot when \emph{some} normal subgroup of index three
+has rank $>51b/200$; test all such subgroups, even those whose
+natural type is absent. On the cold set, \eqref{eq:index-three-head}
+and \eqref{eq:repeated-a} give
+\[
+ 5|\Epi(J,A_4)|\leq10b\,2^{51b/200},\qquad
+ |\Epi(J,R_2^A)|\leq8b\,2^{51b/100}.
+\]
+Together with $Z_J(C_3)\leq3^{b/3}$ and the faithful-character
+bound on $Y$, the exact full sum \eqref{eq:y-one-full} has slope
+at most $\gamma_5<1$, up to a fixed linear factor in $b$.
+For all sources that full sum is at most $C(1+b)2^b$:
+use $a_I\leq b/4$ in the repeated-head formula. Lemma
+\ref{lem:complete-binary-rank-tail}, now with $\epsilon=1/200$
+and its index-three clause, gives the complete hot count
+$2^{b^2/16-b^2/40000+O(b^{3/2}+b\log(b+2))}$.
+Multiplying by the whole fibre and by the original factor
+$1/(384b!p_nG_{\lfloor n/2\rfloor})$, $n=b+8$, leaves a
+quadratic-exponentially small scalar. The cold row is exponentially
+small by Lemma~\ref{lem:uniform-delta}. The divisor $384$ is the
+original $S_8$ normalizer: $Y$ is normal in $C_2\wr S_4$, and its
+characteristic $C$ forces every normalizer to preserve those four
+pairs. The finite union of all ten classes is fused once, with
+all original weights and complete cold terminals retained.
+\end{proof}

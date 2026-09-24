@@ -1,0 +1,148 @@
+\section{Exhaustive counting and boundedness-first assembly}
+\label{sec:assembly}
+Let $F_N$ be the normalized count of all fixed-point-free binary
+subgroups of $S_{2N}$, and retain the complete binary error $E_N$
+from Section~\ref{sec:markers}. Actual orbit projections give the
+exact disjoint partition
+\begin{equation}\label{eq:binary-partition}
+ F_N=C_{2N}^{\crit}+E_N.
+\end{equation}
+
+\begin{proposition}[Independent complete binary error]
+\label{prop:binary-error}
+Both $F_N$ and $E_N$ are bounded, and $E_N=O(2^{-a_BN})$ for
+some $a_B>0$.
+\end{proposition}
+\begin{proof}
+Theorem~\ref{thm:binary-recurrence} gives
+\begin{equation}\label{eq:binary-recurrence}
+ E_N\leq\eta_B(N)+\sum_{M<N}K_B(N,M)F_M,
+ \qquad\eta_B(N)+\sum_{M<N}K_B(N,M)\leq C_B2^{-a_BN}.
+\end{equation}
+The critical ratios are bounded by Theorem~\ref{thm:critical-intro}.
+Choose an onset at which the kernel row is at most $1/2$ and a
+constant at least twice the bounded forcing and at least all finitely
+many earlier values of $F$. Induction in the exact partition proves
+that this constant bounds every $F_N$. Substitution into the same
+recurrence gives the asserted exponential error. This induction uses
+no ordinary subgroup ratio $A_n=s_n/L_n$.
+\end{proof}
+
+\begin{theorem}[Exhaustive ordinary counting estimate]
+\label{thm:global-counting}
+There are nonnegative functions $\eta_0,\eta_1,K$ and the exact
+marker kernel of \eqref{eq:complete-marker-kernel}, with positive
+constants $a_i,C$, such that eventually
+\begin{align}\label{eq:global-rates}
+ \eta_0(n)&\leq C2^{-a_0n},&
+ \eta_1(n)&\leq C2^{-a_1n^2},\notag\\
+ \sum_{b<n}K(n,b)&\leq C2^{-a_2n},&
+ \sum_{\substack{m<n\\m\ \mathrm{even}}}K_{\rm mark}(n,m)
+       &\leq C2^{-a_3n}.
+\end{align}
+They give the complete inequality
+\begin{align}\label{eq:master}
+ A_n\leq{}&C_n^{\crit}+\eta_0(n)+\eta_1(n)
+             +\sum_{b<n}K(n,b)A_b
+             +\mathbf1_{n\ \mathrm{even}}E_{n/2}\notag\\
+ &+\sum_{\substack{m<n\\m\ \mathrm{even}}}
+              K_{\rm mark}(n,m)E_{m/2}
+   +\mathbf1_{n=2N+1}(u_NE_N+v_NE_{N-1}),
+\end{align}
+where $u_N,v_N$ are the exact coefficients in \eqref{eq:uv}.
+There is a single same-degree binary error, and every forward edge
+has one complete target.
+\end{theorem}
+\begin{proof}
+First take all subgroups with an actual transitive orbit outside
+the alphabet consisting of binary groups, natural $C_3,A_4,S_3$,
+and fixed points. Theorem~\ref{thm:nonbinary-alphabet} bounds this
+complete family by an exponentially small ordinary forward row
+and a quadratically small scalar. Every pointing deletes its whole
+original orbit, so its exact weight is
+$n!/(b!a(U))$. A cold estimate uses it in the form
+$\Delta(n,b)/a(U)$ on $A_b$; a hot estimate retains the factor
+$1/(b!a(U)p_nG_{\lfloor n/2\rfloor})$ on its complete source sum.
+These are bounds for already assembled subgroups, including their
+other orbits and any external characters.
+
+In the complementary alphabet let $c,t$ be the numbers of natural
+$C_3,A_4$ orbits. If $t\geq n/1000$, apply the complete scalar
+of Theorem~\ref{thm:macro-a4}. If $t<n/1000$ and $c+t>0$, apply
+Theorem~\ref{thm:low-a4-transfer}. Its intrinsic action condition
+holds here: every relative ternary head of a two-group is zero;
+the normals $1,C_3,S_3$ of natural $S_3$ also have zero relative
+ternary head, since $[C_3,S_3]=C_3$ and $S_3$ has no ternary
+abelian quotient. Fixed points contribute zero. This proves the
+condition for every residual action in the alphabet, without an
+assumption about which normal kernel is selected later. Add the
+ordinary row and scalar of this theorem once. The macro and small
+packet sectors are disjoint by their original-degree cutoff.
+
+It remains that every moved orbit is binary or natural $S_3$.
+Write the marker counts as $g,f$, and $n=2N+\eps$. Under the
+exact collapse of Proposition~\ref{prop:complete-marker-collapse},
+let $q$ be the number of distinct marker signs and put
+$D=(g+f-\eps)/2$. This is an integer, because the binary exterior
+has even degree, and is nonnegative. When $D\geq1$, the complete
+row in Theorem~\ref{thm:complete-marker-row} applies. If the
+collapsed group is critical, its entire contribution is an
+exponentially small scalar by Corollary~\ref{cor:pure-marker-sum}.
+Otherwise it lies in the complete family defining $E_{m/2}$:
+the collapse leaves each pre-existing noncritical binary action
+unchanged, and creates only pair actions. Hence this remaining
+contribution is precisely bounded by the displayed $K_{\rm mark}$
+term. In particular $K_{\rm mark}$ has no unrestricted $A_m$
+target.
+
+When $D=0$, in even degree there are no markers or fixed points.
+The complete binary partition gives $C_{2N}^{\crit}+E_N$, each
+once. In odd degree there is exactly one fixed point or one
+natural $S_3$ orbit. With critical binary orbits these are exactly
+the two disjoint odd parts of $C_n^{\crit}$. Otherwise their exact
+contributions are $\alpha_NE_N$ and $\beta_NpE_N$; the complete
+pair moment of Proposition~\ref{prop:binary-moment} bounds their
+sum by $u_NE_N+v_NE_{N-1}$. No estimate for a restricted binary
+residual is substituted for this complete moment.
+
+These sectors exhaust all actual subgroups and are pairwise
+disjoint before their positive enlargements. Within the first
+sector fix an order of the proved action families and assign a
+subgroup to the first one it meets, before testing temperatures.
+For each assigned family its hot part means that some accepted
+pointing is hot, and its cold part that none is hot. Each theorem's
+complete positive envelope is then paid once, over all its
+assigned inputs. Multiple orbit occurrences are already accounted
+for by pointing the original weight
+$\prod_U(a(U)^{m_U}m_U!)^{-1}$; auxiliary representations and
+alternative certificates contribute no new physical factorial.
+All subsequent sectors are restrictions of their proved positive
+envelopes and are likewise paid once.
+
+Define $\eta_0$ to be the pure-marker scalar, $\eta_1$ the sum of
+the nonbinary, macro and small-packet scalars, and $K$ the sum of
+the nonbinary and small-packet ordinary rows. Their proved complete
+rates and the marker-row theorem give \eqref{eq:global-rates}.
+The auxiliary binary kernel $K_B$ is not added to $K$: its role
+was to prove the independent estimate for $E$, and the original
+even binary count has already been paid with coefficient one.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+By Proposition~\ref{prop:binary-error}, $E_N$ is bounded and
+decays exponentially. The coefficients $u_N,v_N$ are bounded,
+and their targets are $N,N-1$, so their contributions in
+\eqref{eq:master} decay exponentially. The complete marker row
+times the bounded binary errors is exponentially small as well.
+The forcing in \eqref{eq:master}, excluding its ordinary row,
+is therefore bounded and is $1+O(2^{-cn})$ for some $c>0$.
+
+Choose an onset at which $\sum_{b<n}K(n,b)\leq1/2$ and let
+$M$ exceed all finitely many initial $A_b$ and twice a uniform
+bound on the forcing. Induction gives $A_n\leq M$ for every $n$.
+Substituting this established bound into \eqref{eq:master} now
+gives $A_n\leq1+O(2^{-c'n})$. The critical-family lower bound
+gives $A_n\geq1-O(2^{-c''n})$. Taking the smaller positive rate
+proves the result at both parities. No boundedness premise was
+used in deriving any complete row or scalar.
+\end{proof}

@@ -1,0 +1,172 @@
+\section{Faithful character tuples on a common source}\label{sec:characters}
+All characters in this section are complex irreducible characters. A
+faithful tuple means that the intersection of its kernels is trivial.
+Slots may contain the trivial character; this permits harmless padding.
+Binary-primary linear means every power-of-two order, rather than only
+order two.
+
+\subsection{Whole-socle feasibility}
+Write the abelian part of $\Soc(Q)$ as a direct sum of simple
+$\F_pQ$-modules over its various primes. For a nontrivial simple type
+$X$ let $m_X$ be its multiplicity and
+$e_X=\dim_{\End_QX}X$. For each prime let $m_p$ be the dimension of
+the central elementary $p$-socle and let $f_p$ be the dimension of its
+intersection with $Q'$. Put
+\[
+ T=\max\left(\{f_p\}_p,
+       \{\lceil m_X/e_X\rceil\}_{X\ne1},
+       \{1:\Soc(Q)\text{ has a nonabelian factor}\}\right),
+ \qquad M_o=\max_{p\text{ odd}}m_p,
+\]
+with empty maxima zero.
+
+\begin{theorem}[Three-category feasibility]\label{thm:character-feasibility}
+A faithful tuple with $r$ binary-primary linear slots, $l$ unrestricted
+linear slots, and $t$ general irreducible slots exists if and only if
+\begin{equation}\label{eq:character-feasibility}
+ t\geq T,\qquad l+t\geq M_o,\qquad r+l+t\geq m_2.
+\end{equation}
+The trivial group permits the empty tuple.
+\end{theorem}
+\begin{proof}
+Every nontrivial normal subgroup intersects the socle nontrivially.
+It therefore suffices to detect the entire socle with the joint tuple.
+For the abelian socle, Clifford theory says that the restriction of an
+irreducible contains one orbit of linear characters. In a simple
+isotype $X^{m_X}$, a single orbit spans at most $e_X$ independent
+multiplicity directions. To see this, identify the image algebra on
+$X$ with $M_{e_X}(\End_QX)$; a vector in the isotype supplies at most
+$e_X$ rows in its multiplicity space. Conversely $t$ vectors generate
+that isotype whenever $m_X\leq te_X$, by choosing rows to span the
+whole multiplicity space. The dual module has the same dimensions
+and multiplicity, so this criterion applies equally to character orbits.
+
+Linear characters kill $Q'$. All nontrivial abelian socle types lie
+in $Q'$, because their commutator with $Q$ is the whole simple type.
+Thus they require the general slots. So does each derived-central
+direction, and a nonabelian socle factor requires at least one general
+slot. Each irreducible is scalar on a central elementary $p$-group,
+so a slot detects at most one independent central direction. A
+binary-primary linear character kills every odd central element.
+These facts prove necessity of \eqref{eq:character-feasibility}.
+
+For sufficiency, choose bases of each central $p$-socle adapted to its
+derived-central subspace. Assign its first $f_p$ dual coordinates to
+the general slots, and as many remaining coordinates as those slots
+can hold. At odd $p$, put the remaining coordinates in the $l$ linear
+slots; at $p=2$, use the $r+l$ linear slots. The inequalities guarantee
+room. The functionals assigned to linear slots vanish on the entire
+intersection of the abelian socle with $Q'$. They extend first to its
+image in $Q^{\rm ab}$ and then to complex linear characters of
+$Q^{\rm ab}$, since a character of a subgroup of a finite abelian
+group extends to that group. For a binary-primary slot, extend inside
+the binary component and take the trivial character on all odd
+components. Higher binary roots may be necessary and are allowed.
+
+On each nontrivial simple isotype choose $t$ dual vectors whose
+$Q$-orbits generate its full dual, using the matrix-algebra criterion
+above. Combine their assignments over all primes with the chosen
+central functionals to obtain $t$ characters of the abelian socle.
+If the nonabelian socle is nontrivial, choose a nontrivial irreducible
+on each of its simple direct factors and take their tensor product.
+It is faithful: the simple factors are centreless, and a tensor product
+can have scalar cancellation only from scalar images. Assign this
+character to one general slot and use the trivial character there in
+the other slots.
+
+Each slot now specifies an irreducible of the whole socle. Induce it
+to $Q$ and choose an irreducible constituent. By Clifford theory, its
+restriction contains every conjugate of the specified socle character;
+its kernel on the socle is precisely the corresponding normal core.
+The chosen orbit spans and central coordinates make the intersection
+of these cores, together with the extended linear kernels, trivial.
+The resulting tuple is faithful on $Q$.
+\end{proof}
+
+For the source costs below, the cheapest feasible profile is
+\begin{equation}\label{eq:cheapest-character-profile}
+ t=T,\qquad l=\max(M_o-T,0),\qquad
+ r=\max(m_2-\max(M_o,T),0).
+\end{equation}
+Indeed replacing an unrestricted linear slot by a general one increases
+its coefficient from $(\log3)/3$ to $(\log5)/3$, and replacing a
+binary-primary linear slot by either type also increases its coefficient.
+For fixed $t$ choose the least feasible $l$ and then the least $r$;
+increasing $t$ cannot improve that cost.
+
+\subsection{Joint kernel counting}
+\begin{proposition}\label{prop:character-count}
+If $Q$ has a specified faithful tuple with profile $(r,l,t)$, then
+for every actual $J\leq S_b$,
+\begin{equation}\label{eq:character-count}
+ |\Epi(J,Q)|\leq|\Aut Q|\,2^{rb/2}3^{lb/3}5^{tb/3}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For each onto kernel choose one epimorphism and inflate the fixed
+tuple. Its joint kernel is that original kernel, so distinct kernels
+give distinct ordered tuples of characters of the same $J$.
+There are at most $2^{b/2}$ binary-primary linear characters: a Sylow
+$2$-subgroup of $J$ maps onto the binary component of $J^{\rm ab}$,
+and its abelianization has order at most $2^{b/2}$.
+The total number of linear characters is $|J^{\rm ab}|\leq3^{b/3}$
+by \cite[Theorem 2.8]{RoneyDougalTracey2025} (with the perfect case
+immediate). The number of all irreducibles is
+$k(J)\leq5^{b/3}$ by \cite[Theorem 1.1]{GaronziMaroti2015}, including
+$b\leq3$ by direct inspection. Enlarge the joint tuple set to the
+product of these three lists. Finally each onto kernel has exactly
+$|\Aut Q|$ maps.
+\end{proof}
+
+\begin{proposition}[Several anchors, one preimage]\label{prop:anchor-count}
+In a specified faithful tuple of profile $(r,l,t)$ choose an anchor
+subtuple whose joint kernel $K$ is a $p$-group. Let $u$ be the number
+of general slots among the anchors, $g=t-u$, and $d=[Q:O_p(Q)]$.
+Then
+\begin{equation}\label{eq:anchor-count}
+ |\Epi(J,Q)|\leq|\Aut Q|d^g
+        2^{rb/2}3^{lb/3}5^{ub/3}(38/25)^{gb}.
+\end{equation}
+If $Q$ itself is a $p$-group the empty anchor is allowed, with
+$u=0,d=1$.
+\end{proposition}
+\begin{proof}
+The inflated anchor tuple determines $M=\varphi^{-1}(K)$.
+Since $K\leq O_p(Q)$ and $O_p(Q/K)=O_p(Q)/K$, it determines the
+single subgroup $F=\varphi^{-1}(O_p(Q))$ as the preimage of the
+characteristic $p$-core of $J/M$.
+Each remaining general character, restricted to $F$, has constituents
+with $p$-group image. All such constituents factor through the canonical
+maximal $p$-quotient of $F$. An actual Sylow $p$-subgroup $P\leq F$
+maps onto that quotient, so its irreducible list has size at most
+$k(P)\leq(38/25)^b$ by the nilpotent class bound
+\cite[Theorem 1.5]{Maroti2005Classes}. No faithful degree is assigned
+to the abstract quotient. Frobenius reciprocity bounds the number of
+irreducibles of $J$ above a fixed constituent by $[J:F]=d$:
+their dimensions are at least the constituent's dimension, whereas
+its induction has $d$ times that dimension.
+The linear slots use the global lists of Proposition~\ref{prop:character-count},
+and only the $u$ general anchors use the general list. Enlarge the
+joint lists after $F$ has been determined. Faithfulness recovers the
+onto kernel, and one factor $|\Aut Q|$ counts the maps.
+For a $p$-group target $F=J$ is already known and no anchor is needed.
+\end{proof}
+
+\begin{corollary}[Complete finite character entries]\label{cor:character-forward}
+Fix a finite menu of actual actions $U$. For each literal $N\lhd U$
+choose one tuple or anchor certificate whose coefficient of $b$ in
+\eqref{eq:character-count} or \eqref{eq:anchor-count} is at most
+$h(w)/8-\delta$, where $w=\deg U$ and $\delta>0$ is common to the
+menu. The complete accepted-orbit union has zero scalar and a
+forward kernel with exponentially small row, in original weights.
+\end{corollary}
+\begin{proof}
+Sum the chosen bounds over the actual normal axes of each $U$,
+always on the same complete $J$. Their fixed target constants have
+a finite sum $D_U$, so $Z_J(U)\leq D_U2^{(h(w)/8-\delta)b}$.
+The pointed cold row is
+$\Delta(n,b)\sum_{\deg U=n-b}D_U2^{(h(w)/8-\delta)b}/a(U)$.
+By Lemma~\ref{lem:uniform-delta} its logarithm is at most
+$-\delta b+O_W(\log(n+2))$, and $b\geq n-W$ for a fixed width cap
+$W$. The complete finite sum is exponentially small.
+\end{proof}

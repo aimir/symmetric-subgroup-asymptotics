@@ -1,0 +1,159 @@
+\section{The complete macroscopic alternating packet}
+\label{sec:macro-a4}
+Write $A_4=(\F_4,+)\rtimes C_3$ in its natural action on four
+points. Let $Z_{b,c,t}$ count subgroups in the fixed container
+$S_b\times C_3^c\times A_4^t$ full on the displayed $C_3,A_4$
+coordinates and with residual projection having no natural $C_3$
+or $A_4$ orbit. Put $n=b+3c+4t$.
+
+\begin{theorem}[All image and source parameters summed]
+\label{thm:macro-a4}
+Uniformly for $b,c\geq0$ and $t\geq1$,
+\begin{equation}\label{eq:macro-a4}
+ \log Z_{b,c,t}\leq\frac{n^2}{16}-\frac{43t^2}{450}
+                         +O(b^{3/2}+t+\log(c+2)).
+\end{equation}
+After the single original action factor
+$n!/(b!6^cc!24^tt!)$, the entire sector $t\geq n/1000$
+has normalized mass at most
+$2^{-43n^2/(900\cdot10^6)}$ eventually.
+\end{theorem}
+\begin{proof}
+Fix the literal residual group $J\leq S_b$. Put
+$F=J'J^3$, $E=J/F=\F_3^r$, $r=d_3(J)$, and
+$T=\F_3^t$. Conjugation makes $M=H_1(F,\F_2)$ a
+semisimple $\F_2E$-module. Since $\F_4$ contains all third
+roots of unity, its nontrivial simple modules have dimension two,
+are indexed by $h\in(E^*\setminus\{0\})/\{\pm1\}$,
+and have endomorphism field $\F_4$. Write their multiplicities as
+$a_h$, and $A=\sum_h a_h$. The permutation section bound gives
+$A\leq d_2(F)/2\leq b/4$; equation~\eqref{eq:rank3-pattern} gives
+$r\leq2b/9$.
+
+If $K\lhd J$ and $J/K$ is elementary ternary, then $K/F=D$
+for a unique subspace $D\leq E$. Odd-order homology gives naturally
+\[
+ H_1(K,\F_2)=M_D.
+\]
+The $D$-coinvariants retain precisely those simple types whose
+characters vanish on $D$, with the same multiplicities. Distinct
+retained types do not merge: equality up to sign on $E/D$ is already
+equality up to sign on $E$. This controls all image kernels from one
+fixed source module $M$.
+
+An image $L\leq J\times T$ onto $J$ contains $F\times0$.
+Its reduction $\overline L\leq E\times T$ is therefore equivalent
+to its annihilator, the graph
+\[
+ \overline L^\perp=\{(\Gamma(w),w):w\in C_T\},
+       \qquad C_T\leq T^*,\quad\Gamma:C_T\to E^*.
+\]
+This is a bijection: projection of $\overline L$ onto $E$ is onto
+exactly when the annihilator meets $E^*\times0$ trivially.
+Let $S=\{i:e_i\in C_T\}$, $s=|S|$, $u=t-s$,
+and $a=\dim C_T-s$. Fullness on packet coordinate $i$ says
+$\Gamma(e_i)\ne0$ whenever $i\in S$. The exact rank is
+\[
+ d_3(L)=r+u-a.
+\]
+The coordinates in $S$ are exactly those eligible for a residual
+source map; coordinate $i$ has source type $[\Gamma(e_i)]$.
+No eligible and ineligible coordinate can have the same packet
+isotype: equality up to sign would put $e_i\pm e_j$ in
+$\ker\Gamma\leq C_T$, and hence put both in $C_T$.
+
+We spell out the binary fibre above this same image. If
+$W\leq V^t$, $V=(\F_4,+)$, is its intersection with the packet
+kernel, write $Q=V^t/W$. Subgroups above $L$ with intersection $W$
+are the graphs of literal cocycles in $Z^1(L,Q)$. For
+$K=L\cap J$, the odd quotient $L/K\leq T$ gives
+\[
+ H^1(L,Q)\cong\Hom_{L/K}(H_1(K,\F_2),Q),
+       \qquad |B^1(L,Q)|=|Q|.
+\]
+The second equality holds because all packet simple constituents
+are nontrivial and thus $Q^L=0$. Coordinate fullness can only
+restrict this set. An isotype of packet multiplicity $m$ and source
+multiplicity $\alpha$ consequently contributes at most
+\[
+ F_\alpha(m)=\sum_{x=0}^m\gauss mx4\,4^{(\alpha+1)x}
+          \leq2^{2\alpha m+m^2/2+4m}.
+\]
+Indeed $\gauss mx4<2\cdot4^{x(m-x)}$ and there are $m+1$
+summands. The term $+1$ counts the literal coboundaries; it is not
+another source-module choice.
+
+Fix $C_T$ and extend its $s$ coordinate axes to a basis. Values of
+$\Gamma$ on the other $a$ basis vectors contribute $3^{ra}$.
+If the projective multiplicities of the nonzero axis values are
+$m_h$, the eligible fibre is at most
+$2^{2\sum_h a_hm_h+s^2/2+4s}$. Summing all its oriented axis
+values gives
+\[
+ 2^{s^2/2+4s}\Bigl(2\sum_h4^{a_h}\Bigr)^s.
+\]
+Integer convexity and the two physical rank bounds show
+\[
+ 2\sum_h4^{a_h}
+ \leq 2\left(\frac{3^r-1}{2}+4^A-1\right)
+ \leq2^{b/2+2}.
+\]
+The ineligible part has source multiplicity zero and contributes
+at most $2^{u^2/2+4u}$. Thus the whole fixed-$C_T$ sum is at most
+\[
+ 2^{bs/2+(s^2+u^2)/2+(\log_2 3)ra+O(t)}.
+\]
+For each exact axis set $S$, the number of possible $C_T$ of
+dimension $s+a$ is at most $\gauss ua3$: quotient by the contained
+coordinate space, and omit the requirement of no additional axes.
+There are $\binom ts$ choices of $S$. Defining
+\[
+ J_*(x,y)=\max_{0\leq z\leq y}z(x+y-z)
+   =\begin{cases}xy,&x\geq y,\\(x+y)^2/4,&x\leq y,
+    \end{cases}
+\]
+and $\lambda=\log_2 3$, the all-image fibre over this $J$ is at most
+\begin{equation}\label{eq:a4-joint-fibre}
+ 2^{\max_{s+u=t}\{bs/2+(s^2+u^2)/2+\lambda J_*(r,u)\}+O(t)}.
+\end{equation}
+This sums the image, source-column assignment, kernel subspace and
+cocycle on the same group.
+
+The deficit in \eqref{eq:a4-joint-fibre} from $bt/2+t^2$ is
+at least $\delta_0t^2$, with $\delta_0=(2-\lambda)/4$.
+For completeness, set $x=b/t$, $v=u/t$. The deficit divided by
+$t^2$ is at least
+\[
+ d(x,v)=1/2+v-v^2+xv/2-\lambda J_*(2x/9,v).
+\]
+When $2x/9\geq v$ this increases in $x$, so its minimum is at
+$x=9v/2$, where it is $1/2+v+(5/4-\lambda)v^2\geq1/2$.
+On the other region it is concave in $x$, so check $x=0$ and
+$x=9v/2$. At zero it is $1/2+v-(1+\lambda/4)v^2$, a concave
+quadratic whose minimum on $[0,1]$ is $\delta_0$.
+
+Adjoin the $c$ external regular ternary coordinates. The binary
+packet extension does not change $d_3(L)$, and
+$d_3(L)\leq P=2b/9+t$. Its one exact graph fibre is at most
+$2^{\lambda J_*(P,c)+O(\log(c+2))}$. Its physical increment
+in $n^2/16$ is $3bc/8+3tc/2+9c^2/16$. If $c\leq P$, the
+difference is
+\[
+ (3/8-2\lambda/9)bc+(3/2-\lambda)tc+9c^2/16
+             \geq-\frac49(\lambda-3/2)^2t^2>-t^2/225.
+\]
+If $c\geq P$, the difference increases in $c$ and at $c=P$ is
+$P[(1/2-2\lambda/9)b+(33/16-\lambda)t]>0$.
+Summing $J$ uses the independent coarse bound
+$s_b\leq2^{b^2/16+O(b^{3/2})}$ exactly once. Since
+$\delta_0-1/225>43/450$, this proves \eqref{eq:macro-a4}.
+
+Every actual group recovers the sets of its natural $C_3$ and
+$A_4$ orbits. Choosing these supports and actions contributes exactly
+$n!/(b!6^cc!24^tt!)$. The residual $J$ excludes those orbit types,
+so they are not selected a second time. Normalization by $L_n$
+costs only $O(n\log(n+2))$ beyond the $n^2/16$ term.
+For $t\geq n/1000$ the main loss dominates this and the
+$O(n^{3/2})$ error uniformly; the $O(n^2)$ possible $(c,t)$
+values are absorbed as well. This proves the complete scalar claim.
+\end{proof}

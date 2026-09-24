@@ -1,0 +1,122 @@
+\section{Exhaustion of the nonbinary orbit actions}
+\label{sec:nonbinary-alphabet}
+
+\begin{theorem}[Complete nonbinary action reduction]
+\label{thm:nonbinary-alphabet}
+Let $\mathcal X_n$ consist of the actual subgroups of $S_n$ with
+an orbit action outside the following list:
+\[
+ \text{binary transitive actions},\qquad
+ \text{natural }C_3,A_4,S_3,\qquad\text{fixed points}.
+\]
+There are positive constants $c,c'$ and complete kernels $K(n,b)$,
+with $K(n,b)=0$ for $b\geq n$, such that eventually
+\[
+ \frac{|\mathcal X_n|}{L_n}
+ \leq\eta(n)+\sum_{b<n}K(n,b)\frac{s_b}{L_b},\qquad
+ \sum_{b<n}K(n,b)=O(2^{-cn}),\qquad
+ \eta(n)=O(2^{-c'n^2}).
+\]
+Every forward term retains the complete complementary subgroup and
+the original permutation-action weight. Thus every subgroup outside
+this counted union has only the displayed orbit actions.
+\end{theorem}
+\begin{proof}
+We first prove that every transitive action outside the list meets
+one of the proved consumers on its entire original normal menu.
+This is an action-by-action exhaustion, preceding the counting union.
+
+For a primitive action, a nonaffine socle is covered by
+Theorem~\ref{thm:semisimple-compression}. An affine action of degree
+at least $1024$ is covered by Theorem~\ref{thm:small-order-consumer}.
+At smaller degrees at least five, the soluble and nonsoluble cases
+are Theorems~\ref{thm:soluble-primitive-consumer} and
+\ref{thm:nonsoluble-primitive-consumer}, with the exceptional
+degree-five Frobenius action covered by
+Proposition~\ref{prop:s4-f20-consumers}. At degree four the only
+primitive groups are the natural $A_4,S_4$, the latter again
+covered by that proposition. Degrees three and two leave precisely
+the allowed natural actions and the binary group.
+
+Now let $U$ be imprimitive. Choose a minimal nontrivial block of
+size $r$, with $s$ blocks and faithful top $T\leq S_s$.
+The full block stabilizer induces an exact primitive local group
+$L\leq S_r$: any smaller block for that induced action and all
+its translates would give a smaller block for $U$. Transport
+coordinates along representatives of the block action to obtain
+the actual embedding $U\leq L\wr T$. This does not impose a
+splitting or full block kernel.
+
+If $L$ is nonaffine, use Theorem~\ref{thm:semisimple-compression}.
+If it is affine with $r\notin\{2,3,4,5,8,9,16\}$, use
+Theorem~\ref{thm:affine-local-capacity}. For the four degrees
+$5,8,9,16$, Theorem~\ref{thm:small-affine-capacity} covers every
+count except its explicit finite lists; these lists are consumed,
+respectively, by Theorems~\ref{thm:five-affine-exceptions},
+\ref{thm:binary-affine-exceptions}, \ref{thm:nine-affine-exceptions}
+and \ref{thm:binary-affine-exceptions}. Each is an entire-normal
+statement on arbitrary complete sources.
+
+For $r=3$, the exact local group is $C_3$ or $S_3$.
+Theorem~\ref{thm:prime-s3-capacity} and
+Proposition~\ref{prop:bounded-c3} cover all $C_3$ counts.
+The same capacity theorem and Theorem~\ref{thm:bounded-s3}
+cover all $S_3$ counts.
+
+For $r=4$, the local group is natural $A_4$ or $S_4$.
+Theorem~\ref{thm:four-local-capacity} leaves only its displayed
+finite count sets, all at most $3072$. In the actual affine frame
+put $E=U\cap(\F_2^2)^s$, $R=U/E$ and $D=R\cap C_3^s$.
+For $D\ne1$, Theorem~\ref{thm:four-nonzero-core} applies.
+For $D=1$, Theorem~\ref{thm:zero-ternary-capacity} covers all
+counts except $4,8,16$, with counts two and three impossible.
+At four blocks use Theorem~\ref{thm:degree-sixteen-nonbinary};
+at eight and sixteen use Theorem~\ref{thm:zero-ternary-small-frames}.
+This disposes of every exact four-point component.
+
+Only $r=2$, $L=C_2$ remains. Its pair kernel is binary, so its
+top is nonbinary whenever $U$ is nonbinary. The prime-capacity
+theorem leaves exactly
+\[
+ \{2^a:1\leq a\leq8\}\cup
+ \{3\cdot2^a:0\leq a\leq10\}.
+\]
+At count two the whole action would be binary. Counts three,
+four and six are Proposition~\ref{prop:three-pair-actions} and
+Propositions~\ref{prop:four-pairs}, \ref{prop:six-pairs}.
+Count eight is Theorem~\ref{thm:degree-sixteen-nonbinary}, and
+counts twelve and sixteen are Theorems~\ref{thm:twelve-pairs}
+and \ref{thm:sixteen-pairs}. The remaining necessary counts are
+\[
+ 24,32,48,64,96,128,192,256,384,768,1536,3072.
+\]
+Every one is even and at least 24. For each original $N\lhd U$,
+Corollary~\ref{cor:pair-fusion} applies to the actual section
+$K/(K\cap N)$, where $K$ is the pair kernel, with quotient
+$U/(KN)$. There is no assumption that $N\leq K$. Since these
+physical degrees form a fixed finite set, Theorem~\ref{thm:fusion}
+covers the union of all their normal entries with a strict gap.
+This proves the required exhaustion.
+
+Finally choose one of the proved certificates on each original
+action class, before inspecting its complementary group, and give
+the finitely many consumer families a fixed order. For a subgroup
+in $\mathcal X_n$, at least one orbit and its actual Goursat normal
+entry belong to the first eligible family. Apply that family's
+complete incidence sum. For a family with a hot/cold split, the
+existence of any hot eligible occurrence defines its hot part;
+all eligible occurrences in its remaining part are cold. Thus a
+chosen cold pointing cannot hide another hot one.
+
+The incidence factor for deleting the original $w$-point orbit is
+$n!/(b!a(U))$, with $b=n-w$. It changes the occurrence factorial
+once. None of the block systems, chief factors, comparator degrees
+or character tuples acquires a physical support or normalizer.
+The full-fibre theorems are evaluated first on the same actual
+complete $J\leq S_b$, so the cold bounds multiply $s_b/L_b$ and
+the hot bounds are complete scalars at $n$. Every finite family
+has strict positive margin, and every unbounded family has its
+proved uniform margin and subquadratic error. A finite sum of
+their exponential rows and quadratic scalars gives the asserted
+$K,\eta,c,c'$. No bound on $s_b/L_b$ was assumed.
+\end{proof}

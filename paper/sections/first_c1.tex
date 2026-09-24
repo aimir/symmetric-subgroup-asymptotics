@@ -1,0 +1,350 @@
+\section{The first split one-triple application}\label{sec:first-c1}
+We consider subgroups with exactly one actual regular $C_3$ orbit and
+no actual natural $A_4$ orbit. On its complement of size $m=n-3$, an
+external graph is determined by a literal nonzero character
+$\chi:K\to C_3$. Fix a generator of the displayed $C_3$ to specify
+its orientation. For split characters, let $\Theta(K)$ be the set
+whose complete graphs survive any preceding disjoint exclusions.
+The exact surviving character weight is
+\begin{equation}\label{eq:c1-surviving-weight}
+ \sigma^{\mathrm{surv}}_3(K)=|\Theta(K)|
+ =\sum_{\substack{\chi\ne0\\\chi\text{ split}}}
+       {\bf1}_{\{\operatorname{graph}(\chi)\text{ survives}\}},
+ \qquad
+ 0\leq\sigma^{\mathrm{surv}}_3(K)\leq3^{d_3(K)}-3^{h_3(K)}.
+\end{equation}
+In particular the inequality need not be equality after exclusions.
+On a fixed labelled complement the surviving mass is precisely
+\begin{equation}\label{eq:c1-exact-mass}
+ \frac{n!}{6m!}\sum_{K\leq S_m}\sigma^{\mathrm{surv}}_3(K).
+\end{equation}
+The sum restricts to residuals without a regular $C_3$ or natural
+$A_4$ orbit. The factor six is the original action normalizer, and
+there is one selected triple because the actual orbit is unique.
+
+\begin{proposition}[Low one-triple cone]\label{prop:c1-low}
+The split graphs with $20d_3(K)\leq3m$ have normalized mass at most
+\[
+ K_{\mathrm{lo}}(n,m)\frac{s_m}{L_m},\qquad
+ K_{\mathrm{lo}}(n,m)=\frac16\Delta(n,m)3^{3m/20}
+ =2^{-\eta m+O(\log(n+2))},
+ \quad \eta=\frac14-\frac{3\log_2 3}{20}>0.
+\]
+\end{proposition}
+\begin{proof}
+Apply \eqref{eq:c1-surviving-weight} to each residual before enlarging
+its number to $s_m$. The labelled factorials cancel exactly as in
+\eqref{eq:c1-exact-mass}. The coefficient recurrence and Gaussian
+bounds give $\log_2\Delta(n,n-3)\leq-m/4+O(\log(n+2))$ in both
+parities. For odd $n$ this is the precise leading exponent; the other
+parity is stronger. Finally $3\log_2 3<5$.
+\end{proof}
+
+We next prove the earlier orbit estimates actually needed for the high
+cone. Only finitely many physical degrees occur in this application;
+no growing action menu is needed. Put $\gamma=(\log_2 3)/3$ and
+\[
+ Z_J(U)=\sum_{N\lhd U}|\operatorname{Epi}(J,U/N)|,
+ \qquad a(U)=|N_{S_w}(U)|,\quad J\leq S_b.
+\]
+All target normal subgroups in this sum are literal. Fixing each target
+quotient map is the asymmetric Goursat convention, so there is no
+additional automorphism divisor.
+
+\begin{lemma}[Finite earlier orbit fibres]\label{lem:c1-earlier-fibres}
+For the following actual actions, $Z_J(U)/a(U)$ is at most
+$D_U(1+b)2^{\alpha_U b}$, with a fixed constant $D_U$:
+\[
+\begin{array}{c|c|c}
+ \text{action}&w&\alpha_U\\\hline
+ 6T1,6T4,6T5,6T6&6&\gamma\\
+ 12T20,12T85,12T164,12T194&12&2\gamma\\
+ 12T228,12T229,12T265&12&1/2+5\log_2(3)/9\\
+ \text{transitive }3\text{-group}&9&5\log_2(3)/9\\
+ \text{transitive }3\text{-group}&27&5\log_2(3)/3
+\end{array}
+\]
+The degree-nine row and the three final degree-twelve actions require
+$J$ to have exactly one regular $C_3$ orbit and no natural $A_4$
+orbit. Every other row permits arbitrary $J$.
+\end{lemma}
+\begin{proof}
+We give the fibre arguments, including the shared source budgets.
+We use the permutation prime-rank bound $d_p(F)\leq b/p$ for every
+literal subgroup $F\leq S_b$, and the abelianization-order bound
+$|J/J'|\leq3^{b/3}$ from \cite{KovacsPraeger1989}. Constants depending
+on a fixed target, including its finite normal menu, are absorbed
+only after its full quotient sum has been written.
+
+For $6T1=C_6$, the full fibre is $|\operatorname{Hom}(J,C_6)|$.
+For $6T5=C_3\wr C_2\cong C_3\times S_3$, its normal quotients
+are $1,C_2,C_3,C_6,S_3,C_3\times S_3$. Set $F=J'J^2$ and
+$E=J/F$. The semisimple $\mathbb F_3E$-module $H_1(F;\mathbb F_3)$
+has trivial multiplicity $d=d_3(J)$ and sign multiplicities
+$a_\theta$, with $d+\sum a_\theta\leq b/3$. Coprime
+inflation--restriction gives exactly
+\[
+ |\operatorname{Epi}(J,S_3)|=3\sum_{\theta\ne0}(3^{a_\theta}-1),
+\quad
+ |\operatorname{Epi}(J,C_3\times S_3)|
+ =(3^d-1)3\sum_{\theta\ne0}(3^{a_\theta}-1).
+\]
+The product is onto because $C_3$ and $S_3$ have no common
+nontrivial quotient. Since $\sum(3^{a_\theta}-1)\leq
+3^{\sum a_\theta}-1$, each expression is at most $3^{b/3+1}$.
+The central and twisted characters have used one module budget.
+
+The actions $6T4,6T6$ are respectively $A_4$ in degree six and
+$C_2\times A_4$ in degree six. Their binary bases are cyclic
+$\mathbb F_2[C_3]$-modules. Likewise $12T20,12T85,12T164$ have
+cyclic binary bases and elementary tops $C_3^2$, with the top
+action on the base allowed to have a kernel. Here is the requisite
+general estimate for $M\rtimes C_3^r$, $r=1,2$, with cyclic binary
+$M$. Each quotient is $V\rtimes C_3^h$, $h\leq r$, with $V$
+a multiplicity-one semisimple module. Use the same source
+$F=J'J^3$, $E=J/F$, $D=H_1(F;\mathbb F_2)$ for every top map.
+Write the trivial multiplicity of $D$ as $r_0$ and its nontrivial
+simple multiplicities as $a_\alpha$. Each nontrivial type has
+dimension two, and
+\[
+ r_0+2\sum_\alpha a_\alpha\leq b/2.
+\]
+For a fixed onto top map $\theta:E\to C_3^h$, surjective
+restrictions to $F$ number
+$(2^{r_0}-1)^e\prod_i(4^{a_{\alpha_i(\theta)}}-1)$, where
+$e\in\{0,1\}$. If a nontrivial target constituent is retained,
+fix one of its two concrete ternary characters. Pulling it back
+to a specified source type permits at most
+$2\cdot3^{(h-1)d_3(J)}$ top maps. Bound the remaining factors
+using the one source budget and sum the retained type. The result
+is at most
+\[
+ (b/2)\,3^{(h-1)d_3(J)}2^{b/2}.
+\]
+For each restriction and top map, the lift torsor has at most
+$|M|$ elements, by coprime cohomology on $E$. Abelian quotients
+are bounded by $|J/J'|^r$ (or by one such factor when $h=0$).
+Thus all quotients obey the claimed $(1+b)2^{r\gamma b}$ bound.
+This argument treats nonfaithful top actions as well as faithful ones.
+
+For $12T194=C_3\wr A_4$, use its full ternary block kernel.
+Every quotient is an extension of a quotient $S$ of $A_4$ by a
+module subquotient $X$ of the natural permutation module
+$\mathbb F_3^4$. Every such $X$ embeds in $\mathbb F_3[S]$.
+To see this, first restrict to the normal $V_4$. Over a splitting
+field its trivial character gives one trivial $C_3$-module;
+its three nontrivial characters form one orbit and give a simple
+matrix-algebra component. Subquotients of the first embed in the
+regular $C_3$ block, and the second component is semisimple.
+The whole permutation module embeds in $\mathbb F_3[A_4]$ by
+coset sums. If the action factors through $S$, the image lies in
+the fixed space of the kernel, which is the inflated regular
+$\mathbb F_3[S]$-module. For a concrete top map $J\to S$ with
+kernel $F$, the restriction choices are therefore at most
+$3^{d_3(F)}\leq3^{b/3}$. The compatible lift torsor has a fixed
+target-dependent size: after the restriction is fixed, differences
+descend to $S$. The preceding cyclic-module estimate bounds the
+top maps by $D2^{\gamma b}$. This gives $D2^{2\gamma b}$.
+
+For degree-nine $3$-groups, embed $U$ in $C_3\wr C_3$ and put
+$V=U\cap C_3^3$. It is a submodule of the uniserial ring
+$\mathbb F_3[t]/(t^3)$, so $d_3(U)\leq2$. Each quotient is
+elementary ternary of rank at most two, or is an extension of
+$C_3$ by a module $M$ embedding in its regular module.
+For a nonzero $\theta:J\to C_3$, Shapiro's lemma gives
+\[
+ |Z^1(J,\mathbb F_3[C_3]_\theta)|
+   =3^{d_3(\ker\theta)+2}.
+\]
+The actual lift set is empty or a torsor for a subspace of this
+cocycle space; this remains valid for a nonsplit target. Thus every
+quotient $Q$ satisfies
+\begin{equation}\label{eq:degree-nine-joint}
+ |\operatorname{Epi}(J,Q)|\leq3^{d_3(J)+b/3+2}.
+\end{equation}
+By \eqref{eq:rank3-pattern}, the stipulated pattern gives
+$d_3(J)\leq(2b+3)/9$, proving the degree-nine row. The more exact
+quantity before compression is the single sum
+$\sum_{\theta\ne0}3^{d_3(\ker\theta)+2}$.
+
+For the three remaining degree-twelve actions, the actual action has
+three blocks of four points, binary translation base $W\leq V_4^3$,
+and a $3$-group top $P$ acting transitively on the nine nonzero local
+translations. The full module $V_4^3$ is cyclic: a nonzero local
+translation generates its local plane under the block stabilizer,
+and its top translates generate all three planes. Every invariant
+submodule is cyclic by Maschke's theorem. Consequently, for every
+normal quotient $Q$, its binary kernel $M$ is cyclic for its top
+quotient $S$ of $P$. Put $F=O^3(J)$ and $E=J/F$. For a fixed
+map $J\to S$, the pulled-back $M$ embeds in the regular
+$\mathbb F_2[E]$-module. It follows that
+\[
+ |\operatorname{Hom}_E(H_1(F;\mathbb F_2),M)|\leq2^{b/2}.
+\]
+Coprime lift torsors on $E$ cost at most $|M|\leq2^6$.
+Apply \eqref{eq:degree-nine-joint} to the same source $J$ and the
+actual nine-point action of $P$, before enlarging the pattern class
+of sources. This gives the exponent $1/2+5\log_2(3)/9$.
+
+Finally we prove the degree-27 row without any classification of
+its $3$-groups. More generally, for a transitive $3$-group of degree
+$w=3^k$, every quotient satisfies
+\begin{equation}\label{eq:ternary-quotient-small}
+ |\operatorname{Epi}(J,Q)|\leq D_w3^{(w+3)b/18},
+\end{equation}
+where $D_w$ is independent of $J$ and $U$. Choose a central
+semiregular $C_3$ in $U$; its blocks have full elementary ternary
+kernel $V\leq\mathbb F_3^s$, $s=w/3$, and transitive $3$-group
+top $T$. A central semiregular $C_3$ of $T$ makes this permutation
+module free of rank $s/3$ on restriction. Every subquotient $M$
+therefore has socle dimension at most $s/3$. If its action factors
+through $S$, it embeds in at most $s/3$ copies of the regular
+$\mathbb F_3[S]$-module: the group algebra is a self-injective
+algebra with its unique simple module trivial. Hence, over a fixed
+map $J\to S$, restrictions from its literal kernel number at most
+$3^{sb/9}$. After fixing a restriction, lift differences descend
+to $S$ and have a bounded target-dependent cost. Induction on $k$
+gives \eqref{eq:ternary-quotient-small}, since
+$(s+3)/18+s/9=(w+3)/18$. If $S=1$, use the simultaneous head
+bound $d_3(U)\leq(w+3)/6$, obtained from the same block filtration.
+The base $w=3$ is the elementary rank bound. For $w\leq27$ the
+normal menus and target sizes are finite, so their uniform constants
+are finite. At $w=27$ the coefficient is $5/3$, as required.
+\end{proof}
+
+\begin{lemma}[Actual action membership]\label{lem:c1-actual-membership}
+Every exceptional action in Theorem~\ref{thm:three-twentieths}, other
+than natural $C_3,A_4$, is accepted by
+Lemma~\ref{lem:c1-earlier-fibres}. The action descriptions used there
+are certificates on the original permutation sets.
+\end{lemma}
+\begin{proof}
+For the degree-six actions the witnesses are, in order, regular $C_6$,
+the degree-six action of $A_4$, $C_3\wr C_2$, and $C_2\times A_4$
+with its cyclic three-dimensional binary base. These witnesses also
+show that the first and third have normal Sylow $3$-subgroup of index
+two, the second is an irreducible coprime affine action outside
+degree four, and the fourth has cyclic binary module and elementary
+ternary top. Thus they belong to the earlier physical action domains.
+
+The bounded degree-twelve certificate constructs $W=O_2(U)$ and a
+Sylow $3$-complement for $12T20,85,164,228,229,265$. It verifies
+that $W$ has three actual orbits of size four and local image $V_4$.
+Restricting translations to the blocks constructs a literal ambient
+$V_4^3$ normalized by $U$. The complement acts faithfully and
+transitively on its nine nonidentity local translations, and
+transitively on the three blocks. Its order, and the base order, are
+\[
+\begin{array}{c|rrrrrr}
+ U&12T20&12T85&12T164&12T228&12T229&12T265\\\hline
+ |W|&4&16&64&64&64&64\\
+ |P|&9&9&9&27&27&81.
+\end{array}
+\]
+In the first three rows the complement is $C_3^2$, and an exhibited
+base vector has orbit spanning $W$; these are exactly the cyclic
+module witnesses used in the proof. In the last three rows the
+actual nine-point complement is, respectively, $9T6,9T7,9T17$;
+the proper/full binary-base domain applies. In $12T20,12T194$,
+the normal ternary subgroup instead has four actual orbits of size
+three, local image $C_3$, and full natural $A_4$ block action.
+The standard transversal embedding puts the original group inside
+$C_3\wr A_4$; the base is diagonal in the first case and full in
+the second. Thus $12T20$ also belongs to the earlier prime-base
+domain, and $12T194$ belongs to it directly.
+
+These finite statements are part of the bounded action certificate:
+they verify actual blocks, local images, full projection and cyclic
+generators, rather than deciding membership from order or a catalogue
+label. They are separate from the exhaustive normal-pair computation
+which produced the high list. The degree-nine and degree-27 rows
+require no additional finite action classification, since their
+fibre proofs apply to every actual transitive $3$-group in those
+degrees.
+\end{proof}
+
+\begin{theorem}[First split one-triple estimate]\label{thm:c1-first}
+The family of split one-triple graphs with exactly one actual regular
+$C_3$ orbit and no natural $A_4$ orbit admits a positive forward bound
+against complete lower-degree subgroup counts whose row tends to zero
+exponentially. After its low cone and the actual orbit families in
+Lemma~\ref{lem:c1-earlier-fibres} have been removed, its high cone
+is empty.
+\end{theorem}
+\begin{proof}
+Apply Proposition~\ref{prop:c1-low}. For every remaining graph
+with an eligible actual orbit, point one such orbit of degree $w$.
+Its complete complement $J\leq S_b$, $b=n-w$, includes the external
+triple and every other orbit and relation. The exact pointed
+comparison is
+\[
+ \sum_H k(H)=\sum_U\frac{n!}{b!a(U)}
+                    \sum_J Z_J(U).
+\]
+If required, the pattern is retained on each $J$ before using its
+rank bound. Deleting any of the indicated nonmarker actions preserves
+the unique-$C_3$, no-natural-$A_4$ pattern. Only after the fibre has
+been bounded do we enlarge the number of such $J$ to $s_b$.
+Normalize once, obtaining terms
+\[
+ D_U(1+b)\Delta(n,b)2^{\alpha_Ub}\frac{s_b}{L_b}.
+\]
+For even $w$ the Gaussian coefficient of $b$ is $w/8$; for odd
+$w$ its safe value in both parities is $(w-1)/8$. These are strictly
+larger than every corresponding $\alpha_U$ in the table: the smallest
+conditional gap is $1-5\log_2(3)/9>1/9$. The coefficient cost for
+each fixed deletion is polynomial in $n$. There are only finitely
+many actions in degrees $6,9,12,27$, so the whole forward row is
+$O(2^{-\varepsilon n})$ for some $\varepsilon>0$. To form a
+disjoint physical partition, assign a graph to the first eligible
+family in a fixed order. Summing its intersections before applying
+the full pointed upper bound charges each family once. Multiple
+eligible orbits give only the positive pointing multiplicity.
+
+Suppose now that a high graph survives. Its residual $K$ has
+$20d_3(K)>3m$. Because projection of the complete graph onto $K$
+is an isomorphism, the actual nonexternal orbit actions of the graph
+are exactly those of $K$. None is natural $C_3$ or $A_4$ by the
+pattern, and none is one of the other actions in
+Theorem~\ref{thm:three-twentieths}, by
+Lemma~\ref{lem:c1-actual-membership} and the preceding removals.
+Apply \eqref{eq:orbit-relative-head} to its actual orbit filtration:
+\[
+ 20d_3(K)\leq\sum_i20\delta_{A_i}(N_i)
+       \leq\sum_i3\deg A_i=3m,
+\]
+a contradiction. Fixed points have head zero and keep their degree
+in this inequality. Thus every surviving character set
+$\Theta(K)$ in the high cone is empty. This is a statement about
+complete marked graphs; it introduces no additional numerical
+kernel or scalar term.
+\end{proof}
+
+\paragraph{The two exact incidence tests.}
+The preceding proof respects Proposition~\ref{prop:c1-incidence} on
+every disjoint piece. In particular, applying that proposition with
+$\chi\in\Theta(K)$ gives
+\[
+ \sum_K\sigma^{\mathrm{surv}}_3(K)
+ =\sum_{|x|=3}\ 
+ \sum_{\substack{N^x=N,\ N\cap\langle x\rangle=1\\
+        \chi_{N,x}\in\Theta(N\langle x\rangle)}}
+ \frac1{|\{y\in Nx:|y|=3\}|}.
+\]
+The reciprocal is preserved. It is not harmless to drop it: for
+$K_0=C_2^{3h}\rtimes\langle x\rangle$, with $x$ cycling $h$
+triples of pair coordinates, and $K=K_0\times A_5^2$ on
+$m=6h+10$ points, its indicated quotient coset contains exactly
+$4^h\cdot21^2$ elements of order three. This already loses
+$m/3-O(1)$ bits if the reciprocal is discarded.
+
+Likewise the affine test on the same source
+$J=\mathbb F_4^r\rtimes C_3$ has, above the fixed top map to
+$\mathbb F_4^t\rtimes C_3$, exactly
+$4^{t(r+1)}$ cocycles and
+$4^t\prod_{i=0}^{t-1}(4^r-4^i)$ onto lifts. A second mark stays
+on this same $J$. In the proof above the external triple is part of
+$J$ in every earlier fibre, including the degree-six affine fibre;
+it is never appended as an independent character maximum. The final
+zero-set argument makes all these joint high surviving incidences
+empty and therefore requires no factorization of their moments.

@@ -1,0 +1,96 @@
+\subsection{The three exceptional five-point block counts}
+
+\begin{theorem}[Exact affine-five exceptions]\label{thm:five-affine-exceptions}
+Every action with exact primitive affine local degree five and
+$s\in\{2,3,4\}$ has a complete exponentially small forward row
+and a quadratic-exponentially small scalar.
+\end{theorem}
+\begin{proof}
+Write $M=\F_5^s$, $E=U\cap M$, $R=U/E\leq C_4\wr T$.
+Since $s\leq4$, the latter group has order prime to five.
+Transitivity forces $E\ne1$, since otherwise $5\nmid|U|$.
+Schur--Zassenhaus first splits $U=E:R$, then conjugates its
+complement into the actual monomial complement in $M:R$.
+This does not split $R\to T$. The semisimple monomial modules
+$M,M^*$ are cyclic: the orbit of one coordinate vector spans the
+module. Every section $W=E/I$ and its dual are therefore cyclic
+and can be realized as actual submodules of $M$.
+
+Let $D=\ker(R\to T)$ and $K=\ker(R\to\mathrm{GL}(W))$ for
+$W\ne0$. Every coordinate projection of this realized $W$ is
+nonzero by transitivity. A diagonal element trivial on $W$ is
+therefore one, so $K\cap D=1$ and $K$ embeds normally in $T$.
+Its coordinate orbits have one common size $q\mid s$; a fixed
+vector on a monomial orbit is determined by one coordinate, giving
+$\dim W\leq s/q$. Thus $K=1$ if $\dim W\geq2$ at $s=2,3$,
+or if $\dim W\geq3$ at $s=4$. The only further possibility is
+$s=4,\dim W=2,q=2$. Then $K\leq C_2^2$ and $T\leq D_8$,
+so $R$ is binary. The normal subgroup $K$ has a series of at most
+two central $C_2$ factors in $R$: choose an involution in
+$K\cap Z(R)$ and then use centrality of a normal order-two group
+in the quotient. The same holds after quotienting any normal
+$K_0\leq K$.
+
+We need a joint-source onto estimate. If $X=W:S$, with $S$ a
+faithful $5'$-group on $W=\F_5^d$ and $W^*$ cyclic, then
+\begin{equation}\label{eq:five-cyclic-onto}
+ |\Epi(J,X)|\leq5^d|\mathrm{GL}_d(5)|5^{b/5}
+                 \qquad(J\leq S_b).
+\end{equation}
+Indeed fix the single characteristic source subgroup
+$F=O^{5'}(J)$ and $B=J/F$. Residuals commute with epimorphisms,
+so every map onto $X$ sends $F$ onto $W$ and induces a map
+$B\to S$. Put $A=H_1(F,\F_5)$. A surjective equivariant
+restriction dualizes to an injection $W^*\hookrightarrow A^*$.
+The image of one fixed cyclic vector determines its whole cyclic
+$B$-submodule. For each image there are at most
+$|\mathrm{GL}_d(5)|$ identifications; faithfulness determines the
+top map from each identification. Thus this bounds all top maps
+and restrictions jointly by $|\mathrm{GL}_d(5)||A^*|$.
+The remaining lift fibre is empty or a torsor for $Z^1(B,W)$;
+coprime averaging gives $|Z^1(B,W)|\leq|W|$. Finally
+$d_5(F)\leq b/5$ in its actual permutation action, proving
+\eqref{eq:five-cyclic-onto}.
+A central $C_2$ lift has at most $|\Hom(J,C_2)|\leq2^{b/2}$
+choices over a fixed map, whether split or not. The two central
+steps above therefore cost at most $2^b$ in total.
+
+Fix now $N\lhd U$ and $I=N\cap E$. If $I=E$, these terms sum
+exactly to $Z_J(R)$. If $\dim(E/I)=1$, retain the whole comparator
+$U/I$. For this line let $\chi:R\to\F_5^*$ be its action.
+The map $(\chi,\pi_T)$ is injective since $K\cap D=1$, so
+$U/I\hookrightarrow\operatorname{AGL}_1(5)\times T$ has a
+faithful action of degree $5+s\leq4s$.
+For $\dim(E/I)\geq2$, the normal $N/I$ is disjoint from $W$
+and centralizes it. It lies in $W\times K$ and projects injectively
+to the $5'$-group $K$; its graph into $W$ is trivial. Hence
+$N/I=K_0\lhd R$. Apply \eqref{eq:five-cyclic-onto} if $K=1$,
+or apply it after the at most two central binary steps otherwise.
+
+This proves, with a fixed list $\mathcal Q_U$ consisting of $R$
+and all literal line quotients $U/I$, that
+\[
+ Z_J(U)\leq\sum_{Q\in\mathcal Q_U}Z_J(Q)+C_U2^{\eta_sb},
+ \qquad C_U=\nu(U)5^s|\mathrm{GL}_s(5)|,
+\]
+where $\eta_2=\eta_3=\log5/5$ and
+$\eta_4=1+\log5/5$. Equal abstract quotients at different $I$
+remain different entries of this fixed list. Pad every comparator
+to faithful degree $v=4s$.
+
+For clarity the finite comparator argument extends directly to
+this fixed list. Let $m=|\mathcal Q_U|$ and
+$S_U(J)=m^{-1}\sum_{Q\in\mathcal Q_U}Z_J(Q)$. Jensen and
+Lemma~\ref{lem:quotient-moment} give, for every integer $q\geq1$,
+\[
+ \sum_{J\leq S_b}S_U(J)^q
+ \leq m^{-1}\sum_Q\sum_J Z_J(Q)^q\leq s_{b+qv}.
+\]
+The proof of Theorem~\ref{thm:finite-comparator} uses precisely
+this moment inequality and positivity, so applies with statistic
+$S_U$ and multiplier $m$. Here $h(5s)=10,14,20$ and
+$v=8,12,16$, respectively; $v<h(5s)$ and
+$\eta_s<h(5s)/8$, since $\log5/5<7/15$.
+The finite union therefore has the claimed bounds with its original
+physical weights and one complete residual terminal.
+\end{proof}

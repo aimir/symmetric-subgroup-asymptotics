@@ -1,0 +1,315 @@
+\section{Complete primitive-action consumers}\label{sec:primitive-consumers}
+Throughout this section $Z_J(U)=\sum_{N\lhd U}|\Epi(J,U/N)|$.
+Every quotient is literal, and $J$ is the same complete source throughout.
+
+\begin{lemma}[One derived source for soluble affine targets]
+\label{lem:derived-affine}
+Let $U=V\rtimes R$, where $V=\F_p^d$ and $R\ne1$ is soluble,
+faithful and irreducible. Put $\End_R(V)=\F_{p^f}$,
+$c_R=|N_{\GL_d(p)}(R)|/|C_{\GL_d(p)}(R)|$, and
+$\eta=f\log(p)/(pd)$. For every $J\leq S_b$,
+\[
+ Z_J(U)=Z_J(R)+|\Epi(J,U)|,
+ \qquad |\Epi(J,U)|\leq|V|c_R2^{\eta b}.
+\]
+More precisely, if $t$ is the derived length of $R$ and $a_X$
+are the multiplicities in the head of $H_1(J^{(t)},\F_p)$ of
+the distinct pulled-back natural $R$-modules, then
+\begin{equation}\label{eq:derived-affine}
+ |\Epi(J,U)|=|V|c_R\sum_X\bigl(p^{fa_X}-1\bigr).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $F=J^{(t)}$, $Q=J/F$. The nontrivial last derived group
+$R^{(t-1)}$ is abelian and has order prime to $p$, because
+$O_p(R)=1$ for a faithful irreducible linear group. It has no
+fixed vector in $V$. For an onto $\theta:Q\to R$, the
+prime-to-$p$ part of the abelian group $Q^{(t-1)}$ maps onto
+$R^{(t-1)}$. Averaging and inflation--restriction therefore
+give $H^i(Q,V_\theta)=0$ for all $i\geq0$.
+Restriction identifies
+$H^1(J,V_\theta)$ with
+$\Hom_Q(H_1(F,\F_p),V_\theta)$, and each restriction has
+exactly $|V|$ literal cocycles. A nonzero restriction is onto
+$V$ by irreducibility, and is exactly the condition that the
+lift to $U$ is onto: $U^{(t)}=V$.
+
+Two top maps give isomorphic modules precisely when they differ
+by an automorphism of $R$ induced by $N_{\GL_d(p)}(R)$.
+Each such orbit has $c_R$ members, proving
+\eqref{eq:derived-affine}. All types lie in one head, so
+$d\sum_Xa_X\leq d_p(F)\leq b/p$ and
+$\sum_X(p^{fa_X}-1)\leq p^{f\sum_Xa_X}-1$.
+Finally, an original normal subgroup of $U$ either contains $V$
+or intersects it trivially. In the latter case it centralizes
+$V$; since $C_U(V)=V$, it is trivial. This proves the exact
+full-menu identity and the bound.
+\end{proof}
+
+\begin{theorem}[All sufficiently small-order actual actions]
+\label{thm:small-order-consumer}
+All transitive nonbinary actions of degree $w\geq64$ with
+$\log|U|\leq w/8$ have one complete ordinary forward kernel
+\[
+ K_{\rm so}(n,b)=\Delta(n,b)
+ \sum_{\substack{[U]:\deg U=n-b\geq64\\\log|U|\leq(n-b)/8}}
+ \frac{2^{(\log|U|)^2+(\log|U|)(b/2+1)}}{a(U)},
+\]
+with row at most $2\cdot2^{-n}$ eventually and zero scalar.
+In particular this covers every primitive affine action of
+degree at least $1024$.
+\end{theorem}
+\begin{proof}
+The ordinary permutation-generator bound
+\cite[Proposition 2.1]{HoltRoneyDougal2013} gives
+$d(J)\leq b/2+1$. For $\ell=\log|U|$, the number of target
+normal subgroups is at most $2^{\ell^2}$, by padding a generating
+tuple of each subgroup to length $\lfloor\ell\rfloor$.
+The images of source generators then prove the displayed fibre
+envelope. Original pointing gives this kernel directly.
+
+The uniform coefficient/Gaussian comparison gives
+\[
+ \log\Delta(n,b)\leq-\frac{(w-(w\bmod2))b}{8}
+             -\frac{w^2}{16}+O(w\log(n+2)).
+\]
+The envelope costs at most $w^2/64+wb/16+w/8$.
+The action-class entropy is $o(w^2)$ by the transitive
+enumeration theorem. For $w\geq64$, the negative terms are
+at most $-wn/32-w^2/64$; uniformly absorb class entropy into
+$w^2/128+O(w)$ and the remaining terms into $wn/64$.
+Hence $K_{\rm so}(n,n-w)\leq2^{-wn/64}$. Sum over all
+$w\geq64$.
+For affine degree $w=p^d$, $\log|U|<(d+1)\log w
+\leq(\log w)^2+\log w\leq w/8$ when $w\geq1024$.
+The last inequality follows at $\log w=10$ and thereafter
+by differentiating twice. A primitive affine group of that
+degree cannot be binary: in characteristic two an irreducible
+binary linear group has only the trivial simple module.
+\end{proof}
+
+\begin{theorem}[The soluble primitive affine range]
+\label{thm:soluble-primitive-consumer}
+All soluble primitive affine actions of degrees $5\leq w<1024$,
+except the natural action $C_5\rtimes C_4$ of degree five,
+have a complete ordinary forward row $O(2^{-an})$ and a
+complete scalar $O(2^{-a'n^2})$, for fixed $a,a'>0$.
+\end{theorem}
+\begin{proof}
+For each actual $U=\F_p^d\rtimes R$, use
+Lemma~\ref{lem:derived-affine}. A regular prime action has
+$Z_J(C_p)=|\Hom(J,C_p)|\leq p^{b/p}$; for $p\geq5$,
+$\log(p)/p<(p-1)/8$. Suppose $R\ne1$.
+If $p=2$, $w\geq8$, use the faithful action of $R$ on the
+$w-1$ nonzero vectors. It has degree $v=w-1<w$ and
+$\eta\leq1/2<w/8$, so Theorem~\ref{thm:finite-comparator}
+applies with comparator $R$.
+
+For odd $p$ and abelian $R$, irreducibility makes $R$ cyclic
+in the multiplicative group of a field. Thus
+$Z_J(R)=|\Hom(J,R)|\leq|J/J'|\leq3^{b/3}$.
+At $w\geq7$, its exponent and $\eta$ are smaller than
+$(w-1)/8$. At degree five the complements are $1,C_2,C_4$.
+For $C_2$ use its degree-two comparator; the $C_4$ case is
+the specified exception.
+
+At degree nine let $Z=R\cap\{\pm I\}$ and $P=R/Z$,
+acting faithfully on the four projective points. For each
+original normal subgroup of $R$, a fixed top map has at
+most $|\Hom(J,C_2)|$ lifts through its central kernel.
+If $h_2(J)=|\Hom(J,C_2)|$ and $e=d_2(P)$, then
+\[
+ h_2(J)Z_J(P)\leq2^eZ_J(P\times C_2).
+\]
+Indeed, for one quotient $P/N$ with $c=|\Hom(P/N,C_2)|$,
+the two product kernels contribute
+$[1+h_2(J)-c]|\Epi(J,P/N)|$, and
+$h_2(J)\leq2^e[1+h_2(J)-c]$ whenever the epimorphism
+count is nonzero. These kernels are distinct for each $N$.
+Consequently
+$Z_J(R)\leq\nu(R)2^{d_2(P)}Z_J(P\times C_2)$.
+The comparator has faithful degree six, smaller than $h(9)=8$;
+the affine exponent is at most $\log(3)/3<1$.
+
+At degree twenty-five the scalar subgroup of $R\leq\GL_2(5)$
+has order dividing four. Its projective image is a soluble
+subgroup of $\operatorname{PGL}_2(5)\cong S_5$, of order at
+most twenty-four. An intransitive subgroup has this bound
+immediately; a soluble transitive subgroup of prime degree five
+has a regular normal $C_5$ and lies in its order-twenty normalizer.
+Each central quotient lift costs at most
+$|\Hom(J,C_4)|\leq2^{b/2}$. Counting all fixed target normals
+and using $d(J)\leq b/2+1$ gives
+$Z_J(R)\leq D_R2^{(\log48)b/2}$.
+Its exponent is strictly below $h(25)/8=3$.
+
+At degree twenty-seven every soluble irreducible
+$R\leq\GL_3(3)$ has order at most seventy-eight.
+To see this, its Fitting subgroup is a nontrivial nilpotent
+$3'$-group. A nonhomogeneous restriction of the natural module
+has three one-dimensional homogeneous components, giving a
+monomial group of order at most forty-eight. In the homogeneous
+case the constituent has dimension three: a one-dimensional
+constituent would make the Fitting subgroup scalar and central,
+contradicting its self-centralizing property and irreducibility.
+Over the algebraic closure, a nilpotent $3'$-group has no
+absolutely irreducible character of degree three, since its
+irreducible degrees are products of powers of its Sylow primes.
+Thus the faithful constituent splits into three Galois-conjugate
+linear characters. The Fitting subgroup is abelian and its field
+algebra is $\F_{27}$. Its normalizer lies in
+$\Gamma L_1(27)$, of order seventy-eight.
+Hence $Z_J(R)\leq D_R2^{(\log78)b/2}$, with
+$(\log78)/2<26/8$.
+
+In every other odd prime-power degree, the base-size theorem
+\cite[Theorem 1.1]{HalasiMaroti2016} gives
+$|R|\leq w^2$ for $p\geq5$ and $|R|\leq w^3$ for $p=3$.
+Its complete-reducibility and $p$-solubility hypotheses follow
+from irreducibility and solubility here. The remaining ranges
+start at $w=49$ and $81$. The inequalities
+$49^8<2^{48}$ and $81^{12}<2^{80}$, and monotonicity of
+$w-1-8\log w$ and $w-1-12\log w$, give
+$\log|R|/2<(w-1)/8$ in both ranges. The fixed-target ordinary
+generator envelope applies as before.
+
+These cases exhaust the finite set of action classes. Every
+pointwise exponent has a strict physical gap; every comparator
+has $0<v<h(w)$ and $\eta<h(w)/8$. Their original kernels
+are $\Delta(n,n-w)$ times their respective fibre envelopes
+divided by $a(U)$. Apply Theorem~\ref{thm:finite-comparator}
+and take finite positive minima of these gaps. The pointwise
+classes have scalar zero. This proves complete row and scalar
+rates without assuming any normalized count is bounded.
+\end{proof}
+
+\begin{proposition}[Natural symmetric-four and Frobenius-five actions]
+\label{prop:s4-f20-consumers}
+The natural $S_4$ and $C_5\rtimes C_4$ actions have complete
+ordinary forward rows $O(2^{-an})$ and complete scalars
+$O(2^{-a'n^2})$, for positive constants.
+\end{proposition}
+\begin{proof}
+For $S_4=\F_2^2\rtimes S_3$,
+Lemma~\ref{lem:derived-affine} gives
+$Z_J(S_4)\leq Z_J(S_3)+24\cdot2^{b/4}$.
+The comparator $S_3$ has faithful degree three, less than
+the original width four, and $1/4<4/8$. The finite comparator
+theorem applies, using the original normalizer $24$.
+
+For the natural degree-five action put
+$z(J)=Z_J(C_4)=|\Hom(J,C_4)|$ and $\eta=\log(5)/5$.
+The same lemma gives $Z_J(U)\leq z(J)+5\cdot2^{\eta b}$.
+Declare $z(J)\leq2^{3b/8}$ cold. Its exact kernel is
+\[
+ \frac{\Delta(n,n-5)}{20}
+       \left(2^{3(n-5)/8}+5\cdot2^{\eta(n-5)}\right),
+\]
+whose gap is positive since $\eta<15/32<1/2$.
+On the hot event, the whole original fibre is at most
+$6\cdot2^{(\eta-3/8)b}z(J)$.
+Use Theorem~\ref{thm:C4-moment} with
+$r=\max(1,\lceil b/8\rceil)$. Its weighted first moment,
+including the hot cutoff, has quadratic exponent
+\[
+ b^2/16+br/4+r^2/2-(r-1)3b/8+(\eta-3/8)b-n^2/16
+ =-b^2/128+(r-b/8)^2/2+(\eta-5/8)b-25/16.
+\]
+The actual scalar includes exactly the original factor
+$1/(20b!p_nG_{\lfloor n/2\rfloor})$ on the hot source sum.
+Its logarithmic normalization costs $O(n\log(n+2))$;
+the moment error is $o(n^2)$. Thus it is at most
+$2^{-n^2/512}$ eventually. The hot event is empty at $b=0$.
+\end{proof}
+
+\begin{theorem}[The nonsoluble primitive affine range]
+\label{thm:nonsoluble-primitive-consumer}
+All primitive affine actions $U=\F_p^d\rtimes R$ of degrees
+$5\leq w=p^d\leq1024$ with nonsoluble $R$ have one complete
+pointwise ordinary forward row at most $2^{-n/8}$ eventually
+and scalar zero.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:composition-fibre} and
+Proposition~\ref{prop:irreducible-affine}, the complete fibre
+has the bound
+\[
+ Z_J(U)\leq(1+A_U)C_R(1+b\log(b+1))^{D_R}
+              2^{(\kappa(R)+\eta_U)b},
+\]
+where $A_U=|Z^1(R,\F_p^d)|$,
+$\eta_U=f\log(p)/(dp)$, and $\F_{p^f}=\End_R(\F_p^d)$.
+Because $R$ is nonabelian, $f$ is a proper divisor of $d$;
+otherwise the faithful image would be scalar over its commuting
+field. Thus $d\geq2$ and $\eta_U\leq\log(p)/(2p)$.
+Write $\gamma=\log(3)/3<17/32$.
+
+The primitive composition bound
+\cite[Theorem 1.3]{GlasbyPraegerRosaVerret2018} gives
+$c(U)\leq(8/3)\log w-4/3$. Since $c(U)=d+c(R)$ and
+$R$ has a nonabelian composition factor, the number of abelian
+composition factors of $R$ is at most
+$(8/3)\log w-7/3-d$. Hence
+\[
+ \kappa(R)+\eta_U
+ \leq\gamma\bigl((8/3)\log w-11/6-d\bigr)
+ \leq\frac{17}{32}\bigl((8/3)\log w-23/6\bigr).
+\]
+For $x\geq64$, the difference between $(x-1)/8$ and the
+last expression is increasing: using $\log_e2>1/2$, its
+derivative exceeds $1/8-17/(6x)>0$. At $x=64$ it is
+$271/192>1/4$. Thus
+$h(w)/8-\kappa(R)-\eta_U>1/4$ throughout that range.
+
+At $w=32$, the integer composition bound gives at most six
+abelian factors in $R$, so the exponent is at most
+$6(17/32)+1/4=55/16$, leaving gap $9/16$.
+At $w=49$, use $7^{16}<2^{45}$ to obtain at most ten
+abelian factors, giving exponent at most $357/64$ and
+gap $27/64$.
+At $w=25$, quotient the scalar subgroup of order dividing four.
+The projective image is a nonsoluble subgroup of
+$\operatorname{PGL}_2(5)\cong S_5$, hence $A_5$ or $S_5$.
+For completeness, an intransitive subgroup of $S_5$ is soluble;
+a transitive subgroup has one or six Sylow-five subgroups.
+The former case lies in the order-twenty normalizer. In the latter,
+its order is $30,60,$ or $120$; order thirty would give an
+impossible faithful degree-four action of $S_5$ by cosets.
+The other two orders give $A_5,S_5$. Therefore $R$ has at
+most three abelian factors, all $C_2$, so its exponent is
+at most $3/2+17/64=113/64<3-1/4$.
+
+The only remaining prime-power degrees below sixty-four are
+$8,16,27$: prime-degree stabilizers are cyclic, and
+$\GL_2(2),\GL_2(3)$ are soluble. The complete primitive
+action catalogue at these three degrees gives the following
+finite composition-factor data for the literal stabilizers:
+\begin{center}
+\begin{tabular}{cclc}
+\toprule
+degree&primitive indices&abelian factors of $R$&bound on $\kappa(R)$\\
+\midrule
+8&3&none&0\\
+16&11--20&at most one $C_2$ and one $C_3$&$33/32$\\
+27&10,11&at most one $C_2$&$1/2$\\\bottomrule
+\end{tabular}
+\end{center}
+The classification and representative conventions are those of
+\cite{PrimGrp344,RoneyDougal2005Primitive}. The displayed
+composition series supply respectively exponent bounds
+$1/4,41/32,49/64$, all with physical gap greater than $1/4$.
+The catalogue completeness is used only at these three degrees;
+the other ranges were covered analytically.
+
+Finally use the original pointed kernel
+\[
+ \Delta(n,b)\sum_{\substack{[U]\ \mathrm{in\ this\ family}\\w=n-b}}
+ \frac{(1+A_U)C_R(1+b\log(b+1))^{D_R}
+                  2^{(\kappa(R)+\eta_U)b}}{a(U)}.
+\]
+The family is fixed and finite, so all target constants and
+polynomial exponents are fixed. Its complete row is
+$O(n^D)2^{-n/4}\leq2^{-n/8}$ eventually.
+The full cocycle factor $A_U$ remains in this argument; it
+is not set equal to $|\F_p^d|$ for nonsoluble stabilizers.
+\end{proof}

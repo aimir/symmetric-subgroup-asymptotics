@@ -1,0 +1,126 @@
+\section{Uniform capacity of affine local components}
+\label{sec:affine-capacity}
+The estimates here apply to the exact primitive local component of
+an imprimitive action, with arbitrary faithful transitive top.
+
+\begin{lemma}[Refined dual capacities]\label{lem:refined-induced-capacity}\label{lem:refined-capacity}
+For a module induced from a block stabilizer of index $s\geq2$
+with local dimension $a$ in characteristic $p$, each of the following
+available integers bounds the number of generators of every submodule
+of the ambient module and its dual:
+\begin{gather*}
+ \lfloor as/2\rfloor,\qquad
+ \left\lfloor\frac{as}{\lpp(s/s_p)}\right\rfloor\quad(s/s_p>1),\\
+ \left\lfloor as\sqrt{\frac2{3(p-1)e}}\right\rfloor
+       \quad(s_p=p^e,\ e>0).
+\end{gather*}
+If the block action contains a soluble transitive subgroup, two more
+bounds are $\lfloor a\widetilde\omega(s)\rfloor$ and $as_p$, where
+\[
+ k(s)=\sum_{q\mid s}\nu_q(s)(q-1),\qquad
+ \widetilde\omega(s)=\frac{s}{2^{k(s)}}
+                   \binom{k(s)}{\lfloor k(s)/2\rfloor}.
+\]
+The minimum of these bounds and
+$\lceil4as/\sqrt{\log s}\rceil$ may be used in
+Theorem~\ref{thm:affine-chief}.
+\end{lemma}
+\begin{proof}
+The prime-to-$p$ and square-root bounds follow from
+\cite[Theorem~1.6, Corollary~4.27]{Tracey2018}, using $\pi>3$;
+the two conditional bounds are its soluble-transitive alternative.
+The dual is induced from the dual local module. If $s$ is not a
+pure $p$-power, the prime-to-$p$ denominator is at least two.
+If $s$ is a $p$-power, a Sylow $p$-subgroup containing a Sylow
+subgroup of a point stabilizer is transitive, by orbit--stabilizer.
+Thus the conditional estimate applies. Since $k(s)\geq1$ and
+$2^{-k}\binom{k}{\lfloor k/2\rfloor}\leq1/2$, it gives the
+same half bound. Integrality gives its floor. Finally the older
+uniform bound is valid by Theorem~\ref{thm:affine-chief}.
+Taking a minimum preserves every bound and its uniform error estimates.
+\end{proof}
+
+\begin{theorem}[All but seven affine local degrees]
+\label{thm:affine-local-capacity}
+In Theorem~\ref{thm:affine-chief}, suppose
+\[
+ r\notin\{2,3,4,5,8,9,16\}.
+\]
+Take the refined capacities of Lemma~\ref{lem:refined-induced-capacity}.
+With $h(w)=w-(w\bmod2)$, they satisfy
+\[
+ \frac{h(w)-s}{8}-\eta_U\geq\frac{w}{1024}.
+\]
+Consequently all these actions form one complete transfer family
+with an exponentially small ordinary kernel row and a quadratically
+small scalar, uniformly in both the local degree and block count.
+\end{theorem}
+\begin{proof}
+Put $\gamma=(\log3)/3<17/32$, the strict inequality following
+from $3^{32}<2^{51}$. The half bound gives
+\[
+ \eta_U\leq\frac{s}{2}\kappa(L).
+\]
+For every prime $p$, $\log(p)/p\leq\gamma$. The composition-length
+theorem \cite[Theorem~1.3]{GlasbyPraegerRosaVerret2018} gives
+\[
+ \kappa(L)\leq\gamma c(L),\qquad
+ c(L)\leq\frac83\log r-\frac43.
+\]
+For $25\leq r\leq31$, the latter upper bound is below $12$,
+so $c(L)\leq11$ and $\kappa(L)<187/32$. The margin is
+therefore greater than $5s/64-(rs\bmod2)/8$.
+If $rs$ is even, this exceeds $rs/1024$. If it is odd, then
+$s\geq3$ is odd, and the difference from $rs/1024$ exceeds
+\[
+ \frac{(80-r)s-128}{1024}\geq\frac{49\cdot3-128}{1024}>0.
+\]
+This retains the parity cost at the smallest odd endpoint.
+
+For $r\geq32$, use $s\geq2$ to bound the margin below by
+\[
+ \frac{6r+8-34\log r}{48}s.
+\]
+Subtract $rs/1024$. The resulting coefficient at $r=32$ is
+$19/32$, and its derivative is positive for $r\geq32$, since
+$\log_e2>1/2$ gives
+\[
+ \frac{6-34/(r\log_e2)}{48}-\frac1{1024}
+ >\frac{6-68/r}{48}-\frac1{1024}>0.
+\]
+This proves the entire unbounded range analytically.
+
+The remaining accepted prime powers are $7,11,13,17,19,23$.
+For prime local degree $p$, the stabilizer is cyclic of order
+dividing $p-1$, all chief factors have dimension one, and
+\[
+ \eta_U\leq\lfloor s/2\rfloor\kappa(L),\qquad
+ \kappa(L)\leq\log(p)/p+\kappa(C_{p-1}).
+\]
+At $p=7$, $\kappa(L)<3/7+1/2+17/32=327/224$.
+For even $s$, the margin exceeds $9s/448>7s/1024$;
+for odd $s$, the retained floor gives $(9s+271)/448$ instead.
+For a cyclic group, $\kappa(C_m)\leq\log(m)/2$.
+At $p=11$, use $10^3<2^{10}$ to get $\kappa(L)<13/6$;
+the margin is then greater than $s/6-1/8\geq5s/48$.
+At $p=13$, $\kappa(L)<5/2$ gives margin
+$s/4-1/8\geq3s/16$. Both exceed $ps/1024$.
+For $p\geq17$, $\log(p-1)\leq(p-1)/4$ and
+$\log(p)/p<1/2$, so the margin exceeds
+\[
+ s(p-5)/16-1/8\geq s(p-6)/16>ps/1024.
+\]
+The last inequality holds already at $p=17$. This exhausts the
+prime powers outside the seven stated degrees.
+
+The actual quotient $T$ acts on $s\leq h(w)/2$ points and
+$w\geq14$. Choose one block and chief-series certificate per
+action class. Equation~\eqref{eq:affine-chief-fibre} retains
+$\beta_U=o(w^2)$ and $\log\Psi_U(b)\leq Cw\log^2(w+b+1)$.
+Theorem~\ref{thm:parametric} applies with
+$\theta=1/2$, $\rho=1/1024$, $w_0=14$. In particular its complete
+kernel cells are eventually at most $2^{-wn/8192}$ and its
+scalar at most $2^{-n^2/8388608}$. The original action weight
+and all quotient and extension data are those already present in
+\eqref{eq:affine-chief-fibre}.
+\end{proof}

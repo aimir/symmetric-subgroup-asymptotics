@@ -1,0 +1,386 @@
+\section{Complete binary counting}
+\label{sec:binary-complete}
+Let $F_N$ be the number of all fixed-point-free $2$-subgroups of
+$S_{2N}$ divided by $L_{2N}=(2N)!c_NG_N$, and let $E_N$ be the
+same normalized count restricted to groups with a noncritical orbit.
+Thus $F_N=C_{2N}^{\crit}+E_N$ exactly. We prove the complete recurrence
+needed in Section~\ref{sec:assembly}.
+
+\subsection{The original degree-thirty-two boundary}
+\begin{theorem}[Adaptive cover at degree sixteen]\label{thm:binary16-cover}
+Let $T\leq S_{16}$ be transitive and binary, and let $A$ be a section
+of its original permutation module whose action factors through a
+specified quotient $B$ of $T$. There are $C\leq A^B$ and a specified
+permutation cover of $B$ of degree $v_0\in\{8,16\}$ such that
+\begin{equation}\label{eq:binary16-cover}
+ v_0+2\dim C+4\dim(A/C)^B\leq30.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use $S,t,H,\mathcal L,\ell,H_0$ from
+Lemma~\ref{lem:joint-budget}. Put $d_0=\dim H_0\leq4$.
+For $a=4$ the joint budgets $2^jB_{4-j}$, for $0\leq j\leq4$,
+are $(6,6,8,8,16)$. In particular $t,\ell\leq6$.
+If $d_0\leq3$, taking $W=H$ gives $t+\ell\leq8$; taking a
+character line gives $j_0\leq6-t$. The separator in
+Lemma~\ref{lem:separator} supplies $q$ evaluations with kernel
+$C\leq S$, and \eqref{eq:fixed-quotient} gives
+$\dim C=t-q$, $\dim(A/C)^B=q$.
+If $t\leq5$, their cost is
+$2t+2q\leq t+\ell+6\leq14$.
+If $t=6$, then $\ell\leq2$ and $j_0=0$, so $q\leq1$ and the
+same bound holds. The original degree-sixteen cover $T\to B$
+therefore proves \eqref{eq:binary16-cover}.
+
+If $d_0=4$, the common kernel of $H_0$ has sixteen orbits on sixteen
+points. Faithfulness makes it trivial. Thus $T=C_2^4$ is regular;
+as every character in $H_0$ comes from $B$, also $B=T$.
+Four independent characters give a faithful action of this same $B$
+on four disjoint pairs. Use it as the degree-eight cover.
+The original module still has $t,\ell\leq6$, $j_0\leq6-t$.
+For $t\leq5$ the separator cost is at most $t+\ell+6\leq17$;
+for $t=6$ it has $q\leq\lceil\ell/2\rceil\leq3$ and cost at most
+$18$. Adding the new cover degree gives at most $26$.
+The module $A$ was never replaced by a section of the eight-point
+permutation module.
+\end{proof}
+
+For every transitive binary action $U$ of degree $32$ and every
+$N\lhd U$, choose an invariant pair system with kernel $K$ and top
+$T\leq S_{16}$. The groups
+$Q=U/N$, $A=KN/N$ and $B=U/(KN)$ meet the theorem's hypotheses.
+Since every simple binary module of a $2$-group is trivial,
+$r(A/C)=\dim(A/C)^B$. Proposition~\ref{prop:prefix} gives the
+same-source envelope with $v=v_0+2\dim C$, $\lambda=r(A/C)/2$ and
+$g=32-v-8\lambda\geq2$.
+The finite-menu proof of Theorem~\ref{thm:fusion}, restricted on its
+physical side to fixed-point-free binary sources, consequently gives
+\begin{equation}\label{eq:binary32-fusion}
+ T_{32}(N)\leq\eta_{32}(N)+K_{32}(N,N-16)F_{N-16},\qquad
+ \eta_{32}(N)=2^{-\Omega(N^2)},\quad
+ K_{32}(N,N-16)=2^{-\Omega(N)}.
+\end{equation}
+Here $T_{32}$ denotes the family with a degree-$32$ orbit and none
+larger. The auxiliary graph may have fixed points, so its moment is
+bounded by the complete count $s_{b+qv}$ as in
+Proposition~\ref{prop:prefix}. Only the physical cold complement is
+fixed-point-free. At this fixed width all action, normal, frame and
+cut choices form a finite menu, and may all be retained at a fixed
+constant cost. The coefficient is the sum of
+$\Delta(2N,2N-32)D_C2^{(4-g/16)(2N-32)}/a(U)$;
+its logarithm is at most $-g(2N-32)/16+O(\log(N+2))$.
+
+\subsection{Uniformity over unbounded binary widths}
+\begin{theorem}[Complete large-orbit deletion]\label{thm:binary-unbounded}
+Let $T_{64}(N)$ be the normalized family with some actual orbit of
+width at least $64$. There are nonnegative $\eta_{64}$ and $K_{64}$,
+with $K_{64}(N,M)=0$ unless $M\leq N-32$, such that eventually
+\begin{equation}\label{eq:binary-unbounded}
+ T_{64}(N)\leq\eta_{64}(N)+\sum_{M<N}K_{64}(N,M)F_M,
+ \qquad \eta_{64}(N)\leq2^{-(2N)^2/2^{22}},\quad
+ \sum_MK_{64}(N,M)\leq2^{-(2N)/512}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Every nontrivial transitive $2$-group has an invariant pair system:
+a central involution is fixed-point-free, since a central element
+fixing a point fixes its entire transitive orbit. An invariant pair
+system is determined by the partner of one point, so there are at
+most $w-1$ systems. Retain all of them.
+Write $w=2s\geq64$. For every literal normal $N\lhd U$ and every
+pair kernel $K$, put
+\[
+ Q=U/N,\qquad A=KN/N,\qquad B=U/(KN),\qquad S=A^B.
+\]
+For $s=32$ use Theorem~\ref{thm:binary32-capacity}, and for
+$s\geq64$ use Theorem~\ref{thm:binary-large-capacity}.
+Retain all cuts $C\leq S$ satisfying
+$2c+4r(A/C)\leq15s/16$, where $c=\dim C$.
+This menu is nonempty and invariant under the original action
+normalizer. The original pair top is a specified degree-$s$ cover of
+$B$. Proposition~\ref{prop:prefix} gives
+\[
+ e_Q(J)\leq D_C2^{\lambda b}\Phi_C(J),\qquad
+ \Phi_C(J)=e_B(J)2^{c d_2(J)},\quad
+ D_C=|A/C||H^1(B,A/C)|,\quad\lambda=r(A/C)/2.
+\]
+The module bound in Lemma~\ref{lem:joint-budget} gives
+$t=\dim S\leq B_{\log s}\leq5s/16$. Therefore
+\begin{equation}\label{eq:binary-wide-parameters}
+ w/2\leq v=s+2c\leq13w/16,\qquad
+ g=w-v-8\lambda\geq w/32,\qquad g\leq w-v\leq v.
+\end{equation}
+
+We next bound the entire varying menu. The soluble normal-generation
+bound of \cite[Lemma 6.1]{RoneyDougalTracey2025} states
+$d_U(N)\leq\zeta w/\sqrt{\log w}$ for every normal subgroup of a
+soluble transitive $U\leq S_w$. Here all $U$ are $2$-groups.
+Since $|U|\leq2^{w-1}$, padded normal-generating tuples bound their
+number of normal subgroups by $2^{O(w^2/\sqrt{\log w})}$.
+Applying the same theorem to $N=U$ bounds $d(U)$: normal generation
+and ordinary generation agree for a finite $2$-group by its Frattini
+quotient. Every such action is conjugate into a fixed Sylow subgroup
+of $S_w$, and padded generating tuples there bound the number of
+transitive action classes by the same expression.
+Furthermore
+\[
+ t\leq B_{\log s}=O(s/\sqrt{\log s}),\qquad
+ \log G_t=O(s^2/\log s),
+\]
+\[
+ \log D_C\leq\dim(A/C)(1+d(B))=O(w^2/\sqrt{\log w}).
+\]
+The last inequality uses $d(B)\leq d(T)$ for the original transitive
+top $T$. Together with the frame count and $1/a(U)\leq1$, these give
+one absolute function $h(w)=O(w^2/\sqrt{\log w})$ with
+\begin{equation}\label{eq:binary-wide-menu}
+ \sum_{[U],\ \deg U=w}\frac1{a(U)}
+        \sum_{\text{frames},N,C}D_C\leq2^{h(w)}.
+\end{equation}
+Every normal and every cut is included before taking this bound.
+
+The graph proof of Proposition~\ref{prop:prefix} uses the same source
+$J$ for all maps. For binary $J$ and binary covers its graph is binary,
+but may have fixed points; in particular
+$\sum_{J\leq S_b,\ J\text{ binary}}\Phi_C(J)^q\leq s_{b+qv}$.
+Put $e=g/16$, $a_0=v/8+e$, and declare the entry hot if
+$\Phi_C(J)>2^{a_0b}$. Use
+$q=\max(1,\lceil8eb/v^2\rceil)$ in \eqref{eq:hot-square}.
+For $b>0$ its rounding square is at most $v^2/16$, while
+\eqref{eq:binary-wide-parameters} gives
+\[
+ g/v\geq1/26,\qquad b+qv\leq3b/2+v\leq3n/2.
+\]
+Consequently the main exponent of each hot term is at most
+\begin{equation}\label{eq:wide-hot-exponent}
+ -2^{-18}b^2-87w^2/4096.
+\end{equation}
+For $b=0$ the strict hot event is empty. The normalized hot sum has
+the original factor
+\[
+ \frac{D_C}{b!a(U)c_{n/2}G_{n/2}}
+       2^{\lambda b-(q-1)a_0b}s_{b+qv}.
+\]
+Thus the coarse subgroup bound contributes $O(n^{3/2})$ and
+$c_{n/2}^{-1}$ contributes $O(n\log(n+2))$ to its logarithm;
+dropping $1/b!\leq1$ is harmless for this upper bound.
+For every $\delta>0$ there is $H_\delta<\infty$ such that
+$h(w)\leq\delta w^2+H_\delta$ for all $w\geq64$.
+Take $\delta=1/128$ in \eqref{eq:binary-wide-menu}.
+The retained negative terms in \eqref{eq:wide-hot-exponent}, together
+with $b^2+w^2\geq n^2/2$, absorb all errors and the at most $n$ widths,
+yielding the stated hot scalar.
+
+On the complement of the union of all hot events, the complete cold
+coefficient for $b=n-w$ is
+\[
+ \Delta(n,b)\sum_{[U],\deg U=w}\frac1{a(U)}
+       \sum_{\text{frames},N,C}D_C2^{(w/8-g/16)b}.
+\]
+The source factorial cancels the $b!$ in the pointing factor once.
+The coefficient inequality $c_{b/2}/c_{n/2}\leq(2N)^{w/2}$ and
+$\log(G_{b/2}/G_{n/2})=-wb/8-w^2/16+O(1)$ give its logarithm at most
+\[
+ h(w)+(w/2)\log n+O(1)-wb/512-w^2/16.
+\]
+Use $h(w)\leq w^2/128+H$ and, uniformly for $64\leq w\leq n$,
+absorb $(w/2)\log n+H+O(1)$ into $wn/8192$ for large $n$.
+The result is at most $-wn/1024$. Summing at most $n$ widths proves
+\eqref{eq:binary-unbounded}, conservatively with rate $n/512$.
+
+The hot union is selected first over all actual entries; its complement
+is then bounded by cold pointing. Deleting an actual orbit leaves a
+complete fixed-point-free binary subgroup, so the cold target is
+precisely $F_{b/2}$. This establishes the inequality before any bound
+on $F$ has been assumed.
+\end{proof}
+
+\subsection{Finite witness coverage and its universal interpretation}
+Let $\mathcal A$ be the seventeen-action alphabet in
+Theorem~\ref{thm:binary-mixture}.
+
+\begin{lemma}[Finite coverage principles]\label{lem:binary-coverage}
+Fix a power-of-two degree $w$. A list of literal transitive $2$-groups
+containing a Sylow subgroup of $S_w$, and closed up to supplied
+permutation conjugacy under all transitive index-two subgroups,
+contains every transitive binary action up to conjugacy.
+For any finite $2$-group $U$, a list of literal normal subgroups
+containing $1$ and closed under all inverse images of order-two
+subgroups of $Z(U/N)$ contains every normal subgroup of $U$.
+\end{lemma}
+\begin{proof}
+The iterated binary wreath group on $w$ points has order $2^{w-1}$,
+which is the full $2$-part of $w!$. Hence every binary action is
+conjugate into this explicit Sylow group. In a finite $2$-group any
+subgroup lies at the bottom of a chain of index-two subgroups: choose
+successive maximal proper overgroups. Every overgroup of a transitive
+subgroup is transitive. Induction down the chain proves the first claim.
+All index-two subgroups are exactly the kernels of the nonzero
+functionals on $U/\Phi(U)$, so this closure can be checked exhaustively.
+
+If $N<L$ are normal in $U$, the nontrivial normal subgroup $L/N$ of
+$U/N$ meets its centre nontrivially, by the class equation. This
+intersection contains an involution. Its inverse image is a normal
+index-two extension of $N$ lying inside $L$. Repetition starting at
+$1$ reaches every $L$, proving the second claim.
+\end{proof}
+
+\begin{lemma}[Finite binary entry theorem]\label{lem:binary-finite-menu}
+For every transitive binary action $U$ of width $w\in\{2,4,8,16\}$
+outside $\mathcal A$, and every literal normal $N\lhd U$, at least
+one of the following witnesses exists for $Q=U/N$:
+\begin{enumerate}
+\item An invariant pair system with kernel $K$, an actual central cut
+$C\leq(KN/N)^{U/(KN)}$, and an actual permutation cover of $B=U/(KN)$,
+such that $v_B+2\dim C+4\dim((KN/N)/C)^B<w$.
+\item A faithful permutation representation of $Q$ of degree $v<w$.
+\item With $z=\dim\Omega_1Z(Q)$, the exact integer inequality
+$38^{8z}<2^w25^{8z}$.
+\item An equal-degree full-subdirect replacement by a word in
+$\mathcal A$, with actual maps onto $Q$, retaining at least one
+quarter of its points in noncritical factors.
+\end{enumerate}
+The last branch needs only the following four entries:
+\[
+\begin{array}{c|c|c|l}
+ U&|N|&Q&\text{replacement word}\\\hline
+ 8T16&2&\operatorname{SmallGroup}(16,3)&8T27\\
+ 8T20&2&\operatorname{SmallGroup}(16,3)&8T27\\
+ 8T21&2&\operatorname{SmallGroup}(16,3)&8T27\\
+ 16T1086&4&\operatorname{SmallGroup}(256,7667)&C_4[4],D_8[4]^3
+\end{array}
+\]
+In the last row the cover is a proper full-subdirect subgroup of order
+$256$ in the displayed product, not that whole product.
+\end{lemma}
+\begin{proof}
+This is the finite computer-assisted lemma recorded by the literal
+binary entry certificate. We describe its mathematical coverage and
+the statements checked at each vertex; these are essential to its use.
+There are explicit iterated wreath roots in each of the four degrees.
+Each action record gives every transitive index-two child, an actual
+conjugator to its destination, and a checked basis of its Frattini
+quotient. Nonregular base actions retain their children. Regular
+transitive actions have no transitive proper subgroup.
+Each nonbase action record gives $1$ and every central-involution
+extension of each normal vertex. The two closure checks prove exhaustive
+action and normal coverage by Lemma~\ref{lem:binary-coverage}; catalogue
+identifiers play no role in these implications.
+
+For the first branch the record supplies the pair partition, kernel
+$K$, intersection $M=K\cap N$ and lifted cut $M\leq C_0\leq K$.
+The literal equalities $[C_0,U]\leq M$ and
+$\ker(U\to\text{cover image})=KN$ certify the same central section
+and quotient. Fixed sections are computed by commutators modulo
+$M$ and $C_0$, giving the integers $c,r$ and the strict gap.
+For a direct witness the supplied generator images define a map with
+kernel exactly $N$ and moved degree strictly below $w$.
+For a character witness the centre and its involution subgroup are
+reconstructed in the literal quotient, and the displayed integer
+inequality is checked. For a transport witness both specified maps
+are onto the same literal quotient, the original map has kernel $N$,
+and each displayed projection of the actual cover group equals its
+assigned action. The degree and noncritical fraction are then checked
+on the actual orbit partition. The four exceptional charts satisfy
+these conditions, including the retained proper cover in degree sixteen.
+The committed finite records and checker in
+Appendix~\ref{sec:certificates} supply these finite identities.
+
+There is also a uniform proof for regular actions of width $w\geq8$:
+choose a central involution and its coset pairs. Then $K=C_2$,
+$A=KN/N$ is central of dimension at most one, and one may take $C=A$.
+The quotient $B$ has its regular cover of degree at most $w/2$;
+$w/2+2\dim A<w$. All binary actions of degrees two and four are
+already in $\mathcal A$.
+\end{proof}
+
+The first two witness types have the graph envelopes of
+Proposition~\ref{prop:prefix}, with $g>0$. The third has a direct
+slope strictly below $w/8$. Indeed a $2$-group $Q$ has a faithful
+tuple of $z$ irreducible complex characters: choose constituents whose
+central characters span the dual of $\Omega_1Z(Q)$. A nontrivial
+normal subgroup meets $\Omega_1Z(Q)$, so their common kernel is trivial.
+For a binary $J\leq S_b$, inflation along an epimorphism yields a
+tuple from $\operatorname{Irr}(J)^z$. Every tuple determines at most
+one kernel, and each kernel has exactly $|\Aut Q|$ epimorphisms to $Q$.
+The nilpotent conjugacy-class bound
+\cite[Theorem 1.5]{Maroti2005Classes} therefore gives
+\begin{equation}\label{eq:binary-character-entry}
+ |\Epi(J,Q)|\leq|\Aut Q|\,k(J)^z
+ \leq|\Aut Q|\,2^{z\log(38/25)b}.
+\end{equation}
+The strict integer test is exactly $z\log(38/25)<w/8$.
+For $Q=1$ use $e_Q(J)=1$. These assertions concern the actual source
+$J$; no faithful action of an abstract quotient on its points is assumed.
+
+\subsection{Small widths and the complete recurrence}
+\begin{theorem}[Complete binary recurrence]\label{thm:binary-recurrence}
+There are nonnegative $\eta_B(N)$ and $K_B(N,M)$, supported on
+$0\leq M<N$, and constants $a_B,C_B>0$, such that eventually
+\begin{equation}\label{eq:proved-binary-recurrence}
+ E_N\leq\eta_B(N)+\sum_{M<N}K_B(N,M)F_M,\qquad
+ \eta_B(N)+\sum_{M<N}K_B(N,M)\leq C_B2^{-a_BN}.
+\end{equation}
+In particular $F_N$ is bounded and $E_N=O(2^{-a_BN})$.
+\end{theorem}
+\begin{proof}
+Power-of-two orbit sizes give the exact disjoint partition
+\[
+ E_N=T_{64}(N)+T_{32}(N)+S_{16}(N),
+\]
+where $S_{16}$ has all actual orbit widths at most sixteen and at least
+one noncritical orbit. The first two parts are bounded by
+\eqref{eq:binary-unbounded} and \eqref{eq:binary32-fusion}.
+
+For $S_{16}$ consider a nonbase orbit $U$ and its actual axis
+$N=H\cap U$. Include a fixed finite invariant menu of all witness
+transports in Lemma~\ref{lem:binary-finite-menu}; choose the transports
+before counting the complementary source. First take the union in
+which some actual graph entry is hot. Theorem~\ref{thm:fusion}
+bounds this complete union by a scalar $2^{-\Omega(N^2)}$.
+On its complement, point any orbit with an accepted strict local
+entry. For graph entries the cold coefficient is
+\[
+ \Delta(2N,2N-w)\frac{D}{a(U)}
+      2^{(w/8-g/16)(2N-w)}.
+\]
+For the direct character entry it is the same coefficient with
+$D=|\Aut Q|$ and exponent $z\log(38/25)(2N-w)$.
+Their original Gaussian ratio leaves respectively
+$-g(2N-w)/16$ or
+$-(w/8-z\log(38/25))(2N-w)$, with error $O(\log(N+2))$.
+The fixed finite menu has a positive minimum gap. Summing every literal
+normal and every witness thus yields a kernel $K_s$ with row
+$2^{-\Omega(N)}$, supported at $N-4,N-8$; only nonnegative targets
+are included. Entries with zero prefix degree have a direct bound and
+need no hot moment. Deleting the original orbit again leaves the
+complete fixed-point-free binary count $F_{N-w/2}$.
+
+In the remaining family every nonbase orbit has a transport witness
+for its exact axis. Apply all these maps simultaneously, leaving
+$\mathcal A$ factors untouched. The product of the embedded axes lies
+in $H$, so Proposition~\ref{prop:transport} recovers $H$ as the full
+preimage of the joint quotient image. Every replacement has the same
+physical degree, and retains at least one quarter of its noncritical
+support. Theorem~\ref{thm:binary-mixture} and the stronger profile
+envelopes \eqref{eq:proved-mixture-envelopes}, inserted in
+Proposition~\ref{prop:absorb-decorations}, give a scalar
+$2^{-\Omega(N)}$ for the entire remaining family. This also includes
+words already contained in $\mathcal A$, by identity transport.
+The small original noncritical-support range is removed before
+charging the decoration factor.
+
+Consequently
+$S_{16}(N)\leq\eta_s(N)+\sum_MK_s(N,M)F_M$, with both its scalar
+and complete row exponentially small. Add this to the two disjoint
+large-width bounds to obtain \eqref{eq:proved-binary-recurrence}.
+No estimate of $F_M$ has been used to prove the kernel rows.
+
+Finally $C_{2M}^{\crit}$ is bounded by the independently proved
+critical-family theorem. Substitute
+$F_M=C_{2M}^{\crit}+E_M$ in the recurrence. Beyond an onset its row
+is at most $1/2$, and its forcing is bounded. A constant dominating
+twice that forcing and all finitely many initial $E_M$ bounds $E_N$
+by induction. Thus $F_N$ is bounded. Substituting this established
+bound back into the same recurrence proves exponential decay.
+\end{proof}

@@ -1,0 +1,188 @@
+\section{Complete quotient moments and uniform transfer}
+\label{sec:general-transfer}
+For finite $X$ and a complete source $J$ define
+\[
+ Z_J(X)=\sum_{N\lhd X}|\Epi(J,X/N)|,\qquad
+ h(w)=w-(w\bmod2).
+\]
+The normal subgroups here are literal, including $N=X$. Distinct axes
+with isomorphic quotient groups remain distinct terms.
+
+\begin{lemma}[The complete quotient moment]\label{lem:quotient-moment}
+If $R$ has a specified faithful permutation representation of degree
+$v$, then for every integer $q\geq1$,
+\[
+ \sum_{J\leq S_b}Z_J(R)^q\leq s_{b+qv}.
+\]
+\end{lemma}
+\begin{proof}
+$Z_J(R)$ counts full subdirect subgroups of $R\times J$ by their
+intersection with $R$ and their literal graph map. For an ordered
+$q$-tuple of such subgroups take their fibre product over the same
+$J$ inside $R^q\times J$. Projection recovers $J$ and every member
+of the tuple: each of the other subgroups can lift the same element
+of $J$. This is an injection on actual counting sets, including
+coincident maps and proper joint quotient images.
+\end{proof}
+
+\begin{lemma}[Uniform normalization]\label{lem:uniform-delta}
+Uniformly for $n=b+w$, $w\geq1$,
+\begin{equation}\label{eq:uniform-delta}
+ \log\Delta(n,b)\leq-\frac{h(w)b}{8}-\frac{w^2}{16}
+                                      +O(w\log(n+2)).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $r=\lfloor b/2\rfloor$ and $R=\lfloor n/2\rfloor$.
+The recurrence gives $c_r/c_R\leq(2R)^{R-r}$, and
+$p_b\leq(1+b/6)c_r$, whereas $p_n\geq c_R$.
+These terms cost $O(w\log(n+2))$, since $R-r\leq(w+1)/2$.
+The Gaussian bounds give
+$\log(G_r/G_R)=(r^2-R^2)/4+O(1)$.
+For even $w$ this is $-wb/8-w^2/16+O(w)$.
+For odd $w$, the parity correction is at most $b/8+O(w)$,
+giving \eqref{eq:uniform-delta}. The smallest indices are absorbed
+in the same absolute constant.
+\end{proof}
+
+\begin{theorem}[A finite complete comparator]\label{thm:finite-comparator}
+Fix a finite family of actual transitive actions $U$ of degrees $w$.
+Suppose each has a fixed faithfully represented comparator $R_U$ of
+degree $0<v<h(w)$ and constants $B>0$, $C\geq0$, $\eta<h(w)/8$
+such that for all complete $J\leq S_b$,
+\[
+ Z_J(U)\leq BZ_J(R_U)+C2^{\eta b}.
+\]
+Then their complete pointed union has one quadratic-exponentially
+small scalar and one exponentially small complete forward row, with
+the original action weights. The comparator need not be a quotient
+of $U$.
+\end{theorem}
+\begin{proof}
+Put $\alpha=(v+h)/16$, $e=(h-v)/16$ and
+$\chi=h/8-\max(\alpha,\eta)>0$. Split at
+$Z_J(R)>2^{\alpha b}$. The cold summand is exactly bounded by
+\[
+ \frac{\Delta(n,b)}{a(U)}
+           (B2^{\alpha b}+C2^{\eta b}).
+\]
+Equation~\eqref{eq:uniform-delta} gives exponential row decay after
+the finite sum. On the hot part put $d=\max(\eta-\alpha,0)$, so
+the whole fibre is at most $(B+C)2^{db}Z_J(R)$.
+Use Lemma~\ref{lem:quotient-moment} at
+$q=\max(1,\lceil8eb/v^2\rceil)$, $q_*=8eb/v^2$.
+The main normalized exponent is
+\[
+ \frac{(b+qv)^2}{16}-(q-1)\alpha b+db-\frac{(b+w)^2}{16}
+ =-\frac{4e^2b^2}{v^2}-\chi b-\frac{(w-h)b}{8}
+   -\frac{w^2}{16}+\frac{v^2}{16}(q-q_*)^2.
+\]
+Here $0\leq q-q_*\leq1$ and all parameters are fixed. The coarse
+error in \eqref{eq:coarse} and the original factorials cost
+$O(n^{3/2}+n\log(n+2))$, smaller than the quadratic loss.
+Take one any-hot union and its cold complement as in
+Theorem~\ref{thm:fusion}.
+\end{proof}
+
+\begin{theorem}[Growing-parameter quotient transfer]\label{thm:parametric}
+Fix $w_0\geq5$, $0<\theta<1$, and $0<\rho\leq1/8$.
+For each accepted transitive action $U$ of degree $w\geq w_0$, choose
+one certificate consisting of a quotient $R$, a faithful action of
+$R$ on $v_0\leq\theta h(w)$ points, and $\eta_U\geq0$.
+Require $v_0=0$ only when $R=1$, and
+\[
+ \frac{h(w)-v_0}{8}-\eta_U\geq\rho w.
+\]
+Suppose that, for every $J\leq S_b$,
+\begin{equation}\label{eq:parametric-fibre}
+ Z_J(U)\leq2^{\eta_Ub+B_U(b)}Z_J(R),\qquad
+ B_U(b)\leq\beta(w)+Cw\log^2(w+b+1),
+\end{equation}
+where $C$ is fixed and $\beta(w)=o(w^2)$ uniformly over the certificates.
+Then the complete accepted-orbit family has a forward kernel and scalar
+with the uniform eventual bounds
+\begin{equation}\label{eq:parametric-rates}
+ K(n,n-w)\leq2^{-\rho wn/8},\qquad
+ \sum_bK(n,b)\leq2\cdot2^{-\rho w_0n/8},\qquad
+ \eta(n)\leq2^{-\rho^2n^2/8}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Pad the given representation by fixed points to
+$v=\max(v_0,\lfloor4\rho h(w)\rfloor)$ and put
+\[
+ \delta=(h(w)-v)/8-\eta_U,\qquad a=v/8+\delta/2.
+\]
+Then $\delta\geq\rho w/2$, $v\leq(1-4\rho)w$, and
+$\eta_U+a=h(w)/8-\delta/2$. If $R\ne1$, also $v\geq\rho w$:
+use $v_0\geq2$ when $\rho w\leq1$, and otherwise
+$\lfloor4\rho h(w)\rfloor\geq4\rho w-4\rho-1>\rho w$.
+For $R=1$ the hot event below is empty, so no lower bound on $v$ is
+needed. This controlled padding preserves the original margin.
+
+Split at $Z_J(R)>2^{ab}$. The cold kernel is
+\[
+ K(n,b)=\Delta(n,b)\sum_{\substack{U\text{ accepted}\\\deg U=n-b}}
+         \frac{2^{(\eta_U+a)b+B_U(b)}}{a(U)}.
+\]
+By \eqref{eq:uniform-delta} its main exponent is at most
+$-\rho wb/4-w^2/16\leq-\rho wn/4-w^2/32$.
+The number of transitive action classes is $2^{o(w^2)}$ by the
+transitive-subgroup bound of \cite{LucchiniMenegazzoMorigi2000}, in
+the labelled form quoted in the introduction of
+\cite{RoneyDougalTracey2025}. Consequently, after increasing a finite
+constant, $\beta(w)$ plus this class entropy is at most
+$w^2/64+C_1w$ for every $w$. The remaining error is
+$O(w\log^2(n+2))+C_1w=o(wn)$ uniformly. This proves the first bound
+in \eqref{eq:parametric-rates}. Sum the geometric tail over $w\geq w_0$
+to obtain the second.
+
+For a nonempty hot part use
+$q=\max(1,\lceil4\delta b/v^2\rceil)$, $q_*=4\delta b/v^2$,
+and $M=b+qv$. Lemma~\ref{lem:quotient-moment} gives
+$\sum_{J\ {\rm hot}}Z_J(R)\leq2^{-(q-1)ab}s_M$.
+The exact main exponent, including the lift factor, is
+\begin{align*}
+ \frac{M^2}{16}-(q-1)ab+\eta_Ub-\frac{n^2}{16}
+ &=-\frac{\delta^2b^2}{v^2}
+   +(\eta_U+a-w/8)b-\frac{w^2}{16}
+                      +\frac{v^2}{16}(q-q_*)^2\\
+ &\leq-\frac{\rho^2b^2}{4}-\frac{\rho wb}{4}
+                 -(\rho/2-\rho^2)w^2
+ \leq-\rho^2n^2/4.
+\end{align*}
+The last comparison uses $\rho\leq1/8$; the adverse odd correction
+$(h(w)-w)b/8$ is nonpositive. Moreover
+$M\leq(1+1/(2\rho))b+w$, so the coarse error is uniformly
+$O_\rho(n^{3/2})$. The original hot sum is
+\[
+ \sum_{w=w_0}^n\sum_{\deg U=w}
+ \frac{2^{\eta_Ub+B_U(b)}}{b!a(U)p_nG_{\lfloor n/2\rfloor}}
+       \sum_{J\ {\rm hot}}Z_J(R),\qquad b=n-w.
+\]
+Its remaining normalization costs $O(n\log(n+2))$. For any prescribed
+small positive coefficient, the uniform $o(w^2)$ errors and class
+entropy are bounded by that coefficient times $w^2$ plus $O(w)$.
+All errors, including the sum over widths and $Cw\log^2(n+1)$, are
+$o(n^2)$ uniformly. Retaining half the quadratic reserve proves the
+last bound in \eqref{eq:parametric-rates}. No normalized-count
+boundedness has been assumed.
+\end{proof}
+
+\begin{lemma}[Central nonbinary pair sections]\label{lem:central-pair}
+For a faithful nonbinary transitive action of even degree $s\geq4$,
+every trivial section of its binary permutation module has dimension
+$t\leq s/2-1$. Consequently a central pair-kernel quotient at original
+width $2s$ has an effective graph moment degree $s+2t\leq2s-2$.
+\end{lemma}
+\begin{proof}
+If an odd prime $p$ divides $s$, its Sylow subgroup has no fixed
+points. Exactness of invariants bounds a trivial section by the number
+of its orbits, at most $s/p\leq s/2-1$.
+If $s=2^a\geq8$, a Sylow $2$-subgroup is transitive. The soluble
+permutation-module bound gives $t\leq B_a\leq3s/8\leq s/2-1$.
+At $s=4$, the $3$-cycle fixed-vector argument in
+Lemma~\ref{lem:unipotent} gives $t\leq1$.
+For a central kernel $A$ take $C=A$ in Proposition~\ref{prop:prefix}.
+Then the cocycle tail vanishes and the moment degree is $s+2t$.
+\end{proof}

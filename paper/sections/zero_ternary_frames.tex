@@ -1,0 +1,245 @@
+\section{The two zero-ternary frame exceptions}
+\label{sec:zero-ternary-frames}
+Put
+\[
+ z_2(G)=\max_{L\lhd G}\dim_{\F_2}L/[L,G]L^2,
+ \qquad
+ \mu_T(M)=\max_{B\leq M\ {\mathrm{invariant}}}\dim_{\F_2}B/[B,T].
+\]
+The second quantity is the maximum dimension of a trivial homogeneous
+section of the one actual module $M$.
+
+\begin{lemma}[A fixed-frame bound]\label{lem:frame-rank}
+If $1\to E\to U\to T\to1$ has elementary binary kernel
+$E\leq M$ as a $T$-module, then
+$z_2(U)\leq\mu_T(M)+z_2(T)$. Moreover
+\[
+ z_2(U)=\max_{N\lhd U}\operatorname{rank}\Omega_1(Z(U/N))_2.
+\]
+\end{lemma}
+\begin{proof}
+For $K\lhd U$, let $L$ be its image in $T$, put
+$N=[K,U]K^2$ and $I=K\cap E$. The image of $N$ is exactly
+$[L,T]L^2$, so there is an exact sequence
+\[
+ 0\longrightarrow I/(I\cap N)\longrightarrow K/N
+       \longrightarrow L/[L,T]L^2\longrightarrow0.
+\]
+Its first term is a trivial quotient of the actual submodule $I$
+of $M$, proving the bound. Each $K/[K,U]K^2$ is central elementary
+binary in its corresponding quotient of $U$. Conversely the preimage
+of any central elementary binary subgroup in $U/N$ has relative
+head surjecting onto that subgroup. Taking maxima proves the identity.
+\end{proof}
+
+\begin{lemma}[Noncentral socle types in the two frames]
+\label{lem:small-power-socle}
+Suppose $U$ has exact local $A_4$ or $S_4$ on $s\in\{8,16\}$
+blocks and zero ternary linear kernel. Let $M=(\F_2^2)^s$,
+$E=U\cap M$ and $T=U/E$, its actual faithful block top.
+Every nontrivial binary simple type in the socle of every quotient
+has Schur demand at most $5s/8$, and every odd-primary type has
+demand at most $\lfloor s/3\rfloor$. Thus every quotient has a
+faithful tuple of at most $5s/8$ characters if $z_2(U)\leq5s/8$.
+\end{lemma}
+\begin{proof}
+In $Q=U/N$, the whole binary socle $A$ is a semisimple $T$-module:
+the normal binary $\bar E$ acts trivially on each simple type.
+Filter $A$ by $A\cap\bar E$. For a type $X$ of binary dimension
+$d$ and Schur dimension $e$, its multiplicities satisfy
+\[
+ m_E\leq\lfloor2s/d\rfloor,\qquad
+ m_T\leq\lfloor s/(2d)\rfloor.
+\]
+The second bound uses the whole elementary outer section of $T$.
+These multiplicities add, since the types on the two sides may agree.
+For $d\geq4$, their sum is at most $5s/8$. For $d=3,e=3$,
+dividing the sum by three and rounding up also suffices.
+For $d=3,e=1$, the image is $C_7$; its normal kernel is transitive,
+since its orbit number divides both seven and $s$. Restricted to
+that kernel, $X^{m_E}$ is trivial of dimension $3m_E$.
+Lemma~\ref{lem:block-homogeneous} bounds this dimension by $s$,
+giving $m_E\leq\lfloor s/3\rfloor$ and
+$m_T\leq\lfloor s/6\rfloor$.
+
+For $d=2,e=2$ the demand is at most
+$\lceil(s+s/4)/2\rceil=5s/8$. If $d=2,e=1$, the image is
+$C_3$ and its normal kernel $K$ is transitive. At a block
+stabilizer, restriction to $K$ either keeps a nontrivial local
+$C_3$ or $S_3$, or kills the local $C_3$ in the $A_4$ case.
+In the first case take a Sylow $3$-subgroup $P$ of $K$. At a
+$P$-fixed block it is Sylow in the stabilizer and its local image
+is $C_3$, with no fixed vector. Every nonfixed orbit contributes
+at most two invariant dimensions. Exactness of odd-order invariants
+on sections gives $2m_E\leq2\lfloor s/3\rfloor$.
+Adding $m_T\leq s/4$ suffices at both counts.
+In the second case the induced frame restricted to $K$ is two
+copies of the honest permutation module $\F_2^s$. Its transitive
+Sylow $2$-subgroup gives the scalar submodule capacity
+$\binom a{\lfloor a/2\rfloor}=3s/8$ for $s=2^a\in\{8,16\}$.
+Filtering a trivial section through the two copies gives
+$m_E\leq3s/8$, and again $m_E+m_T\leq5s/8$.
+
+For odd $p$, the entire $p$-socle meets $\bar E$ trivially and
+embeds in a quotient of $T$, so its rank is at most $\lfloor s/p\rfloor$.
+The only remaining binary type is the trivial type, whose maximum
+rank over the normal quotients is exactly $z_2(U)$ by
+Lemma~\ref{lem:frame-rank}. Apply the whole-socle criterion.
+\end{proof}
+
+The following finite inputs concern tops and induced linear frames,
+and do not enumerate all extensions $U$ above a frame. They are
+supplied with literal permutation, module and kernel witnesses.
+\begin{lemma}[Finite frame inputs]\label{lem:finite-zero-frames}
+The zero-ternary frame certificates have the following properties.
+\begin{enumerate}[label=(\roman*)]
+\item Every nonbinary transitive top $T$ of degree eight satisfies
+$z_2(T)\leq2$. Every frame induced from an onto map of a point
+stabilizer to $C_3$ or $S_3$ satisfies $\mu_T(M)\leq2$.
+\item For each degree-sixteen top having four four-point blocks,
+exact local $A_4$ or $S_4$, and zero internal ternary kernel,
+every induced $C_3/S_3$ frame admits a Sylow $3$-subgroup $P$
+and a $2$-element $g\in N_T(P)$ with
+$z_2(T)+\dim(M^P)^g\leq10$.
+\item Every primitive degree-sixteen top and every eligible induced
+frame admit an odd subgroup $A$ with $z_2(T)+\dim M^A\leq10$.
+\item The primitive degree-eight actions are the three affine groups
+$2^3:C_7$, $2^3:(C_7:C_3)$, $\operatorname{AGL}_3(2)$ and
+$\operatorname{PSL}_2(7)$, $\operatorname{PGL}_2(7)$, $A_8,S_8$.
+Their normal subgroup orders are respectively
+\[
+ (1,8,56),\ (1,8,56,168),\ (1,8,1344),\ (1,168),\
+ (1,168,336),\ (1,20160),\ (1,20160,40320).
+\]
+Except for the first group, a Sylow $3$-subgroup has orbit lengths
+$1,1,3,3$ in each actual action.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+The degree-eight top alphabet consists of the seventeen imprimitive
+classes constructed by the four-pair and two-four-block Goursat and
+lift certificates, and the seven primitive actions of the stated
+primitive classification. All normal subgroups are retained for the
+relative-rank check. All onto point-stabilizer maps are recovered by
+their literal kernels; for a fixed kernel, automorphisms of $C_3$
+are realized by simultaneous Frobenius and automorphisms of $S_3$
+are inner. This yields all thirty frames on twenty eligible tops.
+
+For every one of these frames the supplied binary invariant-submodule
+list contains zero and is closed under adding every cyclic submodule.
+The latter are constructed from all vector orbits under the actual
+generator matrices. Any omitted invariant submodule would contain
+an included one maximal under containment; adjoining the cyclic
+submodule of a vector outside it contradicts maximality. This proves
+completeness, and direct commutator ranks give the stated maximum two.
+
+For (ii), the complete induced-frame, kernel and complement construction
+gives twenty-nine four-by-four top actions, including their nonsplit
+lifts. Each has exactly one eligible stabilizer kernel. The supplied
+$P,g$ witnesses give the inequality directly; no invariant-submodule
+enumeration in dimension 32 is required. For (iii), all twenty-two
+primitive degree-sixteen entries are checked, giving nine eligible
+stabilizer kernels on seven tops and the stated odd-subgroup witnesses.
+The primitive completeness premise is
+\cite{RoneyDougal2005Primitive,PrimGrp344}; parts (i), (ii) use the
+separate constructive completeness arguments just described. The
+normal orders and actual Sylow orbits in (iv) are direct checks on
+the same seven primitive representatives. Thus these are finite
+mathematical premises with independently checkable completeness
+certificates, rather than an inference from their cardinalities.
+\end{proof}
+
+\begin{theorem}[Complete zero-ternary eight and sixteen frames]
+\label{thm:zero-ternary-small-frames}
+Every exact-local $A_4/S_4$ action with zero ternary kernel and
+eight or sixteen blocks has a faithful character cover on every
+normal quotient of length five or ten, respectively. Their entire
+original-normal menus satisfy Corollary~\ref{cor:character-forward}.
+\end{theorem}
+\begin{proof}
+By Lemmas~\ref{lem:frame-rank} and \ref{lem:small-power-socle},
+it suffices to bound $\mu_T(M)+z_2(T)$ by five or ten.
+At degree eight Lemma~\ref{lem:finite-zero-frames}(i) gives four.
+
+We record two tools for degree sixteen. Odd-order invariants are
+exact, so for an odd subgroup $P$,
+$\mu_T(M)\leq\mu_{N_T(P)}(M^P)$. If $g$ is a $2$-element
+normalizing $P$, the binary cyclic module $M^P\downarrow_{\langle g\rangle}$
+is a sum of modules over a chain ring. The head and socle have
+equal dimension, and submodules cannot have larger socle. Hence
+\[
+ \mu_T(M)\leq\dim(M^P)^g.
+\]
+Also, if $P$ is Sylow three in a transitive top of power-of-two
+degree, a $P$-fixed block contributes zero to $M^P$: the local
+onto $C_3/S_3$ map has nontrivial $C_3$ image there. Each nonfixed
+$P$-orbit contributes at most two invariant dimensions.
+
+Suppose first $T$ preserves eight pairs, with kernel $K$ and top
+$S\leq S_8$. If $K\ne1$, it projects onto every pair. The
+local map from a point stabilizer kills its intersection with $K$,
+because $C_3,S_3$ have no nontrivial normal $2$-subgroup. It
+descends onto the stabilizer of a pair in $S$, giving one of the
+degree-eight frames $M_0$. Induction in stages and the length-two
+filtration of the binary two-point permutation module give a
+filtration of $M$ with two inflated copies of $M_0$. Thus
+$\mu_T(M)\leq2\mu_S(M_0)\leq4$.
+Furthermore Lemma~\ref{lem:frame-rank} on $K\leq\F_2^8$ gives
+$z_2(T)\leq3+z_2(S)\leq5$, using the scalar induced capacity
+three in degree eight. The sum is at most nine.
+If $K=1$, then $T\cong S$ and $z_2(T)\leq2$. A Sylow three
+has at most two nonfixed orbits on the eight pairs, each lifting
+to two orbits on the sixteen points, since an odd pair stabilizer
+fixes its pair pointwise. Hence $\mu_T(M)\leq8$, giving ten.
+
+Otherwise a minimal nontrivial block of $T$ has size four or eight,
+or $T$ is primitive. For size four let $F$ be its internal binary
+translation kernel, let $D$ be its internal ternary kernel and let
+$S\leq S_4$ be the top. If $D\ne1$, retained-$F$ quotients
+have character cover two by Theorem~\ref{thm:four-nonzero-core}.
+For quotients killing $F$, the central elementary binary socle
+injects after removing the odd $D$ into a quotient of
+$C_2\wr S\leq S_8$. Therefore $z_2(T)\leq4$.
+If $S=A_4$ or $S_4$, a Sylow three has at most three nonfixed
+orbits on the sixteen points: over its three cycled four-blocks
+the moving local triples give one orbit of length nine and their
+fixed points one orbit of length three; the fourth block contributes
+at most one further orbit. Thus $\mu_T(M)\leq6$.
+If $S$ is binary, let $P$ be Sylow three of the full block kernel.
+It is also Sylow in $T$, and Frattini gives a normalizer transitive
+on the four blocks. Each block contributes the same dimension
+$d\leq2$ to $M^P$. The normalizer modulo $P$ is binary, so the
+local $d$-space has a series of trivial factors. Induction gives
+$d$ copies of the four-point permutation module in a filtration
+of $M^P$. Their scalar capacity is two, giving
+$\mu_T(M)\leq2d\leq4$. If instead the internal $D=1$, use
+Lemma~\ref{lem:finite-zero-frames}(ii) and the normalizer tool.
+
+For a minimal block of size eight, the two-block kernel is a
+Goursat subdirect product of one of the seven primitive locals in
+Lemma~\ref{lem:finite-zero-frames}(iv). The first, $2^3:C_7$,
+has no eligible point-stabilizer map. For each other local a Sylow
+three has four nonfixed orbits on the sixteen points, so
+$\mu_T(M)\leq8$. For $\operatorname{PGL}_2(7)$ or $S_8$,
+the intersection of the kernel with the square of the simple
+socle is semisimple, and the quotient embeds in $C_2\wr C_2$
+of degree four; hence $z_2(T)\leq2$.
+For the simple locals the block kernel is semisimple, so its
+relative binary rank is zero. For the two eligible affine locals,
+the displayed normal menus show that every intermediate Goursat
+kernel is either a graph of the local group, the full product, or
+contains both translations with odd or common simple quotient.
+The translations are then a semisimple sum of nontrivial simple
+modules, including all automorphism twists. They have no trivial
+section, and the quotient has relative binary rank zero. Thus the
+kernel has $z_2=0$ and $z_2(T)\leq1$. Every case gives a sum
+at most ten. The primitive degree-sixteen case is
+Lemma~\ref{lem:finite-zero-frames}(iii).
+
+These cases exhaust the top: a primitive binary group has prime
+degree, so no omitted binary primitive local occurs at sizes four
+or eight. The original extension $U$ is arbitrary throughout.
+Finally $5^{64\cdot5}<2^{24\cdot32-3}$ and
+$5^{64\cdot10}<2^{24\cdot64-3}$ give the character-forward
+margin at the two physical widths.
+\end{proof}

@@ -1,0 +1,426 @@
+\section{The bounded ternary block counts}\label{sec:bounded-ternary}
+Put $\gamma=(\log_2 3)/3<17/32$. All fibres in this section use the
+complete source $J\leq S_b$, without any restriction on its orbits.
+
+\begin{lemma}[Finite multiplicative comparison]\label{lem:finite-multiplicative}
+Fix finitely many actual actions $U$ of widths $w$, and fixed finite
+comparators $Q_U$ with faithful actions of degrees $0<v_U<h(w)$.
+Suppose
+\[
+ Z_J(U)\leq C_U2^{\eta_Ub}Z_J(Q_U),\qquad
+ \delta_U=(h(w)-v_U)/8-\eta_U>0.
+\]
+Their complete pointed union has an exponentially small forward row
+and a quadratically small scalar, with original normalizers $a(U)$.
+The comparators need not be quotients of $U$.
+\end{lemma}
+\begin{proof}
+Set $\alpha=v/8+\delta/2$, and call $J$ hot when
+$Z_J(Q)>2^{\alpha b}$. The cold coefficient is exactly
+$\Delta(n,b)C_U2^{(\eta_U+\alpha)b}/a(U)$.
+Its exponent is $-\delta b/2-w^2/16+O_w(\log(n+2))$.
+For the full hot fibre use Lemma~\ref{lem:quotient-moment} with
+$q=\max(1,\lceil4\delta b/v^2\rceil)$ and $q_*=4\delta b/v^2$.
+The normalized leading exponent is
+\[
+ \frac{(b+qv)^2}{16}-(q-1)\alpha b+\eta b
+             -\frac{(b+w)^2}{16}
+ =-\frac{\delta^2b^2}{v^2}-\frac{\delta b}{2}
+  -\frac{(w-h(w))b}{8}-\frac{w^2}{16}
+                  +\frac{v^2(q-q_*)^2}{16}.
+\]
+The rounding term is bounded and the coarse counting error is
+$O(n^{3/2}+n\log(n+2))$. The original hot weight is
+$(b!a(U)p_nG_{\lfloor n/2\rfloor})^{-1}$ times the complete hot
+sum of $Z_J(U)$. A finite union therefore preserves both strict
+losses. Choose certificates before the any-hot/cold partition.
+\end{proof}
+
+\begin{lemma}[Central binary comparison]\label{lem:central-comparator}
+If $X$ has central subgroup $C_2$ and quotient $T$, then
+\[
+ Z_J(X)\leq\nu(X)|\operatorname{Hom}(J,C_2)|Z_J(T),\qquad
+ |\operatorname{Hom}(J,C_2)|Z_J(T)
+       \leq2^{d_2(T)}Z_J(T\times C_2),
+\]
+where $\nu(X)$ is its number of literal normal subgroups.
+\end{lemma}
+\begin{proof}
+For each $N\lhd X$, $X/N$ is a central extension of a quotient of
+$T$ by a group of order at most two. A fixed map to that quotient has
+no lifts or at most $|\operatorname{Hom}(J,C_2)|$ lifts. Summing
+over all $N$ proves the first inequality, including repetitions of
+the same normal subgroup of $T$.
+For the second put $h=|\operatorname{Hom}(J,C_2)|$. For each
+$S\lhd T$ put $Q=T/S$, $a=|\operatorname{Hom}(Q,C_2)|$.
+An onto map $J\to Q$ and a binary character are jointly onto
+$Q\times C_2$ precisely when that character does not factor through
+the map. Thus the distinct product normals $S\times1,S\times C_2$
+contribute $(h-a+1)|\Epi(J,Q)|$. Whenever the latter epimorphism
+set is nonempty, $h\geq a$ and
+$h\leq a(h-a+1)\leq2^{d_2(T)}(h-a+1)$.
+All remaining product normals add nonnegative terms.
+\end{proof}
+
+\begin{proposition}[Regular ternary exceptions]\label{prop:bounded-c3}
+Every actual transitive action with exact local regular $C_3$ and
+two or six blocks has a complete exponentially small forward row
+and quadratically small scalar.
+\end{proposition}
+\begin{proof}
+Write $U\leq C_3\wr T$, $E=U\cap C_3^s$. At $s=6$, every
+transitive $T\leq S_6$ contains a semiregular $C_3$: a Sylow
+three-subgroup of order three has trivial point stabilizers, while
+one of order nine is a Sylow subgroup of $S_6$ and contains two
+disjoint three-cycles. The ambient module and its dual restrict to
+two regular $\F_3[C_3]$ modules. Since
+$\F_3[C_3]\cong\F_3[t]/(t^3)$, every submodule has at most two
+generators: its number of Jordan blocks is its socle dimension,
+at most two. Quotients retain this bound.
+The full-chief proof of Theorem~\ref{thm:affine-chief}, with this
+capacity, gives $Z_J(U)\leq C_U2^{2\gamma b}Z_J(T)$.
+Its physical width is eighteen, its comparator degree six, and
+$3/2-2\gamma>0$, so Lemma~\ref{lem:finite-multiplicative} applies.
+
+At $s=2$, exact local $C_3$ forces $E$ to project onto each
+coordinate. Its only $C_2$-invariant possibilities in $\F_3^2$ are
+the diagonal, the antidiagonal, and the full plane. Coprimality
+splits the extension, giving $C_6,S_3,C_3\times S_3$, respectively,
+all in their original degree-six actions. The first has full fibre
+$|\operatorname{Hom}(J,C_6)|\leq3^{b/3}$. For the other two use
+the common source $F=J'J^2$, $B=J/F$. The semisimple module
+$H_1(F,\F_3)$ has trivial multiplicity $d=d_3(J)$ and nontrivial
+sign multiplicities $a_\theta$, with
+$d+\sum a_\theta\leq b/3$. Coprime inflation--restriction gives
+\[
+ |\Epi(J,S_3)|=3\sum_{\theta\ne0}(3^{a_\theta}-1),\qquad
+ |\Epi(J,C_3\times S_3)|
+   =(3^d-1)3\sum_{\theta\ne0}(3^{a_\theta}-1).
+\]
+The second joint map is onto because $C_3,S_3$ have no common
+nontrivial quotient. Each expression is at most $3^{b/3+1}$.
+The complete normal quotients of $C_3\times S_3$ are
+$1,C_2,C_3,C_6,S_3,C_3\times S_3$; the cyclic terms have the same
+abelianization bound. Thus $Z_J(U)\leq C_U2^{\gamma b}$.
+Its slope is less than $h(6)/8=3/4$, so direct normalization
+already gives an exponentially small row and zero scalar.
+\end{proof}
+
+\subsection{Signed modules on a bounded number of triples}
+For exact natural $S_3$ on $s$ blocks write
+\[
+ E=U\cap C_3^s,\quad R=U/E\leq C_2\wr T,\quad
+ D=\ker(R\longrightarrow T)\leq C_2^s.
+\]
+These are the actual kernel and actual top of the chosen block
+system. If $E=1$, the whole block kernel is trivial: a nontrivial
+normal local image is $C_3$ or $S_3$, and in the latter case its
+derived subgroup projects onto $C_3$. Hence $U\cong T$ has faithful
+degree $s$ and satisfies Theorem~\ref{thm:finite-comparator}.
+If an ambient signed ternary module and its dual have capacity $H_3$,
+the full-chief argument gives
+\begin{equation}\label{eq:bounded-s3-layer}
+ Z_J(U)\leq C_U2^{\gamma H_3b}Z_J(R).
+\end{equation}
+Adding a binary capacity $H_2$ gives the same bound with
+$2^{(\gamma H_3+H_2/2)b}Z_J(T)$. These bounds include all proper
+kernels, normal graphs and nonsplit extensions.
+
+\begin{lemma}[Signed isotypes]\label{lem:signed-isotypes}
+Assume $D\ne1$. Its coordinate characters are all nonzero and have
+$q$ distinct values, each repeated $a=s/q$ times. They span $D^*$;
+thus $q\mid s$, $d=\dim D\leq q\leq2^d-1$, and $q=1,2$ forces
+$d=1,2$, respectively. If $a$ is a power of two or $a=3$, every
+submodule of the signed ambient module and of its dual is cyclic.
+\end{lemma}
+\begin{proof}
+Transitivity makes the character multiplicities equal, and their
+common kernel is zero because $D$ is its actual coordinate image.
+The idempotents of $\F_3[D]$ decompose a submodule into isotypes.
+The stabilizer of one isotype acts transitively on its $a$ coordinates
+by signed permutations. If $a$ is a power of two, a transitive Sylow
+two-subgroup of its coordinate image lifts to a two-group of signed
+permutations. The coordinate module is cyclic and semisimple over
+this group; an equivariant projection of a cyclic generator generates
+any submodule. If $a=3$, a Sylow three-subgroup maps isomorphically
+onto a coordinate three-cycle. Its signs have product one, so it
+untwists to the regular $\F_3[C_3]$ module, whose ideals are cyclic.
+Transport a generator of the chosen isotype by $R$ to generate all
+isotypes. Signed permutation matrices identify the dual with the
+original module. Quotients of cyclic modules are cyclic as well.
+\end{proof}
+
+\begin{lemma}[Two common-source onto bounds]\label{lem:cyclic-dual-onto}
+(i) Let $V$ be elementary abelian of order $3^e$, and $R$ a
+two-group acting faithfully with cyclic dual $V^*$. Then
+\[
+ |\Epi(J,V\rtimes R)|\leq3^e|\mathrm{GL}_e(3)|3^{b/3}.
+\]
+The same conclusion holds for $R=C_6$ acting faithfully on a single
+unipotent ternary block, with its involution acting as $-1$.
+
+(ii) If $X$ has a normal Sylow $p$-subgroup $P$ with cyclic center
+and $C_X(P)=Z(P)$, then
+\[
+ |\Epi(J,X)|\leq |Z(P)|\,|\operatorname{Aut}(P)|p^{b/(p-1)}.
+\]
+\end{lemma}
+\begin{proof}
+For (i), fix $F=O^2(J)$ in the two-group case and $F=J'$ in the
+$C_6$ case. Formation residuals commute with onto maps: the image
+of the source residual has the required quotient type, and the
+preimage of the target residual has that type, proving both
+inclusions. Consequently every map under consideration sends this
+same $F$ onto $V$. Put $B=J/F$, $A=H_1(F,\F_3)$.
+The restriction is an onto $B$-map $A\to V_\theta$ and dualizes
+to an injection $\iota:V_\theta^*\to A^*$. Fix a cyclic vector
+$v_0\in V^*$. Its image $f$ determines the whole submodule
+$\langle Bf\rangle$. For each $f$, at most
+$|\mathrm{GL}_e(3)|$ identifications with $V^*$ are possible, and
+faithfulness determines the quotient map $\theta$ uniquely from
+each identification. Thus all quotient maps and onto restrictions
+together have at most $|\mathrm{GL}_e(3)|3^{\dim A}$ choices.
+For fixed restriction the lift fibre is empty or a cocycle torsor
+on $B$. Averaging gives $H^1(B,V_\theta)=0$ when $B$ is a
+two-group. In the second case $B$ is abelian and its two-primary
+Hall subgroup has zero invariants because it maps onto the scalar
+involution; averaging and inflation--restriction give the same
+conclusion. The torsor has size at most $|V|$. Finally
+$\dim A=d_3(F)\leq b/3$.
+
+For (ii), fix $F=O^{p'}(J)$ and its largest $p$-group quotient
+$Q=F/O^p(F)$. Every onto map to $X$ sends $F$ onto $P$ and factors
+there through $Q$. Since $F\leq S_b$,
+$|Q|\leq p^{v_p(b!)}\leq p^{b/(p-1)}$.
+A faithful linear character of $Z(P)$ induces an irreducible
+constituent faithful on $P$: every nontrivial normal subgroup of a
+$p$-group meets its center. Fix its faithful character $\chi$.
+Pullback along onto maps $Q\to P$ gives irreducible characters of
+$Q$; one pulled-back character determines the kernel and therefore
+at most $|\operatorname{Aut}(P)|$ maps. The degree-square identity
+bounds their number by $|\operatorname{Aut}(P)||Q|$.
+For a fixed onto restriction, two extensions to $J$ differ in
+$C_X(P)=Z(P)$, so their quotient maps coincide. Their differences
+form a cocycle torsor on the $p'$-group $J/F$ with coefficients
+$Z(P)$. Coprime averaging bounds its size by $|Z(P)|$.
+\end{proof}
+
+\begin{proposition}[Two symmetric triples]\label{prop:two-s3}
+All exact-local-$S_3$ actions on two blocks satisfy a complete finite
+forward estimate.
+\end{proposition}
+\begin{proof}
+The block stabilizer is its kernel, so its binary image is either
+$C_2^2$ or diagonal $C_2$. In the first case distinct signs force
+$E=\F_3^2$ and $U=S_3\wr C_2$. The ternary kernel is faithful
+irreducible for $R=D_8$, and Lemma~\ref{lem:derived-affine} gives
+$Z_J(U)\leq Z_J(D_8)+216\,3^{b/6}$. The comparator degree is four.
+In the diagonal case $R$ is $C_4$ or $V_4$. Coprimality splits
+the extension. For $C_4$, its square is $-I$, so $E=\F_3^2$ is
+irreducible and the derived-source bound gives
+$Z_J(U)\leq Z_J(C_4)+18\,3^{b/3}\leq19\,3^{b/3}$.
+For $V_4$, the ambient module has two distinct sign lines; choosing
+one or both gives $S_3\times C_2$ or $S_3^2$.
+The former has a faithful degree-five action.
+
+For the latter use the same $F=J'J^2$ and sign multiplicities
+$a_\theta$ as above. An ordered pair of onto maps to $S_3$ is onto
+$S_3^2$ precisely when its binary characters differ: a proper
+subdirect has common quotient $C_2$ or $S_3$, forcing equality.
+Hence
+\[
+ |\Epi(J,S_3^2)|=9\sum_{\theta\ne\psi}
+ (3^{a_\theta}-1)(3^{a_\psi}-1)\leq18\,3^{b/3}.
+\]
+The last inequality expands $\prod_\theta(1+(3^{a_\theta}-1))$
+and uses $\sum a_\theta\leq b/3$. Its complete normal menu is
+\[
+ Z_J(S_3^2)=|\Epi(J,S_3^2)|+2|\Epi(J,S_3\times C_2)|
+ +2|\Epi(J,S_3)|+|\Epi(J,V_4)|+3|\Epi(J,C_2)|+1.
+\]
+Indeed intersection with $C_3^2$ is zero, one of its two sign
+lines, or the full plane; self-centralization resolves the zero
+case, and the other cases give exactly these quotients. Thus
+$Z_J(S_3^2)\leq2Z_J(S_3\times C_2)+18\,3^{b/3}$.
+Every slope is below $h(6)/8$ and every comparator degree is below
+six, so Theorem~\ref{thm:finite-comparator} finishes all cases.
+\end{proof}
+
+\begin{proposition}[Four blocks with two signs]\label{prop:four-s3-two-signs}
+All exact-local-$S_3$ four-block actions whose binary kernel has two
+distinct coordinate characters have a complete finite forward estimate.
+\end{proposition}
+\begin{proof}
+Their equal character classes have size two, $D=C_2^2$, and the
+top preserves the two-class partition. Thus $T\leq D_8$ has order
+four or eight, and $R$ is a two-group of order sixteen or thirty-two.
+Coprimality splits $U=E\rtimes R$. The two isotypes have equal
+dimension in every submodule, so nonzero $E$ has dimension two or
+four. Every two-dimensional section has monomial image exactly
+$D_8\leq\mathrm{GL}_2(3)$: its diagonal signs are independent
+and its two lines are interchanged. Its action kernel $K$ in $R$
+has order two or four. Such a normal kernel has a central series
+of at most two order-two factors, first by meeting $Z(R)$ and
+then because a normal subgroup of order two is central.
+
+Put $P=\F_3^2\rtimes D_8=S_3\wr C_2$ in its faithful degree-six
+action and $Q_*=P\times C_2^2$ in degree ten. The central series,
+Lemma~\ref{lem:central-comparator}, and the literal quotient-menu
+inclusion imply $Z_J(V\rtimes R)\leq A_VZ_J(Q_*)$ for every
+two-dimensional section $V$, with a fixed finite $A_V$.
+They also give $Z_J(R)\leq A_RZ_J(Q_*)$ whenever such a section
+exists. No splitting of the central extensions is required.
+
+If $E$ is the full four-dimensional module, it is faithful and its
+dual is cyclic: the coordinate module is cyclic and semisimple for
+the two-group $R$. Lemma~\ref{lem:cyclic-dual-onto}(i) bounds its
+onto maps by $C_0 3^{b/3}$, where
+$C_0=81|\mathrm{GL}_4(3)|$. A normal subgroup disjoint from $E$
+centralizes $E$, so is trivial. All other proper intersections are
+two-dimensional sections. Consequently
+\[
+ Z_J(U)\leq |\Epi(J,U)|+Z_J(R)
+       +\sum_{\substack{I<E\\\dim I=2, I\ R\text{-stable}}}Z_J(U/I).
+\]
+If $E$ is reducible, the preceding comparisons bound this by
+$B_UZ_J(Q_*)+C_0 3^{b/3}$. If it is irreducible, the sum is empty
+and use $R$ in faithful degree eight instead. If $\dim E=2$, the
+central comparison already bounds the entire fibre. These are all
+normal strata. Comparator degrees at most ten and slope $\gamma$
+are strictly below the required width-twelve thresholds.
+\end{proof}
+
+\begin{proposition}[Three blocks with one sign]\label{prop:three-s3-one-sign}
+All exact-local-$S_3$ three-block actions with diagonal binary kernel
+have a complete finite forward estimate.
+\end{proposition}
+\begin{proof}
+The top is $C_3$ or $S_3$. A lifted coordinate three-cycle of order
+three untwists its signs. In the first case $R=C_2\times C_3$.
+In the second the determinant is nontrivial on the scalar binary
+kernel and splits $R\to S_3$; a transposition conjugating the
+three-cycle to its inverse has constant signs. Thus after diagonal
+rescaling $R=C_2\times S_3$ acts by scalar signs and ordinary
+coordinate permutations. Its nonzero invariant ternary submodules
+are exactly the three ideals in $\F_3[t]/(t^3)$, of lengths
+$e=1,2,3$. All are stable under $S_3$ as well.
+The scalar involution has zero invariants on the module and on
+every quotient. Averaging and inflation--restriction give
+$H^1(R,\F_3^3/E)=0$; a translation therefore removes the cocycle
+of the actual embedded subgroup. Hence $U_e=E_e\rtimes R$.
+
+For top $C_3$, $U_1=S_3\times C_3=:Q$, faithfully of degree six.
+At $e=2,3$, the action is faithful, $U_e'=E_e$, and the dual is
+cyclic. Lemma~\ref{lem:cyclic-dual-onto}(i) gives
+$|\Epi(J,U_e)|\leq C_e3^{b/3}$.
+Normal intersections with $E_e$ form its uniserial chain. At
+surviving length at least two, faithfulness forces a normal subgroup
+disjoint from the ternary kernel to be trivial. At length one the
+quotient is $Q$, whose normals disjoint from its first ternary line
+are $1$ and its central $C_3$. There are no mixed normal graphs,
+because the involution inverts one line and fixes the other.
+Thus, exactly,
+\begin{align*}
+ Z_J(U_1)&=Z_J(Q),\\
+ Z_J(U_2)&=Z_J(Q)+|\Epi(J,U_2)|,\\
+ Z_J(U_3)&=Z_J(Q)+|\Epi(J,U_2)|+|\Epi(J,U_3)|.
+\end{align*}
+
+For top $S_3$, $U_1=S_3^2=:Q_*$, again faithfully of degree six.
+At lengths two and three the action of $R$ is faithful. The normal
+Sylow three-subgroup $P_e=E_e\rtimes C_3$ has center the first
+ideal $C$, of order three, and $C_{U_e}(P_e)=C$. This follows
+since centralizing $E_e$ forces an element into $E_e$, where
+centralizing the top three-cycle forces it into $C$.
+Lemma~\ref{lem:cyclic-dual-onto}(ii) gives
+$|\Epi(J,U_e)|\leq3|\operatorname{Aut}(P_e)|3^{b/2}$.
+Every nontrivial normal subgroup contains $C$, by the uniserial
+chain and faithfulness. Moreover $U_2/C\cong Q_*$ and
+$U_3/C\cong U_2$. To see the necessary twist, the length-one
+quotient is the sign representation of $S_3$, while
+$(\F_3^3/C)^*$ is its augmentation module. The dual of a
+two-dimensional module is its determinant-inverse twist; here the
+determinant is the sign of the $S_3$ factor. Multiplying the scalar
+$C_2$ coordinate of $R$ by this sign is an automorphism of $R$
+and supplies both asserted abstract identifications. Consequently
+the same three displayed identities hold with $Q_*$ in place of
+$Q$ and these new onto tails.
+Both comparators have degree six, physical $h(9)=8$, and the
+largest tail slope $(\log_2 3)/2$ is less than one. Apply
+Theorem~\ref{thm:finite-comparator}.
+\end{proof}
+
+\begin{theorem}[All bounded symmetric-three counts]\label{thm:bounded-s3}
+Every actual action with exact local natural $S_3$ and
+$s\in\{2,3,4,6,8,12,18\}$ blocks has a complete exponentially
+small forward row and a quadratically small scalar. Together with
+Theorem~\ref{thm:prime-s3-capacity}, this covers every imprimitive
+exact-local-$S_3$ action.
+\end{theorem}
+\begin{proof}
+The $E=1$ case was disposed of above. When $D=1$, use
+\eqref{eq:bounded-s3-layer} with comparator $T$ and the respective
+capacities
+\[
+ \begin{array}{c|rrrrrr}s&3&4&6&8&12&18\\\hline
+ H_3&1&1&2&1&3&7.\end{array}
+\]
+These follow from Lemma~\ref{lem:refined-capacity}; at six use
+the semiregular three-cycle argument of Proposition~\ref{prop:bounded-c3},
+lifting through a binary kernel by a Sylow three-subgroup. Every
+margin $(h(3s)-s)/8-\gamma H_3$ is positive. At $s=2$, $D=1$
+contradicts the exact local $S_3$ image; Proposition~\ref{prop:two-s3}
+covers that count completely.
+
+At $s=8$, irrespective of $D$, the prime-to-three bound is $H_3=1$;
+retain $R$ in degree sixteen, with margin $1-\gamma>0$.
+At $s=18$, a soluble transitive subgroup of $T$ gives $H_3\leq5$
+and $H_2\leq2$, so the degree-eighteen comparator $T$ has margin
+$7/2-5\gamma>0$. Otherwise use the actual semiregular $C_3$
+witness for every nonsoluble degree-eighteen action recorded in the
+finite input to Theorem~\ref{thm:three-twentieths}. Its lift through
+$D$ has order three. The signed ternary module and its dual
+untwist to six regular modules over $\F_3[C_3]$, so $H_3\leq6$.
+The same comparator has margin $7/2-6\gamma>0$.
+
+Now assume $D\ne1$ and use the actual isotype count $q$.
+At $s=12$, if $q\leq2$, then $d=q\leq2$ and $H_3\leq3$.
+For each literal normal quotient of $R$, a fixed map to its top
+quotient has at most $2^{db/2}$ restrictions into its binary
+kernel, times a fixed cocycle constant. Thus
+$Z_J(R)\leq C_R2^{db/2}Z_J(T)$, including all normal graphs.
+The margin is at least $2-3\gamma>0$.
+If $q\geq3$, its isotype size is $4,3,2$ or one;
+Lemma~\ref{lem:signed-isotypes} gives $H_3=1$ and the
+degree-twenty-four comparator $R$ has margin $3/2-\gamma>0$.
+At $s=6$, $q\geq2$ similarly gives isotype sizes $3,2,1$ and
+margin $3/4-\gamma>0$ with degree-twelve comparator $R$.
+
+At $s=4,6$, the remaining $q=1$ means that $D$ is central of
+order two in $R$. Combine Lemma~\ref{lem:central-comparator}
+with the capacities $H_3=1,2$. The comparator $T\times C_2$
+has degrees six and eight; its margins are respectively
+$3/4-\gamma>0$ and $5/4-2\gamma>0$.
+The $s=4,q=2$ branch is Proposition~\ref{prop:four-s3-two-signs}.
+For $s=4,q=4$ or $s=3,q=3$, every coordinate sign space is
+distinct. Transitivity makes $E$ the whole ambient module,
+irreducible and faithful for $R$. Since $R$ is soluble, the
+common-derived estimate Lemma~\ref{lem:derived-affine} gives
+$Z_J(U)\leq Z_J(R)+C_U2^{\gamma b}$; the comparator degrees
+$2s<h(3s)$ and tail slopes meet Theorem~\ref{thm:finite-comparator}.
+The only remaining case is $s=3,q=1$, covered by
+Proposition~\ref{prop:three-s3-one-sign}.
+
+The listed cases exhaust all divisors $q\mid s$ and the zero
+kernels. Each multiplicative bound has strictly positive margin,
+so Lemma~\ref{lem:finite-multiplicative} applies. There are finitely
+many actual actions in these widths. Choose one block system and
+the first applicable certificate for each action, then one
+any-hot/cold partition on the complete accepted pointing union.
+The cold coefficients are summed with their original
+$\Delta(n,n-w)/a(U)$, and the hot sums with their original
+$((n-w)!a(U)p_nG_{\lfloor n/2\rfloor})^{-1}$.
+The finite sum preserves exponential and quadratic decay.
+There is no additional action weight for isotypes, quotient
+representations, or alternative block systems.
+\end{proof}

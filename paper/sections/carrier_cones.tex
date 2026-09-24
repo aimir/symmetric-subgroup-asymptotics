@@ -1,0 +1,231 @@
+\section{The finite carrier reduction and its two rational cones}
+\label{sec:carrier-cones}
+The finite local input consists of the eight master groups and all their
+literal normal kernels. The respective numbers of kernels are
+$27,13,28,2911,2911,2911,2292,2915$. Their generators and all
+central-involution extension edges are supplied in the carrier normal
+certificate. Lemma~\ref{lem:binary-coverage} proves completeness from
+these edges. For each kernel the checked tuple is
+$(k,n,m,a_2,c,g)$ as in Lemma~\ref{lem:carrier-transition} and
+\eqref{eq:carrier-epi}. In particular the maximum defining $m$ is
+computed over the same complete normal list, and the original quotient
+is used for $c,g$.
+
+For the degree-sixteen groups the identities $\Phi(G)=G'$ permit
+$a_2\leq m$: here $N^2[N,G]\leq N\cap G'$. Their rows are dominated
+by the following twelve scale-two rows; the other three blocks below
+are the scale-one rows of $X,J,P$. Domination is simultaneous on the
+pair supports and both marks $k,q=\max(m,a_2)$, including every cross
+column between degrees eight and sixteen.
+\[
+\begin{array}{c|rrrrrr}
+H16&k&n&m&a_2&c&g\\\hline
+0&0&0&0&0&1&6\\
+1&1&1&1&1&2&5\\
+2&1&2&1&1&4&4\\
+3&2&3&2&2&3&3\\
+4&2&4&2&2&4&2\\
+5&3&6&3&3&6&0\\
+6&4&6&4&4&5&0\\
+7&4&7&4&4&4&0\\
+8&4&8&4&4&3&0\\
+9&5&11&3&3&1&0\\
+10&5&11&4&4&0&0\\
+11&6&12&3&3&0&0\\
+\end{array}
+\]
+\[
+\begin{array}{c|rrrrrr}
+X&k&n&m&a_2&c&g\\\hline
+0&0&0&0&0&1&3\\
+1&1&1&1&0&2&2\\
+2&1&2&1&1&2&1\\
+3&1&3&1&1&1&1\\
+4&1&4&2&2&2&0\\
+5&2&3&2&1&3&0\\
+6&2&4&2&1&2&0\\
+7&2&5&2&2&1&0\\
+8&3&6&2&2&0&0\\
+\end{array}
+\]
+\[
+\begin{array}{c|rrrrrr}
+J&k&n&m&a_2&c&g\\\hline
+0&0&0&0&0&1&3\\
+1&1&1&1&0&1&2\\
+2&1&2&1&1&2&1\\
+3&1&3&1&1&1&1\\
+4&1&3&1&1&3&0\\
+5&1&4&1&1&2&0\\
+6&1&5&1&2&1&0\\
+7&2&4&1&1&2&0\\
+8&2&5&1&1&1&0\\
+9&2&6&1&2&0&0\\
+\end{array}
+\]
+\[
+\begin{array}{c|rrrrrr}
+P&k&n&m&a_2&c&g\\\hline
+0&0&0&0&0&1&4\\
+1&1&1&1&0&1&3\\
+2&1&2&1&1&2&2\\
+3&1&3&1&1&2&1\\
+4&1&4&1&1&1&1\\
+5&1&5&2&2&2&0\\
+6&2&4&2&1&3&0\\
+7&2&5&2&1&2&0\\
+8&2&6&2&2&1&0\\
+9&3&7&2&2&0&0\\
+\end{array}
+\]
+
+The normalized representatives are
+\[
+\begin{array}{c|rrrrrr|c}
+ &k&n&m&a_2&c&g&s\\\hline
+ H_9&5&11&3&3&1&0&2\\
+ X_{\rm whole}&3&6&2&2&0&0&1\\
+ P_0&0&0&0&0&1&4&1\\
+ P_1&1&1&1&0&1&3&1\\
+ P_2&1&2&1&1&2&2&1\\
+ P_6&2&4&2&1&3&0&1\\
+ P_{\rm whole}&3&7&2&2&0&0&1
+\end{array}
+\]
+For completeness, the following list gives a dominating representative
+for each row in each displayed block, in its displayed order.
+The last representative has exactly the same normalized pair row and
+marks as $X_{\rm whole}$, so they are merged. All comparisons here are
+finite rational inequalities of the explicit support functions.
+\[
+H16:\quad (P_0,P_1,P_2,P_2,P_2,P_6,P_6,P_6,P_6,H_9,X_{\rm whole},X_{\rm whole}).
+\]
+\[
+X:\quad (P_0,P_2,P_2,P_2,P_6,P_6,P_6,P_6,X_{\rm whole}).
+\]
+\[
+J:\quad (P_0,P_1,P_2,P_2,P_2,P_2,P_6,P_6,P_6,X_{\rm whole}).
+\]
+\[
+P:\quad (P_0,P_1,P_2,P_2,P_2,P_6,P_6,P_6,P_6,X_{\rm whole}).
+\]
+
+The reduction of the actual degree-sixteen tuples to the twelve rows
+also checks all degree-eight columns, and the two marks, in the
+committed transition certificate. Thus the preceding reduction does
+not presume that domination inside a smaller submatrix survives the
+addition of new colours. Scaling and merging give exactly
+\eqref{eq:carrier-B}.
+
+It remains to prove the scalar inequality used in
+Theorem~\ref{thm:carrier-cross}. Put $p=\sum_i p_i$ and
+\[
+ \mathcal D=R^2/4+(139/328)Rp+(627/2624)p^2-\mathcal E.
+\]
+In the first cone let $(L,J,S)=(\ell,j-2\ell,R-j)$, and in the second
+let $(A,C,S)=(j,2\ell-j,R-2\ell)$. These are nonnegative in their
+respective cones. Let $z$ consist of $p_1,\ldots,p_6$ followed by the three
+corresponding cone coordinates.
+Expansion gives $5248\mathcal D=z^{\mathsf T}M_\nu z$.
+The upper left $6\times6$ block, common to both $M_\nu$, is
+\[
+M_0=\begin{pmatrix}
+1049&1008&-140&106&-58&24\\
+1008&1254&-550&-222&-386&-222\\
+-140&-550&1254&598&434&-386\\
+106&-222&598&762&598&-58\\
+-58&-386&434&598&598&-58\\
+24&-222&-386&-58&-58&270
+\end{pmatrix}.
+\]
+Write $M_\nu=\begin{pmatrix}M_0&D_\nu\\D_\nu^{\mathsf T}&E_\nu\end{pmatrix}$.
+The remaining blocks are
+\[
+D_A=\begin{pmatrix}
+-400&-528&1112\\
+-1056&-856&1112\\
+2224&1112&1112\\
+912&456&1112\\
+912&456&1112\\
+-400&-200&1112
+\end{pmatrix},\qquad E_A=\begin{pmatrix}
+5248&1312&-1312\\
+1312&1312&-1312\\
+-1312&-1312&1312
+\end{pmatrix}.
+\]
+\[
+D_B=\begin{pmatrix}
+-200&-200&1112\\
+-528&-528&1112\\
+1112&1112&1112\\
+456&456&1112\\
+456&456&1112\\
+-200&-200&1112
+\end{pmatrix},\qquad E_B=\begin{pmatrix}
+1312&0&-656\\
+0&3936&1968\\
+-656&1968&1312
+\end{pmatrix}.
+\]
+The following rational matrices give positive-semidefinite parts.
+\begingroup\setlength\arraycolsep{2pt}\scriptsize
+\[
+P_A=\begin{pmatrix}
+817&804&-548&-328&-393&-\frac{540}{11}&-896&-688&688\\
+804&1254&-550&-288&-386&-222&-1129&-856&856\\
+-548&-550&1254&423&434&-386&1836&1112&-1112\\
+-328&-288&423&577&237&-\frac{3987}{44}&563&323&-323\\
+-393&-386&434&237&490&-58&646&363&-363\\
+-\frac{540}{11}&-222&-386&-\frac{3987}{44}&-58&270&-\frac{19363}{44}&-200&200\\
+-896&-1129&1836&563&646&-\frac{19363}{44}&4645&1312&-1312\\
+-688&-856&1112&323&363&-200&1312&1312&-1312\\
+688&856&-1112&-323&-363&200&-1312&-1312&1312
+\end{pmatrix}.
+\]
+\[
+P_B=\begin{pmatrix}
+729&721&-469&-236&-318&-\frac{602}{11}&-416&-480&86\\
+721&1254&-550&-296&-386&-222&-565&-585&-2\\
+-469&-550&1254&433&434&-386&917&950&-407\\
+-236&-296&433&542&241&-\frac{4061}{44}&275&197&-56\\
+-318&-386&434&241&469&-58&303&231&-65\\
+-\frac{602}{11}&-222&-386&-\frac{4061}{44}&-58&270&-\frac{2413}{11}&-\frac{10005}{44}&\frac{8581}{44}\\
+-416&-565&917&275&303&-\frac{2413}{11}&1254&-134&-813\\
+-480&-585&950&197&231&-\frac{10005}{44}&-134&2690&591\\
+86&-2&-407&-56&-65&\frac{8581}{44}&-813&591&891
+\end{pmatrix}.
+\]
+\endgroup
+Subtraction gives $M_A-P_A\geq0$ entrywise, with entries at most
+$2224$, and $M_B-P_B\geq0$ entrywise, with entries at most $1519$.
+These assertions are direct comparisons of the displayed rational
+entries. Both matrices annihilate
+$v=(0,17,21,0,0,44,0,0,0)$; $P_A$ also annihilates
+$w=(0,0,0,0,0,0,0,1,1)$.
+Delete coordinates six and nine from $P_A$. The successive leading
+principal determinants of the retained matrix are
+\[
+\begin{gathered}
+817,\quad378102,\quad335067392,\quad132631407594,\\
+35034163435774,\quad63581756789450739,\quad2100371145348629273.
+\end{gathered}
+\]
+They are positive. The omitted coordinates of $(v,w)$ form
+$\operatorname{diag}(44,1)$, so subtracting their unique linear
+combination carries any vector into this retained subspace without
+changing its quadratic value. Thus $P_A$ is positive semidefinite.
+Delete coordinate six from $P_B$. Its retained leading principal
+determinants are
+\[
+\begin{gathered}
+729,\quad394325,\quad370093856,\quad140632346331,\\
+36346448139435,\quad19760569015182064,\\
+7216647669027584752,\quad1335792379687239644084.
+\end{gathered}
+\]
+Again they are positive, and the omitted coordinate of $v$ is $44$,
+so the same kernel elimination proves that $P_B$ is positive
+semidefinite. Hence $z^{\mathsf T}M_\nu z\geq0$ for every nonnegative
+$z$. The two cones exhaust all $0\leq j\leq R$, $0\leq\ell\leq R/2$,
+including $j<\ell$, proving the required scalar inequality.

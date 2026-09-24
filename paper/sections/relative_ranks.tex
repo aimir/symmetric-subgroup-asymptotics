@@ -1,0 +1,349 @@
+\section{Relative heads of actual transitive actions}\label{sec:relative-ranks}
+For $N\lhd A$ and a prime $p$, write
+\[
+ h_{p,A}(N)=\dim_{\mathbb F_p}N/(N^p[N,A]),\qquad
+ \rho_A(N)=h_{2,A}(N),\quad \delta_A(N)=h_{3,A}(N).
+\]
+The distinction between a relative head and the abelianization of an
+abstract isomorphic group is essential. For $B\leq C$ normal in $A$,
+the quotient word maps onto the corresponding quotient word downstairs;
+its kernel is an image of the head of $B$. Consequently
+\begin{equation}\label{eq:relative-head-chain}
+ h_{p,A}(C)\leq h_{p,A}(B)+h_{p,A/B}(C/B).
+\end{equation}
+If $G\leq\prod_{i=1}^t A_i$ is full on its actual orbit actions, filter
+$G$ by the kernels of projection onto coordinates $i+1,\ldots,t$.
+The image of the $i$th factor is a normal subgroup $N_i\lhd A_i$.
+Conjugation on that factor is exactly the action of $A_i$, since the
+coordinate projection of $G$ is onto. Thus
+\begin{equation}\label{eq:orbit-relative-head}
+ d_p(G)\leq\sum_i h_{p,A_i}(N_i).
+\end{equation}
+This assertion does not add the ranks of the full coordinate images.
+
+\begin{theorem}[Binary first head]\label{thm:first-head}
+For a faithful transitive $U\leq S_w$, $w\geq2$, and $N\lhd U$,
+\[
+ \rho_U(N)\leq3w/8,
+\]
+except for the whole-action pairs $(U,U)$ of the four critical actions
+in Table~\ref{tab:critical}. Their heads have dimensions $1,2,2,4$.
+\end{theorem}
+\begin{proof}
+We use strong induction on $w$. Tracey's induced-module theorem
+\cite[Theorem~1.6]{Tracey2018} gives, for a submodule of an induced
+binary module with fibre dimension $a$ and index $q\geq2$, at most
+$aE(q,2)\leq aq/2$ module generators. Indeed, if $q$ has odd part
+greater than one, the largest-prime-power branch is at most $q/3$;
+if $q=2^k$, the other branch is
+$\lfloor\sqrt{2/\pi}\,q/\sqrt{k}\rfloor$, which is at most $q/2$
+for $k\geq3$ and equals $1,2$ for $k=1,2$.
+
+Suppose first that $N$ is intransitive, with $q\geq2$ orbits of size
+$m$. Let $K$ be the kernel of $U$ on these orbits and let $H$ be its
+transitive action on one of them. The faithful embedding of $K$ in
+$H^q$ and its coordinate-kernel filtration give
+\[
+ \rho_U(N)\leq\rho_K(N)\leq\sum_{i=1}^q\rho_H(E_i),
+ \qquad E_i\lhd H.
+\]
+If $H$ is not critical, induction suffices. In each critical action
+every proper normal subgroup has relative head at most $3m/8$:
+for $C_2,V_4$ this is immediate; in $D_8$, squares and commutators
+kill its central involution in each proper noncentral normal subgroup;
+in $E_8$, every noncentral normal subgroup has commutator with $E_8$
+equal to its centre and has image of dimension at most three modulo
+that centre. These observations also suffice if the common image of
+$N$ on an orbit is proper in $H$.
+
+The remaining case is a subdirect $N\leq H^q$ with $H$ critical.
+The block stabilizer induces the actual local automorphisms on every
+characteristic elementary section of $H$; the sum of its conjugate
+sections is its induced module of index $q$. For $C_2,V_4$ the preceding
+module bound gives $q/2,q$. For $D_8,E_8$, use both
+$N\cap Z(H)^q$ and its image in $(H/Z(H))^q$. Their fibre dimensions
+are respectively $(1,2)$ and $(1,4)$, so
+\eqref{eq:relative-head-chain} gives $3q/2,5q/2$, respectively.
+All four bounds are at most $3mq/8$. In particular the central line
+of a dihedral block has not been omitted.
+
+If $N$ is transitive, then
+\[
+ \rho_U(N)\leq d(N)\leq
+ \left\lfloor\frac{\sqrt3\,w}{2\sqrt{\log_2w}}\right\rfloor
+\]
+by \cite[Theorem~1.1]{Tracey2021Sharp}. This is at most $3w/8$ for
+$w\geq38$, and also for
+\[w\in\{16,19,24,27,30,32,33,35,36\}.\]
+The remaining finite input checks the whole heads in the complete
+transitive catalogues of degrees
+\[
+ 2,3,\ldots,23,25,26,28,29,31,34,37.
+\]
+Its only failures are the four critical actions. The catalogue
+classification is that of \cite{HoltRoyle2020,TransGrp365}; this slice
+has 7,259 action classes. A separate enumeration of all 233 transitive
+normal pairs in degrees $2,4,8$ shows that a critical transitive $N$
+has a head above $3w/8$ only when $U=N$ is the corresponding critical
+action. Thus the whole-head test is applied to the actual action of
+$N$, and the separate pair test handles its possible overgroups.
+The finite calculation constructs $N/(N^2[N,U])$ and verifies its
+elementary binary invariants; its precise bounded contract is recorded
+in Appendix~\ref{sec:certificates}. Together with the preceding
+induction this proves the assertion in all degrees.
+\end{proof}
+
+We next give the relative ternary bounds needed for the one-triple
+case. Let $\mathcal E_9$ consist of the four transitive actions
+$9T2,9T6,9T7,9T17$, of orders $9,27,27,81$.
+
+\begin{lemma}[Primitive inputs and block filtration]\label{lem:ternary-block}
+For a primitive action $R$ of degree $r$, let $a_3(R)$ count its
+composition factors of order three, with multiplicity. Then
+\[
+ a_3(R)\leq r/3,
+\]
+with equality only for the natural $C_3,S_3$ actions and the affine
+degree-nine actions of orders $216,432$. Outside these four actions,
+$a_3(R)<3r/10$. Every primitive normal pair has
+$\delta_R(N)<3r/20$, apart from the whole natural $C_3,A_4$ pairs.
+For a transitive $A$ with a minimal block system of $s$ blocks of size
+$r$, primitive block component $R$, top $T$, and block kernel $K$,
+\begin{equation}\label{eq:ternary-block-recurrence}
+ \delta_A(N)\leq a_3(R)E(s,3)+\delta_T(NK/K),\qquad
+ E(s,3)=\min\left\{
+ \left\lfloor\frac{s}{\sqrt{\pi\log_3s_3}}\right\rfloor,
+ \frac{s}{\operatorname{lpp}(s/s_3)}\right\}.
+\end{equation}
+The first entry is infinite if $s_3=1$.
+\end{lemma}
+\begin{proof}
+The primitive generator bound
+\cite[Theorem~1.1]{HoltRoneyDougal2013} gives
+$\delta_R(N)\leq\lfloor\log_2r\rfloor$; its exceptional natural
+$S_3$ case has zero relative ternary head. This proves the strict
+$3r/20$ bound for $r\geq34$: check $34\leq r\leq63$, and then
+use $20j<3\cdot2^j$ for $j\geq6$. The composition-length bound
+\cite[Theorem~1.3]{GlasbyPraegerRosaVerret2018} gives
+$a_3(R)\leq(8/3)\log_2r-4/3<3r/10$ for $r\geq45$.
+At $45$ this follows from $45^{16}<2^{89}$, and the difference
+is increasing thereafter. The bounded inputs enumerate all primitive
+normal pairs through degree 33 and all primitive composition series
+through degree 44. These are respectively 945 normal pairs in 253
+actions and 336 actions, with exactly the exceptions stated above.
+The weaker $r/3$ assertion follows immediately, including those
+exceptions. Classification completeness uses
+\cite{RoneyDougal2005Primitive,PrimGrp344}; the finite computations
+count order-three composition factors, rather than the ternary
+valuation of group order.
+
+For the block assertion, choose a chief series $R_i$ of $R$ and
+intersect $A$ and then $N$ with the subgroups $R_i^s$ of the wreath
+base. Tracey's local-chief construction
+\cite[Lemma~5.8]{Tracey2018} makes each elementary chief layer a
+submodule of the actual module induced from a block stabilizer;
+a nonabelian layer is zero or a perfect chief factor. A ternary
+layer of fibre dimension $a_i$ contributes at most $a_iE(s,3)$
+by the induced-module theorem. Other primes and perfect layers
+contribute zero. Sum this single chain using
+\eqref{eq:relative-head-chain}, and then its top quotient. The
+ternary fibre dimensions sum to $a_3(R)$, proving
+\eqref{eq:ternary-block-recurrence}.
+\end{proof}
+
+\begin{theorem}[Ternary relative stability]\label{thm:rank3-stability}
+Except for the whole natural $C_3,A_4$ pairs and the four whole
+$\mathcal E_9$ pairs, every transitive normal pair of degree $w$ obeys
+\[
+ \delta_A(N)\leq\lfloor5w/27\rfloor.
+\]
+Consequently the bounds $w/4$ and $2w/9$ hold outside, respectively,
+the whole natural $C_3$ pair and the two whole natural pairs.
+Positive equality in the former occurs only at natural $A_4$;
+equality in the latter occurs precisely at the four whole
+$\mathcal E_9$ pairs.
+For an arbitrary $G\leq S_m$ with $c$ actual regular $C_3$ orbits
+and $a$ actual natural $A_4$ orbits,
+\begin{equation}\label{eq:rank3-pattern}
+ 9d_3(G)\leq2m+3c+a.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The finite primitive input in Lemma~\ref{lem:ternary-block} already
+implies the assertion in the primitive case. The finite transitive
+normal-pair input in degrees $9,18$ says that the only two-ninth
+equalities are the four whole $\mathcal E_9$ pairs, that every other
+degree-nine pair has head at most one, and that every degree-eighteen
+pair has head at most three. These are complete finite catalogues,
+not assumptions on the possible block systems.
+
+Directly from the formula for $E$ one has
+\[
+ E(s,3)\leq10s/27\quad(s\notin\{2,6,18\}),\qquad
+ E(s,3)\leq7s/18\quad(s\notin\{2,6\}),
+\]
+and $E(2),E(3),E(4),E(6),E(9),E(18)=1,1,1,3,3,7$.
+For example, if the prime-to-three part is neither one nor two,
+the largest-prime-power branch is at most $s/4$; otherwise write
+$s=3^k$ or $2\cdot3^k$, and for $k\geq3$ use $\pi k>9$.
+The finitely many remaining powers give the displayed values. In
+particular
+\[
+ E(s,3)+\lfloor5s/27\rfloor\leq5s/9
+ \quad(s\notin\{2,6\}).
+\]
+Use induction in \eqref{eq:ternary-block-recurrence}. For an ordinary
+top and $s\notin\{2,6\}$, a block of size two has no ternary layer;
+a block of size three uses the last inequality; for $r\geq4$ use
+\[
+ 9\delta_A(N)\leq7rs/6+5s/3\leq5rs/3.
+\]
+For a whole $\mathcal E_9$ top, the bound is
+$\delta\leq3a_3(R)+2\leq r+2\leq5r/3$ for $r\geq3$;
+$r=2$ is immediate. For $s=2$ the bound is $a_3(R)\leq r/3$.
+For $s=6$ it is $3a_3(R)+1$: use the degree-eighteen input at
+$r=3$, the strict composition-density list for $4\leq r\leq8$,
+and $r+1\leq10r/9$ for $r\geq9$. Finally natural $C_3$ and
+$A_4$ tops give $a_3(R)+1$. In the $C_3$ case use the degree-nine
+input at $r=3$, $a_3(R)\leq1$ at $r=4$, and
+$r/3+1\leq5r/9$ for $r\geq5$; the $A_4$ case is immediate.
+These cases exhaust the induction.
+
+The coarser conclusions now follow by comparing $5/27<2/9<1/4$
+and inspecting the six stated exceptions. Apply the two-ninth bound
+to \eqref{eq:orbit-relative-head}; a natural $C_3$ layer costs three
+and a natural $A_4$ layer one above twice its degree. This proves
+\eqref{eq:rank3-pattern}. In particular a no-$C_3$, no-$A_4$
+residual has $d_3(G)\leq2m/9$; neither exclusion can be omitted.
+\end{proof}
+
+\begin{lemma}[Two small module refinements]\label{lem:ternary-refinements}
+In \eqref{eq:ternary-block-recurrence}, if the top contains a
+semiregular $C_3$, the kernel term can be replaced by $a_3(R)s/3$.
+If the top contains a soluble transitive subgroup, it can be replaced
+by $a_3(R)\beta(s)$, where
+\[
+ \beta(s)=[x^{\lfloor k(s)/2\rfloor}]
+       \prod_{q\mid s}(1+x+\cdots+x^{q-1})^{v_q(s)},\qquad
+ k(s)=\sum_{q\mid s}v_q(s)(q-1).
+\]
+\end{lemma}
+\begin{proof}
+Lift a generator of the semiregular $C_3$ to a $3$-element $x$ of
+the original group. Its order can exceed three. On an induced ternary
+module of fibre dimension $a$, bases of one fibre in each three-cycle
+generate the module over $\mathbb F_3[\langle x\rangle]$ with
+$as/3$ vectors. This algebra is the chain ring
+$\mathbb F_3[t]/(t^{3^e})$. For its finite modules, the number of
+generators is the dimension of the socle; a submodule has smaller
+socle, and a quotient cannot require more generators. This bounds
+the actual subquotient in the chief filtration, including fibre twists.
+
+For the second assertion retain the product-of-chains transversal in
+the proof of \cite[Theorem~4.13, Lemma~4.15(ii),
+Proposition~4.18]{Tracey2018}. Its rank polynomial is the product
+displayed above. The chain product has a symmetric chain
+decomposition, so its width is its middle coefficient $\beta(s)$.
+The leading-height argument in that proof chooses at most $a$ module
+generators per member of an antichain of this transversal. Keeping
+its actual width, before the subsequent binomial estimate, gives
+$a\beta(s)$. This uses the soluble-transitive-subgroup hypothesis
+on the actual coset action.
+\end{proof}
+
+\begin{theorem}[Necessary high ternary actions]\label{thm:three-twentieths}
+If a transitive normal pair $(A,N)$ of degree $w$ satisfies
+$20\delta_A(N)>3w$, its actual action is one of the following:
+\begin{enumerate}
+\item natural $C_3$ or natural $A_4$;
+\item $6T1,6T4,6T5,6T6$;
+\item $12T20,12T85,12T164,12T194,12T228,12T229,12T265$;
+\item a transitive $3$-group of degree $9$ or $27$.
+\end{enumerate}
+This is a necessary list of actions, not a claim that all their normal
+pairs have high relative head.
+\end{theorem}
+\begin{proof}
+Primitive actions are covered by Lemma~\ref{lem:ternary-block}.
+Use a minimal block system and put $v=a_3(R)$ in
+\eqref{eq:ternary-block-recurrence}. For a nonexceptional top and
+$s\notin\{2,6,18\}$, $E(s,3)\leq s/3$. If $r\geq5$, then
+\[
+ \frac{vs/3+5s/27}{rs}\leq\frac19+\frac5{27r}
+ \leq\frac4{27}<\frac3{20};
+\]
+at $r=4$, $v\leq1$ gives $14s/27<3(4s)/20$.
+At $s=18$ use $7v+3$; this is at most $27r/10$ for $r\geq9$,
+and $v\leq1,1,1,2,2$ handles $r=4,5,6,7,8$.
+Every transitive degree-six group contains a semiregular $C_3$:
+its Sylow $3$-subgroup either has order three and trivial point
+stabilizers, or is $C_3^2$ on two triples. Thus at $s=6$,
+Lemma~\ref{lem:ternary-refinements} gives $2v+1\leq9r/10$ for
+$r\geq4$. At $s=2$ the top head vanishes and the stronger primitive
+density bound gives $v\leq3r/10$, except possibly $r=9$.
+The complete degree-eighteen normal-pair input gives head at most two
+there and removes that exception.
+
+For a natural $C_3$ top the bound is $v+1$: the only $r\geq4$
+case not below $9r/20$ is $r=4$, giving degree twelve. A natural
+$A_4$ top gives $v+1\leq3r/5$. A whole $\mathcal E_9$ top gives
+$3v+2\leq27r/20$ for $r\geq6$, and $v\leq1$ deals with $r=4,5$.
+For binary blocks $v=0$, only the natural $C_3$ top can fail,
+giving degree six.
+
+It remains to treat ternary blocks, $r=3$. For a nonexceptional top,
+the scalar bound $E(s,3)+\lfloor5s/27\rfloor\leq\lfloor9s/20\rfloor$
+leaves, beyond $s=2,3,4,6,9$, only $18,27,54,81,162$.
+To verify completeness, write $s=3^kt$. If $t\notin\{1,2\}$,
+use $1/4+5/27<9/20$. If $t\in\{1,2\}$ and $k\geq5$,
+use $1/\sqrt{15}<143/540=9/20-5/27$. The remaining powers give
+exactly the stated finite set. The chain widths at its five degrees
+are $5,7,13,19,35$; adding $\lfloor5s/27\rfloor$ gives
+$8,12,23,34,65$, all below the required bounds. This handles tops
+containing a soluble transitive subgroup. In prime-power degree a
+Sylow subgroup is transitive (compare its order with a point
+stabilizer), so it handles $s=27,81$ automatically.
+
+For completeness the nonsoluble seams use the following bounded
+inputs: every nonsoluble degree-eighteen action has a semiregular
+$C_3$ and all its relative heads are at most one; and the maxima of
+$a_3(R)$ for primitive degrees $6,9,18,27,54$ are at most $0,3,0,7,0$.
+The former checks all 91 nonsoluble actions and their 521 normal
+pairs, with an actual semiregular permutation witness for each
+action; the latter checks the 38 primitive actions at those degrees.
+They imply the following structural bounds for nonsoluble transitive
+groups, without a degree-54 or degree-162 transitive census:
+\[
+ \max_{N\lhd A}\delta_A(N)\leq7\quad(\deg A=54),\qquad
+ \max_{N\lhd A}\delta_A(N)\leq24\quad(\deg A=162).
+\]
+Indeed the possible minimal block sizes at degree 54 are
+$2,3,6,9,18,27$, and their kernel-plus-top bounds are respectively
+$5,7,2,7,1,7$. At degree 162 the sizes are
+$2,3,6,9,18,27,54,81$, with bounds
+$15,24,5,24,2,22,1,15$. For the size-three rows nonsolubility
+forces the top to be nonsoluble, because the local component is
+$C_3$ or $S_3$. The last row uses
+$(8/3)\log_2(81)-4/3<16$ and integrality. Primitive cases have
+the smaller bounds $\lfloor\log_2(54)\rfloor=5$ and
+$\lfloor\log_2(162)\rfloor=7$.
+The ternary child bounds at top degrees $18,54,162$ are therefore
+$6+1=7$, $17+7=24$, $45+24=69$, respectively, each sufficient.
+
+Only child degrees $6,9,12,18,27$ remain. The complete normal-pair
+catalogues at degrees $6,12,18$ contain 1,300 actions and 20,410
+pairs; their strict high-action list is exactly items two and three,
+with no degree-eighteen hit. Degree nine is already covered by
+Theorem~\ref{thm:rank3-stability}. At degree 27 a top head at most
+one gives $E(9,3)+1=4\leq81/20$. Otherwise the top is a whole
+$\mathcal E_9$ action, hence a $3$-group. Embed the action in
+$S_3\wr T$ and put $V=C_3^9$. If the image of the full block kernel
+in $C_2^9$ is nontrivial, its coordinate characters on $V$ are all
+nontrivial, by top transitivity. Maschke's theorem then makes every
+invariant translation subquotient have zero trivial head under
+that binary image. The remaining kernel quotient is binary, so
+its ternary relative head is zero, and the whole head is at most two.
+If that image is trivial, the full block kernel and the top are both
+$3$-groups, making the actual degree-27 action a $3$-group. This
+exhausts the final case and proves the theorem.
+\end{proof}

@@ -1,0 +1,104 @@
+\section{Nonaffine primitive components and compressed quotients}
+\label{sec:primitive-compression}
+
+\begin{lemma}[Core-free subgroups of a simple power]
+\label{lem:simple-power-index}
+Let $S$ be nonabelian simple, let $\ell$ be its least proper subgroup
+index, and let $H\leq S^a$ be core-free. Then $[S^a:H]\geq\ell^a$.
+\end{lemma}
+\begin{proof}
+We use $\ell^2<|S|$, proved in
+\cite[Theorem~A(4)]{BallesterBolinchesEstebanRomeroJimenezSeral2022}.
+Induct on $a$. Let $P\leq S^{a-1}$ and $B\leq S$ be the projections
+of $H$, with common Goursat quotient $Q$. If $B<S$, then $|Q|<|S|$.
+A full coordinate factor contained in $P$ must map trivially to $Q$,
+and would therefore be contained in $H$, contrary to core-freeness.
+Thus $P$ is core-free and the induction hypothesis gives
+$[S^a:H]\geq[S^{a-1}:P][S:B]\geq\ell^a$.
+
+If $B=S$, then $Q=S$: otherwise the last factor is contained in $H$.
+Every full coordinate factor contained in $P$ maps onto $Q$, so there
+is at most one, since images of distinct factors commute. If there is
+none, the index is $|S|[S^{a-1}:P]\geq\ell^a$. If there is one,
+write $P=S_i\times P'$; the map to $Q$ is an isomorphism on $S_i$
+and trivial on $P'$, and $P'$ is core-free in $S^{a-2}$. Hence
+$[S^a:H]=|S|[S^{a-2}:P']>\ell^a$. This proves the induction.
+\end{proof}
+
+\begin{theorem}[Primitive compression]\label{thm:primitive-compression}
+If $L\leq S_r$ is nonaffine primitive, its socle $E$ is semisimple
+and $L/E$ has a specified faithful action of positive degree $u$
+with $2u\leq h(r)$. This assertion uses the finite primitive
+classification only in actual degrees $5\leq r\leq29$.
+\end{theorem}
+\begin{proof}
+Every nontrivial normal subgroup of a primitive group is transitive.
+An abelian minimal normal subgroup is regular and gives the affine
+case. Distinct minimal normal subgroups commute; since the centralizer
+of a transitive group is semiregular, two such subgroups must be regular
+mutual centralizers. They are isomorphic, and a third is impossible.
+Consequently $E=S^a$ for a nonabelian simple $S$. Also $C_L(E)=1$:
+a nontrivial centralizer would contain a minimal normal subgroup of
+$L$, whereas its intersection with the centreless $E$ is trivial.
+Thus
+\[
+ L/E\leq\operatorname{Out}(S)\wr S_a.
+\]
+Put $q=|\operatorname{Out}(S)|$. Its regular action gives the wreath
+product a faithful action of degree $aq$, including $q=1$.
+
+Theorem~A(4) of the cited paper gives $q\leq3\log\ell$, where
+$\ell\geq5$ is the least proper subgroup index of $S$.
+Lemma~\ref{lem:simple-power-index} gives $r\geq\ell^a$.
+For $a\geq2$, $2aq\leq\ell^a$: at $a=2,\ell=5$, integrality
+gives $q\leq6$ and $4q\leq24<25$; for $\ell\geq6$ use
+$12\log\ell\leq\ell^2$. Increasing $a$ multiplies the right side
+by at least five and the left side by at most $3/2$.
+For $a=1,\ell\geq30$, use $6\log\ell\leq\ell$ instead.
+
+In the remaining almost simple case, failure of the regular action
+of the actual quotient to have $2|L/E|\leq r$ would imply
+$r<2|L/E|\leq6\log\ell<30$. The finite primitive certificate
+therefore checks precisely the required bounded range. Its complete
+degree-$5$--$29$ primitive alphabet has 116 simple nonabelian socles;
+each carries the literal socle and an actual regular quotient map
+with $2|L/E|\leq r$. Completeness is relative to the stated primitive
+classification \cite{RoneyDougal2005Primitive,PrimGrp344}; the four
+nonsimple nonaffine socles in this range are covered by the preceding
+argument. Thus $2u\leq r$, and parity gives $2u\leq h(r)$.
+\end{proof}
+
+\begin{theorem}[Complete semisimple compression]
+\label{thm:semisimple-compression}
+Suppose an actual transitive $U\leq S_w$, $w\geq5$, has a normal
+semisimple subgroup $E$, possibly trivial, such that $U/E$ has a
+faithful action of degree $v_0\leq h(w)/2$. The complete family of
+these actions satisfies Theorem~\ref{thm:parametric}, with
+$\eta_U=0$, $\theta=1/2$ and $\rho=1/20$.
+Every action with a nonaffine primitive exact local component has
+such a certificate.
+\end{theorem}
+\begin{proof}
+Write $E=\prod_iS_i$. Each $S_i$ is a literal subgroup of $S_w$.
+A nontrivial orbit, followed by a maximal overgroup of its point
+stabilizer, supplies a faithful primitive action of $S_i$ of degree
+at most $w$. Hence $d(S_i)\leq\log w$ by
+\cite[Theorem~1.1]{HoltRoneyDougal2013}, and
+$|\operatorname{Aut}(S_i)|\leq|S_i|^{\log w}$.
+Since $\sum_i\log|S_i|\leq\log(w!)\leq w\log w$, the product in
+Lemma~\ref{lem:semisimple-fibre} has logarithm at most
+$Cw\log^2(w+b+1)$ for an absolute $C$. The reserve is
+$(h(w)-v_0)/8\geq h(w)/16\geq w/20$ for $w\geq5$.
+Theorem~\ref{thm:parametric} applies with $\beta=0$.
+
+For a block system of size $r$ and count $s$, let $L$ be its exact
+primitive component and put $E_0=\operatorname{Soc}(L)$,
+$E=U\cap E_0^s$. Each coordinate projection of $E$ is normal in
+the exact $L$, and hence is a normal subproduct of $E_0$. The
+subdirect-product description of products of nonabelian simple groups
+makes $E$ semisimple, allowing proper diagonal and zero intersections.
+Moreover $U/E$ embeds into $(L/E_0)\wr T$, whose faithful action
+has degree $v_0=us$. Theorem~\ref{thm:primitive-compression} gives
+$2v_0\leq h(r)s\leq h(rs)$. This proves the last assertion,
+including primitive actions by taking $s=1$.
+\end{proof}

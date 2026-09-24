@@ -1,0 +1,291 @@
+\section{The bounded affine exceptions}
+\label{sec:finite-affine-frames}
+We retain the complete quotient killing translations as a comparator.
+Only the other normal quotients need character covers. This distinction
+allows the following arguments to include arbitrary nonsplit extensions.
+
+\begin{lemma}[Homogeneous sections of a block module]
+\label{lem:block-homogeneous}
+Suppose $G$ acts linearly on $M=\bigoplus_{i=1}^sV_i$, with
+$\dim_FV_i=d$ and transitive permutation of the $s\geq2$ summands.
+If $X^m$ is a homogeneous semisimple section, then either
+$\dim_FX\geq2$ and $m\leq ds/2$, or $\dim_FX=1$ and
+$m\leq d\lfloor s/2\rfloor$. In particular a transitive
+monomial module on $s$ lines has homogeneous multiplicity at most
+$\lfloor s/2\rfloor$.
+\end{lemma}
+\begin{proof}
+The first assertion is dimension. For the second choose a derangement
+in the transitive block action: the average fixed-point count is one,
+whereas the identity fixes $s>1$ points. A lift $g$ has at most
+$\lfloor s/2\rfloor$ block cycles. One basis of a starting block
+generates its whole cycle over $F[x]$, with $x$ acting as $g$ and
+the return twist retained. Thus $M$ has at most $d\lfloor s/2\rfloor$
+generators over the PID $F[x]$. Every subquotient has at most that
+many: take its preimage in a free module of that rank, then use
+the submodule theorem over a PID. On $X^m$, the element $g$ is a
+single scalar, so its polynomial-module generator number is $m$.
+This proof does not require semisimplicity of the ambient module.
+\end{proof}
+
+\begin{lemma}[One orbit of constituent types]
+\label{lem:faithful-core-section}
+Let $R$ act faithfully on $M=\bigoplus_iV_i$ and transitively on
+the summands, with each $V_i$ irreducible under its stabilizer.
+Let $D\lhd R$ fix every summand, with nontrivial coordinate images
+$D_i$. Suppose each $D_i$ is normal in the exact local stabilizer.
+Then $M\downarrow_D$ is semisimple, has no trivial constituent,
+and its simple types form one $R$-orbit. Every nonzero $R$-section
+of $M$ is faithful on $D$.
+\end{lemma}
+\begin{proof}
+A simple $D_i$-submodule of $V_i$ and its stabilizer translates
+span $V_i$ by irreducibility; their sum is semisimple. The isotypic
+summands form one orbit, since the sum over a proper orbit would
+be invariant under the stabilizer. The fixed space is invariant
+under that stabilizer, and is zero by faithfulness and $D_i\ne1$.
+Transitivity on blocks joins the local orbits of types into one
+$R$-orbit. A nonzero $R$-section has nonempty invariant type support,
+so it contains every type in that orbit. The intersection of their
+kernels is the kernel of $D$ on the faithful $M$, which is trivial.
+\end{proof}
+
+We repeatedly use the following elementary section observation.
+An elementary abelian $p$-section of an actual $H\leq S_d$ has
+rank at most $\lfloor d/p\rfloor$: lift it to a subgroup of $H$
+and apply the abelian $p$-quotient bound there. This does not assign
+degree $d$ to an arbitrary quotient of $H$.
+
+\begin{theorem}[Binary affine local degrees eight and sixteen]
+\label{thm:binary-affine-exceptions}
+Let $U$ have exact primitive affine local degree $r=2^d$ on $s$
+blocks, where $(r,s)$ is one of
+\[
+ (8,2),(8,4),(8,6),(16,2),(16,4).
+\]
+Put $E=U\cap(\F_2^d)^s$ and $R=U/E$. For every literal
+$N\lhd U$ with $E\not\leq N$, the quotient $U/N$ has a faithful
+tuple of at most $t=s$ irreducible complex characters when $r=8$,
+and at most $t=2s$ when $r=16$. Consequently all these actions
+have complete contractive forward rows and negligible scalars.
+\end{theorem}
+\begin{proof}
+Write the exact linear stabilizer as $R_0\leq\mathrm{GL}_d(2)$,
+and let $K=R\cap R_0^s$. Its coordinate image $K_i$ is normal
+in $R_0$. If it were trivial, the onto local map from a block
+stabilizer would factor through $T_i\leq S_{s-1}$.
+For $d=3$, the three possibilities $C_7,C_7:C_3,\mathrm{GL}_3(2)$
+proved in Theorem~\ref{thm:small-affine-capacity} all have order
+divisible by seven, impossible for $s\leq6$.
+For $d=4,s\leq4$, it would make $R_0$ a quotient of a subgroup
+of $S_3$. The groups of order dividing six, namely
+$1,C_2,C_3,C_6,S_3$, have no irreducible binary module of dimension
+four. For the last assertion, a normal $2$-subgroup acts trivially
+on a simple module. On a nontrivial simple binary $S_3$-module,
+restriction to its normal $C_3$ supplies scalar multiplication by
+$\F_4$, and the inverting involution acts semilinearly. Choose
+a nonzero vector fixed by that involution, which exists in
+characteristic two. Its $\F_4$-line is invariant under both
+generators, so irreducibility forces binary dimension two.
+Thus $K_i\ne1$ in all cases.
+
+Every normal $2$-subgroup of a faithful irreducible binary linear
+group is trivial, since its fixed space is nonzero and invariant.
+Therefore $O_2(K_i)=1$ and $O_2(K)=1$. By
+Lemma~\ref{lem:faithful-core-section}, the physical module is
+semisimple on $K$, with no fixed constituent, and each nonzero
+translation section is faithful on $K$. Its simple $K$-constituents
+have dimension at least two. At degree eight they have dimension
+three: a nontrivial normal subgroup of $C_7:C_3$ contains $C_7$,
+and the other two local possibilities are $C_7$ and the simple
+$\mathrm{GL}_3(2)$.
+
+Fix a retained quotient $Q=U/N$, write $\bar E$ for its nonzero
+translation image, and let $B$ be the preimage of $K$ in $U$.
+Faithfulness gives $N\cap B=N\cap E$, so
+$\bar B/\bar E=K$. A binary minimal normal subgroup outside
+$\bar E$ meets it trivially; its intersection with $\bar B$ maps
+to a normal $2$-subgroup of $K$ and is trivial. Such a subgroup
+therefore centralizes $\bar B$. Every nontrivial-core binary type
+in the whole socle lies in $\bar E$, and its multiplicity is at
+most $s$ for $d=3$ and $2s$ for $d=4$.
+
+Keep the whole sum $A_2^0$ of the core-trivial binary socle types.
+It meets $\bar E$ trivially, because $\bar E^{\bar B}=0$;
+its intersection with $\bar B$ again maps to $O_2(K)=1$.
+Thus it embeds in a quotient of the actual top $T$, and has total
+rank at most $\lfloor s/2\rfloor$. These are different simple
+types from those in $\bar E$, so the bounds take a maximum.
+
+For an odd prime $p$, the whole $p$-socle intersects $\bar B$
+in a normal $p$-subgroup. That subgroup centralizes $\bar E$,
+and faithfulness of $K$ on $\bar E$ forces its image in $K$ to
+be trivial. Hence the whole odd socle injects a quotient of $T$
+and has rank at most $\lfloor s/p\rfloor$. The whole-socle
+criterion of Theorem~\ref{thm:character-feasibility} therefore
+supplies the stated common tuple length, including any nonabelian
+socle in the same slots.
+
+Normals containing $E$ contribute exactly $Z_J(R)$. Fixing tuples
+on all remaining target quotients before inspecting $J$ gives
+\[
+ Z_J(U)\leq Z_J(R)+C_U5^{tb/3},\qquad
+ C_U=\sum_{N\lhd U,\ E\not\leq N}|\operatorname{Aut}(U/N)|.
+\]
+The action on the nonzero vectors of each local space gives $R$
+a concrete faithful degree $(r-1)s<rs$. The exponents satisfy
+$s\log5/3<s$ and $2s\log5/3<2s$, respectively.
+Theorem~\ref{thm:finite-comparator} now applies to this finite
+set of physical degrees. If $E=1$, its retained sum is empty and
+the same comparison is exact.
+\end{proof}
+
+\begin{theorem}[All exceptional affine-nine counts]
+\label{thm:nine-affine-exceptions}
+Every action with exact primitive affine local degree nine and
+$s\in\{2,3,4,6,12\}$ has a complete contractive forward row
+and negligible scalar, on arbitrary complete sources.
+\end{theorem}
+\begin{proof}
+Write $M=(\F_3^2)^s$, $E=U\cap M$, $R=U/E\leq R_0\wr T$,
+$B_0=O_2(R_0)$ and $D=R\cap B_0^s$. The complete local matrix
+classification gives
+\[
+\begin{array}{c|c|c}
+R_0&B_0&R_0/B_0\\\hline
+C_4,C_8,D_8,Q_8,QD_{16}&R_0&1\\
+\mathrm{SL}_2(3)&Q_8&C_3\\
+\mathrm{GL}_2(3)&Q_8&S_3.
+\end{array}
+\]
+This is the seven-local input of the finite affine-nine structural
+certificate: adjoining all elements to the retained sixteen subgroup
+classes of the literal $\mathrm{GL}_2(3)$ proves subgroup coverage;
+irreducibility is checked against its four lines. The displayed
+normal $2$-cores and quotients are the indicated elementary matrix
+groups, not a classification of any imprimitive degree.
+
+Suppose first $D\ne1$. Its coordinate images are nontrivial normal
+subgroups of the exact $R_0$. The physical module is semisimple
+on $D$, and Lemma~\ref{lem:faithful-core-section} shows every
+nonzero translation section is faithful on $D$. In a retained
+quotient $Q=U/N$, let $\bar B$ be the image of the preimage of
+$D$. Then $\bar B/\bar E=D$ and $O_2(\bar B)=1$: a normal
+$2$-subgroup centralizes the normal ternary $\bar E$ and its
+image in $D$ would act trivially.
+
+The entire binary socle therefore injects into a quotient of
+$R/D\leq S_3\wr T$. Removing the normal ternary base embeds
+it further in a quotient of $C_2\wr T\leq S_{2s}$, so its
+rank is at most $s$. Ternary simple types nontrivial on $\bar B$
+lie in $\bar E$; Lemma~\ref{lem:block-homogeneous}, with local
+dimension two, bounds their multiplicities by $s$. The whole
+$\bar B$-trivial ternary type sum meets $\bar E$ and then
+$\bar B$ trivially, and embeds in a quotient of
+$R/D\leq S_{3s}$, again giving rank at most $s$. The two
+sets of types are distinct. For $p\geq5$, the whole $p$-socle
+injects a quotient of $T$, since both local kernels have order
+divisible only by two and three. The whole-socle criterion gives
+a faithful tuple of at most $s$ characters for every retained
+quotient. Thus
+\[
+ Z_J(U)\leq Z_J(R)+C_U5^{sb/3}.
+\]
+The actual action on nonzero local vectors represents $R$ faithfully
+in degree $8s$. For each of the five counts, $8s<h(9s)$ and
+$s\log5/3<h(9s)/8$. The finite comparator theorem applies,
+including the odd physical width $27$ with $h(27)=26$.
+
+If $D=1$, the linear block kernel $K=R\cap R_0^s$ is trivial.
+For binary $R_0$ this is immediate. Otherwise $K$ embeds in
+$S_3^s$ and every binary subgroup of $K$, and hence every binary
+subgroup of its quotients, is elementary. A normal subgroup of
+$\mathrm{SL}_2(3)$ or $\mathrm{GL}_2(3)$ outside $B_0$ contains
+$Q_8$ and cannot have this property. Every coordinate image of
+$K$ therefore lies in $B_0$, giving $K=D=1$. So $R=T$.
+For $s\leq4$, a point stabilizer of $T$ cannot surject onto any
+displayed $R_0$, whose orders are $4,8,16,24,48$; these counts
+are impossible in this branch.
+
+For $s=6,12$, any quotient has binary and other nonternary socles
+embedding in a quotient of $T$. Filter its whole ternary socle by
+its intersection with $\bar E$. The intersection is an actual
+section of $M$ with type multiplicity at most $s$, and the outer
+elementary section of $T$ has rank at most $\lfloor s/3\rfloor$.
+The semisimple socle filtration gives a common cover of length
+$s+\lfloor s/3\rfloor=8,16$. Its exponent is strictly less
+than $9s/8$, since $5^{64(s+\lfloor s/3\rfloor)}<2^{216s-3}$.
+Corollary~\ref{cor:character-forward} consumes these entire normal
+menus. Every argument retained the original source and action weight.
+\end{proof}
+
+\begin{theorem}[Nonzero ternary core at local degree four]
+\label{thm:four-nonzero-core}
+Let $U$ have exact natural $A_4$ or $S_4$ local action on $s$ blocks,
+$2\leq s\leq3072$, and put $E=U\cap(\F_2^2)^s$,
+$R=U/E\leq S_3\wr T$, $D=R\cap C_3^s$. If $D\ne1$, the
+complete action is accepted by Theorem~\ref{thm:finite-comparator}.
+\end{theorem}
+\begin{proof}
+Every coordinate image of $D$ is $C_3$. Its binary simple types in
+$M=(\F_2^2)^s$ are the inverse pairs of the nonzero coordinate
+characters. They form one $R$-orbit, allowing semilinear inversion.
+Each nonzero $R$-section of $M$ is therefore faithful on $D$ and
+has no fixed vector, as in Lemma~\ref{lem:faithful-core-section}.
+For a retained quotient, write $\bar E,\bar B$ for translations
+and the preimage of $D$. Then $\bar B/\bar E=D$ and
+$O_3(\bar B)=1$.
+
+Consider a homogeneous binary $R$-section $X^m$ of $M$ and put
+$e=\dim_{\operatorname{End}_R(X)}X$. Its binary dimension is
+even. If it is at least four, then $m\leq\lfloor s/2\rfloor$.
+In dimension two with endomorphism field $\F_2$, $e=2$ and
+$\lceil m/e\rceil\leq\lceil s/2\rceil$.
+In dimension two with endomorphism field $\F_4$, the image on
+$X$ is $C_3$. Faithfulness on $D$ makes $D=C_3$ central in $R$.
+Changing the field convention on each coordinate by Frobenius aligns
+its generator with the global scalar $\omega I$. Every $R$-map
+then commutes with this scalar and is $\F_4$-linear; the frame
+remains monomial. Binary submodules and maps are now genuinely
+$\F_4$-linear. Lemma~\ref{lem:block-homogeneous} over $\F_4$
+gives $m\leq\lfloor s/2\rfloor$. This use explicitly fixes the
+field and makes no assertion about arbitrary restriction of scalars.
+
+At $s=3$ improve the remaining endomorphism-$\F_2$ case. The
+image on $X$ is $S_3$ and faithful $D$ is its $C_3$. Choose a
+$3$-power lift $z$ of a physical three-cycle. It centralizes $D$.
+Multiply it by $d\in D$ cancelling its image on $X$; the resulting
+$y=zd$ still has odd order and induces the physical three-cycle.
+Its fixed space on $M$ has dimension at most two, since a fixed
+tuple is determined by one coordinate. Odd-order invariants are
+exact in characteristic two. All of $X^m$ is fixed by $y$, so
+$2m\leq2$. Thus the translation-type Schur capacity is
+\[
+ k(s)=1\quad(s=2,3),\qquad k(s)=\lceil s/2\rceil\quad(s\geq4).
+\]
+
+Every binary socle type nontrivial on $\bar B$ lies in $\bar E$.
+For the whole trivial-type sum $A_2^0$, put $L=NE/E\lhd R$.
+Faithfulness gives $L\cap D=1$, so $[L,D]=1$. Its image in
+$R/L$ is injective; the full preimage $H\leq R$ centralizes $D$
+because $[H,D]\leq L\cap D=1$. It also meets $D$ trivially.
+The actual frame gives
+$C_R(D)\cap S_3^s=D$: every coordinate centralizer of the
+projected $C_3$ is $C_3$. Hence $H$ embeds in the actual top $T$,
+and $A_2^0=H/L$ has rank at most $\lfloor s/2\rfloor$.
+
+For odd $p$, the whole $p$-socle intersects $\bar B$ trivially:
+for $p=3$ use $O_3(\bar B)=1$, and otherwise use orders. It
+injects a quotient of $R/D\leq C_2\wr T$, then a quotient
+of $T$, so has rank at most $\lfloor s/p\rfloor$. The
+whole-socle criterion supplies $k(s)$ characters on every retained
+quotient, including the nonabelian socle in the same slots.
+
+Thus $Z_J(U)\leq Z_J(R)+C_U5^{k(s)b/3}$, with all killed
+translation normals exactly in $Z_J(R)$. The comparator has its
+concrete faithful degree $3s<4s$. The retained exponent is less
+than $4s/8$: for even $s$ use $5^{32}<2^{75}$, and for odd
+$s\geq5$ use $75(s+1)\leq96s-3$; counts two and three are
+immediate. This is a fixed finite band of actual actions, so
+Theorem~\ref{thm:finite-comparator} applies once to their union.
+\end{proof}
