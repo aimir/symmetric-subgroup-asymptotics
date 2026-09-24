@@ -79,3 +79,49 @@ allowing substitution of any actions satisfying the same numerical budgets.
 The [certificate documentation](certificates/README.md) and
 [local computation documentation](computations/README.md) specify the scope
 of each supplied check. These computations do not constitute Lean verification.
+
+## Formal theorem boundary
+
+The formal targets are the three quantified statements T1, T2 and T3 in
+[SPEC.md](SPEC.md). A formal result must state which of the following scopes
+it establishes:
+
+* **Conditional assembly:** the final implication is proved with some project
+  components still supplied as explicit hypotheses. This proves the
+  implication, not those components or the complete research argument.
+* **Verification relative to published inputs:** all project-specific
+  structural, counting, weighting, transport, analytic and finite-certificate
+  arguments are checked proofs. Any remaining published mathematical result
+  is an explicit named hypothesis, with its full proposition and source
+  locator. This is the first intended substantive formal milestone.
+* **Closed theorem:** all mathematical inputs, including the published ones,
+  have checked proofs. Only the declared standard logical foundations remain.
+
+The literature register supplies candidate external results, not a blanket
+assumption that its contents are formalized. Every retained published input
+must be individually specified and its exact scope audited. Its hypothesis
+must remain visible in the final theorem type until it is discharged; a
+global axiom declaration must not conceal it.
+
+No project capacity, fusion, mixture, exhaustion or quantitative summation
+claim may enter the published-input list. Acceptance or completeness of the
+supplied action, normal-subgroup, character or module data must also be proved.
+A published structural classification may remain an explicit literature
+input in the relative milestone; correspondence with, and coverage by, the
+concrete certificate list remain project proof obligations.
+
+Finite verification has three separate obligations: soundness of the checker,
+coverage of its quantified domain, and checked acceptance of the supplied
+data. GAP/Python output and file hashes discharge none of these in Lean.
+The intended certified computation uses kernel-checked reductions or proof
+objects, with no additional unreported computation axioms. The release review
+must inspect both the full theorem types and their transitive axiom
+dependencies; an unproved theorem passed as an argument can be absent from an
+axiom report while remaining a mathematical assumption.
+
+Standard classical logical foundations are permitted. Unproved project
+lemmas, proof placeholders and hidden certificate-acceptance assumptions are
+excluded from either substantive verification milestone. The c=1 application,
+shared-C3 moment and inverse-complement compatibility remain required checked
+applications of the reusable results. Source verification, computational
+replay, manuscript review and formal proof are reported separately.

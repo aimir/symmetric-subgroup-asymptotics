@@ -58,12 +58,14 @@ For R>0 let rho be the unique positive solution of
 
 T2 gives the exact-saddle approximation
 
-    A_n = n! G_R (1+rho/6)^epsilon exp(P(rho))
+    Q_n = n! G_R (1+rho/6)^epsilon exp(P(rho))
           / (rho^R sqrt(2*pi*b(rho))),
-    abs(s_n/A_n - 1) <= C/n                  (n>=N0)
+    abs(s_n/Q_n - 1) <= C/n                  (n>=N0)
 
 for suitable fixed C,N0. The saddle statement for L_n is independent of
 the group-counting theorem; its transfer to s_n uses T1.
+The symbol Q_n denotes only this saddle benchmark. The manuscript's A_n
+continues to mean the normalized count s_n/L_n.
 
 For the fully elementary expression, put
 
@@ -154,3 +156,48 @@ with vanishing forcing and escape from each finite target set, but a rate
 needs additional quantitative hypotheses. Keep this alternative distinct from
 the complete-count recurrence actually used in T1. No bootstrap may assume T1
 in order to establish a premise of T1.
+
+## 5. Exact formal statement conventions
+
+The three final asymptotic targets are T1, T2 and T3 above. Their fully
+quantified joint form is: there exist real c,K1,K2,K3>0 and a natural N0>=2
+such that, for every natural n>=N0, all three inequalities hold:
+
+    abs(s_n/L_n - 1) <= K1 * 2^(-c*n),
+    abs(s_n/Q_n - 1) <= K2 / n,
+    abs(s_n/M_n - 1 - (6*epsilon-4)/(48*n)^(1/4))
+        <= K3 / sqrt(n).
+
+Taking the maximum of three thresholds gives this common N0. Every constant
+is independent of n, its parity and its residue class modulo four. The
+residue-class constants C0,...,C3 in M_n are fixed by the exact products and
+sums in Section 3; they are distinct from the error bounds K1,K2,K3.
+
+The definitions and bridges required by these statements are:
+
+* s_n is the finite cardinality of the subgroups of the permutation group on
+  the labelled n-element set. It is not a sum over representatives up to
+  conjugacy. G_R is the finite cardinality of all subspaces of F_2^R.
+* R=floor(n/2), epsilon=n mod 2 and j=n mod 4 are natural indices. Factorials,
+  these counts and c_R's finite rational sum are coerced to real numbers
+  before analytic arithmetic. Every fractional or negative exponent in the
+  asymptotic formulas is a real exponent; divisions such as n/8, n^2/16 and
+  1/4 in such expressions are real divisions.
+* Negative coefficient indices contribute zero. An implementation using
+  natural indices must guard c_(R-1) when R=0 and every analogous shifted
+  coefficient; truncated natural subtraction cannot replace this convention.
+  In particular L_0=L_1=1. Positivity of every L_n is a proof obligation.
+* rho_R is the unique positive saddle only for R>=1. Prove its existence and
+  uniqueness, and positivity of Q_n for n>=2. For total sequence definitions,
+  set Q_0=Q_1=1; these harmless values lie outside the asserted range.
+* Prove convergence and positivity of phi and both theta sums, hence of all
+  four Cj. Define M_n by the displayed formula for n>=1 and set M_0=1 to avoid
+  a convention about zero to the zeroth power. Prove M_n>0.
+* First prove the T2 and T3 analytic bounds with L_n in place of s_n, without
+  assuming T1. Their final versions for s_n then follow from T1. Every
+  O-term in the exposition must yield a quantified eventual inequality of
+  the form above.
+
+No optimized exponent c, effective onset N0, or stronger remainder is included
+in these targets. Their formal trust boundary is specified in
+[ASSUMPTIONS.md](ASSUMPTIONS.md).
