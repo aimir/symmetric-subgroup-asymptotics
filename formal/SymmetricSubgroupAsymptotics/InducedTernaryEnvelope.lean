@@ -23,7 +23,7 @@ theorem induced_coprime_orbit_head_bound (p : ℕ) [Fact p.Prime]
         Module.finrank (ZMod p) V*
           Fintype.card (DoubleCoset.Quotient (H:Set G) (P:Set G)) := by
   letI := induced_finiteDimensional H ρ
-  have h := representationCharacterHead_le_coordinates
+  have h := representationCharacterHead_le_coordinates (p := p) (V₀ := M.toSubmodule)
     (fun q=>inducedMackeyComponent H P ρ q)
     (M.toRepresentation.comp P.subtype)
     (fun q=>Representation.ind (inducedOrbitStabilizer H P q.out).subtype
@@ -33,8 +33,9 @@ theorem induced_coprime_orbit_head_bound (p : ℕ) [Fact p.Prime]
       (inducedOrbitStabilizer H P q.out) (inducedOrbitFibre H P ρ q.out) S)
     (inducedMackeySubmoduleCoordinate H P ρ M)
     (inducedMackeySubmoduleCoordinate_injective H P ρ M)
-  apply (representationCharacterHead_le_restriction M.toRepresentation P.subtype).trans
-  simpa only [Finset.sum_const,Finset.card_univ,Nat.nsmul_eq_mul,Nat.mul_comm] using h
+  have hr := representationCharacterHead_le_restriction (p := p) (V := M.toSubmodule)
+    M.toRepresentation P.subtype
+  simpa only [Finset.sum_const,Finset.card_univ,Nat.nsmul_eq_mul,Nat.mul_comm] using hr.trans h
 
 theorem induced_coprime_primePower_head_bound (p q : ℕ) [Fact p.Prime] [Fact q.Prime]
     (hpq : p≠q)
