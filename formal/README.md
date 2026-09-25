@@ -424,8 +424,12 @@ The original imprimitive ternary recurrence is also proved in
 It constructs all actual chief layers, including proper nonabelian subdirect
 layers, and retains the original top section. Its multiplier is the sum of
 ternary abelian weights on an actual chief series of the original local
-component. Bounding that sum using primitive composition and finite inputs
-remains separate from this structural theorem.
+component. An actual composition refinement now bounds that weight by the
+composition length. `PrimitiveCompositionTail` derives the strict bound
+`10 W < 3 r` for every primitive degree `r >= 45`, conditional on the
+precisely stated published `PrimitiveCompositionLengthInput`. That input,
+the remaining small-degree cases and the high-cone installation remain
+separate obligations.
 
 The first c=1 application proves the physical factor `n!/(6 m!)` times the
 exact surviving split-character sum on the complete complement. Its unrestricted
@@ -449,6 +453,11 @@ original-point conjugacies. The complete degree-16 action registry remains to be
 nonbase normal registries cover all 203 states, and every state is installed
 in its physical-pair, exact character-criterion or original transport branch.
 The 190 physical pairs have actual capacity and central-prefix bounds.
+The shared coordinate route also has generic proofs identifying the whole
+original flip kernel from Schreier words, certifying an exact fixed preimage
+by a sparse linear factor, and excluding central quotient classes by either
+faithful kernel action or a nonsplit affine obstruction. These generic
+lemmas do not replace the remaining concrete finite certificate checks.
 The finite character criteria now supply original-source analytic envelopes.
 Complete weighted-family installation of the character and transport branches
 remains separate. The central
