@@ -37,12 +37,17 @@ Equivalently c_R is the sum over a+2b+4d=R of
 weights 1/24 and 1/8, whose sum is 1/6. Thus positivity and the exact parity
 coefficient c_R+epsilon*c_(R-1)/6 are established without a saddle estimate.
 
-For positive a1,a2,a4, the elementary quartic coefficient estimate is
+The exceptional critical-lift sum uses
+P_tilde(y)=y/(2sqrt(2))+7y^2/48+y^4/768. Evaluate its positive series at
+the original saddle rho_R from ANA-SADDLE. With c_tilde_R its coefficient,
 
-    log [y^R]exp(a1*y+a2*y^2+a4*y^4)
-      = -(R/4)log R + (R/4)(1+log(4a4)) + O(sqrt R).
+    c_tilde_R * rho_R^R <= exp(P_tilde(rho_R)),
+    c_R * rho_R^R >= const * exp(P(rho_R))/sqrt(R),
+    P_tilde(rho_R) <= P(rho_R)-rho_R^4/768 <= P(rho_R)-R/16
 
-In particular halving a4 gives the exponential critical-lift comparison.
+eventually. Thus c_tilde_R/c_R=O(sqrt(R)exp(-R/16))=O(2^(-R/32)).
+This comparison needs only the original independent saddle estimate;
+no separate perturbed saddle or general quartic coefficient asymptotic is needed.
 For fixed shifts d, the required coefficient ratios have logarithms O(log R).
 Growing support/profile sums require their uniform estimates separately;
 fixed-d estimates cannot be applied with an unbounded d without proof.

@@ -108,6 +108,13 @@ definition obligations as conclusions, not hypotheses.
 | [BinaryRankSums](SymmetricSubgroupAsymptotics/BinaryRankSums.lean), [ExceptionalIncidence](SymmetricSubgroupAsymptotics/ExceptionalIncidence.lean) | Exact rank-binning of the literal weighted sum over actual U and nonzero B, and its uniform quadratic-incidence deficit bound. |
 | [NoncanonicalLifts](SymmetricSubgroupAsymptotics/NoncanonicalLifts.lean), [RetainedQuadraticAnnihilator](SymmetricSubgroupAsymptotics/RetainedQuadraticAnnihilator.lean) | Removing the unique canonical lift removes precisely B=0; an explicit dual coordinate equivalence identifies the retained equations with the original square annihilator. |
 | [PhysicalExceptionalBound](SymmetricSubgroupAsymptotics/PhysicalExceptionalBound.lean), [CriticalProducts](SymmetricSubgroupAsymptotics/CriticalProducts.lean) | Exact physical noncanonical count as retained incidence; concrete critical direct products satisfy every premise and have a proved uniform `O(G_R 2^(-d))` bound. |
+| [ProductCanonicalLifts](SymmetricSubgroupAsymptotics/ProductCanonicalLifts.lean) | Constructs the actual finite-product binary quotient, retains every original projection, proves kernel coverage, and installs the uniform canonical full-projection estimate. |
+| [CriticalProductTransport](SymmetricSubgroupAsymptotics/CriticalProductTransport.lean), [CriticalOccurrenceQuotients](SymmetricSubgroupAsymptotics/CriticalOccurrenceQuotients.lean), [CriticalProfileEstimates](SymmetricSubgroupAsymptotics/CriticalProfileEstimates.lean), [CriticalCanonicalProfiles](SymmetricSubgroupAsymptotics/CriticalCanonicalProfiles.lean) | Exact indexed permutation-range transport, original kernel equality, canonical/noncanonical partition, and uniform complete-model estimate; each V4 remains one width-two projection. |
+| [PerturbedQuartic](SymmetricSubgroupAsymptotics/PerturbedQuartic.lean) | Bounds the complete original-weight exceptional profile sum by the explicit perturbed polynomial at the original saddle, giving eventual coefficient ratio at most `256 pi 2^(-R/32)`. |
+| [WeightedCounting](SymmetricSubgroupAsymptotics/WeightedCounting.lean), [WeightedCriticalAssembly](SymmetricSubgroupAsymptotics/WeightedCriticalAssembly.lean), [EvenCriticalAsymptotic](SymmetricSubgroupAsymptotics/EvenCriticalAsymptotic.lean) | Positive weighted error assembly, exact factorial cancellation, and the complete even critical-family asymptotic and matching subgroup lower bound. |
+| [OddMarker](SymmetricSubgroupAsymptotics/OddMarker.lean), [OddProfileActions](SymmetricSubgroupAsymptotics/OddProfileActions.lean), [OddCriticalProfiles](SymmetricSubgroupAsymptotics/OddCriticalProfiles.lean) | Natural S3, its forced A3 kernel and exact contraction preserving the entire exterior image; singleton and S3 model equivalences, original normalizer six, and total quotient rank including the marker. |
+| [OddProfileAssembly](SymmetricSubgroupAsymptotics/OddProfileAssembly.lean), [OddCriticalAsymptotic](SymmetricSubgroupAsymptotics/OddCriticalAsymptotic.lean) | Disjoint actual odd-marker sectors with the rank-zero guard, original profile weights, and the complete odd critical-family asymptotic. |
+| [CriticalFamilyAsymptotic](SymmetricSubgroupAsymptotics/CriticalFamilyAsymptotic.lean) | A single actual critical family on Fin n, both-parity exponential relative error, and the exponential lower side for the total subgroup count. |
 
 The Gaussian-sum bounds imply
 
@@ -240,11 +247,31 @@ a constant relative bound on an all-D8 word is not claimed to decay.
 and `CriticalProfileAssembly` exposes that actual product-subgroup fibre in
 the original-weight formula.
 
-The complete critical-family asymptotic still requires transporting the
-indexed products of permutation-range groups into the regrouped coordinate
-products, installing the canonical/full-projection estimates, the weighted
-exceptional-profile coefficient estimate, and the odd-marker argument. Profile
-weights are never asserted to be subgroup cardinalities by definition.
+The indexed permutation-range products are transported to those coordinate
+groups through the proved faithful action equivalences. The product kernel
+is retained exactly; each original V4 projection remains a width-two condition.
+This installs both the canonical deficit and exceptional lift estimate on the
+actual model subgroup count. Summing the latter with the original weights
+gives the perturbed coefficient. Its exponential decay follows by evaluating
+at the already proved original saddle.
+
+For the odd S3 marker, fourth powers force A3 on that coordinate alone.
+The exact contraction preserves the complete exterior subgroup image and
+adds one binary quotient coordinate. Thus an exterior profile of rank R-1
+has total quotient rank R. Its physical weight is the exterior weight divided
+by six; no artificial C2 normalizer is charged. The singleton and S3 sectors
+are disjoint actual orbit profiles.
+
+`CriticalFamilyAsymptotic.criticalSubgroups_relative_error` proves, with one
+constant and threshold for both parities,
+
+    abs(card(CriticalSubgroups n) / exactBenchmark n - 1) <= K * 2^(-n/96).
+
+Every member is an actual subgroup on Fin n, and every full lift over a
+permitted critical profile is included. Consequently
+`subgroupCount_critical_lower` proves the matching exponential lower bound
+for the total subgroup count. The rate is unoptimized. Profile weights are
+never asserted to be subgroup cardinalities by definition.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.

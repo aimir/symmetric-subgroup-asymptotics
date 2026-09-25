@@ -150,17 +150,22 @@ changes the exponential generating polynomial to
  \widetilde P(y)=\frac{y}{2\sqrt2}+\frac{7y^2}{48}
                          +\frac{y^4}{768}.
 \end{equation}
-For fixed $a_1,a_2,a_4>0$ one has
+Write $\widetilde c_R=[y^R]e^{\widetilde P(y)}$ and use the original
+positive saddle $\rho=\rho_R$ from Section~\ref{sec:analysis}.
+Positivity and the independent saddle estimate of Theorem~\ref{thm:saddle}
+give
 \begin{equation}\label{eq:quartic-coefficient}
- \log_e[y^R]\exp(a_1y+a_2y^2+a_4y^4)
- =-\frac R4\log_e R+\frac R4(1+\log_e(4a_4))+O(\sqrt R).
+ \frac{\widetilde c_R}{c_R}
+ \ll \sqrt R\exp\bigl(\widetilde P(\rho)-P(\rho)\bigr)
+ \ll \sqrt R\,e^{-R/16}
+ =O(2^{-R/32}).
 \end{equation}
-For completeness, the upper bound follows by substituting
-$y=(R/(4a_4))^{1/4}$ into the positive series. For the lower bound take
-$\lfloor R/4\rfloor$ quartic terms and at most three linear terms;
-Stirling's inequalities give the same two terms with error $O(\log R)$.
-Halving the quartic coefficient in \eqref{eq:tilde-P} therefore gives
-exceptional relative mass $2^{-R/4+O(\sqrt R)}$.
+Indeed $\widetilde c_R\rho^R\leq e^{\widetilde P(\rho)}$,
+whereas $c_R\rho^R\gg e^{P(\rho)}/\sqrt R$.
+Also $\widetilde P(\rho)\leq P(\rho)-\rho^4/768$ and
+$\rho^4\geq48R$ for all sufficiently large $R$, by the saddle equation.
+The final bound absorbs the square-root factor. No second saddle estimate
+is needed; the rate is not optimized.
 
 In odd degree the fixed-point option contributes $c_R$. The natural
 $S_3$ option contributes $c_{R-1}/6$. Any subgroup full on its $S_3$
@@ -169,7 +174,9 @@ coordinate alone: raise an element projecting to a $3$-cycle to a
 sufficiently large power of two. Quotienting this forced subgroup turns
 that coordinate into one elementary binary coordinate. Its full lift
 analysis is consequently the same one, with exceptional marker
-$y/(6\sqrt2)$. Formula~\eqref{eq:quartic-coefficient}, also after
-a fixed coefficient shift, gives the same exponential conclusion.
+$y/(6\sqrt2)$. Apply \eqref{eq:quartic-coefficient} at ranks $R$ and
+$R-1$ and divide their positive weighted sum by $c_R+c_{R-1}/6$.
+The additional factor $1/\sqrt2$ only improves the bound, and the fixed
+shift changes the constant. This gives the same exponential conclusion.
 The two options have different actual orbit profiles and are disjoint.
 \end{proof}

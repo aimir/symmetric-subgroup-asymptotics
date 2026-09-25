@@ -102,8 +102,19 @@ bounded using
 
     P_tilde(y) = y/(2 sqrt(2)) + 7y^2/48 + y^4/768,
 
-with odd marker 1+y/(6 sqrt(2)). Halving the quartic coefficient yields
-relative error 2^(-R/4+O(sqrt R)). For an odd S3 marker, the actual subgroup
+with odd marker 1+y/(6 sqrt(2)). Evaluate the positive perturbed series at
+the original saddle rho_R. The independent original saddle lower bound
+gives perturbed/original coefficient ratio at most
+
+    O(sqrt(R) exp(P_tilde(rho_R)-P(rho_R)))
+      <= O(sqrt(R) exp(-R/16)) = O(2^(-R/32)).
+
+Here P_tilde(rho)<=P(rho)-rho^4/768 and rho_R^4>=48R eventually.
+This uses the already proved original saddle estimate and avoids a second
+saddle analysis. The positive weighted sum of the bounds at R and R-1,
+divided by c_R+c_(R-1)/6, gives the same rate for the two odd markers;
+the exceptional S3 marker's extra 1/sqrt(2) improves the bound.
+For an odd S3 marker, the actual subgroup
 contains its A3 kernel; after quotienting that forced subgroup the binary
 lift argument applies. Thus, for some a>0,
 
