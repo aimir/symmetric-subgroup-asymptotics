@@ -97,6 +97,17 @@ definition obligations as conclusions, not hypotheses.
 | [ComplementCount](SymmetricSubgroupAsymptotics/ComplementCount.lean) | Actual complement/retraction equivalence, exact finite complement count, and weighted retained-annihilator duality with Gaussian expansion. |
 | [SquareLiftFibres](SymmetricSubgroupAsymptotics/SquareLiftFibres.lean) | Exact square admissibility, actual lift/complement equivalence and fixed-intersection count, arbitrary-image restriction, and full projection under an explicit Frattini-kernel hypothesis. |
 | [AllLifts](SymmetricSubgroupAsymptotics/AllLifts.lean) | Exact all-lifts annihilator and Gaussian-polynomial identities for every image in a finite central binary extension, retaining the original kernel and square coordinates. |
+| [BinaryHeisenberg](SymmetricSubgroupAsymptotics/BinaryHeisenberg.lean), [PairedPermutations](SymmetricSubgroupAsymptotics/PairedPermutations.lean), [BinaryPlaneFunctions](SymmetricSubgroupAsymptotics/BinaryPlaneFunctions.lean), [CriticalActions](SymmetricSubgroupAsymptotics/CriticalActions.lean), [CriticalActionModels](SymmetricSubgroupAsymptotics/CriticalActionModels.lean) | Literal regular and Heisenberg actions, faithful transitivity, binary quotients, central kernel charts, Frattini containment, and original symmetric normalizers 2, 24, 8, 384. |
+| [OrbitProfileAssembly](SymmetricSubgroupAsymptotics/OrbitProfileAssembly.lean) | Joint label/lift fibres, exact normalizer-weighted counts on a common labelled set and `Fin n`, and disjointness of distinct multiplicity profiles. |
+| [CriticalProfileAssembly](SymmetricSubgroupAsymptotics/CriticalProfileAssembly.lean) | Installs the concrete four-action data in actual labelled critical families, proving their exact disjoint profile-weighted sum. |
+| [OrbitProfileProduct](SymmetricSubgroupAsymptotics/OrbitProfileProduct.lean) | Faithful independent block action and an exact equivalence between full direct-product subgroups and full permutation-model subgroups. |
+| [QuadraticRealization](SymmetricSubgroupAsymptotics/QuadraticRealization.lean), [HyperbolicFrames](SymmetricSubgroupAsymptotics/HyperbolicFrames.lean) | Actual quadratic realization torsors, nonsingular polar forms, and exact orthogonal orders 2 and 72 by kernel-checked hyperbolic-frame enumeration. |
+| [CoordinateIncidence](SymmetricSubgroupAsymptotics/CoordinateIncidence.lean), [QuadraticIncidence](SymmetricSubgroupAsymptotics/QuadraticIncidence.lean) | Joint retained relations determine all pivot outcomes; actual surjective coordinate maps have a proved uniform realization-fibre bound, including a free binary summand. |
+| [BinaryFrameIncidence](SymmetricSubgroupAsymptotics/BinaryFrameIncidence.lean), [BinaryFrameEstimates](SymmetricSubgroupAsymptotics/BinaryFrameEstimates.lean), [QuadraticSubspaceIncidence](SymmetricSubgroupAsymptotics/QuadraticSubspaceIncidence.lean) | Exact ordered-basis fibres retain any subspace predicate; their Euler-product normalization gives the actual annihilator-aware subspace-incidence bound. |
+| [ExceptionalLiftKernel](SymmetricSubgroupAsymptotics/ExceptionalLiftKernel.lean), [ExceptionalGaussianBound](SymmetricSubgroupAsymptotics/ExceptionalGaussianBound.lean) | The complete joint Gaussian dimension sum has a proved profile- and parity-uniform `O(G_R 2^(-d))` bound with an explicit constant. |
+| [BinaryRankSums](SymmetricSubgroupAsymptotics/BinaryRankSums.lean), [ExceptionalIncidence](SymmetricSubgroupAsymptotics/ExceptionalIncidence.lean) | Exact rank-binning of the literal weighted sum over actual U and nonzero B, and its uniform quadratic-incidence deficit bound. |
+| [NoncanonicalLifts](SymmetricSubgroupAsymptotics/NoncanonicalLifts.lean), [RetainedQuadraticAnnihilator](SymmetricSubgroupAsymptotics/RetainedQuadraticAnnihilator.lean) | Removing the unique canonical lift removes precisely B=0; an explicit dual coordinate equivalence identifies the retained equations with the original square annihilator. |
+| [PhysicalExceptionalBound](SymmetricSubgroupAsymptotics/PhysicalExceptionalBound.lean), [CriticalProducts](SymmetricSubgroupAsymptotics/CriticalProducts.lean) | Exact physical noncanonical count as retained incidence; concrete critical direct products satisfy every premise and have a proved uniform `O(G_R 2^(-d))` bound. |
 
 The Gaussian-sum bounds imply
 
@@ -189,11 +200,51 @@ the square admissibility condition, identifies each fibre with actual linear
 complements, and only then reindexes by annihilator duality. The square
 condition cannot be replaced by the commutator condition alone.
 
-These are generic counting theorems with explicit action and extension data.
-The four concrete actions, their kernel/normalizer/Frattini facts, assembly on
-a common labelled point set across profiles, and the exceptional-lift error
-bounds remain obligations for the complete critical-family count. Profile
-weights are not asserted to be subgroup cardinalities by definition.
+The four local actions are constructed explicitly. The degree-four and
+degree-eight nonabelian models act by `(x,z) ↦ (x+a,z+b·x+c)`, with quotient
+`(a,b)` and central binary coordinate `c`. Actual squares prove Frattini
+containment. Their original symmetric normalizers are computed as literal
+permutation groups; no catalogue order is assumed.
+
+`OrbitProfileAssembly` counts actual conjugate subgroups on `Fin n`.
+An internal symmetry acts jointly on the labels and the model subgroup;
+the proof does not assume that it fixes each lift. Full subgroups recover
+their complete multiplicity profile, so distinct profiles contribute disjoint
+families. The full-subgroup specialization proves its own naturality premise.
+
+For every retained relation space `B`, `QuadraticSubspaceIncidence` proves
+
+    #{U : dim U=k, U full, every relation in B annihilates q(U)}
+      <= phi^(-1) [R choose k]_2 * 72^dim(B) / 2^(2k dim(B)).
+
+Its hypotheses are a literal product chart, nonsingular coordinate polar
+forms of dimension at least two, and the proved local isometry-cardinality
+bound. Choosing a basis from the coordinate restrictions on `B` fixes all
+pivot quadratic forms jointly. Counting actual realization fibres, then
+actual ordered-basis fibres, preserves the original incidence throughout.
+The numerical sum over all image and positive relation dimensions is uniform
+in both the orbit profile and parity; its constant is explicit and unoptimized.
+
+`PhysicalExceptionalBound` identifies the entire weighted incidence sum
+with actual noncanonical subgroups. `CriticalProducts` verifies every premise
+for arbitrary finite products of D8/E8 with a free binary factor. It counts
+literal subgroups with full projections onto the actual nonabelian factors:
+
+    N_exceptional <= (2^66 * Theta_half / phi^4) * G_R * 2^(-(R/2-t)),
+    Theta_half = sum_(j in Z) 2^(-j^2/4).
+
+Further full-projection requirements on the regular C2/V4 coordinates select
+a subfamily, so the same bound applies. This includes the zero-gap case;
+a constant relative bound on an all-D8 word is not claimed to decay.
+`OrbitProfileProduct` supplies the exact independent-block action equivalence,
+and `CriticalProfileAssembly` exposes that actual product-subgroup fibre in
+the original-weight formula.
+
+The complete critical-family asymptotic still requires transporting the
+indexed products of permutation-range groups into the regrouped coordinate
+products, installing the canonical/full-projection estimates, the weighted
+exceptional-profile coefficient estimate, and the odd-marker argument. Profile
+weights are never asserted to be subgroup cardinalities by definition.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.

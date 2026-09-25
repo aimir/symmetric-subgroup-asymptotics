@@ -89,8 +89,10 @@ condition; replacing it by the polar form alone is invalid.
 The needed quadratic realization lemma says that, for a prescribed quadratic
 form on a k-space and a surjection onto a nonsingular plus-type space of
 dimension 2 or 4, the fibre has either zero elements or |O^+(d,2)| elements,
-hence at most 72. Row-reduced simultaneous annihilator constraints give total
-exceptional lift mass O(G_R 2^(-d)), where
+hence at most 72. Choose a basis of the retained relation dual from the
+actual coordinate restrictions. Its dual relations isolate the pivot
+outcomes, so fixing nonpivot maps fixes all pivot quadratic forms jointly.
+Counting their actual realization fibres gives total exceptional lift mass O(G_R 2^(-d)), where
 
     d = R/2 - (number of nonabelian factors).
 
