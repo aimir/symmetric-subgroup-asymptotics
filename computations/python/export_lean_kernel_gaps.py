@@ -116,7 +116,9 @@ private def factorEntries (l : Fin {w}) : List (Fin {ng} × Fin {w}) :=
   {lookup(terms,'l.val')}
 private def factor : (Fin {ng} → Fin {w} → ZMod 2) →ₗ[ZMod 2] (Fin {w} → ZMod 2) :=
   LinearMap.pi (fun l => ((factorEntries l).map
-    (fun p => (LinearMap.proj p.2).comp (LinearMap.proj p.1))).sum)
+    (fun p => (LinearMap.proj p.2 : (Fin {w} → ZMod 2) →ₗ[ZMod 2] ZMod 2).comp
+      (LinearMap.proj p.1 : (Fin {ng} → Fin {w} → ZMod 2) →ₗ[ZMod 2]
+        (Fin {w} → ZMod 2)))).sum)
 private theorem fixed_le_kernel_basis : ∀ j,
     (charts {di}).2.inclusion (Pi.single j 1)∈kernelChart.space := by decide +kernel
 private theorem fixed_basis : ∀ j l,

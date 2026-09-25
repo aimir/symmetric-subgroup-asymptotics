@@ -153,7 +153,9 @@ private def {tag}_commutator (j : Fin {ng}) : physicalFrame.top.ker :=
     simp only [mul_assoc,mul_inv_cancel,mul_one,inv_mul_cancel]⟩
 private def {tag}_factor : (Fin {ng} → Fin {w} → ZMod 2) →ₗ[ZMod 2] ZMod 2 :=
   (({terms} : List (Fin {ng} × Fin {w})).map
-    (fun p => (LinearMap.proj p.2).comp (LinearMap.proj p.1))).sum
+    (fun p => (LinearMap.proj p.2 : (Fin {w} → ZMod 2) →ₗ[ZMod 2] ZMod 2).comp
+      (LinearMap.proj p.1 : (Fin {ng} → Fin {w} → ZMod 2) →ₗ[ZMod 2]
+        (Fin {w} → ZMod 2)))).sum
 private theorem {tag}_zero : ∀ i,
     {tag}_factor (binaryCoordinate_generatorDefects {A}.action images ({A}.charts {ai}).2
       ({A}.kernelChart.inclusion (Pi.single i 1)))=0 := by
@@ -206,7 +208,7 @@ theorem centralKernel{ai} (u : Original)
     change sourceMap (u⁻¹*(generators j*u*(generators j)⁻¹))=1 at hk
     simp only [map_mul,map_inv,sourceMap_generator] at hk
     rw [inv_mul_eq_one,eq_mul_inv_iff_mul_eq] at hk
-    exact hk.symm
+    exact hk
   have hb : ∀ j,{A}.action (sourceMap u) ({A}.kernelChart.inclusion (Pi.single j 1))-
       {A}.kernelChart.inclusion (Pi.single j 1)∈({A}.charts {ai}).2.space := by
     intro j
@@ -471,7 +473,13 @@ theorem schreier_action{bi:03d} : ∀ q : SourceTop,
   schreier_assembly+=row_assembly(theorem,statement)
  piece('Schreier',schreier_checks,'pilotSchreierGroup',schreier_assembly)
  piece('Basis',[root+'Base'],'pilotBasisGroup',source_between('private def basisWords','theorem kernel_space'))
- module(root,header([root+'Schreier',root+'Basis'],'pilotAssemblyGroup')+public(whole[whole.index('theorem kernel_space'):]))
+ central_start=whole.find('private def centralAxis',whole.index('theorem kernel_space'))
+ if central_start>=0:
+  piece('Kernel',[root+'Schreier',root+'Basis'],'pilotKernelGroup',whole[whole.index('theorem kernel_space'):central_start])
+  module(root+'Central',header([root+'Kernel'],'pilotCentralGroup')+public(whole[central_start:]))
+  module(root,f'import {prefix}{root}Central\n')
+ else:
+  module(root,header([root+'Schreier',root+'Basis'],'pilotAssemblyGroup')+public(whole[whole.index('theorem kernel_space'):]))
  return outputs
 
 def emit_acceptance(node,m,t,binding_module,axis_module=None):
@@ -540,14 +548,14 @@ theorem accepted_or_exceptional (N : Subgroup Original) [N.Normal] :
 '''
  for ai,di,z in central:
   Z=f'BinaryKernelCentral{mid:03d}.Axis{ai}'
-  central_proof=f'''    have hfaith : ∀ g : SourceTop,
+  central_proof=f'''  have hfaith : ∀ g : SourceTop,
         (∀ j,{A}.action g ({A}.kernelChart.inclusion (Pi.single j 1))-
           {A}.kernelChart.inclusion (Pi.single j 1)∈({A}.states {ai}).toSubmodule) → g=1 := by
-      simpa only [{A}.states_space] using {Z}.faithful
-    have hcentral := physicalFrame.shared_central_quotient_mem_kernel_of_basis
-      {A}.action topEquiv action_eq {A}.kernelChart
-      BinaryPairBinding{label}.kernel_space.symm ({A}.states {ai}) hfaith
-''' if (ai,di,z) in faithful else f'    have hcentral := BinaryPairBinding{label}.centralKernel{ai}\n'
+    simpa only [{A}.states_space] using {Z}.faithful
+  exact physicalFrame.shared_central_quotient_mem_kernel_of_basis
+    {A}.action topEquiv action_eq {A}.kernelChart
+    BinaryPairBinding{label}.kernel_space.symm ({A}.states {ai}) hfaith u hu
+''' if (ai,di,z) in faithful else f'  exact BinaryPairBinding{label}.centralKernel{ai} u hu\n'
   s+=f'''
 def residualAxis{ai} : Subrepresentation physicalFrame.coordinateTopAction :=
   physicalFrame.sharedSubrepresentation {A}.action topEquiv action_eq ({A}.states {ai})
@@ -555,16 +563,22 @@ def residualFixed{ai} : Subrepresentation physicalFrame.coordinateTopAction :=
   physicalFrame.sharedSubrepresentation {A}.action topEquiv action_eq ({A}.states {di})
 abbrev residualNormal{ai} := physicalFrame.coordinateSubgroup residualAxis{ai}.toSubmodule
 
+/-- Central classes for the literal original exceptional normal lie in
+the original flip kernel. The proof retains this action's exact K/A. -/
+theorem residual_central{ai} (u : Original)
+    (hu : QuotientGroup.mk' residualNormal{ai} u∈
+      Subgroup.center (Original ⧸ residualNormal{ai})) : u∈physicalFrame.top.ker := by
+{central_proof.rstrip()}
+
 /-- Exact central-omega criterion for the literal exceptional original
 normal. Its dimension follows from the complete shared fixed preimage. -/
 def residualCriterion{ai} : BinaryNormalCharacterCriterion (Original ⧸ residualNormal{ai}) 16 where
   dimension := {z}
   cardinal := by
-{central_proof.rstrip()}
     have hfixed := physicalFrame.shared_cut {A}.action topEquiv action_eq
       {A}.kernel ({A}.states {ai}) ({A}.states {ai}) ({A}.states {di}) kernel_space {Z}.certificate
     have hc := physicalFrame.centralOmega_card_of_fixed_chart residualAxis{ai} residualFixed{ai}
-      hfixed hcentral
+      hfixed residual_central{ai}
     change Nat.card (binaryCentralOmega (Original ⧸ residualNormal{ai}))=
       2^(Module.finrank (ZMod 2) ({A}.states {di}).toSubmodule-
         Module.finrank (ZMod 2) ({A}.states {ai}).toSubmodule) at hc
