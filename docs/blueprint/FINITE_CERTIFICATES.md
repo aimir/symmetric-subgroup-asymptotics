@@ -68,6 +68,19 @@ The runner supports either a `gap` executable or `sage --gap`. Commands,
 input conventions and expected local verdicts are documented in
 [the GAP README](../../computations/gap/README.md).
 
+The separate Lean module
+[BinaryExceptionalCarriers](../../formal/SymmetricSubgroupAsymptotics/BinaryExceptionalCarriers.lean)
+installs all four literal charts. Finite Cayley tables, generator words and
+graph-kernel checks prove the actual homomorphisms, their exact images and
+both original kernels. The generic transport proof then recovers the full
+original subgroup with any exterior group, including nonabelian exteriors.
+Actual block restriction maps identify the physical carrier projections and
+their positive noncritical support. The
+[exporter](../../computations/python/export_lean_carriers.py) generates
+untrusted Lean witnesses from the committed data; neither GAP verdicts nor
+catalogue orders are proof premises. This establishes these four charts,
+not the complete coverage contract below.
+
 ## 3. Complete coverage contract
 
 A complete finite certificate for the boundary quantifies over every actual
@@ -106,6 +119,13 @@ Run `python3 computations/gap/finite_menu.py verify`; the
 candidate export and the computational trust boundary. Replay does not use
 transitive catalogue queries or `NormalSubgroups`. This binary certificate
 has no coverage claim for the separate nonbinary or primitive finite inputs.
+
+In Lean, `BinaryCoverage` proves the two generic registry implications:
+index-prime action closure and central-prime normal closure give exhaustive
+coverage. The full menu's literal closure edges and accepted leaf outcomes
+have not yet been installed in those theorems. Computational replay of the
+complete data and kernel checking of the four charts therefore have distinct
+verification scopes.
 
 ## 4. Carrier finite inputs
 

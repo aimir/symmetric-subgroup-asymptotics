@@ -212,9 +212,9 @@
       "sha256": "3fea8e64b36752795889cb9104eee6658ce1299caa092d07cf96d22b1e29eaa5"
     },
     {
-      "bytes": 6072,
+      "bytes": 7216,
       "path": "computations/README.md",
-      "sha256": "7e50909fb7d613ceb97e8e677a1dcd064626d0421e9841b306919cdabe6743f2"
+      "sha256": "6843ff1b7ad5e08430b02ec2ebbff0ad7a5aee6fc71c3ab73f88ba7ab1b3ddbf"
     },
     {
       "bytes": 5659,
@@ -467,6 +467,11 @@
       "sha256": "deb22cb95b3edf2d0d522d164e973986b500e05d8cb0c13eed6549007f96d3e4"
     },
     {
+      "bytes": 15956,
+      "path": "computations/python/export_lean_carriers.py",
+      "sha256": "a6fd5fca33f35c1c3b1a6e97e66cf7904149103c950a226a8dd46e4454753ad0"
+    },
+    {
       "bytes": 6906,
       "path": "computations/python/pair_top_interfaces.py",
       "sha256": "01dd628e02956f80971270c1b1860f09142e06b4c6bbcfec70fb73387b5bec68"
@@ -502,9 +507,9 @@
       "sha256": "9c883afa186dea74be4bbbf994449ec6c341d0219bc59ff496234217c023cfdf"
     },
     {
-      "bytes": 9512,
+      "bytes": 10715,
       "path": "docs/blueprint/FINITE_CERTIFICATES.md",
-      "sha256": "b51eaeb12cad9fe1709e18457e2aafdd935e96ad05096908ea95f0afa6d0f3ed"
+      "sha256": "0a7b1c3f7be96cbf862c16644d99761d389f5964d96689ad5fb380b597ead615"
     },
     {
       "bytes": 6935,
@@ -558,7 +563,7 @@
     "normal_rows": 21806
   },
   "schema_version": 2,
-  "scope": "Selected finite inputs and necessary regression controls. Normal and module lists retain actual generator maps and original physical degrees. Packages overlap; record counts must not be added as disjoint physical cases. Universal counting, lifting, weighted fusion and the global asymptotic theorem require separate mathematical proofs. No formal verification is claimed.",
+  "scope": "Selected finite inputs and necessary regression controls. Normal and module lists retain actual generator maps and original physical degrees. Packages overlap; record counts must not be added as disjoint physical cases. Universal counting, lifting, weighted fusion and the global asymptotic theorem require separate mathematical proofs. The replay programs do not claim formal verification. The separate Lean carrier modules kernel-check four literal charts; full finite-menu acceptance remains a distinct formal obligation.",
   "six_block": {
     "actions": 182,
     "block_certificates": 224,
