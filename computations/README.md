@@ -124,6 +124,38 @@ finite proof chunks limit repeated kernel reduction; no native evaluation
 oracle or external replay verdict is a proof premise. These four charts do
 not establish complete finite-menu coverage.
 
+## Structural roots and compact action certificates
+
+```sh
+python3 computations/python/export_lean_wreath_roots.py --check
+python3 computations/python/export_lean_menu_cayley.py --check
+python3 computations/python/export_lean_action_registry.py --width 8 --check
+python3 computations/python/export_lean_generator_edges.py --check
+```
+
+The root exporter produces short two-way generator words for the original
+degree-2, 4, 8 and 16 menu roots. Lean proves their Sylow property from a
+faithful iterated-wreath action and its exact order. The second exporter
+produces faithful numeric permutation codes, generator transitions and
+well-founded parent paths. These give executable finite groups and exact
+equivalences with the original generated permutation groups; no declared
+group order or Python result is a proof premise. Its default output covers
+the degree-2/4 actions and the order-1024 degree-16 exceptional source.
+`--node ID` selects additional literal menu actions. Both read-only checks
+reproduce committed source bytes and require only the Python standard library.
+
+The degree-8 registry exporter checks every original-generator assignment and
+all original-point child conjugacies, proving complete transitive binary
+action coverage there. The generator-edge exporter demonstrates the compressed
+method on every transitive index-two child of 16T1086: inverse-conjugated
+target-generator membership and exact checked group orders force equality.
+It uses packed numeric tables and small rejection witnesses. This covers
+that action's children, not the whole degree-16 registry.
+
+Action certificates, exhaustive registry coverage, and normal-state
+acceptance are separate mathematical obligations. Generating a Cayley
+certificate for an action does not discharge the latter two.
+
 ## Zero-ternary induced frames
 
 The [frame package](frames/README.md) checks every literal induced frame,

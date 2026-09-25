@@ -138,6 +138,15 @@ definition obligations as conclusions, not hypotheses.
 | [BinaryTransport](SymmetricSubgroupAsymptotics/BinaryTransport.lean), [BinaryTransportFibreProducts](SymmetricSubgroupAsymptotics/BinaryTransportFibreProducts.lean) | Reversible simultaneous transport of actual subgroups through arbitrary proper subdirect carriers, literal axes, full projections, and unchanged original fixed weights. |
 | [BinaryCoverage](SymmetricSubgroupAsymptotics/BinaryCoverage.lean), [FiniteGroupCertificates](SymmetricSubgroupAsymptotics/FiniteGroupCertificates.lean) | Universal p-group action/normal coverage from local closure, and soundness of finite Cayley and homomorphism-graph certificates. The actual finite closure checks are separate obligations. |
 | [BinaryCheckedTransport](SymmetricSubgroupAsymptotics/BinaryCheckedTransport.lean), [BinaryPermutationBlocks](SymmetricSubgroupAsymptotics/BinaryPermutationBlocks.lean), [BinaryExceptionalCarriers](SymmetricSubgroupAsymptotics/BinaryExceptionalCarriers.lean) | Four literal exceptional charts, exact original kernels and quotient maps, reversible transport with any exterior, and actual block projections with positive noncritical support. The degree-sixteen carrier remains the proper joint image. |
+| [BinarySylowCoverage](SymmetricSubgroupAsymptotics/BinarySylowCoverage.lean), [BinaryWreathRoots](SymmetricSubgroupAsymptotics/BinaryWreathRoots.lean), [BinaryMenuRoots](SymmetricSubgroupAsymptotics/BinaryMenuRoots.lean), [BinaryConjugacyTransport](SymmetricSubgroupAsymptotics/BinaryConjugacyTransport.lean) | Global coverage from local representative edges; structurally proved Sylow roots bound to all four literal menu roots; simultaneous original action/normal/quotient conjugacy and unchanged normalizer weights. |
+| [FusionGoursat](SymmetricSubgroupAsymptotics/FusionGoursat.lean), [FusionGoursatCount](SymmetricSubgroupAsymptotics/FusionGoursatCount.lean), [FusionLabelCounting](SymmetricSubgroupAsymptotics/FusionLabelCounting.lean), [FusionOrbitPointing](SymmetricSubgroupAsymptotics/FusionOrbitPointing.lean), [FusionOrbitDeletion](SymmetricSubgroupAsymptotics/FusionOrbitDeletion.lean), [FusionPhysicalCount](SymmetricSubgroupAsymptotics/FusionPhysicalCount.lean) | Reversible actual Goursat encoding, complete surviving literal-axis/source sum, intrinsic orbit extraction, and the original factorial/normalizer divisor proved by labelled-frame fibres. |
+| [FusionEpimorphismTransport](SymmetricSubgroupAsymptotics/FusionEpimorphismTransport.lean), [FusionEpimorphismLifts](SymmetricSubgroupAsymptotics/FusionEpimorphismLifts.lean), [FusionFiniteMenu](SymmetricSubgroupAsymptotics/FusionFiniteMenu.lean) | Literal epi transport and survival-restricted extension fibres; fractional-Schur epi envelopes on the actual source; actual physical hot/cold fusion from local envelopes and same-source moments. |
+| [FusionCentralLifts](SymmetricSubgroupAsymptotics/FusionCentralLifts.lean), [FusionCentralPrefix](SymmetricSubgroupAsymptotics/FusionCentralPrefix.lean) | Actual central-cut lift fibres, exact binary character factor, original Schur envelope, and its literal same-source graph moment without a split-extension assumption. |
+| [FusionPhysicalUnion](SymmetricSubgroupAsymptotics/FusionPhysicalUnion.lean), [FusionKernelAssembly](SymmetricSubgroupAsymptotics/FusionKernelAssembly.lean), [FusionShiftedMenu](SymmetricSubgroupAsymptotics/FusionShiftedMenu.lean), [FusionContinuationRow](SymmetricSubgroupAsymptotics/FusionContinuationRow.lean) | Actual normalized physical fusion from local envelopes and graph moments, including zero graph width; complete finite sums at each actual complement degree n−2h, exact weighted row assembly, forward support and a proved contractive row aggregate. |
+| [C1SplitCharacters](SymmetricSubgroupAsymptotics/C1SplitCharacters.lean), [C1BinaryInflation](SymmetricSubgroupAsymptotics/C1BinaryInflation.lean), [C1CharacterWitness](SymmetricSubgroupAsymptotics/C1CharacterWitness.lean), [C1ComplementChart](SymmetricSubgroupAsymptotics/C1ComplementChart.lean), [C1InverseComplement](SymmetricSubgroupAsymptotics/C1InverseComplement.lean), [C1InverseComplementCount](SymmetricSubgroupAsymptotics/C1InverseComplementCount.lean), [C1CosetReciprocal](SymmetricSubgroupAsymptotics/C1CosetReciprocal.lean), [C1ActualGraphs](SymmetricSubgroupAsymptotics/C1ActualGraphs.lean), [C1RetainedAnnihilator](SymmetricSubgroupAsymptotics/C1RetainedAnnihilator.lean), [C1PhysicalWeight](SymmetricSubgroupAsymptotics/C1PhysicalWeight.lean) | Exact surviving split-character weights, reversible inverse-complement charts with the original reciprocal denominator, binary-kernel invariance, retained annihilator count, and the physical c=1 row with original normalizer six. |
+| [FiniteCayleyReflection](SymmetricSubgroupAsymptotics/FiniteCayleyReflection.lean), [FinitePermutationEncoding](SymmetricSubgroupAsymptotics/FinitePermutationEncoding.lean), [FiniteCayleyGroup](SymmetricSubgroupAsymptotics/FiniteCayleyGroup.lean), [FiniteCayleyMaps](SymmetricSubgroupAsymptotics/FiniteCayleyMaps.lean) | Faithful numeric permutation rows, well-founded original-generator paths, actual executable finite groups, and homomorphisms certified by generator transitions. |
+| [FinitePermutationRegistry](SymmetricSubgroupAsymptotics/FinitePermutationRegistry.lean), [BinaryMenuSmallCoverage](SymmetricSubgroupAsymptotics/BinaryMenuSmallCoverage.lean), [BinaryRowCharacters](SymmetricSubgroupAsymptotics/BinaryRowCharacters.lean), [BinaryCharacterRegistry](SymmetricSubgroupAsymptotics/BinaryCharacterRegistry.lean), [BinaryActionCoverage8](SymmetricSubgroupAsymptotics/BinaryActionCoverage8.lean) | Universal original-generator bit coverage, literal ambient conjugacy edges, and complete transitive binary action coverage in degrees 2, 4 and 8. |
+| [BinaryGeneratorConjugacy](SymmetricSubgroupAsymptotics/BinaryGeneratorConjugacy.lean), [BinaryGeneratorRegistry](SymmetricSubgroupAsymptotics/BinaryGeneratorRegistry.lean), [BinaryNormalGeneratorSteps](SymmetricSubgroupAsymptotics/BinaryNormalGeneratorSteps.lean) | Generator membership plus exact orders identify actual conjugate children and quotient-cyclic normal steps; full row correspondence tables are unnecessary. |
 | [BinaryMixtureCentralComparison](SymmetricSubgroupAsymptotics/BinaryMixtureCentralComparison.lean), [BinaryMixtureCyclicFour](SymmetricSubgroupAsymptotics/BinaryMixtureCyclicFour.lean) | Actual central-extension-to-split comparison preserving every exterior image and its weights, instantiated on C4 powers over arbitrary finite nonabelian exteriors. |
 
 The Gaussian-sum bounds imply
@@ -362,8 +371,26 @@ divisor. Fixed-width cold kernels are exponentially small in the complete
 complement degree. Positive-width hot kernels are quadratically small,
 relative only to the explicit coarse counting input `1/16 + o(1)`.
 Zero-width moment bounds force every retained weight to be at most one.
-These numerical results do not yet install physical orbit pointing,
-capacity certificates, or the surviving c=1 owner application.
+`FusionPhysicalCount` now proves physical orbit pointing with the original
+normalizer divisor on the complete stable literal-axis sum. `FusionFiniteMenu`
+then splits this numerical sum into hot and cold terms using only local epi
+envelopes and same-source moments. `FusionPhysicalUnion` installs the resulting
+recurrence on actual covering families of subgroups of S_n. No invariance of individual axes or source
+envelopes is silently assumed. `FusionContinuationRow` retains different
+removed widths at the same ambient degree and proves eventual row contraction.
+The central-cut epi envelope and its full graph moment are now connected to
+the actual original extension tower. Actual module charts and the named
+permutation quotient-rank bound remain explicit inputs. The numerical fusion
+endpoint deletes a positive even number of points; its ambient degree has
+either parity. Installing the strict local capacity gaps remains separate.
+
+The first c=1 application proves the physical factor `n!/(6 m!)` times the
+exact surviving split-character sum on the complete complement. Its unrestricted
+weight is `3^d₃(K)−3^h₃(K)`; a survival predicate remains inside that count.
+The inverse-complement formula is an exact reversible reindexing with weight
+`1/|{y in Nx : orderOf y=3}|`. Binary-kernel inflation preserves characters,
+splitting and all these surviving weights. These identities do not yet prove
+the required high-cone exhaustion by earlier owners or the final c=1 bound.
 
 Simultaneous binary transport now reconstructs the literal original subgroup
 from the full replacement relation, including nonabelian proper subdirect
@@ -372,8 +399,11 @@ both exact kernels, and physical block projections. Their exporter reads
 the committed finite menu; Lean checks each generated witness. The
 degree-sixteen carrier is its actual proper joint image, and the auxiliary
 quotient degree is never charged as physical support. The generic registry
-coverage implications are proved, but their full finite action/normal
-closure checks and accepted outcomes remain to be installed. The central
+coverage implications are proved, with all four original Sylow roots now
+installed by structural wreath-product proofs and short generator words.
+All transitive binary actions of degrees 2, 4 and 8 are covered by checked
+original-point conjugacies. The complete degree-16 action registry and the
+nonbase normal registries and their accepted outcomes remain to be installed. The central
 binary extension comparison is proved for every exact exterior image and
 its nonnegative weights, and is instantiated for C4 powers. Complete
 finite-menu coverage, the joint numerical transition estimates, labelled

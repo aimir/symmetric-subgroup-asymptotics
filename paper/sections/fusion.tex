@@ -100,13 +100,25 @@ The result is uniform in ambient parity, but its constants may depend
 on the fixed finite menu.
 \end{theorem}
 \begin{proof}
+For each $U$, first close the selected literal axes under
+$N_{S_w}(U)$. This finite enlargement leaves the existential physical
+orbit event unchanged. Choose one certificate on each resulting
+normalizer orbit and transport it through the induced quotient
+isomorphisms; thus $D,v,\lambda,\Phi$ can be constant on that orbit.
+All sums below refer to this closed literal-axis menu.
+
 On a pointed orbit the subgroup has exact Goursat form
 \[
  \{(u,j)\in U\times J:uN=\beta(j)\}
 \]
 for a unique literal epimorphism $\beta:J\to U/N$, once the quotient
 map is fixed. This counts actual maps, so there is no additional
-division by $|\Aut(U/N)|$. For an entry put
+division by $|\Aut(U/N)|$. First apply the pointing factor
+$n!/(b!a(U))$ to the total normalizer-stable sum over literal axes and
+complete sources. A single axis need not be fixed by the action
+normalizer. Only after this division do we split the numerical sum
+entry by entry; the envelopes need not be conjugacy invariant.
+For an entry put
 $e=g/16$, $a_0=v/8+e$, and call its complete source hot when
 $\Phi(J)>2^{a_0b}$.
 If $v=0$, the moment bound has the same finite right-hand side $s_b$
@@ -156,12 +168,12 @@ including rank zero, so the estimate holds in both parities. Each summand
 in \eqref{eq:cold-kernel} is therefore
 $2^{-gb/16+O_w(\log(n+2))}$. The finite sum proves the row estimate.
 
-Use the event that any eligible entry is hot, then the complement of
-that event. Pointing may overcount, but only by a positive sum which
-has already been bounded. Restriction by any earlier disjoint family
-can only reduce this sum. The actual complement $J$ includes every
-later orbit and every terminal attachment, as required by
-\eqref{eq:pointing}.
+The hot and cold contributions partition the local numerical sum
+after pointing. Summing over the finite action menu may overcount,
+but only by the positive sum already bounded. Restriction by any
+earlier disjoint family can only reduce it. The actual complement
+$J$ includes every later orbit and every terminal attachment, as
+required by \eqref{eq:pointing}.
 \end{proof}
 
 \begin{corollary}[Nonbinary pair actions]\label{cor:pair-fusion}

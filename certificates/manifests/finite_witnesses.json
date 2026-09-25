@@ -212,9 +212,9 @@
       "sha256": "3fea8e64b36752795889cb9104eee6658ce1299caa092d07cf96d22b1e29eaa5"
     },
     {
-      "bytes": 7216,
+      "bytes": 9002,
       "path": "computations/README.md",
-      "sha256": "6843ff1b7ad5e08430b02ec2ebbff0ad7a5aee6fc71c3ab73f88ba7ab1b3ddbf"
+      "sha256": "ff68261753bf624050c780adec0b3da9a16eb32a6b73d889ba7cb3eaab2e5219"
     },
     {
       "bytes": 5659,
@@ -467,9 +467,29 @@
       "sha256": "deb22cb95b3edf2d0d522d164e973986b500e05d8cb0c13eed6549007f96d3e4"
     },
     {
+      "bytes": 10728,
+      "path": "computations/python/export_lean_action_registry.py",
+      "sha256": "bccd975ea6eb51aa29fb511e17afefd988e1e0f45a908a747c55bf11f5cf5436"
+    },
+    {
       "bytes": 15956,
       "path": "computations/python/export_lean_carriers.py",
       "sha256": "a6fd5fca33f35c1c3b1a6e97e66cf7904149103c950a226a8dd46e4454753ad0"
+    },
+    {
+      "bytes": 8644,
+      "path": "computations/python/export_lean_generator_edges.py",
+      "sha256": "576113d5a9e4e793178b6cf4d431afcceb0f948a7aeecc3ebf1b8c154faa27e1"
+    },
+    {
+      "bytes": 8064,
+      "path": "computations/python/export_lean_menu_cayley.py",
+      "sha256": "e261909d41bd3bbeedd1f279c5cb7e9d165610fb824ceafad3a028ed3e0fb3c3"
+    },
+    {
+      "bytes": 4862,
+      "path": "computations/python/export_lean_wreath_roots.py",
+      "sha256": "87fd535230582d0e647ee5bdb58ac3afb36f0ba1b924e98fc7a40e8b96d1db68"
     },
     {
       "bytes": 6906,
