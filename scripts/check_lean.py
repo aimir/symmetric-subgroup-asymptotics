@@ -3,6 +3,8 @@
 
 Dependencies must already be built. This command never launches a Lake build.
 The Lean allocator limit is supplemented by a sampled process-group RSS watchdog.
+Defaults are 3 GiB allocator / 4 GiB RSS; explicitly selected checks may use
+up to 6 GiB allocator / 8 GiB RSS. The single-compiler lock applies to both.
 Successful objects replace existing objects only after checking completes.
 Logs and receipts must be kept outside the publication repository.
 """
@@ -232,10 +234,10 @@ def main():
     parser.add_argument("--seconds", type=int, default=900)
     parser.add_argument("--log-limit-mb", type=int, default=16)
     args = parser.parse_args()
-    if not 64 <= args.memory_mb <= 3072:
-        parser.error("--memory-mb must be between64 and3072")
-    if not args.memory_mb <= args.rss_limit_mb <= 4096:
-        parser.error("--rss-limit-mb must be at least the allocator limit and at most4096")
+    if not 64 <= args.memory_mb <= 6144:
+        parser.error("--memory-mb must be between 64 and 6144")
+    if not args.memory_mb <= args.rss_limit_mb <= 8192:
+        parser.error("--rss-limit-mb must be at least the allocator limit and at most 8192")
     if not 1 <= args.seconds <= 3600:
         parser.error("--seconds must be between1 and3600")
     if not 1 <= args.log_limit_mb <= 64:
