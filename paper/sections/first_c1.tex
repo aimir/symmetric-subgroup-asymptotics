@@ -27,17 +27,32 @@ The split graphs with $20d_3(K)\leq3m$ have normalized mass at most
 \[
  K_{\mathrm{lo}}(n,m)\frac{s_m}{L_m},\qquad
  K_{\mathrm{lo}}(n,m)=\frac16\Delta(n,m)3^{3m/20}
- =2^{-\eta m+O(\log(n+2))},
+ \leq2^{-\eta m+O(\log(n+2))},
  \quad \eta=\frac14-\frac{3\log_2 3}{20}>0.
 \]
 \end{proposition}
 \begin{proof}
 Apply \eqref{eq:c1-surviving-weight} to each residual before enlarging
 its number to $s_m$. The labelled factorials cancel exactly as in
-\eqref{eq:c1-exact-mass}. The coefficient recurrence and Gaussian
-bounds give $\log_2\Delta(n,n-3)\leq-m/4+O(\log(n+2))$ in both
-parities. For odd $n$ this is the precise leading exponent; the other
-parity is stronger. Finally $3\log_2 3<5$.
+\eqref{eq:c1-exact-mass}. Here is an explicit bound covering every
+fixed deletion width $w$:
+\begin{equation}\label{eq:arbitrary-width-pointing}
+ \Delta(b+w,b)\leq
+ \phi^{-2}2^{(w+1)/4}(b+w+1)^{w+2}
+ 2^{-\lfloor w/2\rfloor b/4},
+ \qquad \phi=\prod_{j\geq1}(1-2^{-j}).
+\end{equation}
+Indeed, the two guarded parity coefficients at rank $k$ both lie
+between $A_k$ and $(k+1)A_k$, since $A_{k-1}\leq2kA_k$.
+The rank shift $t=\lfloor(b+w)/2\rfloor-\lfloor b/2\rfloor$
+lies between $\lfloor w/2\rfloor$ and $w$. Apply the coefficient
+shift bound $A_k\leq(2(k+t))^tA_{k+t}$ and the Gaussian ratio bound;
+their polynomial factors are at most $(b+w+1)^{w+2}$.
+The Gaussian exponent is at most
+$(w+1)/4-\lfloor w/2\rfloor b/4$, proving the display also at rank zero.
+For $w=3$ this gives the required loss $m/4$. Finally $3^5<2^8$
+gives $3\log_2(3)/20<6/25<1/4$, so the low-cone kernel is also
+$O(2^{-m/200})$ after absorbing its fixed polynomial factor.
 \end{proof}
 
 We next prove the earlier orbit estimates actually needed for the high
@@ -279,8 +294,11 @@ triple and every other orbit and relation. The exact pointed
 comparison is
 \[
  \sum_H k(H)=\sum_U\frac{n!}{b!a(U)}
-                    \sum_J Z_J(U).
+                    \sum_J Z^{\mathrm{surv}}_J(U),
+ \qquad 0\leq Z^{\mathrm{surv}}_J(U)\leq Z_J(U).
 \]
+Here the surviving fibre retains the preceding exclusions on the complete
+pointed graph. The unrestricted fibre is used only for the upper bound.
 If required, the pattern is retained on each $J$ before using its
 rank bound. Deleting any of the indicated nonmarker actions preserves
 the unique-$C_3$, no-natural-$A_4$ pattern. Only after the fibre has
@@ -291,9 +309,12 @@ Normalize once, obtaining terms
 \]
 For even $w$ the Gaussian coefficient of $b$ is $w/8$; for odd
 $w$ its safe value in both parities is $(w-1)/8$. These are strictly
-larger than every corresponding $\alpha_U$ in the table: the smallest
-conditional gap is $1-5\log_2(3)/9>1/9$. The coefficient cost for
-each fixed deletion is polynomial in $n$. There are only finitely
+larger than every corresponding $\alpha_U$ in the table. For a check
+using only rational numbers, $3^5<2^8$ bounds its five exponents by
+$8/15,16/15,25/18,8/9,8/3$, respectively. Each resulting gap is at
+least $1/9$. Equation~\eqref{eq:arbitrary-width-pointing} bounds the
+coefficient cost for each fixed deletion by a polynomial in $n$.
+There are only finitely
 many actions in degrees $6,9,12,27$, so the whole forward row is
 $O(2^{-\varepsilon n})$ for some $\varepsilon>0$. To form a
 disjoint physical partition, assign a graph to the first eligible
