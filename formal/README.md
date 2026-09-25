@@ -115,6 +115,14 @@ definition obligations as conclusions, not hypotheses.
 | [OddMarker](SymmetricSubgroupAsymptotics/OddMarker.lean), [OddProfileActions](SymmetricSubgroupAsymptotics/OddProfileActions.lean), [OddCriticalProfiles](SymmetricSubgroupAsymptotics/OddCriticalProfiles.lean) | Natural S3, its forced A3 kernel and exact contraction preserving the entire exterior image; singleton and S3 model equivalences, original normalizer six, and total quotient rank including the marker. |
 | [OddProfileAssembly](SymmetricSubgroupAsymptotics/OddProfileAssembly.lean), [OddCriticalAsymptotic](SymmetricSubgroupAsymptotics/OddCriticalAsymptotic.lean) | Disjoint actual odd-marker sectors with the rank-zero guard, original profile weights, and the complete odd critical-family asymptotic. |
 | [CriticalFamilyAsymptotic](SymmetricSubgroupAsymptotics/CriticalFamilyAsymptotic.lean) | A single actual critical family on Fin n, both-parity exponential relative error, and the exponential lower side for the total subgroup count. |
+| [BinaryFamilies](SymmetricSubgroupAsymptotics/BinaryFamilies.lean) | Intrinsic complete fixed-point-free binary families, complete critical inclusion, and exact disjoint F=Ccrit+E, with independent critical boundedness. |
+| [BinaryAbelianization](SymmetricSubgroupAsymptotics/BinaryAbelianization.lean) | Actual binary character dual, onto evaluation for finite groups, universal quotient and exact homomorphism cardinalities. |
+| [TerminalContraction](SymmetricSubgroupAsymptotics/TerminalContraction.lean) | Complete-exterior contraction through O²(T), preserving the entire critical-product image and every predicate on it. |
+| [TerminalCentralFibres](SymmetricSubgroupAsymptotics/TerminalCentralFibres.lean), [TerminalRetractions](SymmetricSubgroupAsymptotics/TerminalRetractions.lean), [TerminalFibreCount](SymmetricSubgroupAsymptotics/TerminalFibreCount.lean) | Actual scalar splitting annihilator, kernel-retraction equivalence, and complete central-fibre count for arbitrary finite nonabelian exterior images. |
+| [TerminalCohomology](SymmetricSubgroupAsymptotics/TerminalCohomology.lean) | The retained annihilator equals the kernel of the actual scalar H² class map; actual inflation kernels and their pulled-coboundary membership criterion. |
+| [TerminalGraphClassification](SymmetricSubgroupAsymptotics/TerminalGraphClassification.lean), [TerminalRecords](SymmetricSubgroupAsymptotics/TerminalRecords.lean), [TerminalRecordAssembly](SymmetricSubgroupAsymptotics/TerminalRecordAssembly.lean) | All exterior-full quotient images, reversible ordered records, faithful original group maps, and exact original divisor for any actual-image weight. |
+| [CocycleLifts](SymmetricSubgroupAsymptotics/CocycleLifts.lean), [JointSourceGraphs](SymmetricSubgroupAsymptotics/JointSourceGraphs.lean) | Literal fixed-source lift–cocycle fibres and the full marked graph moment in degree b+q(s+2c), allowing repeated maps and proper joint images. |
+| [SharedC3](SymmetricSubgroupAsymptotics/SharedC3.lean), [SharedC3LinearCounts](SymmetricSubgroupAsymptotics/SharedC3LinearCounts.lean), [SharedC3Counts](SymmetricSubgroupAsymptotics/SharedC3Counts.lean) | Actual scalar semidirect-product map classification, exact onto linear-map counts, and shared-C3 single/double-mark audit formulae with all coboundaries retained. |
 
 The Gaussian-sum bounds imply
 
@@ -272,6 +280,37 @@ permitted critical profile is included. Consequently
 `subgroupCount_critical_lower` proves the matching exponential lower bound
 for the total subgroup count. The rate is unoptimized. Profile weights are
 never asserted to be subgroup cardinalities by definition.
+
+The complete binary family is now defined intrinsically by the 2-group
+condition and absence of singleton orbits. `binaryFamilyRatio_partition`
+proves the exact F=Ccrit+E identity, with E the complement of all critical
+profiles, including noncanonical lifts. This does not bound E.
+
+For an actual central extension with elementary binary kernel, the terminal
+counting theorem proves
+
+    card {H <= X : image(H) = Y} = sum_(L <= Ann) 2^(d₂(Y) * dim L).
+
+The annihilator is the literal image of scalar character restriction, and
+`TerminalCohomology` identifies it with the kernel of the actual scalar H²
+class map. The source Y may be nonabelian. Complete-exterior contraction,
+all quotient graphs and the original |GL(u,2)| 2^(u d₂(T)) record divisor
+are also proved, with arbitrary conditions and weights on the actual image.
+The numerical terminal bound and its installation on the full critical
+attachment count remain further obligations.
+
+For a faithful degree-s cover of B, `JointSourceGraphs` proves
+
+    sum_(J <= S_b) (card(Epi(J,B)) * 2^(c*d₂(J)))^q
+      <= subgroupCount (b + q*(s+2*c)).
+
+Every map in a tuple has the same actual source J. The lift correspondence
+retains literal cocycles and arbitrary survival predicates. The shared-C3
+fixture proves the actual counts 4^(m(r+1)) and
+4^m product_(i<m)(4^r-4^i), including degenerate ranks, and a genuine
+same-source double-mark count. These results supply algebraic interfaces;
+the numerical cocycle bound, original-weight fusion and surviving c=1
+owner application still require their own proofs.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
