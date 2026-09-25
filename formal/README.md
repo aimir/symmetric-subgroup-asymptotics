@@ -17,12 +17,18 @@ python3 -B scripts/check_lean.py SymmetricSubgroupAsymptotics/FiniteGroupCertifi
   --log-dir ../lean-check-logs
 ```
 
-The runner requires already checked imports. It permits one compiler at a
-time, limits Lean to one thread and 3 GB of allocator memory, and stops its
-process group above 4 GB of resident memory or the chosen time limit. Logs
-and hash receipts stay outside this repository. A failed check does not
-replace its previous object file. Avoid unrestricted parallel `lake build`
-for the generated finite certificates; use their serial capped drivers.
+The runner requires existing import objects and validates available local
+check receipts. It records legacy imports without receipts as unverified;
+it does not recursively certify all installed dependency objects.
+It permits one compiler at a time and one Lean thread, with defaults of
+3 GiB allocator memory and a sampled 4 GiB process-group RSS watchdog.
+Selected modules may use `--memory-mb 6144 --rss-limit-mb 8192`, allowing
+6 GiB allocator memory and an 8 GiB RSS threshold. Larger limits are rejected.
+The RSS watchdog is sampled, not an operating-system hard allocation limit.
+Every check also has a wall timeout. Split certificates that exceed these
+ceilings. Logs and hash receipts stay outside this repository. A failed check
+does not replace its previous object file. Avoid unrestricted parallel
+`lake build` for generated finite certificates; use the capped runner.
 Cached dependencies allow checking offline. There are no CI workflows.
 The supervisor's small process and receipt regressions run locally with
 `python3 -B scripts/test_check_lean.py` from the repository root; they do
