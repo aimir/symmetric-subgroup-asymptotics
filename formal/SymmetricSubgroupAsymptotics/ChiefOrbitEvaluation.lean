@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.InducedTernaryEnvelope
+import SymmetricSubgroupAsymptotics.InducedTernaryWidthEnvelope
 
 /-! A local elementary evaluation on the original finite group produces
 an actual induced quotient layer. Its kernel is the intersection of
@@ -148,19 +148,18 @@ end LocalChief
 kernel and retained restriction image are constructed from the original
 local evaluation, while only its actual induced quotient is bounded. -/
 theorem localChief_ternary_step
-    (hTracey : TraceyPrimePowerModuleInput 3)
     {A N V : Type} [Group A] [Finite A] [Group N] [Finite N]
     [AddCommGroup V] [Module (ZMod 3) V] [FiniteDimensional (ZMod 3) V]
     (H : Subgroup A) (δ : A→*MulAut N)
     (ρ : Representation (ZMod 3) H V) (φ : N→*Multiplicative V)
     (he : ∀ (h:H) (n:N),(φ (δ (h:A) n)).toAdd=ρ h (φ n).toAdd) :
     (Module.finrank (ZMod 3) (primeActionCharacters 3 δ):ℝ)≤
-      (Module.finrank (ZMod 3) V:ℝ)*traceyTernaryEnvelope H.index+
+      (Module.finrank (ZMod 3) V:ℝ)*(ternaryIndexWidth H.index:ℝ)+
         (Module.finrank (ZMod 3) (localChiefRetainedCharacters H δ ρ φ he):ℝ) := by
   have hnat := localChief_head_eq H δ ρ φ he
   have hreal := congrArg (Nat.cast : ℕ→ℝ) hnat
   simp only [Nat.cast_add] at hreal
-  have hb := inducedTernary_head_le_envelope hTracey H ρ
+  have hb := inducedTernary_head_le_indexWidth_real H ρ
     (localChiefInducedImage H δ ρ φ he)
   exact hreal.trans_le (add_le_add hb le_rfl)
 

@@ -2,8 +2,8 @@ import SymmetricSubgroupAsymptotics.ActualLocalChiefSteps
 
 /-! The actual local-chief recurrence. Every local factor and every
 ambient intersection is constructed from the original evaluation. The
-only outside analytic/group-theoretic input is the literal published
-prime-power induced-module theorem. -/
+ternary width coefficient is proved for the original induced quotient;
+no published prime-power module hypothesis is needed. -/
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
 noncomputable section
@@ -15,18 +15,18 @@ variable (hβ : Function.Surjective β)
 variable (hsep:∀n:N,(∀a:A,θ (MulAut.conjNormal a n)=1)→n=1)
 include hθ hβ hsep
 
-theorem actualLocalChiefHead_bound (hTracey:TraceyPrimePowerModuleInput 3)
+theorem actualLocalChiefHead_bound
     (s:ActualChiefSeries R) :
     (Module.finrank (ZMod 3) (primeRelativeCharacters 3 N):ℝ)≤
-      (actualChiefSeriesTernaryWeight s:ℝ)*traceyTernaryEnvelope H.index := by
+      (actualChiefSeriesTernaryWeight s:ℝ)*(ternaryIndexWidth H.index:ℝ) := by
   let C (i:Fin (s.length+1)) := localChiefIntersection N θ (s.subgroup i)
   let d (i:Fin (s.length+1)) : ℝ :=
     Module.finrank (ZMod 3) (primeRelativeCharacters 3 (C i))
   let w (i:Fin s.length) : ℝ :=
     chiefTernaryWeight (normalChainQuotient (s.subgroup i.castSucc) (s.subgroup i.succ))
   have hs (i:Fin s.length) :
-      d i.succ≤w i*traceyTernaryEnvelope H.index+d i.castSucc :=
-    ternaryChiefStep_le hTracey _ _ H _
+      d i.succ≤w i*(ternaryIndexWidth H.index:ℝ)+d i.castSucc :=
+    ternaryChiefStep_le _ _ H _
       (actualLocalChiefStep N H θ β hθ hβ _ _ (s.step i).le (s.chief i))
   have hsum := Finset.sum_le_sum (fun i (_:i∈(Finset.univ:Finset (Fin s.length)))=>hs i)
   have hz : C 0=⊥ := by

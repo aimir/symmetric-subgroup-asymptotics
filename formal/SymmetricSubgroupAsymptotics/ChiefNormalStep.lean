@@ -98,17 +98,16 @@ theorem localChiefRetained_le_relative :
 end Construction
 
 theorem localChief_ternary_normal_step
-    (hTracey : TraceyPrimePowerModuleInput 3)
     {A V : Type} [Group A] [Finite A]
     [AddCommGroup V] [Module (ZMod 3) V] [FiniteDimensional (ZMod 3) V]
     (N H : Subgroup A) [N.Normal]
     (ρ : Representation (ZMod 3) H V) (φ : N→*Multiplicative V)
     (he : ∀ (h:H) (n:N),(φ (MulAut.conjNormal (h:A) n)).toAdd=ρ h (φ n).toAdd) :
     (Module.finrank (ZMod 3) (primeRelativeCharacters 3 N):ℝ)≤
-      (Module.finrank (ZMod 3) V:ℝ)*traceyTernaryEnvelope H.index+
+      (Module.finrank (ZMod 3) V:ℝ)*(ternaryIndexWidth H.index:ℝ)+
         (Module.finrank (ZMod 3)
           (primeRelativeCharacters 3 (localChiefAmbientKernel N H ρ φ he)):ℝ) := by
-  have h := localChief_ternary_step hTracey H (normalChainSourceAction N) ρ φ he
+  have h := localChief_ternary_step H (normalChainSourceAction N) ρ φ he
   have hr : (Module.finrank (ZMod 3)
       (localChiefRetainedCharacters H (normalChainSourceAction N) ρ φ he):ℝ)≤
       (Module.finrank (ZMod 3)

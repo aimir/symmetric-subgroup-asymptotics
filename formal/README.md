@@ -176,7 +176,9 @@ definition obligations as conclusions, not hypotheses.
 | [TraceyPrimePowerInput](SymmetricSubgroupAsymptotics/TraceyPrimePowerInput.lean), [TraceySylowIndices](SymmetricSubgroupAsymptotics/TraceySylowIndices.lean), [TraceyTernaryPrimePower](SymmetricSubgroupAsymptotics/TraceyTernaryPrimePower.lean) | A literal published prime-power input, actual Sylow orbit degrees, and floor-preserving numerical aggregation. The input remains a theorem hypothesis. |
 | [BinaryFiniteEntryCoverage8](SymmetricSubgroupAsymptotics/BinaryFiniteEntryCoverage8.lean) | Exhaustive original degree-8 normal-state coverage: 190 physical certificates, 10 exact character criteria and three transport charts, with the original conjugation and normalizer. |
 | [BinaryPairCertificateCapacity](SymmetricSubgroupAsymptotics/BinaryPairCertificateCapacity.lean), [BinaryPairPrefixChart](SymmetricSubgroupAsymptotics/BinaryPairPrefixChart.lean) | Actual cut dimension and quotient capacity, followed by the literal central-prefix tower, surviving-epi bound and joint moment. |
-| [InducedMackeyDecomposition](SymmetricSubgroupAsymptotics/InducedMackeyDecomposition.lean), [InducedTernaryEnvelope](SymmetricSubgroupAsymptotics/InducedTernaryEnvelope.lean) | Actual twisted Mackey coordinates and the full ternary head envelope. The coprime branch follows from Maschke and Frobenius; only the prime-power branch uses the named Tracey input. |
+| [InducedMackeyDecomposition](SymmetricSubgroupAsymptotics/InducedMackeyDecomposition.lean), [InducedTernaryEnvelope](SymmetricSubgroupAsymptotics/InducedTernaryEnvelope.lean) | Actual twisted Mackey coordinates and the older Gaussian envelope, whose prime-power branch retains the named Tracey hypothesis. The coprime branch is proved from Maschke and Frobenius. |
+| [PGroupOrderedTransversal](SymmetricSubgroupAsymptotics/PGroupOrderedTransversal.lean), [RepresentationLeadingAntichain](SymmetricSubgroupAsymptotics/RepresentationLeadingAntichain.lean), [PGroupInducedHead](SymmetricSubgroupAsymptotics/PGroupInducedHead.lean) | Actual prime-index chains and ordered coset transversals bound the intrinsic head of every induced subrepresentation over a finite three-group, with arbitrary original subgroups and fibres. |
+| [InducedTernaryWidthEnvelope](SymmetricSubgroupAsymptotics/InducedTernaryWidthEnvelope.lean), [TernaryIndexWidthValues](SymmetricSubgroupAsymptotics/TernaryIndexWidthValues.lean) | The proved integer B(s) envelope on actual Sylow/Mackey pieces, natural division before the fibre factor, and exact small-index values; no prime-power literature hypothesis. |
 | [ChiefOrbitEvaluation](SymmetricSubgroupAsymptotics/ChiefOrbitEvaluation.lean), [ChiefNormalStep](SymmetricSubgroupAsymptotics/ChiefNormalStep.lean), [ChiefTernaryFiltration](SymmetricSubgroupAsymptotics/ChiefTernaryFiltration.lean) | Constructed elementary images, exact retained-character kernels and aggregation of actual elementary, perfect and coprime layers. |
 | [ImprimitiveBlockEvaluation](SymmetricSubgroupAsymptotics/ImprimitiveBlockEvaluation.lean), [ChiefConjugateIntersections](SymmetricSubgroupAsymptotics/ChiefConjugateIntersections.lean) | Original block-fibre action and separation, yielding the actual normal intersection chain with proved endpoints. |
 | [CharacterEpimorphismBound](SymmetricSubgroupAsymptotics/CharacterEpimorphismBound.lean), [BinaryIrreducibleTuple](SymmetricSubgroupAsymptotics/BinaryIrreducibleTuple.lean) | The original target-automorphism/class-character bound and construction of its faithful irreducible tuple from actual central involutions. |
@@ -429,9 +431,11 @@ separate from this numerical implication.
 The original imprimitive ternary recurrence is also proved in
 [ImprimitiveChiefHead](SymmetricSubgroupAsymptotics/ImprimitiveChiefHead.lean).
 It constructs all actual chief layers, including proper nonabelian subdirect
-layers, and retains the original top section. Its multiplier is the sum of
-ternary abelian weights on an actual chief series of the original local
-component. An actual composition refinement now bounds that weight by the
+layers, and retains the original top section. Its proved coefficient is the
+integer `ternaryIndexWidth s`, formed from actual Sylow/Mackey pieces; this
+route requires no published prime-power module hypothesis. Its multiplier
+is the sum of ternary abelian weights on an actual chief series of the
+original local component. An actual composition refinement now bounds that weight by the
 composition length. `PrimitiveCompositionTail` derives the strict bound
 `10 W < 3 r` for every primitive degree `r >= 45`, conditional on the
 precisely stated published `PrimitiveCompositionLengthInput`. That input,

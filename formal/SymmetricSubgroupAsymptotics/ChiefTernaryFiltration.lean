@@ -24,16 +24,16 @@ inductive TernaryChiefStep (B C H : Subgroup A) [B.Normal] [C.Normal] : ℕ→Pr
   | coprime (hBC : B≤C) (q : ℕ) (hq : (q:ZMod 3)≠0)
       (hQ : IsPGroup q (normalChainQuotient B C)) : TernaryChiefStep B C H 0
 
-theorem ternaryChiefStep_le (hTracey : TraceyPrimePowerModuleInput 3)
+theorem ternaryChiefStep_le
     (B C H : Subgroup A) [B.Normal] [C.Normal] (a : ℕ)
     (step : TernaryChiefStep B C H a) :
     (Module.finrank (ZMod 3) (primeRelativeCharacters 3 C):ℝ)≤
-      (a:ℝ)*traceyTernaryEnvelope H.index+
+      (a:ℝ)*(ternaryIndexWidth H.index:ℝ)+
         (Module.finrank (ZMod 3) (primeRelativeCharacters 3 B):ℝ) := by
   cases step with
   | elementary ρ φ he hkernel =>
     subst B
-    exact localChief_ternary_normal_step hTracey C H ρ φ he
+    exact localChief_ternary_normal_step C H ρ φ he
   | perfect hBC hQ =>
     letI := hQ
     have h := primeRelativeHead_chain_le B C 3 hBC
@@ -50,12 +50,12 @@ theorem ternaryChiefStep_le (hTracey : TraceyPrimePowerModuleInput 3)
 
 /-- Aggregate a literal ambient-normal chain with actual local quotient
 data. The local fibre dimensions are added once across this same chain. -/
-theorem ternaryChiefFiltration_le (hTracey : TraceyPrimePowerModuleInput 3)
+theorem ternaryChiefFiltration_le
     (N : ℕ→Subgroup A) [∀i,(N i).Normal] (H : Subgroup A)
     (hzero : N 0=⊥) (a : ℕ→ℕ) (n : ℕ)
     (steps : ∀i<n,TernaryChiefStep (N i) (N (i+1)) H (a i)) :
     (Module.finrank (ZMod 3) (primeRelativeCharacters 3 (N n)):ℝ)≤
-      (∑i∈Finset.range n,(a i:ℝ))*traceyTernaryEnvelope H.index := by
+      (∑i∈Finset.range n,(a i:ℝ))*(ternaryIndexWidth H.index:ℝ) := by
   induction n with
   | zero =>
     have hN : Subsingleton (N 0) := by rw [hzero]; infer_instance
@@ -64,31 +64,31 @@ theorem ternaryChiefFiltration_le (hTracey : TraceyPrimePowerModuleInput 3)
     simp only [h,Nat.cast_zero,Finset.range_zero,Finset.sum_empty,zero_mul,le_refl]
   | succ n ih =>
     have hi := ih (fun i hi=>steps i (Nat.lt_trans hi (Nat.lt_succ_self n)))
-    have hs := ternaryChiefStep_le hTracey (N n) (N (n+1)) H (a n)
+    have hs := ternaryChiefStep_le (N n) (N (n+1)) H (a n)
       (steps n (Nat.lt_succ_self n))
     rw [Finset.sum_range_succ]
     calc
-      _≤(a n:ℝ)*traceyTernaryEnvelope H.index+
+      _≤(a n:ℝ)*(ternaryIndexWidth H.index:ℝ)+
           (Module.finrank (ZMod 3) (primeRelativeCharacters 3 (N n)):ℝ) := hs
-      _≤(a n:ℝ)*traceyTernaryEnvelope H.index+
-          (∑i∈Finset.range n,(a i:ℝ))*traceyTernaryEnvelope H.index :=
+      _≤(a n:ℝ)*(ternaryIndexWidth H.index:ℝ)+
+          (∑i∈Finset.range n,(a i:ℝ))*(ternaryIndexWidth H.index:ℝ) :=
         add_le_add le_rfl hi
-      _=((∑i∈Finset.range n,(a i:ℝ))+(a n:ℝ))*traceyTernaryEnvelope H.index := by ring
+      _=((∑i∈Finset.range n,(a i:ℝ))+(a n:ℝ))*(ternaryIndexWidth H.index:ℝ) := by ring
 
 /-- The actual original top quotient is appended after the single
 local chief chain. No independently enlarged source or product is used. -/
-theorem ternaryChiefFiltration_with_top (hTracey : TraceyPrimePowerModuleInput 3)
+theorem ternaryChiefFiltration_with_top
     (N : ℕ→Subgroup A) [∀i,(N i).Normal] (H C : Subgroup A) [C.Normal]
     (hzero : N 0=⊥) (a : ℕ→ℕ) (n : ℕ) (hNC : N n≤C)
     (steps : ∀i<n,TernaryChiefStep (N i) (N (i+1)) H (a i)) :
     (Module.finrank (ZMod 3) (primeRelativeCharacters 3 C):ℝ)≤
-      (∑i∈Finset.range n,(a i:ℝ))*traceyTernaryEnvelope H.index+
+      (∑i∈Finset.range n,(a i:ℝ))*(ternaryIndexWidth H.index:ℝ)+
         (Module.finrank (ZMod 3) (primeRelativeCharacters 3 (normalChainQuotient (N n) C)):ℝ) := by
   have hc := primeRelativeHead_chain_le (N n) C 3 hNC
   have hc' : (Module.finrank (ZMod 3) (primeRelativeCharacters 3 C):ℝ)≤
       (Module.finrank (ZMod 3) (primeRelativeCharacters 3 (N n)):ℝ)+
         (Module.finrank (ZMod 3) (primeRelativeCharacters 3 (normalChainQuotient (N n) C)):ℝ) := by
     exact_mod_cast hc
-  exact hc'.trans (add_le_add (ternaryChiefFiltration_le hTracey N H hzero a n steps) le_rfl)
+  exact hc'.trans (add_le_add (ternaryChiefFiltration_le N H hzero a n steps) le_rfl)
 
 end SymmetricSubgroupAsymptotics
