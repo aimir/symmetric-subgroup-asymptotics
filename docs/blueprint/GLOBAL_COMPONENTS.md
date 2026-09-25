@@ -119,9 +119,13 @@ Ann(ξ)={λ∈K*:λ_*(ξ)=0 in H²(Y,F₂)}. Then
 
     #{H<=X: H→Y onto}=Σ_{L<=Ann(ξ)}2^{d₂(Y)dim L}.       (2.2)
 
-Indeed L is the annihilator of H∩K. Its splitting condition is exactly
-L<=Ann(ξ), and the complement fibre is a torsor under Hom(Y,K/(H∩K)).
-This applies to arbitrary nonabelian Y and retains the actual extension.
+Indeed Ann(ξ) is the image of scalar restriction Hom(X,C2)→K*:
+a normalized section identifies an extending character with a scalar
+coboundary of the actual defect. For W=H∩K, taking kernels bijects the
+subgroups with homomorphisms X→K/W restricting to the quotient on K.
+Such a map exists exactly when W⊥<=Ann(ξ), and its fibre is a torsor under
+Hom(Y,K/W). This applies to arbitrary nonabelian Y and retains the actual
+extension; no classification of all extensions is needed for this count.
 
 **TERM-RECORD.** For binary E let d=d₂(E). Let P_u consist of linear maps
 p:F₂^u⊕E/Φ(E)→V injective on F₂^u and full on each displayed critical
@@ -178,8 +182,8 @@ from the five-term sequence and the abelian binary quotient bound.
 The strengthened d₂(T)<=b/2-1 in even degree with a noncritical orbit
 requires the corresponding equality classification.
 
-Standard algebra needed here is extension classification, splitting under
-coefficient quotients, five-term exactness, degree-two Künneth, elementary
+Standard algebra needed here is the explicit scalar defect/coboundary test,
+coefficient-quotient retractions, five-term exactness, degree-two Künneth, elementary
 binary H², Burnside's basis theorem and Gaussian formulas. The fixed
 critical group and orthogonal calculations are finite algebraic inputs.
 Specialized sparse-carrier bounds are not prerequisites for

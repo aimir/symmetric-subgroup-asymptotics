@@ -31,11 +31,13 @@ The number of subgroups of $X$ mapping onto $Y$ equals
 \end{equation}
 \end{lemma}
 \begin{proof}
-Fix $W=H\cap K$. The image of $H$ is a complement to $K/W$ in $X/W$.
-It exists exactly when the image of $\xi$ in $H^2(Y,K/W)$ vanishes.
-Since cohomology commutes with finite direct sums of coefficients, this
-is equivalent to $W^\perp\leq\Ann(\xi)$. When nonempty, the complement
-set is a torsor under $Z^1(Y,K/W)=\Hom(Y,K/W)$, of size
+The annihilator is the image of restriction $\Hom(X,C_2)\to K^*$:
+a normalized section identifies extension of a character with its scalar
+defect being a coboundary. Fix $W=H\cap K$. Taking kernels bijects these
+subgroups with homomorphisms $r:X\to K/W$ restricting to the quotient
+map on $K$. Such an $r$ exists exactly when every scalar coordinate extends,
+or $W^\perp\leq\Ann(\xi)$. Differences of extensions factor through $Y$,
+so this fibre is a torsor under $\Hom(Y,K/W)$, of size
 $2^{d_2(Y)\codim W}$. Different intersections are disjoint.
 \end{proof}
 
