@@ -77,6 +77,7 @@ definition obligations as conclusions, not hypotheses.
 | [SaddleEstimates](SymmetricSubgroupAsymptotics/SaddleEstimates.lean) | Quantitative radius and variance bounds, a two-correction saddle expansion, and ratio limits. |
 | [AnalyticGeneratingFunction](SymmetricSubgroupAsymptotics/AnalyticGeneratingFunction.lean) | The convergent complex coefficient series equals the actual exponential, including the guarded parity coefficient. |
 | [CoefficientIntegral](SymmetricSubgroupAsymptotics/CoefficientIntegral.lean) | Exact Cauchy, angular and real saddle integral identities for both parities. |
+| [ShiftedCoefficientRatio](SymmetricSubgroupAsymptotics/ShiftedCoefficientRatio.lean) | Exact shifted coefficient extraction at the same saddle and the quantitative relative ratio error `O(1/r)`. |
 | [SaddleKernel](SymmetricSubgroupAsymptotics/SaddleKernel.lean), [SaddleKernelComplex](SymmetricSubgroupAsymptotics/SaddleKernelComplex.lean) | The decay, centered phase and parity amplitude, with an exact bridge to the complex integrand. |
 | [SaddleCentral](SymmetricSubgroupAsymptotics/SaddleCentral.lean) | A uniform central-arc error bounded by `2^27/(r sqrt r)` at every positive rank. |
 | [SaddleTails](SymmetricSubgroupAsymptotics/SaddleTails.lean) | Both outer arcs and the full Gaussian complement have proved uniform `O(r^(-3/2))` bounds. |
@@ -89,6 +90,8 @@ definition obligations as conclusions, not hypotheses.
 | [ElementaryBenchmarkEstimates](SymmetricSubgroupAsymptotics/ElementaryBenchmarkEstimates.lean) | The unconditional `ElementaryBenchmarkEstimate`, `T3_of_T1`, and `AllTargets ↔ T1`. |
 | [AsymptoticTransfer](SymmetricSubgroupAsymptotics/AsymptoticTransfer.lean) | T1 transfers the independently stated analytic benchmark estimates to T2 and T3; exponential absorption and correction bounds are proved. |
 | [BinaryConstruction](SymmetricSubgroupAsymptotics/BinaryConstruction.lean) | An explicit injective map from binary subspaces to labelled pair-action subgroups gives `G_(n/2) ≤ subgroupCount n` in both parities. |
+| [CanonicalLifts](SymmetricSubgroupAsymptotics/CanonicalLifts.lean) | Exact subgroup/subspace correspondence through a surjective binary quotient, Gaussian cardinality, simultaneous full-projection counting and faithful permutation transport. |
+| [CriticalProfiles](SymmetricSubgroupAsymptotics/CriticalProfiles.lean) | Complete four-colour profile enumeration and exact weighted coefficient identities, retaining the separate V4 and D8 weights and both parity decorations. |
 
 The Gaussian-sum bounds imply
 
@@ -134,6 +137,32 @@ Together with the proved definition obligations, `allTargets_iff_T1` proves
 class; they are not optimized.
 The pair-action construction counts a single fixed system of pairs and does
 not establish the full critical-family lower bound.
+
+The shifted coefficient ratio is now also proved independently of T1:
+
+    exists C > 0, exists N >= 1, forall r >= N,
+      abs(c_(r-1)/(rho_r*c_r)-1) <= C/r.
+
+Both coefficients use the same saddle `rho_r`. Exact coefficient extraction
+identifies this ratio with the quotient of the normalized amplitude-one and
+amplitude-zero integrals. The uniform integral estimate applies to both;
+eventual denominator control justifies division. The module also proves the
+corresponding absolute error and normalized limit.
+
+For critical counting, `CriticalProfiles` proves the exact finite weighted
+profile identity, including `1/24+1/8=1/6` for the two distinct rank-two
+actions. `CanonicalLifts` separately counts actual subgroups containing the
+kernel of a supplied surjective binary quotient: there are exactly `G_r`.
+Its restricted correspondence retains every full-coordinate condition. A
+canonical lift contains the entire kernel, so a commuting quotient square
+with the stated kernel coverage proves fullness on an actual factor directly.
+Faithful permutation transport preserves distinct subgroups.
+
+These are reusable exact counting components. The four concrete action
+instances, their normalizer orders, the global labelled-orbit correspondence,
+and the noncanonical-lift identity and error bounds are further obligations
+for the complete critical-family count. Profile weights are not asserted to
+be actual subgroup cardinalities by definition.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
