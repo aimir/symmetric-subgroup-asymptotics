@@ -22,8 +22,9 @@ check receipts. It records legacy imports without receipts as unverified;
 it does not recursively certify all installed dependency objects.
 It permits one compiler at a time and one Lean thread, with defaults of
 3 GiB allocator memory and a sampled 4 GiB process-group RSS watchdog.
-Selected modules may use `--memory-mb 6144 --rss-limit-mb 8192`, allowing
-6 GiB allocator memory and an 8 GiB RSS threshold. Larger limits are rejected.
+Selected modules may use up to `--memory-mb 12288 --rss-limit-mb 16384`,
+allowing 12 GiB allocator memory and a 16 GiB RSS threshold. Larger limits
+are rejected; use lower limits whenever sufficient.
 The RSS watchdog is sampled, not an operating-system hard allocation limit.
 Every check also has a wall timeout. Split certificates that exceed these
 ceilings. Logs and hash receipts stay outside this repository. A failed check
