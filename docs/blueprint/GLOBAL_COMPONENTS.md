@@ -35,7 +35,8 @@ rho₃(c+1), juxtaposition means the product rho₃·(c+1).
 
 **ASM-COMPONENTS.** Let E_N count all fixed-point-free binary subgroups of
 S_(2N) with at least one actual noncritical orbit, divided by (2N)!c_NG_N.
-Let Ccrit_n be the normalized canonical critical family. The intended
+Let Ccrit_n be the normalized complete critical family, including its
+noncanonical lifts. The intended
 exhaustive master is
 
     A_n <= Ccrit_n + epsilon_sep(n) + epsilon_fwd(n)
@@ -343,7 +344,7 @@ For the terminal-trivial forward term, set
 
 The critical-family estimate gives an absolute B_crit with
 I_s<=B_crit c_sG_s for every s. B_crit is a constant, distinct from the
-canonical-family sequence Ccrit_n. A literal direct product of a nonempty
+complete critical-family sequence Ccrit_n. A literal direct product of a nonempty
 critical projection of rank N-B and an exterior projection of degree2B
 has normalized upper-kernel coefficient
 

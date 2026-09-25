@@ -55,7 +55,7 @@ corollaries; their proofs do not depend on the subgroup asymptotic.
 | CNT-WEIGHT | Exact normalizer and occurrence-factorial weights | Orbit-stabilizer and recovered actual orbits |
 | ANA-GAUSS | Gaussian subspace totals and their exponentially accurate theta equivalent | Gaussian product formula; summable tails |
 | ANA-COEF | Positive coefficient recurrence, fixed-shift ratios and quartic coefficient comparison | Exact exponential generating function; independent coefficient analysis |
-| CRT-MODEL | Canonical critical family, both parity markers, complete critical-lift error | CNT-WEIGHT, ANA-GAUSS, ANA-COEF, critical-action classification, quadratic lift fibre |
+| CRT-MODEL | Complete critical family, both parity markers, canonical main term and exceptional-lift error | CNT-WEIGHT, ANA-GAUSS, ANA-COEF, specified action and normalizer calculations, quadratic lift fibre |
 | CNT-LIFT | Conditional cocycle bound above one fixed quotient map | Inflation-restriction, actual Sylow/normalizer, published abelian p-quotient bound |
 | CNT-GRAPH | Injective encoding of tuples of maps from the same source | Actual permutation covers and quotient maps |
 | CAP-SECTION | Coupled fixed/nontrivial socle bound and retained-annihilator cut | Actual-section module bounds, nonbinary trivial-section budget |

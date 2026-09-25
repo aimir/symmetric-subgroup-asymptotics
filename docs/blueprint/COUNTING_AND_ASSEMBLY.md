@@ -47,8 +47,8 @@ transgression conditions belong to this same physical subgroup.
 
 ## CRT-MODEL: critical actions and every central lift
 
-The required equality classification and explicit action calculations identify
-the following even critical actions:
+The critical family uses the following four specified even actions, with
+their quotients and normalizers supplied by explicit action calculations:
 
 | Action | Degree | Elementary binary quotient rank | a(U) |
 |---|---:|---:|---:|
@@ -58,12 +58,16 @@ the following even critical actions:
 | plus-type extraspecial group of order 32 | 8 | 4 | 384 |
 
 The two odd deficiency-one actions are a singleton and natural S3, giving the
-factor 1+y/6. The equality classification is a separate imported input; an
-enumeration of these examples does not establish that classification.
+factor 1+y/6. Counting this chosen family does not require asserting that
+these actions exhaust equality in a permutation-rank bound. Where needed for
+noncritical refinements, that equality classification is a separate input.
 
 For a critical orbit product D, take the product K of the specified canonical
 kernels and the quotient pi:D->V=F_2^R. Full-projecting subspaces U<=V give
-the canonical subgroups pi^(-1)(U). The subgroup itself recovers its blocks,
+the canonical subgroups pi^(-1)(U). Each contains K, so its projection to an
+actual factor contains the specified kernel and is full on its quotient;
+it is therefore the whole factor. This step needs no Frattini theorem.
+The subgroup itself recovers its blocks,
 actions, kernels and quotient subspace. Failure to project fully onto any
 coordinate lies in at most 15R hyperplanes, so its relative mass is
 O(R G_(R-1)/G_R)=O(R2^(-R/2)), uniformly in the profile.
@@ -197,8 +201,10 @@ c is claimed.
 
 ## APP-C1: required validity check
 
-The split one-external-triple application counts the exact surviving character
-weight sigma_3(K)=3^d_3(K)-3^h_3(K), not an unmarked residual. Its
+The split one-external-triple application retains the exact surviving character
+weight sigma_3^surv(K)=|Theta_surv(K)|, with all prior exclusion indicators
+inside that count. It satisfies 0<=sigma_3^surv(K)<=3^d_3(K)-3^h_3(K);
+equality need not hold after exclusions. Its
 inverse-complement chart weights each order-three representative by 1/q, where
 q counts representatives of that oriented character. Quotienting by a binary
 kernel preserves this split mark. A shared-C3 insertion followed by the external

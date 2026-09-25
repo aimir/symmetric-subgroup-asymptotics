@@ -517,9 +517,9 @@
       "sha256": "89511de40b1b2019a450733aff918119ed8ce70f7d1b6d319a5a5356a9f5239c"
     },
     {
-      "bytes": 37248,
+      "bytes": 37349,
       "path": "provenance/claims.json",
-      "sha256": "ff5c29eb90d12accb730487c69658111b16a2a599d831464983ab579b601fa00"
+      "sha256": "56003fe0926331200c554428b0b4f240ea143db0894b014a04666d91477ff1dd"
     }
   ],
   "four_block": {

@@ -426,7 +426,7 @@
     {
       "id": "C1-FIRST",
       "kind": "application",
-      "statement": "Exact surviving split character sigma3=3^d3−3^h3, low forward cone and complete prior-owner coverage force high residual empty.",
+      "statement": "The exact surviving split-character count sigma3_surv=|Theta_surv| retains all exclusion indicators and satisfies 0≤sigma3_surv≤3^d3−3^h3; the low forward cone and complete prior-owner coverage force the high residual empty.",
       "depends_on": [
         "ALG",
         "RANK3",
