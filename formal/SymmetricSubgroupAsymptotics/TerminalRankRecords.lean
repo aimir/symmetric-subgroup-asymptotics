@@ -134,7 +134,7 @@ theorem terminalRawRecordGroupMap_injective (u : ℕ)
 
 /-- Fixed-rank sum identity for any original image weight, including the
 entire central-lift fibre weight. -/
-theorem terminalRankRecords_weight_sum [Finite T] [Finite V] (u : ℕ)
+theorem terminalRankRecords_weight_sum [Finite T] [Fintype V] [DecidableEq V] (u : ℕ)
     (w : Subgroup (Multiplicative V × T) → ℝ) :
     (∑ p : TerminalOrderedMaps (A := BinaryAbelianization T) (V := V) u,
       w (terminalRawRecordGroupMap u p.1).range) =
