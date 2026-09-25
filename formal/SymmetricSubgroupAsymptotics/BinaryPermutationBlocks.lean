@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.FiniteGroupCertificates
+import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
 
 /-!
 # Exact permutation restrictions from generator intertwiners
