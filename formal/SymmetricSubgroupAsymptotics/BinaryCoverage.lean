@@ -1,4 +1,3 @@
-import SymmetricSubgroupAsymptotics.BinaryTransport
 import Mathlib.GroupTheory.Nilpotent
 import Mathlib.Order.Atoms.Finite
 

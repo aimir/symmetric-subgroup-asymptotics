@@ -15,3 +15,13 @@ paper/**/*.out
 paper/**/*.run.xml
 paper/**/*.synctex.gz
 paper/**/*.toc
+
+# Reproducible bulk finite witnesses; generated and kernel-checked locally.
+formal/SymmetricSubgroupAsymptotics/GeneratedAction16/
+formal/SymmetricSubgroupAsymptotics/GeneratedNormal16/
+formal/SymmetricSubgroupAsymptotics/GeneratedTopNormals/
+
+formal/SymmetricSubgroupAsymptotics/GeneratedKernelAxes/
+
+formal/SymmetricSubgroupAsymptotics/GeneratedPairBindings/
+formal/SymmetricSubgroupAsymptotics/GeneratedSchreierActions/

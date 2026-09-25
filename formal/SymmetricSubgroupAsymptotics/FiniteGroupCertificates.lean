@@ -1,4 +1,5 @@
-import SymmetricSubgroupAsymptotics.BinaryTransport
+import Mathlib.Algebra.Group.Prod
+import Mathlib.Algebra.Group.Subgroup.Ker
 import Mathlib.GroupTheory.OrderOfElement
 
 /-!

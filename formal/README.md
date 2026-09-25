@@ -2,16 +2,31 @@
 
 The local project pins Lean **4.30.0** and mathlib commit
 `c5ea00351c28e24afc9f0f84379aa41082b1188f`. Its complete dependency graph is
-recorded in `lake-manifest.json`. With elan installed, run from this directory:
+recorded in `lake-manifest.json`. With elan installed, obtain mathlib's
+precompiled objects from this directory:
 
 ```sh
 lake exe cache get
-lake build
 ```
 
-The first command obtains mathlib's precompiled objects; the second checks
-this project's proofs. Cached dependencies allow the build to run offline.
-There are no CI workflows.
+Check project modules individually, in dependency order, with
+[check_lean.py](../scripts/check_lean.py). For example, from the repository root:
+
+```sh
+python3 -B scripts/check_lean.py SymmetricSubgroupAsymptotics/FiniteGroupCertificates.lean \
+  --log-dir ../lean-check-logs
+```
+
+The runner requires already checked imports. It permits one compiler at a
+time, limits Lean to one thread and 3 GB of allocator memory, and stops its
+process group above 4 GB of resident memory or the chosen time limit. Logs
+and hash receipts stay outside this repository. A failed check does not
+replace its previous object file. Avoid unrestricted parallel `lake build`
+for the generated finite certificates; use their serial capped drivers.
+Cached dependencies allow checking offline. There are no CI workflows.
+The supervisor's small process and receipt regressions run locally with
+`python3 -B scripts/test_check_lean.py` from the repository root; they do
+not invoke Lean or allocate large amounts of memory.
 
 ## Statements and explicit benchmarks
 
@@ -147,7 +162,26 @@ definition obligations as conclusions, not hypotheses.
 | [FiniteCayleyReflection](SymmetricSubgroupAsymptotics/FiniteCayleyReflection.lean), [FinitePermutationEncoding](SymmetricSubgroupAsymptotics/FinitePermutationEncoding.lean), [FiniteCayleyGroup](SymmetricSubgroupAsymptotics/FiniteCayleyGroup.lean), [FiniteCayleyMaps](SymmetricSubgroupAsymptotics/FiniteCayleyMaps.lean) | Faithful numeric permutation rows, well-founded original-generator paths, actual executable finite groups, and homomorphisms certified by generator transitions. |
 | [FinitePermutationRegistry](SymmetricSubgroupAsymptotics/FinitePermutationRegistry.lean), [BinaryMenuSmallCoverage](SymmetricSubgroupAsymptotics/BinaryMenuSmallCoverage.lean), [BinaryRowCharacters](SymmetricSubgroupAsymptotics/BinaryRowCharacters.lean), [BinaryCharacterRegistry](SymmetricSubgroupAsymptotics/BinaryCharacterRegistry.lean), [BinaryActionCoverage8](SymmetricSubgroupAsymptotics/BinaryActionCoverage8.lean) | Universal original-generator bit coverage, literal ambient conjugacy edges, and complete transitive binary action coverage in degrees 2, 4 and 8. |
 | [BinaryGeneratorConjugacy](SymmetricSubgroupAsymptotics/BinaryGeneratorConjugacy.lean), [BinaryGeneratorRegistry](SymmetricSubgroupAsymptotics/BinaryGeneratorRegistry.lean), [BinaryNormalGeneratorSteps](SymmetricSubgroupAsymptotics/BinaryNormalGeneratorSteps.lean) | Generator membership plus exact orders identify actual conjugate children and quotient-cyclic normal steps; full row correspondence tables are unnecessary. |
+| [FusionArbitraryWidth](SymmetricSubgroupAsymptotics/FusionArbitraryWidth.lean), [FusionWidthContinuation](SymmetricSubgroupAsymptotics/FusionWidthContinuation.lean), [FusionWidthPhysical](SymmetricSubgroupAsymptotics/FusionWidthPhysical.lean) | Exact normalization and contractive forward rows at arbitrary odd/even deletion widths; the physical implication retains the original action divisor and complete complement. |
+| [C1LowCone](SymmetricSubgroupAsymptotics/C1LowCone.lean), [C1LowNormalized](SymmetricSubgroupAsymptotics/C1LowNormalized.lean), [C1LowNaturality](SymmetricSubgroupAsymptotics/C1LowNaturality.lean), [C1Continuation](SymmetricSubgroupAsymptotics/C1Continuation.lean) | The actual surviving low-cone physical mass and its uniform exponential bound, plus a contractive numerical row for earlier-owner types. Actual high-cone owner coverage is a separate obligation. |
+| [PrimeEquivariantCharacters](SymmetricSubgroupAsymptotics/PrimeEquivariantCharacters.lean), [PrimeRelativeHeadChain](SymmetricSubgroupAsymptotics/PrimeRelativeHeadChain.lean), [PrimeRelativeFiltration](SymmetricSubgroupAsymptotics/PrimeRelativeFiltration.lean), [PrimeCoordinateRanks](SymmetricSubgroupAsymptotics/PrimeCoordinateRanks.lean) | Exact restriction-image heads for nonsplit extensions and proper nonabelian subdirect cores, normal filtrations, and a high relative-head witness in an original coordinate. |
+| [C1PrimitiveTail](SymmetricSubgroupAsymptotics/C1PrimitiveTail.lean), [C1ImprimitiveNumerics](SymmetricSubgroupAsymptotics/C1ImprimitiveNumerics.lean), [TraceyTernaryEnvelope](SymmetricSubgroupAsymptotics/TraceyTernaryEnvelope.lean) | The primitive tail with its precisely named HRD hypothesis, and proved imprimitive scalar bounds with the structural recurrence still explicit. |
+| [TraceyPrimePowerInput](SymmetricSubgroupAsymptotics/TraceyPrimePowerInput.lean), [TraceySylowIndices](SymmetricSubgroupAsymptotics/TraceySylowIndices.lean), [TraceyTernaryPrimePower](SymmetricSubgroupAsymptotics/TraceyTernaryPrimePower.lean) | A literal published prime-power input, actual Sylow orbit degrees, and floor-preserving numerical aggregation. The input remains a theorem hypothesis. |
+| [BinaryFiniteEntryCoverage8](SymmetricSubgroupAsymptotics/BinaryFiniteEntryCoverage8.lean) | Exhaustive original degree-8 normal-state coverage: 190 physical certificates, 10 exact character criteria and three transport charts, with the original conjugation and normalizer. |
+| [BinaryPairCertificateCapacity](SymmetricSubgroupAsymptotics/BinaryPairCertificateCapacity.lean), [BinaryPairPrefixChart](SymmetricSubgroupAsymptotics/BinaryPairPrefixChart.lean) | Actual cut dimension and quotient capacity, followed by the literal central-prefix tower, surviving-epi bound and joint moment. |
+| [InducedMackeyDecomposition](SymmetricSubgroupAsymptotics/InducedMackeyDecomposition.lean), [InducedTernaryEnvelope](SymmetricSubgroupAsymptotics/InducedTernaryEnvelope.lean) | Actual twisted Mackey coordinates and the full ternary head envelope. The coprime branch follows from Maschke and Frobenius; only the prime-power branch uses the named Tracey input. |
+| [ChiefOrbitEvaluation](SymmetricSubgroupAsymptotics/ChiefOrbitEvaluation.lean), [ChiefNormalStep](SymmetricSubgroupAsymptotics/ChiefNormalStep.lean), [ChiefTernaryFiltration](SymmetricSubgroupAsymptotics/ChiefTernaryFiltration.lean) | Constructed elementary images, exact retained-character kernels and aggregation of actual elementary, perfect and coprime layers. |
+| [ImprimitiveBlockEvaluation](SymmetricSubgroupAsymptotics/ImprimitiveBlockEvaluation.lean), [ChiefConjugateIntersections](SymmetricSubgroupAsymptotics/ChiefConjugateIntersections.lean) | Original block-fibre action and separation, yielding the actual normal intersection chain with proved endpoints. |
+| [CharacterEpimorphismBound](SymmetricSubgroupAsymptotics/CharacterEpimorphismBound.lean), [BinaryIrreducibleTuple](SymmetricSubgroupAsymptotics/BinaryIrreducibleTuple.lean) | The original target-automorphism/class-character bound and construction of its faithful irreducible tuple from actual central involutions. |
+| [BinaryCharacterEnvelope](SymmetricSubgroupAsymptotics/BinaryCharacterEnvelope.lean), [BinaryCharacterFusion](SymmetricSubgroupAsymptotics/BinaryCharacterFusion.lean) | The original arbitrary-source bound `Epi(J,Q) ≤ Aut(Q) 2^(z log₂(38/25)b)` for finite binary targets; exact criterion gaps and survival-restricted fusion input. Only the stated nilpotent class-count theorem remains external. |
+| [BinaryPairCertificateCapacity](SymmetricSubgroupAsymptotics/BinaryPairCertificateCapacity.lean) | Checked original subgroup orders determine the literal central-cut dimension and original quotient capacity; a physical gap additionally requires equality of certificate width and actual degree. |
+| [ModuleCoordinateHeads](SymmetricSubgroupAsymptotics/ModuleCoordinateHeads.lean), [InducedOrbitDecomposition](SymmetricSubgroupAsymptotics/InducedOrbitDecomposition.lean) | Actual finite-coordinate submodule head bounds and the original induced representation's equivariant double-coset support decomposition. |
 | [BinaryMixtureCentralComparison](SymmetricSubgroupAsymptotics/BinaryMixtureCentralComparison.lean), [BinaryMixtureCyclicFour](SymmetricSubgroupAsymptotics/BinaryMixtureCyclicFour.lean) | Actual central-extension-to-split comparison preserving every exterior image and its weights, instantiated on C4 powers over arbitrary finite nonabelian exteriors. |
+
+| [BinaryPairFrameGenerators](SymmetricSubgroupAsymptotics/BinaryPairFrameGenerators.lean), [BinaryPairSharedCutInstall](SymmetricSubgroupAsymptotics/BinaryPairSharedCutInstall.lean) | Original generator images construct the exact physical pair frame and top range; shared coordinate cuts yield original central-cut and full fixed-preimage certificates. |
+| [NormalChiefSeries](SymmetricSubgroupAsymptotics/NormalChiefSeries.lean), [AbelianMinimalNormal](SymmetricSubgroupAsymptotics/AbelianMinimalNormal.lean), [ActualLocalChiefSteps](SymmetricSubgroupAsymptotics/ActualLocalChiefSteps.lean) | Existence of literal normal chief chains and installation of every actual elementary, coprime-order and nonabelian layer. Ternary weights count only abelian factors. |
+| [MinimalNormalSimpleQuotients](SymmetricSubgroupAsymptotics/MinimalNormalSimpleQuotients.lean), [MinimalNormalSubdirect](SymmetricSubgroupAsymptotics/MinimalNormalSubdirect.lean), [PerfectSubdirect](SymmetricSubgroupAsymptotics/PerfectSubdirect.lean) | Actual jointly faithful simple quotient coordinates prove perfectness for proper subdirect nonabelian chief layers. |
+| [RelativeSecondIsomorphism](SymmetricSubgroupAsymptotics/RelativeSecondIsomorphism.lean) | The exact character-space equivalence between the original sections N/(N∩K) and NK/K, with their literal ambient conjugation actions. |
 
 The Gaussian-sum bounds imply
 
@@ -380,9 +414,18 @@ envelopes is silently assumed. `FusionContinuationRow` retains different
 removed widths at the same ambient degree and proves eventual row contraction.
 The central-cut epi envelope and its full graph moment are now connected to
 the actual original extension tower. Actual module charts and the named
-permutation quotient-rank bound remain explicit inputs. The numerical fusion
-endpoint deletes a positive even number of points; its ambient degree has
-either parity. Installing the strict local capacity gaps remains separate.
+permutation quotient-rank bound remain explicit inputs. The arbitrary-width extension normalizes every positive deletion width at its
+actual complement degree, including odd widths. Its required strict slope
+is floor(w/2)/4. Complete finite acceptance and family coverage remain
+separate from this numerical implication.
+
+The original imprimitive ternary recurrence is also proved in
+[ImprimitiveChiefHead](SymmetricSubgroupAsymptotics/ImprimitiveChiefHead.lean).
+It constructs all actual chief layers, including proper nonabelian subdirect
+layers, and retains the original top section. Its multiplier is the sum of
+ternary abelian weights on an actual chief series of the original local
+component. Bounding that sum using primitive composition and finite inputs
+remains separate from this structural theorem.
 
 The first c=1 application proves the physical factor `n!/(6 m!)` times the
 exact surviving split-character sum on the complete complement. Its unrestricted
@@ -402,8 +445,13 @@ quotient degree is never charged as physical support. The generic registry
 coverage implications are proved, with all four original Sylow roots now
 installed by structural wreath-product proofs and short generator words.
 All transitive binary actions of degrees 2, 4 and 8 are covered by checked
-original-point conjugacies. The complete degree-16 action registry and the
-nonbase normal registries and their accepted outcomes remain to be installed. The central
+original-point conjugacies. The complete degree-16 action registry remains to be installed. The degree-8
+nonbase normal registries cover all 203 states, and every state is installed
+in its physical-pair, exact character-criterion or original transport branch.
+The 190 physical pairs have actual capacity and central-prefix bounds.
+The finite character criteria now supply original-source analytic envelopes.
+Complete weighted-family installation of the character and transport branches
+remains separate. The central
 binary extension comparison is proved for every exact exterior image and
 its nonnegative weights, and is instantiated for C4 powers. Complete
 finite-menu coverage, the joint numerical transition estimates, labelled
