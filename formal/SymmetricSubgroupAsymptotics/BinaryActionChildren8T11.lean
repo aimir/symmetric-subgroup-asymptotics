@@ -1,0 +1,164 @@
+import SymmetricSubgroupAsymptotics.BinaryActionRegistry8
+
+/-! All original index-two transitive children of b8_11, checked by generator bits. -/
+set_option autoImplicit false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 0
+noncomputable section
+namespace SymmetricSubgroupAsymptotics.BinaryActionChildren8T11
+open BinaryActionRegistry8
+private def C := BinaryMenuCayley8T11.certificate
+private def values (bits : Fin 3 → Bool) (i : Fin 16) : Bool :=
+  (if i.val < 8 then (if i.val < 4 then (if i.val < 2 then (if i.val < 1 then (true == bits 2) else ((true == bits 0) == bits 2)) else (if i.val < 3 then (true == bits 1) else ((true == bits 0) == bits 1))) else (if i.val < 6 then (if i.val < 5 then ((true == bits 1) == bits 2) else (((true == bits 0) == bits 1) == bits 2)) else (if i.val < 7 then true else (true == bits 0)))) else (if i.val < 12 then (if i.val < 10 then (if i.val < 9 then ((true == bits 0) == bits 2) else (true == bits 2)) else (if i.val < 11 then ((true == bits 0) == bits 1) else (true == bits 1))) else (if i.val < 14 then (if i.val < 13 then (((true == bits 0) == bits 1) == bits 2) else ((true == bits 1) == bits 2)) else (if i.val < 15 then (true == bits 0) else true))))
+private def characters : BinaryRowCharacters C where
+  values := values
+  identity_eq := by decide +kernel
+  parent_eq := by decide +kernel
+
+private def conjugator0 : Equiv.Perm (Fin 8) where
+  toFun x := (#[0,4,7,5,2,6,1,3] : Array (Fin 8))[x.val]!
+  invFun x := (#[0,6,4,7,1,3,5,2] : Array (Fin 8))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def forward0 (i : Fin 16) : Fin 8 :=
+  (if i.val < 8 then (if i.val < 4 then (if i.val < 2 then (if i.val < 1 then 0 else 4) else (if i.val < 3 then 0 else 0)) else (if i.val < 6 then (if i.val < 5 then 3 else 0) else (if i.val < 7 then 1 else 0))) else (if i.val < 12 then (if i.val < 10 then (if i.val < 9 then 6 else 0) else (if i.val < 11 then 2 else 0)) else (if i.val < 14 then (if i.val < 13 then 0 else 5) else (if i.val < 15 then 0 else 7))))
+private def backward0 (j : Fin 8) : Fin 16 :=
+  (if j.val < 4 then (if j.val < 2 then (if j.val < 1 then 3 else 6) else (if j.val < 3 then 10 else 4)) else (if j.val < 6 then (if j.val < 5 then 1 else 13) else (if j.val < 7 then 8 else 15)))
+private theorem forward_checked0 : ∀ i,
+    characters.values (binaryAssignment (0 : Fin 8)) i = true →
+    registry.rows 3 (forward0 i) = permutationConjugateCode conjugator0 (C.rows i) :=
+  (by decide +kernel)
+private theorem backward_checked0 : ∀ j,
+    characters.values (binaryAssignment (0 : Fin 8)) (backward0 j) = true ∧
+    registry.rows 3 j = permutationConjugateCode conjugator0 (C.rows (backward0 j)) :=
+  (by decide +kernel)
+
+private def conjugator2 : Equiv.Perm (Fin 8) where
+  toFun x := (#[0,3,7,6,2,5,1,4] : Array (Fin 8))[x.val]!
+  invFun x := (#[0,6,4,1,7,5,3,2] : Array (Fin 8))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def forward2 (i : Fin 16) : Fin 8 :=
+  (if i.val < 8 then (if i.val < 4 then (if i.val < 2 then (if i.val < 1 then 0 else 3) else (if i.val < 3 then 2 else 0)) else (if i.val < 6 then (if i.val < 5 then 0 else 6) else (if i.val < 7 then 1 else 0))) else (if i.val < 12 then (if i.val < 10 then (if i.val < 9 then 5 else 0) else (if i.val < 11 then 0 else 0)) else (if i.val < 14 then (if i.val < 13 then 4 else 0) else (if i.val < 15 then 0 else 7))))
+private def backward2 (j : Fin 8) : Fin 16 :=
+  (if j.val < 4 then (if j.val < 2 then (if j.val < 1 then 11 else 6) else (if j.val < 3 then 2 else 1)) else (if j.val < 6 then (if j.val < 5 then 12 else 8) else (if j.val < 7 then 5 else 15)))
+private theorem forward_checked2 : ∀ i,
+    characters.values (binaryAssignment (2 : Fin 8)) i = true →
+    registry.rows 1 (forward2 i) = permutationConjugateCode conjugator2 (C.rows i) :=
+  (by decide +kernel)
+private theorem backward_checked2 : ∀ j,
+    characters.values (binaryAssignment (2 : Fin 8)) (backward2 j) = true ∧
+    registry.rows 1 j = permutationConjugateCode conjugator2 (C.rows (backward2 j)) :=
+  (by decide +kernel)
+
+private def conjugator4 : Equiv.Perm (Fin 8) where
+  toFun x := (#[0,1,3,4,2,7,5,6] : Array (Fin 8))[x.val]!
+  invFun x := (#[0,1,4,2,3,6,7,5] : Array (Fin 8))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def forward4 (i : Fin 16) : Fin 8 :=
+  (if i.val < 8 then (if i.val < 4 then (if i.val < 2 then (if i.val < 1 then 5 else 0) else (if i.val < 3 then 0 else 6)) else (if i.val < 6 then (if i.val < 5 then 0 else 0) else (if i.val < 7 then 1 else 0))) else (if i.val < 12 then (if i.val < 10 then (if i.val < 9 then 0 else 3) else (if i.val < 11 then 4 else 0)) else (if i.val < 14 then (if i.val < 13 then 2 else 0) else (if i.val < 15 then 0 else 7))))
+private def backward4 (j : Fin 8) : Fin 16 :=
+  (if j.val < 4 then (if j.val < 2 then (if j.val < 1 then 5 else 6) else (if j.val < 3 then 12 else 9)) else (if j.val < 6 then (if j.val < 5 then 10 else 0) else (if j.val < 7 then 3 else 15)))
+private theorem forward_checked4 : ∀ i,
+    characters.values (binaryAssignment (4 : Fin 8)) i = true →
+    registry.rows 4 (forward4 i) = permutationConjugateCode conjugator4 (C.rows i) :=
+  (by decide +kernel)
+private theorem backward_checked4 : ∀ j,
+    characters.values (binaryAssignment (4 : Fin 8)) (backward4 j) = true ∧
+    registry.rows 4 j = permutationConjugateCode conjugator4 (C.rows (backward4 j)) :=
+  (by decide +kernel)
+
+private def conjugator6 : Equiv.Perm (Fin 8) where
+  toFun x := (#[0,6,5,7,2,4,3,1] : Array (Fin 8))[x.val]!
+  invFun x := (#[0,7,4,6,5,2,1,3] : Array (Fin 8))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def forward6 (i : Fin 16) : Fin 8 :=
+  (if i.val < 8 then (if i.val < 4 then (if i.val < 2 then (if i.val < 1 then 2 else 0) else (if i.val < 3 then 4 else 0)) else (if i.val < 6 then (if i.val < 5 then 3 else 0) else (if i.val < 7 then 1 else 0))) else (if i.val < 12 then (if i.val < 10 then (if i.val < 9 then 0 else 0) else (if i.val < 11 then 0 else 6)) else (if i.val < 14 then (if i.val < 13 then 0 else 5) else (if i.val < 15 then 0 else 7))))
+private def backward6 (j : Fin 8) : Fin 16 :=
+  (if j.val < 4 then (if j.val < 2 then (if j.val < 1 then 9 else 6) else (if j.val < 3 then 0 else 4)) else (if j.val < 6 then (if j.val < 5 then 2 else 13) else (if j.val < 7 then 11 else 15)))
+private theorem forward_checked6 : ∀ i,
+    characters.values (binaryAssignment (6 : Fin 8)) i = true →
+    registry.rows 1 (forward6 i) = permutationConjugateCode conjugator6 (C.rows i) :=
+  (by decide +kernel)
+private theorem backward_checked6 : ∀ j,
+    characters.values (binaryAssignment (6 : Fin 8)) (backward6 j) = true ∧
+    registry.rows 1 j = permutationConjugateCode conjugator6 (C.rows (backward6 j)) :=
+  (by decide +kernel)
+
+private def conjugator7 : Equiv.Perm (Fin 8) where
+  toFun x := (#[0,1,2,3,4,5,6,7] : Array (Fin 8))[x.val]!
+  invFun x := (#[0,1,2,3,4,5,6,7] : Array (Fin 8))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def forward7 (i : Fin 16) : Fin 16 :=
+  (if i.val < 8 then (if i.val < 4 then (if i.val < 2 then (if i.val < 1 then 0 else 1) else (if i.val < 3 then 2 else 3)) else (if i.val < 6 then (if i.val < 5 then 4 else 5) else (if i.val < 7 then 6 else 7))) else (if i.val < 12 then (if i.val < 10 then (if i.val < 9 then 8 else 9) else (if i.val < 11 then 10 else 11)) else (if i.val < 14 then (if i.val < 13 then 12 else 13) else (if i.val < 15 then 14 else 15))))
+private def backward7 (j : Fin 16) : Fin 16 :=
+  (if j.val < 8 then (if j.val < 4 then (if j.val < 2 then (if j.val < 1 then 0 else 1) else (if j.val < 3 then 2 else 3)) else (if j.val < 6 then (if j.val < 5 then 4 else 5) else (if j.val < 7 then 6 else 7))) else (if j.val < 12 then (if j.val < 10 then (if j.val < 9 then 8 else 9) else (if j.val < 11 then 10 else 11)) else (if j.val < 14 then (if j.val < 13 then 12 else 13) else (if j.val < 15 then 14 else 15))))
+private theorem forward_checked7 : ∀ i,
+    characters.values (binaryAssignment (7 : Fin 8)) i = true →
+    registry.rows 10 (forward7 i) = permutationConjugateCode conjugator7 (C.rows i) :=
+  (by decide +kernel)
+private theorem backward_checked7 : ∀ j,
+    characters.values (binaryAssignment (7 : Fin 8)) (backward7 j) = true ∧
+    registry.rows 10 j = permutationConjugateCode conjugator7 (C.rows (backward7 j)) :=
+  (by decide +kernel)
+
+private theorem checked : ∀ bits : Fin 3 → Bool,
+    (∀ i j, characters.values bits (C.next i j) = (characters.values bits i == bits j)) →
+    (∀ y : Fin 8, ∃ i, characters.values bits i = true ∧ encodedRowAction C i 0 = y) →
+    ∃ k, ∃ g : Equiv.Perm (Fin 8),
+      (∀ i, characters.values bits i = true →
+        ∃ j, registry.rows k j = permutationConjugateCode g (C.rows i)) ∧
+      (∀ j, ∃ i, characters.values bits i = true ∧
+        registry.rows k j = permutationConjugateCode g (C.rows i)) := by
+  intro bits
+  obtain ⟨b,rfl⟩ := binaryAssignment_surjective 3 bits
+  fin_cases b
+  · intro _ _
+    exact ⟨3,conjugator0,
+      fun i hi => ⟨forward0 i,forward_checked0 i hi⟩,
+      fun j => ⟨backward0 j,backward_checked0 j⟩⟩
+  · intro _ ht
+    exact False.elim ((show ¬(∀ y : Fin 8, ∃ i,
+      characters.values (binaryAssignment (1 : Fin 8)) i = true ∧
+        encodedRowAction C i 0 = y) from by decide +kernel) ht)
+  · intro _ _
+    exact ⟨1,conjugator2,
+      fun i hi => ⟨forward2 i,forward_checked2 i hi⟩,
+      fun j => ⟨backward2 j,backward_checked2 j⟩⟩
+  · intro _ ht
+    exact False.elim ((show ¬(∀ y : Fin 8, ∃ i,
+      characters.values (binaryAssignment (3 : Fin 8)) i = true ∧
+        encodedRowAction C i 0 = y) from by decide +kernel) ht)
+  · intro _ _
+    exact ⟨4,conjugator4,
+      fun i hi => ⟨forward4 i,forward_checked4 i hi⟩,
+      fun j => ⟨backward4 j,backward_checked4 j⟩⟩
+  · intro _ ht
+    exact False.elim ((show ¬(∀ y : Fin 8, ∃ i,
+      characters.values (binaryAssignment (5 : Fin 8)) i = true ∧
+        encodedRowAction C i 0 = y) from by decide +kernel) ht)
+  · intro _ _
+    exact ⟨1,conjugator6,
+      fun i hi => ⟨forward6 i,forward_checked6 i hi⟩,
+      fun j => ⟨backward6 j,backward_checked6 j⟩⟩
+  · intro _ _
+    exact ⟨10,conjugator7,
+      fun i hi => ⟨forward7 i,forward_checked7 i hi⟩,
+      fun j => ⟨backward7 j,backward_checked7 j⟩⟩
+
+/-- Complete literal transitive index-two child coverage for this original action. -/
+theorem children (K : Subgroup (Equiv.Perm (Fin 8)))
+    (hle : K ≤ Subgroup.closure (Set.range BinaryMenuCayley8T11.generators))
+    (hindex : K.relIndex (Subgroup.closure (Set.range BinaryMenuCayley8T11.generators)) = 2)
+    (ht : PermutationSubgroupTransitive K) : ActionRegistryCovered actions K :=
+  binary_character_registry_children C characters actions registry 0 checked K hle hindex ht
+
+end SymmetricSubgroupAsymptotics.BinaryActionChildren8T11
