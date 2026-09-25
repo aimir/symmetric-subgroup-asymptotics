@@ -303,8 +303,35 @@ extra quotient-automorphism factor in this literal graph chart.
 **PACK-RANK.** If J has no actual regular C3 or natural A4 orbit, the
 relative ternary rank theorem gives d₃(J)<=2b/9. This inequality, together
 with A<=b/4, is sufficient for the packet argument; its equality cases
-are needed elsewhere, not here. The primitive and induced-module inputs
-and finite coverage for this rank theorem remain explicit dependencies.
+are needed elsewhere, not here. The relative-head proof now uses the
+self-contained ordered-transversal argument in
+[the manuscript](../../paper/sections/relative_ranks.tex). For s₃=3^t, put
+
+    C(s)=s                 if t=0,
+         s/3               if t=1 or 2,
+         7s/27             if t>=3,
+    B(s)=min(C(s),s/lpp(s/s₃)), lpp(1)=1.
+
+Every actual submodule of the original induced ternary representation
+has invariant-character head at most dim(V)·B(s). An actual index-three
+subnormal chain and reverse-lexicographic coset transport retain the
+original arbitrary fibre twists; minimizing lifts of bases of the
+submodule's intrinsic coinvariants produces the antichain bound. The
+seven-chain three-cube partition, actual Sylow/Mackey coordinates and
+the coprime Maschke/Frobenius bound give B, including mixed orbit sizes.
+This derived head estimate does not import the Tracey Gaussian bound
+or claim B(s)<=E(s,3). It does not replace stronger module-generator
+inputs used for binary sections and affine counting elsewhere.
+
+The primitive generator/composition bounds and the complete primitive
+and small transitive normal-pair inputs remain explicit dependencies.
+The three-twentieths consequence retains complete degree6/12/18 pairs
+and the degree-nine equality owners; the actual degree18 head bound two
+closes the remaining index18 case. Separate degree54/162 relative-head
+seams are no longer needed for this route. The necessary high-action
+list still requires its original consumer/owner classification, and
+this manuscript argument is not a claim that its complete Lean assembly
+or those finite coverage inputs have been kernel checked.
 
 **PACK-MACRO.** Let Z_(b,c,t) count all packet subgroups in
 S_b×C3^c×A4^t, full on the displayed C3/A4 factors, whose residual J has

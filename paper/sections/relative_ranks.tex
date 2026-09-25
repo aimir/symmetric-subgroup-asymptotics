@@ -97,6 +97,117 @@ We next give the relative ternary bounds needed for the one-triple
 case. Let $\mathcal E_9$ consist of the four transitive actions
 $9T2,9T6,9T7,9T17$, of orders $9,27,27,81$.
 
+\begin{lemma}[Ordered-transversal head bound]\label{lem:ordered-transversal-head}
+Let $P$ be a finite $p$-group, $H\leq P$, $[P:H]=p^t$, and let
+$V$ be an $a$-dimensional representation of the original $H$ over a
+field $k$. For every actual submodule $M\leq\operatorname{Ind}_H^P V$,
+\[
+ \dim_k\operatorname{Hom}_P(M,k)\leq
+ a\,\operatorname{width}(\{0,\ldots,p-1\}^t).
+\]
+The order defining width is componentwise. For $p=3$ its width is at
+most $W(t)$, where
+\[
+ W(0)=W(1)=1,\qquad W(2)=3,\qquad
+ W(t)=7\cdot3^{t-3}\quad(t\geq3).
+\]
+\end{lemma}
+\begin{proof}
+First choose an actual chain
+$H=H_0\lhd H_1\lhd\cdots\lhd H_t=P$ with each index $p$.
+For existence, a proper subgroup $L<P$ acts on $P/L$. The number of
+fixed cosets is positive and divisible by $p$, since $[P:L]$ is
+and all nontrivial orbit sizes are. A fixed coset $gL$ satisfies
+$g^{-1}Lg\leq L$, hence equality by finiteness. Thus $L$ is
+properly contained in its normalizer. An element of order $p$ in
+$N_P(L)/L$ supplies the next subgroup of index $p$. Iteration and
+index multiplication give exactly $t$ steps. Only consecutive
+normality is required; $H$ need not be normal in $P$.
+
+Choose $x_i\in H_i$ generating $H_i/H_{i-1}$, and set
+$T(b)=x_1^{b_1}\cdots x_t^{b_t}$ for $0\leq b_i<p$.
+Successively extracting the highest digit proves that these are unique
+representatives for the original right cosets of $H$. Order the labels
+by $L(b)=\sum_i b_ip^{i-1}$, so the largest differing coordinate decides
+the comparison. If $d<b$ in this order and $b\leq c$ componentwise,
+then the coset of $T(d)T(b)^{-1}T(c)$ has label strictly below $c$.
+Indeed, at the largest differing coordinate $i$, the equal higher tails
+of $d,b$ cancel. With $A,B,C\in H_{i-1}$ the remaining expression is
+\[
+ A x_i^{d_i-b_i}B^{-1}C x_i^{c_i}S_c
+   =D x_i^{d_i-b_i+c_i}S_c,\qquad D\in H_{i-1}.
+\]
+This uses only $H_{i-1}\lhd H_i$. The exponent satisfies
+$0\leq d_i-b_i+c_i<c_i<p$, so no carry changes a higher coordinate.
+The lower coordinates absorb every commutator and stabilizer term.
+
+Use the coinduced model
+\[
+ \{f:P\to V:f(hx)=\rho(h)f(x)\},\qquad
+ (g\cdot f)(x)=f(xg).
+\]
+It is the original induced representation: $g\otimes v$ corresponds
+to the function supported on $Hg^{-1}$ with value $v$ at $g^{-1}$;
+the tensor relation gives precisely the displayed $\rho(h)$ twist.
+Values at the $T(b)$ give one copy of the original $V$ per coset.
+For $q=T(b)^{-1}T(c)$, act by $q^{-1}$. Then
+\[
+ (q^{-1}\cdot f)(T(c))=f(T(c)q^{-1})=f(T(b)).
+\]
+Thus the entire leading fibre vector moves unchanged from row $b$ to
+row $c$. Every lower row moves to a row below $c$ by the preceding
+calculation. Its original fibre twist is retained; it cannot create a
+higher row. In particular this argument does not require an invariant
+basis or a split fibre representation.
+
+Choose an ordered basis of $V$ and order full labels $(b,j)$ by
+$aL(b)+j$, with coset position first. Work in the intrinsic quotient
+\[
+ Q=M/\langle g\cdot u-u:g\in P,\ u\in M\rangle_k.
+\]
+Among lifts in $M$ of all bases of $Q$, minimize the sum of their
+leading full-label heights. Such lifts exist, and the sum is a natural
+number. If two different lifts have leading labels $(b,j),(c,j)$ with
+$b\leq c$ componentwise, subtract from the second the scalar multiple
+of $q^{-1}$ applied to the first which cancels its leading coefficient.
+The new lift has strictly smaller height: the leading fibre row is
+unchanged by transport, and every other term stays below $(c,j)$.
+In $Q$ its class is the old second class minus that multiple of the
+first, so the classes still form a basis and the new lift is nonzero.
+This contradicts minimality. The case $b=c$ uses $q=1$ and also
+excludes duplicate labels. Thus the leading labels inject into $a$
+disjoint copies of the grid, with an antichain in each copy.
+Invariant forms on $M$ are exactly $Q^*$, proving the dimension bound.
+The quotient here is intrinsic to $M$, not its image in ambient
+coinvariants.
+
+For three ternary coordinates the following seven chains partition all
+27 labels:
+\[
+\begin{array}{l}
+000,100,200,210,220,221,222;\qquad001,101,201,211,212;\\
+002,102,202;\qquad010,110,120,121,122;\qquad011,111,112;\\
+012;\qquad020,021,022.
+\end{array}
+\]
+Fixing the other $t-3$ coordinates gives $3^{t-3}$ slices, each met
+at most seven times by an antichain. For $t=2$ use the chains
+$00,10,20,21,22$; $01,11,12$; and $02$. The cases $t=0,1$ are immediate.
+\end{proof}
+
+For a positive integer $s$, write $s_3=3^t$ and define the integer
+ternary envelope
+\begin{equation}\label{eq:ternary-B}
+ B(s)=\min\{C(s),s/\operatorname{lpp}(s/s_3)\},\qquad
+ C(s)=\begin{cases}
+ s,&t=0,\\
+ s/3,&t=1,2,\\
+ 7s/27,&t\geq3,
+ \end{cases}
+\end{equation}
+with $\operatorname{lpp}(1)=1$. We use this envelope directly in the
+relative-head recurrence.
+
 \begin{lemma}[Primitive inputs and block filtration]\label{lem:ternary-block}
 For a primitive action $R$ of degree $r$, let $a_3(R)$ count its
 composition factors of order three, with multiplicity. Then
@@ -110,12 +221,8 @@ $\delta_R(N)<3r/20$, apart from the whole natural $C_3,A_4$ pairs.
 For a transitive $A$ with a minimal block system of $s$ blocks of size
 $r$, primitive block component $R$, top $T$, and block kernel $K$,
 \begin{equation}\label{eq:ternary-block-recurrence}
- \delta_A(N)\leq a_3(R)E(s,3)+\delta_T(NK/K),\qquad
- E(s,3)=\min\left\{
- \left\lfloor\frac{s}{\sqrt{\pi\log_3s_3}}\right\rfloor,
- \frac{s}{\operatorname{lpp}(s/s_3)}\right\}.
+ \delta_A(N)\leq a_3(R)B(s)+\delta_T(NK/K).
 \end{equation}
-The first entry is infinite if $s_3=1$.
 \end{lemma}
 \begin{proof}
 The primitive generator bound
@@ -137,16 +244,52 @@ exceptions. Classification completeness uses
 count order-three composition factors, rather than the ternary
 valuation of group order.
 
+Here is the common ternary head bound used in the block argument.
+Write $s_3=3^t$. Restrict to a Sylow $3$-subgroup and decompose the
+original induced module by its actual double cosets, retaining the
+twisted fibre actions. Its orbit indices are $3^j$ with $j\geq t$,
+and their sum is $s$. Filter the given submodule by the kernels of
+these actual coordinate maps. Head subadditivity and
+Lemma~\ref{lem:ordered-transversal-head} bound each resulting head
+by $aW(j)$. For $t=1,2$, all $W(j)\leq3^j/3$; for $t\geq3$,
+all $W(j)=7\cdot3^j/27$. Summation therefore gives $aC(s)$,
+including mixed orbit sizes. For $t=0$ the ambient dimension $as$
+suffices. Restriction can only increase the invariant character head.
+
+For a prime $q\ne3$, restrict instead to a Sylow $q$-subgroup.
+Maschke's theorem makes every submodule of each induced component
+a direct summand. Its maps to the trivial line therefore extend to
+the component; Frobenius reciprocity bounds their dimension by $a$.
+Each actual orbit has size at least $s_q$, so there are at most
+$s/s_q$ components. Maximizing $s_q$ gives
+$as/\operatorname{lpp}(s/s_3)$; at $s/s_3=1$ use the ambient
+dimension $as$ instead.
+Together these give $aB(s)$. All local coefficients and their sums
+are integers; no floor is moved through the original fibre dimension.
+
 For the block assertion, choose a chief series $R_i$ of $R$ and
-intersect $A$ and then $N$ with the subgroups $R_i^s$ of the wreath
-base. Tracey's local-chief construction
-\cite[Lemma~5.8]{Tracey2018} makes each elementary chief layer a
-submodule of the actual module induced from a block stabilizer;
-a nonabelian layer is zero or a perfect chief factor. A ternary
-layer of fibre dimension $a_i$ contributes at most $a_iE(s,3)$
-by the induced-module theorem. Other primes and perfect layers
-contribute zero. Sum this single chain using
-\eqref{eq:relative-head-chain}, and then its top quotient. The
+filter $N\cap K$ by the inverse images of $R_i$ under all original
+conjugate block evaluations. These maps separate the block kernel.
+Each elementary layer is a submodule of the actual module induced
+from a block stabilizer. A ternary layer of fibre dimension $a_i$
+therefore contributes at most $a_iB(s)$; a layer at another prime
+has zero ternary head.
+
+For a nonabelian chief factor $Q$, each coordinate image of the
+corresponding layer is normal in the original quotient of $R$,
+hence either trivial or all of $Q$. Minimal normality makes $Q$
+perfect. Choose a maximal proper normal subgroup $M\lhd Q$.
+The ambient conjugates of the maps $Q\to Q/M$ are jointly injective,
+since their common kernel is ambient-normal and proper in $Q$.
+They give surjections onto simple perfect groups. Thus the original
+layer, including any proper subdirect correlations, is a subdirect
+product of simple perfect groups and is perfect: induct on the
+number of coordinates, whose successive kernels are either trivial
+or a full simple factor. Its ternary head is zero.
+
+Sum this single chain using \eqref{eq:relative-head-chain}.
+The relative second isomorphism theorem identifies the final top
+section with $NK/K$ under the original ambient conjugation. The
 ternary fibre dimensions sum to $a_3(R)$, proving
 \eqref{eq:ternary-block-recurrence}.
 \end{proof}
@@ -171,43 +314,32 @@ and $a$ actual natural $A_4$ orbits,
 \begin{proof}
 The finite primitive input in Lemma~\ref{lem:ternary-block} already
 implies the assertion in the primitive case. The finite transitive
-normal-pair input in degrees $9,18$ says that the only two-ninth
-equalities are the four whole $\mathcal E_9$ pairs, that every other
-degree-nine pair has head at most one, and that every degree-eighteen
-pair has head at most three. These are complete finite catalogues,
-not assumptions on the possible block systems.
+normal-pair input in degree nine says that the only two-ninth
+equalities are the four whole $\mathcal E_9$ pairs and every other
+pair has head at most one. This is a complete finite catalogue,
+not an assumption on possible block systems.
 
-Directly from the formula for $E$ one has
+From \eqref{eq:ternary-B}, $B(s)\leq s/3$ for $s\geq3$ and
 \[
- E(s,3)\leq10s/27\quad(s\notin\{2,6,18\}),\qquad
- E(s,3)\leq7s/18\quad(s\notin\{2,6\}),
+ B(2),B(3),B(4),B(6),B(9),B(18)=1,1,1,2,3,6.
 \]
-and $E(2),E(3),E(4),E(6),E(9),E(18)=1,1,1,3,3,7$.
-For example, if the prime-to-three part is neither one nor two,
-the largest-prime-power branch is at most $s/4$; otherwise write
-$s=3^k$ or $2\cdot3^k$, and for $k\geq3$ use $\pi k>9$.
-The finitely many remaining powers give the displayed values. In
-particular
-\[
- E(s,3)+\lfloor5s/27\rfloor\leq5s/9
- \quad(s\notin\{2,6\}).
-\]
+For $3\nmid s$ and $s\geq3$, the prime-to-three denominator is
+at least four; the other cases follow from $C(s)$.
 Use induction in \eqref{eq:ternary-block-recurrence}. For an ordinary
-top and $s\notin\{2,6\}$, a block of size two has no ternary layer;
-a block of size three uses the last inequality; for $r\geq4$ use
+top with $s\geq3$ and $r\geq3$,
 \[
- 9\delta_A(N)\leq7rs/6+5s/3\leq5rs/3.
+ \delta_A(N)\leq rs/9+5s/27\leq5rs/27.
 \]
-For a whole $\mathcal E_9$ top, the bound is
-$\delta\leq3a_3(R)+2\leq r+2\leq5r/3$ for $r\geq3$;
-$r=2$ is immediate. For $s=2$ the bound is $a_3(R)\leq r/3$.
-For $s=6$ it is $3a_3(R)+1$: use the degree-eighteen input at
-$r=3$, the strict composition-density list for $4\leq r\leq8$,
-and $r+1\leq10r/9$ for $r\geq9$. Finally natural $C_3$ and
-$A_4$ tops give $a_3(R)+1$. In the $C_3$ case use the degree-nine
+For $r=2$ there is no ternary layer. At $s=2$ the top head vanishes
+and $\delta_A(N)\leq a_3(R)\leq r/3\leq10r/27$.
+For a whole $\mathcal E_9$ top the bound is
+$3a_3(R)+2\leq r+2\leq5r/3$ for $r\geq3$;
+$r=2$ is immediate. A natural $A_4$ top gives $a_3(R)+1$,
+which is at most $20r/27$ for $r\geq3$; again $r=2$ is immediate.
+A natural $C_3$ top also gives $a_3(R)+1$. Use the degree-nine
 input at $r=3$, $a_3(R)\leq1$ at $r=4$, and
-$r/3+1\leq5r/9$ for $r\geq5$; the $A_4$ case is immediate.
-These cases exhaust the induction.
+$r/3+1\leq5r/9$ for $r\geq5$; the binary-block case is immediate.
+These cases exhaust the induction. Integrality gives the stated floors.
 
 The coarser conclusions now follow by comparing $5/27<2/9<1/4$
 and inspecting the six stated exceptions. Apply the two-ninth bound
@@ -215,40 +347,6 @@ to \eqref{eq:orbit-relative-head}; a natural $C_3$ layer costs three
 and a natural $A_4$ layer one above twice its degree. This proves
 \eqref{eq:rank3-pattern}. In particular a no-$C_3$, no-$A_4$
 residual has $d_3(G)\leq2m/9$; neither exclusion can be omitted.
-\end{proof}
-
-\begin{lemma}[Two small module refinements]\label{lem:ternary-refinements}
-In \eqref{eq:ternary-block-recurrence}, if the top contains a
-semiregular $C_3$, the kernel term can be replaced by $a_3(R)s/3$.
-If the top contains a soluble transitive subgroup, it can be replaced
-by $a_3(R)\beta(s)$, where
-\[
- \beta(s)=[x^{\lfloor k(s)/2\rfloor}]
-       \prod_{q\mid s}(1+x+\cdots+x^{q-1})^{v_q(s)},\qquad
- k(s)=\sum_{q\mid s}v_q(s)(q-1).
-\]
-\end{lemma}
-\begin{proof}
-Lift a generator of the semiregular $C_3$ to a $3$-element $x$ of
-the original group. Its order can exceed three. On an induced ternary
-module of fibre dimension $a$, bases of one fibre in each three-cycle
-generate the module over $\mathbb F_3[\langle x\rangle]$ with
-$as/3$ vectors. This algebra is the chain ring
-$\mathbb F_3[t]/(t^{3^e})$. For its finite modules, the number of
-generators is the dimension of the socle; a submodule has smaller
-socle, and a quotient cannot require more generators. This bounds
-the actual subquotient in the chief filtration, including fibre twists.
-
-For the second assertion retain the product-of-chains transversal in
-the proof of \cite[Theorem~4.13, Lemma~4.15(ii),
-Proposition~4.18]{Tracey2018}. Its rank polynomial is the product
-displayed above. The chain product has a symmetric chain
-decomposition, so its width is its middle coefficient $\beta(s)$.
-The leading-height argument in that proof chooses at most $a$ module
-generators per member of an antichain of this transversal. Keeping
-its actual width, before the subsequent binomial estimate, gives
-$a\beta(s)$. This uses the soluble-transitive-subgroup hypothesis
-on the actual coset action.
 \end{proof}
 
 \begin{theorem}[Necessary high ternary actions]\label{thm:three-twentieths}
@@ -265,77 +363,51 @@ pairs have high relative head.
 \end{theorem}
 \begin{proof}
 Primitive actions are covered by Lemma~\ref{lem:ternary-block}.
+We retain the complete normal-pair catalogues in degrees $6,12,18$:
+1,300 actions and 20,410 pairs. Their strict high-action list is
+exactly items two and three, with no degree-eighteen hit. In particular
+every degree-eighteen pair has head at most two. These remain bounded
+classification inputs for the actual actions and all their normal subgroups.
+
 Use a minimal block system and put $v=a_3(R)$ in
-\eqref{eq:ternary-block-recurrence}. For a nonexceptional top and
-$s\notin\{2,6,18\}$, $E(s,3)\leq s/3$. If $r\geq5$, then
+\eqref{eq:ternary-block-recurrence}. For a nonexceptional top with
+$s\geq3$, $B(s)\leq s/3$. If $r\geq5$, then
 \[
  \frac{vs/3+5s/27}{rs}\leq\frac19+\frac5{27r}
  \leq\frac4{27}<\frac3{20};
 \]
 at $r=4$, $v\leq1$ gives $14s/27<3(4s)/20$.
-At $s=18$ use $7v+3$; this is at most $27r/10$ for $r\geq9$,
-and $v\leq1,1,1,2,2$ handles $r=4,5,6,7,8$.
-Every transitive degree-six group contains a semiregular $C_3$:
-its Sylow $3$-subgroup either has order three and trivial point
-stabilizers, or is $C_3^2$ on two triples. Thus at $s=6$,
-Lemma~\ref{lem:ternary-refinements} gives $2v+1\leq9r/10$ for
-$r\geq4$. At $s=2$ the top head vanishes and the stronger primitive
-density bound gives $v\leq3r/10$, except possibly $r=9$.
-The complete degree-eighteen normal-pair input gives head at most two
-there and removes that exception.
+At $s=2$ the top head vanishes and the stronger primitive density
+bound gives $v\leq3r/10$ for $r\geq4$, except possibly $r=9$;
+the degree-eighteen input removes that exception.
 
 For a natural $C_3$ top the bound is $v+1$: the only $r\geq4$
 case not below $9r/20$ is $r=4$, giving degree twelve. A natural
-$A_4$ top gives $v+1\leq3r/5$. A whole $\mathcal E_9$ top gives
+$A_4$ top gives $v+1\leq3r/5$ for $r\geq4$.
+A whole $\mathcal E_9$ top gives
 $3v+2\leq27r/20$ for $r\geq6$, and $v\leq1$ deals with $r=4,5$.
 For binary blocks $v=0$, only the natural $C_3$ top can fail,
 giving degree six.
 
 It remains to treat ternary blocks, $r=3$. For a nonexceptional top,
-the scalar bound $E(s,3)+\lfloor5s/27\rfloor\leq\lfloor9s/20\rfloor$
-leaves, beyond $s=2,3,4,6,9$, only $18,27,54,81,162$.
-To verify completeness, write $s=3^kt$. If $t\notin\{1,2\}$,
-use $1/4+5/27<9/20$. If $t\in\{1,2\}$ and $k\geq5$,
-use $1/\sqrt{15}<143/540=9/20-5/27$. The remaining powers give
-exactly the stated finite set. The chain widths at its five degrees
-are $5,7,13,19,35$; adding $\lfloor5s/27\rfloor$ gives
-$8,12,23,34,65$, all below the required bounds. This handles tops
-containing a soluble transitive subgroup. In prime-power degree a
-Sylow subgroup is transitive (compare its order with a point
-stabilizer), so it handles $s=27,81$ automatically.
-
-For completeness the nonsoluble seams use the following bounded
-inputs: every nonsoluble degree-eighteen action has a semiregular
-$C_3$ and all its relative heads are at most one; and the maxima of
-$a_3(R)$ for primitive degrees $6,9,18,27,54$ are at most $0,3,0,7,0$.
-The former checks all 91 nonsoluble actions and their 521 normal
-pairs, with an actual semiregular permutation witness for each
-action; the latter checks the 38 primitive actions at those degrees.
-They imply the following structural bounds for nonsoluble transitive
-groups, without a degree-54 or degree-162 transitive census:
 \[
- \max_{N\lhd A}\delta_A(N)\leq7\quad(\deg A=54),\qquad
- \max_{N\lhd A}\delta_A(N)\leq24\quad(\deg A=162).
+ B(s)+\lfloor5s/27\rfloor\leq\lfloor9s/20\rfloor
+ \qquad(s\notin\{2,6,18\}).
 \]
-Indeed the possible minimal block sizes at degree 54 are
-$2,3,6,9,18,27$, and their kernel-plus-top bounds are respectively
-$5,7,2,7,1,7$. At degree 162 the sizes are
-$2,3,6,9,18,27,54,81$, with bounds
-$15,24,5,24,2,22,1,15$. For the size-three rows nonsolubility
-forces the top to be nonsoluble, because the local component is
-$C_3$ or $S_3$. The last row uses
-$(8/3)\log_2(81)-4/3<16$ and integrality. Primitive cases have
-the smaller bounds $\lfloor\log_2(54)\rfloor=5$ and
-$\lfloor\log_2(162)\rfloor=7$.
-The ternary child bounds at top degrees $18,54,162$ are therefore
-$6+1=7$, $17+7=24$, $45+24=69$, respectively, each sufficient.
+To check all indices, write $s=3^tm$ with $3\nmid m$.
+If $m\notin\{1,2\}$, use $1/4+5/27<9/20$.
+If $m\in\{1,2\}$ and $t\geq3$, use
+$7/27+5/27=4/9<9/20$. For $t\leq2$ the only remaining
+indices $s\geq2$ are $2,3,6,9,18$; the sums at $s=3,9$ are
+$1,4$ and satisfy the displayed floors. At $s=18$, use the actual
+top bound two from the finite input, giving $B(18)+2=8<81/10$.
+No separate top-degree $27,54,81,162$ refinement is needed.
 
-Only child degrees $6,9,12,18,27$ remain. The complete normal-pair
-catalogues at degrees $6,12,18$ contain 1,300 actions and 20,410
-pairs; their strict high-action list is exactly items two and three,
-with no degree-eighteen hit. Degree nine is already covered by
-Theorem~\ref{thm:rank3-stability}. At degree 27 a top head at most
-one gives $E(9,3)+1=4\leq81/20$. Otherwise the top is a whole
+The only child degrees still to inspect are $6,9,12,18,27$.
+The first, third and fourth use the retained finite catalogues.
+Degree nine is covered by Theorem~\ref{thm:rank3-stability}.
+At degree 27 a top head at most
+one gives $B(9)+1=4\leq81/20$. Otherwise the top is a whole
 $\mathcal E_9$ action, hence a $3$-group. Embed the action in
 $S_3\wr T$ and put $V=C_3^9$. If the image of the full block kernel
 in $C_2^9$ is nontrivial, its coordinate characters on $V$ are all
@@ -347,3 +419,10 @@ If that image is trivial, the full block kernel and the top are both
 $3$-groups, making the actual degree-27 action a $3$-group. This
 exhausts the final case and proves the theorem.
 \end{proof}
+
+For the separate bounded counting argument below, we retain the finite
+semiregular witnesses for all 91 nonsoluble degree-eighteen actions:
+each contains an actual fixed-point-free permutation of order three.
+Those witnesses are used for the stronger module-generator capacities
+in Theorem~\ref{thm:bounded-s3}; they are not needed for the relative-head
+classification just proved.

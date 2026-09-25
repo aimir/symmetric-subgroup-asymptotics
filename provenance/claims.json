@@ -209,7 +209,7 @@
     {
       "id": "FINITE-RANK",
       "kind": "finite_input",
-      "statement": "First-head input: 7,259 action classes at degrees {2,…,23,25,26,28,29,31,34,37}, and 233 normal pairs at degrees 2,4,8. Ternary 2/9 input: 294 primitive composition actions in degrees 2–37 and primitive normal pairs in degrees 2–17; stability also uses degrees 19,20,21. The 3/20 and c=1 input uses 253 primitive actions and 945 normal pairs in degrees 2–33, plus 336 primitive composition actions in degrees 2–44; analytic tails start at 34 and 45 respectively. Actual transitive degree-18 and nonsoluble degree-54/162 seams have separate action and relative-head certificates. Each finite coverage theorem and each literal inequality is required.",
+      "statement": "First-head input: 7,259 action classes at degrees {2,…,23,25,26,28,29,31,34,37}, and 233 normal pairs at degrees 2,4,8. The current ternary manuscript route uses 253 primitive actions and 945 normal pairs in degrees 2–33, 336 primitive composition actions in degrees 2–44, degree9 equality classification, and all transitive normal pairs in degrees 6,12,18 (1,300 actions and 20,410 pairs). Analytic primitive tails start at 34 and 45 respectively. Earlier primitive ranges through 17/37 and separate nonsoluble degree 54/162 relative-head seams are retained as additional legacy checks, not extra premises of the current B(s) route. Degree 18 semiregular witnesses remain required by the separate bounded-S3 module-generator application. Each selected-route finite coverage theorem and literal inequality remains required.",
       "depends_on": [],
       "references": [
         "provenance/LITERATURE.md",
@@ -324,7 +324,7 @@
     {
       "id": "RANK3",
       "kind": "derived",
-      "statement": "Actual relative ternary heads have the scoped 1/4,2/9,5/27 and 3/20 bounds; no-natural-C3/A4 condition remains on the 2/9 residual theorem.",
+      "statement": "Actual relative ternary heads have the scoped 1/4,2/9,5/27 and 3/20 bounds; the no-natural-C3/A4 condition remains on the 2/9 residual theorem. The listed dependencies retain the earlier sufficient route; current_manuscript_route records the smaller premise set of the self-contained B(s) proof.",
       "depends_on": [
         "ALG",
         "TRACEY18",
@@ -334,8 +334,28 @@
         "RDT-EXCESS"
       ],
       "references": [
-        "docs/blueprint/GLOBAL_COMPONENTS.md"
-      ]
+        "docs/blueprint/GLOBAL_COMPONENTS.md",
+        "paper/sections/relative_ranks.tex",
+        "provenance/LITERATURE.md"
+      ],
+      "current_manuscript_route": {
+        "depends_on": [
+          "ALG",
+          "HRD",
+          "GPRV",
+          "FINITE-RANK"
+        ],
+        "proof": "paper/sections/relative_ranks.tex",
+        "labels": [
+          "lem:ordered-transversal-head",
+          "lem:ternary-block",
+          "thm:rank3-stability",
+          "thm:three-twentieths"
+        ],
+        "head_envelope": "The project proves the actual-fibre ordered-transversal head bound and its integer B(s) envelope. No Gaussian E(s,3) or soluble-width premise is used by this manuscript route.",
+        "finite_scope": "Primitive normal pairs through degree33 (253 actions,945 pairs), primitive composition actions through degree44 (336 actions), degree9 equality classification, and all transitive normal pairs in degrees6,12,18 (1300 actions,20410 pairs). Separate degree18 semiregular witnesses remain used by the stronger bounded-S3 generator-capacity argument.",
+        "formal_boundary": "The manuscript proof and dependency declaration are not a completed kernel check. Existing Gaussian Lean interfaces retain their explicit hypotheses until replaced."
+      }
     },
     {
       "id": "REGULAR",

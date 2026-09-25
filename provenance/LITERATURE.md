@@ -142,6 +142,59 @@ lpp for the largest prime-power divisor, and K(s)=sum_q v_q(s)(q-1),
 
 The first branch is infinite when s_p=1; lpp(1)=1.
 
+The binary module-generator bounds and the general affine counting
+capacities continue to use this literature input. The latter require bounds
+on module generators of arbitrary submodules (including dual modules) and
+asymptotic square-root decay. The ternary relative-head argument below does
+not replace those stronger applications.
+
+**Project ternary head replacement.** The ordered-transversal lemma in
+`paper/sections/relative_ranks.tex` proves the needed head bound directly for
+the original arbitrary fibre over every finite p-group and every subgroup
+H, including nonnormal H. An actual chain from H to P with consecutive
+normal index-p steps gives right-coset words. Reverse-lexicographic transport
+moves every lower row below the target row. In Mathlib's coinduced convention,
+q=T(b)^(-1)T(c) acts as q^(-1) to move row b to c, with the leading fibre
+vector unchanged and all lower original H-twists retained. Minimizing the
+sum of leading heights over lifts of all bases of the intrinsic coinvariants
+of the actual submodule yields antichains in dim(V) disjoint copies of the
+p-grid. This proof concerns invariant linear forms; it does not infer an
+unconditional generator bound over an arbitrary ambient group from its head.
+
+For p=3 the explicit seven-chain partition of the three-cube gives local
+coefficients W(0)=W(1)=1, W(2)=3, and W(j)=7*3^(j-3) for j>=3. If s_3=3^t,
+actual Sylow-3/Mackey orbit indices are 3^j with j>=t and sum s. The original
+coordinate-kernel filtration therefore gives a*C(s), where C(s)=s for t=0,
+s/3 for t=1,2, and 7s/27 for t>=3. Mixed orbit sizes are included.
+The coprime branch needs no additional published bound: Maschke extends
+submodule maps to the trivial line, Frobenius reciprocity bounds each actual
+orbit contribution by the original fibre dimension, and Sylow orbit sizes
+give at most s/s_q contributions. With lpp(1)=1, the resulting integer bound
+is a*B(s), B(s)=min(C(s),s/lpp(s/s_3)). All local coefficients are integers
+before scaling by dim(V).
+
+This B-envelope supplies the relative ternary recurrence, stability and
+three-twentieths classification. It is established independently of E(s,3);
+no inequality B(s)<=E(s,3) is claimed. The old Gaussian prime-power interface
+`TraceyPrimePowerModuleInput` still records the final assertion of Theorem
+4.13, printed p.23, taking H1=H. Its original conclusion is stronger than
+this replacement at large ternary valuations, and existing conditional Lean
+modules using that interface remain conditional until their statements are
+explicitly migrated to B. The new self-contained manuscript proof must not
+be mistaken for a completed kernel check of its full formalization.
+
+The ordered-transversal argument is related to Lemma 4.15 and Remark 4.17
+(printed p.24) and Proposition 4.18 (pp.24–25), but their conclusions are
+not imported as premises of this project proof. Neither the Gaussian estimate
+nor the soluble mixed-prime chain-width refinement is needed for these
+relative ternary endpoints. The complete primitive and small transitive
+catalogues remain separate classification inputs. In particular all
+normal pairs in degrees 6,12,18 are retained (1,300 actions, 20,410 pairs),
+and the degree-18 no-high-pair result gives head at most two. The 91 actual
+nonsoluble degree-18 semiregular witnesses remain in use in the separate
+bounded symmetric-three counting argument, which requires module-generator
+capacities; their use is not removed by the relative-head simplification.
+
 Corollary 3.12, p.17: if a transitive group of degree 3*2^m has no soluble
 transitive subgroup, there are a Mersenne prime p=2^a-1, e>=1 and
 t>=t_1>=0 with m=ea+t, and a soluble subgroup with binomial(e,j)*2^t_1
@@ -149,31 +202,39 @@ orbits of size 3*p^j*2^(t-t_1), for 0<=j<=e. The preceding nonabelian
 PSL_2(p) construction is additionally needed to exclude p=3 and infer a>=3;
 that strengthening is not stated in the corollary alone.
 
-Two additional interfaces of the 2018 paper enter affine block-kernel fusion:
+Further interfaces and the local-chief construction:
 
 * Corollaries 4.26–4.27, pp.30–31, retain the unconditional induced-module
   bound and its soluble-coset-image improvement separately. In particular,
   if [G:H]=s>=2, dim V=a and M<=Ind_H^G V, Corollary 4.27(iii) implies
   d_G(M)<=ceil(4as/sqrt(log s)). No solubility assumption on G is needed
   for this weaker displayed bound.
-* Lemma 5.8, pp.35–36, constructs the local-chief filtration for a large
-  subgroup G<=R wr S, where S is transitive of degree s. Its series is
-  (G intersect N_i^s), for a local normal series 1=N_0<...<N_e=R.
-  Each local factor is elementary abelian or a nonabelian R-chief factor.
-  An elementary abelian factor supplies a submodule of the corresponding
-  induced module; a nonabelian factor supplies either zero or a G-chief
-  factor. The series ends at the block kernel K=G intersect R^s.
-  The printed final equality with G in the lemma's displayed series is
-  inconsistent with its definitions; the construction and proof give K.
+
+The local-chief filtration used for the relative ternary recurrence is now
+proved directly in the project. `NormalChiefSeries` constructs an actual
+normal chief series; the `LocalChief` modules form the intersections under
+all original conjugate evaluations. Nonabelian layers retain their proper
+subdirect correlations: actual ambient-normal coordinate images are zero
+or full, then jointly faithful simple perfect quotients prove perfectness.
+`RelativeSecondIsomorphism` keeps the original ambient action on the top
+section. Lemma5.8, pp.35–36, gives a related wreath-product construction,
+but is not an external premise for this project recurrence. Identification
+of the sum of ternary chief weights with the manuscript's composition
+multiplicity is a separate formalization obligation. The affine full-fibre
+argument cites the related local-chief construction separately; the head
+recurrence alone does not formalize that complete counting argument.
 
 Theorem 1.1(1), p.1, also gives the uniform transitive generator bound
 floor(c*n/sqrt(log n)), with c approximately 0.920581<1. It is sufficient
 for the coarse affine-block estimate, but is distinct from the sharp
 constant in the following input.
 
-Applications: CAP-SECTION, APP-C1, BIN-LARGE and the relative ternary endpoints
-in ASM-OLD. The numerical inequalities 5s/16, 3s/8 and the coupled
-annihilator/socle bound are new project deductions, not imported theorems.
+Applications: CAP-SECTION, the affine module-generator counting bounds in
+APP-C1, and BIN-LARGE. The relative ternary head endpoints now use the
+self-proved B-envelope described above; older Gaussian formal interfaces
+retain their visible literature hypothesis. The numerical inequalities
+5s/16, 3s/8 and the coupled annihilator/socle bound are new project deductions,
+not imported theorems.
 
 **LIT-TRACEY-SHARP — public preprint.** Gareth Tracey,
 *Sharp upper bounds on the minimal number of elements required to generate
@@ -210,6 +271,13 @@ Applications: the character entries of NB-EXHAUST and FIN-MENU. The nilpotent
 bound applies to an actual Sylow subgroup of a common preimage. An abstract
 quotient does not acquire the same faithful permutation degree automatically.
 The conjectural 5^(b/4) bound is not an input.
+
+The formal `NilpotentConjugacyClassInput` states this bound for the actual
+permutation subgroup. `BinaryCharacterEnvelope` proves the passage to
+arbitrary original sources J<=S_b: maps to a binary target are determined
+by their restriction to an actual Sylow subgroup, proved using the joint
+image of two maps. The faithful irreducible tuple is constructed from the
+target's actual central involutions; its existence is not an external input.
 
 ## Primitive and affine inputs
 
@@ -288,9 +356,9 @@ The finite primitive endpoints use the following slices:
 
 | Consumer | Required finite scope |
 |---|---|
-| Two-ninth ternary rank | Primitive degrees 2–37 for composition density (294 actions); primitive normal pairs in degrees 2–17; transitive degree-9/18 handoffs. |
-| Relative ternary stability | The preceding primitive base, extra normal pairs in degrees 19,20,21, and the transitive degree-18 seam. |
-| c=1 / three-twentieths theorem | Primitive normal pairs in degrees 2–33 (253 actions, 945 normal pairs); primitive composition density in degrees 2–44 (336 actions). Analytic tails begin at 34 and 45. |
+| Two-ninth ternary rank | Primitive normal pairs through degree 33 (253 actions, 945 pairs) and primitive composition density through degree 44 (336 actions); complete transitive degree-9 normal-pair handoff. |
+| Relative ternary stability | The same primitive base and complete transitive degree-9 normal pairs; the B-envelope handles every imprimitive index without an additional degree-18 stability seam. |
+| c=1 / three-twentieths theorem | The same primitive slices, with tails beginning at 34 and 45; complete normal pairs in transitive degrees 6,12,18 (1,300 actions, 20,410 pairs) and the degree-9 equality list. No separate degree-54/162 transitive census or nonsoluble rank seam is required. |
 | Nonaffine primitive compression | Primitive degrees 5–29, retaining nonaffine actions. |
 | Small nonsoluble affine exception | Degrees 8,16,27. |
 
