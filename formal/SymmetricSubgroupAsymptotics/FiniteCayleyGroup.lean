@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.FiniteCayleyReflection
+import Mathlib.Tactic.DeriveFintype
 
 /-!
 # Executable finite row groups from reflected Cayley certificates

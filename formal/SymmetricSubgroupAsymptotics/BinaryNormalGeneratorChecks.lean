@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryNormalRegistry
+import SymmetricSubgroupAsymptotics.BinaryGeneratorWords
 
 /-! Generator checks for literal normal-state certificates. -/
 
@@ -44,26 +45,6 @@ theorem binaryNormal_of_generator_conjugates
     have hh := hinv i hx
     simpa [Subgroup.mem_comap, MulAut.conj_apply, mul_assoc] using hh
 
-
-/-- A source generator tuple is full when its faithful original image is
-exactly the original generating tuple. -/
-theorem binaryNormal_full_generators_of_equiv {H : Type*} [Group H]
-    (original : ι → H) (rows : ι → G)
-    (e : G ≃* Subgroup.closure (Set.range original))
-    (he : ∀ j, (e (rows j) : H)=original j) :
-    Subgroup.closure (Set.range rows)=⊤ := by
-  let f : G →* H := (Subgroup.closure (Set.range original)).subtype.comp e.toMonoidHom
-  have hf : Function.Injective f := Subtype.val_injective.comp e.injective
-  apply Subgroup.map_injective hf
-  rw [MonoidHom.map_closure]
-  have him : f '' Set.range rows=Set.range original := by
-    ext x
-    simp only [Set.mem_image,Set.mem_range,exists_exists_eq_and]
-    simpa only [show ∀ j, f (rows j)=original j from he]
-  rw [him]
-  change _=Subgroup.map ((Subgroup.closure (Set.range original)).subtype.comp e.toMonoidHom) ⊤
-  rw [← Subgroup.map_map,Subgroup.map_top_of_surjective _ e.surjective,
-    ← MonoidHom.range_eq_map, Subgroup.range_subtype]
 
 namespace EncodedCayleyCertificate
 

@@ -109,7 +109,7 @@ runtimes, not a kernel-checked proof.
 ```sh
 python3 computations/python/export_lean_carriers.py
 python3 computations/python/export_lean_carriers.py --check
-lake -d formal build SymmetricSubgroupAsymptotics.BinaryExceptionalCarriers
+python3 -B scripts/check_lean.py SymmetricSubgroupAsymptotics/BinaryExceptionalCarriers.lean --log-dir ../lean-check-logs
 ```
 
 The exporter uses the committed binary menu to regenerate the four exceptional
@@ -155,6 +155,49 @@ that action's children, not the whole degree-16 registry.
 Action certificates, exhaustive registry coverage, and normal-state
 acceptance are separate mathematical obligations. Generating a Cayley
 certificate for an action does not discharge the latter two.
+
+## Original Schreier-word action certificates
+
+```sh
+python3 -B computations/python/export_lean_schreier_actions.py --source b16_1086
+python3 -B scripts/check_lean.py SymmetricSubgroupAsymptotics/GeneratedSchreierActions/Source16T1086.lean --log-dir ../lean-check-logs
+```
+
+The exporter selects one original action and bounds its word search, number
+of assignments, and output size. Actual index-two subgroups are generated
+by two Schreier words per original generator. Literal relations, preserved
+point colourings, and two-way generator words certify every assignment.
+No source order or source element table is a proof premise. The fixtures
+`b2_1`, `b4_3`, and `b16_1086` have passed kernel checking; complete global
+degree-sixteen coverage still requires all original sources and their common
+registry bindings.
+
+Lean checks use the [bounded runner](../scripts/check_lean.py), with already
+checked imports in dependency order. Generated modules are ignored build
+outputs; logs and receipts belong outside this repository. The legacy
+parallel action-table and full normal-lift builds are disabled.
+
+## Original degree-eight normal-state certificates
+
+```sh
+python3 computations/python/export_lean_normal_registry.py --check
+python3 computations/python/export_lean_pair_frames.py --check
+python3 computations/python/export_lean_pair_local.py --check
+python3 computations/python/export_lean_pair_installed.py --check
+python3 computations/python/export_lean_normal_characters.py --check
+python3 computations/python/export_lean_finite_entry8.py --check
+python3 -B scripts/check_lean.py SymmetricSubgroupAsymptotics/BinaryFiniteEntryCoverage8.lean --log-dir ../lean-check-logs
+```
+
+These standard-library exporters reproduce all 203 original nonbase normal
+states in degree eight and their complete finite branches: 190 physical
+pair certificates, 10 central-involution character criteria and three
+transport charts. The kernel checks both exhaustion and each original
+binding. The pair certificate retains the literal central cut, complete
+fixed preimage, faithful quotient cover and physical width. The character
+criterion checks the actual quotient's central involutions and exact integer
+gap; the analytic character estimate is a separate theorem. The finite
+coverage theorem keeps the eight base action indices explicit.
 
 ## Zero-ternary induced frames
 

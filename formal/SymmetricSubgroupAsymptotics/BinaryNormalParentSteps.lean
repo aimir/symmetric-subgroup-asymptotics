@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryNormalGeneratorChecks
+import SymmetricSubgroupAsymptotics.BinaryGeneratorWords
 
 /-!
 # Quotient-sized normal registry installation
@@ -14,30 +15,6 @@ noncomputable section
 namespace SymmetricSubgroupAsymptotics
 
 variable {G ι κ : Type*} [Group G]
-
-/-- Positive words suffice in finite groups; every checked word is an
-actual product in the original source, even for nonsplit extensions. -/
-structure BinaryNormalGeneratorWords (source : ι → G) (target : κ → G) where
-  words : ι → List κ
-  equations : ∀ i, ((words i).map target).prod=source i
-
-namespace BinaryNormalGeneratorWords
-variable {source : ι → G} {target : κ → G}
-    (W : BinaryNormalGeneratorWords source target)
-
-include W
-
-theorem closure_le : Subgroup.closure (Set.range source) ≤
-    Subgroup.closure (Set.range target) := by
-  apply (Subgroup.closure_le _).mpr
-  rintro _ ⟨i,rfl⟩
-  rw [← W.equations i]
-  apply Subgroup.list_prod_mem
-  intro g hg
-  obtain ⟨j,_,rfl⟩ := List.mem_map.mp hg
-  exact Subgroup.subset_closure ⟨j,rfl⟩
-
-end BinaryNormalGeneratorWords
 
 namespace BinaryNormalState
 variable [Finite G] {generators : ι → G}
