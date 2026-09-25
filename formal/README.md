@@ -123,6 +123,15 @@ definition obligations as conclusions, not hypotheses.
 | [TerminalGraphClassification](SymmetricSubgroupAsymptotics/TerminalGraphClassification.lean), [TerminalRecords](SymmetricSubgroupAsymptotics/TerminalRecords.lean), [TerminalRecordAssembly](SymmetricSubgroupAsymptotics/TerminalRecordAssembly.lean) | All exterior-full quotient images, reversible ordered records, faithful original group maps, and exact original divisor for any actual-image weight. |
 | [CocycleLifts](SymmetricSubgroupAsymptotics/CocycleLifts.lean), [JointSourceGraphs](SymmetricSubgroupAsymptotics/JointSourceGraphs.lean) | Literal fixed-source lift–cocycle fibres and the full marked graph moment in degree b+q(s+2c), allowing repeated maps and proper joint images. |
 | [SharedC3](SymmetricSubgroupAsymptotics/SharedC3.lean), [SharedC3LinearCounts](SymmetricSubgroupAsymptotics/SharedC3LinearCounts.lean), [SharedC3Counts](SymmetricSubgroupAsymptotics/SharedC3Counts.lean) | Actual scalar semidirect-product map classification, exact onto linear-map counts, and shared-C3 single/double-mark audit formulae with all coboundaries retained. |
+| [TerminalGaussian](SymmetricSubgroupAsymptotics/TerminalGaussian.lean), [TerminalEstimates](SymmetricSubgroupAsymptotics/TerminalEstimates.lean) | The complete terminal double sum, its endpoint-sensitive ratio, convergent relation series, and zero-inflation polynomial bound. |
+| [TerminalIncidenceCohomology](SymmetricSubgroupAsymptotics/TerminalIncidenceCohomology.lean), [TerminalIncidence](SymmetricSubgroupAsymptotics/TerminalIncidence.lean), [TerminalIncidenceRecords](SymmetricSubgroupAsymptotics/TerminalIncidenceRecords.lean) | Actual H² diagonal invariants, vertical and mixed splitting tests, and ordered-record incidence with the actual retained inflation-kernel factor. |
+| [TerminalIncidencePullback](SymmetricSubgroupAsymptotics/TerminalIncidencePullback.lean), [TerminalIncidenceCritical](SymmetricSubgroupAsymptotics/TerminalIncidenceCritical.lean) | The literal critical-product section and multiplication defect connect the original pullback-annihilator predicate to the proved incidence estimate with local constant 72. |
+| [CocycleCardinality](SymmetricSubgroupAsymptotics/CocycleCardinality.lean), [InflationRestriction](SymmetricSubgroupAsymptotics/InflationRestriction.lean), [Non2LiftBound](SymmetricSubgroupAsymptotics/Non2LiftBound.lean) | Exact B1/H1 and restriction-image factors, and numerical bounds for arbitrary survival-restricted lifts in the original possibly nonsplit extension. |
+| [Non2SylowReduction](SymmetricSubgroupAsymptotics/Non2SylowReduction.lean), [Non2SharedC3Audit](SymmetricSubgroupAsymptotics/Non2SharedC3Audit.lean) | The original Sylow normalizer maps onto the quotient; restriction preserves its actual equivariance, with exact shared-C3 cohomological single/double-mark audits. |
+| [FusionNumerics](SymmetricSubgroupAsymptotics/FusionNumerics.lean), [FusionPointingRatio](SymmetricSubgroupAsymptotics/FusionPointingRatio.lean), [FusionCold](SymmetricSubgroupAsymptotics/FusionCold.lean) | Complete hot-moment inequality and rounded square, exact both-parity pointing ratio, original cold divisors, and exponential finite-menu cold sums. |
+| [FusionHotBenchmark](SymmetricSubgroupAsymptotics/FusionHotBenchmark.lean), [FusionHot](SymmetricSubgroupAsymptotics/FusionHot.lean), [FusionZeroWidth](SymmetricSubgroupAsymptotics/FusionZeroWidth.lean) | Elementary all-pairs benchmark normalization, quadratic hot-kernel decay relative to an explicit coarse counting input, and the zero-width moment case. |
+| [BinaryTransport](SymmetricSubgroupAsymptotics/BinaryTransport.lean), [BinaryTransportFibreProducts](SymmetricSubgroupAsymptotics/BinaryTransportFibreProducts.lean) | Reversible simultaneous transport of actual subgroups through arbitrary proper subdirect carriers, literal axes, full projections, and unchanged original fixed weights. |
+| [BinaryMixtureCentralComparison](SymmetricSubgroupAsymptotics/BinaryMixtureCentralComparison.lean), [BinaryMixtureCyclicFour](SymmetricSubgroupAsymptotics/BinaryMixtureCyclicFour.lean) | Actual central-extension-to-split comparison preserving every exterior image and its weights, instantiated on C4 powers over arbitrary finite nonabelian exteriors. |
 
 The Gaussian-sum bounds imply
 
@@ -296,8 +305,13 @@ The annihilator is the literal image of scalar character restriction, and
 class map. The source Y may be nonabelian. Complete-exterior contraction,
 all quotient graphs and the original |GL(u,2)| 2^(u d₂(T)) record divisor
 are also proved, with arbitrary conditions and weights on the actual image.
-The numerical terminal bound and its installation on the full critical
-attachment count remain further obligations.
+The terminal numerical double sum is now bounded, including its large-d
+endpoint. Actual H² diagonal and commuting-pair tests give an allowable
+function space of dimension at most the retained inflation-kernel dimension
+tau. The ordered-record incidence bound consequently retains the factor
+`(72 * 2^tau)^ell`. Installing that bound on the complete physical attachment
+count, including the global original-record divisor and weighted assembly,
+remains a further obligation.
 
 For a faithful degree-s cover of B, `JointSourceGraphs` proves
 
@@ -308,9 +322,30 @@ Every map in a tuple has the same actual source J. The lift correspondence
 retains literal cocycles and arbitrary survival predicates. The shared-C3
 fixture proves the actual counts 4^(m(r+1)) and
 4^m product_(i<m)(4^r-4^i), including degenerate ranks, and a genuine
-same-source double-mark count. These results supply algebraic interfaces;
-the numerical cocycle bound, original-weight fusion and surviving c=1
-owner application still require their own proofs.
+same-source double-mark count. The new cohomological audit independently
+recovers `|H1|=1`, `|B1|=4^m`, and actual restriction-image size `4^(mr)`.
+Inflation-restriction now proves the exact restriction-image factor and
+the bound `|A| |H1(B,A)| |Hom(ker beta,A)^J|` for the original lift fibre,
+including arbitrary survival predicates and empty fibres. Actual Sylow
+restriction retains the normalizer action; the finite-length fractional
+Schur inequality and permutation quotient-rank bound remain needed for
+the advertised numerical exponent.
+
+The numerical fusion kernels retain the original factorials and action
+divisor. Fixed-width cold kernels are exponentially small in the complete
+complement degree. Positive-width hot kernels are quadratically small,
+relative only to the explicit coarse counting input `1/16 + o(1)`.
+Zero-width moment bounds force every retained weight to be at most one.
+These numerical results do not yet install physical orbit pointing,
+capacity certificates, or the surviving c=1 owner application.
+
+Simultaneous binary transport now reconstructs the literal original subgroup
+from the full replacement relation, including nonabelian proper subdirect
+carriers. The central binary extension comparison is proved for every exact
+exterior image and its nonnegative weights, and is instantiated for C4
+powers. Complete finite-menu coverage, the joint numerical transition
+estimates, labelled decoration bounds and the binary-error recurrence
+remain separate obligations.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.

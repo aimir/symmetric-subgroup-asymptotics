@@ -157,12 +157,15 @@ and hence
     N_D(T)/X_r(d)<=2^{O(log(r+2))}
        [1+Σ_{ell>=1}2^{-ell(delta+d/2-tau-log₂72)-3ell²/4}]. (2.5)
 
-The algebra behind this bound has four separate ingredients:
+The algebra behind this bound has the following ingredients:
 
-* Künneth splits a scalar quadratic lifting condition into its restriction
-  on the binary intersection, its cross polarization and its pullback in
-  the actual inflation kernel. The last condition cannot be replaced by
-  vanishing of the quadratic form itself.
+* Evaluation of the actual scalar coboundary on vertical involutions,
+  commuting vertical/exterior pairs, and the exterior subgroup gives the
+  restriction, cross-polarization and actual inflation-kernel tests directly.
+  The linear diagonal invariant c(a,a)-c(0,0) descends to actual H². Its
+  image on the retained kernel has dimension at most tau. The necessary
+  tests put the full quadratic outcome in the exterior pullback of this
+  allowed space; they do not force the quadratic form itself to vanish.
 * Row reduction of an ell-dimensional annihilator fixes pivot critical
   factors. A fixed quadratic form has at most 72 surjective realizations
   in either nonsingular plus-type target of dimension two or four; each
@@ -183,7 +186,7 @@ The strengthened d₂(T)<=b/2-1 in even degree with a noncritical orbit
 requires the corresponding equality classification.
 
 Standard algebra needed here is the explicit scalar defect/coboundary test,
-coefficient-quotient retractions, five-term exactness, degree-two Künneth, elementary
+coefficient-quotient retractions, five-term exactness, elementary
 binary H², Burnside's basis theorem and Gaussian formulas. The fixed
 critical group and orthogonal calculations are finite algebraic inputs.
 Specialized sparse-carrier bounds are not prerequisites for

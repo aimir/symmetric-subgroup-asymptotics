@@ -109,6 +109,9 @@ map is fixed. This counts actual maps, so there is no additional
 division by $|\Aut(U/N)|$. For an entry put
 $e=g/16$, $a_0=v/8+e$, and call its complete source hot when
 $\Phi(J)>2^{a_0b}$.
+If $v=0$, the moment bound has the same finite right-hand side $s_b$
+for every $q$. Hence $\Phi(J)\leq1$ for every $J$, and the strict hot
+set is empty. We may therefore assume $v>0$ in the hot estimate below.
 
 For a hot source and any integer $q\geq1$,
 \[
@@ -122,9 +125,17 @@ Choose $q=\max(1,\lceil8eb/v^2\rceil)$. The exact identity
  &\hspace{8mm}=-\frac{4e^2b^2}{v^2}-eb-\frac{w^2}{16}
        +\frac{v^2}{16}\left(q-\frac{8eb}{v^2}\right)^2
 \end{align}
-has a strictly negative quadratic term. Equation~\eqref{eq:coarse}
-and the coefficient bounds in Section~\ref{sec:critical} contribute
-only $O(n^{3/2}+n\log(n+2))$ to the normalized logarithm.
+has a strictly negative quadratic term. The all-pairs monomial gives
+$c_R\geq1/(2^RR!)$. Thus, writing $R=\lfloor n/2\rfloor$ and
+using $b\geq w$ so that $R\leq b$,
+\[
+ \frac{n!}{b!L_n}
+ \leq\phi^{-1}2^{-R^2/4+R+1/4}
+ \leq\phi^{-1}2^{-n^2/16+5n/8+1/4}.
+\]
+Together with \eqref{eq:coarse}, this contributes only
+$O(n^{3/2}+n)$ to the normalized logarithm. No saddle estimate is
+needed for this normalization.
 As all entry parameters are fixed, the complete finite hot union is
 $O(2^{-a n^2})$.
 
@@ -134,12 +145,14 @@ the sum over entries of
 \begin{equation}\label{eq:cold-kernel}
  \Delta(n,b)\frac{D}{a(U)}2^{(w/8-g/16)b},\qquad b=n-w.
 \end{equation}
-For fixed even $w$, \eqref{eq:coefficient-recurrence} and the Gaussian
-bounds give
+For $w=2h$, \eqref{eq:coefficient-recurrence} and the Gaussian
+bounds give the explicit estimate
 \[
- \log\Delta(n,n-w)=-wb/8-w^2/16+O_w(\log(n+2)).
+ \Delta(n,b)\leq
+ \phi^{-2}2^{(h+1)/4}(n+1)^{h+1}2^{-hb/4-h^2/4}.
 \]
-The parity correction is $O_w(1)$ and is included here. Each summand
+The guarded odd coefficient obeys the same backward-shift bound,
+including rank zero, so the estimate holds in both parities. Each summand
 in \eqref{eq:cold-kernel} is therefore
 $2^{-gb/16+O_w(\log(n+2))}$. The finite sum proves the row estimate.
 

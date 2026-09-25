@@ -87,4 +87,3 @@ theorem carrierFibreProduct_card [Finite A] [Finite B] (f : A →* Q) (g : B →
   rw [Nat.card_congr (carrierFibreProductEquiv f g hg),Nat.card_prod]
 
 end SymmetricSubgroupAsymptotics
-
