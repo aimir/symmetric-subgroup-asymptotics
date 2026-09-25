@@ -154,17 +154,29 @@ holds with $s_n$ in place of $L_n$, and
 \eqref{eq:saddle-formula} holds with $s_n$ on the left.
 \end{theorem}
 \begin{proof}
-Put $x=(96R)^{1/4}$. Solving \eqref{eq:saddle} successively in powers
-of $x^{-1}$ gives
+Put $x=(96R)^{1/4}$ and $v=x(x-\rho)$. Only the first displacement
+of the saddle is needed:
 \begin{equation}\label{eq:rho-expansion}
- \rho=x-8x^{-1}-12x^{-2}+32x^{-3}+0x^{-4}
-                    +184x^{-5}+O(x^{-6}).
+ \rho=x-8x^{-1}+O(x^{-2}),\qquad v=8+O(x^{-1}).
 \end{equation}
-This is a controlled expansion: after substitution, the residual in
-the saddle equation is $O(x^{-3})$, and its derivative near $x$ is
-of order $x^3$. The mean value theorem gives the indicated root error.
-Equivalently the analytic implicit-function theorem applies to
-$\rho/x$ as a function of $1/x$ near zero.
+Indeed, the equation is $\rho^4+32\rho^2+48\rho=x^4$.
+For large $x$ its positive root lies in $[x/2,x]$; substituting
+$x-8/x$ leaves residual $O(x)$, and the derivative throughout the
+intervening interval is of order $x^3$. The mean value theorem proves
+\eqref{eq:rho-expansion}.
+
+Expand $\log_e\rho=\log_ex+\log_e(1-v/x^2)$ to quadratic order.
+Since $v$ is bounded, the cubic remainder, multiplied by $R=x^4/96$,
+is $O(x^{-2})$. Direct substitution gives
+\begin{align*}
+ P(\rho)-R\log_e\rho
+ &=\frac R4-R\log_ex+\frac{x^2}{6}+\frac x2
+       +\frac{v^2}{48}-\frac v3-\frac{v}{2x}+O(x^{-2})\\
+ &=\frac R4-R\log_ex+\frac{x^2}{6}+\frac x2
+       -\frac43-\frac4x+O(x^{-2}).
+\end{align*}
+The cancellation is explicit: $v^2/48-v/3=-4/3+(v-8)^2/48$.
+Also $b(\rho)/(4R)=1+O(x^{-2})$.
 
 Define
 \[
@@ -172,28 +184,36 @@ Define
  -\frac R4\log_eR+\frac{1-\log_e96}{4}R
  +\frac{2\sqrt6}{3}\sqrt R+\frac x2-\frac43\right).
 \]
-Taylor expansion using \eqref{eq:rho-expansion} in
-$P(\rho)-R\log_e\rho-\frac12\log_e(2\pi b(\rho))$ yields
+The preceding estimates and the saddle formula yield
 \begin{equation}\label{eq:log-coefficient-expansion}
- \log_e\frac{c_R}{T_R}=-\frac4x+\frac{109}{9x^2}+O(x^{-3}).
+ \log_e\frac{c_R}{T_R}=-\frac4x+O(x^{-2}).
 \end{equation}
-All Taylor arguments tend to zero; their next derivatives are bounded
-on a fixed neighborhood. The saddle error is $O(R^{-1})=O(x^{-4})$,
-so is smaller than the remainder displayed here. For the odd amplitude,
+The relative saddle error is $O(R^{-1})=O(x^{-4})$ and is absorbed
+in this remainder. For the odd amplitude, the same first displacement gives
 \begin{equation}\label{eq:odd-amplitude-expansion}
- \log_e\frac{1+\rho/6}{x/6}=\frac6x-\frac{26}{x^2}+O(x^{-3}).
+ \log_e\frac{1+\rho/6}{x/6}=\frac6x+O(x^{-2}).
 \end{equation}
-One can check the first terms without the full root expansion:
-\eqref{eq:saddle} also gives $P(\rho)=R/4+\rho^2/12+3\rho/8$,
-which removes the quartic term before expanding.
 
-Now apply Stirling's formula to $n!$, Lemma~\ref{lem:Gaussian-asymptotic}
-to $G_R$, and \eqref{eq:log-coefficient-expansion} to $c_R$, with
-\eqref{eq:odd-amplitude-expansion} when $\eps=1$.
-Substitute $R=(n-\eps)/2$. The quadratic Gaussian factor contributes
-the four-periodic constants in \eqref{eq:four-constants}; the odd
-amplitude and the shift from $R$ to $n/2$ give the power
-$n^{3\eps/8}$. Collecting the order-$x^{-1}$ terms gives
+To make the parity conversion explicit, set $y=(48n)^{1/4}$ and
+\begin{align*}
+ \Lambda_n={}&(n+\tfrac12)\log_en-n+\tfrac12\log_e(2\pi)
+   +\lfloor R^2/4\rfloor\log_e2+\log_e\kappa_{R\bmod2}\\
+ &+\log_eT_R+\eps\log_e(x/6)+(6\eps-4)/x.
+\end{align*}
+Stirling's formula, Lemma~\ref{lem:Gaussian-asymptotic} and the two
+expansions above give $\log_e L_n=\Lambda_n+O(n^{-1/2})$.
+Using $R=(n-\eps)/2$ and the exact constants in
+\eqref{eq:four-constants}, elementary algebra gives
+\begin{align*}
+ \Lambda_n-\log_eM_n-\frac{6\eps-4}{y}
+ ={}&\frac{n-3\eps+4}{8}\log_e\frac{n}{n-\eps}-\frac\eps8\\
+ &+\frac{x^2-y^2}{6}+\frac{x-y}{2}
+       +(6\eps-4)\left(\frac1x-\frac1y\right).
+\end{align*}
+In even degree this is identically zero. In odd degree the first line
+is $O(n^{-1})$, while $y^4-x^4=48$ bounds the remaining three
+differences by $O(n^{-1/2})$, $O(n^{-3/4})$ and $O(n^{-5/4})$,
+respectively. Thus
 \[
  \log_e(L_n/M_n)=(6\eps-4)(48n)^{-1/4}+O(n^{-1/2}).
 \]

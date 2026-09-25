@@ -99,9 +99,18 @@ Replacing rho prematurely by a truncated series can introduce a larger error.
 
 ## ANA-EXPLICIT: the nonzero first correction
 
-Put x=(96R)^(1/4). Substitution into the saddle equation gives
+Put x=(96R)^(1/4) and v=x(x-rho). Substitution and the mean value theorem give
 
-    rho=x-8/x-12/x^2+32/x^3+184/x^5+O(x^(-6)).
+    rho=x-8/x+O(x^(-2)),    v=8+O(1/x).
+
+This first displacement suffices. Expanding log(1-v/x^2) through its
+quadratic term gives
+
+    P(rho)-R log rho
+      =R/4-R log x+x^2/6+x/2+v^2/48-v/3-v/(2x)+O(x^(-2)).
+
+The identity v^2/48-v/3=-4/3+(v-8)^2/48 exposes the cancellation at the
+saddle and gives the correction -4/x. Also b(rho)/(4R)=1+O(x^(-2)).
 
 Define
 
@@ -110,13 +119,27 @@ Define
 
 The controlled expansions are
 
-    log(c_R/T_R)=-4/x+109/(9x^2)+O(x^(-3)),
-    log((1+rho/6)/(x/6))=6/x-26/x^2+O(x^(-3)).
+    log(c_R/T_R)=-4/x+O(x^(-2)),
+    log((1+rho/6)/(x/6))=6/x+O(x^(-2)).
 
-The O(R^(-1)) local saddle error is O(x^(-4)), so it does not affect these
-coefficients. Combining them yields the relative first correction
-(-4+6epsilon)/x with remainder O(x^(-2)). Stirling's formula and ANA-GAUSS,
-with R=(n-epsilon)/2, give
+The O(R^(-1)) local saddle error is O(x^(-4)), so it is absorbed in this
+remainder. Combining them yields the first correction (-4+6epsilon)/x.
+For the degree conversion, let y=(48n)^(1/4) and define the logarithmic model
+
+    Lambda_n=(n+1/2)log n-n+log(2pi)/2
+             +floor(R^2/4)log 2+log kappa_(R mod 2)
+             +log T_R+epsilon log(x/6)+(6epsilon-4)/x.
+
+Stirling and ANA-GAUSS give log L_n=Lambda_n+O(n^(-1/2)). The exact
+four-residue normalization yields
+
+    Lambda_n-log M_n-(6epsilon-4)/y
+      =((n-3epsilon+4)/8)log(n/(n-epsilon))-epsilon/8
+        +(x^2-y^2)/6+(x-y)/2+(6epsilon-4)(1/x-1/y).
+
+The right-hand side vanishes exactly in even degree. In odd degree the
+logarithmic expression including -epsilon/8 is O(1/n), while y^4-x^4=48 bounds the other terms by
+O(n^(-1/2)), O(n^(-3/4)) and O(n^(-5/4)), respectively. Exponentiating gives
 
     L_n/M_n=1+(6epsilon-4)/(48n)^(1/4)+O(n^(-1/2)).
 
