@@ -60,6 +60,27 @@ def array(xs):
     return '#[' + ','.join(map(str, xs)) + ']'
 
 
+def node_id(name):
+    """The numeric suffix of an original menu node identifier."""
+    return int(name.split('_')[1])
+
+
+def permutation16(name, g):
+    """The original public degree-16 data declaration, byte for byte.
+
+    This pure tuple emitter is shared by the bounded data chunks and the
+    legacy producer. It performs no group enumeration or filesystem access.
+    """
+    inv = tuple(g.index(i) for i in range(len(g)))
+    return f'''def {name} : Equiv.Perm (Fin 16) where
+  toFun x := ({array(g)} : Array (Fin 16))[x.val]!
+  invFun x := ({array(inv)} : Array (Fin 16))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+'''
+
+
 def table(gens, degree):
     identity = tuple(range(degree))
     rows = [identity]

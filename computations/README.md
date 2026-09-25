@@ -177,6 +177,21 @@ checked imports in dependency order. Generated modules are ignored build
 outputs; logs and receipts belong outside this repository. The legacy
 parallel action-table and full normal-lift builds are disabled.
 
+The common degree-sixteen generator data can be rebuilt in bounded pieces:
+
+```sh
+python3 -B computations/python/export_lean_action16_data_chunks.py --chunk 0
+python3 -B scripts/check_lean.py SymmetricSubgroupAsymptotics/GeneratedAction16/DataChunk000.lean --log-dir ../lean-check-logs
+```
+
+Each selected chunk contains at most32 original generator tuples. Check each
+chunk serially. The explicit `--assemble --receipt-dir ../lean-check-logs`
+mode replaces `Data.lean` only after every chunk matches its generator and
+has a successful current check receipt. Then check `Data.lean` itself with
+the same bounded runner. The common family indices, generator names and
+action expression remain unchanged. These are data definitions, not an
+action-coverage proof.
+
 ## Original degree-eight normal-state certificates
 
 ```sh
