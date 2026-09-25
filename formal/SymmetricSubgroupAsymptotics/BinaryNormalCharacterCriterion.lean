@@ -1,5 +1,7 @@
 import SymmetricSubgroupAsymptotics.BinaryNormalSparseRegistry
 import Mathlib.Algebra.Module.ZMod
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.FieldTheory.Finiteness
 import Mathlib.LinearAlgebra.Dimension.Finite
 
 /-! The literal central involution subgroup used by the binary character
