@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryNormalParentSteps
-import SymmetricSubgroupAsymptotics.BinaryPairFixedCertificates
+import Mathlib.GroupTheory.Subgroup.Centralizer
 
 /-! Finite row checks for literal pair cuts and their complete fixed
 preimages. Kernels, cuts and source generators are actual group objects. -/

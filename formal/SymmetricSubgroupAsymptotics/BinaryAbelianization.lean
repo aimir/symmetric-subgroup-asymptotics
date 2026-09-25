@@ -1,5 +1,4 @@
-import SymmetricSubgroupAsymptotics.ComplementCount
-import Mathlib.Algebra.Module.ZMod
+import SymmetricSubgroupAsymptotics.CharacterDualityImports
 
 /-!
 # The universal elementary binary quotient through its characters

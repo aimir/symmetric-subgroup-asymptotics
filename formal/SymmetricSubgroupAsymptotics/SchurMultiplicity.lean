@@ -1,5 +1,7 @@
 import SymmetricSubgroupAsymptotics.SchurCapacity
 import Mathlib.LinearAlgebra.Dimension.Free
+import Mathlib.RingTheory.SimpleModule.Isotypic
+import Mathlib.Tactic.FieldSimp
 
 /-!
 # Actual socle multiplicities over Schur division rings

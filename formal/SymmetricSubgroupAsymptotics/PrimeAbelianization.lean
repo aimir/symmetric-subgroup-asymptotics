@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.BinaryAbelianization
+import SymmetricSubgroupAsymptotics.CharacterDualityImports
 
 /-!
 # The actual maximal elementary prime quotient

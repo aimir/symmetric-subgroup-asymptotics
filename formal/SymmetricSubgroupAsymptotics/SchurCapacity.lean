@@ -1,4 +1,7 @@
 import SymmetricSubgroupAsymptotics.SchurFiniteLength
+import Mathlib.Data.Real.Archimedean
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Push
 
 /-!
 # The actual simple-socle Hom capacity

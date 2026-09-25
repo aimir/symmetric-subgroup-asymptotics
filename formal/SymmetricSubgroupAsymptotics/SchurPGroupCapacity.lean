@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.SchurRepresentation
-import Mathlib.RepresentationTheory.Irreducible
+import Mathlib.Algebra.Field.ZMod
 import Mathlib.RepresentationTheory.Invariants
 import Mathlib.GroupTheory.PGroup
 

@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.SchurRepresentation
+import SymmetricSubgroupAsymptotics.Non2SylowReduction
 import SymmetricSubgroupAsymptotics.PrimeActionQuotient
 import SymmetricSubgroupAsymptotics.PrimeFrattini
 

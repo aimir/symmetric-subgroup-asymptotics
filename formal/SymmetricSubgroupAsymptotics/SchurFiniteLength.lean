@@ -1,6 +1,7 @@
-import SymmetricSubgroupAsymptotics.Non2SylowReduction
+import Mathlib.Data.Real.Basic
+import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
 import Mathlib.RingTheory.FiniteLength
-import Mathlib.RingTheory.SimpleModule.Isotypic
 
 /-!
 # Finite-length Hom estimates over the original coefficient field

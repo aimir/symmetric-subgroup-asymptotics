@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryCoordinateRegistry
-import SymmetricSubgroupAsymptotics.BinaryPairFixedCertificates
+import SymmetricSubgroupAsymptotics.RepresentationGeneratorInvariants
 
 /-! Exact central cuts and full fixed preimages of the retained coordinate
 module. Original generator tests imply the complete action statements;

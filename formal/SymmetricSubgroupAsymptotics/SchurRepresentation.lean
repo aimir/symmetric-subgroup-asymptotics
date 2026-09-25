@@ -1,5 +1,8 @@
 import SymmetricSubgroupAsymptotics.SchurMultiplicity
 import SymmetricSubgroupAsymptotics.SchurRestriction
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.FieldTheory.Finiteness
+import Mathlib.RepresentationTheory.Intertwining
 
 /-!
 # Fractional Schur bounds for original group actions
