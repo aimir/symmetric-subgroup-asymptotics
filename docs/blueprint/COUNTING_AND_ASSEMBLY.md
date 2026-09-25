@@ -78,9 +78,13 @@ c=codim_K span(q(U)). The exact number of lifts over U is
 
     sum_(j=0)^c GaussianBinomial(c,j;2) * 2^(k*j).
 
-For each possible intersection W with K, the relevant quotient is elementary
-abelian and complements form Hom(U,K/W). The square condition also contains
-the commutator condition; replacing it by the polar form alone is invalid.
+For each possible intersection W with K, the admissibility condition is
+span(q(U))<=W. Every element of the resulting quotient has square one, so
+the inverse-of-a-product identity forces commutativity. The quotient is
+therefore elementary abelian, and its complements form a torsor under
+Hom(U,K/W). This argument works for any finite central extension with binary
+kernel and quotient. The square condition also contains the commutator
+condition; replacing it by the polar form alone is invalid.
 
 The needed quadratic realization lemma says that, for a prescribed quadratic
 form on a k-space and a surjection onto a nonsingular plus-type space of

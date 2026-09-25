@@ -92,6 +92,11 @@ definition obligations as conclusions, not hypotheses.
 | [BinaryConstruction](SymmetricSubgroupAsymptotics/BinaryConstruction.lean) | An explicit injective map from binary subspaces to labelled pair-action subgroups gives `G_(n/2) ≤ subgroupCount n` in both parities. |
 | [CanonicalLifts](SymmetricSubgroupAsymptotics/CanonicalLifts.lean) | Exact subgroup/subspace correspondence through a surjective binary quotient, Gaussian cardinality, simultaneous full-projection counting and faithful permutation transport. |
 | [CriticalProfiles](SymmetricSubgroupAsymptotics/CriticalProfiles.lean) | Complete four-colour profile enumeration and exact weighted coefficient identities, retaining the separate V4 and D8 weights and both parity decorations. |
+| [FullProjection](SymmetricSubgroupAsymptotics/FullProjection.lean) | Actual hyperplane counts, the finite deficit at most `15r G_(r-1)`, and profile-uniform relative error `O(r 2^(-r/2))`, including canonical subgroup projections. |
+| [LabelledOrbitProfiles](SymmetricSubgroupAsymptotics/LabelledOrbitProfiles.lean) | Concrete labelled block atlases, exact original-normalizer and occurrence-factorial weights, and recovery of the atlas from any full subgroup on separated transitive action types. |
+| [ComplementCount](SymmetricSubgroupAsymptotics/ComplementCount.lean) | Actual complement/retraction equivalence, exact finite complement count, and weighted retained-annihilator duality with Gaussian expansion. |
+| [SquareLiftFibres](SymmetricSubgroupAsymptotics/SquareLiftFibres.lean) | Exact square admissibility, actual lift/complement equivalence and fixed-intersection count, arbitrary-image restriction, and full projection under an explicit Frattini-kernel hypothesis. |
+| [AllLifts](SymmetricSubgroupAsymptotics/AllLifts.lean) | Exact all-lifts annihilator and Gaussian-polynomial identities for every image in a finite central binary extension, retaining the original kernel and square coordinates. |
 
 The Gaussian-sum bounds imply
 
@@ -158,11 +163,37 @@ canonical lift contains the entire kernel, so a commuting quotient square
 with the stated kernel coverage proves fullness on an actual factor directly.
 Faithful permutation transport preserves distinct subgroups.
 
-These are reusable exact counting components. The four concrete action
-instances, their normalizer orders, the global labelled-orbit correspondence,
-and the noncanonical-lift identity and error bounds are further obligations
-for the complete critical-family count. Profile weights are not asserted to
-be actual subgroup cardinalities by definition.
+`FullProjection` proves that at most `r` surjective coordinates of dimensions
+at most four exclude at most `15r G_(r-1)` subspaces. Its relative-error
+constant and threshold are chosen before all coordinate profiles; the rate is
+`O(r 2^(-r/2))`. The same bounds count actual canonical subgroup projections.
+
+`LabelledOrbitProfiles` constructs actual families of block charts. Their
+cardinality is exactly `n! / product(a(U)^m(U) m(U)!)`, where `a(U)` is the
+normalizer in the original permutation group. This is also proved as a
+rational identity. Transitivity and pairwise distinction of permutation-action
+types let a full subgroup recover its orbit blocks, projected actions, and
+unique atlas within the specified profile. Equal-size actions remain separate.
+
+For a finite central extension with binary kernel `K` and quotient `V`,
+`AllLifts` proves, for every `U <= V`,
+
+    #{H : image(H)=U} = sum_(B <= Q(U)^perp) 2^(dim(U)*dim(B))
+                     = sum_(j=0)^dim(Q(U)^perp) [dim(Q(U)^perp) choose j]_2
+                         * 2^(dim(U)*j).
+
+Here `Q(U)` is the span of the actual squares above `U`, expressed in the
+supplied kernel chart. Restriction preserves those original coordinates
+pointwise. The proof partitions literal subgroups by `H intersect K`, proves
+the square admissibility condition, identifies each fibre with actual linear
+complements, and only then reindexes by annihilator duality. The square
+condition cannot be replaced by the commutator condition alone.
+
+These are generic counting theorems with explicit action and extension data.
+The four concrete actions, their kernel/normalizer/Frattini facts, assembly on
+a common labelled point set across profiles, and the exceptional-lift error
+bounds remain obligations for the complete critical-family count. Profile
+weights are not asserted to be subgroup cardinalities by definition.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
