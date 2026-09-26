@@ -414,6 +414,97 @@ This proof uses neither a one-dimensional parameter space nor an equality
 between $H$ and the full relative radical of $N$.
 \end{proof}
 
+\begin{lemma}[The remaining original normal branches]
+\label{lem:carrier-normal-branches}
+For each of the five degree-sixteen masters put $D=G'$,
+$R=D^2[D,G]$, $d=\log|D|$, $s=\log|G/D|$ and $e=d_G(D)$.
+Their parameters are
+\[
+\begin{array}{c|rrrr}
+G&d&s&e&\log|R|\\\hline
+16T1082,\ 16T1083,\ 16T1084&4&6&3&1\\
+16T1332&6&5&4&2\\
+16T1547&6&6&3&3.
+\end{array}
+\]
+If $D\leq N$, with $w=\dim(N/D)$, then $0\leq w\leq s$ and
+the six invariants are bounded coordinatewise by
+\[
+ (\max(e,w),d+w,e,e,s-w,0).
+\]
+Here the order, the maximum $m=e$, and both quotient slopes are exact.
+For $R<N<D$ the exhaustive exact alternatives are
+\[
+\begin{array}{c|l}
+G&(k,n,m,a_2,c,g)\\\hline
+16T1082,\ 16T1083,\ 16T1084
+ &(1,2,1,1,2,2),\ (2,3,2,1,3,1)\\
+16T1547 &(1,4,2,2,2,2),\ (2,5,2,2,3,1)\\
+16T1332 &(t,2+t,t,1,4,4-t),\quad t\in\{1,2,3\}.
+\end{array}
+\]
+Inside $R$, the first three masters have the two exact rows
+$(0,0,0,0,1,4)$ and $(1,1,1,0,3,3)$.
+For $16T1332$ there is a central subgroup $Z$ of order two, and every
+original normal inside $R$ is $1,Z$ or $R$, with respective rows
+\[
+ (0,0,0,0,1,6),\qquad(1,1,1,0,1,5),\qquad(1,2,1,1,4,4).
+\]
+Together with the four small-radical rows of $16T1547$ and the crossing
+results above, these alternatives cover every original normal subgroup.
+\end{lemma}
+\begin{proof}
+For $D\leq N$, the image dimension gives $|N|=2^{d+w}$ and the
+abelian quotient has order $2^{s-w}$. The original derived-normal
+maximum is $e$: its upper bound follows from the checked original
+centralizer ranks, and $D$ itself attains the lower bound. The full-form
+head estimate gives $d_G(N)\leq\max(e,w)$, while
+$N^2[N,G]\leq N\cap D$ gives $a_2\leq m=e$.
+
+For $R<N<D$, nonempty original commutator saturation gives
+$N^2[N,G]=R$. Put $t=d_G(N)$ and $\ell=\dim L_N$.
+Then $t,\ell>0$, $t+\ell=e$, $|N|=|R|2^t$, and
+$m=\max(m(R),t)$. In a pair family, $e=3$; the full common radical
+of $L_N$ has dimension zero when $\ell=2$, and dimension two when
+$\ell=1$. Lemma~\ref{lem:carrier-annihilator-center} gives
+$c=\ell+\dim U_N$ and $g=\ell$.
+In the complete star family the nonzero full parameter space $L_N$
+has common radical dimension $4-\ell=t$, so $c=4$ and $g=4-t$.
+The excluded case $\ell=0$ is $N=D$ and belongs to the first branch.
+
+For the first three masters, $|R|=2$ makes $R$ central, its relative
+radical trivial, and its head and normal-head maximum both one.
+Full pair-form separation and saturation give $C_1=R$ and $C_R=D$,
+proving the two small rows. For $16T1332$, the four original radical
+rows, with all five original generators acting, give
+$R^2[R,G]=[R,G]=Z$, with $|R|=4$ and $|Z|=2$.
+Every original normal $M\leq R$ lies in $Z$ or contains $Z$;
+outside $Z$ it has relative radical $Z$ and head at most one.
+Cardinality therefore forces $M=R$. The same tests and full star
+separation give $C_1=Z$, $C_Z=R$, and $C_R=D$, yielding the three
+rows and $m(R)=d_G(R)=1$.
+
+Finally split an arbitrary $N\lhd G$ first by $D\leq N$, then by
+$N\leq D$. In the latter case saturation makes $N$ comparable with
+$R$, giving either $N\leq R$ or $R<N<D$. The remaining case is
+crossing. This proof never counts normals by counting their possible
+rows and does not assume that every displayed possibility is realized.
+\end{proof}
+
+There is a useful simplification when comparing these rows numerically.
+The feasible pairs satisfy $\delta\leq k$, $\epsilon\leq m$ and
+$\delta+\epsilon\leq n$, so their polygon depends on $n$ only through
+$\min(n,k+m)$. Thus a comparison row $(K,N_0,M,A,C,G_0)$ dominates
+all pair supports and both marks whenever
+\[
+ k\leq K,\quad m\leq M,\quad a_2\leq A,\quad
+ \min(n,k+m)\leq N_0,\quad c\leq C,\quad g\leq G_0.
+\]
+This comparison preserves the original order $n$ in the group-theoretic
+identities. It simply includes its entire feasible polygon in the
+comparison polygon. In particular it remains valid for a negative
+first mark, with a nonnegative terminal multiplier.
+
 For $Q=G/N$ take $(c,g)=(\log|Q|,0)$ if $Q$ is abelian, and
 $(c,g)=(\log|Z(Q)|,\log|Q'|)$ otherwise. For a full subdirect
 product $L$ of the bounded carrier factors,
@@ -530,8 +621,24 @@ scales $s_s$, gives the bound $8(4s_s)B_{6j}$ in every column.
 The self support is at most $18\leq64B_{66}=24$, and both marks
 are $3\leq8\alpha_6=8\beta_6=4$.
 This handles all crossing normals of that master at once, while
-retaining their separate original weights. It does not supply coverage
-or weight estimates for the other normal branches.
+retaining their separate original weights. The remaining branches are
+covered by Lemma~\ref{lem:carrier-normal-branches}. Its effective-polygon
+comparison sends every pair-family row, every above-derived row, and
+the small-radical rows into the twelve displayed H16 rows. The first
+two star intermediate rows go to H16 rows $2$ and $4$.
+The last star intermediate row is $r_\dagger=(3,5,3,1,4,1)$, at scale
+two, and can also be assigned directly to colour six. Indeed
+\[
+ \max\{h_s(4,1),h_{r_\dagger}(c,g)\}
+ \leq\max\{4k+m,\,3(c+g)\}.
+\]
+The forty-one displayed comparisons satisfy the same bound
+$8(4s_s)B_{6j}$. Its self support is at most $15\leq24$ and its
+pair support with $r_*$ is at most $18\leq24$; both marks are at most
+$4$. Thus these two extra envelopes use the existing sixth colour
+and do not change the cone matrix or its physical normalization.
+No step replaces the original weighted normal family by a sum over
+distinct numerical labels.
 
 \begin{lemma}[The complete marked recurrence]\label{lem:carrier-recurrence}
 For every such master word, the logarithm of its full-subdirect count

@@ -747,6 +747,47 @@ that arbitrary actual normals belong to the displayed menu.
 The [1547 small-radical row bridge](SymmetricSubgroupAsymptotics/BinaryCarrierRadicalRows16T1547.lean)
 likewise transports the four universal profiles into literal carrier histories.
 
+The remaining normal branches now have uniform original-action proofs.
+[NormalOrderTwo](SymmetricSubgroupAsymptotics/NormalOrderTwo.lean) and
+[PrimeDerivedOrderTwoProfiles](SymmetricSubgroupAsymptotics/PrimeDerivedOrderTwoProfiles.lean)
+give both small-radical rows for the first three masters. The four-row
+[1332 radical structure](SymmetricSubgroupAsymptotics/BinaryCarrierRadicalStructure16T1332.lean)
+and its [exact profiles](SymmetricSubgroupAsymptotics/BinaryCarrierRadicalProfiles16T1332.lean)
+prove that every original normal inside its radical is trivial, the central
+order-two subgroup, or the radical itself; its normal-head maximum is one.
+
+For `R < N < G'`, the
+[pair-family theorem](SymmetricSubgroupAsymptotics/PrimeDerivedPairIntermediate.lean)
+and [full-star theorem](SymmetricSubgroupAsymptotics/PrimeDerivedStarIntermediate.lean)
+retain the entire vanishing-character space. They prove exact radical,
+maximum-head, order and quotient fields. The star argument works for arbitrary
+horizontal dimension and explicitly excludes the zero-parameter endpoint.
+The [above-derived transport](SymmetricSubgroupAsymptotics/BinaryCarrierAboveDerivedRows16.lean)
+gives the simultaneous bound `(max(e,w), d+w, e, e, s-w, 0)` for all five
+original carriers, with exact order and quotient slopes.
+
+[Pair-family coverage](SymmetricSubgroupAsymptotics/BinaryCarrierPairNormalRows16.lean)
+and [star-family coverage](SymmetricSubgroupAsymptotics/BinaryCarrierStarNormalRows16T1332.lean)
+combine these results with the crossing branches. They cover **every original
+normal axis** of the five degree-sixteen masters, without enumerating normals
+or assuming a complete normal-subgroup catalogue. Distinct normals remain
+distinct inputs; possible invariant rows are not a count of normals.
+
+The [effective-envelope theorem](SymmetricSubgroupAsymptotics/JointCapacityEffectiveEnvelope.lean)
+compares the whole coupled polygon using `min(n,k+m)`. It preserves the literal
+subgroup order in all group identities, and its cost comparison allows a
+negative first mark. The
+[scalar master comparisons](SymmetricSubgroupAsymptotics/BinaryCarrierMasterEnvelopes.lean)
+reuse the displayed H16 rows for the resulting branches. The
+[all-five envelope bridge](SymmetricSubgroupAsymptotics/BinaryCarrierMasterEnvelopeCoverage16.lean)
+assigns every original normal axis one of twelve H16 envelopes or two star
+envelopes; both star envelopes have sixth-colour cross-column certificates.
+The [weighted-history adapter](SymmetricSubgroupAsymptotics/BinaryCarrierWordEffectiveEnvelope.lean)
+transfers proved envelope inequalities without merging axes or changing weights.
+Numerical comparisons,
+physical source coverage, original axis-weight sums and the complete remainder
+recurrence are separate obligations from exhaustive degree-sixteen row coverage.
+
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
 The [verification boundary](../ASSUMPTIONS.md#formal-theorem-boundary)
