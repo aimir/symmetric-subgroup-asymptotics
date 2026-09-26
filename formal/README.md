@@ -581,6 +581,20 @@ and all marker moments, and proves the finite-family continuation row
 eventually contracts. Its character counting branch takes the named
 nilpotent conjugacy-class input; hot decay separately takes the global
 coarse subgroup-growth input.
+The [direct first-moment consumer](SymmetricSubgroupAsymptotics/BinaryOrderCharacterDirectFusion.lean)
+also proves a forward recurrence for the same complete finite menu, with
+no hot term or coarse subgroup-growth premise. It continues at the actual
+graph degree `m = n - w + v < n`, retaining every literal original normal
+and the original action normalizer. The [exact physical assembly](SymmetricSubgroupAsymptotics/FusionDirectPhysicalUnion.lean)
+and [direct coefficient decay](SymmetricSubgroupAsymptotics/FusionDirectDecay.lean)
+prove exponential decay of the complete finite row before bounding any
+unknown subgroup count. The character class-count input remains explicit.
+The [uniform coefficient estimate](SymmetricSubgroupAsymptotics/FusionDirectUniform.lean)
+retains the quadratic width loss for every complement degree: its exponent
+is `-2*e*b - (h^2-r^2)/4 + (h-r+1)/4`, its polynomial degree is `h+r+1`,
+and its factor remains the original `D/a(U)`. A growing-menu argument must
+still bound the sum of those original factors; the coefficient estimate
+does not supply that group-theoretic input.
 The [degree-sixteen application](SymmetricSubgroupAsymptotics/BinaryTransitiveBoundary16Fusion.lean)
 accepts all transitive binary actions of order at most 256, including every
 original normal, without enumerating groups or normals. A nontrivial normal
@@ -591,6 +605,14 @@ and the [exact character criterion](SymmetricSubgroupAsymptotics/BinaryTransitiv
 then applies. The complete finite subtype of all these original actions
 has its own recurrence and contractive aggregate; physical family coverage,
 naturality, the class input and hot coarse-growth input remain explicit.
+The [actual degree-sixteen sector](SymmetricSubgroupAsymptotics/BinarySmallOrbit16Physical.lean)
+supplies this coverage for the unmarked set of original subgroups admitting
+a genuine sixteen-point orbit chart with binary restriction image of order
+at most 256. Its [direct recurrence](SymmetricSubgroupAsymptotics/BinarySmallOrbit16Direct.lean)
+proves both coverage and naturality and has an exponentially decaying row,
+with only the named class-count input retained. Arbitrary earlier-owner
+restrictions decrease the left-hand cardinality without adding chart
+multiplicity. This is a sector bound, not coverage of every subgroup.
 The [power-degree extension](SymmetricSubgroupAsymptotics/BinaryTransitivePowerBoundaryFusion.lean)
 proves the same complete selection for every original transitive action of
 degree `w = 2^k ≥ 16` and order at most `2^(w/2)`. Nontrivial normals save
@@ -621,12 +643,23 @@ right-generator transition defects. Normality, distinct representatives
 and representative reachability are unnecessary. Its
 [order-stop adapter](SymmetricSubgroupAsymptotics/BinarySchreierCosetOrderStops.lean)
 allows compressed certificates to enter the same original-action registry;
-concrete compressed witnesses remain to be supplied.
+the [selected 16T832 pilot](SymmetricSubgroupAsymptotics/BinarySchreierCosetPilot16T832.lean)
+uses 16 representatives and five correlated flip columns to prove the
+original source has order at most 512 and stop its index-two children at
+256. It does not accept that source's own normal axes or prove a global
+registry root.
 For an original pair action, the
 [correlated-flip specialization](SymmetricSubgroupAsymptotics/BinaryPairCosetOrderBound.lean)
 proves `card U ≤ q * 2^finrank(C)` from pointwise transition defects in a
 proposed flip subspace `C`. It requires no proof that every vector in `C`
 occurs in the source, and preserves its actual linear correlations.
+The [column certificate](SymmetricSubgroupAsymptotics/BinaryFlipCosetOrderBound.lean)
+allows dependent columns and proves the bound `q * 2^d` from pointwise
+transition identities. The selected producer
+[`export_lean_pair_coset_order.py`](../computations/python/export_lean_pair_coset_order.py)
+requires `--source b16_832`, bounds its search, retained inputs and output,
+and supports `--write` and read-only exact replay with `--check`.
+Its emitted Lean source requires a separate bounded compiler check.
 Additional local pilots cover
 [16T1025 and six targets](SymmetricSubgroupAsymptotics/BinarySchreierPrunedPilot16T1025.lean)
 and [16T832 with its target 16T624](SymmetricSubgroupAsymptotics/BinarySchreierPrunedPilot16T832.lean).
