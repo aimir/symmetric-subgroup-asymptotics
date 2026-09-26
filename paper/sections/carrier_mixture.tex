@@ -74,6 +74,36 @@ For a row $r=(k,n,m,a_2,c,g)$ define
        \delta+\epsilon\leq n\},\qquad q_r=\max(m,a_2).
 \]
 The quantity $a_2$ cannot in general be replaced by $m$.
+The following criterion makes that replacement available for an entire
+ambient group and reduces the radical certificates to generator tests.
+
+\begin{lemma}[Finite radical certificates]\label{lem:carrier-finite-radical}
+Let $G=\langle s_1,\ldots,s_u\rangle$ be a finite $2$-group and
+$N=\langle x_1,\ldots,x_v\rangle\lhd G$. Then
+\[
+ R_N=\bigl\langle x_i^2,\ [x_i,s_j]:
+       1\leq i\leq v,\ 1\leq j\leq u\bigr\rangle^G.
+\]
+If $\Phi(G)\leq G'$, then $R_N\leq N\cap G'$ and $a_2\leq m$
+for every such $N$. If also $G'\leq N$, then $m=\rho(G)$ and
+$G/N$ is abelian.
+\end{lemma}
+\begin{proof}
+Write $U$ for the displayed normal closure. Its generators lie in
+$R_N$, and $R_N\lhd G$, so $U\leq R_N$. In $G/U$, each $x_iU$
+has square one and commutes with every $s_jU$, hence with the whole
+quotient. The image of $N$ is therefore central elementary abelian,
+which gives $N^2[N,G]\leq U$ and proves equality. An ordinary closure
+can replace this normal closure when its normality in the original
+$G$ has been certified.
+
+Every square and ambient commutator from $N$ lies in $\Phi(G)$.
+Under the stated containment this puts the same $G$-normal subgroup
+$R_N$ inside $N\cap G'$. Its relative head is one of the terms in
+the maximum defining $m$, so $a_2\leq m$. Finally $G'\leq N$ gives
+$N\cap G'=G'$, proving the remaining assertions.
+\end{proof}
+
 For $Q=G/N$ take $(c,g)=(\log|Q|,0)$ if $Q$ is abelian, and
 $(c,g)=(\log|Z(Q)|,\log|Q'|)$ otherwise. For a full subdirect
 product $L$ of the bounded carrier factors,
