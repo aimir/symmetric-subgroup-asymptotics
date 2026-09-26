@@ -574,6 +574,31 @@ the dual normal registry stops at small quotient index. The binary-group
 hypothesis remains explicit at every fusion use: small order alone does
 not prove the binary epimorphism bound. Concrete high-order coverage is
 still required.
+The [combined order-or-character consumer](SymmetricSubgroupAsymptotics/BinaryOrderCharacterFusion.lean)
+accepts a fixed certificate for every literal original normal. It retains
+the original action normalizer, target automorphism factor, surviving maps
+and all marker moments, and proves the finite-family continuation row
+eventually contracts. Its character counting branch takes the named
+nilpotent conjugacy-class input; hot decay separately takes the global
+coarse subgroup-growth input.
+The [degree-sixteen application](SymmetricSubgroupAsymptotics/BinaryTransitiveBoundary16Fusion.lean)
+accepts all transitive binary actions of order at most 256, including every
+original normal, without enumerating groups or normals. A nontrivial normal
+leaves a quotient of order at most 128. For the remaining trivial normal,
+the [faithful central-action argument](SymmetricSubgroupAsymptotics/FaithfulTransitiveCentralCard.lean)
+bounds the central involution dimension by three in the nonregular case,
+and the [exact character criterion](SymmetricSubgroupAsymptotics/BinaryTransitiveCentralCriterion.lean)
+then applies. The complete finite subtype of all these original actions
+has its own recurrence and contractive aggregate; physical family coverage,
+naturality, the class input and hot coarse-growth input remain explicit.
+The [power-degree extension](SymmetricSubgroupAsymptotics/BinaryTransitivePowerBoundaryFusion.lean)
+proves the same complete selection for every original transitive action of
+degree `w = 2^k ≥ 16` and order at most `2^(w/2)`. Nontrivial normals save
+one order bit, and a large source's bottom axis satisfies the
+[uniform character criterion](SymmetricSubgroupAsymptotics/BinaryTransitivePowerCharacterCriterion.lean).
+Any fixed finite family, including different such widths, has the original
+weighted recurrence and contractive row. This does not bound the aggregate
+over an unbounded family of widths.
 The [local Schreier adapter](SymmetricSubgroupAsymptotics/BinarySchreierPrunedAdapter.lean)
 reuses complete original word certificates and stops every index-two child
 when the actual source order is at most twice the cutoff.
@@ -582,13 +607,45 @@ installs the original 16T1026 certificate and proves order bounds of 256
 for its two original targets, 16T524 and 16T611. Its local registry therefore
 stops at order 128. No catalogue order is used as a proof, and the pilot
 does not claim a Sylow root or global coverage.
+The [encoded upper-order certificate](SymmetricSubgroupAsymptotics/FiniteEncodedOrderBound.lean)
+needs only an encoded identity and closure of its finite rows under the
+original generators. It requires neither row injectivity nor parent words;
+extraneous rows are allowed because its conclusion is only an upper bound.
+The [encoded adapter](SymmetricSubgroupAsymptotics/BinarySchreierEncodedOrderStops.lean)
+and [finite-slice assembly](SymmetricSubgroupAsymptotics/BinarySchreierPrunedAssembly.lean)
+combine such bounds with the original sparse Schreier certificates.
+The [coset-cover order certificate](SymmetricSubgroupAsymptotics/GeneratorCosetOrderBound.lean)
+instead covers the generated source by `q` right cosets of any actual
+ambient subgroup `K`, proving its order is at most `q * card K` from
+right-generator transition defects. Normality, distinct representatives
+and representative reachability are unnecessary. Its
+[order-stop adapter](SymmetricSubgroupAsymptotics/BinarySchreierCosetOrderStops.lean)
+allows compressed certificates to enter the same original-action registry;
+concrete compressed witnesses remain to be supplied.
+For an original pair action, the
+[correlated-flip specialization](SymmetricSubgroupAsymptotics/BinaryPairCosetOrderBound.lean)
+proves `card U ≤ q * 2^finrank(C)` from pointwise transition defects in a
+proposed flip subspace `C`. It requires no proof that every vector in `C`
+occurs in the source, and preserves its actual linear correlations.
+Additional local pilots cover
+[16T1025 and six targets](SymmetricSubgroupAsymptotics/BinarySchreierPrunedPilot16T1025.lean)
+and [16T832 with its target 16T624](SymmetricSubgroupAsymptotics/BinarySchreierPrunedPilot16T832.lean).
+They preserve the original conjugators and do not assert global coverage.
 The selected producer
 [`export_lean_schreier_order_stop.py`](../computations/python/export_lean_schreier_order_stop.py)
-regenerates either leaf with `--source b16_524 --write` or
-`--source b16_611 --write`; `--check` verifies exact replay.
-It uses at most 256 rows and two generator edges per row, with fixed
+accepts the explicit sources 473, 485, 500, 510, 524, 590, 611, 624 and 633
+with `--source b16_524 --write`, for example; `--check` verifies exact replay.
+It uses at most 256 rows and four generator edges per row, with fixed
 operation, time and output limits. The generated sources are ignored;
 each requires its own bounded Lean check.
+For the selected 832 sparse certificate,
+[`extract_selected_schreier_record.py`](../computations/python/extract_selected_schreier_record.py)
+extracts compact untrusted original-point hints into a private JSON file;
+[`export_lean_selected_schreier.py`](../computations/python/export_lean_selected_schreier.py)
+then emits the source and binding under one shared search budget.
+Both require explicit source selection and support read-only exact replay.
+The extractor bounds cumulative decompression separately from retained
+buffers; the producer never reads the full normal-subgroup data stream.
 The finite character criteria now supply original-source analytic envelopes.
 Complete weighted-family installation of the character and transport branches
 remains separate. The central
