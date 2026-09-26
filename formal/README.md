@@ -650,9 +650,9 @@ are central and, under the proved evaluation-kernel condition, have prime
 exponent. The retained restriction image annihilates both original powers
 and mixed commutators. This gives a head bound from their combined finite
 test kernel; it does not identify that kernel with the extendible characters.
-Original-normal coverage inside `G'`, numerical test-kernel bounds for the
-proper-intersection branches, simultaneous row domination, and physical
-weighted coverage still require their own proofs.
+The exact crossing results below resolve these retained-head tests for the
+four pair-family masters. Coverage of all other normal branches, simultaneous
+row domination, and physical weighted coverage still require their own proofs.
 
 The [exact order module](SymmetricSubgroupAsymptotics/BinaryCarrierExactOrders16.lean)
 derives `|G| = 2^10, 2^10, 2^10, 2^11, 2^12` for the masters
@@ -678,6 +678,74 @@ master, `N ∩ G' <= R` implies `N <= R`, where `R = (G')²[G',G]`
 is the actual relative radical. These direction and containment bounds
 do not replace the remaining correlated head, radical, and quotient-row
 inequalities.
+
+The [character detection theorem](SymmetricSubgroupAsymptotics/PrimeRelativeCharacterDetection.lean)
+identifies the common kernel of the complete invariant characters vanishing
+on `B` as `B R`; it identifies `B` itself only with an explicit `R <= B` proof.
+[Full vanishing-space center detection](SymmetricSubgroupAsymptotics/PrimeDerivedVanishingCenter.lean)
+then identifies the actual center preimage modulo `G'` with the common radical
+of that entire space, retaining every original conjugation constraint.
+
+The [saturation certificate](SymmetricSubgroupAsymptotics/NormalSubgroupSaturationCertificate.lean)
+uses nonempty iterated original commutator words to prove, for every original
+normal `M <= G'`, either `M <= R` or `R <= [M,G]`. Selected certificates
+prove this for all five masters from at most 64 derived rows, without
+constructing the full group or enumerating its normals. The
+[bounded exporter](../computations/python/export_lean_carrier_saturation.py)
+only emits these certificates; the Lean proofs establish their consequences.
+[Exact radical and maximum-head transport](SymmetricSubgroupAsymptotics/NormalSubgroupSaturationHeadBounds.lean)
+shows, for `B <= G'` outside `R`, that its maximum over **all** original normals
+is `max(m(R), head(B))`.
+
+For the four pair-family masters, the
+[exact crossing theorem](SymmetricSubgroupAsymptotics/BinaryCarrierCrossing16.lean)
+proves `[N,G] = N ∩ G' = R_N` for every crossing normal, so its head is the
+actual image dimension `w`. The
+[intersection capacity theorem](SymmetricSubgroupAsymptotics/BinaryCarrierCrossingCapacity16.lean)
+proves `m = a₂ = 2`. The
+[literal history-row bridge](SymmetricSubgroupAsymptotics/BinaryCarrierCrossingRows16.lean)
+then gives the two exact possibilities for `(k,n,m,a₂,c,g)`:
+
+| Original masters | `w = 1` | `w = 2` |
+| --- | --- | --- |
+| 1082, 1083, 1084 | `(1,4,2,2,2,1)` | `(2,5,2,2,1,1)` |
+| 1547 | `(1,6,2,2,2,1)` | `(2,7,2,2,1,1)` |
+
+All six coordinates belong to the same literal normal axis. This covers
+crossing normals only and preserves distinct normals with identical rows;
+it neither asserts realization of every row nor supplies their total weights.
+
+For the star-family master, the
+[full mixed-vanishing identity](SymmetricSubgroupAsymptotics/PrimeDerivedMixedVanishing.lean)
+is `L_[N,G] = J_W`; it makes no extendibility assumption and does not identify
+`[N,G]` with `N ∩ G'`. The
+[generic crossing theorem](SymmetricSubgroupAsymptotics/PrimeDerivedStarCrossing.lean)
+retains all original powers in the relative radical and proves
+`k + dim(L_B) <= dim(U)`, together with exact center and derived orders.
+Its [original 1332 application](SymmetricSubgroupAsymptotics/BinaryCarrierStarCrossing16T1332.lean)
+keeps `ell = dim(L_B)` and `w = dim(NG'/G')` from the same normal:
+`ell,w >= 1`, `ell+w <= 4`, `k <= 4-ell`,
+`m <= max(2,4-ell)`, `c = 4-w`, and `g = ell`.
+
+The [small-radical profiles for 1547](SymmetricSubgroupAsymptotics/BinaryCarrierRadicalProfiles16T1547.lean)
+cover every original normal `M <= R`, using the exact central subgroup `Z`
+of order two and `R_R = [R,G] = Z`. Their exact rows are
+`(0,0,0,0,1,6)`, `(1,1,1,0,2,5)`, `(1,2,1,1,1,4)`,
+and `(2,3,2,1,3,3)`. The order-four alternative covers all such original
+normal planes through one theorem; it assumes no list or count of planes.
+The [center preimage theorem](SymmetricSubgroupAsymptotics/BinaryCarrierRadicalCenter16T1547.lean)
+retains the same subgroup in both quotient-order calculations.
+
+The [star row bridge](SymmetricSubgroupAsymptotics/BinaryCarrierStarCrossingRows16T1332.lean)
+keeps the exact order `n = 6-ell+w`, bounds all six fields together, and
+places every star crossing row below `(3,8,3,3,3,3)`. The
+[common-envelope certificate](SymmetricSubgroupAsymptotics/BinaryCarrierStarEnvelope.lean)
+proves both mark bounds, its self comparison, and every comparison with the
+41 displayed H16/X/J/P numerical rows in the sixth cone colour. It checks
+all degree-eight columns as well. This scalar certificate does not assert
+that arbitrary actual normals belong to the displayed menu.
+The [1547 small-radical row bridge](SymmetricSubgroupAsymptotics/BinaryCarrierRadicalRows16T1547.lean)
+likewise transports the four universal profiles into literal carrier histories.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.

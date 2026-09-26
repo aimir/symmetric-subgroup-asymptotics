@@ -241,6 +241,179 @@ the extendibility and power constraints on characters of $B$ remain
 separate.
 \end{proof}
 
+\begin{lemma}[Exact annihilator and center detection]
+\label{lem:carrier-annihilator-center}
+Keep $G,D,V,E$ as above and write $R=D^2[D,G]$.
+For every subgroup $B\leq D$, the common kernel in $D$ of $L_B$
+is $BR$. If $R\leq B$, put
+\[
+ C_B=\{x\in G:[x,G]\leq B\},\qquad
+ U_B=\bigcap_{\lambda\in L_B}\operatorname{rad}(b_\lambda).
+\]
+Then $B\lhd G$, $D\leq C_B$, and the original quotient map induces
+\[
+ C_B/D\cong U_B,\qquad |C_B|=|D|2^{\dim U_B}.
+\]
+Suppose in addition that independent character pairs have zero common
+radical and that $N\lhd G$ satisfies neither $N\leq D$ nor $D\leq N$.
+For $B=N\cap D$, the space $L_B$ has a unique nonzero member
+$\lambda$. If $R\leq B$, then, with
+$w=\dim(ND/D)$ and $r=\dim\operatorname{rad}(b_\lambda)$,
+\begin{equation}\label{eq:carrier-crossing-center}
+ |D:B|=2,\qquad 1\leq w\leq r,\qquad
+ |Z(G/N)|=2^{r+1-w},\qquad |(G/N)'|=2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The invariant characters of $D$ are the complete dual of $D/R$.
+The ordinary double-annihilator identity in this vector space says
+that their common kernel on $B$ is the inverse image of $BR/R$,
+which is $BR$. This does not identify $B$ itself unless $R\leq B$.
+
+Under that containment, $B/R$ lies in the central elementary subgroup
+$D/R$ of $G/R$, so $B$ is normal in $G$.
+For every original $x,y\in G$, detection gives
+$[x,y]\in B$ exactly when $\lambda([x,y])=0$ for every
+$\lambda\in L_B$. Thus $x\in C_B$ exactly when $xD\in U_B$.
+In particular $D\leq C_B$, and the asserted equivalence and order
+formula follow from the original quotient map.
+
+In the crossing case, Lemma~\ref{lem:carrier-intersection-directions}
+gives $L_B\ne0$ and $W=ND/D\ne0$. Two independent members of $L_B$
+would force $W=0$, so $\dim L_B=1$. Its unique nonzero member
+detects $BR$; when $R\leq B$, this is its literal kernel $B$ in $D$,
+of index two. Also $W\leq\operatorname{rad}(b_\lambda)$, so
+$1\leq w\leq r$. Since $|N|=|B|2^w$ and
+$Z(G/N)=C_B/N$, the center formula follows. Finally the original
+derived group maps onto $(G/N)'$ with kernel $B$, proving its order.
+\end{proof}
+
+\begin{lemma}[Saturation and exact crossing heads]
+\label{lem:carrier-saturation-crossing}
+Keep the notation of Lemma~\ref{lem:carrier-annihilator-center}.
+Suppose $\dim E\geq2$, independent character pairs have zero common
+radical, and every original $G$-normal subgroup $M\leq D$ satisfies
+\[
+ M\leq R\quad\hbox{or}\quad R\leq[M,G].
+\]
+Then every crossing normal $N$ satisfies, with $B=N\cap D$,
+\[
+ [N,G]=B=N^2[N,G],\qquad d_G(N)=\dim(ND/D).
+\]
+For every original normal $B\leq D$ with $B\not\leq R$,
+\[
+ B^2[B,G]=R,\qquad
+ \max_{M\lhd G,\,M\leq B}d_G(M)
+ =\max\left\{\max_{M\lhd G,\,M\leq R}d_G(M),d_G(B)\right\},
+\]
+where $d_G(M)=\dim\operatorname{Hom}(M,\F_2)^G$.
+\end{lemma}
+\begin{proof}
+Put $H=[N,G]\leq B$. If $H\leq R$, every character of $D$
+annihilates $H$, so every form annihilates $W=ND/D$ against $V$.
+Two independent characters would then force $W=0$, a contradiction.
+Thus saturation gives $R\leq H$. The full space $L_H$ is the joint
+annihilator of $W$, and the pair hypothesis makes its dimension at most
+one. Since $0\ne L_B\leq L_H$, these spaces are equal. Exact detection
+now gives $H=B$. Every original square in $N$ lies in $N\cap D$,
+since $G/D$ has exponent two, proving the relative radical identity
+and the head formula.
+
+If $M\leq D$ and $M\not\leq R$, saturation and monotonicity of the
+relative radical give $R\leq[M,G]\leq M^2[M,G]\leq R$.
+For $M\leq B$ outside $R$, the resulting quotient inclusion
+$M/R\leq B/R$ gives $d_G(M)\leq d_G(B)$. Subgroups inside $R$
+contribute the other maximum. Both terms are attained within $B$,
+which proves equality without enumerating its normal subgroups.
+\end{proof}
+
+For the original pair-family masters $16T1082$, $16T1083$, $16T1084$
+and $16T1547$, the saturation hypothesis is certified by original
+commutator words on their $16$ or $64$ derived rows. Every word has
+positive commutator depth, so an element of a normal subgroup outside
+$R$ generates all of $R$ through its original ambient commutators.
+The same finite certificates give saturation for $16T1332$, whose
+star family is treated separately from the pair hypothesis.
+For the four pair-family masters, every nonzero form has radical
+dimension two, $d_G(D)=3$, and
+$\max_{M\lhd G,\,M\leq R}d_G(M)\leq2$.
+Consequently every crossing normal has exactly one of the following
+rows, in the order $(k,n,m,a_2,c,g)$:
+\[
+\begin{array}{c|cc}
+ G & w=1 & w=2\\ \hline
+ 16T1082,\ 16T1083,\ 16T1084
+ &(1,4,2,2,2,1)&(2,5,2,2,1,1)\\
+ 16T1547 &(1,6,2,2,2,1)&(2,7,2,2,1,1).
+\end{array}
+\]
+Indeed $B$ has index two in $D$, its relative radical is $R$, and
+$d_G(B)=2$; hence $m=a_2=2$. The remaining coordinates follow from
+Lemma~\ref{lem:carrier-annihilator-center} and $|N|=|B|2^w$.
+These are exhaustive possibilities for crossing normals; no realization
+of every listed row or identification of different normals is required.
+
+For $16T1547$, the remaining normals inside $R$ also admit a uniform
+argument. Here $|R|=8$, and the original commutator tests on its eight
+rows give a central subgroup $Z$ of order two with
+$R^2[R,G]=[R,G]=Z$. Every original normal $M\leq R$ either lies in
+$Z$ or contains $Z$; if $M\not\leq Z$, the same saturation words give
+$M^2[M,G]=Z$. Thus $M$ is $1$, $Z$, an order-four subgroup above $Z$,
+or $R$. This argument requires no list or count of the order-four
+subgroups. Their exact rows are
+\[
+\begin{array}{c|c}
+ M &(k,n,m,a_2,c,g)\\ \hline
+ 1 &(0,0,0,0,1,6)\\
+ Z &(1,1,1,0,2,5)\\
+ Z<M<R &(1,2,1,1,1,4)\\
+ R &(2,3,2,1,3,3).
+\end{array}
+\]
+For completeness, the original form separation first gives $C_M\leq D$.
+If $M<R$, saturation strengthens this to $C_M\leq R$.
+The identity $[R,G]=Z$ then gives $C_M=R$ for $Z\leq M<R$;
+the eight-row fixed tests give $C_1=Z$, and $C_R=D$.
+These are the center orders in the table. The derived orders are
+$|D|/|M|$, and the maximum defining $m$ ranges over every original
+normal below $M$, using the same relative-radical identities.
+
+\begin{lemma}[Crossing capacities for the full star family]
+\label{lem:carrier-star-crossing}
+Keep $G,D,V,E$ as above, and suppose the complete original form family
+is the star family on $V=U\oplus\F_2$, with $E^*=U^*$ and $d=\dim U$.
+Assume every original normal subgroup of $D$ is comparable with $R$.
+For a crossing normal $N$, put $B=N\cap D$, $H=[N,G]$,
+$w=\dim(ND/D)$ and $g=\dim L_B$. Then
+\[
+ R\leq H\leq B,\qquad d_G(N)+g\leq d,\qquad
+ |(G/N)'|=2^g,\qquad |Z(G/N)|=2^{d-w}.
+\]
+\end{lemma}
+\begin{proof}
+The complete space $L_H$ is exactly the joint annihilator of $W=ND/D$.
+Since it contains the nonzero space $L_B$, the star formula forces
+$W\leq U\oplus0$. Its first projection identifies $L_H$ with the
+annihilator of a $w$-dimensional subspace of $U$, so
+$\dim L_H=d-w$. If $H\leq R$, then $L_H=E^*$, forcing $w=0$;
+comparability therefore gives $R\leq H$.
+Exact character detection and the order identity now give
+\[
+ |D|=2^{d-w}|H|=2^g|B|,\qquad |N|=2^w|B|.
+\]
+All original powers remain in the relative radical $N^2[N,G]$,
+which contains $H$. Hence
+$2^{d_G(N)}|H|\leq|N|$, and the displayed identities yield
+$d_G(N)+g\leq d$.
+
+The full common radical of $L_B\ne0$ is its annihilator in
+$U\oplus0$, of dimension $d-g$. Thus
+$|C_B|=|D|2^{d-g}$ and $|Z(G/N)|=|C_B|/|N|=2^{d-w}$.
+The image of $D$ in $G/N$ has order $|D:B|=2^g$.
+This proof uses neither a one-dimensional parameter space nor an equality
+between $H$ and the full relative radical of $N$.
+\end{proof}
+
 For $Q=G/N$ take $(c,g)=(\log|Q|,0)$ if $Q$ is abelian, and
 $(c,g)=(\log|Z(Q)|,\log|Q'|)$ otherwise. For a full subdirect
 product $L$ of the bounded carrier factors,
@@ -336,6 +509,29 @@ row dominating all these coefficients simultaneously. Finally scale
 its accumulated mass by four, obtaining $p_i\geq0$ with
 $\sum_i p_i=4T$; this accounts for the factor $1/64$ in
 \eqref{eq:carrier-B}.
+
+The crossing branch of $16T1332$ can be assigned directly to the
+sixth colour, without distinguishing its six possible pairs $(g,w)$.
+Indeed Lemma~\ref{lem:carrier-star-crossing} and saturation give the
+coordinatewise upper row
+\[
+ (4-g,\,6-g+w,\,\max(2,4-g),\,\max(2,4-g),\,4-w,\,g),
+ \qquad g,w\geq1,\quad g+w\leq4.
+\]
+All these rows lie below $r_*=(3,8,3,3,3,3)$ at scale two.
+For any displayed row $s=(k,n,m,a_2,c,g)$, with nonnegative slopes,
+\[
+ \max\{h_s(3,3),h_{r_*}(c,g)\}
+ \leq\max\{3\min(n,k+m),\,3(c+g)\}.
+\]
+Checking this last expression on the forty-one displayed rows of
+Appendix~\ref{sec:carrier-cones}, with their stated colours $j$ and
+scales $s_s$, gives the bound $8(4s_s)B_{6j}$ in every column.
+The self support is at most $18\leq64B_{66}=24$, and both marks
+are $3\leq8\alpha_6=8\beta_6=4$.
+This handles all crossing normals of that master at once, while
+retaining their separate original weights. It does not supply coverage
+or weight estimates for the other normal branches.
 
 \begin{lemma}[The complete marked recurrence]\label{lem:carrier-recurrence}
 For every such master word, the logarithm of its full-subdirect count
