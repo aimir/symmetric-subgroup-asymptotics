@@ -245,6 +245,64 @@ $J$ includes every later orbit and every terminal attachment, as
 required by \eqref{eq:pointing}.
 \end{proof}
 
+\begin{proposition}[Direct first-moment fusion]\label{prop:direct-first-moment-fusion}
+Fix a finite original action/normal-axis menu as above. For each entry
+assume the local envelope and only the first moment
+\[
+ |\Epi(J,U/N)|\leq D2^{\lambda b}\Phi(J),\qquad
+ \sum_{J\leq S_b}\Phi(J)\leq s_{b+v}.
+\]
+Suppose $w=2h$, $v=2r<w$, and $g=w-v-8\lambda>0$.
+For the same actual orbit family, with any retained survival predicates
+invariant under the relabellings in the pointing formula, there is a
+nonnegative forward kernel satisfying
+\[
+ \frac{|\mathcal U_n|}{L_n}
+ \leq\sum_{m<n}K_{\rm dir}(n,m)\frac{s_m}{L_m},\qquad
+ \sum_{m<n}K_{\rm dir}(n,m)=O(2^{-\kappa n})
+\]
+for some $\kappa>0$. This conclusion does not use the coarse estimate
+\eqref{eq:coarse}.
+\end{proposition}
+\begin{proof}
+Apply the original pointing factor to the complete literal-axis sum,
+as in the preceding proof, and then use the first moment. An entry
+continues at $m=b+v=n-w+v<n$, with coefficient
+\[
+ \Gamma_{U,N}(b)=
+ \frac{(b+w)!}{b!\,a(U)}D2^{\lambda b}
+ \frac{L_{b+v}}{L_{b+w}}.
+\]
+Define $K_{\rm dir}(n,m)$ by summing these coefficients over all
+literal entries with this target degree, taking an entry to be zero
+when $n<w$. Distinct normals and actions
+remain separate summands, even when their target degrees agree.
+The divisor is still $a(U)$, and no additional quotient by target
+automorphisms or marker choices occurs.
+
+Put $k=h-r>0$. Since $n=m+2k$, exact factorial cancellation gives
+\[
+ \Gamma_{U,N}(b)
+ =\frac{D}{a(U)}\frac{m!}{b!}2^{\lambda b}\Delta(n,m).
+\]
+The fixed-width benchmark estimate above applies in either parity,
+and $m!/b!\leq m^v$. Consequently, for an entry-dependent constant,
+\[
+ \Gamma_{U,N}(b)
+ \leq C(n+1)^{v+k+1}2^{\lambda b-km/4}
+ \leq C(n+1)^{v+k+1}2^{-gb/8}.
+\]
+Absorb the fixed polynomial into the exponential and sum the fixed
+finite menu. This proves the row estimate without estimating any
+unknown subgroup count $s_m$.
+\end{proof}
+The order markers $v=2\log_2|U/N|$ and the character marker $v=0$
+fit this even-prefix argument whenever their strict width conditions
+hold. Any class-count input used to establish the character envelope
+remains necessary. The proposition supplies neither a physical cover
+by the menu nor uniform control when the widths, menu, or lift constants
+grow with $n$; those wider regimes remain separate obligations.
+
 \begin{corollary}[Nonbinary pair actions]\label{cor:pair-fusion}
 Let $U$ be a transitive action on $2s$ points with an invariant pair
 system whose faithful top $T\leq S_s$ is nonbinary, with even $s\geq24$.
