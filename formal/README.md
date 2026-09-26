@@ -574,6 +574,21 @@ the dual normal registry stops at small quotient index. The binary-group
 hypothesis remains explicit at every fusion use: small order alone does
 not prove the binary epimorphism bound. Concrete high-order coverage is
 still required.
+The [local Schreier adapter](SymmetricSubgroupAsymptotics/BinarySchreierPrunedAdapter.lean)
+reuses complete original word certificates and stops every index-two child
+when the actual source order is at most twice the cutoff.
+The [three-source pilot](SymmetricSubgroupAsymptotics/BinarySchreierPrunedPilot16T1026.lean)
+installs the original 16T1026 certificate and proves order bounds of 256
+for its two original targets, 16T524 and 16T611. Its local registry therefore
+stops at order 128. No catalogue order is used as a proof, and the pilot
+does not claim a Sylow root or global coverage.
+The selected producer
+[`export_lean_schreier_order_stop.py`](../computations/python/export_lean_schreier_order_stop.py)
+regenerates either leaf with `--source b16_524 --write` or
+`--source b16_611 --write`; `--check` verifies exact replay.
+It uses at most 256 rows and two generator edges per row, with fixed
+operation, time and output limits. The generated sources are ignored;
+each requires its own bounded Lean check.
 The finite character criteria now supply original-source analytic envelopes.
 Complete weighted-family installation of the character and transport branches
 remains separate. The central
@@ -975,7 +990,7 @@ polynomial cost gives the unconditional bound
 This theorem has no count, weight or numerical estimate as a premise.
 Its family is the literal union of all positive-support profiles in the
 specified thirteen-colour alphabet on `Fin (2*N)`; global binary coverage,
-odd markers, nonbinary ownership and the full remainder recurrence are
+remaining odd actions, nonbinary ownership and the full remainder recurrence are
 separate obligations.
 
 The [singleton extension theorem](SymmetricSubgroupAsymptotics/BinaryCarrierOddSingleton.lean)
@@ -988,6 +1003,28 @@ then forgets all chart witnesses without an extra factorial.
 The physical factor `2*N+1` is absorbed exactly by the
 [odd benchmark inequality](SymmetricSubgroupAsymptotics/SingletonBenchmark.lean).
 This covers the singleton sector, not every odd-degree subgroup.
+
+The [complete S3 sector](SymmetricSubgroupAsymptotics/BinaryCarrierS3Completion.lean)
+proves the same rate `29/2980864` for every positive-support profile in
+the original thirteen-colour alphabet with one natural S3 orbit.
+The [exact model equivalence](SymmetricSubgroupAsymptotics/BinaryCarrierS3Model.lean)
+proves that the original exterior is a binary group, forces the marker's
+A3 kernel, and adds one C2 occurrence while retaining every original
+carrier coordinate and its individual fullness condition.
+The [weight identity](SymmetricSubgroupAsymptotics/BinaryCarrierS3Weights.lean)
+retains the original divisor six and the occurrence factorial:
+`weight(p)/6 = ((p.c2+1)/3)*weight(p.addC2)`.
+The shifted half-degree is `N=R+2*a+4*T+1`.
+The [complete weighted mixture](SymmetricSubgroupAsymptotics/BinaryCarrierWeightedMixture.lean)
+supplies the bound on the original profile sum directly, and the
+[physical union](SymmetricSubgroupAsymptotics/BinaryCarrierS3Union.lean)
+absorbs the linear weight correction and quadratic number of bins.
+The [union of both odd sectors](SymmetricSubgroupAsymptotics/BinaryCarrierOddMixtureCompletion.lean)
+is a literal family of subgroups of `Perm (Fin (2*N+1))`.
+Its normalized count is eventually at most `2*2^(-(29/2980864)*N)`,
+hence at most `2^(-(29/5961728)*N)`.
+These theorems have no counting estimate as a premise. Their finite
+alphabet and single-marker scope do not supply global odd-action coverage.
 
 For the degree-eight J carrier, the selected
 [states](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/States.lean) and

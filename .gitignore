@@ -29,3 +29,6 @@ formal/SymmetricSubgroupAsymptotics/GeneratedCarrier16T1086/
 
 # Reproducible individually selected sparse composition certificates.
 formal/SymmetricSubgroupAsymptotics/GeneratedPrimeComposition/
+
+# Reproducible individually selected original-action order-stop certificates.
+formal/SymmetricSubgroupAsymptotics/GeneratedPrunedActions/
