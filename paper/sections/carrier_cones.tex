@@ -105,6 +105,18 @@ for each row in each displayed block, in its displayed order.
 The last representative has exactly the same normalized pair row and
 marks as $X_{\rm whole}$, so they are merged. All comparisons here are
 finite rational inequalities of the explicit support functions.
+They can be checked without enumerating the feasible integer pairs:
+for $x,y\geq0$, the support of the row $(k,n,m,a_2,c,g)$ is at most
+\[
+ \min\bigl\{xk+ym,\ (x-y)_+k+(y-x)_+m+\min(x,y)n\bigr\}.
+\]
+The first expression uses the two separate capacity bounds. For the
+second, use the joint bound on $\delta+\epsilon$ and the separate
+bound for the variable with the larger coefficient. Substitution of
+the displayed rational entries proves all $41^2$ ordered pair
+comparisons, with their original scales; the two mark comparisons are
+coordinatewise. This specialization is used only for the nonnegative
+quotient slopes, not to discard a negative first mark in the recurrence.
 \[
 H16:\quad (P_0,P_1,P_2,P_2,P_2,P_6,P_6,P_6,P_6,H_9,X_{\rm whole},X_{\rm whole}).
 \]

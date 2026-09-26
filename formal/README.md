@@ -784,9 +784,31 @@ assigns every original normal axis one of twelve H16 envelopes or two star
 envelopes; both star envelopes have sixth-colour cross-column certificates.
 The [weighted-history adapter](SymmetricSubgroupAsymptotics/BinaryCarrierWordEffectiveEnvelope.lean)
 transfers proved envelope inequalities without merging axes or changing weights.
-Numerical comparisons,
-physical source coverage, original axis-weight sums and the complete remainder
-recurrence are separate obligations from exhaustive degree-sixteen row coverage.
+The [complete displayed pair table](SymmetricSubgroupAsymptotics/BinaryCarrierDisplayedPairs.lean)
+proves all 1,681 ordered comparisons and both marks with the original scales.
+Its small proof modules use the reusable
+[polygon budget](SymmetricSubgroupAsymptotics/JointCapacityPolygonBudget.lean).
+The [fourteen-envelope energy certificate](SymmetricSubgroupAsymptotics/BinaryCarrierMasterMenuEnergy.lean)
+includes both extra star envelopes and their mutual comparison.
+
+[Master-word history bounds](SymmetricSubgroupAsymptotics/BinaryCarrierMasterWords16.lean)
+now install this certificate on every ordered word of the five literal
+degree-sixteen groups, with arbitrary repetitions and survival conditions.
+Each original position contributes mass eight. For `T = 2 * word.length`,
+the quadratic exponent is `(R+4*T)^2/4 - (25/82)*R*T - (29/164)*T^2`.
+The theorem retains the explicit polynomial loss and the original
+`axisWeightProduct`; it does not substitute a count of envelope labels.
+[Unit weights](SymmetricSubgroupAsymptotics/BinaryCarrierUnitWeights.lean)
+identify that product with the number of actual normal histories and bound it
+from the original group orders. The
+[degree-sixteen terminal theorem](SymmetricSubgroupAsymptotics/BinaryCarrierMasterTerminal16.lean)
+then proves a concrete fixed-word counting bound with exactly one critical
+terminal attachment, arbitrary terminal survival tests, and a proved internal
+normal multiplicity of at most `2^(4096 * word.length)`. It takes no weight-bound
+hypothesis. Original labelled-action normalizers and profile factors remain
+outside this fixed-word count.
+Actual degree-eight bindings, physical source coverage, physical weight
+identifications and the complete remainder recurrence remain separate.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
