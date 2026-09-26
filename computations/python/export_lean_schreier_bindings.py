@@ -127,6 +127,10 @@ def main():
     parser.add_argument('--with-source', action='store_true',
                         help='Emit/check the selected Source and Binding using one witness search')
     parser.add_argument('--max-states', type=int, default=65536)
+    parser.add_argument('--max-cache-states', type=int, default=65536,
+                        help='Aggregate retained forward-BFS states for this one source')
+    parser.add_argument('--max-cache-bytes', type=int, default=64 * 1024 * 1024,
+                        help='Conservative retained-object cache budget; not a process RSS cap')
     parser.add_argument('--max-word-length', type=int, default=256)
     parser.add_argument('--max-assignments', type=int, default=256)
     parser.add_argument('--max-output-bytes', type=int, default=128 * 1024)
@@ -134,7 +138,8 @@ def main():
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
     if min(args.max_states, args.max_word_length, args.max_assignments,
-           args.max_output_bytes, args.max_source_output_bytes) < 1:
+           args.max_output_bytes, args.max_source_output_bytes,
+           args.max_cache_states, args.max_cache_bytes) < 1:
         parser.error('all limits must be positive')
     with gzip.open(ROOT / 'certificates/data/binary_menu.jsonl.gz', 'rt') as f:
         header = json.loads(next(f))
@@ -149,7 +154,9 @@ def main():
     branches = compile_witnesses(nodes[args.source], action, nodes,
                                  max_states=args.max_states,
                                  max_word_length=args.max_word_length,
-                                 max_assignments=args.max_assignments)
+                                 max_assignments=args.max_assignments,
+                                 max_cache_states=args.max_cache_states,
+                                 max_cache_bytes=args.max_cache_bytes)
     local_file = (args.output_dir if args.with_source else OUT) / f'Source{label(args.source)}.lean'
     local_data = emit(nodes[args.source], nodes, branches).encode()
     if len(local_data) > args.max_source_output_bytes:

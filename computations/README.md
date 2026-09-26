@@ -210,9 +210,20 @@ To emit a selected degree-sixteen source and its common-family binding
 with one bounded witness search, use `--with-source`:
 
 ```sh
-python3 -B computations/python/export_lean_schreier_bindings.py --source b16_1087 --with-source --max-states 1024 --max-assignments 64 --max-word-length 256
-python3 -B computations/python/export_lean_schreier_bindings.py --source b16_1087 --with-source --check --max-states 1024 --max-assignments 64 --max-word-length 256
+python3 -B computations/python/export_lean_schreier_bindings.py --source b16_1087 --with-source --max-states 1024 --max-assignments 64 --max-word-length 256 --max-cache-states 65536 --max-cache-bytes 67108864
+python3 -B computations/python/export_lean_schreier_bindings.py --source b16_1087 --with-source --check --max-states 1024 --max-assignments 64 --max-word-length 256 --max-cache-states 65536 --max-cache-bytes 67108864
 ```
+
+Both Schreier exporters reuse forward searches for the exact ordered target
+generators within one selected invocation. Resuming the same breadth-first
+order preserves the shortest words; all Lean equations remain required.
+`--max-states` limits each search. `--max-cache-states` and `--max-cache-bytes`
+limit the aggregate retained cache, defaulting to 65,536 states and 64 MiB.
+Exceeding a limit aborts before witness files are written; it is never treated
+as nonmembership. The byte budget conservatively accounts for retained Python
+objects, excludes interpreter and temporary storage, and is not an RSS cap.
+A container resize can cross it by one insertion before the immediate abort.
+Nothing is cached across invocations or serialized as a group table.
 
 Both files are bounded before either is written; each replacement is
 atomic. Check `Source16T1087.lean` and then `Binding16T1087.lean` separately

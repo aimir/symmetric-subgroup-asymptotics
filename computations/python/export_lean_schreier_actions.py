@@ -15,7 +15,7 @@ import sys
 
 sys.dont_write_bytecode = True
 from export_lean_menu_cayley import ROOT, array, lookup
-from permutation_words import (character_relations, compose, inverse,
+from permutation_words import (_word, character_relations, compose, evaluate, inverse,
                                orbit_coloring, positive_words,
                                schreier_generators)
 
@@ -54,12 +54,133 @@ def generator_tuple(name, generators):
     return text
 
 
-def compile_witnesses(node, action, nodes, *, max_states, max_word_length, max_assignments):
+class _ForwardWordPrefix:
+    """One deterministic BFS prefix for an exact ordered generator tuple."""
+
+    __slots__ = ('generators', 'rows', 'indices', 'parents', 'letters', 'cursor',
+                 'value_bytes')
+
+    def __init__(self, generators, width):
+        self.generators = generators
+        identity = tuple(range(width))
+        self.rows, self.indices = [identity], {identity: 0}
+        self.parents, self.letters, self.cursor = [0], [0], 0
+        # Charge referenced integers even when Python shares them. This is a
+        # conservative retained-object budget, not a process RSS measurement.
+        self.value_bytes = (sys.getsizeof(generators)
+                            + sum(self._permutation_bytes(g) for g in generators)
+                            + self._permutation_bytes(identity)
+                            + 3 * sys.getsizeof(0))
+
+    @staticmethod
+    def _permutation_bytes(p):
+        return sys.getsizeof(p) + sum(sys.getsizeof(x) for x in p)
+
+    def storage_bytes(self):
+        return (sys.getsizeof(self) + self.value_bytes + sys.getsizeof(self.value_bytes)
+                + sys.getsizeof(self.cursor)
+                + sum(sys.getsizeof(x) for x in
+                      (self.rows, self.indices, self.parents, self.letters)))
+
+    def append(self, row, parent, letter):
+        index = len(self.rows)
+        self.indices[row] = index
+        self.rows.append(row)
+        self.parents.append(parent)
+        self.letters.append(letter)
+        self.value_bytes += (self._permutation_bytes(row) + sys.getsizeof(index)
+                             + sys.getsizeof(parent) + sys.getsizeof(letter))
+
+
+class _ForwardWordCache:
+    """Bounded search reuse within one selected compile_witnesses call.
+
+    Only forward searches are cached, keyed by width and the literal ordered
+    target generators. Prefixes stop at complete BFS parent rows, exactly as
+    positive_words does, so every returned shortest word is unchanged.
+    Both per-prefix and aggregate state limits apply. The byte limit charges
+    retained Python objects conservatively; it excludes interpreter overhead,
+    temporary call arguments and the caller's resulting witnesses. It is not
+    an OS RSS cap. A container resize can cross it by one insertion; that
+    insertion immediately raises ValueError and aborts witness production.
+    Nothing is evicted, serialized, or treated as nonmembership on a limit.
+    """
+
+    __slots__ = ('max_states', 'max_word_length', 'max_cache_states', 'max_cache_bytes',
+                 'prefixes', 'states', 'cache_bytes')
+
+    def __init__(self, *, max_states, max_word_length, max_cache_states, max_cache_bytes):
+        if min(max_states, max_word_length, max_cache_states, max_cache_bytes) < 1:
+            raise ValueError('all forward-search limits must be positive')
+        self.max_states, self.max_word_length = max_states, max_word_length
+        self.max_cache_states, self.max_cache_bytes = max_cache_states, max_cache_bytes
+        self.prefixes, self.states = {}, 0
+        self.cache_bytes = (sys.getsizeof(self) + sys.getsizeof(self.prefixes)
+                            + sum(sys.getsizeof(n) for n in
+                                  (max_states, max_word_length, max_cache_states,
+                                   max_cache_bytes, max_cache_states, 4 * max_cache_bytes)))
+        self._check_bytes()
+
+    def _check_bytes(self):
+        if self.cache_bytes > self.max_cache_bytes:
+            raise ValueError('forward-word cache exceeds configured byte limit')
+
+    def _reserve_state(self):
+        if self.states >= self.max_cache_states:
+            raise ValueError('forward-word cache exceeds configured aggregate state limit')
+
+    def words(self, generators, targets, width):
+        generators = tuple(map(tuple, generators))
+        targets = tuple(map(tuple, targets))
+        key = (width, generators)
+        if key not in self.prefixes:
+            self._reserve_state()
+            prefix = _ForwardWordPrefix(generators, width)
+            before = sys.getsizeof(self.prefixes)
+            self.prefixes[key] = prefix
+            self.states += 1
+            self.cache_bytes += (prefix.storage_bytes() + sys.getsizeof(key)
+                                 + sys.getsizeof(width) + sys.getsizeof(self.prefixes) - before)
+            self._check_bytes()
+        prefix = self.prefixes[key]
+        missing = set(targets).difference(prefix.indices)
+        while missing and prefix.cursor < len(prefix.rows):
+            x = prefix.rows[prefix.cursor]
+            for j, g in enumerate(prefix.generators):
+                y = compose(x, g)
+                if y not in prefix.indices:
+                    if len(prefix.rows) >= self.max_states:
+                        raise ValueError('positive-word search exceeds configured state limit')
+                    self._reserve_state()
+                    before = prefix.storage_bytes()
+                    prefix.append(y, prefix.cursor, j)
+                    self.states += 1
+                    self.cache_bytes += prefix.storage_bytes() - before
+                    self._check_bytes()
+                    missing.discard(y)
+            # Do not stop halfway through a parent, even if its first child
+            # completed this request. Later requests resume the identical BFS.
+            before = sys.getsizeof(prefix.cursor)
+            prefix.cursor += 1
+            self.cache_bytes += sys.getsizeof(prefix.cursor) - before
+            self._check_bytes()
+        if missing:
+            raise KeyError('target is outside the literal generated subgroup')
+        result = [_word(prefix.parents, prefix.letters, prefix.indices[t], self.max_word_length)
+                  for t in targets]
+        assert all(evaluate(generators, word, width) == t for word, t in zip(result, targets))
+        return result
+
+
+def compile_witnesses(node, action, nodes, *, max_states, max_word_length, max_assignments,
+                     max_cache_states=65536, max_cache_bytes=64 * 1024 * 1024):
     gs, width = raw(node['generators']), node['degree']
     degree = len(gs)
     if 2 ** degree > max_assignments:
         raise ValueError('assignment count exceeds configured limit')
     bounds = dict(max_states=max_states, max_word_length=max_word_length)
+    forward_cache = _ForwardWordCache(**bounds, max_cache_states=max_cache_states,
+                                      max_cache_bytes=max_cache_bytes)
     relations = character_relations(gs, width, **bounds)
     edges = action['action_children']
     branches = []
@@ -84,7 +205,7 @@ def compile_witnesses(node, action, nodes, *, max_states, max_word_length, max_a
             conjugator = tuple(x - 1 for x in edge['conjugator'])
             conjugated = [compose(compose(conjugator, g), inverse(conjugator)) for g in schreier]
             try:
-                forward = positive_words(target, conjugated, width, **bounds)
+                forward = forward_cache.words(target, conjugated, width)
                 backward = positive_words(conjugated, target, width, **bounds)
             except KeyError:
                 continue
@@ -235,12 +356,17 @@ def main():
     parser.add_argument('--output-dir', type=Path,
                         default=ROOT / 'formal/SymmetricSubgroupAsymptotics/GeneratedSchreierActions')
     parser.add_argument('--max-states', type=int, default=65536)
+    parser.add_argument('--max-cache-states', type=int, default=65536,
+                        help='Aggregate retained forward-BFS states for this one source')
+    parser.add_argument('--max-cache-bytes', type=int, default=64 * 1024 * 1024,
+                        help='Conservative retained-object cache budget; not a process RSS cap')
     parser.add_argument('--max-word-length', type=int, default=256)
     parser.add_argument('--max-assignments', type=int, default=256)
     parser.add_argument('--max-output-bytes', type=int, default=2 * 1024 * 1024)
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
-    if min(args.max_states, args.max_word_length, args.max_assignments, args.max_output_bytes) < 1:
+    if min(args.max_states, args.max_word_length, args.max_assignments, args.max_output_bytes,
+           args.max_cache_states, args.max_cache_bytes) < 1:
         parser.error('all limits must be positive')
     with gzip.open(ROOT / 'certificates/data/binary_menu.jsonl.gz', 'rt') as f:
         header = json.loads(next(f))
@@ -254,7 +380,9 @@ def main():
     branches = compile_witnesses(nodes[args.source], action, nodes,
                                  max_states=args.max_states,
                                  max_word_length=args.max_word_length,
-                                 max_assignments=args.max_assignments)
+                                 max_assignments=args.max_assignments,
+                                 max_cache_states=args.max_cache_states,
+                                 max_cache_bytes=args.max_cache_bytes)
     data = emit(nodes[args.source], nodes, branches).encode()
     if len(data) > args.max_output_bytes:
         raise SystemExit('certificate exceeds configured output limit; split it before proceeding')
