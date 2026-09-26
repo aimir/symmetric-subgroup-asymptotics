@@ -80,14 +80,66 @@ product $L$ of the bounded carrier factors,
 \begin{equation}\label{eq:carrier-epi}
  |\Epi(L,Q)|\leq C(d(L)+2)^C2^{c d(L)+g\rho(L)}.
 \end{equation}
-For abelian $Q$, generator images prove the assertion, including
-non-elementary abelian quotients. Otherwise apply
-\cite[Theorem 4.6]{RoneyDougalTracey2025} with its target normal
-subgroup equal to $Q$, its direct factor $P=1$, and its subdirect
-factor $R=L$. All source factors and targets have order at most
-$2^{12}$; its normal-rank parameter is bounded by $\rho(L)$.
-The constant in \eqref{eq:carrier-epi} is therefore absolute on this
-fixed alphabet.
+The following elementary bound proves \eqref{eq:carrier-epi} for every
+finite $2$-group source, without a restriction on its direct-product
+factors. Its constant is absolute on the fixed target alphabet.
+
+\begin{proposition}[Structured epimorphisms]\label{prop:structured-epi}
+Let $G,Q$ be finite $2$-groups, and put $d=d(G)$,
+$\rho=\rho(G)$ and $q=\log|Q|$. Then
+\begin{equation}\label{eq:structured-epi-explicit}
+ |\Epi(G,Q)|\leq
+ (d+1)^q\,|Q'|^{\rho}\,|Q|^{|Q'|^q}\,|Z(Q)|^d.
+\end{equation}
+In particular, \eqref{eq:carrier-epi} holds with
+\[
+ C=C_Q=\max\{q,|Q|^{|Q'|^q}\}\geq1,\qquad
+ c=\log|Z(Q)|,\qquad g=\log|Q'|.
+\]
+These choices also give the stated abelian case.
+\end{proposition}
+\begin{proof}
+Choose an actual generating tuple of $G$ of length $d$, by lifting a
+basis of $G/\Phi(G)$. For every epimorphism to $Q$, at most $q$ of
+these same generators have images generating $Q$: choose a basis
+from their images in $Q/\Phi(Q)$ and lift back to the selected
+indices. Padding by identities gives at most $(d+1)^q$ ordered
+tuples. Fix one such tuple $x=(x_1,\ldots,x_q)$ and count the maps
+$f$ for which $f(x)$ generates $Q$.
+
+Set $D=[\langle x\rangle^G,G]\leq G'$ and
+$H=D\cap\ker f$. These are normal subgroups of the original $G$,
+and $f(D)=Q'$, so $[D:H]=|Q'|$. There are at most $|Q'|^{\rho}$
+possible $H$. Indeed, for every $M\lhd G$ inside $G'$, the number
+of $G$-normal subgroups of index at most $2^a$ in $M$ is at most
+$2^{a\rho}$. To see this, every proper normal interval in a finite
+$2$-group admits a bottom step of index two: choose a central
+involution in its nontrivial normal quotient. Each normal $J\leq M$
+has at most $2^{d_G(J)}-1\leq2^{\rho}-1$ normal index-two children,
+since each is the kernel of a nonzero $G$-invariant character of $J$.
+Keeping the previous subgroups as well as these children multiplies
+the cumulative count by at most $2^{\rho}$ at each step, starting
+with the single subgroup $M$.
+
+Now fix $H$ and let $C$ be the inverse image in $G$ of the
+centralizer of the tuple $xH$ in $G/H$. The conjugates of that tuple
+lie coordinatewise in $x_iD/H$, so
+\[
+ [G:C]\leq|D/H|^q=|Q'|^q.
+\]
+Every counted $f$ sends $C$ into $Z(Q)$, because it kills $H$ and
+$f(x)$ generates $Q$. Thus $G\to Q/Z(Q)$ is constant on left
+$C$-cosets, giving at most $|Q|^{|Q'|^q}$ quotient maps. Normality
+of $C$ is not required. In a fixed quotient-map fibre, choose one
+map $f_0$ when the fibre is nonempty. The pointwise differences
+$f(g)f_0(g)^{-1}$ are central and form a homomorphism $G\to Z(Q)$;
+they determine $f$. There are at most $|Z(Q)|^d$ such
+homomorphisms, by the original generating tuple. Empty fibres
+contribute zero. Multiplying the tuple, normal-subgroup,
+quotient-map and central-fibre bounds proves
+\eqref{eq:structured-epi-explicit}. Finally
+$(d+1)^q\leq(d+2)^{C_Q}$ and $|Q|^{|Q'|^q}\leq C_Q$.
+\end{proof}
 
 \subsection{The finite rows and the recurrence}
 Use the masters $X=8T26$, $J=8T27$, $P=8T35$ and the five degree-sixteen
