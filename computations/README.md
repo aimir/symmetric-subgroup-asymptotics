@@ -261,6 +261,50 @@ the same bounded runner. The common family indices, generator names and
 action expression remain unchanged. These are data definitions, not an
 action-coverage proof.
 
+## Selected prime composition certificates
+
+The selected exporter reads one literal primitive-action record from the
+committed `primitive_rank` dataset. Both the source generator tuple and
+every recorded composition-chain tuple are retained in their original
+order. Run the small pilot first:
+
+```sh
+python3 -B computations/python/export_lean_prime_composition.py --degree 3 --index 2 --max-order 6 --max-total-rows 16 --max-operations 200 --max-word-letters 1000 --max-output-bytes 131072 --max-seconds 30
+python3 -B scripts/check_lean.py SymmetricSubgroupAsymptotics/GeneratedPrimeComposition/Primitive3P2.lean --log-dir ../lean-check-logs
+```
+
+`--check` reproduces the selected source without writing it. An optional
+`--expect-row-sha256` pins the exact decompressed JSONL line, including its
+newline. The emitted header also records that hash and the committed
+compressed dataset hash. Only one degree/index pair can be selected per
+invocation; there is no bulk mode.
+
+The exporter bounds each group search, cumulative rows, generator counts,
+word lengths, operations, retained word letters, input bytes and output
+bytes. Its time checks are cooperative and do not impose a hard RSS limit.
+A rejected request leaves the previous output untouched, so a previous
+file is not evidence that the new request succeeded. All checks finish
+before atomic replacement of the selected source.
+
+Lean binds each literal chain generator to a word in the original source.
+Compact numeric permutation codes, sparse right-generator transitions and
+strictly decreasing parent ranks then construct actual group elements
+through the checked reflection theorem. Separately named small row checks
+use synchronous elaboration to limit retained pending proof tasks. Actual
+subgroup orders, generator inclusion, normality, prime relative indices
+and both endpoints produce a composition series of the original subgroup.
+Every chosen actual chief series is bounded by the number of order-three
+factors of that series. JSON rank, order and classification labels are
+never accepted as proof assumptions.
+
+The generated degree-three/index-two and degree-nine/index-six pilots
+have passed kernel checking with the bounded runner's default limits.
+The latter retains the chain of orders `1,3,9,18,36,72,216` and proves the
+chosen-chief bound three. These are selected literal actions, not a
+complete primitive catalogue. The exporter rejects nonprime composition
+edges; recognition of all actions, nonabelian simple factors, primitive
+normal-rank bounds and global coverage remain separate obligations.
+
 ## Original degree-eight normal-state certificates
 
 ```sh

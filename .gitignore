@@ -26,3 +26,6 @@ formal/SymmetricSubgroupAsymptotics/GeneratedKernelAxes/
 formal/SymmetricSubgroupAsymptotics/GeneratedPairBindings/
 formal/SymmetricSubgroupAsymptotics/GeneratedSchreierActions/
 formal/SymmetricSubgroupAsymptotics/GeneratedCarrier16T1086/
+
+# Reproducible individually selected sparse composition certificates.
+formal/SymmetricSubgroupAsymptotics/GeneratedPrimeComposition/
