@@ -761,34 +761,54 @@ coordinates, retaining the projection to $D\times B$ throughout.
 After dropping fullness only on these coordinates, the comparison
 group is $C_2^{2a}$. Its uniquely determined set of nonzero coordinate
 projections has size $k$, giving \eqref{eq:C4-comparison}.
+For the terminal upper bound, this support decomposition is unnecessary:
+the terminal family already permits every image in its binary abelian
+coordinates. Regroup the new $2a$ binary coordinates with the original
+binary abelian part, retaining fullness on each nonabelian critical
+coordinate and each carrier factor. The resulting terminal family has
+critical rank $R+2a$, with no binomial prefactor. This regrouping concerns
+the comparison family; the original orbit profile and its weight remain
+unchanged.
 
-For $E=C_2^R\times C_4^a$, projection onto $B$ gives the exact identity
+The same central comparison gives, for every finite group $E$,
 \[
  |\operatorname{Sub}(E\times B)|
- =\sum_{L\leq B}\sum_{K\leq E}|\Hom(L,E/K)|.
+ \leq |\operatorname{Sub}(E\times C_2^u)|.
 \]
-For fixed $L$, maps factor through $L^{\rm ab}$. If its conjugate
-partition has columns $y_1\geq y_2\geq\cdots$, then
-$\sum y_i\leq u$. The inner sum is a subfamily of the subgroups of
-$E\times L^{\rm ab}$, whose columns are
-$(R+a+y_1,a+y_2,y_3,\ldots)$.
-For an abelian $2$-group with columns $x_i$, the subgroup formula for
-subtype columns $z_i$ is
+Indeed, choose a central subgroup $C\leq B$ of order two and compare
+$E\times B\to E\times(B/C)$ with its split extension. Apply induction
+to $B/C$, keeping $C_2\times E$ as the unchanged exterior, and regroup
+the binary factors. This induction preserves every condition on the
+exact $E$-image; it does not require $E$ to be abelian.
+
+Set $E=C_4^a\times C_2^R$ and $r=R+u$. Reduce the $C_4$ coordinates
+of $C_4^a\times C_2^r$ modulo two. Its kernel has binary dimension
+$r+a$. Above an actual image $U$ of dimension $j$, the squares span
+exactly the copy of $U$ in the doubled $C_4$ coordinates. The square
+obstruction therefore has dimension $j$. The exact central-lift formula,
+with $k$ the retained annihilator dimension, gives
 \[
- \prod_i2^{z_{i+1}(x_i-z_i)}
-       \gauss{x_i-z_{i+1}}{z_i-z_{i+1}}2.
+ |\operatorname{Sub}(C_4^a\times C_2^r)|
+ =\sum_{j=0}^a\gauss aj2
+    \sum_{k=0}^{r+a-j}\gauss{r+a-j}k2\,2^{jk}.
 \]
-Its logarithm is at most $\sum_i z_i(x_i-z_i)+O(h)$, where $h$ is
-the number of nonzero columns. Maximize each term to obtain
-$\sum_i\lfloor x_i^2/4\rfloor$. Moving every added cell to the first
-column increases this sum, giving $(R+a+u)^2/4+a^2/4$.
-The number of subtype choices contributes
-$O((a+u)\log(a+u+2)+\log(R+2))$: only the first column has
-$O(R+a+u)$ choices and all later column heights sum to at most $a+u$.
-Finally
-$|\operatorname{Sub}(B)|\leq C_0 2^{u^2/4}$ by
-\cite[Theorem 1.1]{FusariSpiga2023}. This proves
-\eqref{eq:Hall-mixture}.
+Use $\gauss nk2\leq\phi^{-1}2^{k(n-k)}$, where
+$\phi=\prod_{i\geq1}(1-2^{-i})$. The exponent of each summand is at most
+\[
+ j(a-j)+k(r+a-j-k)+jk
+ =j(a-j)+k(r+a-k)\leq\frac{a^2+(r+a)^2}{4}.
+\]
+There are at most $(a+1)(r+a+1)$ summands. In particular we have the
+stronger explicit bound
+\begin{equation}\label{eq:Hall-mixture-explicit}
+ |\operatorname{Sub}(C_2^R\times C_4^a\times B)|
+ \leq \frac{(a+1)(R+a+u+1)}{\phi^2}
+       2^{((R+a+u)^2+a^2)/4}.
+\end{equation}
+The logarithm of the prefactor is
+$O((a+u)\log(a+u+2)+\log(R+2))$, uniformly also when $a=u=0$.
+Adding the nonnegative $u^2/4$ recovers \eqref{eq:Hall-mixture}
+with the stated constants.
 \end{proof}
 
 \begin{theorem}[Complete mixture]\label{thm:binary-mixture}
@@ -805,9 +825,11 @@ bounds hold uniformly:
 \end{align}
 \end{theorem}
 \begin{proof}
-The carrier product $B$ has $u=\log|B|\leq7T$. From
-\eqref{eq:C4-comparison} and Theorem~\ref{thm:carrier-cross}, whose
-quadratic is increasing in the critical rank, use $k\leq2a$ to get
+The carrier product $B$ has $u=\log|B|\leq7T$. Use the
+exterior-preserving central comparison in Lemma~\ref{lem:mixture-Hall},
+and regroup its unrestricted binary abelian coordinates as above.
+The terminal reserve from Theorem~\ref{thm:carrier-cross}, applied
+directly at critical rank $R+2a$, gives
 \[
  \begin{aligned}
  \log\operatorname{SD}(D,C_4^a,B)
@@ -816,7 +838,7 @@ quadratic is increasing in the critical rank, use $k\leq2a$ to get
  &\leq N^2/4-\frac{29}{656}TN+O(N\log(N+2)).
  \end{aligned}
 \]
-The factor $2^{2a}$ is in the error. Since $A_T<2$ and
+Since $A_T<2$ and
 $c_R/c_N\leq(2N)^{2a+4T}$, division by $c_NG_N$ and insertion of
 \eqref{eq:mixture-weight} proves the second envelope.
 

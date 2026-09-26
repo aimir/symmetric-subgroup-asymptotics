@@ -869,8 +869,28 @@ requiring fullness only on the individual carrier coordinates. Concrete
 epimorphism certificates remain necessary for each quotient variant.
 The [binary-mixture numerical inequalities](SymmetricSubgroupAsymptotics/BinaryMixtureNumerics.lean)
 also prove the manuscript's carrier linear deficit and small-carrier Hall
-deficit. The group-theoretic Hall bound and asymptotic error absorption are
-separate from these scalar inequalities.
+deficit. The [C4 terminal comparison](SymmetricSubgroupAsymptotics/BinaryCarrierCyclicFourProductEnergy.lean)
+applies the reserve directly at rank `R+2a`, preserving all individual
+nonabelian critical and carrier fullness conditions. Its comparison family
+allows every binary abelian image, so no support split is needed.
+
+The [exterior-preserving comparison](SymmetricSubgroupAsymptotics/BinaryPGroupExteriorComparison.lean)
+replaces a finite group of order `2^u` by its elementary abelian comparison
+while preserving arbitrary predicates on the exact exterior image; the
+exterior may be nonabelian. The original C4
+[square obstruction](SymmetricSubgroupAsymptotics/BinaryCyclicFourSquareObstruction.lean),
+[exact two-column count](SymmetricSubgroupAsymptotics/BinaryCyclicFourCount.lean),
+and [Gaussian estimate](SymmetricSubgroupAsymptotics/BinaryCyclicFourCountNumerics.lean)
+give the [mixed subgroup bound](SymmetricSubgroupAsymptotics/BinaryCyclicFourMixedHall.lean)
+with explicit factor `(a+1)*(R+u+a+1)/eulerProduct^2` and exponent
+`(a^2+(R+u+a)^2)/4`. It counts all original product subgroups and bounds
+arbitrary survival subfamilies by inclusion. No general Hall-partition
+formula or arbitrary-group subgroup-count estimate is an input.
+The [abelian quotient-graph classification](SymmetricSubgroupAsymptotics/AbelianProductGraphClassification.lean)
+also gives the exact double Hom sum for arbitrary finite abelian first
+factor and arbitrary finite second factor. Connecting the mixed bound to
+all critical terminal families and absorbing the analytic/profile errors
+remain separate tasks; these local results do not prove T1.
 
 For the degree-eight J carrier, the selected
 [states](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/States.lean) and

@@ -188,6 +188,19 @@ The theorem covers every full-subdirect coupling, including nonsplit proper
 relations and all critical lifts. A retained-factor comparison
 |Sub_P(C4^a x Y)|<=|Sub_P(C2^(2a) x Y)| is valid when P depends only on the
 projection to Y. It does not preserve arbitrary added marking weights.
+The terminal upper family allows unrestricted binary abelian images, so
+the comparison applies its reserve directly at rank R+2a. For the
+C4-heavy estimate, an exterior-preserving central-order-two induction
+gives |Sub(E x B)|<=|Sub(E x C2^u)| when |B|=2^u, even for nonabelian E.
+Keeping E=C4^a x C2^R and counting its actual square obstruction yields
+
+    |Sub(E x B)| <= (a+1)(R+u+a+1)/phi^2
+                   * 2^((a^2+(R+u+a)^2)/4).
+
+This explicit two-column bound supplies the manuscript's weaker Hall
+estimate without a general abelian-partition formula or a supplied
+subgroup-count estimate for B. It does not itself supply the terminal
+sectional-rank estimate or the normalized profile summation.
 Combine the joint carrier cross bound, the C4-heavy envelope and the original
 small-support bridge on disjoint profile regions. Their support-sensitive
 reserves, not only the final O(2^(-gamma*N)) statement, are prerequisites for
