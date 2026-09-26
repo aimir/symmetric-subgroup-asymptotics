@@ -203,6 +203,44 @@ space and the actual quotient; ranks of selected numerical forms
 alone do not supply them.
 \end{proof}
 
+\begin{lemma}[Derived-intersection directions]\label{lem:carrier-intersection-directions}
+Keep $G,D,V,E$ as in Lemma~\ref{lem:carrier-joint-radicals}, but let
+$N\lhd G$ be arbitrary. Put
+\[
+ B=N\cap D,\qquad W=ND/D,\qquad
+ L_B=\{\lambda\in E^*: \lambda|_B=0\}.
+\]
+Then $L_B\leq J_W$ and $|N|=|B|2^{\dim W}$.
+If $B<D$, then $L_B\ne0$. Consequently, a radical bound $a$ for
+every nonzero $b_\lambda$ gives $\dim W\leq a$.
+If independent pairs have zero common radical, then
+$\dim L_B\geq2$ implies $N\leq D$.
+For the star family of Corollary~\ref{cor:carrier-star-family},
+$L_B\ne0$ gives the sharper bound
+\[
+ \dim W+\dim L_B\leq\dim U.
+\]
+\end{lemma}
+\begin{proof}
+Original normality gives $[N,G]\leq N\cap D=B$, so every character
+in $L_B$ annihilates all commutators from $W$. The second isomorphism
+theorem identifies $W$ with $N/B$, proving the order identity.
+If $B<D$, choose a maximal proper $G$-normal subgroup $J$ of $D$
+containing $B$. Then $D/J$ is a minimal nontrivial normal subgroup
+of the finite $2$-group $G/J$, and hence has order two and is
+central. Its nonzero character gives a member of $L_B$.
+
+The single-form bound follows by choosing a nonzero member of $L_B$.
+Two independent members force $W=0$ under the stated pair hypothesis.
+For the star family, a nonzero member of $L_B$ forces every vector
+of $W$ to have last coordinate zero. First projection identifies $W$
+with a subspace of the common annihilator of $L_B$ in $U$, whose
+dimension is $\dim U-\dim L_B$. This proves the last inequality.
+These are constraints from characters of $D$ vanishing on $B$;
+the extendibility and power constraints on characters of $B$ remain
+separate.
+\end{proof}
+
 For $Q=G/N$ take $(c,g)=(\log|Q|,0)$ if $Q$ is abelian, and
 $(c,g)=(\log|Z(Q)|,\log|Q'|)$ otherwise. For a full subdirect
 product $L$ of the bounded carrier factors,

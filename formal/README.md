@@ -654,6 +654,31 @@ Original-normal coverage inside `G'`, numerical test-kernel bounds for the
 proper-intersection branches, simultaneous row domination, and physical
 weighted coverage still require their own proofs.
 
+The [exact order module](SymmetricSubgroupAsymptotics/BinaryCarrierExactOrders16.lean)
+derives `|G| = 2^10, 2^10, 2^10, 2^11, 2^12` for the masters
+1082, 1083, 1084, 1332, 1547, respectively, from their proved quotient
+coordinate equivalences and actual derived orders. Their 2-group property
+is a consequence of these equalities.
+[Original normal-interval characters](SymmetricSubgroupAsymptotics/PrimeNormalIntervalCharacters.lean)
+supply a nonzero invariant derived character vanishing on every proper
+original normal `B < G'`. The
+[intersection form constraints](SymmetricSubgroupAsymptotics/PrimeDerivedIntersectionForms.lean)
+and [proper-intersection reduction](SymmetricSubgroupAsymptotics/PrimeDerivedProperIntersection.lean)
+put the actual image of `N` in its form radical. The
+[star parameter capacity](SymmetricSubgroupAsymptotics/StarAlternatingParameterCapacity.lean)
+retains the entire vanishing-character subspace in the 1332 case.
+
+Consequently the [five-master intersection theorem](SymmetricSubgroupAsymptotics/BinaryCarrierProperIntersection16.lean)
+proves, for every original normal `N` not containing `G'`,
+`|N| <= 4 |N ∩ G'|` for 1082, 1083, 1084, 1547, and
+`|N| <= 8 |N ∩ G'|` for 1332. The exact
+[image-order identity](SymmetricSubgroupAsymptotics/PrimeDerivedIntersectionImage.lean)
+identifies these as bounds on the original quotient directions. For every
+master, `N ∩ G' <= R` implies `N <= R`, where `R = (G')²[G',G]`
+is the actual relative radical. These direction and containment bounds
+do not replace the remaining correlated head, radical, and quotient-row
+inequalities.
+
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
 The [verification boundary](../ASSUMPTIONS.md#formal-theorem-boundary)
