@@ -55,6 +55,22 @@ their full profiles and normal coverage, seven master quotient maps, exact
 profile reductions and both rational cone certificates. Its group and numeric
 checks supply different premises of the mixed-family estimate.
 
+The small original-generator square certificates for the five degree-sixteen
+carrier masters can be reproduced individually:
+
+```sh
+python3 -B computations/python/export_lean_derived_square_words.py --master 1082 --check
+```
+
+The other supported masters are `1083`, `1084`, `1332` and `1547`. The
+producer checks the original forward and inverse permutations and tuple
+order, then searches under fixed state, operation and time limits. `--check`
+compares the selected Lean source without writing files; `--write` emits
+that one source. Optional `--report` metadata must be written outside the
+publication repository. The producer never invokes a compiler or proves
+normal coverage. Lean independently checks each square-word equation and
+derives the evaluation-kernel identity on the literal original group.
+
 For the other finite theorem inputs:
 
 ```sh

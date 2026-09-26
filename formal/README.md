@@ -566,6 +566,18 @@ its nonnegative weights, and is instantiated for C4 powers. Complete
 finite-menu coverage, the joint numerical transition estimates, labelled
 decoration bounds and the binary-error recurrence remain separate obligations.
 
+[DerivedGeneratorWords](SymmetricSubgroupAsymptotics/DerivedGeneratorWords.lean)
+certifies derived membership using expressions in the original generators.
+If every original generator square equals such an expression, the binary
+evaluation kernel of their literal generated subgroup equals its derived
+subgroup. The five degree-sixteen carrier masters have kernel-checked
+pointwise permutation witnesses. Their
+[all-normal applications](SymmetricSubgroupAsymptotics/BinaryCarrierDerivedMasters16.lean)
+prove `a₂ <= m`, and hence `max m a₂ = m`, for every original normal axis
+of each master. This conclusion requires no enumeration of those normals.
+The other numerical row fields, simultaneous domination and physical
+coverage remain separate requirements.
+
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
 The [verification boundary](../ASSUMPTIONS.md#formal-theorem-boundary)
