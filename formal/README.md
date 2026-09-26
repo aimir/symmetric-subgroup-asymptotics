@@ -950,7 +950,17 @@ The [profile sum](SymmetricSubgroupAsymptotics/BinaryCarrierSmallSupportProfiles
 retains the entire coefficient shift and every original normalizer/factorial
 weight; the [physical assembly](SymmetricSubgroupAsymptotics/BinaryCarrierSmallSupportPhysical.lean)
 uses a forgetful surjection, so overlapping presentations cause no difficulty.
-The other two regimes and global binary coverage remain separate steps.
+The [complete finite-alphabet mixture](SymmetricSubgroupAsymptotics/BinaryCarrierMixtureCompletion.lean)
+also installs the Hall and carrier-reserve branches on the same original
+physical parameter bins. Their rates are respectively `1/50` and
+`29/1490432` in half-degree `N`. Summing every bin and absorbing its
+polynomial cost gives the unconditional bound
+`card(Family N) / exactBenchmark(2*N) ≤ 2^(-(29/2980864)*N)` eventually.
+This theorem has no count, weight or numerical estimate as a premise.
+Its family is the literal union of all positive-support profiles in the
+specified thirteen-colour alphabet on `Fin (2*N)`; global binary coverage,
+odd markers, nonbinary ownership and the full remainder recurrence are
+separate obligations.
 
 For the degree-eight J carrier, the selected
 [states](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/States.lean) and
