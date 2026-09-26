@@ -578,6 +578,20 @@ of each master. This conclusion requires no enumeration of those normals.
 The other numerical row fields, simultaneous domination and physical
 coverage remain separate requirements.
 
+[PrimeNormalHeadCentralizer](SymmetricSubgroupAsymptotics/PrimeNormalHeadCentralizer.lean)
+proves `p ^ d_G(N) <= |C_N(u)|` for any finite group, prime `p`, original
+normal subgroup `N` and original element `u`. Its commutator-fibre injection
+does not require an abelian subgroup or a homomorphism from commutators.
+Consequently, one centralizer inside the original derived subgroup bounds
+the maximum over every original derived normal.
+[DerivedWordCentralizerCertificate](SymmetricSubgroupAsymptotics/DerivedWordCentralizerCertificate.lean)
+supplies such a bound from a finite code covering the commuting rows of an
+actual derived-word certificate. The
+[quotient transport](SymmetricSubgroupAsymptotics/PrimeEvaluationKernelQuotients.lean)
+preserves the evaluation-kernel containment, and the
+[exact inflation bound](SymmetricSubgroupAsymptotics/BinaryDerivedInflationBound.lean)
+then gives `tau <= rho` on the same actual group or quotient.
+
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
 The [verification boundary](../ASSUMPTIONS.md#formal-theorem-boundary)

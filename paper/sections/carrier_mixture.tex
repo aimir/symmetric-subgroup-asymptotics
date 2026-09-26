@@ -104,6 +104,34 @@ the maximum defining $m$, so $a_2\leq m$. Finally $G'\leq N$ gives
 $N\cap G'=G'$, proving the remaining assertions.
 \end{proof}
 
+\begin{lemma}[One centralizer controls all normal heads]
+\label{lem:carrier-centralizer-head}
+Let $G$ be a finite group, $p$ a prime, $N\lhd G$, and $u\in G$.
+Write $R=N^p[N,G]$ and $d_{G,p}(N)=\log_p|N:R|$. Then
+\[
+ p^{d_{G,p}(N)}\leq |C_N(u)|.
+\]
+Consequently, for a finite $2$-group $G$ and any subgroup $S\leq G$,
+\[
+ 2^{\max_{M\lhd G,\,M\leq S}d_G(M)}\leq |C_S(u)|,
+ \qquad 2^{\rho(G)}\leq |C_{G'}(u)|.
+\]
+Neither $N$ nor $G'$ is required to be abelian.
+\end{lemma}
+\begin{proof}
+The set map $f:N\to R$ given by $f(x)=[x,u]$ need not be a
+homomorphism. If $f(x)=f(y)$, then $y^{-1}x\in C_N(u)$.
+Choose one representative $y_r$ of each nonempty fibre. The map
+\[
+ x\longmapsto \bigl(f(x),y_{f(x)}^{-1}x\bigr)
+\]
+injects $N$ into $R\times C_N(u)$. Thus
+$|N|\leq |R|\,|C_N(u)|$, proving the first bound after division
+by $|R|$. Apply it to every original $G$-normal subgroup $M\leq S$
+and use $C_M(u)\leq C_S(u)$. Taking the maximum gives the second
+bound; putting $S=G'$ gives the last one.
+\end{proof}
+
 For $Q=G/N$ take $(c,g)=(\log|Q|,0)$ if $Q$ is abelian, and
 $(c,g)=(\log|Z(Q)|,\log|Q'|)$ otherwise. For a full subdirect
 product $L$ of the bounded carrier factors,
