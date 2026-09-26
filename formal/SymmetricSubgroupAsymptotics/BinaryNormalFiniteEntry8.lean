@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.BinaryPairCertificateCapacity
+import SymmetricSubgroupAsymptotics.BinaryPhysicalPairCertificate
 import SymmetricSubgroupAsymptotics.BinaryNormalCharacterCriterion
 import SymmetricSubgroupAsymptotics.BinaryNormalTransport8
 
@@ -10,39 +10,6 @@ exactly the independently checked physical carrier charts. -/
 set_option autoImplicit false
 noncomputable section
 namespace SymmetricSubgroupAsymptotics
-
-structure BinaryPhysicalPairCertificate {w : ℕ}
-    (U : Subgroup (Equiv.Perm (Fin w))) (N : Subgroup U) where
-  pairCount : ℕ
-  frame : BinaryPairFrame U (Fin pairCount)
-  generatorCount : ℕ
-  generators : Fin generatorCount → U
-  generators_full : Subgroup.closure (Set.range generators)=⊤
-  localCertificate : BinaryPairLocalCertificate generators frame.top N
-  physical_width : localCertificate.width=Nat.card (Fin w)
-
-namespace BinaryPhysicalPairCertificate
-variable {w : ℕ} {U : Subgroup (Equiv.Perm (Fin w))} {N : Subgroup U} [N.Normal]
-    (C : BinaryPhysicalPairCertificate U N)
-
-def physicalCut := sectionSubgroupImage (p := 2)
-  (V := C.frame.kernelSpace ⧸ C.frame.normalSpace N)
-  (C.frame.sectionMap N) (C.localCertificate.kernelCut C.frame)
-
-def physicalRepresentation := C.localCertificate.physicalRepresentation C.frame N
-  C.generators C.generators_full
-
-/-- The actual cut dimension and actual quotient capacity satisfy the
-physical gap. No capacity bound is a certificate assumption. -/
-theorem actual_gap (hU : IsPGroup 2 U) :
-    (C.localCertificate.coverDegree:ℝ)+2*Module.finrank (ZMod 2) C.physicalCut+
-      4*representationSchurCapacity C.physicalRepresentation<w := by
-  rw [show Module.finrank (ZMod 2) C.physicalCut=C.localCertificate.cutDimension from
-    C.localCertificate.cutDimension_eq C.frame N]
-  have h := C.localCertificate.physical_gap C.frame N C.generators
-    C.generators_full hU C.physical_width
-  simpa only [Nat.card_fin] using h
-end BinaryPhysicalPairCertificate
 
 def binaryEightTransportChart (i : Fin 3) : CheckedPermutationCarrier 8 16 :=
   ![BinaryChart8T16.chart,BinaryChart8T20.chart,BinaryChart8T21.chart] i
