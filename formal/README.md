@@ -592,6 +592,17 @@ preserves the evaluation-kernel containment, and the
 [exact inflation bound](SymmetricSubgroupAsymptotics/BinaryDerivedInflationBound.lean)
 then gives `tau <= rho` on the same actual group or quotient.
 
+The five literal degree-sixteen masters have checked derived-group orders
+`16, 16, 16, 64, 64` and centralizer bounds giving
+`rho <= 3, 3, 3, 4, 3`, respectively. The
+[combined axis bounds](SymmetricSubgroupAsymptotics/BinaryCarrierMasterRankBounds16.lean)
+install `max(m, a₂) <= min(log₂|N|, r)` for every original normal axis,
+with those respective values of `r`. The
+[generic capacity theorem](SymmetricSubgroupAsymptotics/BinaryCarrierAxisCapacity.lean)
+uses the actual order of `N`; it requires no recorded normal profile.
+Sharper exceptional `m` bounds, the other row fields, simultaneous
+domination and physical coverage remain separate requirements.
+
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
 The [verification boundary](../ASSUMPTIONS.md#formal-theorem-boundary)
