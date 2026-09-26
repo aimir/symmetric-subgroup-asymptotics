@@ -1,7 +1,7 @@
 """Pure emitter for the selected original finite carrier graph.
 
-Called only by export_lean_carriers.py --chart 16T1086 --modular.  The canonical
-BinaryExceptional16T1086 module becomes an import wrapper, so legacy import
+Called by export_lean_carriers.py for 16T1086 in both default and selected
+runs. The canonical BinaryExceptional16T1086 module is an import wrapper, so import
 paths and public theorem names remain unique. No full row multiplication
 table is constructed: the original generator transitions, words, and marked
 range/kernel maps are retained verbatim as finite data.

@@ -4,6 +4,8 @@
 Run from any directory. This reconstructs Cayley rows and generator words
 from certificates/data/binary_menu.jsonl.gz; Lean proves their soundness.
 No catalogue order or external checker verdict is used as a proof premise.
+The canonical 16T1086 chart always uses modular output, including in the
+default four-chart run. Every row search is capped at 1024 elements.
 """
 from pathlib import Path
 import argparse
@@ -12,6 +14,8 @@ from collections import deque
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT=ROOT/'formal/SymmetricSubgroupAsymptotics'
+MAX_CARRIER_ROWS = 1024
+CARRIER_NODES = ('b8_16', 'b8_20', 'b8_21', 'b16_1086')
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--check', action='store_true',
@@ -19,7 +23,7 @@ parser.add_argument('--check', action='store_true',
 parser.add_argument('--chart', choices=['16T1086'],
                     help='Select only this original chart; leave physical block files unchanged.')
 parser.add_argument('--modular', action='store_true',
-                    help='Split the selected chart into literal data and 32-row generator/word/kernel checks.')
+                    help='Compatibility flag: selected 16T1086 output is always modular.')
 args = parser.parse_args()
 if args.modular and args.chart is None:
     parser.error('--modular requires --chart 16T1086')
@@ -42,8 +46,8 @@ def bfs(gens,identity,op):
         for j,h in enumerate(gens):
             v=op(g,h)
             if v not in ix:
-                if args.modular and len(rows)>=1024:
-                    raise ValueError('Selected carrier graph exceeds its 1024-row recovery bound')
+                if len(rows)>=MAX_CARRIER_ROWS:
+                    raise ValueError(f'Carrier row search exceeds its {MAX_CARRIER_ROWS}-row bound')
                 ix[v]=len(rows);rows.append(v);words.append(words[i]+[j])
             ns.append(ix[v])
         nxt.append(ns)
@@ -129,8 +133,9 @@ with gzip.open(ROOT/'certificates/data/binary_menu.jsonl.gz','rt')as f:
             for e in a['normals']:
                 if e['kind']=='transport':charts.append((nodes[a['id']],e))
             if args.chart:break
-if args.chart and len(charts)!=1:
-    raise ValueError('The selected action must have exactly one transport chart')
+expected_nodes = ('b16_1086',) if args.chart else CARRIER_NODES
+if tuple(node['id'] for node, _ in charts) != expected_nodes:
+    raise ValueError('Expected exactly the selected original carrier charts in canonical order')
 for node,e in charts:
     label=node['id'].replace('b','',1).replace('_','T');w=node['degree'];q=e['quotient_degree']
     ds={
@@ -139,7 +144,7 @@ for node,e in charts:
         'quotient':mkdata(e['quotient_generators'],q),
         'axis':mkdata(e['normal_generators'],w),
         'coverKernel':mkdata(e['cover_kernel_generators'],w)}
-    if args.modular:
+    if label == '16T1086':
         from export_lean_carrier_modular import emit_modular_chart
         emit_modular_chart(label,w,q,ds,OUT,save_generated,lookup,row,check_only=args.check)
         continue
