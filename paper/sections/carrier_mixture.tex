@@ -924,6 +924,45 @@ multiplicity weights, at most $(N+1)^2$ parameter pairs $(a,T)$ remain.
 Their sum proves the theorem.
 \end{proof}
 
+The same weighted estimates give a direct extension to one natural
+$S_3$ orbit, with critical orbits and the original thirteen noncritical
+colours on the remaining points. Write $\mathbf p$ for the critical
+profile of rank $R$, keep the noncritical profile $\mathbf q$ fixed,
+and put $C=2a+4T>0$ and $N=R+C+1$. The physical degree is $2N+1$.
+The exterior group is a $2$-group. If $(g,d)$ lifts a three-cycle and
+$d^{2^k}=1$, its $4^k$th power is $(g,1)$. Thus every subgroup full
+on the $S_3$ coordinate contains $A_3$ on that coordinate alone.
+The sign quotient, followed by its inverse full preimage, identifies
+its full models bijectively with those of
+$(\mathbf p+\mathbf e_{C_2},\mathbf q)$. Every original critical and
+noncritical coordinate remains full; no full projection onto either
+entire class product is required.
+
+The physical weight is still the original one. If
+$\omega(\mathbf p,\mathbf q)$ denotes the reciprocal product of the
+original normalizers and occurrence factorials, then
+\[
+ \frac{\omega(\mathbf p,\mathbf q)}6
+ =\frac{p_{C_2}+1}{3}\,
+       \omega(\mathbf p+\mathbf e_{C_2},\mathbf q).
+\]
+The factor includes both the marker normalizer six and the new C2
+occurrence factorial. The map $\mathbf p\mapsto\mathbf p+\mathbf e_{C_2}$
+is injective into the critical profiles of rank $R+1$, so positivity
+bounds the original weighted sum by $(R+1)/3$ times the complete
+shifted sum, with $\mathbf q$ unchanged. Its half-degree is exactly
+$(R+1)+C=N$. Moreover,
+$L_{2N+1}\geq(2N+1)!c_NG_N$, retaining the nonnegative additional
+term of the odd coefficient. The preceding weighted estimates therefore
+give a polynomial times $2^{-\Omega(N)}$ for each such bin.
+There are at most $(N+1)^2$ pairs $(a,T)$ with $C+1\leq N$, and the
+weight correction is at most $(N+1)/3$. Their cubic polynomial cost
+is absorbed by the exponential decay. This bounds the actual union
+of physical subgroups, allowing overlapping profile presentations.
+It is a specialization to this finite alphabet and leaves the general
+complete-family marker transfer of Section~\ref{sec:marker-complete}
+unchanged.
+
 Combining \eqref{eq:proved-mixture-envelopes} with
 Propositions~\ref{prop:transport}--\ref{prop:absorb-decorations}
 proves the same negligible-mass conclusion for every fixed finite menu
