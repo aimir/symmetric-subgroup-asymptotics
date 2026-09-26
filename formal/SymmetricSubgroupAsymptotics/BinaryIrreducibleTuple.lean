@@ -45,7 +45,8 @@ def binaryScalarSign : Multiplicative (ZMod 2)→*k where
     have hy : y.toAdd=0 ∨ y.toAdd=1 := by
       generalize y.toAdd=z
       fin_cases z <;> simp
-    rcases hx with hx|hx <;> rcases hy with hy|hy <;> simp [hx,hy]
+    have htwo : (1 : ZMod 2) + 1 = 0 := by decide
+    rcases hx with hx|hx <;> rcases hy with hy|hy <;> simp [hx,hy,htwo]
 
 theorem binaryScalarSign_eq_one [CharZero k] (x : Multiplicative (ZMod 2)) :
     binaryScalarSign (k := k) x=1 ↔ x=1 := by
