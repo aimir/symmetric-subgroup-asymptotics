@@ -118,6 +118,33 @@ is injective into the subgroups of $S_{b+qv}$. Repeated maps, dependent
 characters, and proper joint subdirect images are allowed.
 \end{proof}
 
+\begin{proposition}[A target-order alternative]\label{prop:target-order-fusion}
+Let $Q$ be a finite $2$-group of order $2^a$. For every finite group
+$J$ and all integers $b,q\geq0$,
+\[
+ |\Hom(J,Q)|\leq2^{a d_2(J)},\qquad
+ \sum_{J\leq S_b}\bigl(2^{a d_2(J)}\bigr)^q\leq s_{b+2aq}.
+\]
+Consequently this supplies the fusion parameters
+$D=1$, $\lambda=0$, $v=2a$ whenever the original physical width
+satisfies $2a<w$.
+\end{proposition}
+\begin{proof}
+Every nontrivial finite $2$-group has a central subgroup $C$ of
+order two. Each nonempty fibre of
+$\Hom(J,Q)\to\Hom(J,Q/C)$ is a torsor under $\Hom(J,C)$:
+the pointwise difference of two lifts is a homomorphism because
+$C$ is central. Its cardinality is $2^{d_2(J)}$.
+Induction on $a$ proves the first inequality, including empty fibres
+and nonsplit extensions. For the second, encode the $aq$ binary
+characters together as a graph over the same literal $J$, realizing
+each binary coordinate on a pair of new points.
+\end{proof}
+This argument counts actual maps; it takes no quotient by target
+automorphisms and does not require a faithful action of $Q$ on $2a$
+points. Its width condition is distinct from the character criterion
+used later.
+
 \subsection{A complete finite-menu estimate}
 \begin{theorem}[Original-weight fusion]\label{thm:fusion}
 Fix a finite collection of pairs $(U,N)$, where $U\leq S_w$ is
