@@ -832,6 +832,13 @@ splits the two classes of original occurrences with the same exactness.
 The [mixed degree-sixteen model count](SymmetricSubgroupAsymptotics/BinaryCarrierMixedProfile16.lean)
 combines these charts for the literal critical and five-master actions,
 retaining every individual full projection and arbitrary original predicates.
+Its [labelled count](SymmetricSubgroupAsymptotics/BinaryCarrierLabelledProfile16.lean)
+has physical degree `2*R+16*L` and the original action normalizers and
+occurrence factorials. Arbitrary survival families are bounded by inclusion
+in the full family; the theorem does not assume their invariance.
+The [generic mixed-profile theorem](SymmetricSubgroupAsymptotics/BinaryCarrierMixedProfile.lean)
+provides the same transport for any finite menu of original binary actions,
+given a history certificate and order bound on its exact occurrence word.
 The [general product reserve](SymmetricSubgroupAsymptotics/BinaryCarrierWordProductEnergy.lean)
 also supports words with different physical scales. It discharges internal
 normal multiplicity from the original group orders and counts actual product
@@ -844,6 +851,14 @@ preserve scales one and two across all 43 envelopes. The
 installs their bounds from actual row coverage and the exact sum of original
 physical scales. Repeated labels retain separate original normal choices and
 weights; the numerical menu does not count normals.
+The [original mixed-word certificate](SymmetricSubgroupAsymptotics/BinaryCarrierMixedMenuWord.lean)
+supplies those inputs for arbitrary words in J and the five degree-sixteen
+masters. Its [weighted and subgroup reserves](SymmetricSubgroupAsymptotics/BinaryCarrierMixedMenuReserve.lean)
+use the structural total scale of the original word, including repetitions.
+The [binary-mixture numerical inequalities](SymmetricSubgroupAsymptotics/BinaryMixtureNumerics.lean)
+also prove the manuscript's carrier linear deficit and small-carrier Hall
+deficit. The group-theoretic Hall bound and asymptotic error absorption are
+separate from these scalar inequalities.
 
 For the degree-eight J carrier, the selected
 [states](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/States.lean) and
@@ -859,6 +874,9 @@ places all thirteen normals in the displayed table at scale one, keeping the
 same original subgroup across all fields.
 The [X evaluation-kernel theorem](SymmetricSubgroupAsymptotics/BinaryCarrierEvaluationKernel8T26.lean)
 also proves that the actual binary evaluation kernel equals the commutator.
+The selected [X registry](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T26/Registry.lean)
+now certifies all 27 original normal subgroups with exhaustive coverage;
+its six-field capacity profiles remain to be installed.
 Remaining degree-eight profile bindings, physical source coverage, physical
 weight identifications and the complete remainder recurrence remain separate.
 
