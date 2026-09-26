@@ -941,8 +941,16 @@ with prefactor `4*(N+1)^4/eulerProduct^6` and exponent
 `-N/2+1/2+(211/192)*C^2+(14/3)*C+49/3`, where `N=R+C` and `C=2*a+4*T`.
 The [uniform scalar estimates](SymmetricSubgroupAsymptotics/BinaryMixtureAbsorption.lean)
 absorb the full critical coefficient shift and fixed logarithmic costs in
-all three mixture regimes. Complete physical profile summation remains a
-separate assembly step; the model and scalar bounds alone do not prove it.
+all three mixture regimes. The
+[complete small-support union](SymmetricSubgroupAsymptotics/BinaryCarrierAllSmallSupport.lean)
+now sums every positive support `C ≤ sqrt(N)/4` in the original thirteen-colour
+alphabet and proves that its actual labelled subgroup count, divided by
+`exactBenchmark (2*N)`, is eventually at most `2^(-N/4)`.
+The [profile sum](SymmetricSubgroupAsymptotics/BinaryCarrierSmallSupportProfiles.lean)
+retains the entire coefficient shift and every original normalizer/factorial
+weight; the [physical assembly](SymmetricSubgroupAsymptotics/BinaryCarrierSmallSupportPhysical.lean)
+uses a forgetful surjection, so overlapping presentations cause no difficulty.
+The other two regimes and global binary coverage remain separate steps.
 
 For the degree-eight J carrier, the selected
 [states](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/States.lean) and
