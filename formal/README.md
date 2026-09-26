@@ -181,6 +181,8 @@ definition obligations as conclusions, not hypotheses.
 | [InducedTernaryWidthEnvelope](SymmetricSubgroupAsymptotics/InducedTernaryWidthEnvelope.lean), [TernaryIndexWidthValues](SymmetricSubgroupAsymptotics/TernaryIndexWidthValues.lean) | The proved integer B(s) envelope on actual Sylow/Mackey pieces, natural division before the fibre factor, and exact small-index values; no prime-power literature hypothesis. |
 | [ChiefOrbitEvaluation](SymmetricSubgroupAsymptotics/ChiefOrbitEvaluation.lean), [ChiefNormalStep](SymmetricSubgroupAsymptotics/ChiefNormalStep.lean), [ChiefTernaryFiltration](SymmetricSubgroupAsymptotics/ChiefTernaryFiltration.lean) | Constructed elementary images, exact retained-character kernels and aggregation of actual elementary, perfect and coprime layers. |
 | [ImprimitiveBlockEvaluation](SymmetricSubgroupAsymptotics/ImprimitiveBlockEvaluation.lean), [ChiefConjugateIntersections](SymmetricSubgroupAsymptotics/ChiefConjugateIntersections.lean) | Original block-fibre action and separation, yielding the actual normal intersection chain with proved endpoints. |
+| [TransitiveBlockQuotient](SymmetricSubgroupAsymptotics/TransitiveBlockQuotient.lean), [PrimitiveBlockFibre](SymmetricSubgroupAsymptotics/PrimitiveBlockFibre.lean), [OriginalMinimalBlock](SymmetricSubgroupAsymptotics/OriginalMinimalBlock.lean) | Constructed minimal block quotient, primitive literal fibre image, exact degree product, smaller faithful top action, and the original-normal natural-number chief recurrence. |
+| [PermutationChiefWeight](SymmetricSubgroupAsymptotics/PermutationChiefWeight.lean) | Every genuine chosen-chief ternary weight is bounded by the three-adic valuation of the point-degree factorial; small-degree density bounds need no classification assumption. |
 | [CharacterEpimorphismBound](SymmetricSubgroupAsymptotics/CharacterEpimorphismBound.lean), [BinaryIrreducibleTuple](SymmetricSubgroupAsymptotics/BinaryIrreducibleTuple.lean) | The original target-automorphism/class-character bound and construction of its faithful irreducible tuple from actual central involutions. |
 | [BinaryCharacterEnvelope](SymmetricSubgroupAsymptotics/BinaryCharacterEnvelope.lean), [BinaryCharacterFusion](SymmetricSubgroupAsymptotics/BinaryCharacterFusion.lean) | The original arbitrary-source bound `Epi(J,Q) ≤ Aut(Q) 2^(z log₂(38/25)b)` for finite binary targets; exact criterion gaps and survival-restricted fusion input. Only the stated nilpotent class-count theorem remains external. |
 | [BinaryPairCertificateCapacity](SymmetricSubgroupAsymptotics/BinaryPairCertificateCapacity.lean) | Checked original subgroup orders determine the literal central-cut dimension and original quotient capacity; a physical gap additionally requires equality of certificate width and actual degree. |
@@ -440,7 +442,11 @@ composition length. `PrimitiveCompositionTail` derives the strict bound
 `10 W < 3 r` for every primitive degree `r >= 45`, conditional on the
 precisely stated published `PrimitiveCompositionLengthInput`. That input,
 the remaining small-degree cases and the high-cone installation remain
-separate obligations.
+separate obligations. The minimal block quotient is itself constructed from
+a cover of the original point stabilizer. Its local component is primitive
+on the unchanged fibre, and its top is the faithful original permutation
+range. The exact degree product makes both degrees smaller; the numerical
+induction and primitive bounds remain separate from this construction.
 
 The first c=1 application proves the physical factor `n!/(6 m!)` times the
 exact surviving split-character sum on the complete complement. Its unrestricted
