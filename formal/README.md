@@ -807,8 +807,28 @@ terminal attachment, arbitrary terminal survival tests, and a proved internal
 normal multiplicity of at most `2^(4096 * word.length)`. It takes no weight-bound
 hypothesis. Original labelled-action normalizers and profile factors remain
 outside this fixed-word count.
-Actual degree-eight bindings, physical source coverage, physical weight
-identifications and the complete remainder recurrence remain separate.
+The [exact tail decomposition](SymmetricSubgroupAsymptotics/SubgroupTailFibre.lean)
+and its [critical terminal specialization](SymmetricSubgroupAsymptotics/BinaryCarrierTerminalFamily.lean)
+identify those fibres with literal original subgroups, preserving arbitrary
+predicates and requiring fullness only on each specified coordinate. The
+[fixed-product theorem](SymmetricSubgroupAsymptotics/BinaryCarrierMasterProduct16.lean)
+therefore states the reserve directly for actual subgroup cardinalities.
+
+[Upper profile assembly](SymmetricSubgroupAsymptotics/OrbitProfileUpperAssembly.lean)
+retains the original normalizer orders and occurrence factorials using only
+naturality of the local subgroup family. Each labeling fibre contains a free
+copy of the original internal-symmetry group, so an upper bound does not need
+transitivity, separation of action types, or uniqueness of presentations.
+
+For the degree-eight J carrier, the selected
+[states](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/States.lean) and
+[registry](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/Registry.lean)
+certify all thirteen literal normal subgroups and exhaustive coverage.
+This does not yet identify their six-field capacity profiles.
+The [X evaluation-kernel theorem](SymmetricSubgroupAsymptotics/BinaryCarrierEvaluationKernel8T26.lean)
+also proves that the actual binary evaluation kernel equals the commutator.
+Remaining degree-eight profile bindings, physical source coverage, physical
+weight identifications and the complete remainder recurrence remain separate.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.

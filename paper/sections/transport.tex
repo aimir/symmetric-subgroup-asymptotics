@@ -56,6 +56,39 @@ This counts labelled groups directly, so division by $n!$ retains
 the original action-normalizer weights and occurrence factorials.
 \end{proof}
 
+The original denominator can also be retained directly when only an
+upper bound is needed; uniqueness of the orbit presentation is unnecessary.
+
+\begin{lemma}[Upper assembly with original normalizers]\label{lem:upper-assembly}
+Fix nonempty finite sets $\Omega_i$, actions $U_i\leq S(\Omega_i)$,
+and multiplicities $m_i$, and let $X$ be the disjoint union of these
+occurrences, of total size $n$. Put
+\[
+ W=\prod_i\bigl(N_{S(\Omega_i)}(U_i)\wr S_{m_i}\bigr)\leq S(X).
+\]
+If $\mathcal P$ is any family of subgroups of $S(X)$ invariant under
+conjugation by $W$, then its assembled family
+$\mathcal A=\{gKg^{-1}:g\in S(X),\ K\in\mathcal P\}$ satisfies
+\[
+ |\mathcal A|\leq
+ \frac{n!\,|\mathcal P|}
+ {\prod_i |N_{S(\Omega_i)}(U_i)|^{m_i}m_i!}.
+\]
+\end{lemma}
+\begin{proof}
+For every pair $(g,K)$ and every $w\in W$, the pair
+$(gw,w^{-1}Kw)$ has the same assembled subgroup. It remains in
+$S(X)\times\mathcal P$ by invariance, and distinct $w$ give distinct
+first coordinates. Every nonempty assembly fibre therefore has at
+least $|W|$ elements. Summing the fibre sizes gives
+$|\mathcal A||W|\leq n!|\mathcal P|$. The displayed denominator is
+the order of the original internal-symmetry group $W$.
+\end{proof}
+
+No transitivity, separation of the action types, or fullness of the
+local subgroups is required for this upper bound. Invariance is a
+condition on the whole family; individual subgroups need not be fixed.
+
 Here is the quantitative form needed to use such a transport. Suppose
 a target binary word has critical rank $R$, $a$ regular $C_4$ factors,
 and noncritical carrier support of half-degree $4T$, so
