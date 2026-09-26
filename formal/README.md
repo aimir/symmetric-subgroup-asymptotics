@@ -160,6 +160,7 @@ definition obligations as conclusions, not hypotheses.
 | [BinaryTransport](SymmetricSubgroupAsymptotics/BinaryTransport.lean), [BinaryTransportFibreProducts](SymmetricSubgroupAsymptotics/BinaryTransportFibreProducts.lean) | Reversible simultaneous transport of actual subgroups through arbitrary proper subdirect carriers, literal axes, full projections, and unchanged original fixed weights. |
 | [BinaryCoverage](SymmetricSubgroupAsymptotics/BinaryCoverage.lean), [FiniteGroupCertificates](SymmetricSubgroupAsymptotics/FiniteGroupCertificates.lean) | Universal p-group action/normal coverage from local closure, and soundness of finite Cayley and homomorphism-graph certificates. The actual finite closure checks are separate obligations. |
 | [BinaryCheckedTransport](SymmetricSubgroupAsymptotics/BinaryCheckedTransport.lean), [BinaryPermutationBlocks](SymmetricSubgroupAsymptotics/BinaryPermutationBlocks.lean), [BinaryExceptionalCarriers](SymmetricSubgroupAsymptotics/BinaryExceptionalCarriers.lean) | Four literal exceptional charts, exact original kernels and quotient maps, reversible transport with any exterior, and actual block projections with positive noncritical support. The degree-sixteen carrier remains the proper joint image. |
+| [BinaryNormalTransport16](SymmetricSubgroupAsymptotics/BinaryNormalTransport16.lean) | Every normal subgroup of the original 16T1086 action either has a local pair certificate or is the exact chart axis. Transport reconstructs the original subgroup with its full exterior and carries the action and normal subgroup through the same ambient conjugacy. |
 | [BinarySylowCoverage](SymmetricSubgroupAsymptotics/BinarySylowCoverage.lean), [BinaryWreathRoots](SymmetricSubgroupAsymptotics/BinaryWreathRoots.lean), [BinaryMenuRoots](SymmetricSubgroupAsymptotics/BinaryMenuRoots.lean), [BinaryConjugacyTransport](SymmetricSubgroupAsymptotics/BinaryConjugacyTransport.lean) | Global coverage from local representative edges; structurally proved Sylow roots bound to all four literal menu roots; simultaneous original action/normal/quotient conjugacy and unchanged normalizer weights. |
 | [FusionGoursat](SymmetricSubgroupAsymptotics/FusionGoursat.lean), [FusionGoursatCount](SymmetricSubgroupAsymptotics/FusionGoursatCount.lean), [FusionLabelCounting](SymmetricSubgroupAsymptotics/FusionLabelCounting.lean), [FusionOrbitPointing](SymmetricSubgroupAsymptotics/FusionOrbitPointing.lean), [FusionOrbitDeletion](SymmetricSubgroupAsymptotics/FusionOrbitDeletion.lean), [FusionPhysicalCount](SymmetricSubgroupAsymptotics/FusionPhysicalCount.lean) | Reversible actual Goursat encoding, complete surviving literal-axis/source sum, intrinsic orbit extraction, and the original factorial/normalizer divisor proved by labelled-frame fibres. |
 | [FusionEpimorphismTransport](SymmetricSubgroupAsymptotics/FusionEpimorphismTransport.lean), [FusionEpimorphismLifts](SymmetricSubgroupAsymptotics/FusionEpimorphismLifts.lean), [FusionFiniteMenu](SymmetricSubgroupAsymptotics/FusionFiniteMenu.lean) | Literal epi transport and survival-restricted extension fibres; fractional-Schur epi envelopes on the actual source; actual physical hot/cold fusion from local envelopes and same-source moments. |
@@ -183,6 +184,8 @@ definition obligations as conclusions, not hypotheses.
 | [ImprimitiveBlockEvaluation](SymmetricSubgroupAsymptotics/ImprimitiveBlockEvaluation.lean), [ChiefConjugateIntersections](SymmetricSubgroupAsymptotics/ChiefConjugateIntersections.lean) | Original block-fibre action and separation, yielding the actual normal intersection chain with proved endpoints. |
 | [TransitiveBlockQuotient](SymmetricSubgroupAsymptotics/TransitiveBlockQuotient.lean), [PrimitiveBlockFibre](SymmetricSubgroupAsymptotics/PrimitiveBlockFibre.lean), [OriginalMinimalBlock](SymmetricSubgroupAsymptotics/OriginalMinimalBlock.lean) | Constructed minimal block quotient, primitive literal fibre image, exact degree product, smaller faithful top action, and the original-normal natural-number chief recurrence. |
 | [PermutationChiefWeight](SymmetricSubgroupAsymptotics/PermutationChiefWeight.lean) | Every genuine chosen-chief ternary weight is bounded by the three-adic valuation of the point-degree factorial; small-degree density bounds need no classification assumption. |
+| [OriginalNormalChiefHead](SymmetricSubgroupAsymptotics/OriginalNormalChiefHead.lean) | Every original normal subgroup's relative ternary head is bounded by any chosen chief weight of its finite ambient group, using B(1)=1. At original permutation degrees ≤2, ≤5 and ≤8, the respective head bounds are 0, 1 and 2. |
+| [TransitiveHeadDegreeInduction](SymmetricSubgroupAsymptotics/TransitiveHeadDegreeInduction.lean) | Strong degree induction on original finite faithful transitive actions, conditional on primitive head and chosen-chief-weight bounds and a scalar recurrence. Selected degrees can instead use a bound on every original transitive normal pair; recursion retains the actual top range and normal image. |
 | [CharacterEpimorphismBound](SymmetricSubgroupAsymptotics/CharacterEpimorphismBound.lean), [BinaryIrreducibleTuple](SymmetricSubgroupAsymptotics/BinaryIrreducibleTuple.lean) | The original target-automorphism/class-character bound and construction of its faithful irreducible tuple from actual central involutions. |
 | [BinaryCharacterEnvelope](SymmetricSubgroupAsymptotics/BinaryCharacterEnvelope.lean), [BinaryCharacterFusion](SymmetricSubgroupAsymptotics/BinaryCharacterFusion.lean) | The original arbitrary-source bound `Epi(J,Q) ≤ Aut(Q) 2^(z log₂(38/25)b)` for finite binary targets; exact criterion gaps and survival-restricted fusion input. Only the stated nilpotent class-count theorem remains external. |
 | [BinaryPairCertificateCapacity](SymmetricSubgroupAsymptotics/BinaryPairCertificateCapacity.lean) | Checked original subgroup orders determine the literal central-cut dimension and original quotient capacity; a physical gap additionally requires equality of certificate width and actual degree. |
@@ -445,8 +448,22 @@ the remaining small-degree cases and the high-cone installation remain
 separate obligations. The minimal block quotient is itself constructed from
 a cover of the original point stabilizer. Its local component is primitive
 on the unchanged fibre, and its top is the faithful original permutation
-range. The exact degree product makes both degrees smaller; the numerical
-induction and primitive bounds remain separate from this construction.
+range. The exact degree product makes both degrees smaller.
+[TransitiveHeadDegreeInduction](SymmetricSubgroupAsymptotics/TransitiveHeadDegreeInduction.lean)
+proves the resulting strong degree induction with explicit primitive head
+bounds, chosen chief series with bounded weight, and the scalar inequality
+`g(r) * B(s) + f(s) <= f(r*s)`. A finite set of degrees may instead use
+bounds for every original transitive normal pair at those degrees; the
+primitive head and scalar premises then apply outside that set. Concrete
+primitive inputs, finite coverage and high-action ownership remain to be installed.
+
+[OriginalNormalChiefHead](SymmetricSubgroupAsymptotics/OriginalNormalChiefHead.lean)
+also proves that the relative ternary head of any `N` normal in a finite
+group `A` is at most the weight of any chosen actual chief series of `A`.
+It uses the original inclusion and ambient conjugation at index one,
+with `B(1)=1`. No permutation, transitivity or primitivity assumption is
+needed for this helper. Its permutation corollaries use the factorial
+valuation bound without identifying chief weight with composition length.
 
 The first c=1 application proves the physical factor `n!/(6 m!)` times the
 exact surviving split-character sum on the complete complement. Its unrestricted
