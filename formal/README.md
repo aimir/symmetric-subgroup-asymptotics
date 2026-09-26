@@ -819,12 +819,26 @@ retains the original normalizer orders and occurrence factorials using only
 naturality of the local subgroup family. Each labeling fibre contains a free
 copy of the original internal-symmetry group, so an upper bound does not need
 transitivity, separation of action types, or uniqueness of presentations.
+The [real-weight consumer](SymmetricSubgroupAsymptotics/OrbitProfileUpperWeights.lean)
+inserts a proved model count under exactly that original profile weight.
+
+The [literal occurrence chart](SymmetricSubgroupAsymptotics/BinaryCarrierOccurrenceWord.lean)
+identifies an explicitly enumerated product with its original repeated
+occurrences. [Critical/carrier regrouping](SymmetricSubgroupAsymptotics/BinaryCarrierCriticalOccurrence.lean)
+preserves the original regular C2 and V4 block conditions, every nonabelian
+critical projection, and arbitrary predicates on the reconstructed subgroup.
+The [sum-profile chart](SymmetricSubgroupAsymptotics/OrbitProfileProductSum.lean)
+splits the two classes of original occurrences with the same exactness.
 
 For the degree-eight J carrier, the selected
 [states](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/States.lean) and
 [registry](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/Registry.lean)
 certify all thirteen literal normal subgroups and exhaustive coverage.
-This does not yet identify their six-field capacity profiles.
+Their [complete six-field profiles](SymmetricSubgroupAsymptotics/BinaryCarrierNormalProfiles8T27.lean)
+are now proved from actual radical words, second radicals, normal containments,
+and quotient center/derived certificates. Every field uses the same original
+normal; equal numerical rows do not merge subgroup identities. In particular,
+the whole-group profile retains second head 2 and maximum derived head 1.
 The [X evaluation-kernel theorem](SymmetricSubgroupAsymptotics/BinaryCarrierEvaluationKernel8T26.lean)
 also proves that the actual binary evaluation kernel equals the commutator.
 Remaining degree-eight profile bindings, physical source coverage, physical
