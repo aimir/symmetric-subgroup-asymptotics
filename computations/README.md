@@ -202,9 +202,10 @@ of assignments, and output size. Actual index-two subgroups are generated
 by two Schreier words per original generator. Literal relations, preserved
 point colourings, and two-way generator words certify every assignment.
 No source order or source element table is a proof premise. The fixtures
-`b2_1`, `b4_3`, and `b16_1085` through `b16_1088` have passed kernel checking; complete global
-degree-sixteen coverage still requires all original sources and their common
-registry bindings.
+`b2_1`, `b4_3`, `b16_1025`, `b16_1026`, and `b16_1082` through `b16_1101`
+have passed kernel checking. The twenty-two degree-sixteen fixtures also have
+checked common-registry bindings; complete degree-sixteen coverage requires
+all 1,427 original sources and their bindings.
 
 To emit a selected degree-sixteen source and its common-family binding
 with one bounded witness search, use `--with-source`:
@@ -230,11 +231,15 @@ atomic. Check `Source16T1087.lean` and then `Binding16T1087.lean` separately
 with the bounded runner. The exporter reports branch counts and witness
 word sizes. This example retains all 64 assignments, including 32 rejected
 by literal relations; the assignment type is explicit in each Boolean proof.
-The four checked common-family bindings at indices 896–899 also form the
-checked slice `Bindings0896Count0004.lean`. A slice is emitted with
-`export_lean_schreier_assembly.py --slice 896 4 --receipt-dir ../lean-check-logs`
+The checked common-family bindings at indices 891–912 form two canonical
+leaves, `Bindings0891Count0011.lean` and `Bindings0902Count0011.lean`, and
+their checked join `Bindings0891Count0022.lean`. A leaf is emitted with
+`export_lean_schreier_assembly.py --slice 891 11 --receipt-dir ../lean-check-logs`
 only after its complete local dependency closure has current successful
-receipts. It establishes those four bindings, not `Complete16`.
+receipts. A larger slice instead imports its two checked halves; the join
+above uses `--slice 891 22`. Two of 128 canonical leaves and one of 127 joins
+are checked. The remaining leaves and joins are required before the final
+`Complete16` theorem can be checked.
 
 Lean checks use the [bounded runner](../scripts/check_lean.py), with already
 checked imports in dependency order. Generated modules are ignored build
