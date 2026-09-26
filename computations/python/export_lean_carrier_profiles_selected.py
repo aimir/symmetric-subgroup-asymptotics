@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """Emit one individually selected, bounded original-carrier profile stage.
 
-The enabled master is X=8T26. Select exactly one of ``--stage radicals``,
+The admitted masters are X=8T26 and P=8T35. Select one master and exactly
+one of ``--stage radicals``,
 ``--stage derived``, ``--stage quotients`` or ``--stage heads``. Radicals identifies actual
 relative radicals and their iterates, binding k,n,a2 to the same original
 normal. Derived proves G' and original normal membership masks. Quotients
 proves c,g using actual center/intersection masks; check Derived first.
 Heads proves the ambient-normal maximum from the complete checked registry
 and requires its accepted Derived source digest via --derived-sha256.
+P quotients/heads also require both accepted radical-source digests; X
+retains its pinned defaults. All stages are selected and checked separately.
 No numerical profile, a2 <= m shortcut, normal discovery, quotient-table
 search, or catalogue-wide mode is used. The accepted States/Registry and
 all original source data are pinned. Literal generator order is retained.
@@ -34,7 +37,7 @@ MAX_WORD_NODES_TOTAL = 3584
 MAX_OUTPUT_BYTES = 2097152
 MAX_OPERATIONS = 500000
 MAX_SECONDS = 30.0
-REGISTRY_PRODUCER_SHA256 = "ffc6bd238c2946d8823111369444e6db3396710ab0ca52eb4959811dbefb1e01"
+REGISTRY_PRODUCER_SHA256 = "8570319e818b32b8d02e253d5affe83a5d63f0c2b94e9e5ad834a80b04de0f84"
 FORMAT_HELPER_SHA256 = "550ca3a24f2c63489355ac64c20f38d33ac69083b876d3673cfad5ca9305f6eb"
 RADICAL_WORDS_SHA256 = "7815c2e29ba1cb2d1c5637a6bdaf728414e456964c504d90be283d10cdb01274"
 # Admission requires a selected root check; no implicit admission from SPECS.
@@ -42,6 +45,10 @@ ACCEPTED = {
     "8T26": {
         "States.lean": "99874578be301c2620758f5f3e2726e2980353d59fc441869459dc1341400f54",
         "Registry.lean": "a917062dde031342ab81595494935fa0815e183b3023e283a0b99d17c9e2f34b",
+    },
+    "8T35": {
+        "States.lean": "16a8592a8dd67ea3b21d9d391718062e1ec0413d3e01ea3a2d596c5921e7c399",
+        "Registry.lean": "06e7c8199920748807f0b94a0fa23ec08cdb7128b11ba31a453a067aaf04862d",
     },
 }
 
@@ -418,7 +425,7 @@ ACCEPTED_RADICALS = {
 MAX_DERIVED_WORD_DEPTH = 16
 
 
-def checked_stage_prerequisites(spec, stage):
+def checked_stage_prerequisites(spec, stage, supplied_radical_hashes=None):
     paths = {}
     formal = ROOT / "formal/SymmetricSubgroupAsymptotics"
     if stage in ("derived", "quotients"):
@@ -428,8 +435,15 @@ def checked_stage_prerequisites(spec, stage):
     if stage == "heads":
         paths.update({formal / name: digest for name, digest in HEAD_HELPERS.items()})
     if stage in ("quotients", "heads"):
+        accepted = ACCEPTED_RADICALS.get(spec.master)
+        if accepted is None:
+            accepted = supplied_radical_hashes
+        elif supplied_radical_hashes and supplied_radical_hashes != accepted:
+            raise registry.Rejected("explicit radical hashes differ from pinned accepted sources")
+        if not accepted or set(accepted) != {"Radicals.lean", "RadicalProfiles.lean"}:
+            raise registry.Rejected("this selected stage requires accepted radical source hashes")
         paths.update({spec.output_directory / name: digest
-                      for name, digest in ACCEPTED_RADICALS[spec.master].items()})
+                      for name, digest in accepted.items()})
     for path, expected in paths.items():
         if registry.sha256(registry.read_small(path, MAX_OUTPUT_BYTES)) != expected:
             raise registry.Rejected(f"accepted selected stage prerequisite changed: {path.name}")
@@ -1136,6 +1150,8 @@ def main():
     parser.add_argument("--master", choices=sorted(ACCEPTED), required=True)
     parser.add_argument("--stage", choices=sorted(STAGES), required=True)
     parser.add_argument("--derived-sha256", help="required only for heads, after root checks Derived")
+    parser.add_argument("--radicals-sha256", help="accepted Radicals source SHA for a newly admitted master")
+    parser.add_argument("--radical-profiles-sha256", help="accepted RadicalProfiles source SHA for a newly admitted master")
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--write", action="store_true")
     mode.add_argument("--check", action="store_true")
@@ -1149,6 +1165,19 @@ def main():
             parser.error("heads requires --derived-sha256 with the selected checked Derived source SHA256")
     elif args.derived_sha256 is not None:
         parser.error("--derived-sha256 is used only by the heads stage")
+    supplied_radical_hashes = None
+    if args.radicals_sha256 is not None or args.radical_profiles_sha256 is not None:
+        if args.stage not in ("quotients", "heads"):
+            parser.error("explicit radical hashes are used only by quotients/heads")
+        if (args.radicals_sha256 is None or args.radical_profiles_sha256 is None
+                or re.fullmatch(r"[0-9a-f]{64}", args.radicals_sha256) is None
+                or re.fullmatch(r"[0-9a-f]{64}", args.radical_profiles_sha256) is None):
+            parser.error("supply both accepted radical source SHA256 values")
+        supplied_radical_hashes = {"Radicals.lean": args.radicals_sha256,
+                                   "RadicalProfiles.lean": args.radical_profiles_sha256}
+    if (args.stage in ("quotients", "heads") and args.master not in ACCEPTED_RADICALS
+            and supplied_radical_hashes is None):
+        parser.error("this master requires --radicals-sha256 and --radical-profiles-sha256 after root checks")
     if not 1 <= args.max_operations <= MAX_OPERATIONS:
         parser.error("max-operations must be in [1,500000]")
     if not 0 < args.max_seconds <= MAX_SECONDS:
@@ -1164,7 +1193,7 @@ def main():
     spec = registry.SPECS[args.master]
     budget = registry.Budget(args.max_operations, args.max_seconds, args.max_output_bytes)
     prerequisites = checked_prerequisites(spec)
-    prerequisites.update(checked_stage_prerequisites(spec, args.stage))
+    prerequisites.update(checked_stage_prerequisites(spec, args.stage, supplied_radical_hashes))
     if args.stage == "heads":
         prerequisites[spec.output_directory / "Derived.lean"] = args.derived_sha256
         verify_prerequisite_paths(prerequisites)
@@ -1193,7 +1222,7 @@ def main():
         "accepted_prerequisites": {str(p.relative_to(ROOT)): h for p, h in prerequisites.items()},
         "record_sha256": spec.record_sha256,
         "producer_sha256": registry.sha256(registry.read_small(Path(__file__).resolve())),
-        "enabled_stages": sorted(STAGES), "other_masters_enabled": False,
+        "enabled_stages": sorted(STAGES), "other_masters_enabled": len(ACCEPTED) > 1,
         "lean_status": "pending root checks", "mode": "check" if args.check else "write",
     }
     if args.private_report is not None:

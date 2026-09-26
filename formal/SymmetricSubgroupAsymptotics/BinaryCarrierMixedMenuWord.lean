@@ -1,8 +1,10 @@
 import SymmetricSubgroupAsymptotics.BinaryCarrierMasterWords16
+import SymmetricSubgroupAsymptotics.BinaryCarrierNormalRows8T26
 import SymmetricSubgroupAsymptotics.BinaryCarrierNormalRows8T27
+import SymmetricSubgroupAsymptotics.BinaryCarrierNormalRows8T35
 import SymmetricSubgroupAsymptotics.BinaryCarrierFullMenuHistory
 
-/-! Ordered words in the literal J and five original degree-sixteen masters.
+/-! Ordered words in the literal X, J, P and five original degree-sixteen masters.
 Every original normal axis is covered by the proved full numerical menu.
 Scale one or two belongs to each original factor occurrence, independently
 of normal-axis choices. Repeated labels never identify axes or positions. -/
@@ -15,13 +17,17 @@ namespace SymmetricSubgroupAsymptotics.BinaryCarrierMixedMenuWord
 open BinaryCarrierWord FullSubdirectGoursat JointCapacityRow
 
 inductive Kind
+  | x
   | j
+  | p
   | degree16 (master : BinaryCarrierMasterWords16.Master)
   deriving DecidableEq, Fintype
 
 /-- This changes no carrier group or permutation tuple. -/
 def factor : Kind → Factor
+  | .x => BinaryCarrierNormalRows8T26.factor
   | .j => BinaryCarrierNormalRows8T27.factor
+  | .p => BinaryCarrierNormalRows8T35.factor
   | .degree16 m => BinaryCarrierMasterWords16.factor m
 
 def word (kinds : List Kind) : List Factor := kinds.map factor
@@ -30,7 +36,9 @@ def word (kinds : List Kind) : List Factor := kinds.map factor
   simp only [word, List.length_map]
 
 def factorScale : Kind → ℝ
+  | .x => 1
   | .j => 1
+  | .p => 1
   | .degree16 _ => 2
 
 def totalScale : List Kind → ℝ
@@ -64,10 +72,24 @@ theorem factor_covered (k : Kind) (N : NormalAxis (factor k).Carrier) :
         (BinaryCarrierFullMenu.envelope label) ∧
       BinaryCarrierFullMenu.physicalScale label = factorScale k := by
   cases k with
+  | x =>
+      obtain ⟨i, _, hr, hs⟩ := BinaryCarrierNormalRows8T26.actualRow_displayed N
+      refine ⟨BinaryCarrierFullMenu.displayedLabel
+        (BinaryCarrierNormalRows8T26.displayedIndex i), ?_, ?_⟩
+      · rw [BinaryCarrierFullMenu.envelope_displayed, ← hr]
+        exact EffectivelyBoundedBy.refl _
+      · exact (BinaryCarrierFullMenu.physicalScale_displayed _).trans hs
   | j =>
       obtain ⟨i, _, hr, hs⟩ := BinaryCarrierNormalRows8T27.actualRow_displayed N
       refine ⟨BinaryCarrierFullMenu.displayedLabel
         (BinaryCarrierNormalRows8T27.displayedIndex i), ?_, ?_⟩
+      · rw [BinaryCarrierFullMenu.envelope_displayed, ← hr]
+        exact EffectivelyBoundedBy.refl _
+      · exact (BinaryCarrierFullMenu.physicalScale_displayed _).trans hs
+  | p =>
+      obtain ⟨i, _, hr, hs⟩ := BinaryCarrierNormalRows8T35.actualRow_displayed N
+      refine ⟨BinaryCarrierFullMenu.displayedLabel
+        (BinaryCarrierNormalRows8T35.displayedIndex i), ?_, ?_⟩
       · rw [BinaryCarrierFullMenu.envelope_displayed, ← hr]
         exact EffectivelyBoundedBy.refl _
       · exact (BinaryCarrierFullMenu.physicalScale_displayed _).trans hs
@@ -147,9 +169,15 @@ def certifiedHistoryRows (kinds : List Kind) :
 
 theorem factor_card_le (k : Kind) : Nat.card (factor k).Carrier ≤ 2 ^ 12 := by
   cases k with
+  | x =>
+      change Nat.card BinaryCarrierNormalRows8T26.Original ≤ 2 ^ 12
+      exact BinaryMenuCayley8T26.exact_card.le.trans (by decide)
   | j =>
       change Nat.card BinaryCarrierNormalRows8T27.Original ≤ 2 ^ 12
       exact BinaryMenuCayley8T27.exact_card.le.trans (by decide)
+  | p =>
+      change Nat.card BinaryCarrierNormalRows8T35.Original ≤ 2 ^ 12
+      exact BinaryMenuCayley8T35.exact_card.le.trans (by decide)
   | degree16 m => exact BinaryCarrierMasterWords16.factor_card_le m
 
 theorem orderBound (kinds : List Kind) : OrderBound (word kinds) 12 := by

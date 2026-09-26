@@ -14,7 +14,9 @@ namespace SymmetricSubgroupAsymptotics.BinaryCarrierMixedActions
 open BinaryCarrierWord BinaryCarrierMixedMenuWord
 
 def points : Kind → Type
+  | .x => Fin 8
   | .j => Fin 8
+  | .p => Fin 8
   | .degree16 _ => Fin 16
 
 instance (k : Kind) : Fintype (points k) := by
@@ -25,7 +27,9 @@ instance (k : Kind) : Nonempty (points k) := by
 
 /-- Original generator tuples, in their existing literal order. -/
 def action : (k : Kind) → Subgroup (Equiv.Perm (points k))
+  | .x => Subgroup.closure (Set.range BinaryMenuCayley8T26.generators)
   | .j => Subgroup.closure (Set.range BinaryMenuCayley8T27.generators)
+  | .p => Subgroup.closure (Set.range BinaryMenuCayley8T35.generators)
   | .degree16 .t1082 => Subgroup.closure (Set.range BinaryActionData16.node1082Generators)
   | .degree16 .t1083 => Subgroup.closure (Set.range BinaryActionData16.node1083Generators)
   | .degree16 .t1084 => Subgroup.closure (Set.range BinaryActionData16.node1084Generators)
@@ -34,7 +38,9 @@ def action : (k : Kind) → Subgroup (Equiv.Perm (points k))
 
 theorem action_binary (k : Kind) : IsPGroup 2 (action k) := by
   cases k with
+  | x => exact (factor Kind.x).binary
   | j => exact (factor Kind.j).binary
+  | p => exact (factor Kind.p).binary
   | degree16 m =>
       cases m with
       | t1082 => exact (factor (.degree16 .t1082)).binary
@@ -47,11 +53,15 @@ theorem action_binary (k : Kind) : IsPGroup 2 (action k) := by
 theorem localFactor_eq (k : Kind) :
     BinaryCarrierMixedProfile.localFactor points action action_binary k = factor k := by
   cases k with
+  | x => rfl
   | j => rfl
+  | p => rfl
   | degree16 m => cases m <;> rfl
 
 def factorScaleNat : Kind → ℕ
+  | .x => 1
   | .j => 1
+  | .p => 1
   | .degree16 _ => 2
 
 theorem factorScaleNat_cast (k : Kind) : (factorScaleNat k : ℝ) = factorScale k := by
@@ -60,7 +70,7 @@ theorem factorScaleNat_cast (k : Kind) : (factorScaleNat k : ℝ) = factorScale 
 theorem point_card (k : Kind) : Fintype.card (points k) = 8 * factorScaleNat k := by
   cases k <;> rfl
 
-/-- Count every original occurrence, with scale1 for J and scale2 for each master. -/
+/-- Count every original occurrence, with scale1 for X/J/P and scale2 for each degree-sixteen master. -/
 def scale (m : Kind → ℕ) : ℕ := ∑ k, m k * factorScaleNat k
 
 theorem scale_cast (m : Kind → ℕ) :

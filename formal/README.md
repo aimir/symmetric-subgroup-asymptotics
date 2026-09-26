@@ -852,7 +852,7 @@ installs their bounds from actual row coverage and the exact sum of original
 physical scales. Repeated labels retain separate original normal choices and
 weights; the numerical menu does not count normals.
 The [original mixed-word certificate](SymmetricSubgroupAsymptotics/BinaryCarrierMixedMenuWord.lean)
-supplies those inputs for arbitrary words in J and the five degree-sixteen
+supplies those inputs for arbitrary words in X, J, P and the five degree-sixteen
 masters. Its [weighted and subgroup reserves](SymmetricSubgroupAsymptotics/BinaryCarrierMixedMenuReserve.lean)
 use the structural total scale of the original word, including repetitions.
 The [literal mixed actions](SymmetricSubgroupAsymptotics/BinaryCarrierMixedActions.lean)
@@ -860,8 +860,9 @@ identify that scale with the original physical degree `2*R+8*T` and install
 the reserve in the original-normalizer labelled bound, without a supplied
 counting or numerical-certificate hypothesis.
 Their [original order bound](SymmetricSubgroupAsymptotics/BinaryCarrierMixedOrder.lean)
-gives `2^(6*T)` for the complete J/five-master product and each actual
-subgroup, with the same original physical scale.
+gives `2^(6*T + numberOfP)` for the complete master product and each actual
+subgroup, hence the uniform `2^(7*T)` bound. A P occurrence has physical
+scale one and order 128; words containing no P recover `2^(6*T)`.
 The [coordinate epimorphism pullback](SymmetricSubgroupAsymptotics/CarrierEpimorphismPullback.lean)
 preserves the complete exterior image and reconstructs the original subgroup.
 It gives a family injection and retains any original profile scalar while
@@ -913,8 +914,20 @@ and [exact row bridge](SymmetricSubgroupAsymptotics/BinaryCarrierNormalRows8T26.
 retain one original normal index across radicals, second radicals, maximum
 heads, orders and quotient invariants. All 27 normals match the nine displayed
 X rows at scale one; equal rows retain their separate original normals.
-Remaining degree-eight profile bindings, physical source coverage, physical
-weight identifications and the complete remainder recurrence remain separate.
+The selected [P registry](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T35/Registry.lean),
+[six-field profiles](SymmetricSubgroupAsymptotics/BinaryCarrierNormalProfiles8T35.lean),
+and [exact row bridge](SymmetricSubgroupAsymptotics/BinaryCarrierNormalRows8T35.lean)
+do the same for all 28 original P normals and all ten displayed scale-one
+P rows. All three degree-eight masters now feed the mixed history theorem
+alongside the five degree-sixteen masters. Applying quotient routes to
+the original profiles, physical source coverage, normalized summation and
+the complete remainder recurrence remain separate.
+
+The [finite factorial profile bound](SymmetricSubgroupAsymptotics/FiniteFactorialProfiles.lean)
+retains every original denominator and bounds any finite profile sum by
+`exp(sum_i (1/w_i))`, hence by `exp(numberOfColours)` when all denominators
+are at least one. Exact noncritical normalizer orders are unnecessary for
+this upper bound; the critical coefficient ratios remain separate.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.

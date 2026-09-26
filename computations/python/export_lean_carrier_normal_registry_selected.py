@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Emit one bounded, explicitly selected literal carrier-normal registry.
 
-The emitter is parameterized by a pinned source specification; the first
-enabled pilot is X=8T26 only. P is deliberately not enabled before that
-pilot is accepted. The committed normal tuples are certificates to verify,
+The emitter is parameterized by a pinned source specification. The
+admitted selected masters are X=8T26 and P=8T35, with an explicit --master
+required for every run. The committed normal tuples are certificates to verify,
 not a trusted exhaustive list: completeness is derived in Lean from every
 actual central-involution quotient row and its checked normal child.
 
@@ -74,6 +74,10 @@ SPECS = {
         master="8T26", order_log=6, normal_count=27, generator_count=3, record_line=1,
         record_sha256="89feb301725e1593c82b11c7f57905689e158196d13fe63a5254e258d5c34043",
         source_sha256="dd25940fce3f2bdb486ce63b2df73a2b0966011ba221f61d546ed929980dd6ca"),
+    "8T35": SelectedMaster(
+        master="8T35", order_log=7, normal_count=28, generator_count=3, record_line=3,
+        record_sha256="585a49584bfbda66745a9e018f9c902c6ced285c94ba39f2653c47a0f7c3ad10",
+        source_sha256="76a5f90545ba67f4e69d7f81ad46418c85aa8d46e36b644fc1e544ab045d1d95"),
 }
 
 
@@ -495,7 +499,7 @@ def main():
         "decompressed_bytes": decompressed_bytes, "output_bytes": output_bytes,
         "source_sha256": spec.source_sha256, "record_sha256": spec.record_sha256,
         "outputs": outputs, "profile_fields_bound": False,
-        "other_masters_enabled": False, "lean_status": "pending root checks",
+        "other_masters_enabled": len(SPECS) > 1, "lean_status": "pending root checks",
         "mode": "check" if args.check else "write",
     }
     if args.private_report is not None:
