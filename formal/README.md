@@ -385,6 +385,13 @@ has total quotient rank R. Its physical weight is the exterior weight divided
 by six; no artificial C2 normalizer is charged. The singleton and S3 sectors
 are disjoint actual orbit profiles.
 
+The [general binary-exterior contraction](SymmetricSubgroupAsymptotics/OddMarkerBinaryContraction.lean)
+removes the exponent-four restriction: an elementwise power `4^k` kills
+the binary exterior lift and preserves the original A3 coordinate.
+It proves exact subgroup, survival-predicate and original-weight transport
+for every 2-group exterior, retaining its entire subgroup image.
+The general S3 physical-profile reindexing and weight sum remain separate.
+
 `CriticalFamilyAsymptotic.criticalSubgroups_relative_error` proves, with one
 constant and threshold for both parities,
 
@@ -558,6 +565,15 @@ original flip kernel from Schreier words, certifying an exact fixed preimage
 by a sparse linear factor, and excluding central quotient classes by either
 faithful kernel action or a nonsplit affine obstruction. These generic
 lemmas do not replace the remaining concrete finite certificate checks.
+The [order-pruned coverage theorem](SymmetricSubgroupAsymptotics/BinaryOrderPrunedCoverage.lean)
+installs the numeric target-order selection on every original normal quotient
+when `card U ≤ 2^a` and `2*a < w`. For binary actions this accepts all actions
+of order at most 128 in degree 16, including their descendants on the same
+points. Its registry theorem needs only high-order transitive children;
+the dual normal registry stops at small quotient index. The binary-group
+hypothesis remains explicit at every fusion use: small order alone does
+not prove the binary epimorphism bound. Concrete high-order coverage is
+still required.
 The finite character criteria now supply original-source analytic envelopes.
 Complete weighted-family installation of the character and transport branches
 remains separate. The central
@@ -909,9 +925,9 @@ with arbitrary original survival tests and only individual nonabelian
 critical projections required to be full. Its explicit exponent is
 `(a+u+7)^2/3 + (a^2+(R+u+a)^2)/4`; its prefactor is
 `2*(R+1)*(c+1)*(a+1)*(R+u+a+1)/eulerProduct^5`, where `c` is the number
-of nonabelian critical factors. Absorbing the analytic/profile errors and
-proving exhaustive global ownership remain separate tasks; these local
-results do not prove T1.
+of nonabelian critical factors. The complete finite-alphabet summation
+below absorbs the analytic and profile errors. Exhaustive global ownership
+remains separate; these local results do not prove T1.
 
 The [thirteen-colour Hall consumer](SymmetricSubgroupAsymptotics/BinaryCarrierOriginalCyclicFourHall.lean)
 installs this estimate on the actual regular C4 translation action and all
@@ -962,6 +978,17 @@ specified thirteen-colour alphabet on `Fin (2*N)`; global binary coverage,
 odd markers, nonbinary ownership and the full remainder recurrence are
 separate obligations.
 
+The [singleton extension theorem](SymmetricSubgroupAsymptotics/BinaryCarrierOddSingleton.lean)
+transfers this complete finite-alphabet bound to degree `2*N+1`, with the
+same rate, for every original complement chart. The
+[relabel equivalence](SymmetricSubgroupAsymptotics/BinaryCarrierMixtureRelabel.lean)
+proves the required closure of the actual even family; the
+[chart comparison](SymmetricSubgroupAsymptotics/SingletonExtensionCharts.lean)
+then forgets all chart witnesses without an extra factorial.
+The physical factor `2*N+1` is absorbed exactly by the
+[odd benchmark inequality](SymmetricSubgroupAsymptotics/SingletonBenchmark.lean).
+This covers the singleton sector, not every odd-degree subgroup.
+
 For the degree-eight J carrier, the selected
 [states](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/States.lean) and
 [registry](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/Registry.lean)
@@ -989,8 +1016,9 @@ and [exact row bridge](SymmetricSubgroupAsymptotics/BinaryCarrierNormalRows8T35.
 do the same for all 28 original P normals and all ten displayed scale-one
 P rows. All three degree-eight masters now feed the mixed history theorem
 alongside the five degree-sixteen masters, and their quotient routes are
-installed in the original profiles. Physical source coverage, normalized
-summation and the complete remainder recurrence remain separate.
+installed in the original profiles. The finite-alphabet normalized sum is
+proved above; exhaustive physical source coverage and the complete remainder
+recurrence remain separate.
 
 The [finite factorial profile bound](SymmetricSubgroupAsymptotics/FiniteFactorialProfiles.lean)
 retains every original denominator and bounds any finite profile sum by
