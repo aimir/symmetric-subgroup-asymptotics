@@ -187,9 +187,14 @@ definition obligations as conclusions, not hypotheses.
 | [OriginalNormalChiefHead](SymmetricSubgroupAsymptotics/OriginalNormalChiefHead.lean) | Every original normal subgroup's relative ternary head is bounded by any chosen chief weight of its finite ambient group, using B(1)=1. At original permutation degrees ≤2, ≤5 and ≤8, the respective head bounds are 0, 1 and 2. |
 | [FaithfulFiniteActionImage](SymmetricSubgroupAsymptotics/FaithfulFiniteActionImage.lean), [FaithfulNaturalChiefFamilies](SymmetricSubgroupAsymptotics/FaithfulNaturalChiefFamilies.lean) | An explicit point labelling preserves the faithful original action, normal character head and chosen chief weight. If its permutation image contains the natural alternating group at degree at least five, the original ambient has an actual chief series of ternary weight zero and every original normal subgroup has relative ternary head zero. |
 | [TransitiveHeadDegreeInduction](SymmetricSubgroupAsymptotics/TransitiveHeadDegreeInduction.lean) | Strong degree induction on original finite faithful transitive actions, conditional on primitive head and chosen-chief-weight bounds and a scalar recurrence. Selected degrees can instead use a bound on every original transitive normal pair; recursion retains the actual top range and normal image. |
+| [SubgroupIndexJordanHolder](SymmetricSubgroupAsymptotics/SubgroupIndexJordanHolder.lean), [SubnormalCompositionIndices](SymmetricSubgroupAsymptotics/SubnormalCompositionIndices.lean), [ChiefCompositionTernaryCount](SymmetricSubgroupAsymptotics/ChiefCompositionTernaryCount.lean) | Proved matching of actual composition-factor orders; every chosen chief weight is bounded by the order-three factor count in any supplied actual composition series. An existence corollary supplies a chief series with that bound. |
+| [TernaryStabilityArithmetic](SymmetricSubgroupAsymptotics/TernaryStabilityArithmetic.lean), [TransitiveTernaryStability](SymmetricSubgroupAsymptotics/TransitiveTernaryStability.lean) | Concrete numerical stability and its degree-eighteen bypass, with the scalar recurrence proved. Primitive head/weight bounds and complete degree-eighteen normal-pair bounds remain explicit inputs. |
 | [CharacterEpimorphismBound](SymmetricSubgroupAsymptotics/CharacterEpimorphismBound.lean), [BinaryIrreducibleTuple](SymmetricSubgroupAsymptotics/BinaryIrreducibleTuple.lean) | The original target-automorphism/class-character bound and construction of its faithful irreducible tuple from actual central involutions. |
 | [BinaryCharacterEnvelope](SymmetricSubgroupAsymptotics/BinaryCharacterEnvelope.lean), [BinaryCharacterFusion](SymmetricSubgroupAsymptotics/BinaryCharacterFusion.lean) | The original arbitrary-source bound `Epi(J,Q) ≤ Aut(Q) 2^(z log₂(38/25)b)` for finite binary targets; exact criterion gaps and survival-restricted fusion input. Only the stated nilpotent class-count theorem remains external. |
 | [BinaryPairCertificateCapacity](SymmetricSubgroupAsymptotics/BinaryPairCertificateCapacity.lean) | Checked original subgroup orders determine the literal central-cut dimension and original quotient capacity; a physical gap additionally requires equality of certificate width and actual degree. |
+| [BinaryPhysicalPairCertificate](SymmetricSubgroupAsymptotics/BinaryPhysicalPairCertificate.lean), [BinaryNormalFiniteEntry](SymmetricSubgroupAsymptotics/BinaryNormalFiniteEntry.lean), [BinaryPairSharedFiniteEntry](SymmetricSubgroupAsymptotics/BinaryPairSharedFiniteEntry.lean) | Exact pair, character or literal carrier alternatives for the same original normal subgroup. Pair gaps use the actual physical degree and retained cut. Shared registries require explicit resolution of every exceptional axis. |
+| [BinaryNormalFiniteEntry16](SymmetricSubgroupAsymptotics/BinaryNormalFiniteEntry16.lean), [BinaryNormalCharacterFiniteEntry16](SymmetricSubgroupAsymptotics/BinaryNormalCharacterFiniteEntry16.lean) | All-normal typed entries for the selected original actions 16T1086, 16T1184 and 16T1391. These are selected action results; full degree-sixteen action coverage and counting envelopes remain separate. |
+| [BinaryCarrierOriginal](SymmetricSubgroupAsymptotics/BinaryCarrierOriginal.lean) | The checked chart acts directly on the original source and normal quotient, with exact kernel, reversible reconstruction, arbitrary exterior, full carrier projection and injectivity. Earlier-owner acceptance and its weighted estimate are not consequences of reconstruction alone. |
 | [ModuleCoordinateHeads](SymmetricSubgroupAsymptotics/ModuleCoordinateHeads.lean), [InducedOrbitDecomposition](SymmetricSubgroupAsymptotics/InducedOrbitDecomposition.lean) | Actual finite-coordinate submodule head bounds and the original induced representation's equivariant double-coset support decomposition. |
 | [BinaryMixtureCentralComparison](SymmetricSubgroupAsymptotics/BinaryMixtureCentralComparison.lean), [BinaryMixtureCyclicFour](SymmetricSubgroupAsymptotics/BinaryMixtureCyclicFour.lean) | Actual central-extension-to-split comparison preserving every exterior image and its weights, instantiated on C4 powers over arbitrary finite nonabelian exteriors. |
 
@@ -441,8 +446,12 @@ layers, and retains the original top section. Its proved coefficient is the
 integer `ternaryIndexWidth s`, formed from actual Sylow/Mackey pieces; this
 route requires no published prime-power module hypothesis. Its multiplier
 is the sum of ternary abelian weights on an actual chief series of the
-original local component. An actual composition refinement now bounds that weight by the
-composition length. `PrimitiveCompositionTail` derives the strict bound
+original local component. Chosen chief weight is bounded by the number of
+order-three factors in any supplied actual composition series, using a
+proved Jordan–Hölder matching of quotient indices. Finite records still
+require actual series/count certificates and original-group bindings.
+The earlier composition-length bound also remains available.
+`PrimitiveCompositionTail` derives the strict bound
 `10 W < 3 r` for every primitive degree `r >= 45`, conditional on the
 precisely stated published `PrimitiveCompositionLengthInput`. That input,
 the remaining small-degree cases and the high-cone installation remain
@@ -457,6 +466,15 @@ bounds, chosen chief series with bounded weight, and the scalar inequality
 bounds for every original transitive normal pair at those degrees; the
 primitive head and scalar premises then apply outside that set. Concrete
 primitive inputs, finite coverage and high-action ownership remain to be installed.
+
+The concrete stability installation uses `g(r) = r/3` with natural division
+and a head bound equal to one in degrees three and four, two in degrees
+nine and eighteen, and `5w/27` otherwise. Its scalar inequality is proved
+outside total degree eighteen. That degree uses an explicit bound for all
+original transitive normal pairs. Primitive chosen weights at most `r/3`
+and strict primitive heads `20d < 3r` outside degrees three, four and eighteen
+remain inputs. The installation does not classify the exceptional actions
+within degrees three, four or nine.
 
 [OriginalNormalChiefHead](SymmetricSubgroupAsymptotics/OriginalNormalChiefHead.lean)
 also proves that the relative ternary head of any `N` normal in a finite
