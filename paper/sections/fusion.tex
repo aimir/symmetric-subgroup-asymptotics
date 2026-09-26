@@ -1,4 +1,45 @@
 \section{Same-source lifts and original-weight fusion}\label{sec:fusion}
+\subsection{The binary permutation rank bound}
+The binary rank input needed below has a direct degree-induction proof.
+Write $d_2(P)=\dim_{\F_2}\Hom(P,C_2)$; for a finite $2$-group this
+is also the dimension of its Frattini quotient.
+\begin{lemma}\label{lem:binary-permutation-rank}
+If a finite $2$-group $P$ acts faithfully on $b$ points, then
+$d_2(P)\leq\lfloor b/2\rfloor$.
+\end{lemma}
+\begin{proof}
+Induct on $b$, with degrees zero and one immediate. For an intransitive
+action, restrict to a nonempty proper orbit of size $a$. Its actual image
+acts faithfully on that orbit, and the restriction kernel acts faithfully
+on the original complement. Character restriction and induction give
+\[
+ d_2(P)\leq d_2(\text{image})+d_2(\text{kernel})
+ \leq\lfloor a/2\rfloor+\lfloor(b-a)/2\rfloor
+ \leq\lfloor b/2\rfloor.
+\]
+For a transitive action, a cover of the original point stabilizer has
+relative index two. Its actual blocks are pairs, so $b=2m$. Let $Q$
+be the faithful action on the $m$ pairs and $K$ its original kernel.
+The flip coordinates identify $K$ with a $P$-invariant subspace of
+$\F_2^m$, retaining all correlations among the flips. Restriction gives
+\[
+ d_2(P)\leq d_2(Q)+\dim\Hom(K,\F_2)^P.
+\]
+If $m=1$, the top is trivial and $\dim K\leq1$. Otherwise the
+transitive $2$-group $Q$ has a fixed-point-free central involution:
+any nonidentity central element of order two is semiregular in a
+faithful transitive action. Choose a lift $g\in P$. Every invariant
+form on $K$ annihilates $(g-1)K$, hence rank--nullity gives
+\[
+ \dim\Hom(K,\F_2)^P
+ \leq\dim K/(g-1)K
+ =\dim\ker((g-1)|_K)
+ \leq\dim\ker((g-1)|_{\F_2^m})=m/2.
+\]
+Induction bounds $d_2(Q)$ by $\lfloor m/2\rfloor$, so the total
+is at most $m=b/2$. No splitting of the original extension is used.
+\end{proof}
+
 \subsection{The fractional Schur cost}
 The following lemma applies to nonsplit group extensions and to
 nonsemisimple modules.
@@ -38,7 +79,8 @@ Left exactness of $\Hom(-,A)$ gives
 Types not inflated from $B$ contribute zero. Since $D\to B$ is onto,
 the remaining simple dimensions and endomorphism fields are precisely
 those used in $r(A)$. Finally $\dim W\leq b/p$ by the permutation
-$p$-group abelianization bound. This proves \eqref{eq:cocycle}.
+$p$-group abelianization bound, whose binary case is
+Lemma~\ref{lem:binary-permutation-rank}. This proves \eqref{eq:cocycle}.
 \end{proof}
 
 \begin{proposition}[Central cut and graph moment]\label{prop:prefix}
