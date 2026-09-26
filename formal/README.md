@@ -185,6 +185,7 @@ definition obligations as conclusions, not hypotheses.
 | [TransitiveBlockQuotient](SymmetricSubgroupAsymptotics/TransitiveBlockQuotient.lean), [PrimitiveBlockFibre](SymmetricSubgroupAsymptotics/PrimitiveBlockFibre.lean), [OriginalMinimalBlock](SymmetricSubgroupAsymptotics/OriginalMinimalBlock.lean) | Constructed minimal block quotient, primitive literal fibre image, exact degree product, smaller faithful top action, and the original-normal natural-number chief recurrence. |
 | [PermutationChiefWeight](SymmetricSubgroupAsymptotics/PermutationChiefWeight.lean) | Every genuine chosen-chief ternary weight is bounded by the three-adic valuation of the point-degree factorial; small-degree density bounds need no classification assumption. |
 | [OriginalNormalChiefHead](SymmetricSubgroupAsymptotics/OriginalNormalChiefHead.lean) | Every original normal subgroup's relative ternary head is bounded by any chosen chief weight of its finite ambient group, using B(1)=1. At original permutation degrees ≤2, ≤5 and ≤8, the respective head bounds are 0, 1 and 2. |
+| [FaithfulFiniteActionImage](SymmetricSubgroupAsymptotics/FaithfulFiniteActionImage.lean), [FaithfulNaturalChiefFamilies](SymmetricSubgroupAsymptotics/FaithfulNaturalChiefFamilies.lean) | An explicit point labelling preserves the faithful original action, normal character head and chosen chief weight. If its permutation image contains the natural alternating group at degree at least five, the original ambient has an actual chief series of ternary weight zero and every original normal subgroup has relative ternary head zero. |
 | [TransitiveHeadDegreeInduction](SymmetricSubgroupAsymptotics/TransitiveHeadDegreeInduction.lean) | Strong degree induction on original finite faithful transitive actions, conditional on primitive head and chosen-chief-weight bounds and a scalar recurrence. Selected degrees can instead use a bound on every original transitive normal pair; recursion retains the actual top range and normal image. |
 | [CharacterEpimorphismBound](SymmetricSubgroupAsymptotics/CharacterEpimorphismBound.lean), [BinaryIrreducibleTuple](SymmetricSubgroupAsymptotics/BinaryIrreducibleTuple.lean) | The original target-automorphism/class-character bound and construction of its faithful irreducible tuple from actual central involutions. |
 | [BinaryCharacterEnvelope](SymmetricSubgroupAsymptotics/BinaryCharacterEnvelope.lean), [BinaryCharacterFusion](SymmetricSubgroupAsymptotics/BinaryCharacterFusion.lean) | The original arbitrary-source bound `Epi(J,Q) ≤ Aut(Q) 2^(z log₂(38/25)b)` for finite binary targets; exact criterion gaps and survival-restricted fusion input. Only the stated nilpotent class-count theorem remains external. |
@@ -464,6 +465,17 @@ It uses the original inclusion and ambient conjugation at index one,
 with `B(1)=1`. No permutation, transitivity or primitivity assumption is
 needed for this helper. Its permutation corollaries use the factorial
 valuation bound without identifying chief weight with composition length.
+
+[FaithfulFiniteActionImage](SymmetricSubgroupAsymptotics/FaithfulFiniteActionImage.lean)
+uses an explicit labelling `Ω ≃ Fin n` to identify a faithful action with
+its literal permutation image. It preserves transitivity and primitivity,
+the original normal subgroup with its ambient conjugation, the relative
+character head, and the weight of a chosen actual chief series.
+[FaithfulNaturalChiefFamilies](SymmetricSubgroupAsymptotics/FaithfulNaturalChiefFamilies.lean)
+then installs the existing zero-weight alternating and symmetric families
+when that image contains `A_n` and `n >= 5`. The alternating inclusion
+remains an explicit recognition hypothesis; primitive classification and
+the remaining global primitive bounds are separate obligations.
 
 The first c=1 application proves the physical factor `n!/(6 m!)` times the
 exact surviving split-character sum on the complete complement. Its unrestricted
