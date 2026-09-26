@@ -829,6 +829,21 @@ preserves the original regular C2 and V4 block conditions, every nonabelian
 critical projection, and arbitrary predicates on the reconstructed subgroup.
 The [sum-profile chart](SymmetricSubgroupAsymptotics/OrbitProfileProductSum.lean)
 splits the two classes of original occurrences with the same exactness.
+The [mixed degree-sixteen model count](SymmetricSubgroupAsymptotics/BinaryCarrierMixedProfile16.lean)
+combines these charts for the literal critical and five-master actions,
+retaining every individual full projection and arbitrary original predicates.
+The [general product reserve](SymmetricSubgroupAsymptotics/BinaryCarrierWordProductEnergy.lean)
+also supports words with different physical scales. It discharges internal
+normal multiplicity from the original group orders and counts actual product
+subgroups with one terminal attachment.
+
+The [full numerical menu](SymmetricSubgroupAsymptotics/BinaryCarrierFullMenu.lean)
+and its [energy certificate](SymmetricSubgroupAsymptotics/BinaryCarrierFullMenuEnergy.lean)
+preserve scales one and two across all 43 envelopes. The
+[mixed-scale history theorem](SymmetricSubgroupAsymptotics/BinaryCarrierFullMenuHistory.lean)
+installs their bounds from actual row coverage and the exact sum of original
+physical scales. Repeated labels retain separate original normal choices and
+weights; the numerical menu does not count normals.
 
 For the degree-eight J carrier, the selected
 [states](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/States.lean) and
@@ -839,6 +854,9 @@ are now proved from actual radical words, second radicals, normal containments,
 and quotient center/derived certificates. Every field uses the same original
 normal; equal numerical rows do not merge subgroup identities. In particular,
 the whole-group profile retains second head 2 and maximum derived head 1.
+The [original J row bridge](SymmetricSubgroupAsymptotics/BinaryCarrierNormalRows8T27.lean)
+places all thirteen normals in the displayed table at scale one, keeping the
+same original subgroup across all fields.
 The [X evaluation-kernel theorem](SymmetricSubgroupAsymptotics/BinaryCarrierEvaluationKernel8T26.lean)
 also proves that the actual binary evaluation kernel equals the commutator.
 Remaining degree-eight profile bindings, physical source coverage, physical
