@@ -855,6 +855,15 @@ The [original mixed-word certificate](SymmetricSubgroupAsymptotics/BinaryCarrier
 supplies those inputs for arbitrary words in J and the five degree-sixteen
 masters. Its [weighted and subgroup reserves](SymmetricSubgroupAsymptotics/BinaryCarrierMixedMenuReserve.lean)
 use the structural total scale of the original word, including repetitions.
+The [literal mixed actions](SymmetricSubgroupAsymptotics/BinaryCarrierMixedActions.lean)
+identify that scale with the original physical degree `2*R+8*T` and install
+the reserve in the original-normalizer labelled bound, without a supplied
+counting or numerical-certificate hypothesis.
+The [coordinate epimorphism pullback](SymmetricSubgroupAsymptotics/CarrierEpimorphismPullback.lean)
+preserves the complete exterior image and reconstructs the original subgroup.
+It gives a family injection and retains any original profile scalar while
+requiring fullness only on the individual carrier coordinates. Concrete
+epimorphism certificates remain necessary for each quotient variant.
 The [binary-mixture numerical inequalities](SymmetricSubgroupAsymptotics/BinaryMixtureNumerics.lean)
 also prove the manuscript's carrier linear deficit and small-carrier Hall
 deficit. The group-theoretic Hall bound and asymptotic error absorption are
