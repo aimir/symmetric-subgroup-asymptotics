@@ -178,6 +178,31 @@ $\dim W>a$. Thus $\dim J_W\leq q$. The two special cases follow by
 taking $(q,a)=(1,0)$ and $q=0$, respectively.
 \end{proof}
 
+\begin{corollary}[Star commutator family]\label{cor:carrier-star-family}
+In the setting of Lemma~\ref{lem:carrier-joint-radicals}, suppose that
+there are linear identifications $V=U\oplus\F_2$ and $E^*=U^*$ under
+which the actual commutator forms are
+\[
+ b_\lambda((u,t),(v,s))=\lambda(u)s+t\lambda(v).
+\]
+Then every original normal subgroup $N\geq D$ satisfies
+\[
+ d_G(N)\leq\max\{\dim U,\dim(N/D)\}.
+\]
+\end{corollary}
+\begin{proof}
+Put $W=N/D$. If $W$ contains $(u,t)$ with $t\ne0$, then every
+$\lambda\in J_W$ satisfies $t\lambda(v)=0$ for all $v\in U$, by
+testing against $(v,0)$. Thus $J_W=0$.
+Otherwise $W\leq U\oplus0$, and first projection identifies $W$
+with a subspace $S\leq U$. Testing against $(0,1)$ shows that
+$J_W=S^\perp\leq U^*$, so $\dim W+\dim J_W=\dim U$.
+Both cases give the result through \eqref{eq:carrier-joint-head}.
+The required identifications concern the complete original character
+space and the actual quotient; ranks of selected numerical forms
+alone do not supply them.
+\end{proof}
+
 For $Q=G/N$ take $(c,g)=(\log|Q|,0)$ if $Q$ is abelian, and
 $(c,g)=(\log|Z(Q)|,\log|Q'|)$ otherwise. For a full subdirect
 product $L$ of the bounded carrier factors,

@@ -621,15 +621,38 @@ controls every quotient subspace at once from common-radical bounds. The
 [kernel decoder](SymmetricSubgroupAsymptotics/PrimeLinearKernelCertificate.lean)
 certifies such bounds on complete finite vector spaces.
 
-For the literal `16T1082` group, the
-[original form transport](SymmetricSubgroupAsymptotics/BinaryCarrierFormTransport16T1082.lean)
-binds the numerical forms to every actual invariant derived character and
-the original generator tuple. Seven single-form and 21 pair certificates
-give the [uniform head theorem](SymmetricSubgroupAsymptotics/BinaryCarrierHeadAboveDerived16T1082.lean):
-`d_G(N) <= max(3, log₂|N/G'|)` for every original normal `N >= G'`.
-This supplies that branch's head bound; other masters, normals not containing
-`G'`, simultaneous row domination and physical weighted coverage still
-require their own proofs.
+The five literal degree-sixteen masters have uniform head theorems for
+every original normal `N >= G'`:
+
+| Original action | Bound on `d_G(N)` |
+| --- | --- |
+| [16T1082](SymmetricSubgroupAsymptotics/BinaryCarrierHeadAboveDerived16T1082.lean), [16T1083](SymmetricSubgroupAsymptotics/BinaryCarrierHeadAboveDerived16T1083.lean), [16T1084](SymmetricSubgroupAsymptotics/BinaryCarrierHeadAboveDerived16T1084.lean) | `max(3, log₂(card N / 16))` |
+| [16T1547](SymmetricSubgroupAsymptotics/BinaryCarrierHeadAboveDerived16T1547.lean) | `max(3, log₂(card N / 64))` |
+| [16T1332](SymmetricSubgroupAsymptotics/BinaryCarrierHeadAboveDerived16T1332.lean) | `max(4, log₂(card N / 64))` |
+
+Each theorem also uses the actual quotient `N/G'`. Complete
+[character coordinates](SymmetricSubgroupAsymptotics/PrimeRelativeCharacterCoordinates.lean)
+come from word relations modulo the whole-original-group relative radical.
+Actual commutator words bind these coordinates to the forms. The first
+four actions use seven single-form and 21 pair certificates. For 1083 and
+1084, one original generator has proved-zero evaluation; only the quotient
+coordinates drop it, while all seven original conjugators remain.
+For 1332 the complete actual family is identified with the
+[star family](SymmetricSubgroupAsymptotics/StarAlternatingHead.lean);
+[full-family separation](SymmetricSubgroupAsymptotics/StarAlternatingSeparation.lean)
+proves independence of its original quotient coordinates. The
+[star head theorem](SymmetricSubgroupAsymptotics/PrimeDerivedStarHead.lean)
+then controls every quotient subspace without enumerating independent tuples.
+
+[PrimeIntersectionRetainedHead](SymmetricSubgroupAsymptotics/PrimeIntersectionRetainedHead.lean)
+handles the exact intersection `B = N ∩ G'`: its actual quotient directions
+are central and, under the proved evaluation-kernel condition, have prime
+exponent. The retained restriction image annihilates both original powers
+and mixed commutators. This gives a head bound from their combined finite
+test kernel; it does not identify that kernel with the extendible characters.
+Original-normal coverage inside `G'`, numerical test-kernel bounds for the
+proper-intersection branches, simultaneous row domination, and physical
+weighted coverage still require their own proofs.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
