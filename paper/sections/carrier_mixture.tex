@@ -838,9 +838,18 @@ directly at critical rank $R+2a$, gives
  &\leq N^2/4-\frac{29}{656}TN+O(N\log(N+2)).
  \end{aligned}
 \]
-Since $A_T<2$ and
-$c_R/c_N\leq(2N)^{2a+4T}$, division by $c_NG_N$ and insertion of
-\eqref{eq:mixture-weight} proves the second envelope.
+The original noncritical profile weights have a uniform finite-sum
+bound without evaluating their normalizers. If $w_i$ is the original
+normalizer order of colour $i$, then $w_i\geq1$, and any finite set
+$\mathcal M$ of multiplicity profiles satisfies
+\[
+ \sum_{\mathbf m\in\mathcal M}
+    \prod_{i=1}^{13}\frac1{w_i^{m_i}m_i!}
+ \leq\prod_{i=1}^{13}\exp(1/w_i)\leq e^{13}.
+\]
+All thirteen colours remain separate, including those with the same
+master. Together with $c_R/c_N\leq(2N)^{2a+4T}$, division by $c_NG_N$
+and insertion of \eqref{eq:mixture-weight} proves the second envelope.
 
 For the other envelope first project onto an arbitrary actual
 $H\leq C_4^a\times B$. Its sectional binary rank is at most $a+u$:
@@ -868,14 +877,51 @@ here $N\leq71N_0/70$. The fixed $\log72$ correction costs $O(a+1)$,
 and all profile and coefficient costs are $O(a\log(N+2))$.
 This proves the first envelope, including $T=0$.
 
-Let $C=2a+4T$ be the noncritical half-support. Remove
-$0<C\leq\sqrt N/4$ by Theorem~\ref{thm:small-support} with
-$\eps=1$, applied to the entire physical family before any comparison.
+Let $C=2a+4T$ be the noncritical half-support. For this finite alphabet,
+the entire range $0<C\leq\sqrt N/4$ has a direct estimate. Each original
+carrier action has binary character rank at most three times its physical
+scale: apply the certified head bound to the top normal subgroup and
+inflate characters along its fixed master epimorphism. This is strictly
+less than half its original degree. The regular $C_4$ has rank one.
+For an actual full noncritical tail $J$, restrict to one of its original
+blocks. The restriction kernel acts faithfully on the original complement,
+so the half-degree bound for that kernel preserves the local gap and gives
+$d_2(J)\leq C-1$, even when $J$ is a proper subdirect product. Applied to
+the actual evaluation kernel, the same bound gives $\tau(J)\leq C$.
+These marks concern $J$ itself, before any master pullback.
+
+To count such tails, the master pullback is injective, and its source
+has order $2^q$ with $q=2a+u\leq7C/4$. The central comparison above
+bounds its subgroup count by $G_q$. The terminal Hall estimate therefore
+bounds the model count by
+\[
+ 2\phi^{-3}(R+1)(c+1)\,X_R(C-1)\,G_q\,
+       2^{(C+7)^2/3},
+\]
+where $c$ is the number of nonabelian critical factors. The elementary
+Gaussian estimates give
+$X_R(C-1)/G_N\leq\phi^{-2}(R+1)2^{-N/2+1/2}$ and
+$G_q\leq\phi^{-1}(q+1)2^{q^2/4}$. Sum the critical profiles at their
+exact rank $R=N-C$, retaining $c_R$, and the noncritical profiles with
+their original weights as above. The logarithm of the normalized mass
+at this support is at most
+\[
+ -\frac N2+\frac12+\frac{211}{192}C^2+\frac{14}{3}C+\frac{49}{3}
+   +C\log(2N)+O(\log(N+2)).
+\]
+For $C\leq\sqrt N/4$ the quadratic terms leave at most
+$-1325N/3072$, and the remaining error is uniformly $o(N)$.
+Thus this range, including its support-size sum, is exponentially small.
+This finite-alphabet argument uses neither the general equality
+classification nor the coarse ordinary subgroup-count estimate from
+Theorem~\ref{thm:small-support}.
+
 If $C>\sqrt N/4$ and $T>a/140$, then $C<284T$, so
 $T>\sqrt N/1136$. The negative term of the second envelope therefore
 has order at least $N^{3/2}$ and absorbs its error. The first envelope
-is exponentially small uniformly for $a\geq1$. There are at most
-$(N+1)^2$ profiles. Their sum proves the theorem.
+is exponentially small uniformly for $a\geq1$. After summing the original
+multiplicity weights, at most $(N+1)^2$ parameter pairs $(a,T)$ remain.
+Their sum proves the theorem.
 \end{proof}
 
 Combining \eqref{eq:proved-mixture-envelopes} with

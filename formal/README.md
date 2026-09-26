@@ -913,6 +913,37 @@ of nonabelian critical factors. Absorbing the analytic/profile errors and
 proving exhaustive global ownership remain separate tasks; these local
 results do not prove T1.
 
+The [thirteen-colour Hall consumer](SymmetricSubgroupAsymptotics/BinaryCarrierOriginalCyclicFourHall.lean)
+installs this estimate on the actual regular C4 translation action and all
+twelve original carriers. The source order satisfies `u <= 6*T + numberOfP
+<= 7*T`; the physical degree is `2*R+4*a+8*T`, and the denominator still
+contains the original target normalizers and occurrence factorials.
+
+The [full-block rank construction](SymmetricSubgroupAsymptotics/PermutationFullBlockRankGap.lean)
+and [concrete noncritical actions](SymmetricSubgroupAsymptotics/BinaryNoncriticalActionRankGap.lean)
+derive a strict gap for a correlated original subgroup from one actual full
+noncritical block. The [faithful permutation transgression bound](SymmetricSubgroupAsymptotics/BinaryTerminalPermutationRank.lean)
+also bounds the retained annihilator dimension by half the original degree.
+Their [thirteen-colour adapter](SymmetricSubgroupAsymptotics/BinaryCarrierOriginalCyclicFourRankGap.lean)
+supplies both marks for the same original tail, using the actual C4
+translation model of the Hall consumer.
+
+The [original small-support count](SymmetricSubgroupAsymptotics/BinaryCarrierOriginalSmallSupport.lean)
+partitions each original subgroup by its unique full noncritical tail and
+applies the [single-tail attachment estimate](SymmetricSubgroupAsymptotics/BinaryTerminalFullTailCount.lean).
+Only the number of tails uses master preimages: the
+[binary-group count](SymmetricSubgroupAsymptotics/BinaryPGroupSubgroupCount.lean)
+proves that a source of order `2^q` and every onto image have at most `G_q`
+subgroups. The [Gaussian comparison](SymmetricSubgroupAsymptotics/TerminalGaussianComparison.lean)
+retains the original rank gap, giving the
+[normalized model estimate](SymmetricSubgroupAsymptotics/BinaryCarrierSmallSupportNormalized.lean)
+with prefactor `4*(N+1)^4/eulerProduct^6` and exponent
+`-N/2+1/2+(211/192)*C^2+(14/3)*C+49/3`, where `N=R+C` and `C=2*a+4*T`.
+The [uniform scalar estimates](SymmetricSubgroupAsymptotics/BinaryMixtureAbsorption.lean)
+absorb the full critical coefficient shift and fixed logarithmic costs in
+all three mixture regimes. Complete physical profile summation remains a
+separate assembly step; the model and scalar bounds alone do not prove it.
+
 For the degree-eight J carrier, the selected
 [states](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/States.lean) and
 [registry](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/Registry.lean)
