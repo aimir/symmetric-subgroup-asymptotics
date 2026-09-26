@@ -859,6 +859,9 @@ The [literal mixed actions](SymmetricSubgroupAsymptotics/BinaryCarrierMixedActio
 identify that scale with the original physical degree `2*R+8*T` and install
 the reserve in the original-normalizer labelled bound, without a supplied
 counting or numerical-certificate hypothesis.
+Their [original order bound](SymmetricSubgroupAsymptotics/BinaryCarrierMixedOrder.lean)
+gives `2^(6*T)` for the complete J/five-master product and each actual
+subgroup, with the same original physical scale.
 The [coordinate epimorphism pullback](SymmetricSubgroupAsymptotics/CarrierEpimorphismPullback.lean)
 preserves the complete exterior image and reconstructs the original subgroup.
 It gives a family injection and retains any original profile scalar while
@@ -884,8 +887,12 @@ same original subgroup across all fields.
 The [X evaluation-kernel theorem](SymmetricSubgroupAsymptotics/BinaryCarrierEvaluationKernel8T26.lean)
 also proves that the actual binary evaluation kernel equals the commutator.
 The selected [X registry](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T26/Registry.lean)
-now certifies all 27 original normal subgroups with exhaustive coverage;
-its six-field capacity profiles remain to be installed.
+certifies all 27 original normal subgroups with exhaustive coverage.
+Their [six-field profiles](SymmetricSubgroupAsymptotics/BinaryCarrierNormalProfiles8T26.lean)
+and [exact row bridge](SymmetricSubgroupAsymptotics/BinaryCarrierNormalRows8T26.lean)
+retain one original normal index across radicals, second radicals, maximum
+heads, orders and quotient invariants. All 27 normals match the nine displayed
+X rows at scale one; equal rows retain their separate original normals.
 Remaining degree-eight profile bindings, physical source coverage, physical
 weight identifications and the complete remainder recurrence remain separate.
 
