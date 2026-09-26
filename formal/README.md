@@ -866,8 +866,16 @@ scale one and order 128; words containing no P recover `2^(6*T)`.
 The [coordinate epimorphism pullback](SymmetricSubgroupAsymptotics/CarrierEpimorphismPullback.lean)
 preserves the complete exterior image and reconstructs the original subgroup.
 It gives a family injection and retains any original profile scalar while
-requiring fullness only on the individual carrier coordinates. Concrete
-epimorphism certificates remain necessary for each quotient variant.
+requiring fullness only on the individual carrier coordinates. The
+[concrete degree-eight routes](SymmetricSubgroupAsymptotics/BinaryCarrierRoutes8.lean)
+prove all four required epimorphisms from the literal original generators:
+J to 8T28, and P to 8T18, 8T29 and 8T31. Together with the identity routes,
+the [original-action theorem](SymmetricSubgroupAsymptotics/BinaryCarrierOriginalActions.lean)
+counts all seven degree-eight and five degree-sixteen carrier colours.
+Its [generic profile pullback](SymmetricSubgroupAsymptotics/BinaryCarrierMixedProfileEpimorphism.lean)
+reconstructs each original subgroup and preserves arbitrary survival tests.
+The physical degree is `2*R+8*T`; original target normalizers and occurrence
+factorials remain distinct even when targets share a source master.
 The [binary-mixture numerical inequalities](SymmetricSubgroupAsymptotics/BinaryMixtureNumerics.lean)
 also prove the manuscript's carrier linear deficit and small-carrier Hall
 deficit. The [C4 terminal comparison](SymmetricSubgroupAsymptotics/BinaryCarrierCyclicFourProductEnergy.lean)
@@ -889,9 +897,21 @@ arbitrary survival subfamilies by inclusion. No general Hall-partition
 formula or arbitrary-group subgroup-count estimate is an input.
 The [abelian quotient-graph classification](SymmetricSubgroupAsymptotics/AbelianProductGraphClassification.lean)
 also gives the exact double Hom sum for arbitrary finite abelian first
-factor and arbitrary finite second factor. Connecting the mixed bound to
-all critical terminal families and absorbing the analytic/profile errors
-remain separate tasks; these local results do not prove T1.
+factor and arbitrary finite second factor. The
+[sectional character bound](SymmetricSubgroupAsymptotics/PrimeSectionalCharacterRank.lean)
+and its [terminal application](SymmetricSubgroupAsymptotics/BinaryTerminalSectionalRank.lean)
+prove `tau(H) <= a+u` for every actual `H <= C4^a × B`, including proper
+subdirect tails. The [Gaussian product identity](SymmetricSubgroupAsymptotics/TerminalGaussianProductIdentity.lean)
+sums every such literal tail exactly. The
+[critical-family Hall theorem](SymmetricSubgroupAsymptotics/BinaryCriticalCyclicFourHall.lean)
+therefore counts the original critical product attached once to this tail,
+with arbitrary original survival tests and only individual nonabelian
+critical projections required to be full. Its explicit exponent is
+`(a+u+7)^2/3 + (a^2+(R+u+a)^2)/4`; its prefactor is
+`2*(R+1)*(c+1)*(a+1)*(R+u+a+1)/eulerProduct^5`, where `c` is the number
+of nonabelian critical factors. Absorbing the analytic/profile errors and
+proving exhaustive global ownership remain separate tasks; these local
+results do not prove T1.
 
 For the degree-eight J carrier, the selected
 [states](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T27/States.lean) and
@@ -919,15 +939,25 @@ The selected [P registry](SymmetricSubgroupAsymptotics/GeneratedCarrierNormal8T3
 and [exact row bridge](SymmetricSubgroupAsymptotics/BinaryCarrierNormalRows8T35.lean)
 do the same for all 28 original P normals and all ten displayed scale-one
 P rows. All three degree-eight masters now feed the mixed history theorem
-alongside the five degree-sixteen masters. Applying quotient routes to
-the original profiles, physical source coverage, normalized summation and
-the complete remainder recurrence remain separate.
+alongside the five degree-sixteen masters, and their quotient routes are
+installed in the original profiles. Physical source coverage, normalized
+summation and the complete remainder recurrence remain separate.
 
 The [finite factorial profile bound](SymmetricSubgroupAsymptotics/FiniteFactorialProfiles.lean)
 retains every original denominator and bounds any finite profile sum by
 `exp(sum_i (1/w_i))`, hence by `exp(numberOfColours)` when all denominators
 are at least one. Exact noncritical normalizer orders are unnecessary for
 this upper bound; the critical coefficient ratios remain separate.
+The [original profile-weight adapter](SymmetricSubgroupAsymptotics/BinaryCarrierProfileWeights.lean)
+factors the literal mixed denominator into the exact critical weight and
+those original carrier factors. It bounds the complete finite carrier sum,
+and then all critical profiles of a fixed rank, by
+`criticalCoefficient R * exp(numberOfColours)` without merging colours.
+The [local rank-gap theorem](SymmetricSubgroupAsymptotics/PermutationCharacterRankGap.lean)
+preserves a proved gap on an invariant original block through its faithful
+complement. The [master rank-gap theorem](SymmetricSubgroupAsymptotics/BinaryCarrierMixedRankGap.lean)
+supplies the gap for all eight literal masters and their actual onto images,
+using the already checked normal rows at the original physical scales.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
