@@ -71,6 +71,24 @@ publication repository. The producer never invokes a compiler or proves
 normal coverage. Lean independently checks each square-word equation and
 derives the evaluation-kernel identity on the literal original group.
 
+The same five masters have separate small derived-group and centralizer
+certificates:
+
+```sh
+python3 -B computations/python/export_lean_derived_group_words.py --master 1082 --check
+python3 -B computations/python/export_lean_carrier_rank.py --master 1082 --check
+```
+
+These selected producers enumerate at most 64 derived elements, with fixed
+operation and time ceilings. They use original generator words, checked
+transitions and whole-group conjugation. The rank producer also verifies
+the exact bytes of its derived-group prerequisite. Its row code covers
+every derived element commuting with one original element, so the generic
+centralizer theorem bounds the heads of all original derived normals.
+No normal subgroup list or full ambient-group table is generated. Lean
+checking remains separate from both producers; 64-row decision proofs are
+split into individual declarations to keep resource use bounded.
+
 For the other finite theorem inputs:
 
 ```sh
