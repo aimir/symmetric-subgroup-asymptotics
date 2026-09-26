@@ -132,6 +132,52 @@ and use $C_M(u)\leq C_S(u)$. Taking the maximum gives the second
 bound; putting $S=G'$ gives the last one.
 \end{proof}
 
+\begin{lemma}[Joint commutator radicals]\label{lem:carrier-joint-radicals}
+Let $G$ be a finite $2$-group with $\Phi(G)=D=G'$, and put
+\[
+ V=G/D,\qquad E=D/(D^2[D,G]).
+\]
+For $\lambda\in E^*$ let $b_\lambda$ be the alternating form on $V$
+given by $b_\lambda(xD,yD)=\lambda([x,y])$.
+For every original normal subgroup $N\geq D$, write $W=N/D$ and
+\[
+ J_W=\{\lambda\in E^*: W\leq\operatorname{rad}(b_\lambda)\}.
+\]
+Then
+\begin{equation}\label{eq:carrier-joint-head}
+ d_G(N)\leq\dim W+\dim J_W.
+\end{equation}
+Let $q,a$ be nonnegative integers. If the forms associated with every
+$q+1$ independent characters in
+$E^*$ have common radical of dimension at most $a$, then
+\[
+ \dim W>a\quad\Longrightarrow\quad d_G(N)\leq\dim W+q.
+\]
+In particular, zero common radicals for independent character pairs give
+$d_G(N)\leq\dim W+1$ for $W\ne0$. If each nonzero form has radical
+dimension at most $a$, then $d_G(N)\leq\dim W$ whenever $\dim W>a$.
+The subgroup $D$ need not be abelian.
+\end{lemma}
+\begin{proof}
+Elements of $E^*$ are exactly the $G$-invariant characters of $D$.
+The commutator identities and this invariance make
+$\lambda([x,y])$ additive in both original variables. The resulting
+maps vanish on $G'$ in each variable, so they descend to the displayed
+alternating forms on $V$.
+
+Restriction of a $G$-invariant character of $N$ to $D$ has kernel
+the characters of $N/D$, of dimension $\dim W$. Every character in
+the restriction image annihilates $[N,G]$, so that image lies in
+$J_W$. Rank--nullity proves \eqref{eq:carrier-joint-head}. This uses
+only a necessary condition on the restriction image; no assertion
+that every member of $J_W$ extends is needed.
+
+If $\dim J_W>q$, choose $q+1$ independent characters in $J_W$.
+The same $W$ lies in all their radicals, contradicting
+$\dim W>a$. Thus $\dim J_W\leq q$. The two special cases follow by
+taking $(q,a)=(1,0)$ and $q=0$, respectively.
+\end{proof}
+
 For $Q=G/N$ take $(c,g)=(\log|Q|,0)$ if $Q$ is abelian, and
 $(c,g)=(\log|Z(Q)|,\log|Q'|)$ otherwise. For a full subdirect
 product $L$ of the bounded carrier factors,

@@ -603,6 +603,34 @@ uses the actual order of `N`; it requires no recorded normal profile.
 Sharper exceptional `m` bounds, the other row fields, simultaneous
 domination and physical coverage remain separate requirements.
 
+[FiniteQuotientDerivedIntersection](SymmetricSubgroupAsymptotics/FiniteQuotientDerivedIntersection.lean)
+reduces the quotient-center preimage and derived-quotient order through the
+same actual intersection `N ∩ G'`. The
+[row identities](SymmetricSubgroupAsymptotics/BinaryCarrierIntersectionRows.lean)
+retain the complete original normal subgroup and its order. The
+[finite radical consumer](SymmetricSubgroupAsymptotics/PrimeRelativeRadicalFiniteCertificate.lean)
+uses actual candidate membership, whole-group normality and generator tests.
+
+[PrimeDerivedJointHead](SymmetricSubgroupAsymptotics/PrimeDerivedJointHead.lean)
+bounds every original normal head above `G'` by the dimension of its actual
+quotient image plus a joint commutator annihilator. Only the actual retained
+restriction image is put in that annihilator; equality or extendibility of
+all invariant derived characters is not assumed. The
+[independent-family lemma](SymmetricSubgroupAsymptotics/LinearJointAnnihilatorCapacity.lean)
+controls every quotient subspace at once from common-radical bounds. The
+[kernel decoder](SymmetricSubgroupAsymptotics/PrimeLinearKernelCertificate.lean)
+certifies such bounds on complete finite vector spaces.
+
+For the literal `16T1082` group, the
+[original form transport](SymmetricSubgroupAsymptotics/BinaryCarrierFormTransport16T1082.lean)
+binds the numerical forms to every actual invariant derived character and
+the original generator tuple. Seven single-form and 21 pair certificates
+give the [uniform head theorem](SymmetricSubgroupAsymptotics/BinaryCarrierHeadAboveDerived16T1082.lean):
+`d_G(N) <= max(3, log₂|N/G'|)` for every original normal `N >= G'`.
+This supplies that branch's head bound; other masters, normals not containing
+`G'`, simultaneous row domination and physical weighted coverage still
+require their own proofs.
+
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
 The [verification boundary](../ASSUMPTIONS.md#formal-theorem-boundary)
