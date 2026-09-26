@@ -225,6 +225,69 @@ index-two extension of $N$ lying inside $L$. Repetition starting at
 $1$ reaches every $L$, proving the second claim.
 \end{proof}
 
+\begin{lemma}[Uniform order stops at power-of-two degrees]
+\label{lem:binary-sixteen-order-stop}
+Let $k\geq4$, $w=2^k$, and let $U\leq S_w$ be a faithful
+transitive binary action with $|U|\leq2^{w/2}$.
+For every original normal subgroup $N\lhd U$, put
+$Q=U/N$, $a=\log_2|Q|$, and $z=\dim\Omega_1Z(Q)$. Then at least
+one of the sufficient fusion conditions
+\[
+ 2a<w,\qquad 38^{8z}<2^w25^{8z}
+\]
+holds. Consequently, for any fixed finite collection of such original
+actions, all their normal axes admit the original-weight fusion
+estimate of Theorem~\ref{thm:fusion}, with constants that may depend
+on that collection. In particular this applies at degree sixteen
+to every transitive binary action of order at most $256$.
+\end{lemma}
+\begin{proof}
+If $N\ne1$, then $|N|\geq2$, so
+$|Q|=|U|/|N|\leq2^{w/2-1}$ and $2a\leq w-2<w$.
+If $|U|\leq2^{w/2-1}$, the same bound holds for every quotient,
+including $N=1$.
+
+It remains to consider $N=1$ and $|U|>2^{w/2-1}$. The elementary
+inequality $k+1\leq2^{k-1}$ for $k\geq4$ gives
+$2^{w/2-1}\geq2^k=w$, so $|U|>w$.
+Every central subgroup acts freely on the original $w$ points: a central
+element fixing one point fixes its entire $U$-orbit, and faithfulness
+makes that element trivial. Hence $A=\Omega_1Z(U)$ has order at most
+$w$. Equality would make $A$ transitive. Any element of $U$ fixing
+one point would then fix every point by commuting with $A$, so $U$
+would act regularly and have order $w$, a contradiction. Thus
+$|A|<2^k$ and $z<k$.
+For $k=4$, the exact integer inequality
+$38^{24}<2^{16}25^{24}$ gives
+$38^{8z}<2^{16}25^{8z}$ for every $0\leq z\leq3$.
+For $k\geq5$, induction from $k=5$ gives $8(k-1)\leq2^k=w$.
+If $z>0$, use $38<50$ to obtain
+\[
+ 38^{8z}<2^{8z}25^{8z}\leq2^w25^{8z},
+\]
+since $8z\leq8(k-1)\leq w$. The case $z=0$ is immediate.
+
+For the order condition, Proposition~\ref{prop:target-order-fusion}
+supplies $D=1$, $v=2a$, $\lambda=0$, and
+$\Phi(J)=2^{a d_2(J)}$. These are graph-moment marker coordinates;
+they do not assert that $Q$ has a faithful action on $2a$ points.
+For the character condition, the actual-source estimate
+\eqref{eq:binary-character-entry} below, with its stated nilpotent
+conjugacy-class bound, supplies
+$D=|\Aut Q|$, $v=0$, $\Phi(J)=1$, and
+$\lambda=z\log_2(38/25)<w/8$. This estimate also holds for arbitrary
+$J\leq S_b$: restriction to an original Sylow $2$-subgroup preserves
+surjectivity to $Q$ and determines each map, since that Sylow subgroup
+maps onto the joint binary image of any two maps in $Q\times Q$.
+In both cases
+$w-v-8\lambda>0$, and all moments concern the same original $J$.
+Sum over the complete fixed finite collection of these original
+pairs $(U,N)$ and apply Theorem~\ref{thm:fusion}. Its pointing
+weights retain $|N_{S_w}(U)|$, while the character branch retains
+$|\Aut Q|$. No quotient normalizer or smaller faithful action is
+substituted for the original action.
+\end{proof}
+
 \begin{lemma}[Finite binary entry theorem]\label{lem:binary-finite-menu}
 For every transitive binary action $U$ of width $w\in\{2,4,8,16\}$
 outside $\mathcal A$, and every literal normal $N\lhd U$, at least
