@@ -110,7 +110,7 @@ theorem oddMarkerBinaryContraction_card (hD : IsPGroup 2 D) (P : Subgroup D → 
 section Finite
 variable [Finite D]
 
-local instance subgroupFinite {G : Type*} [Group G] [Finite G] :
+local instance oddMarkerBinarySubgroupFinite {G : Type*} [Group G] [Finite G] :
     Finite (Subgroup G) :=
   Finite.of_injective (fun H : Subgroup G => (H : Set G)) SetLike.coe_injective
 
