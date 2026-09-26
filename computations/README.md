@@ -202,9 +202,28 @@ of assignments, and output size. Actual index-two subgroups are generated
 by two Schreier words per original generator. Literal relations, preserved
 point colourings, and two-way generator words certify every assignment.
 No source order or source element table is a proof premise. The fixtures
-`b2_1`, `b4_3`, and `b16_1086` have passed kernel checking; complete global
+`b2_1`, `b4_3`, and `b16_1085` through `b16_1088` have passed kernel checking; complete global
 degree-sixteen coverage still requires all original sources and their common
 registry bindings.
+
+To emit a selected degree-sixteen source and its common-family binding
+with one bounded witness search, use `--with-source`:
+
+```sh
+python3 -B computations/python/export_lean_schreier_bindings.py --source b16_1087 --with-source --max-states 1024 --max-assignments 64 --max-word-length 256
+python3 -B computations/python/export_lean_schreier_bindings.py --source b16_1087 --with-source --check --max-states 1024 --max-assignments 64 --max-word-length 256
+```
+
+Both files are bounded before either is written; each replacement is
+atomic. Check `Source16T1087.lean` and then `Binding16T1087.lean` separately
+with the bounded runner. The exporter reports branch counts and witness
+word sizes. This example retains all 64 assignments, including 32 rejected
+by literal relations; the assignment type is explicit in each Boolean proof.
+The four checked common-family bindings at indices 896–899 also form the
+checked slice `Bindings0896Count0004.lean`. A slice is emitted with
+`export_lean_schreier_assembly.py --slice 896 4 --receipt-dir ../lean-check-logs`
+only after its complete local dependency closure has current successful
+receipts. It establishes those four bindings, not `Complete16`.
 
 Lean checks use the [bounded runner](../scripts/check_lean.py), with already
 checked imports in dependency order. Generated modules are ignored build

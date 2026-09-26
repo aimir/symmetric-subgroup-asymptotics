@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Bind one checked local Schreier source to the original common Data family.
 
-This emits only typed generator equalities, source/target subgroup bindings,
-and the installed local-child theorem. It never generates legacy source
-tables or an aggregate coverage claim. The selected local source must already
-match the bounded Schreier exporter. Compile separately with check_lean.py.
+This emits typed generator equalities, source/target subgroup bindings,
+and the installed local-child theorem. By default the selected local source
+must already match the bounded Schreier exporter. --with-source emits that
+same local source too, reusing one bounded witness search for both files.
+Both files still require separate kernel checks through check_lean.py.
+No legacy source table or aggregate coverage claim is generated.
 """
 import argparse
 import gzip
@@ -16,7 +18,9 @@ import sys
 sys.dont_write_bytecode = True
 from export_lean_menu_cayley import ROOT, lookup
 from export_lean_schreier_actions import compile_witnesses, emit, label
-from export_lean_action16_data_chunks import checked_data_layout, chunk_count, chunk_name
+from export_lean_action16_data_chunks import (
+    checked_data_layout, chunk_count, chunk_name, write_or_check,
+)
 
 OUT = ROOT / 'formal/SymmetricSubgroupAsymptotics/GeneratedSchreierActions'
 
@@ -118,15 +122,19 @@ end SymmetricSubgroupAsymptotics.BinarySchreierBinding{tag}
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source', required=True, help='One previously emitted degree-sixteen source')
+    parser.add_argument('--source', required=True, help='One original degree-sixteen source')
     parser.add_argument('--output-dir', type=Path, default=OUT)
+    parser.add_argument('--with-source', action='store_true',
+                        help='Emit/check the selected Source and Binding using one witness search')
     parser.add_argument('--max-states', type=int, default=65536)
     parser.add_argument('--max-word-length', type=int, default=256)
     parser.add_argument('--max-assignments', type=int, default=256)
     parser.add_argument('--max-output-bytes', type=int, default=128 * 1024)
+    parser.add_argument('--max-source-output-bytes', type=int, default=2 * 1024 * 1024)
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
-    if min(args.max_states, args.max_word_length, args.max_assignments, args.max_output_bytes) < 1:
+    if min(args.max_states, args.max_word_length, args.max_assignments,
+           args.max_output_bytes, args.max_source_output_bytes) < 1:
         parser.error('all limits must be positive')
     with gzip.open(ROOT / 'certificates/data/binary_menu.jsonl.gz', 'rt') as f:
         header = json.loads(next(f))
@@ -142,21 +150,34 @@ def main():
                                  max_states=args.max_states,
                                  max_word_length=args.max_word_length,
                                  max_assignments=args.max_assignments)
-    local_file = OUT / f'Source{label(args.source)}.lean'
-    if not local_file.is_file() or local_file.read_bytes() != emit(nodes[args.source], nodes, branches).encode():
+    local_file = (args.output_dir if args.with_source else OUT) / f'Source{label(args.source)}.lean'
+    local_data = emit(nodes[args.source], nodes, branches).encode()
+    if len(local_data) > args.max_source_output_bytes:
+        raise SystemExit('local source exceeds the output limit; split it before proceeding')
+    if not args.with_source and (not local_file.is_file() or local_file.read_bytes() != local_data):
         raise SystemExit('selected local source must first match export_lean_schreier_actions.py')
     data = emit_binding(nodes[args.source], names, branches).encode()
     if len(data) > args.max_output_bytes:
         raise SystemExit('binding exceeds the output limit; split it before proceeding')
     path = args.output_dir / f'Binding{label(args.source)}.lean'
-    if args.check:
-        if not path.is_file() or path.read_bytes() != data:
-            raise SystemExit(f'Generated binding differs: {path}')
-    else:
-        args.output_dir.mkdir(parents=True, exist_ok=True)
-        if not path.exists() or path.read_bytes() != data:
-            path.write_bytes(data)
+    # Render and bound both outputs before publishing either. Each file is
+    # replaced atomically; an interrupted pair is not a proof receipt and
+    # both modules must still be checked in Source, Binding order.
+    if args.with_source:
+        write_or_check(local_file, local_data, args.check, args.max_source_output_bytes)
+    write_or_check(path, data, args.check, args.max_output_bytes)
+    word_lengths = [len(word) for branch in branches
+                    for words in ((branch['forward'], branch['backward'])
+                                  if branch['kind'] == 'accepted' else
+                                  (branch['words'],) if branch['kind'] == 'relation' else ())
+                    for word in words]
     print(json.dumps(dict(source=args.source, file=str(path), bytes=len(data),
+                          local_source_file=str(local_file), local_source_bytes=len(local_data),
+                          with_source=args.with_source,
+                          branches={kind: sum(b['kind'] == kind for b in branches)
+                                    for kind in ('trivial', 'relation', 'color', 'accepted')},
+                          witness_words=len(word_lengths), witness_letters=sum(word_lengths),
+                          max_witness_word_length=max(word_lengths, default=0),
                           source_index=names.index(args.source),
                           target_count=len({b['target'] for b in branches if b['kind'] == 'accepted'})), sort_keys=True))
 

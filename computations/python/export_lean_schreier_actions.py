@@ -182,9 +182,11 @@ private theorem conjugacy{b} :
 '''
         elif kind == 'relation':
             u, v = map(word_literal, branch['words'])
+            # The numeric word literals provide no independent Fin d type.
+            # Fix d explicitly before kernel reduction of the Boolean goal.
             text += f'''  · intro _ hs
-    exact False.elim ((show binaryWordBit (schreierAssignment ({b} : Fin {assignments})) {u} ≠
-      binaryWordBit (schreierAssignment ({b} : Fin {assignments})) {v} from by decide +kernel)
+    exact False.elim ((show binaryWordBit (schreierAssignment (d := {degree}) ({b} : Fin {assignments})) {u} ≠
+      binaryWordBit (schreierAssignment (d := {degree}) ({b} : Fin {assignments})) {v} from by decide +kernel)
       (hs {u} {v} (by decide +kernel)))
 '''
         elif kind == 'color':
