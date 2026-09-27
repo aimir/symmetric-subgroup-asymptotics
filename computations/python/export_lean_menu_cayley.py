@@ -110,13 +110,20 @@ def table(gens, degree):
                 identity=remap[0], next=nxt, prev=prev)
 
 
-def emit(node):
+def emit(node, *, module_name=None, title=None, generated_from=None,
+         scope_text=None, extra_body=''):
     w = node['degree']
     gens = [tuple(x - 1 for x in g) for g in node['generators']]
     d = len(gens)
     t = table(gens, w)
     n = len(t['codes'])
     label = node['id'].removeprefix('b').replace('_', 'T')
+    module_name = module_name or f'BinaryMenuCayley{label}'
+    title = title or f'Compact literal action certificate {label}'
+    generated_from = generated_from or (
+        'Generated from the original menu permutations by export_lean_menu_cayley.py.')
+    scope_text = scope_text or (
+        'This certifies\nthis original action, not finite-menu or normal-registry completeness.')
     use_packed = w == 16
     code_expr = finite_lookup(t['codes'], w**w, packed=use_packed)
     rank_expr = packed_lookup(t['rank']) if use_packed else lookup(t['rank'])
@@ -129,12 +136,11 @@ import SymmetricSubgroupAsymptotics.FinitePermutationEncoding
 import Mathlib.Order.Fin.Basic
 
 /-!
-# Compact literal action certificate {label}
+# {title}
 
-Generated from the original menu permutations by export_lean_menu_cayley.py.
+{generated_from}
 All finite equations use Lean's kernel. BFS parents establish actual group
-membership; numeric permutation codes establish faithfulness. This certifies
-this original action, not finite-menu or normal-registry completeness.
+membership; numeric permutation codes establish faithfulness. {scope_text}
 -/
 
 set_option autoImplicit false
@@ -142,7 +148,7 @@ set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 noncomputable section
 
-namespace SymmetricSubgroupAsymptotics.BinaryMenuCayley{label}
+namespace SymmetricSubgroupAsymptotics.{module_name}
 
 '''
     for j, g in enumerate(gens):
@@ -208,9 +214,9 @@ def originalEquiv : letI := group
     FiniteGroupRow {n} ≃* Subgroup.closure (Set.range generators) :=
   certificate.rowEquiv rows_injective prevRow prev_checked
 
-end SymmetricSubgroupAsymptotics.BinaryMenuCayley{label}
+{extra_body}end SymmetricSubgroupAsymptotics.{module_name}
 '''
-    return OUT / f'BinaryMenuCayley{label}.lean', s
+    return OUT / f'{module_name}.lean', s
 
 
 def main():

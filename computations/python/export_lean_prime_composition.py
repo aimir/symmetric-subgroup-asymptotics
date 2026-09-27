@@ -140,12 +140,13 @@ class SelectedRow:
 
 
 def read_selected(degree: int, index: int, budget: Budget,
-                  expected_sha256: str | None) -> SelectedRow:
+                  expected_sha256: str | None,
+                  catalogue: str = "primitive") -> SelectedRow:
     data_hash = bounded_file_hash(DATA, budget)
     # Avoid JSON materialization of unrelated normal lists. Check the selected
     # candidate's TOP-LEVEL locator after parsing, not just its text matches.
     needles = (
-        re.compile(rb'"catalogue"\s*:\s*"primitive"'),
+        re.compile(rb'"catalogue"\s*:\s*"' + re.escape(catalogue.encode()) + rb'"'),
         re.compile(rb'"degree"\s*:\s*' + str(degree).encode() + rb'\s*[,}]'),
         re.compile(rb'"index"\s*:\s*' + str(index).encode() + rb'\s*[,}]'),
     )
@@ -167,7 +168,7 @@ def read_selected(degree: int, index: int, budget: Budget,
                 continue
             row = json.loads(raw, object_pairs_hook=unique_object)
             if (not isinstance(row, dict) or row.get("kind") != "action"
-                    or row.get("catalogue") != "primitive"
+                    or row.get("catalogue") != catalogue
                     or type(row.get("degree")) is not int
                     or type(row.get("index")) is not int
                     or row["degree"] != degree or row["index"] != index):
@@ -176,7 +177,7 @@ def read_selected(degree: int, index: int, budget: Budget,
             require(expected_sha256 is None or line_hash == expected_sha256,
                     "selected raw JSONL line does not match --expect-row-sha256")
             return SelectedRow(degree, index, line_number, line_hash, data_hash, used, row)
-    raise CertificateError("selected primitive locator absent within bounded stream; "
+    raise CertificateError(f"selected {catalogue} locator absent within bounded stream; "
                            "no completeness or missing-catalogue conclusion follows")
 
 
