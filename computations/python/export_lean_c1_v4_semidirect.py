@@ -25,7 +25,7 @@ import time
 sys.dont_write_bytecode = True
 
 from export_lean_menu_cayley import (
-    ROOT, array, checks, compose, finite_lookup, lookup, packed_lookup, table,
+    ROOT, array, checks, compose, finite_lookup, lookup, packed, packed_lookup, table,
 )
 from export_lean_prime_composition import (
     Budget, CertificateError, DATA, LIMIT_SPECS, bounded_file_hash,
@@ -60,7 +60,8 @@ def inverse(value: tuple[int, ...]) -> tuple[int, ...]:
 
 def positive_words(generators: list[tuple[int, ...]], ceiling: int,
                    budget: Budget, name: str) -> dict[tuple[int, ...], tuple[int, ...]]:
-    identity = tuple(range(12))
+    require(generators, f"{name}: empty generator list")
+    identity = tuple(range(len(generators[0])))
     words = {identity: ()}
     queue = deque([identity])
     while queue:
@@ -83,22 +84,22 @@ def lean_word(word: tuple[int, ...]) -> str:
     return "[" + ",".join(str(x) for x in word) + "]"
 
 
-def permutation_def(name: str, value: tuple[int, ...]) -> str:
+def permutation_def(name: str, value: tuple[int, ...], degree: int = 12) -> str:
     inv = inverse(value)
-    return f'''private def {name} : Equiv.Perm (Fin 12) where
-  toFun x := ({array(value)} : Array (Fin 12))[x.val]!
-  invFun x := ({array(inv)} : Array (Fin 12))[x.val]!
+    return f'''private def {name} : Equiv.Perm (Fin {degree}) where
+  toFun x := ({array(value)} : Array (Fin {degree}))[x.val]!
+  invFun x := ({array(inv)} : Array (Fin {degree}))[x.val]!
   left_inv := by decide +kernel
   right_inv := by decide +kernel
 
 '''
 
 
-def generator_family(prefix: str, values: list[tuple[int, ...]]) -> str:
-    text = "".join(permutation_def(f"{prefix}Generator{i}", value)
+def generator_family(prefix: str, values: list[tuple[int, ...]], degree: int = 12) -> str:
+    text = "".join(permutation_def(f"{prefix}Generator{i}", value, degree)
                    for i, value in enumerate(values))
     names = [f"{prefix}Generator{i}" for i in range(len(values))]
-    return text + f'''def {prefix}Generators (j : Fin {len(values)}) : Equiv.Perm (Fin 12) :=
+    return text + f'''def {prefix}Generators (j : Fin {len(values)}) : Equiv.Perm (Fin {degree}) :=
   {lookup(names, "j.val")}
 
 '''
@@ -200,8 +201,54 @@ def build(index: int, row: dict[str, object], selected_line: int,
             require(conjugate in base_words, "source generator does not normalize the base")
             conjugate_words.append(base_words[conjugate])
 
+    blocks_value = owner.get("blocks")
+    require(isinstance(blocks_value, list) and len(blocks_value) == 3,
+            "V4 owner lost its three literal blocks")
+    blocks: list[set[int]] = []
+    for block in blocks_value:
+        require(isinstance(block, list) and len(block) == 4
+                and all(type(x) is int and 1 <= x <= 12 for x in block),
+                "malformed literal four-point block")
+        blocks.append({x - 1 for x in block})
+    require(set().union(*blocks) == set(range(12))
+            and sum(map(len, blocks)) == 12, "literal blocks do not partition the points")
+    identity = tuple(range(12))
+    local: list[tuple[int, ...]] = []
+    for block in blocks:
+        entries = [x for x in base_words if x != identity
+                   and {p for p in range(12) if x[p] != p} == block]
+        require(len(entries) == 3, "a literal block does not carry exactly three translations")
+        local.extend(sorted(entries, key=packed))
+    require(len(set(local)) == 9, "local translations are not distinct")
+    local_in_base = [base_words[x] for x in local]
+    local_words = positive_words(local, 64, budget, "local translations")
+    require(set(local_words) == set(base_words), "local translations do not generate the base")
+    base_in_local = [local_words[x] for x in base]
+    require(all(compose(x, x) == identity for x in base_words),
+            "binary base is not elementary")
+
+    local_index = {value: i for i, value in enumerate(local)}
+    action_generators: list[tuple[int, ...]] = []
+    for c in complement:
+        images = []
+        for x in local:
+            conjugate = compose(compose(c, x), inverse(c))
+            require(conjugate in local_index,
+                    "complement generator does not permute local translations")
+            images.append(local_index[conjugate])
+        require(sorted(images) == list(range(9)), "local conjugation image is not a permutation")
+        action_generators.append(tuple(images))
+    action_words = positive_words(action_generators, len(complement_words), budget,
+                                  "nine-vector action")
+    transitive_words: list[tuple[int, ...]] = []
+    for target in range(9):
+        choices = [(len(word), word) for action, word in action_words.items()
+                   if action[0] == target]
+        require(choices, "nine-vector action is not transitive")
+        transitive_words.append(min(choices)[1])
+
     module_name = f"TernaryV4Semidirect12T{index}"
-    text = f'''import SymmetricSubgroupAsymptotics.C1SparseSemidirectCertificate
+    text = f'''import SymmetricSubgroupAsymptotics.C1V4BlockGeometryCertificate
 import SymmetricSubgroupAsymptotics.FiniteCayleyGroup
 import SymmetricSubgroupAsymptotics.FinitePermutationEncoding
 import Mathlib.Order.Fin.Basic
@@ -227,6 +274,8 @@ namespace SymmetricSubgroupAsymptotics.{module_name}
     text += generator_family("source", source)
     text += generator_family("base", base)
     text += generator_family("complement", complement)
+    text += generator_family("local", local)
+    text += generator_family("action", action_generators, degree=9)
     base_block, base_order = cayley_block("base", base, 64)
     complement_block, complement_order = cayley_block("complement", complement, 81)
     text += base_block + complement_block
@@ -241,6 +290,9 @@ namespace SymmetricSubgroupAsymptotics.{module_name}
     text += word_function("conjugateWord",
                           f"Fin {len(source)} × Fin {len(base)}", len(base), conjugate_words,
                           f"i.1.val * {len(base)} + i.2.val")
+    text += word_function("localInBaseWord", "Fin 9", len(base), local_in_base)
+    text += word_function("baseInLocalWord", f"Fin {len(base)}", 9, base_in_local)
+    text += word_function("transitiveWord", "Fin 9", len(complement), transitive_words)
     text += f'''private def baseInSource : BinaryNormalGeneratorWords
     baseGenerators sourceGenerators where
   words := baseInSourceWord
@@ -292,6 +344,52 @@ theorem action_join :
     certificate.actionBase ⊔ certificate.actionComplement = ⊤ :=
   certificate.action_join
 
+private def blocks (b : Fin 3) : Finset (Fin 12) :=
+  {lookup([f"({{{','.join(map(str, sorted(block)))}}} : Finset (Fin 12))" for block in blocks], "b.val")}
+
+private def pointBlock (x : Fin 12) : Fin 3 :=
+  Fin.ofNat 3 x.val
+
+private def coordinate (i : Fin 9) : Fin 3 :=
+  Fin.ofNat 3 (i.val / 3)
+
+private def localInBase : BinaryNormalGeneratorWords
+    localGenerators baseGenerators where
+  words := localInBaseWord
+  equations := by decide +kernel
+
+private def baseInLocal : BinaryNormalGeneratorWords
+    baseGenerators localGenerators where
+  words := baseInLocalWord
+  equations := by decide +kernel
+
+def geometry : C1V4BlockGeometryCertificate certificate where
+  blocks := blocks
+  block_card := by decide +kernel
+  pointBlock := pointBlock
+  block_membership := by decide +kernel
+  coordinate := coordinate
+  coordinate_card := by decide +kernel
+  localTranslations := localGenerators
+  local_ne_one := by decide +kernel
+  local_injective := by decide +kernel
+  local_support := by decide +kernel
+  local_product := by decide +kernel
+  localInBase := localInBase
+  baseInLocal := baseInLocal
+  rows_exponent_two := by decide +kernel
+  actionGenerators := actionGenerators
+  conjugation := by decide +kernel
+  transitiveWord := transitiveWord
+  transitive_from_zero := by decide +kernel
+
+theorem base_exponent_two : ∀ x : certificate.base, x ^ 2 = 1 :=
+  geometry.base_exponent_two
+
+theorem localClosure_eq_base :
+    Subgroup.closure (Set.range localGenerators) = certificate.base :=
+  geometry.localClosure_eq_base
+
 end SymmetricSubgroupAsymptotics.{module_name}
 '''
     path = ROOT / f"formal/SymmetricSubgroupAsymptotics/{module_name}.lean"
@@ -301,7 +399,8 @@ end SymmetricSubgroupAsymptotics.{module_name}
         "complement_rows": complement_order,
         "max_word_length": max(map(len, base_in_source + complement_in_source
                                    + source_base_words + source_complement_words
-                                   + conjugate_words)),
+                                   + conjugate_words + local_in_base + base_in_local
+                                   + transitive_words)),
     }
 
 

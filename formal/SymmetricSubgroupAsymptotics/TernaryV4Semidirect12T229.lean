@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.C1SparseSemidirectCertificate
+import SymmetricSubgroupAsymptotics.C1V4BlockGeometryCertificate
 import SymmetricSubgroupAsymptotics.FiniteCayleyGroup
 import SymmetricSubgroupAsymptotics.FinitePermutationEncoding
 import Mathlib.Order.Fin.Basic
@@ -107,6 +107,84 @@ private def complementGenerator2 : Equiv.Perm (Fin 12) where
 def complementGenerators (j : Fin 3) : Equiv.Perm (Fin 12) :=
   (if j.val < 1 then complementGenerator0 else (if j.val < 2 then complementGenerator1 else complementGenerator2))
 
+private def localGenerator0 : Equiv.Perm (Fin 12) where
+  toFun x := (#[9,1,2,6,4,5,3,7,8,0,10,11] : Array (Fin 12))[x.val]!
+  invFun x := (#[9,1,2,6,4,5,3,7,8,0,10,11] : Array (Fin 12))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def localGenerator1 : Equiv.Perm (Fin 12) where
+  toFun x := (#[6,1,2,9,4,5,0,7,8,3,10,11] : Array (Fin 12))[x.val]!
+  invFun x := (#[6,1,2,9,4,5,0,7,8,3,10,11] : Array (Fin 12))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def localGenerator2 : Equiv.Perm (Fin 12) where
+  toFun x := (#[3,1,2,0,4,5,9,7,8,6,10,11] : Array (Fin 12))[x.val]!
+  invFun x := (#[3,1,2,0,4,5,9,7,8,6,10,11] : Array (Fin 12))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def localGenerator3 : Equiv.Perm (Fin 12) where
+  toFun x := (#[0,10,2,3,7,5,6,4,8,9,1,11] : Array (Fin 12))[x.val]!
+  invFun x := (#[0,10,2,3,7,5,6,4,8,9,1,11] : Array (Fin 12))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def localGenerator4 : Equiv.Perm (Fin 12) where
+  toFun x := (#[0,7,2,3,10,5,6,1,8,9,4,11] : Array (Fin 12))[x.val]!
+  invFun x := (#[0,7,2,3,10,5,6,1,8,9,4,11] : Array (Fin 12))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def localGenerator5 : Equiv.Perm (Fin 12) where
+  toFun x := (#[0,4,2,3,1,5,6,10,8,9,7,11] : Array (Fin 12))[x.val]!
+  invFun x := (#[0,4,2,3,1,5,6,10,8,9,7,11] : Array (Fin 12))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def localGenerator6 : Equiv.Perm (Fin 12) where
+  toFun x := (#[0,1,11,3,4,8,6,7,5,9,10,2] : Array (Fin 12))[x.val]!
+  invFun x := (#[0,1,11,3,4,8,6,7,5,9,10,2] : Array (Fin 12))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def localGenerator7 : Equiv.Perm (Fin 12) where
+  toFun x := (#[0,1,8,3,4,11,6,7,2,9,10,5] : Array (Fin 12))[x.val]!
+  invFun x := (#[0,1,8,3,4,11,6,7,2,9,10,5] : Array (Fin 12))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def localGenerator8 : Equiv.Perm (Fin 12) where
+  toFun x := (#[0,1,5,3,4,2,6,7,11,9,10,8] : Array (Fin 12))[x.val]!
+  invFun x := (#[0,1,5,3,4,2,6,7,11,9,10,8] : Array (Fin 12))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+def localGenerators (j : Fin 9) : Equiv.Perm (Fin 12) :=
+  (if j.val < 4 then (if j.val < 2 then (if j.val < 1 then localGenerator0 else localGenerator1) else (if j.val < 3 then localGenerator2 else localGenerator3)) else (if j.val < 6 then (if j.val < 5 then localGenerator4 else localGenerator5) else (if j.val < 7 then localGenerator6 else (if j.val < 8 then localGenerator7 else localGenerator8))))
+
+private def actionGenerator0 : Equiv.Perm (Fin 9) where
+  toFun x := (#[5,4,3,8,7,6,0,1,2] : Array (Fin 9))[x.val]!
+  invFun x := (#[6,7,8,2,1,0,5,4,3] : Array (Fin 9))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def actionGenerator1 : Equiv.Perm (Fin 9) where
+  toFun x := (#[1,2,0,3,4,5,8,6,7] : Array (Fin 9))[x.val]!
+  invFun x := (#[2,0,1,3,4,5,7,8,6] : Array (Fin 9))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+private def actionGenerator2 : Equiv.Perm (Fin 9) where
+  toFun x := (#[2,0,1,4,5,3,8,6,7] : Array (Fin 9))[x.val]!
+  invFun x := (#[1,2,0,5,3,4,7,8,6] : Array (Fin 9))[x.val]!
+  left_inv := by decide +kernel
+  right_inv := by decide +kernel
+
+def actionGenerators (j : Fin 3) : Equiv.Perm (Fin 9) :=
+  (if j.val < 1 then actionGenerator0 else (if j.val < 2 then actionGenerator1 else actionGenerator2))
+
 private def baseCodes (i : Fin 64) : Fin (12^12) :=
   Fin.ofNat 8916100448256 (((if (i.val) / 32 < 1 then 1764270427859482822717083408535441793862065342070416849080527536828894168491371394414358715581120436513233455430743749064754503475004665131384989447603855931508966124605951832569847410571622257428177747189641743767621611234399264372303344858630358295631053313791100888342011346967831684179971536363065169029904368560026484922870736264346634388300477758423049031043891734040015952763839803543217541822686392661382523158885937 else 3560286225044666218587112496156636626901207822459748919404973000595904206038861912106348939977266672212355639275088975476693438815277703597211768095893618573779151177212984112620937719669353404410797599343483754101764443373729347697203950511387450979635456707129985404020108188905993957626211023857936137980061871520117614779542264817370360638459642195011326069392132062935152397319326954688227868950126673124413297133136593) : ℕ) / 2 ^ (44 * ((i.val) % 32)) % 2 ^ 44)
 private def baseRanks (i : Fin 64) : ℕ :=
@@ -194,6 +272,15 @@ private def sourceComplementWord (i : Fin 4) : List (Fin 3) :=
 private def conjugateWord (i : Fin 4 × Fin 6) : List (Fin 6) :=
   (if i.1.val * 6 + i.2.val < 12 then (if i.1.val * 6 + i.2.val < 6 then (if i.1.val * 6 + i.2.val < 3 then (if i.1.val * 6 + i.2.val < 1 then [0] else (if i.1.val * 6 + i.2.val < 2 then [1] else [2])) else (if i.1.val * 6 + i.2.val < 4 then [3] else (if i.1.val * 6 + i.2.val < 5 then [4] else [5]))) else (if i.1.val * 6 + i.2.val < 9 then (if i.1.val * 6 + i.2.val < 7 then [0] else (if i.1.val * 6 + i.2.val < 8 then [1] else [2])) else (if i.1.val * 6 + i.2.val < 10 then [3] else (if i.1.val * 6 + i.2.val < 11 then [4] else [5])))) else (if i.1.val * 6 + i.2.val < 18 then (if i.1.val * 6 + i.2.val < 15 then (if i.1.val * 6 + i.2.val < 13 then [0,1] else (if i.1.val * 6 + i.2.val < 14 then [0] else [2])) else (if i.1.val * 6 + i.2.val < 16 then [3] else (if i.1.val * 6 + i.2.val < 17 then [4,5] else [4]))) else (if i.1.val * 6 + i.2.val < 21 then (if i.1.val * 6 + i.2.val < 19 then [5] else (if i.1.val * 6 + i.2.val < 20 then [4] else [1])) else (if i.1.val * 6 + i.2.val < 22 then [0] else (if i.1.val * 6 + i.2.val < 23 then [2] else [3])))))
 
+private def localInBaseWord (i : Fin 9) : List (Fin 6) :=
+  (if i.val < 4 then (if i.val < 2 then (if i.val < 1 then [4] else [4,5]) else (if i.val < 3 then [5] else [3])) else (if i.val < 6 then (if i.val < 5 then [2,3] else [2]) else (if i.val < 7 then [1] else (if i.val < 8 then [0,1] else [0]))))
+
+private def baseInLocalWord (i : Fin 6) : List (Fin 9) :=
+  (if i.val < 3 then (if i.val < 1 then [8] else (if i.val < 2 then [6] else [5])) else (if i.val < 4 then [3] else (if i.val < 5 then [0] else [2])))
+
+private def transitiveWord (i : Fin 9) : List (Fin 3) :=
+  (if i.val < 4 then (if i.val < 2 then (if i.val < 1 then [] else [1]) else (if i.val < 3 then [2] else [0,2])) else (if i.val < 6 then (if i.val < 5 then [0,1] else [0]) else (if i.val < 7 then [0,0] else (if i.val < 8 then [0,0,1] else [0,0,2]))))
+
 private def baseInSource : BinaryNormalGeneratorWords
     baseGenerators sourceGenerators where
   words := baseInSourceWord
@@ -244,5 +331,51 @@ theorem base_normal_in_action :
 theorem action_join :
     certificate.actionBase ⊔ certificate.actionComplement = ⊤ :=
   certificate.action_join
+
+private def blocks (b : Fin 3) : Finset (Fin 12) :=
+  (if b.val < 1 then ({0,3,6,9} : Finset (Fin 12)) else (if b.val < 2 then ({1,4,7,10} : Finset (Fin 12)) else ({2,5,8,11} : Finset (Fin 12))))
+
+private def pointBlock (x : Fin 12) : Fin 3 :=
+  Fin.ofNat 3 x.val
+
+private def coordinate (i : Fin 9) : Fin 3 :=
+  Fin.ofNat 3 (i.val / 3)
+
+private def localInBase : BinaryNormalGeneratorWords
+    localGenerators baseGenerators where
+  words := localInBaseWord
+  equations := by decide +kernel
+
+private def baseInLocal : BinaryNormalGeneratorWords
+    baseGenerators localGenerators where
+  words := baseInLocalWord
+  equations := by decide +kernel
+
+def geometry : C1V4BlockGeometryCertificate certificate where
+  blocks := blocks
+  block_card := by decide +kernel
+  pointBlock := pointBlock
+  block_membership := by decide +kernel
+  coordinate := coordinate
+  coordinate_card := by decide +kernel
+  localTranslations := localGenerators
+  local_ne_one := by decide +kernel
+  local_injective := by decide +kernel
+  local_support := by decide +kernel
+  local_product := by decide +kernel
+  localInBase := localInBase
+  baseInLocal := baseInLocal
+  rows_exponent_two := by decide +kernel
+  actionGenerators := actionGenerators
+  conjugation := by decide +kernel
+  transitiveWord := transitiveWord
+  transitive_from_zero := by decide +kernel
+
+theorem base_exponent_two : ∀ x : certificate.base, x ^ 2 = 1 :=
+  geometry.base_exponent_two
+
+theorem localClosure_eq_base :
+    Subgroup.closure (Set.range localGenerators) = certificate.base :=
+  geometry.localClosure_eq_base
 
 end SymmetricSubgroupAsymptotics.TernaryV4Semidirect12T229
