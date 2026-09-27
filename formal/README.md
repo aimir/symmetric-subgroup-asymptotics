@@ -651,14 +651,34 @@ actual representation injected into a coinduced module from index `2^t`
 in a finite 2-group. It constructs the subgroup-chain coordinates and
 uses the Boolean antichain bound, with no supplied module-capacity input.
 The corresponding original induced-subrepresentation and invariant-character
-bounds hold over the stated fields. Installing this in an induction over
-all original normal subgroups, and then bounding the actual menu, remains
-separate work.
+bounds hold over the stated fields.
+The [all-normal binary induction](SymmetricSubgroupAsymptotics/TransitiveBinaryNormalHead.lean)
+now bounds the relative character head of every original normal subgroup
+by `A_k = sum_{j<k} choose(j,j/2)` in degree `2^k`. Its
+[permutation adapter](SymmetricSubgroupAsymptotics/PermutationBinaryHead.lean)
+and [pair-kernel adapter](SymmetricSubgroupAsymptotics/BinaryPairNormalHead.lean)
+retain the exact normal intersection, the original conjugation action and
+the actual top image. The
+[normal-count consequence](SymmetricSubgroupAsymptotics/TransitiveBinaryNormalCount.lean)
+gives at most `2^(a*A_k)` original normals when `card U ≤ 2^a`;
+the [generator theorem](SymmetricSubgroupAsymptotics/TransitiveBinaryGenerators.lean)
+constructs an actual generating tuple of length `A_k`. These discharge
+their rank inputs internally. Bounding and installing the complete
+weighted menu remains separate work.
 The [elementary width asymptotics](SymmetricSubgroupAsymptotics/BinaryWidthAsymptotics.lean)
 prove `choose(k,k/2)/2^k → 0` and the same limit for the cumulative
 widths `sum_{j<k} choose(j,j/2)`. An exact central-binomial recurrence
 gives a square bound in both parities; no Stirling or group-theoretic
 estimate is assumed.
+The [cocycle generator bound](SymmetricSubgroupAsymptotics/CocycleGeneratorBound.lean)
+injects actual one-cocycles into their values on a supplied original
+generating tuple, giving `card Z¹ ≤ (card A)^d` and the same upper bound
+for the actual quotient `H¹`. It does not evaluate cohomology classes
+on generators. The independent
+[class-count extension theorem](SymmetricSubgroupAsymptotics/ConjugacyClassExtension.lean)
+proves `k(G) ≤ k(N)*k(G/N)` for every finite group and original normal
+subgroup, including nonabelian kernels. This extension inequality does
+not itself establish the required permutation class-count envelope.
 The [local Schreier adapter](SymmetricSubgroupAsymptotics/BinarySchreierPrunedAdapter.lean)
 reuses complete original word certificates and stops every index-two child
 when the actual source order is at most twice the cutoff.
