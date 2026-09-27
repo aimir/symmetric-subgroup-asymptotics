@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.NoncriticalBinaryOddSingleton
 import SymmetricSubgroupAsymptotics.OddMarkerPairIntrinsicIncidence
 import SymmetricSubgroupAsymptotics.OddMarkerBinaryErrorTransfer
+import SymmetricSubgroupAsymptotics.OddCriticalOrbitCriterion
 
 /-!
 # The complete physical binary zero-defect family in odd degree
@@ -60,6 +61,87 @@ theorem natural_hasNoFixedPoints (N : ℕ) (H : NaturalSector N) :
       obtain ⟨u,hu⟩ := oddMarker_transitive x y
       exact ⟨u,fun hx => hy (hu.symm.trans hx)⟩
   | inr i => exact fullAction_moves_point N i x
+
+/-- The retained occupied noncritical residual orbit excludes every literal
+member of the complete odd critical family. -/
+theorem natural_ne_oddCritical (N : ℕ) (H : NaturalSector N)
+    (J : OddCriticalSubgroups N) : H.val ≠ J.val := by
+  obtain ⟨t,e,K,hK,hKH⟩ := H.property
+  have h0 : OrbitProfileFullOn
+      (OddMarkerPairModelEquiv.OddAction
+        (OddMarkerPairIntrinsicIncidence.ExteriorPoints N)
+        (OddMarkerPairIntrinsicIncidence.ExteriorAction N))
+      (Equiv.refl _) K :=
+    (orbitProfileFullOn_iff _ _ _).mpr hK
+  have hOn : OrbitProfileFullOn
+      (OddMarkerPairModelEquiv.OddAction
+        (OddMarkerPairIntrinsicIncidence.ExteriorPoints N)
+        (OddMarkerPairIntrinsicIncidence.ExteriorAction N)) e H.val := by
+    rw [← hKH]
+    simpa only [Equiv.refl_trans] using h0.relabel e
+  obtain ⟨a,ha,hpos⟩ :=
+    OddMarkerPairIntrinsicIncidence.selector_noncritical N t.val t.property
+  let j : Fin (OddMarkerPairProfileUnion.oddMultiplicity t.val
+      (.inr (.inr (.inr a)))) := ⟨0,hpos⟩
+  let x : BinaryResidualOrbitMenu.points (2*N) a := Classical.choice inferInstance
+  have htrans : ∀ i
+      (x y : OddMarkerPairModelEquiv.OddPoints
+        (OddMarkerPairIntrinsicIncidence.ExteriorPoints N) i),
+      ∃ u : OddMarkerPairModelEquiv.OddAction
+          (OddMarkerPairIntrinsicIncidence.ExteriorPoints N)
+          (OddMarkerPairIntrinsicIncidence.ExteriorAction N) i,
+        (u : Equiv.Perm _) x = y :=
+    RepeatedOddMarkerPhysicalProfile.action_transitive
+      (OddMarkerPairModelEquiv.BasePoints
+        (OddMarkerPairIntrinsicIncidence.ExteriorPoints N))
+      (OddMarkerPairModelEquiv.BaseAction
+        (OddMarkerPairIntrinsicIncidence.ExteriorPoints N)
+        (OddMarkerPairIntrinsicIncidence.ExteriorAction N))
+      (fullAction_transitive N)
+  obtain ⟨o,c,hc⟩ := hOn.selected_orbit_image htrans
+    (.inr (.inr (.inr a))) j x
+  intro hHJ
+  obtain ⟨q,d,L,hL,hLJ⟩ := J.property
+  have hL0 : OrbitProfileFullOn oddCriticalActionSubgroup (Equiv.refl _) L :=
+    (orbitProfileFullOn_iff _ _ _).mpr hL
+  have hCrit : OrbitProfileFullOn oddCriticalActionSubgroup d H.val := by
+    rw [hHJ,← hLJ]
+    simpa only [Equiv.refl_trans] using hL0.relabel d
+  obtain ⟨i,k,b,hb⟩ := hCrit.orbit_image_chart oddCriticalAction_transitive o
+  cases i with
+  | fixed =>
+      have he : BinaryResidualOrbitMenu.points (2*N) a ≃ Fin 1 :=
+        c.trans b.symm
+      have hcard := Fintype.card_congr he
+      have hgt : 2 < Fintype.card (BinaryResidualOrbitMenu.points (2*N) a) := a.1.2
+      simp only [Fintype.card_fin] at hcard
+      omega
+  | marker =>
+      have he : BinaryResidualOrbitMenu.points (2*N) a ≃ Fin 3 :=
+        c.trans b.symm
+      have hcard : Fintype.card (BinaryResidualOrbitMenu.points (2*N) a) = 3 := by
+        simpa only [Fintype.card_fin] using Fintype.card_congr he
+      have hne := RepeatedOddMarkerPhysicalBinary.exteriorDegree_ne_three
+        (BinaryResidualOrbitMenu.points (2*N))
+        (BinaryResidualOrbitMenu.action (2*N))
+        (BinaryResidualOrbitMenu.action_isPGroup (2*N))
+        (BinaryResidualOrbitMenu.action_transitive (2*N)) a
+      exact hne hcard
+  | binary i =>
+      change relabelSubgroup b (criticalActionSubgroup i) =
+        OrbitProfileFromOrbits.orbitImage H.val o at hb
+      apply ha
+      refine ⟨i,b.trans c.symm,?_⟩
+      calc
+        relabelSubgroup (b.trans c.symm) (criticalActionSubgroup i) =
+            relabelSubgroup c.symm
+              (relabelSubgroup b (criticalActionSubgroup i)) :=
+          (relabelSubgroup_trans b c.symm _).symm
+        _ = relabelSubgroup c.symm
+              (OrbitProfileFromOrbits.orbitImage H.val o) := by rw [hb]
+        _ = BinaryResidualOrbitMenu.action (2*N) a := by
+          rw [← hc]
+          exact relabelSubgroup_symm c _
 
 theorem subgroup_injective (N : ℕ) : Function.Injective (subgroup N) := by
   intro H K h
