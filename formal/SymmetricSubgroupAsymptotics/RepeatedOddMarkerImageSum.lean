@@ -107,6 +107,18 @@ theorem card_family_rat (hD : IsPGroup 2 D)
         (ternaryFullWeight (Coordinate (actualScalar B.1) a) : ℚ) := by
   exact_mod_cast card_family hD P
 
+/-- Named whole-family weight for consumers with dependent physical point
+types. Its finite index is exactly the original image-state index above. -/
+def familyWeight
+    (P : Subgroup ((ι → Multiplicative (ZMod 2)) × D) → Prop) : ℚ :=
+  ∑ B : ImageState P, ∏ a : Label (actualScalar B.1),
+    (ternaryFullWeight (Coordinate (actualScalar B.1) a) : ℚ)
+
+theorem card_family_weight_rat (hD : IsPGroup 2 D)
+    (P : Subgroup ((ι → Multiplicative (ZMod 2)) × D) → Prop) :
+    (Nat.card (Family P) : ℚ) = familyWeight P :=
+  card_family_rat hD P
+
 end Finite
 
 end SymmetricSubgroupAsymptotics.RepeatedOddMarkerImageSum
