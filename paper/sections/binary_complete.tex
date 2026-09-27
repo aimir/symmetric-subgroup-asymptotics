@@ -109,6 +109,43 @@ $(\lfloor j/2\rfloor+1)B_j^2\leq4^j$. Splitting the cumulative
 sum at $k/2$ proves the stated estimate for $A_k$.
 \end{proof}
 
+\begin{lemma}[Zero cuts at large binary widths]\label{lem:binary-zero-cut}
+Let $U$ be transitive and binary of degree $w=2s$, where $s=2^j$,
+and fix an original pair kernel $K$ and $N\lhd U$.
+For $A=KN/N$ and $B=U/(KN)$, the literal cut $C=0$ has
+\[
+ v=s,\qquad r(A)=\dim A^B\leq B_j,\qquad
+ g=w-v-4r(A)\geq w/128>0\quad(j\geq9).
+\]
+For $j\geq11$ the stronger bound $g\geq w/32$ holds.
+The corresponding coefficient remains $D=|A||H^1(B,A)|$, and
+the same-source moment weight is exactly $\Phi(J)=e_B(J)$.
+\end{lemma}
+\begin{proof}
+The invariant bound follows by taking the full preimage of $A^B$
+in the original pair kernel and applying the binary module bound
+to that trivial quotient. Since $B$ is binary, its simple modules
+over $\F_2$ are trivial, so this invariant dimension is the Schur
+capacity. The original top $T\leq S_s$ maps onto this same $B$;
+Proposition~\ref{prop:prefix} applies to that faithful cover, without
+assuming a faithful degree-$s$ action of $B$ or a split extension.
+With $C=0$ it gives the stated $D$ and $\Phi$.
+
+Pascal's identity gives $B_{j+1}\leq2B_j$. The exact values
+$B_9=126$ and $B_{11}=462$ therefore imply, respectively,
+$256B_j\leq63\,2^j$ for $j\geq9$ and
+$64B_j\leq15\,2^j$ for $j\geq11$.
+Substitution into $g=s-4r(A)$ proves both bounds.
+\end{proof}
+
+Thus physical widths $1024$ and $2048$ already have zero-cut
+parameters $e=g/16\geq1/2$ and $e\geq1$, respectively, and can
+be included in a fixed finite direct-fusion prefix. At every width
+at least $4096$, the zero cut meets the uniform margin used below.
+Only widths $64,128,256,512$ in the large-width route require
+the sharper cut construction; degree $32$ remains the separate
+adaptive boundary above.
+
 \begin{theorem}[Complete large-orbit deletion]\label{thm:binary-unbounded}
 Let $T_{64}(N)$ be the normalized family with some actual orbit of
 width at least $64$. There are nonnegative $\eta_{64}$ and $K_{64}$,
@@ -132,8 +169,10 @@ pair kernel $K$, put
 \[
  Q=U/N,\qquad A=KN/N,\qquad B=U/(KN),\qquad S=A^B.
 \]
-For $s=32$ use Theorem~\ref{thm:binary32-capacity}, and for
-$s\geq64$ use Theorem~\ref{thm:binary-large-capacity}.
+For $s=32$ use Theorem~\ref{thm:binary32-capacity}; the remaining
+finite widths $64\leq s<2048$ are covered by
+Theorem~\ref{thm:binary-large-capacity}. For $s\geq2048$ the zero
+cut in Lemma~\ref{lem:binary-zero-cut} already suffices.
 Retain all cuts $C\leq S$ satisfying
 $2c+4r(A/C)\leq15s/16$, where $c=\dim C$.
 This menu is nonempty and invariant under the original action

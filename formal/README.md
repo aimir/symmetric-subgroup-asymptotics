@@ -704,13 +704,32 @@ give a single `H ≥ 0`, independent of degree and action family, for the bound
 [complete action classes](SymmetricSubgroupAsymptotics/BinaryTransitiveActionClasses.lean)
 select one original subgroup per actual ambient-conjugacy class and prove
 complete coverage and separation. Installing those representatives in the
-full entry family, proving local cut acceptance and assembling the physical
-recurrence remain separate obligations.
+physical recurrence remains a separate obligation.
+The [complete entry index](SymmetricSubgroupAsymptotics/BinaryOriginalMenuEntries.lean)
+now assembles the literal action-class, pair-system, original-normal and
+central-cut indices. Its weighted sum equals the proved menu mass exactly,
+and every literal accepted subtype inherits the same bound.
+The [actual accepted row](SymmetricSubgroupAsymptotics/BinaryOriginalWideRow.lean)
+installs that mass internally, proves forward support, exponential decay
+and eventual contraction. Its numerical acceptance predicate alone does
+not assert local envelopes for arbitrary nonzero cuts.
 The [zero-cut parameters](SymmetricSubgroupAsymptotics/BinaryZeroCutWideParameters.lean)
 prove that `w=2^(k+1)`, `v=2^k` and `r≤choose(k,k/2)` satisfy the required
 wide-row inequalities for every `k≥11`. This numerical statement requires
 an actual section-capacity and local-envelope application before it counts
 any physical family.
+The [zero-cut extension](SymmetricSubgroupAsymptotics/BinaryPairZeroCutExtension.lean)
+identifies the exact kernel of `U/N → U/(K∨N)` and its original conjugation
+action without assuming splitting. The
+[actual zero-cut fusion theorem](SymmetricSubgroupAsymptotics/BinaryPairZeroCutFusion.lean)
+derives its Schur capacity, original translation/H¹ coefficient, arbitrary
+survival envelope and all same-source moments. Its faithful prefix is the
+actual top group covering the quotient. Every original normal has the
+required uniform gap at physical width at least 4096.
+The [strict-gap refinement](SymmetricSubgroupAsymptotics/BinaryPairZeroCutPositiveFusion.lean)
+proves `e≥w/2048>0` from physical width 1024, including `e≥1/2` and `e≥1`
+at 1024 and 2048. Their finite-prefix physical recurrence installation remains
+separate, as do sharper cuts below 1024 and global subgroup ownership.
 The [cocycle generator bound](SymmetricSubgroupAsymptotics/CocycleGeneratorBound.lean)
 injects actual one-cocycles into their values on a supplied original
 generating tuple, giving `card Z¹ ≤ (card A)^d` and the same upper bound
@@ -726,6 +745,18 @@ by the product of bounds for all actual coordinate subgroups. Its
 [p-group specialization](SymmetricSubgroupAsymptotics/PGroupProductClassBound.lean)
 requires these coordinate bounds only for p-subgroups. Neither theorem
 assumes independent coordinates or monotonicity of class count under inclusion.
+The [actual block kernel](SymmetricSubgroupAsymptotics/BlockKernelClassBound.lean)
+uses jointly injective actions on the original fibres. The
+[eight-point block construction](SymmetricSubgroupAsymptotics/BinaryEightPointBlocks.lean)
+selects the needed stabilizer-chain prefix and proves the exact degree product.
+The [class induction](SymmetricSubgroupAsymptotics/BinaryEightBlockClassInduction.lean)
+then derives `k(G)^7≤5^(2*card X)` for every finite faithful binary action
+from its explicit degree-at-most-eight class base. That finite base is still
+an input; the theorem does not discharge the separate 38/25 nilpotent bound.
+The [finite-base reduction](SymmetricSubgroupAsymptotics/BinarySmallClassBaseReduction.lean)
+reduces that base to bounds 2, 5 and 25 for transitive binary actions in
+degrees 2, 4 and 8. Empty, singleton and intransitive actions are proved
+internally through the original restriction kernel.
 The [binary quotient specialization](SymmetricSubgroupAsymptotics/TransitiveBinaryCocycleBound.lean)
 constructs its generators internally and proves `card H¹ ≤ (card A)^A_k`
 for the stated representation of every actual quotient of the original
@@ -735,7 +766,8 @@ requires complete original rows and one original-group conjugator per
 row. Its [8T35 pilot](SymmetricSubgroupAsymptotics/BinaryConjugacyClass8T35.lean)
 proves an upper bound of 25 for the literal original group's class count.
 The selected producer `computations/python/export_lean_conjugacy_cover_selected.py`
-accepts only `--source 8T35`; `--write` emits its ignored witness data,
+accepts one explicit `--source` from its pinned eight-point allowlist;
+`--write` emits only that source's ignored witness data,
 and `--check` performs a read-only replay. Separate Lean checks of the
 generated data and pilot establish the theorem. This pilot does not
 assert coverage of other eight-point groups or the universal envelope.
