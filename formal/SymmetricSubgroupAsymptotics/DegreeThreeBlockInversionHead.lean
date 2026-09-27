@@ -1,6 +1,8 @@
 import SymmetricSubgroupAsymptotics.BlockKernelSignCoordinates
 import SymmetricSubgroupAsymptotics.OddMarkerTernaryChart
 import SymmetricSubgroupAsymptotics.PrimeLayerVanishing
+import SymmetricSubgroupAsymptotics.RelativeAmbientSubgroup
+import SymmetricSubgroupAsymptotics.RelativeAmbientTransport
 import SymmetricSubgroupAsymptotics.RelativeSecondIsomorphism
 import SymmetricSubgroupAsymptotics.TernaryRelativeSignHead
 
@@ -434,6 +436,77 @@ theorem blockKernelNormal_primeRelativeCharacters_eq_zero
   have hchain := primeRelativeHead_chain_le B P 3 inf_le_left
   rw [hBzero, hQzero] at hchain
   exact Nat.eq_zero_of_le_zero hchain
+
+/-- The physical intersection of an original normal subgroup with the
+literal block kernel also has zero head under the whole original ambient
+group. -/
+theorem originalIntersection_primeRelativeCharacters_eq_zero
+    [Finite A] [Fintype X] [FaithfulSMul A Ω]
+    [MulAction.IsPretransitive A X]
+    (N : Subgroup A) [N.Normal]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (x₀ : X) (hx₀ : coordinateSign b hb x₀ ≠ 1) :
+    Module.finrank (ZMod 3)
+      (primeRelativeCharacters 3
+        (N ⊓ Kernel (A := A) (X := X))) = 0 := by
+  let P : Subgroup (Kernel (A := A) (X := X)) :=
+    N.subgroupOf (Kernel (A := A) (X := X))
+  letI : P.Normal := inferInstance
+  have hPzero : Module.finrank (ZMod 3)
+      (primeRelativeCharacters 3 P) = 0 :=
+    blockKernelNormal_primeRelativeCharacters_eq_zero
+      (hb := hb) b P e x₀ hx₀
+  have hle := primeRelativeHead_inf_le_subgroupOf 3 N
+    (Kernel (A := A) (X := X))
+  change Module.finrank (ZMod 3)
+      (primeRelativeCharacters 3
+        (N ⊓ Kernel (A := A) (X := X))) ≤
+    Module.finrank (ZMod 3) (primeRelativeCharacters 3 P) at hle
+  rw [hPzero] at hle
+  exact Nat.eq_zero_of_le_zero hle
+
+/-- In the nontrivial inversion-image branch, the original normal pair's
+entire ternary head is bounded by its actual normal image in the top block
+action. -/
+theorem originalNormal_primeRelativeHead_le_top
+    [Finite A] [Fintype X] [FaithfulSMul A Ω]
+    [MulAction.IsPretransitive A X]
+    (N : Subgroup A) [N.Normal]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (x₀ : X) (hx₀ : coordinateSign b hb x₀ ≠ 1) :
+    Module.finrank (ZMod 3) (primeRelativeCharacters 3 N) ≤
+      Module.finrank (ZMod 3)
+        (primeRelativeCharacters 3
+          (originalNormalRange
+            (OriginalBlockClassBound.topMap (A := A) (X := X)) N)) := by
+  let K := Kernel (A := A) (X := X)
+  have hkernel : Module.finrank (ZMod 3)
+      (primeRelativeCharacters 3 (N ⊓ K)) = 0 :=
+    originalIntersection_primeRelativeCharacters_eq_zero (hb := hb) b N e x₀ hx₀
+  have hchain := primeRelativeHead_chain_le (N ⊓ K) N 3 inf_le_left
+  rw [hkernel, primeRelativeHead_second_isomorphism 3 N K,
+    primeRelativeHead_original_range 3
+      (OriginalBlockClassBound.topMap (A := A) (X := X)) N] at hchain
+  simpa only [zero_add] using hchain
+
+/-- Numerical endpoint used by the degree-27 mixed case: a top relative
+head at most two forces the full original relative head to be at most two,
+and therefore strictly below the `3/20` line in degree 27. -/
+theorem originalNormal_degreeTwentySeven_inversion_safe
+    [Finite A] [Fintype X] [FaithfulSMul A Ω]
+    [MulAction.IsPretransitive A X]
+    (N : Subgroup A) [N.Normal]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (x₀ : X) (hx₀ : coordinateSign b hb x₀ ≠ 1)
+    (htop : Module.finrank (ZMod 3)
+      (primeRelativeCharacters 3
+        (originalNormalRange
+          (OriginalBlockClassBound.topMap (A := A) (X := X)) N)) ≤ 2) :
+    Module.finrank (ZMod 3) (primeRelativeCharacters 3 N) ≤ 2 ∧
+      20 * Module.finrank (ZMod 3) (primeRelativeCharacters 3 N) < 3 * 27 := by
+  have hhead := (originalNormal_primeRelativeHead_le_top (hb := hb)
+    b N e x₀ hx₀).trans htop
+  exact ⟨hhead, by omega⟩
 
 /-- A nontrivial inversion image on one fibre annihilates the complete
 ternary relative head of the literal all-even kernel.  Transitivity spreads
