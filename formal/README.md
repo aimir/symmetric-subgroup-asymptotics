@@ -621,6 +621,12 @@ one order bit, and a large source's bottom axis satisfies the
 Any fixed finite family, including different such widths, has the original
 weighted recurrence and contractive row. This does not bound the aggregate
 over an unbounded family of widths.
+The [actual power-degree sector](SymmetricSubgroupAsymptotics/BinarySmallOrbitPowerDirect.lean)
+also constructs the complete physical cover for every fixed `k ≥ 4`.
+It counts the unmarked original subgroups with such an orbit chart and
+proves the direct recurrence and aggregate decay at that fixed degree.
+The character class-count premise remains; no constants or thresholds
+are asserted uniformly as `k` grows.
 The [local Schreier adapter](SymmetricSubgroupAsymptotics/BinarySchreierPrunedAdapter.lean)
 reuses complete original word certificates and stops every index-two child
 when the actual source order is at most twice the cutoff.
