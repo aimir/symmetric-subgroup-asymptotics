@@ -103,6 +103,29 @@ theorem full_coordinates (hD : IsPGroup 2 D)
   RepeatedOddMarkerFullCoordinates.full_of_same_state hD H H'.1
     H'.2.1.symm H'.2.2.symm hfull
 
+/-- Finiteness follows from the exact original fibre, even when the
+ambient exterior is infinite. -/
+theorem finite_fibre (hD : IsPGroup 2 D)
+    (H : Subgroup ((ι → OddMarkerGroup) × D))
+    (hfull : ∀ i, H.map (coordinate i)=⊤) : Finite (Fibre H) := by
+  apply Nat.finite_of_card_ne_zero
+  rw [card_fibre hD H hfull]
+  exact pow_ne_zero _ (by decide)
+
+/-- Arbitrary earlier ownership exclusions remain predicates on the
+original subgroup. Enlarging to the full state fibre gives an upper
+bound, without asserting equality after exclusions. -/
+theorem card_restricted_fibre_le (hD : IsPGroup 2 D)
+    (H : Subgroup ((ι → OddMarkerGroup) × D))
+    (hfull : ∀ i, H.map (coordinate i)=⊤)
+    (P : Subgroup ((ι → OddMarkerGroup) × D) → Prop) :
+    Nat.card {H' : Fibre H // P H'.1} ≤
+      3 ^ (Fintype.card ι - Module.finrank (ZMod 3) (kernelSubmodule H)) := by
+  letI := finite_fibre hD H hfull
+  exact (Nat.card_le_card_of_injective
+    (Subtype.val : {H' : Fibre H // P H'.1} → Fibre H) Subtype.val_injective).trans_eq
+      (card_fibre hD H hfull)
+
 end SymmetricSubgroupAsymptotics.RepeatedOddMarkerStateFibre
 
 end
