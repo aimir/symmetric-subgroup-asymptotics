@@ -71,6 +71,44 @@ $\Delta(2N,2N-32)D_C2^{(4-g/16)(2N-32)}/a(U)$;
 its logarithm is at most $-g(2N-32)/16+O(\log(N+2))$.
 
 \subsection{Uniformity over unbounded binary widths}
+Put $A_k=\sum_{j<k}B_j$, with $A_0=0$. These cumulative Boolean
+widths give the binary normal-count input directly.
+\begin{lemma}[Original normal heads]\label{lem:binary-normal-heads}
+For a transitive $2$-group $U\leq S_{2^k}$ and every original
+normal subgroup $N\lhd U$,
+\[
+ \dim\Hom(N,C_2)^U\leq A_k.
+\]
+Consequently $d(U)\leq A_k$, and the number of original normal
+subgroups of $U$ is at most $2^{(2^k-1)A_k}$.
+Moreover $A_k=O(2^k/\sqrt{k+1})$, in particular $A_k=o(2^k)$.
+\end{lemma}
+\begin{proof}
+At degree one the group is trivial. Otherwise choose an original
+invariant pair system, with kernel $K$ and transitive top $T$ of
+degree $2^{k-1}$. The exact subgroup $N\cap K$ is a submodule of
+the pair permutation module, so its invariant character dimension
+is at most $B_{k-1}$ by the binary module bound. Restriction of
+invariant characters from $N$ has kernel the characters of the
+actual image $NK/K$, invariant under $T$. Thus the required head
+is at most $B_{k-1}+A_{k-1}=A_k$. Surjectivity of restriction is
+neither needed nor asserted.
+
+Apply this to the original top subgroup to bound the ordinary
+character rank of $U$; Frattini lifting gives $A_k$ generators,
+padding by identities if necessary. To count normals, let $c_a$
+count the original $U$-normal subgroups of index at most $2^a$.
+Every new subgroup at the next cutoff is an index-two child of
+one at the previous cutoff: for an original normal $H$, use an
+order-two subgroup of $Z(U/H)$. Each parent has at
+most $2^{A_k}-1$ such children, from its nonzero invariant
+characters. Hence $c_0=1$ and $c_{a+1}\leq2^{A_k}c_a$.
+The bound follows from $|U|\leq2^{2^k-1}$.
+Finally the elementary central-binomial recurrence gives
+$(\lfloor j/2\rfloor+1)B_j^2\leq4^j$. Splitting the cumulative
+sum at $k/2$ proves the stated estimate for $A_k$.
+\end{proof}
+
 \begin{theorem}[Complete large-orbit deletion]\label{thm:binary-unbounded}
 Let $T_{64}(N)$ be the normalized family with some actual orbit of
 width at least $64$. There are nonnegative $\eta_{64}$ and $K_{64}$,
@@ -87,6 +125,8 @@ a central involution is fixed-point-free, since a central element
 fixing a point fixes its entire transitive orbit. An invariant pair
 system is determined by the partner of one point, so there are at
 most $w-1$ systems. Retain all of them.
+Choose one auxiliary coordinate chart per system; in the sums below
+a frame means this chosen realization.
 Write $w=2s\geq64$. For every literal normal $N\lhd U$ and every
 pair kernel $K$, put
 \[
@@ -111,17 +151,16 @@ $t=\dim S\leq B_{\log s}\leq5s/16$. Therefore
  g=w-v-8\lambda\geq w/32,\qquad g\leq w-v\leq v.
 \end{equation}
 
-We next bound the entire varying menu. The soluble normal-generation
-bound of \cite[Lemma 6.1]{RoneyDougalTracey2025} states
-$d_U(N)\leq\zeta w/\sqrt{\log w}$ for every normal subgroup of a
-soluble transitive $U\leq S_w$. Here all $U$ are $2$-groups.
-Since $|U|\leq2^{w-1}$, padded normal-generating tuples bound their
-number of normal subgroups by $2^{O(w^2/\sqrt{\log w})}$.
-Applying the same theorem to $N=U$ bounds $d(U)$: normal generation
-and ordinary generation agree for a finite $2$-group by its Frattini
-quotient. Every such action is conjugate into a fixed Sylow subgroup
-of $S_w$, and padded generating tuples there bound the number of
-transitive action classes by the same expression.
+We next bound the entire varying menu. Write $w=2^k$.
+Lemma~\ref{lem:binary-normal-heads} bounds the number of literal
+normal subgroups of each action by $2^{(w-1)A_k}$ and gives an
+actual generating tuple of length $A_k$. Every such action is
+conjugate into a fixed Sylow subgroup of $S_w$, of order
+$2^{w-1}$. Choose one original tuple for each action class after
+this conjugation. Equal tuples generate the same subgroup, so
+the number of transitive action classes is also at most
+$2^{(w-1)A_k}$. This argument requires no separate soluble
+normal-generation estimate.
 Furthermore
 \[
  t\leq B_{\log s}=O(s/\sqrt{\log s}),\qquad
@@ -130,9 +169,18 @@ Furthermore
 \[
  \log D_C\leq\dim(A/C)(1+d(B))=O(w^2/\sqrt{\log w}).
 \]
-The last inequality uses $d(B)\leq d(T)$ for the original transitive
-top $T$. Together with the frame count and $1/a(U)\leq1$, these give
-one absolute function $h(w)=O(w^2/\sqrt{\log w})$ with
+The last inequality uses $d(B)\leq d(T)\leq A_{k-1}$ for the
+original transitive top $T$. More explicitly, every subspace of
+$\F_2^t$ has a spanning $t$-tuple, so there are at most $2^{t^2}$
+cuts. Using the frame bound $w-1\leq2^w$ and $1/a(U)\leq1$, set
+\[
+ h(2^k)=2(2^k-1)A_k+B_{k-1}^2
+          +2^{k-1}(1+A_{k-1})+2^k
+       =O(w^2/\sqrt{\log w}).
+\]
+The cocycle bound here evaluates actual cocycles on generators
+of the same $B$ before passing to their cohomology quotient.
+These estimates give
 \begin{equation}\label{eq:binary-wide-menu}
  \sum_{[U],\ \deg U=w}\frac1{a(U)}
         \sum_{\text{frames},N,C}D_C\leq2^{h(w)}.
