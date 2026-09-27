@@ -184,4 +184,92 @@ theorem target_weight_sum (X : Type) [Finite X]
         _ _ (fun _ => rfl)).symm
     _ = _ := Fintype.sum_sigma _
 
+def ProfileSize (N : ℕ) (t : Profile (α := α)) : Prop :=
+  2*t.1.1 + 8*(t.1.2+1) +
+    BinaryFourPairProfileIncidence.baseDegree Ω t.2 = 2*N
+
+def sourceFinChart (N : ℕ) (t : Profile (α := α)) (ht : ProfileSize Ω N t) :
+    OrbitProfilePoints (FullPoints Ω) (sourceMultiplicity t) ≃ Fin (2*N) :=
+  orbitProfileFinLabels (FullPoints Ω) (sourceMultiplicity t) (2*N) (by
+    change (∑ i, RepeatedMarkerMergedProfile.multiplicity
+      (BinaryPairE8Profile.exteriorMultiplicity t.2 t.1.2) (t.1.1+4) i *
+      Fintype.card (RepeatedMarkerMergedProfile.points
+        (BinaryPairE8Profile.exteriorPoints Ω) i)) = 2*N
+    rw [RepeatedMarkerMergedProfile.degree,
+      BinaryFourPairProfileIncidence.exterior_degree Ω t.2 t.1.2]
+    dsimp only [ProfileSize] at ht
+    omega)
+
+def targetFinChart (N : ℕ) (t : Profile (α := α)) (ht : ProfileSize Ω N t) :
+    OrbitProfilePoints (FullPoints Ω) (targetMultiplicity t) ≃ Fin (2*N) :=
+  orbitProfileFinLabels (FullPoints Ω) (targetMultiplicity t) (2*N) (by
+    change (∑ i, RepeatedMarkerMergedProfile.multiplicity
+      (BinaryPairE8Profile.exteriorMultiplicity t.2 (t.1.2+1)) t.1.1 i *
+      Fintype.card (RepeatedMarkerMergedProfile.points
+        (BinaryPairE8Profile.exteriorPoints Ω) i)) = 2*N
+    rw [RepeatedMarkerMergedProfile.degree,
+      BinaryFourPairProfileIncidence.exterior_degree Ω t.2 (t.1.2+1)]
+    dsimp only [ProfileSize] at ht
+    omega)
+
+def sourcePhysicalEquiv (N : ℕ) (t : Profile (α := α)) (ht : ProfileSize Ω N t) :
+    BinaryFourPairProfileIncidence.Physical Ω t.2 U (t.1.1+4) t.1.2 ≃
+      SourcePhysicalOn Ω U t (Fin (2*N)) :=
+  assembledOrbitProfileEquivOn _ (sourceFinChart Ω N t ht)
+
+def targetPhysicalEquiv (N : ℕ) (t : Profile (α := α)) (ht : ProfileSize Ω N t) :
+    BinaryFourPairProfileIncidence.Physical Ω t.2 U t.1.1 (t.1.2+1) ≃
+      TargetPhysicalOn Ω U t (Fin (2*N)) :=
+  assembledOrbitProfileEquivOn _ (targetFinChart Ω N t ht)
+
+theorem source_frame_sum_on (N : ℕ) (t : Profile (α := α))
+    (ht : ProfileSize Ω N t) :
+    (∑ H : SourcePhysicalOn Ω U t (Fin (2*N)),
+      (Nat.card (PermutationPairOrbitCharacters.Frame H.val 4) : ℚ)) =
+    ∑ H : BinaryFourPairProfileIncidence.Physical Ω t.2 U (t.1.1+4) t.1.2,
+      (Nat.card (PermutationPairOrbitCharacters.Frame H.val 4) : ℚ) := by
+  apply (Fintype.sum_equiv (sourcePhysicalEquiv Ω U N t ht) _ _ ?_).symm
+  intro H
+  exact_mod_cast (PermutationPairOrbitCharacters.frame_card_relabel H.val
+    (sourceFinChart Ω N t ht) 4).symm
+
+theorem target_card_on (N : ℕ) (t : Profile (α := α))
+    (ht : ProfileSize Ω N t) :
+    Nat.card (TargetPhysicalOn Ω U t (Fin (2*N))) =
+      Nat.card (BinaryFourPairProfileIncidence.Physical Ω t.2 U t.1.1 (t.1.2+1)) :=
+  (Nat.card_congr (targetPhysicalEquiv Ω U N t ht)).symm
+
+/-- Exact common-label Hall incidence for any finite collection of complete
+profiles.  Injectivity of both multiplicity maps prevents any profile
+overcount on either side. -/
+theorem normalized_selected_frame_incidence (N : ℕ)
+    (S : Finset (Profile (α := α)))
+    (hsize : ∀ t ∈ S, ProfileSize Ω N t)
+    (htrans : ∀ a (x y : Ω a), ∃ u : U a, (u : Equiv.Perm (Ω a)) x = y)
+    (hsep : OrbitActionTypesSeparated
+      (BinaryPairE8Profile.exteriorPoints Ω)
+      (BinaryPairE8Profile.exteriorAction Ω U))
+    (hdegree : ∀ a, Fintype.card (Ω a) ≠ 2) :
+    (∑ H : SourceSelected Ω U (Fin (2*N)) S,
+      (Nat.card (PermutationPairOrbitCharacters.Frame H.val 4) : ℚ)) /
+        (2*N).factorial ≤
+      6*N * ((Nat.card (TargetSelected Ω U (Fin (2*N)) S) : ℚ) /
+        (2*N).factorial) := by
+  have hs := source_weight_sum Ω U (Fin (2*N)) S htrans hsep hdegree
+    (fun H => (Nat.card (PermutationPairOrbitCharacters.Frame H 4) : ℚ))
+  have ht := target_weight_sum Ω U (Fin (2*N)) S htrans hsep hdegree
+    (fun _ => (1 : ℚ))
+  have ht' : (Nat.card (TargetSelected Ω U (Fin (2*N)) S) : ℚ) =
+      ∑ t : S, (Nat.card (TargetPhysicalOn Ω U t.val (Fin (2*N))) : ℚ) := by
+    simpa only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, one_mul, mul_one,
+      Nat.card_eq_fintype_card] using ht
+  rw [hs,ht',Finset.sum_div,Finset.sum_div,Finset.mul_sum]
+  apply Finset.sum_le_sum
+  intro t _
+  rw [source_frame_sum_on Ω U N t.val (hsize t.val t.property),
+    target_card_on Ω U N t.val (hsize t.val t.property)]
+  exact BinaryFourPairProfileIncidence.normalized_frame_incidence_six_mul
+    Ω t.val.2 U N t.val.1.1 t.val.1.2 htrans hsep hdegree
+    (hsize t.val t.property)
+
 end SymmetricSubgroupAsymptotics.BinaryFourPairProfileUnion
