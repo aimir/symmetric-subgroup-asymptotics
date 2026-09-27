@@ -54,19 +54,32 @@ variable {X : Type} [Fintype X] (H : Subgroup (Equiv.Perm X))
 
 /-- Excluding the two literal small orbit sizes is sufficient; no
 preselected action catalogue or complete-profile hypothesis is supplied. -/
-theorem orbit_cover (n : ℕ) (hdegree : Fintype.card X ≤ n)
+theorem orbit_cover_of_orbit_card_le (n : ℕ)
     (o : OrbitProfileFromOrbits.Orbit H)
     (hbinary : IsPGroup 2 (OrbitProfileFromOrbits.orbitImage H o))
-    (hneOne : Nat.card o.orbit ≠ 1) (hneTwo : Nat.card o.orbit ≠ 2) :
+    (hneOne : Nat.card o.orbit ≠ 1) (hneTwo : Nat.card o.orbit ≠ 2)
+    (hbound : Nat.card o.orbit ≤ n) :
     ∃ i : Label n, ∃ e : points n i ≃ o.orbit,
       relabelSubgroup e (action n i) = OrbitProfileFromOrbits.orbitImage H o := by
-  obtain ⟨i,e,he⟩ := BinaryBoundedOrbitMenu.orbit_cover H n hdegree o hbinary
+  obtain ⟨i,e,he⟩ := BinaryBoundedOrbitMenu.orbit_cover_of_orbit_card_le
+    H n o hbinary hbound
   have hc : Fintype.card (BinaryBoundedOrbitMenu.points n i) = Nat.card o.orbit := by
     rw [← Nat.card_eq_fintype_card]
     exact Nat.card_congr e
   have hp := BinaryBoundedOrbitMenu.point_card_pos n i
   have hi : 2 < Fintype.card (BinaryBoundedOrbitMenu.points n i) := by omega
   exact ⟨⟨i,hi⟩,e,he⟩
+
+theorem orbit_cover (n : ℕ) (hdegree : Fintype.card X ≤ n)
+    (o : OrbitProfileFromOrbits.Orbit H)
+    (hbinary : IsPGroup 2 (OrbitProfileFromOrbits.orbitImage H o))
+    (hneOne : Nat.card o.orbit ≠ 1) (hneTwo : Nat.card o.orbit ≠ 2) :
+    ∃ i : Label n, ∃ e : points n i ≃ o.orbit,
+      relabelSubgroup e (action n i) = OrbitProfileFromOrbits.orbitImage H o := by
+  apply orbit_cover_of_orbit_card_le H n o hbinary hneOne hneTwo
+  rw [Nat.card_eq_fintype_card]
+  exact (Fintype.card_le_of_injective (fun x : o.orbit => (x : X))
+    Subtype.val_injective).trans hdegree
 
 /-- All original exterior orbits are covered simultaneously. The actual
 subgroup and all relations between its orbit actions are retained. -/

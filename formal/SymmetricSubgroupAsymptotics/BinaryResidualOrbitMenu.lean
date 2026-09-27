@@ -92,17 +92,18 @@ variable {X : Type} [Fintype X] (H : Subgroup (Equiv.Perm X))
 
 /-- Every binary orbit outside sizes one and two and outside the original
 E8 conjugacy class has a label in the residual menu. -/
-theorem orbit_cover (n : ℕ) (hdegree : Fintype.card X ≤ n)
+theorem orbit_cover_of_orbit_card_le (n : ℕ)
     (o : OrbitProfileFromOrbits.Orbit H)
     (hbinary : IsPGroup 2 (OrbitProfileFromOrbits.orbitImage H o))
     (hneOne : Nat.card o.orbit ≠ 1) (hneTwo : Nat.card o.orbit ≠ 2)
     (hneE8 : ¬ ∃ e : criticalActionPoints .e8 ≃ o.orbit,
       relabelSubgroup e (criticalActionSubgroup .e8) =
-        OrbitProfileFromOrbits.orbitImage H o) :
+        OrbitProfileFromOrbits.orbitImage H o)
+    (hbound : Nat.card o.orbit ≤ n) :
     ∃ i : Label n, ∃ e : points n i ≃ o.orbit,
       relabelSubgroup e (action n i) = OrbitProfileFromOrbits.orbitImage H o := by
-  obtain ⟨i,e,he⟩ := BinaryExteriorOrbitMenu.orbit_cover H n hdegree o
-    hbinary hneOne hneTwo
+  obtain ⟨i,e,he⟩ := BinaryExteriorOrbitMenu.orbit_cover_of_orbit_card_le H n o
+    hbinary hneOne hneTwo hbound
   have hi : ¬ IsE8 n i := by
     rintro ⟨c,hc⟩
     apply hneE8
@@ -114,6 +115,20 @@ theorem orbit_cover (n : ℕ) (hdegree : Fintype.card X ≤ n)
       _ = relabelSubgroup e (BinaryExteriorOrbitMenu.action n i) := by rw [hc]
       _ = _ := he
   exact ⟨⟨i,hi⟩,e,he⟩
+
+theorem orbit_cover (n : ℕ) (hdegree : Fintype.card X ≤ n)
+    (o : OrbitProfileFromOrbits.Orbit H)
+    (hbinary : IsPGroup 2 (OrbitProfileFromOrbits.orbitImage H o))
+    (hneOne : Nat.card o.orbit ≠ 1) (hneTwo : Nat.card o.orbit ≠ 2)
+    (hneE8 : ¬ ∃ e : criticalActionPoints .e8 ≃ o.orbit,
+      relabelSubgroup e (criticalActionSubgroup .e8) =
+        OrbitProfileFromOrbits.orbitImage H o) :
+    ∃ i : Label n, ∃ e : points n i ≃ o.orbit,
+      relabelSubgroup e (action n i) = OrbitProfileFromOrbits.orbitImage H o := by
+  apply orbit_cover_of_orbit_card_le H n o hbinary hneOne hneTwo hneE8
+  rw [Nat.card_eq_fintype_card]
+  exact (Fintype.card_le_of_injective (fun x : o.orbit => (x : X))
+    Subtype.val_injective).trans hdegree
 
 end OriginalOrbits
 

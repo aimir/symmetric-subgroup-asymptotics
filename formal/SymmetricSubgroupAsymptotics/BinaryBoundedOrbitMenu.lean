@@ -88,21 +88,22 @@ section OriginalOrbits
 
 variable {X : Type} [Fintype X] (H : Subgroup (Equiv.Perm X))
 
-/-- The binaryity premise concerns this literal original orbit image;
-the original H may have other nonbinary orbit images. -/
-theorem orbit_cover (n : ℕ) (hdegree : Fintype.card X ≤ n)
+/-- Orbit-local coverage only needs a bound on the displayed orbit, not on
+the ambient permutation set.  This is essential when an odd marker has
+already consumed points outside the binary orbit. -/
+theorem orbit_cover_of_orbit_card_le (n : ℕ)
     (o : OrbitProfileFromOrbits.Orbit H)
-    (hbinary : IsPGroup 2 (OrbitProfileFromOrbits.orbitImage H o)) :
+    (hbinary : IsPGroup 2 (OrbitProfileFromOrbits.orbitImage H o))
+    (hbound : Nat.card o.orbit ≤ n) :
     ∃ i : Label n, ∃ e : points n i ≃ o.orbit,
       relabelSubgroup e (action n i) = OrbitProfileFromOrbits.orbitImage H o := by
   letI : Fintype o.orbit := Fintype.ofFinite _
   letI : Nonempty o.orbit := by
     obtain ⟨x,hx⟩ := MulAction.orbitRel.Quotient.nonempty_orbit o
     exact ⟨⟨x,hx⟩⟩
-  have hbound : Fintype.card o.orbit ≤ n :=
-    (Fintype.card_le_of_injective (fun x : o.orbit => (x : X)) Subtype.val_injective).trans
-      hdegree
-  let d : Degree n := ⟨⟨Fintype.card o.orbit,Nat.lt_succ_of_le hbound⟩,Fintype.card_pos⟩
+  have hbound' : Fintype.card o.orbit ≤ n := by
+    rwa [← Nat.card_eq_fintype_card]
+  let d : Degree n := ⟨⟨Fintype.card o.orbit,Nat.lt_succ_of_le hbound'⟩,Fintype.card_pos⟩
   let e : Fin d.1.1 ≃ o.orbit := (Fintype.equivFin o.orbit).symm
   let V : Subgroup (Equiv.Perm (Fin d.1.1)) :=
     relabelSubgroup e.symm (OrbitProfileFromOrbits.orbitImage H o)
@@ -127,6 +128,18 @@ theorem orbit_cover (n : ℕ) (hdegree : Fintype.card X ≤ n)
       (relabelSubgroup_trans c.symm e i.representative).symm
     _ = relabelSubgroup e V := by rw [← hc',relabelSubgroup_symm]
     _ = _ := relabelSubgroup_symm e.symm (OrbitProfileFromOrbits.orbitImage H o)
+
+/-- The binaryity premise concerns this literal original orbit image;
+the original H may have other nonbinary orbit images. -/
+theorem orbit_cover (n : ℕ) (hdegree : Fintype.card X ≤ n)
+    (o : OrbitProfileFromOrbits.Orbit H)
+    (hbinary : IsPGroup 2 (OrbitProfileFromOrbits.orbitImage H o)) :
+    ∃ i : Label n, ∃ e : points n i ≃ o.orbit,
+      relabelSubgroup e (action n i) = OrbitProfileFromOrbits.orbitImage H o := by
+  apply orbit_cover_of_orbit_card_le H n o hbinary
+  rw [Nat.card_eq_fintype_card]
+  exact (Fintype.card_le_of_injective (fun x : o.orbit => (x : X))
+    Subtype.val_injective).trans hdegree
 
 /-- All binary original orbit images are installed simultaneously in one
 finite menu, with their full coordinate actions and correlations retained. -/
