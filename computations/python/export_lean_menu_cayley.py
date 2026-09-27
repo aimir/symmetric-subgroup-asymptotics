@@ -81,7 +81,7 @@ def permutation16(name, g):
 '''
 
 
-def table(gens, degree):
+def table(gens, degree, max_rows=None):
     identity = tuple(range(degree))
     rows = [identity]
     indices = {identity: 0}
@@ -91,6 +91,8 @@ def table(gens, degree):
         for j, g in enumerate(gens):
             q = compose(p, g)
             if q not in indices:
+                if max_rows is not None and len(rows) >= max_rows:
+                    raise ValueError(f'actual closure exceeds the {max_rows}-row ceiling')
                 indices[q] = len(rows)
                 rows.append(q)
                 parents.append(i)
@@ -104,18 +106,19 @@ def table(gens, degree):
     for i, edges in enumerate(nxt):
         for j, k in enumerate(edges):
             prev[k][j] = i
-    return dict(codes=[packed(rows[i]) for i in sorted_indices],
+    return dict(elements=[rows[i] for i in sorted_indices],
+                codes=[packed(rows[i]) for i in sorted_indices],
                 rank=sorted_indices, parent=[remap[parents[i]] for i in sorted_indices],
                 letter=[letters[i] for i in sorted_indices],
                 identity=remap[0], next=nxt, prev=prev)
 
 
 def emit(node, *, module_name=None, title=None, generated_from=None,
-         scope_text=None, extra_body=''):
+         scope_text=None, extra_body='', packed_tables=None, max_rows=None):
     w = node['degree']
     gens = [tuple(x - 1 for x in g) for g in node['generators']]
     d = len(gens)
-    t = table(gens, w)
+    t = table(gens, w, max_rows=max_rows)
     n = len(t['codes'])
     label = node['id'].removeprefix('b').replace('_', 'T')
     module_name = module_name or f'BinaryMenuCayley{label}'
@@ -124,7 +127,7 @@ def emit(node, *, module_name=None, title=None, generated_from=None,
         'Generated from the original menu permutations by export_lean_menu_cayley.py.')
     scope_text = scope_text or (
         'This certifies\nthis original action, not finite-menu or normal-registry completeness.')
-    use_packed = w == 16
+    use_packed = w == 16 if packed_tables is None else packed_tables
     code_expr = finite_lookup(t['codes'], w**w, packed=use_packed)
     rank_expr = packed_lookup(t['rank']) if use_packed else lookup(t['rank'])
     parent_expr = finite_lookup(t['parent'], n, packed=use_packed)
