@@ -747,7 +747,17 @@ derives the binary power degree from the actual orbit image and combines
 these rows. Thus every subgroup with any binary orbit of size at least 1024
 is covered by one original-weight forward recurrence, with exponentially
 decaying aggregate and no supplied power-degree hypothesis.
-Sharper cuts below 1024 and global subgroup ownership remain separate.
+The [finite small-pair recurrence](SymmetricSubgroupAsymptotics/BinaryOriginalSmallPairPhysical.lean)
+now covers degrees 32, 64, 128, 256 and 512. For each original normal,
+a small actual section supplies a proved central cut; a large actual
+section forces a faithful top action and satisfies the proved character
+criterion. The choice precedes the exterior group. The
+[combined degree-at-least-32 sector](SymmetricSubgroupAsymptotics/BinaryOriginalNoncriticalPhysical.lean)
+therefore counts every original subgroup with an actual binary orbit
+image of degree at least 32. Its complete original-weight row is forward,
+decays exponentially and is eventually contractive. It allows arbitrary
+complementary actions and ownership exclusions. Global subgroup coverage,
+the remaining smaller binary families, and nonbinary sectors remain separate.
 The [general central-cut chart](SymmetricSubgroupAsymptotics/OriginalCentralCutExtension.lean)
 constructs the original tower `Q → Q/C → B` from any supplied subspace
 `C ≤ A^B`, with exact central and quotient kernel charts. Its
@@ -760,8 +770,12 @@ The independent [evaluation separator](SymmetricSubgroupAsymptotics/LinearMapEva
 constructs linearly independent detecting inputs from bounds on actual
 image-line slices. The [central-cut arithmetic](SymmetricSubgroupAsymptotics/BinaryCentralCutNumerics.lean)
 then gives the small-section cost bound for all pair exponents at least four.
-Installing an actual chosen cut or its character alternative into every
-remaining physical axis is a separate theorem.
+The [actual small-section cut](SymmetricSubgroupAsymptotics/BinaryPairSmallSectionCut.lean)
+and [large-section character alternative](SymmetricSubgroupAsymptotics/BinaryPairLargeSectionCharacter.lean)
+install this dichotomy for every original pair section of pair degree
+at least 16. The large branch identifies the entire central involution
+subgroup of the original nonsplit quotient; it does not assert that the
+small-cut inequality holds in that branch.
 The [cocycle generator bound](SymmetricSubgroupAsymptotics/CocycleGeneratorBound.lean)
 injects actual one-cocycles into their values on a supplied original
 generating tuple, giving `card Z¹ ≤ (card A)^d` and the same upper bound
@@ -799,6 +813,10 @@ order at most 256. It retains all original actions and normal axes,
 arbitrary complementary actions, and arbitrary earlier-owner exclusions.
 This sector does not require action-catalogue coverage or a coarse bound
 on total subgroup counts. Larger-order degree-sixteen images remain separate.
+The [bounded-width conversion](SymmetricSubgroupAsymptotics/BinarySmallWidthCharacterConversion.lean)
+also rechecks old exact character criteria at widths 4, 8 and 16 against
+the new rate, preserving the original group and central cardinality.
+It makes no conversion claim at arbitrary widths or for the global class predicates.
 The [finite-base reduction](SymmetricSubgroupAsymptotics/BinarySmallClassBaseReduction.lean)
 reduces that base to bounds 2, 5 and 25 for transitive binary actions in
 degrees 2, 4 and 8. Empty, singleton and intransitive actions are proved
