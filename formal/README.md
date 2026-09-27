@@ -595,6 +595,13 @@ is `-2*e*b - (h^2-r^2)/4 + (h-r+1)/4`, its polynomial degree is `h+r+1`,
 and its factor remains the original `D/a(U)`. A growing-menu argument must
 still bound the sum of those original factors; the coefficient estimate
 does not supply that group-theoretic input.
+The [growing-width numerical sum](SymmetricSubgroupAsymptotics/FusionDirectAggregate.lean)
+proves an eventual `C * 2^(-n/16)` bound when every original entry has
+`v ≤ 13*w/16`, gap `16*e ≥ w/32`, and the full original weighted menu at
+width `w ≥ 64` satisfies `sum (D/a) ≤ 2^(w^2/128+H)` for one fixed `H`.
+Its threshold is uniform across widths. The menu-mass bound and actual
+physical coverage remain explicit requirements, not consequences of
+the numerical aggregation.
 The [degree-sixteen application](SymmetricSubgroupAsymptotics/BinaryTransitiveBoundary16Fusion.lean)
 accepts all transitive binary actions of order at most 256, including every
 original normal, without enumerating groups or normals. A nontrivial normal
