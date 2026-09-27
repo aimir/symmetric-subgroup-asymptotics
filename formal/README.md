@@ -703,8 +703,10 @@ give a single `H ≥ 0`, independent of degree and action family, for the bound
 `sum (D/a) ≤ 2^(w^2/128+H)`. The
 [complete action classes](SymmetricSubgroupAsymptotics/BinaryTransitiveActionClasses.lean)
 select one original subgroup per actual ambient-conjugacy class and prove
-complete coverage and separation. Installing those representatives in the
-physical recurrence remains a separate obligation.
+complete coverage and separation. The
+[original orbit charts](SymmetricSubgroupAsymptotics/FusionOrbitRepresentativeCharts.lean)
+transport every eligible original orbit into those representatives using the
+same original subgroup on both coordinate projections.
 The [complete entry index](SymmetricSubgroupAsymptotics/BinaryOriginalMenuEntries.lean)
 now assembles the literal action-class, pair-system, original-normal and
 central-cut indices. Its weighted sum equals the proved menu mass exactly,
@@ -728,8 +730,19 @@ actual top group covering the quotient. Every original normal has the
 required uniform gap at physical width at least 4096.
 The [strict-gap refinement](SymmetricSubgroupAsymptotics/BinaryPairZeroCutPositiveFusion.lean)
 proves `e≥w/2048>0` from physical width 1024, including `e≥1/2` and `e≥1`
-at 1024 and 2048. Their finite-prefix physical recurrence installation remains
-separate, as do sharper cuts below 1024 and global subgroup ownership.
+at 1024 and 2048.
+The [zero-entry installation](SymmetricSubgroupAsymptotics/BinaryOriginalZeroCutEntry.lean)
+and [wide physical recurrence](SymmetricSubgroupAsymptotics/BinaryOriginalWidePhysical.lean)
+now bound the unmarked family with a binary orbit of power degree at least
+4096 by the proved forward, exponentially decaying original row. A single
+pairing is chosen for each original action before the exterior is specified;
+every original normal is retained. The complementary action is arbitrary.
+The [finite-prefix recurrence](SymmetricSubgroupAsymptotics/BinaryOriginalFinitePrefixPhysical.lean)
+proves the corresponding original-weight bound and contracting aggregate for
+orbit degrees 1024 and 2048. Neither installation assumes class-count bounds,
+coarse subgroup growth, or a supplied coverage/capacity estimate. Both allow
+arbitrary additional ownership exclusions by literal subtype inclusion.
+Sharper cuts below 1024 and global subgroup ownership remain separate.
 The [cocycle generator bound](SymmetricSubgroupAsymptotics/CocycleGeneratorBound.lean)
 injects actual one-cocycles into their values on a supplied original
 generating tuple, giving `card Z¹ ≤ (card A)^d` and the same upper bound
