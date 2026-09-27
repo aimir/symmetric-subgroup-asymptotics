@@ -660,16 +660,33 @@ and [pair-kernel adapter](SymmetricSubgroupAsymptotics/BinaryPairNormalHead.lean
 retain the exact normal intersection, the original conjugation action and
 the actual top image. The
 [normal-count consequence](SymmetricSubgroupAsymptotics/TransitiveBinaryNormalCount.lean)
-gives at most `2^(a*A_k)` original normals when `card U ≤ 2^a`;
+gives at most `2^(a*A_k)` original normals when `card U ≤ 2^a`,
+and at most `2^((2^k-1)*A_k)` directly from the permutation degree;
 the [generator theorem](SymmetricSubgroupAsymptotics/TransitiveBinaryGenerators.lean)
 constructs an actual generating tuple of length `A_k`. These discharge
 their rank inputs internally. Bounding and installing the complete
 weighted menu remains separate work.
+The [action-count adapter](SymmetricSubgroupAsymptotics/TransitiveBinaryActionCount.lean)
+bounds every family separated by actual permutation conjugacy by the
+same `2^((2^k-1)*A_k)`. It injects chosen original generating tuples
+into one chosen Sylow subgroup, whose exact order is proved in
+[BinaryPermutationOrder](SymmetricSubgroupAsymptotics/BinaryPermutationOrder.lean).
+The [trivial-section adapter](SymmetricSubgroupAsymptotics/PermutationBinaryTrivialSection.lean)
+bounds an actual trivial quotient through its original preimage's
+coinvariants. No embedding of the section is assumed.
+The [whole-subspace count](SymmetricSubgroupAsymptotics/BinarySubspaceTupleCount.lean)
+bounds all actual subspaces of a binary space of dimension `d` by
+`2^(d*d)`, using padded spanning tuples.
 The [elementary width asymptotics](SymmetricSubgroupAsymptotics/BinaryWidthAsymptotics.lean)
 prove `choose(k,k/2)/2^k → 0` and the same limit for the cumulative
 widths `sum_{j<k} choose(j,j/2)`. An exact central-binomial recurrence
 gives a square bound in both parities; no Stirling or group-theoretic
 estimate is assumed.
+The [numerical menu exponent](SymmetricSubgroupAsymptotics/BinaryMenuExponentAsymptotics.lean)
+proves `E_k/(2^k)^2 → 0` for the explicit sum of these proposed menu
+costs, hence every positive quadratic coefficient eventually dominates
+it. This numerical theorem does not claim that the complete physical
+menu has already been bounded or installed.
 The [cocycle generator bound](SymmetricSubgroupAsymptotics/CocycleGeneratorBound.lean)
 injects actual one-cocycles into their values on a supplied original
 generating tuple, giving `card Z¹ ≤ (card A)^d` and the same upper bound
@@ -679,6 +696,19 @@ on generators. The independent
 proves `k(G) ≤ k(N)*k(G/N)` for every finite group and original normal
 subgroup, including nonabelian kernels. This extension inequality does
 not itself establish the required permutation class-count envelope.
+The [binary quotient specialization](SymmetricSubgroupAsymptotics/TransitiveBinaryCocycleBound.lean)
+constructs its generators internally and proves `card H¹ ≤ (card A)^A_k`
+for the stated representation of every actual quotient of the original
+transitive binary group.
+The [sparse class-cover verifier](SymmetricSubgroupAsymptotics/FiniteConjugacyCover.lean)
+requires complete original rows and one original-group conjugator per
+row. Its [8T35 pilot](SymmetricSubgroupAsymptotics/BinaryConjugacyClass8T35.lean)
+proves an upper bound of 25 for the literal original group's class count.
+The selected producer `computations/python/export_lean_conjugacy_cover_selected.py`
+accepts only `--source 8T35`; `--write` emits its ignored witness data,
+and `--check` performs a read-only replay. Separate Lean checks of the
+generated data and pilot establish the theorem. This pilot does not
+assert coverage of other eight-point groups or the universal envelope.
 The [local Schreier adapter](SymmetricSubgroupAsymptotics/BinarySchreierPrunedAdapter.lean)
 reuses complete original word certificates and stops every index-two child
 when the actual source order is at most twice the cutoff.

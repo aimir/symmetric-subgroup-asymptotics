@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.TransitiveBinaryNormalHead
 import SymmetricSubgroupAsymptotics.PGroupNormalSubgroupCount
+import SymmetricSubgroupAsymptotics.BinaryPermutationOrder
 
 /-!
 # Counting original normals in a transitive binary action
@@ -58,6 +59,16 @@ theorem transitiveBinary_literal_normal_count_le
     Nat.card {N : Subgroup U // N.Normal} ≤
       2^(a * binaryCumulativeWidth k) :=
   transitiveBinary_normal_count_le k U hU (Nat.card_fin _) a horder
+
+/-- The original permutation degree supplies the order bound internally. -/
+theorem transitiveBinary_normal_count_le_degree
+    (k : ℕ) (U : Subgroup (Equiv.Perm X))
+    [MulAction.IsPretransitive U X] (hU : IsPGroup 2 U)
+    (hdegree : Nat.card X = 2^k) :
+    Nat.card {N : Subgroup U // N.Normal} ≤
+      2^((2^k-1) * binaryCumulativeWidth k) :=
+  transitiveBinary_normal_count_le k U hU hdegree (2^k-1)
+    (binary_permutation_card_le k hdegree U hU)
 
 end SymmetricSubgroupAsymptotics
 
