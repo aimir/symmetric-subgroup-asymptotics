@@ -56,6 +56,40 @@ theorem map_injective (e : X ≃ Option α) :
     Function.Injective (Subgroup.map (extensionHom e)) :=
   Subgroup.map_injective (extensionHom_injective e)
 
+/-- Every permutation fixing the distinguished point is the extension of
+its exact restriction to the complementary point set. -/
+theorem exists_preimage_of_fixes [DecidableEq α] (e : X ≃ Option α)
+    (x : X) (hx : e x = none) (g : Equiv.Perm X) (hg : g x = x) :
+    ∃ a : Equiv.Perm α, extensionHom e a = g := by
+  let σ : Equiv.Perm (Option α) := e.permCongr g
+  let a : Equiv.Perm α := Equiv.removeNone σ
+  have hex : e.symm none = x :=
+    e.injective ((e.apply_symm_apply none).trans hx.symm)
+  have hσ : σ none = none := by
+    change e (g (e.symm none)) = none
+    rw [hex,hg,hx]
+  have ha : a.optionCongr = σ := by
+    have h := map_equiv_removeNone σ
+    rw [hσ] at h
+    simpa [a] using h
+  refine ⟨a,?_⟩
+  change e.symm.permCongr a.optionCongr = g
+  rw [ha]
+  apply Equiv.ext
+  intro y
+  simp [σ]
+
+/-- Comapping along singleton extension and mapping back recovers every
+subgroup whose elements fix the distinguished point. -/
+theorem map_comap_eq_of_fixes [DecidableEq α] (e : X ≃ Option α)
+    (x : X) (hx : e x = none) (H : Subgroup (Equiv.Perm X))
+    (hfix : ∀ g : H, (g : Equiv.Perm X) x = x) :
+    (H.comap (extensionHom e)).map (extensionHom e) = H := by
+  apply Subgroup.map_comap_eq_self
+  intro g hg
+  obtain ⟨a,ha⟩ := exists_preimage_of_fixes e x hx g (hfix ⟨g,hg⟩)
+  exact ⟨a,ha⟩
+
 /-- Actual subgroups on the original point set `X`, with existential
 point/source witnesses. The charts are data, not extra counted labels. -/
 abbrev Family (charts : X → X ≃ Option α)
