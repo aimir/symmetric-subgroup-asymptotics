@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryFourPairIntrinsicCoverage
+import SymmetricSubgroupAsymptotics.PermutationPairOrbitMoment
 
 /-!
 # The intrinsic noncritical four-frame incidence
@@ -157,6 +158,31 @@ theorem intrinsic_four_frame_incidence (N : ℕ) :
           (Nat.card (PermutationPairOrbitCharacters.Frame H.val 4) : ℚ) := by
     exact_mod_cast hcoverNat
   exact hcover.trans (selected_source_frame_incidence N)
+
+/-- The checked four-frame incidence supplies the fourth-root term in the
+actual pair-orbit moment of the complete intrinsic family. -/
+theorem intrinsic_pair_orbit_moment (N : ℕ) :
+    (∑ H : NoncriticalBinarySubgroups N,
+        (Nat.card (PermutationPairOrbitMarks.PairOrbit H.val) : ℝ)) ≤
+      (7 + (6*N : ℝ) ^ (1/4 : ℝ)) *
+          Nat.card (NoncriticalBinarySubgroups N) +
+        ∑ H : NoncriticalBinarySubgroups N,
+          (Nat.card (PermutationPairOrbitMarks.DuplicateMark H.val) : ℝ) := by
+  have hincQ := intrinsic_four_frame_incidence N
+  have hincR :
+      (∑ H : NoncriticalBinarySubgroups N,
+          (Nat.card (PermutationPairOrbitCharacters.Frame H.val 4) : ℝ)) ≤
+        (6*N : ℝ) * Nat.card (NoncriticalBinarySubgroups N) := by
+    exact_mod_cast hincQ
+  have hc : Nat.card (NoncriticalBinarySubgroups N) =
+      Fintype.card (NoncriticalBinarySubgroups N) := Nat.card_eq_fintype_card
+  have h := CharacterPairMoment.aggregate_card_le_quarter_power
+    (fun H : NoncriticalBinarySubgroups N =>
+      PermutationPairOrbitCharacters.character H.val)
+    (fun H => PermutationPairOrbitCharacters.character_ne_zero H.val)
+    (6*N : ℝ) (by positivity)
+    (by simpa only [PermutationPairOrbitMoment.frame_card, ← hc] using hincR)
+  simpa only [PermutationPairOrbitMoment.collision_card, ← hc] using h
 
 end SymmetricSubgroupAsymptotics.BinaryFourPairIntrinsicIncidence
 
