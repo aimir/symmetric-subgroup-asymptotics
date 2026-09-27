@@ -748,6 +748,20 @@ these rows. Thus every subgroup with any binary orbit of size at least 1024
 is covered by one original-weight forward recurrence, with exponentially
 decaying aggregate and no supplied power-degree hypothesis.
 Sharper cuts below 1024 and global subgroup ownership remain separate.
+The [general central-cut chart](SymmetricSubgroupAsymptotics/OriginalCentralCutExtension.lean)
+constructs the original tower `Q → Q/C → B` from any supplied subspace
+`C ≤ A^B`, with exact central and quotient kernel charts. Its
+[fusion envelope](SymmetricSubgroupAsymptotics/OriginalCentralCutFusion.lean)
+retains `|A/C|*|H¹(B,A/C)|` and the entire common-source weight
+`#Epi(J,B)*2^(dim(C)*d₂(J))`; a faithful original cover of B supplies all
+moments. Neither theorem assumes that B itself acts faithfully on those
+cover points, or that the extension splits.
+The independent [evaluation separator](SymmetricSubgroupAsymptotics/LinearMapEvaluationSeparator.lean)
+constructs linearly independent detecting inputs from bounds on actual
+image-line slices. The [central-cut arithmetic](SymmetricSubgroupAsymptotics/BinaryCentralCutNumerics.lean)
+then gives the small-section cost bound for all pair exponents at least four.
+Installing an actual chosen cut or its character alternative into every
+remaining physical axis is a separate theorem.
 The [cocycle generator bound](SymmetricSubgroupAsymptotics/CocycleGeneratorBound.lean)
 injects actual one-cocycles into their values on a supplied original
 generating tuple, giving `card Z¹ ≤ (card A)^d` and the same upper bound
