@@ -664,8 +664,7 @@ gives at most `2^(a*A_k)` original normals when `card U ≤ 2^a`,
 and at most `2^((2^k-1)*A_k)` directly from the permutation degree;
 the [generator theorem](SymmetricSubgroupAsymptotics/TransitiveBinaryGenerators.lean)
 constructs an actual generating tuple of length `A_k`. These discharge
-their rank inputs internally. Bounding and installing the complete
-weighted menu remains separate work.
+their rank inputs internally.
 The [action-count adapter](SymmetricSubgroupAsymptotics/TransitiveBinaryActionCount.lean)
 bounds every family separated by actual permutation conjugacy by the
 same `2^((2^k-1)*A_k)`. It injects chosen original generating tuples
@@ -682,11 +681,36 @@ prove `choose(k,k/2)/2^k → 0` and the same limit for the cumulative
 widths `sum_{j<k} choose(j,j/2)`. An exact central-binomial recurrence
 gives a square bound in both parities; no Stirling or group-theoretic
 estimate is assumed.
-The [numerical menu exponent](SymmetricSubgroupAsymptotics/BinaryMenuExponentAsymptotics.lean)
-proves `E_k/(2^k)^2 → 0` for the explicit sum of these proposed menu
-costs, hence every positive quadratic coefficient eventually dominates
-it. This numerical theorem does not claim that the complete physical
-menu has already been bounded or installed.
+The [actual pair-section bound](SymmetricSubgroupAsymptotics/BinaryPairSectionInvariantBound.lean)
+controls its invariant dimension and counts all literal central cuts. The
+[section cohomology bound](SymmetricSubgroupAsymptotics/BinaryPairSectionCocycleBound.lean)
+retains the actual top quotient and the actual translation and H¹ factors.
+The [frame sum](SymmetricSubgroupAsymptotics/BinaryPairFrameMenuMass.lean)
+sums these costs over every original normal subgroup and central cut.
+The [pair-system count](SymmetricSubgroupAsymptotics/TransitivePairingCount.lean)
+bounds distinct equivariant partner functions by `w-1`. The
+[frame construction](SymmetricSubgroupAsymptotics/BinaryPairFramePairing.lean)
+chooses exactly one auxiliary chart for each realized pair system, and the
+[original-action transport](SymmetricSubgroupAsymptotics/BinaryPairFrameTransport.lean)
+constructs such a system for every positive power-degree transitive binary action.
+The [complete weighted sum](SymmetricSubgroupAsymptotics/BinaryWideMenuMass.lean)
+then bounds every conjugacy-separated original action family, including all
+its realized pair systems, original normals and central cuts, with its original
+normalizer divisor. The
+[numerical menu exponent](SymmetricSubgroupAsymptotics/BinaryMenuExponentAsymptotics.lean)
+and [uniform constant](SymmetricSubgroupAsymptotics/BinaryMenuExponentUniform.lean)
+give a single `H ≥ 0`, independent of degree and action family, for the bound
+`sum (D/a) ≤ 2^(w^2/128+H)`. The
+[complete action classes](SymmetricSubgroupAsymptotics/BinaryTransitiveActionClasses.lean)
+select one original subgroup per actual ambient-conjugacy class and prove
+complete coverage and separation. Installing those representatives in the
+full entry family, proving local cut acceptance and assembling the physical
+recurrence remain separate obligations.
+The [zero-cut parameters](SymmetricSubgroupAsymptotics/BinaryZeroCutWideParameters.lean)
+prove that `w=2^(k+1)`, `v=2^k` and `r≤choose(k,k/2)` satisfy the required
+wide-row inequalities for every `k≥11`. This numerical statement requires
+an actual section-capacity and local-envelope application before it counts
+any physical family.
 The [cocycle generator bound](SymmetricSubgroupAsymptotics/CocycleGeneratorBound.lean)
 injects actual one-cocycles into their values on a supplied original
 generating tuple, giving `card Z¹ ≤ (card A)^d` and the same upper bound
@@ -696,6 +720,12 @@ on generators. The independent
 proves `k(G) ≤ k(N)*k(G/N)` for every finite group and original normal
 subgroup, including nonabelian kernels. This extension inequality does
 not itself establish the required permutation class-count envelope.
+The [correlated-product bound](SymmetricSubgroupAsymptotics/SubgroupProductClassBound.lean)
+filters the original group by coordinate kernels and bounds its class count
+by the product of bounds for all actual coordinate subgroups. Its
+[p-group specialization](SymmetricSubgroupAsymptotics/PGroupProductClassBound.lean)
+requires these coordinate bounds only for p-subgroups. Neither theorem
+assumes independent coordinates or monotonicity of class count under inclusion.
 The [binary quotient specialization](SymmetricSubgroupAsymptotics/TransitiveBinaryCocycleBound.lean)
 constructs its generators internally and proves `card H¹ ≤ (card A)^A_k`
 for the stated representation of every actual quotient of the original
