@@ -74,6 +74,82 @@ theorem ordinaryRemainderRatio_partition (N epsilon : ℕ) :
   unfold ordinaryRemainderRatio outsideFitsRatio
   rw [ordinaryRemainder_card_partition,Nat.cast_add,add_div]
 
+def OutsideOrbit {X : Type} [Fintype X]
+    (H : Subgroup (Equiv.Perm X)) :=
+  {o : OrbitProfileFromOrbits.Orbit H //
+    ¬ IsPGroup 2 (OrbitProfileFromOrbits.orbitImage H o) ∧
+      ¬ ∃ e : Fin 3 ≃ o.orbit,
+        relabelSubgroup e oddMarkerActionSubgroup =
+          OrbitProfileFromOrbits.orbitImage H o}
+
+theorem outsideFits_hasOrbit (N epsilon : ℕ)
+    (H : OutsideFitsFamily N epsilon) : Nonempty (OutsideOrbit H.1.1) := by
+  have hbad := H.2
+  change ¬ ∀ o : OrbitProfileFromOrbits.Orbit H.1.1,
+    IsPGroup 2 (OrbitProfileFromOrbits.orbitImage H.1.1 o) ∨
+      ∃ e : Fin 3 ≃ o.orbit,
+        relabelSubgroup e oddMarkerActionSubgroup =
+          OrbitProfileFromOrbits.orbitImage H.1.1 o at hbad
+  push Not at hbad
+  obtain ⟨o,hp,hs⟩ := hbad
+  exact ⟨⟨o,hp,not_exists.mpr hs⟩⟩
+
+abbrev MarkedOutsideFamily (N epsilon : ℕ) :=
+  Σ H : OrdinaryRemainderSubgroups (2*N+epsilon), OutsideOrbit H.1
+
+local instance outsideOrbitFinite {X : Type} [Fintype X]
+    (H : Subgroup (Equiv.Perm X)) : Finite (OutsideOrbit H) :=
+  Finite.of_injective Subtype.val Subtype.val_injective
+
+local instance markedOutsideFamilyFinite (N epsilon : ℕ) :
+    Finite (MarkedOutsideFamily N epsilon) := inferInstance
+
+/-- Choose one literal bad orbit. The whole original physical subgroup is
+retained as the first component, so the pointing is injective without a
+multiplicity loss. -/
+def outsideFitsMarkedEmbedding (N epsilon : ℕ) :
+    OutsideFitsFamily N epsilon ↪ MarkedOutsideFamily N epsilon where
+  toFun H := ⟨H.1,Classical.choice (outsideFits_hasOrbit N epsilon H)⟩
+  inj' := by
+    intro H K h
+    apply Subtype.ext
+    exact congrArg Sigma.fst h
+
+theorem outsideFits_card_le_marked (N epsilon : ℕ) :
+    Nat.card (OutsideFitsFamily N epsilon) ≤
+      Nat.card (MarkedOutsideFamily N epsilon) :=
+  Nat.card_le_card_of_injective (outsideFitsMarkedEmbedding N epsilon)
+    (outsideFitsMarkedEmbedding N epsilon).injective
+
+/-- A bad orbit cannot be a singleton or a pair. Degree three remains, and
+its cyclic `C3` action is the first required general non-2 application. -/
+theorem outsideOrbit_card_gt_two {X : Type} [Fintype X]
+    (H : Subgroup (Equiv.Perm X)) (o : OutsideOrbit H) :
+    2 < Nat.card o.1.orbit := by
+  have hpos : 0 < Nat.card o.1.orbit := by
+    letI : Nonempty o.1.orbit := ⟨o.1.out,by
+      rw [o.1.orbit_eq_orbit_out Quotient.out_eq']
+      exact MulAction.mem_orbit_self o.1.out⟩
+    exact Nat.card_pos
+  have h1 : Nat.card o.1.orbit ≠ 1 := by
+    intro hc
+    obtain ⟨e,he⟩ := SmallOriginalOrbitCharts.singleton_chart H o.1 hc
+    have hp : IsPGroup 2 (⊤ : Subgroup (Equiv.Perm PUnit.{1})) := by
+      intro g
+      refine ⟨0,Subtype.ext ?_⟩
+      exact Subsingleton.elim _ _
+    have hp' := hp.map e.permCongrHom.toMonoidHom
+    change IsPGroup 2 (relabelSubgroup e ⊤) at hp'
+    exact o.2.1 (he ▸ hp')
+  have h2 : Nat.card o.1.orbit ≠ 2 := by
+    intro hc
+    obtain ⟨e,he⟩ := SmallOriginalOrbitCharts.pair_chart H o.1 hc
+    have hp := (BinaryFourPairIntrinsicTarget.criticalAction_isPGroup .c2).map
+      e.permCongrHom.toMonoidHom
+    change IsPGroup 2 (relabelSubgroup e (criticalActionSubgroup .c2)) at hp
+    exact o.2.1 (he ▸ hp)
+  omega
+
 theorem even_zero_normalized_le (N : ℕ) :
     (Nat.card (OrdinaryZeroFamily N 0) : ℝ) / exactBenchmark (2*N) ≤
       binaryErrorRatio N := by
