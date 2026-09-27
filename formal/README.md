@@ -787,6 +787,18 @@ from its degree-at-most-eight class base.
 The [complete class theorem](SymmetricSubgroupAsymptotics/BinaryPermutationClassBound.lean)
 now installs this base and proves the bound without a class-count hypothesis.
 It does not assert the separate 38/25 bound for arbitrary nilpotent groups.
+The [seven-power character envelope](SymmetricSubgroupAsymptotics/BinarySevenCharacterInstalled.lean)
+installs this proved class bound for actual binary target epimorphisms,
+retaining the original target automorphism factor and arbitrary survival.
+The [complete finite-menu row](SymmetricSubgroupAsymptotics/BinaryOrderSevenCharacterDirectFusion.lean)
+has no class-count premise: a literal physical cover yields a forward
+ordinary-count recurrence whose aggregate decays exponentially.
+The [degree-sixteen installation](SymmetricSubgroupAsymptotics/BinarySmallOrbit16SevenDirect.lean)
+proves that cover for every actual binary orbit image of degree 16 and
+order at most 256. It retains all original actions and normal axes,
+arbitrary complementary actions, and arbitrary earlier-owner exclusions.
+This sector does not require action-catalogue coverage or a coarse bound
+on total subgroup counts. Larger-order degree-sixteen images remain separate.
 The [finite-base reduction](SymmetricSubgroupAsymptotics/BinarySmallClassBaseReduction.lean)
 reduces that base to bounds 2, 5 and 25 for transitive binary actions in
 degrees 2, 4 and 8. Empty, singleton and intransitive actions are proved
