@@ -16,6 +16,15 @@ open scoped Classical
 
 namespace SymmetricSubgroupAsymptotics
 
+/-- Literal finite conclusion exported by the degree-nine normal-pair
+certificate.  Only the order of the original action group is retained. -/
+def DegreeNineRankTwoOrderInput : Prop :=
+  ∀ (G X : Type) [Group G] [Finite G] [Finite X] [MulAction G X]
+    [FaithfulSMul G X] [MulAction.IsPretransitive G X] [Nonempty X],
+    Nat.card X = 9 → ∀ (M : Subgroup G) [M.Normal],
+      Module.finrank (ZMod 3) (primeRelativeCharacters 3 M) = 2 →
+        Nat.card G = 9 ∨ Nat.card G = 27 ∨ Nat.card G = 81
+
 /-- Exact finite degree-nine endpoint needed by the degree-twenty-seven
 block reduction.  The committed finite certificate finds precisely the four
 transitive actions `9T2`, `9T6`, `9T7`, and `9T17`; each is a 3-group. -/
@@ -25,6 +34,16 @@ def DegreeNineRankTwoPGroupInput : Prop :=
     Nat.card X = 9 → ∀ (M : Subgroup G) [M.Normal],
       Module.finrank (ZMod 3) (primeRelativeCharacters 3 M) = 2 →
         IsPGroup 3 G
+
+/-- The certified order menu consists entirely of powers of three. -/
+theorem degreeNineRankTwoPGroupInput_of_order
+    (hOrder : DegreeNineRankTwoOrderInput) :
+    DegreeNineRankTwoPGroupInput := by
+  intro G X _ _ _ _ _ _ _ hDegree M _ hRank
+  rcases hOrder G X hDegree M hRank with h9 | h27 | h81
+  · exact IsPGroup.of_card (n := 2) (by simpa only [pow_two] using h9)
+  · exact IsPGroup.of_card (n := 3) (by norm_num [h27])
+  · exact IsPGroup.of_card (n := 4) (by norm_num [h81])
 
 namespace OriginalMinimalBlock
 
@@ -117,7 +136,7 @@ theorem highDegreeTwentySeven_isPGroup
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
     (hPrimitive : PrimitiveTernaryStrictHeadBound)
     (h18 : DegreeEighteenTernaryHeadBound)
-    (h9 : DegreeNineRankTwoPGroupInput)
+    (h9Order : DegreeNineRankTwoOrderInput)
     [Finite A] [Finite Ω] [FaithfulSMul A Ω]
     (N : Subgroup A) [N.Normal]
     (hDegree : Nat.card Ω = 27)
@@ -132,6 +151,8 @@ theorem highDegreeTwentySeven_isPGroup
   letI : Finite D.Top := D.top_finite
   letI : Nonempty D.Points := ⟨D.base⟩
   let T := originalNormalRange D.topMap N
+  have h9 : DegreeNineRankTwoPGroupInput :=
+    degreeNineRankTwoPGroupInput_of_order h9Order
   have hTopGroup : IsPGroup 3 D.Top := h9 D.Top D.Points hPoints T (by
     simpa only [T] using hTop)
   apply D.degreeTwentySeven_high_isPGroup N hDegree hFibre hTopGroup
@@ -146,7 +167,7 @@ theorem highDegreeTwentySeven_imprimitive_isPGroup
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
     (hPrimitive : PrimitiveTernaryStrictHeadBound)
     (h18 : DegreeEighteenTernaryHeadBound)
-    (h9 : DegreeNineRankTwoPGroupInput)
+    (h9Order : DegreeNineRankTwoOrderInput)
     {A Ω : Type} [Group A] [Finite A] [Finite Ω] [MulAction A Ω]
     [FaithfulSMul A Ω] [MulAction.IsPretransitive A Ω]
     (N : Subgroup A) [N.Normal]
@@ -161,7 +182,7 @@ theorem highDegreeTwentySeven_imprimitive_isPGroup
   let D : OriginalMinimalBlock (A := A) ω₀ :=
     Classical.choice (originalMinimalBlock_nonempty ω₀ himprimitive)
   exact OriginalMinimalBlock.highDegreeTwentySeven_isPGroup (D := D)
-    hChief hPrimitive h18 h9 N hDegree hHigh
+    hChief hPrimitive h18 h9Order N hDegree hHigh
 
 end SymmetricSubgroupAsymptotics
 
