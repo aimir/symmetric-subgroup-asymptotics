@@ -161,17 +161,26 @@ The same conclusions hold for the larger kernel
 $K_{\rm mark}^{+}(n,m)$ obtained by replacing $\binom Mq$ with $(M)_q$.
 \end{theorem}
 \begin{proof}
-The last assertion follows from
+The counting comparison for $K_{\rm mark}$ follows from
 Proposition~\ref{prop:complete-marker-collapse} and
 $t_q(Y)\leq\binom Mq$. In particular it does not assume boundedness
 of any normalized subgroup count.
 
-Put $\lambda=\log_2 3$ and $k=g-q$. Since $L_3(1)=1$, while
-the ternary Gaussian product constant is less than two, for $a\geq2$
+Put $\lambda=\log_2 3$ and $k=g-q$. Counting ordered bases bounds
+the number of $d$-dimensional subspaces of $\F_3^a$ by
+$3^{d(a-d+1)}$: there are at most $3^{ad}$ ordered independent
+$d$-tuples, and each such subspace has at least $3^{d(d-1)}$
+ordered bases. Dropping the full-coordinate condition therefore gives
 \[
- L_3(a)\leq2a\,3^{(a+1)^2/4}
-       \leq2^{\lambda(a-1)^2/4+6(a-1)}.
+ L_3(a)\leq(a+1)3^{a^2/4+a}.
 \]
+For $a\geq2$, use $a+1\leq3^{a-1}$ to obtain
+\[
+ L_3(a)\leq3^{(a-1)^2/4+15(a-1)/4}
+       \leq2^{\lambda(a-1)^2/4+6(a-1)},
+\]
+where $\lambda<8/5$. The same bound holds at $a=1$ because
+$L_3(1)=1$ exactly.
 Consequently
 \[
  H_{g,q}\leq2^{\lambda k^2/4+6k+g}.
@@ -186,15 +195,20 @@ The uniform Gaussian estimates leave quadratic exponent
 \[
  Q=-\frac{N(D+k)}2+\frac{(D+k)^2}4+\frac{\lambda k^2}4.
 \]
-We claim $Q\leq-13ND/60$. Set $x=D/N$, $y=k/N$.
-The expression $Q/N^2$ is convex in $y$, so it suffices to check
-$y=0$ and $y=\min(2x,1-x)$. At $y=0$ its ratio to $x$ is
-at most $-1/4$. If $x\leq1/3$, the other endpoint has ratio
-$-3/2+(9+4\lambda)x/4\leq-(9-4\lambda)/12$.
-If $x\geq1/3$, that ratio is
-$(\lambda-1)/(4x)-\lambda/2+\lambda x/4$, a convex function of
-$x$ whose endpoint values are $-(9-4\lambda)/12$ and $-1/4$.
-The bound follows from $\lambda<8/5$.
+We claim $Q\leq-13ND/60$. Since $\lambda<8/5$,
+\[
+ 60Q+13ND\leq E:=15D^2+30Dk+39k^2-17ND-30Nk.
+\]
+If $3D\leq N$, factor this polynomial as
+\[
+ E=-(17D+30k)(N-3D)-(2D-k)(39k+18D)\leq0.
+\]
+If $3D\geq N$, use instead
+\[
+ E=-(3D-N)(9N-8D)-(N-D-k)\bigl(39k+9(N-D)\bigr)\leq0.
+\]
+All displayed factors are nonnegative under the stated constraints,
+including the endpoint $M=0$.
 
 The coefficient recurrence gives $c_M/p_n\leq(2N)^{D+k}$.
 Also $\binom Mq\leq(M)_q\leq M^q\leq N^q$, $q\leq3D$, and
@@ -203,8 +217,10 @@ The omitted factor $2^q/(6^gf!)$ is at most one. For fixed $D$
 there are at most $(2D+2)^2$ choices of $g,f,q$. The complete
 fixed-$D$ logarithm is therefore at most
 $-13ND/60+O(D\log(N+2))$, with one absolute implied constant.
-Eventually it is at most $-ND/6$. The geometric sum over
-$1\leq D\leq N$ is at most $2^{-N/10}$.
+Eventually the logarithmic error is at most $ND/60$, uniformly in $D$,
+so the fixed-$D$ logarithm is at most $-ND/5$.
+There are at most $N$ positive defects, and therefore the complete sum
+is at most $N2^{-N/5}\leq2^{-N/10}$ for all sufficiently large $N$.
 The same proof therefore bounds $K_{\rm mark}^{+}$; its counting
 comparison follows directly from
 Proposition~\ref{prop:marker-presentation-bound}. In the $D=0$ states
