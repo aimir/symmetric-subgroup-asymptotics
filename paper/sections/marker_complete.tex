@@ -95,6 +95,45 @@ indexes the summation variables $a_i$; it creates no $q!$ factor.
 Projection recovers all the displayed data, proving equality.
 \end{proof}
 
+\begin{proposition}[A presentation bound for collapsed pairs]
+\label{prop:marker-presentation-bound}
+Under the hypotheses of Proposition~\ref{prop:complete-marker-collapse},
+write $m=2M$ and suppose $0\leq q\leq M$. The same number of groups is
+at most
+\[
+ \frac{n!}{m!}\frac{2^qH_{g,q}}{6^gf!}(M)_q\,|\mathcal Y_m|,
+ \qquad (M)_q=\frac{M!}{(M-q)!}.
+\]
+This bound also follows directly by covering the groups with displayed
+collapsed presentations, without identifying equivalent presentations.
+\end{proposition}
+\begin{proof}
+For each original sign image, enumerate its $q$ distinct signs and assign
+each of the $g$ marker coordinates to its sign. These presentations cover
+the original family; counting all enumerations gives an upper bound.
+For a fixed multiplicity profile, the assignments contribute
+$g!/\prod_i a_i!$ and the literal extension fibres contribute
+$\prod_iL_3(a_i)$. Thus their complete contribution is $g!H_{g,q}$.
+
+Fix an exterior orbit profile with $p$ existing pair orbits. Merge the
+$q$ displayed collapsed pairs with those $p$ pairs, and retain the
+condition that the resulting subgroup belongs to $\mathcal Y_m$.
+Dropping distinctness and any conditions referring to the distinguished
+$q$ positions only enlarges this model family; its nonnegative
+presentation weights are kept unchanged. Relabelling invariance
+allows the ordinary full-profile labelling formula to be applied to it.
+The original pair divisor is $2^pp!$, whereas the merged pair divisor
+is $2^{p+q}(p+q)!$. Their ratio is
+\[
+ 2^q\frac{(p+q)!}{p!}=2^q(p+q)_q\leq2^q(M)_q.
+\]
+Every other exterior normalizer and occurrence factorial is unchanged.
+Together with the original marker divisor $6^gg!$, the fixed-point
+divisor $f!$, and the labelled-support ratio $n!/m!$, this gives the
+claimed bound. Summing over exterior profiles counts each eligible
+collapsed profile at most once for the fixed value of $q$.
+\end{proof}
+
 \begin{theorem}[Complete noncanonical marker row]
 \label{thm:complete-marker-row}
 Write $n=2N+\eps$. For even $m=2M<n$, define
@@ -118,6 +157,8 @@ For collections $\mathcal Y_m$ closed under conjugation by $S_m$,
 the complete normalized count of the corresponding marker groups
 whose collapsed group lies in $\mathcal Y_m$ is at most
 $\sum_mK_{\rm mark}(n,m)|\mathcal Y_m|/L_m$.
+The same conclusions hold for the larger kernel
+$K_{\rm mark}^{+}(n,m)$ obtained by replacing $\binom Mq$ with $(M)_q$.
 \end{theorem}
 \begin{proof}
 The last assertion follows from
@@ -156,13 +197,19 @@ $x$ whose endpoint values are $-(9-4\lambda)/12$ and $-1/4$.
 The bound follows from $\lambda<8/5$.
 
 The coefficient recurrence gives $c_M/p_n\leq(2N)^{D+k}$.
-Also $\binom Mq\leq N^q$, $q\leq3D$, and $6k+g\leq15D$.
+Also $\binom Mq\leq(M)_q\leq M^q\leq N^q$, $q\leq3D$, and
+$6k+g\leq15D$.
 The omitted factor $2^q/(6^gf!)$ is at most one. For fixed $D$
 there are at most $(2D+2)^2$ choices of $g,f,q$. The complete
 fixed-$D$ logarithm is therefore at most
 $-13ND/60+O(D\log(N+2))$, with one absolute implied constant.
 Eventually it is at most $-ND/6$. The geometric sum over
 $1\leq D\leq N$ is at most $2^{-N/10}$.
+The same proof therefore bounds $K_{\rm mark}^{+}$; its counting
+comparison follows directly from
+Proposition~\ref{prop:marker-presentation-bound}. In the $D=0$ states
+used below, $q$ is zero or one, so the falling factorial and binomial
+factors coincide.
 \end{proof}
 
 \begin{corollary}[Pure markers]\label{cor:pure-marker-sum}
