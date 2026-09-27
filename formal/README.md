@@ -654,6 +654,11 @@ The corresponding original induced-subrepresentation and invariant-character
 bounds hold over the stated fields. Installing this in an induction over
 all original normal subgroups, and then bounding the actual menu, remains
 separate work.
+The [elementary width asymptotics](SymmetricSubgroupAsymptotics/BinaryWidthAsymptotics.lean)
+prove `choose(k,k/2)/2^k → 0` and the same limit for the cumulative
+widths `sum_{j<k} choose(j,j/2)`. An exact central-binomial recurrence
+gives a square bound in both parities; no Stirling or group-theoretic
+estimate is assumed.
 The [local Schreier adapter](SymmetricSubgroupAsymptotics/BinarySchreierPrunedAdapter.lean)
 reuses complete original word certificates and stops every index-two child
 when the actual source order is at most twice the cutoff.
