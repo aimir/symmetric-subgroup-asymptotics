@@ -54,13 +54,35 @@ vanishes on the $\psi$-isotype. Multiplying one such diagonal operator
 for every other distinct sign gives the exact $\chi$-projection.
 These projections sum to the identity, with each distinct sign counted
 once, regardless of its coordinate multiplicity.
-In an isotype of dimension $a_i$,
-the intersection $K_i$ must have full coordinate projections. For
-each such intersection, the lifts are the cocycles into
-$\F_3^{a_i}/K_i$. This is a nontrivial sign module, its invariants
-are zero, and $H^1(B,\F_3^{a_i}/K_i)=0$. The cocycle set therefore
-has exactly $3^{a_i-\dim K_i}$ elements. Hence the literal lift count
-is $\prod_iL_3(a_i)$.
+In an isotype of dimension $a_i$, the intersection $K_i$ must have
+full coordinate projections. Indeed, lift an original marker
+$3$-cycle and raise it to a sufficiently large power of $4$:
+its binary image vanishes and the $3$-cycle is unchanged. Conversely,
+a full ternary kernel coordinate together with a nontrivial sign
+generates the full original $S_3$ coordinate.
+
+For a fixed invariant kernel $K=\bigoplus_i K_i$, let $P$ be the
+whole original preimage of $B$. Subgroups of $P$ with image $B$
+and kernel $K$ correspond exactly to sections of $P/K\to B$.
+The fixed transpositions on the marker coordinates, together with
+the unchanged exterior coordinate, give one such section.
+Relative to this section the fibre is exactly
+$Z^1(B,\F_3^g/K)$, with no quotient-automorphism factor.
+
+This cocycle count has an elementary inverse. On a nontrivial sign
+component $V_i=\F_3^{a_i}/K_i$, a cocycle $z$ vanishes on
+$\ker\chi_i$: there it is a homomorphism, and each value is
+annihilated by both a power of $2$ and $3$. Choose an actual
+$s_i\in B$ with $\chi_i(s_i)=-1$. The cocycle identity then gives
+\[
+ z(b)=\chi_i(b)z(s_i)-z(s_i)\qquad(b\in B).
+\]
+Thus evaluation at $s_i$ is inverse to the principal-cocycle map,
+since $-1-1=1$ in $\F_3$. The distinct-sign projections descend
+to the original quotient; summing their projected evaluations
+gives the inverse for the whole quotient. Consequently the fibre
+has exactly $3^{g-\dim K}=\prod_i3^{a_i-\dim K_i}$ elements,
+and the literal lift count is $\prod_iL_3(a_i)$.
 
 The original marker weight is $1/(6^gg!f!)$. Assigning the displayed
 marker coordinates to the $q$ selected pairs contributes
