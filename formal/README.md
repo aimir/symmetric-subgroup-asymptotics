@@ -769,12 +769,20 @@ uses jointly injective actions on the original fibres. The
 selects the needed stabilizer-chain prefix and proves the exact degree product.
 The [class induction](SymmetricSubgroupAsymptotics/BinaryEightBlockClassInduction.lean)
 then derives `k(G)^7≤5^(2*card X)` for every finite faithful binary action
-from its explicit degree-at-most-eight class base. That finite base is still
-an input; the theorem does not discharge the separate 38/25 nilpotent bound.
+from its degree-at-most-eight class base.
+The [complete class theorem](SymmetricSubgroupAsymptotics/BinaryPermutationClassBound.lean)
+now installs this base and proves the bound without a class-count hypothesis.
+It does not assert the separate 38/25 bound for arbitrary nilpotent groups.
 The [finite-base reduction](SymmetricSubgroupAsymptotics/BinarySmallClassBaseReduction.lean)
 reduces that base to bounds 2, 5 and 25 for transitive binary actions in
 degrees 2, 4 and 8. Empty, singleton and intransitive actions are proved
-internally through the original restriction kernel.
+internally through the original restriction kernel. The
+[small base](SymmetricSubgroupAsymptotics/BinarySmallConjugacyClassBase.lean)
+installs the degree-two and degree-four cases; the
+[degree-eight table](SymmetricSubgroupAsymptotics/BinaryConjugacyClassTable8.lean)
+uses exact original orders for eleven entries and sparse original-group
+conjugacy covers for fifteen entries. Complete original-action coverage
+then supplies the transitive degree-eight bound of 25.
 The [binary quotient specialization](SymmetricSubgroupAsymptotics/TransitiveBinaryCocycleBound.lean)
 constructs its generators internally and proves `card H¹ ≤ (card A)^A_k`
 for the stated representation of every actual quotient of the original
@@ -787,8 +795,10 @@ The selected producer `computations/python/export_lean_conjugacy_cover_selected.
 accepts one explicit `--source` from its pinned eight-point allowlist;
 `--write` emits only that source's ignored witness data,
 and `--check` performs a read-only replay. Separate Lean checks of the
-generated data and pilot establish the theorem. This pilot does not
-assert coverage of other eight-point groups or the universal envelope.
+generated data and consumer establish each literal group bound. All fifteen
+selected covers are installed in the degree-eight table; the separate
+original-action coverage theorem and block induction establish the
+universal binary envelope. The producer itself establishes no Lean theorem.
 The [local Schreier adapter](SymmetricSubgroupAsymptotics/BinarySchreierPrunedAdapter.lean)
 reuses complete original word certificates and stops every index-two child
 when the actual source order is at most twice the cutoff.
