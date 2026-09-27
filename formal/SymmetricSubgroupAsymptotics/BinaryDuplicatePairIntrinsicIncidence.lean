@@ -418,6 +418,58 @@ theorem intrinsic_normalized_duplicate_incidence (N : ℕ) (hN : 1 ≤ N) :
       exact mul_le_mul_of_nonneg_left
         (div_le_div_of_nonneg_right htarget (by positivity)) (by norm_num)
 
+/-- The four-frame moment and the one-quarter duplicate recurrence form a
+closed contractive recurrence for the normalized intrinsic pair moment. -/
+theorem intrinsic_normalized_pair_recurrence (N : ℕ) (hN : 1 ≤ N) :
+    (∑ H : NoncriticalBinarySubgroups N,
+        (Nat.card (PermutationPairOrbitMarks.PairOrbit H.val) : ℝ)) /
+          (2*N).factorial ≤
+      (7 + (6*N : ℝ) ^ (1/4 : ℝ)) *
+          ((Nat.card (NoncriticalBinarySubgroups N) : ℝ) / (2*N).factorial) +
+        (1/4 : ℝ) *
+          ((∑ H : NoncriticalBinarySubgroups (N-1),
+            (Nat.card (PermutationPairOrbitMarks.PairOrbit H.val) : ℝ)) /
+              (2*(N-1)).factorial) := by
+  have hp :=
+    BinaryFourPairIntrinsicIncidence.intrinsic_pair_orbit_moment N
+  have hpdiv :
+      (∑ H : NoncriticalBinarySubgroups N,
+          (Nat.card (PermutationPairOrbitMarks.PairOrbit H.val) : ℝ)) /
+            (2*N).factorial ≤
+        ((7 + (6*N : ℝ) ^ (1/4 : ℝ)) *
+            Nat.card (NoncriticalBinarySubgroups N) +
+          ∑ H : NoncriticalBinarySubgroups N,
+            (Nat.card (PermutationPairOrbitMarks.DuplicateMark H.val) : ℝ)) /
+              (2*N).factorial :=
+    (div_le_div_iff_of_pos_right (by positivity)).mpr hp
+  have hdQ := intrinsic_normalized_duplicate_incidence N hN
+  have hd :
+      (∑ H : NoncriticalBinarySubgroups N,
+          (Nat.card (PermutationPairOrbitMarks.DuplicateMark H.val) : ℝ)) /
+            (2*N).factorial ≤
+        (1/4 : ℝ) *
+          ((∑ H : NoncriticalBinarySubgroups (N-1),
+            (Nat.card (PermutationPairOrbitMarks.PairOrbit H.val) : ℝ)) /
+              (2*(N-1)).factorial) := by
+    have hcast := (Rat.cast_le (K := ℝ)).mpr hdQ
+    push_cast at hcast
+    simpa using hcast
+  calc
+    (∑ H : NoncriticalBinarySubgroups N,
+        (Nat.card (PermutationPairOrbitMarks.PairOrbit H.val) : ℝ)) /
+          (2*N).factorial ≤
+        ((7 + (6*N : ℝ) ^ (1/4 : ℝ)) *
+            Nat.card (NoncriticalBinarySubgroups N) +
+          ∑ H : NoncriticalBinarySubgroups N,
+            (Nat.card (PermutationPairOrbitMarks.DuplicateMark H.val) : ℝ)) /
+              (2*N).factorial := hpdiv
+    _ = (7 + (6*N : ℝ) ^ (1/4 : ℝ)) *
+          ((Nat.card (NoncriticalBinarySubgroups N) : ℝ) / (2*N).factorial) +
+        (∑ H : NoncriticalBinarySubgroups N,
+          (Nat.card (PermutationPairOrbitMarks.DuplicateMark H.val) : ℝ)) /
+            (2*N).factorial := by ring
+    _ ≤ _ := add_le_add le_rfl hd
+
 end SymmetricSubgroupAsymptotics.BinaryDuplicatePairIntrinsicIncidence
 
 end
