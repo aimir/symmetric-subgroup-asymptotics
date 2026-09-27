@@ -397,8 +397,13 @@ has a full A3 projection of this kernel; the kernel need not be a product.
 The [diagonal projection theorem](SymmetricSubgroupAsymptotics/DiagonalIsotypeProjection.lean)
 decomposes invariant subspaces by distinct scalar functions using explicit
 separating operators, over any field and with no finite-source assumption.
-The original ternary chart, complete cocycle fibres and physical marker sum
-are additional steps beyond these two foundations.
+The [actual ternary chart](SymmetricSubgroupAsymptotics/OddMarkerTernaryChart.lean)
+identifies the original alternating subgroup with F3 and proves the literal
+S3 conjugation formula. The [repeated-marker module](SymmetricSubgroupAsymptotics/RepeatedOddMarkerModule.lean)
+then reconstructs the original joint kernel exactly from its F3 submodule,
+proves its decomposition by the same original sign characters and retains
+full coordinate projection under the actual binary-exterior hypothesis.
+Complete cocycle fibres and the physical marker sum remain additional steps.
 
 `CriticalFamilyAsymptotic.criticalSubgroups_relative_error` proves, with one
 constant and threshold for both parities,
