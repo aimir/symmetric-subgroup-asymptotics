@@ -602,6 +602,10 @@ width `w ≥ 64` satisfies `sum (D/a) ≤ 2^(w^2/128+H)` for one fixed `H`.
 Its threshold is uniform across widths. The menu-mass bound and actual
 physical coverage remain explicit requirements, not consequences of
 the numerical aggregation.
+The [wide direct row](SymmetricSubgroupAsymptotics/FusionWideDirectRow.lean)
+assigns every one of those entries to `m=n-w+v<n`, proves that its row sum
+is exactly the checked aggregate, and derives decay and eventual
+contraction. Entries sharing a target degree are all retained.
 The [degree-sixteen application](SymmetricSubgroupAsymptotics/BinaryTransitiveBoundary16Fusion.lean)
 accepts all transitive binary actions of order at most 256, including every
 original normal, without enumerating groups or normals. A nontrivial normal
@@ -641,6 +645,15 @@ proves the required labelling, exact two-restriction reconstruction and
 image equivalence internally. Its unmarked injection adds no point or
 chart multiplicity and requires no binary assumption on the full original
 subgroup or its complement.
+The [binary induced-module head theorem](SymmetricSubgroupAsymptotics/BinaryInducedHead.lean)
+proves the intrinsic coinvariant bound `dim(V) * choose(t,t/2)` for an
+actual representation injected into a coinduced module from index `2^t`
+in a finite 2-group. It constructs the subgroup-chain coordinates and
+uses the Boolean antichain bound, with no supplied module-capacity input.
+The corresponding original induced-subrepresentation and invariant-character
+bounds hold over the stated fields. Installing this in an induction over
+all original normal subgroups, and then bounding the actual menu, remains
+separate work.
 The [local Schreier adapter](SymmetricSubgroupAsymptotics/BinarySchreierPrunedAdapter.lean)
 reuses complete original word certificates and stops every index-two child
 when the actual source order is at most twice the cutoff.
