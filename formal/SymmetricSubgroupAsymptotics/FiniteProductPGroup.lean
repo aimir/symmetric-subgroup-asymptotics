@@ -32,7 +32,23 @@ theorem orbitProfileProduct_isPGroup {p : ℕ} {ι : Type*} [Fintype ι]
   finitePi_isPGroup (fun i => Fin (m i) → U i)
     (fun i => finitePi_isPGroup (fun _ : Fin (m i) => U i) (fun _ => hU i))
 
+/-- A local action group only has to be a `p`-group when that action occurs
+in the profile.  This is the form needed by zero-defect profiles: an
+inadmissible colour can remain in the fixed ambient menu with multiplicity
+zero. -/
+theorem orbitProfileProduct_isPGroup_of_occupied {p : ℕ} {ι : Type*} [Fintype ι]
+    {Ω : ι → Type*} (m : ι → ℕ) (U : ∀ i, Subgroup (Equiv.Perm (Ω i)))
+    (hU : ∀ i, 0 < m i → IsPGroup p (U i)) :
+    IsPGroup p (OrbitProfileProductGroup m U) := by
+  apply finitePi_isPGroup (fun i => Fin (m i) → U i)
+  intro i
+  by_cases hi : 0 < m i
+  · exact finitePi_isPGroup (fun _ : Fin (m i) => U i) (fun _ => hU i hi)
+  · intro f
+    refine ⟨0, ?_⟩
+    funext j
+    exact (hi (Nat.zero_lt_of_lt j.isLt)).elim
+
 end SymmetricSubgroupAsymptotics
 
 end
-
