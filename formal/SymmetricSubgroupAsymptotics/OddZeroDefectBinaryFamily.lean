@@ -2,6 +2,9 @@ import SymmetricSubgroupAsymptotics.NoncriticalBinaryOddSingleton
 import SymmetricSubgroupAsymptotics.OddMarkerPairIntrinsicIncidence
 import SymmetricSubgroupAsymptotics.OddMarkerBinaryErrorTransfer
 import SymmetricSubgroupAsymptotics.OddCriticalOrbitCriterion
+import SymmetricSubgroupAsymptotics.SingletonExtensionOrbits
+import SymmetricSubgroupAsymptotics.PGroupTransitiveDegree
+import SymmetricSubgroupAsymptotics.OddCriticalLiteral
 
 /-!
 # The complete physical binary zero-defect family in odd degree
@@ -143,6 +146,61 @@ theorem natural_ne_oddCritical (N : ℕ) (H : NaturalSector N)
           rw [← hc]
           exact relabelSubgroup_symm c _
 
+/-- Adding the singleton preserves the source's noncritical moving orbit
+and its exact restriction image.  That orbit cannot become the singleton,
+the natural `S_3` action, or one of the four critical binary actions. -/
+theorem singleton_ne_oddCritical (N : ℕ) (H : SingletonSector N)
+    (J : OddCriticalSubgroups N) : H.val ≠ J.val := by
+  obtain ⟨x,K,hKH⟩ := H.property
+  obtain ⟨o,ho⟩ :=
+    (CriticalOrbitCriterion.not_isEvenCritical_iff N K.val).mp K.property.2
+  let e : Fin (2*N+1) ≃ Option (Fin (2*N)) := finSuccEquiv' x
+  let O := SingletonExtension.extendedOrbit e K.val o
+  obtain ⟨q,d,L,hL,hLJ⟩ := J.property
+  have hL0 : OrbitProfileFullOn oddCriticalActionSubgroup (Equiv.refl _) L :=
+    (orbitProfileFullOn_iff _ _ _).mpr hL
+  intro hHJ
+  have hCrit : OrbitProfileFullOn oddCriticalActionSubgroup d
+      (K.val.map (SingletonExtension.extensionHom e)) := by
+    rw [hKH,hHJ,← hLJ]
+    simpa only [Equiv.refl_trans] using hL0.relabel d
+  obtain ⟨i,j,c,hc⟩ := hCrit.orbit_image_chart oddCriticalAction_transitive O
+  let φ := SingletonExtension.orbitEquiv e K.val o
+  cases i with
+  | fixed =>
+      have he : o.orbit ≃ Fin 1 := φ.trans c.symm
+      have hcard : Nat.card o.orbit = 1 := by
+        simpa only [Nat.card_fin] using Nat.card_congr he
+      exact BinaryFourPairIntrinsicCoverage.orbit_card_ne_one N K o hcard
+  | marker =>
+      have he : o.orbit ≃ Fin 3 := φ.trans c.symm
+      have hcard : Nat.card o.orbit = 3 := by
+        simpa only [Nat.card_fin] using Nat.card_congr he
+      let z : o.orbit := ⟨o.out,by
+        rw [o.orbit_eq_orbit_out Quotient.out_eq']
+        exact MulAction.mem_orbit_self o.out⟩
+      have hne : Nat.card o.orbit ≠ 3 :=
+        binary_transitive_degree_ne_three K.property.1.1 z
+          (fun y => MulAction.exists_smul_eq K.val z y)
+      exact hne hcard
+  | binary i =>
+      apply ho
+      have hc' : relabelSubgroup c (criticalActionSubgroup i) =
+          OrbitProfileFromOrbits.orbitImage
+            (K.val.map (SingletonExtension.extensionHom e)) O := hc
+      refine ⟨i,c.trans φ.symm,?_⟩
+      calc
+        relabelSubgroup (c.trans φ.symm) (criticalActionSubgroup i) =
+            relabelSubgroup φ.symm
+              (relabelSubgroup c (criticalActionSubgroup i)) :=
+          (relabelSubgroup_trans c φ.symm _).symm
+        _ = relabelSubgroup φ.symm
+              (OrbitProfileFromOrbits.orbitImage
+                (K.val.map (SingletonExtension.extensionHom e)) O) := by rw [hc']
+        _ = OrbitProfileFromOrbits.orbitImage K.val o := by
+          rw [← SingletonExtension.relabel_orbitImage e K.val o]
+          exact relabelSubgroup_symm φ _
+
 theorem subgroup_injective (N : ℕ) : Function.Injective (subgroup N) := by
   intro H K h
   cases H with
@@ -175,12 +233,41 @@ theorem subgroup_injective (N : ℕ) : Function.Injective (subgroup N) := by
       | inr K =>
           exact congrArg Sum.inr (Subtype.ext h)
 
+/-- Both zero-defect sectors lie in the literal complement of the complete
+odd critical family. -/
+theorem subgroup_notCritical (N : ℕ) (H : SectorSum N) :
+    ¬ IsCriticalSubgroup (2*N+1) (subgroup N H) := by
+  intro hcrit
+  obtain ⟨J,hJ⟩ := (isCriticalSubgroup_odd_iff N (subgroup N H)).mp hcrit
+  cases H with
+  | inl H => exact singleton_ne_oddCritical N H J hJ.symm
+  | inr H => exact natural_ne_oddCritical N H J hJ.symm
+
 /-- The literal union of the two zero-defect sectors, with duplicate
 subgroups forgotten.  Injectivity above proves that nothing is lost. -/
 abbrev Family (N : ℕ) := Set.range (subgroup N)
 
 def sectorEquiv (N : ℕ) : SectorSum N ≃ Family N :=
   Equiv.ofInjective (subgroup N) (subgroup_injective N)
+
+/-- The completed physical family embeds without multiplicity into the
+actual ordinary remainder used by T1. -/
+def ordinaryRemainderEmbedding (N : ℕ) :
+    Family N ↪ OrdinaryRemainderSubgroups (2*N+1) where
+  toFun H := ⟨H.val,by
+    obtain ⟨S,hS⟩ := H.property
+    rw [← hS]
+    exact subgroup_notCritical N S⟩
+  inj' := by
+    intro H K h
+    apply Subtype.ext
+    exact congrArg
+      (fun L : OrdinaryRemainderSubgroups (2*N+1) => L.val) h
+
+theorem card_le_ordinaryRemainder (N : ℕ) :
+    Nat.card (Family N) ≤ Nat.card (OrdinaryRemainderSubgroups (2*N+1)) :=
+  Nat.card_le_card_of_injective (ordinaryRemainderEmbedding N)
+    (ordinaryRemainderEmbedding N).injective
 
 theorem card_eq (N : ℕ) :
     Nat.card (Family N) = Nat.card (SingletonSector N) + Nat.card (NaturalSector N) := by
@@ -204,6 +291,14 @@ theorem normalized_card_le (N : ℕ) (hN : 1 ≤ N) :
           binaryErrorRatio (N-1) := by
   rw [normalized_card]
   exact OddMarkerBinaryErrorTransfer.binary_error_transfer N hN
+
+theorem normalized_card_le_ordinaryRemainderRatio (N : ℕ) :
+    (Nat.card (Family N) : ℝ) / exactBenchmark (2*N+1) ≤
+      ordinaryRemainderRatio (2*N+1) := by
+  unfold ordinaryRemainderRatio
+  exact div_le_div_of_nonneg_right
+    (by exact_mod_cast card_le_ordinaryRemainder N)
+    (exactBenchmark_pos _).le
 
 end SymmetricSubgroupAsymptotics.OddZeroDefectBinaryFamily
 
