@@ -286,7 +286,16 @@ Put $k=h-r>0$. Since $n=m+2k$, exact factorial cancellation gives
  =\frac{D}{a(U)}\frac{m!}{b!}2^{\lambda b}\Delta(n,m).
 \]
 The fixed-width benchmark estimate above applies in either parity,
-and $m!/b!\leq m^v$. Consequently, for an entry-dependent constant,
+and $m!/b!\leq m^v$. Retaining its quadratic width term gives the
+uniform estimate, valid for every $b\geq0$,
+\begin{equation}\label{eq:direct-uniform-coefficient}
+ \Gamma_{U,N}(b)
+ \leq \phi^{-2}\frac{D}{a(U)}(n+1)^{(w+v)/2+1}
+ 2^{-gb/8-(w^2-v^2)/16+(w-v+2)/8}.
+\end{equation}
+Indeed the exponent before simplification is
+$\lambda b-km/4-k^2/4+(k+1)/4$.
+Consequently, for an entry-dependent constant,
 \[
  \Gamma_{U,N}(b)
  \leq C(n+1)^{v+k+1}2^{\lambda b-km/4}
