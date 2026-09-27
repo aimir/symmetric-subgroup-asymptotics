@@ -742,6 +742,11 @@ proves the corresponding original-weight bound and contracting aggregate for
 orbit degrees 1024 and 2048. Neither installation assumes class-count bounds,
 coarse subgroup growth, or a supplied coverage/capacity estimate. Both allow
 arbitrary additional ownership exclusions by literal subtype inclusion.
+The [combined intrinsic sector](SymmetricSubgroupAsymptotics/BinaryOriginalLargePhysical.lean)
+derives the binary power degree from the actual orbit image and combines
+these rows. Thus every subgroup with any binary orbit of size at least 1024
+is covered by one original-weight forward recurrence, with exponentially
+decaying aggregate and no supplied power-degree hypothesis.
 Sharper cuts below 1024 and global subgroup ownership remain separate.
 The [cocycle generator bound](SymmetricSubgroupAsymptotics/CocycleGeneratorBound.lean)
 injects actual one-cocycles into their values on a supplied original
