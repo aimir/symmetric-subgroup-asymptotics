@@ -19,8 +19,9 @@ and put $H_{g,0}=0$ for $g>0$.
 
 \begin{proposition}[Exact collapse of repeated signs]
 \label{prop:complete-marker-collapse}
-Let $\mathcal Y_m$ be any collection of fixed-point-free binary
-subgroups on $m$ points. Let $t_q(Y)$ count the $q$-element sets of
+Let $\mathcal Y_m$ be a collection of fixed-point-free binary
+subgroups on $m$ points, closed under conjugation by $S_m$.
+Let $t_q(Y)$ count the $q$-element sets of
 actual pair orbits of $Y$ whose characters on $Y$ are distinct.
 For $n=m+3g+f-2q$, the number of subgroups obtained by replacing these
 selected pairs by $g$ natural $S_3$ orbits in $q$ sign classes, and
@@ -41,8 +42,19 @@ Deleting repeated signs is injective on $B$; realize each retained
 sign on a pair. The resulting group is $Y\leq S_m$ and the newly
 introduced pairs give the selected set.
 
-By Maschke's theorem every $B$-invariant subspace of $C_3^g$ splits
-across these distinct sign isotypes. In an isotype of dimension $a_i$,
+Every $B$-invariant subspace of $C_3^g$ splits across these distinct
+sign isotypes by an explicit projection. Regard the signs as scalars
+in $\F_3$. For distinct signs $\chi,\psi$, choose $b\in B$ with
+$\chi(b)\ne\psi(b)$. The operator
+\[
+ (\chi(b)-\psi(b))^{-1}\bigl(b-\psi(b)I\bigr)
+\]
+preserves the subspace, is the identity on the $\chi$-isotype and
+vanishes on the $\psi$-isotype. Multiplying one such diagonal operator
+for every other distinct sign gives the exact $\chi$-projection.
+These projections sum to the identity, with each distinct sign counted
+once, regardless of its coordinate multiplicity.
+In an isotype of dimension $a_i$,
 the intersection $K_i$ must have full coordinate projections. For
 each such intersection, the lifts are the cocycles into
 $\F_3^{a_i}/K_i$. This is a nontrivial sign module, its invariants
@@ -55,7 +67,8 @@ marker coordinates to the $q$ selected pairs contributes
 $g!/\prod_i a_i!$. A selected pair already has action weight $1/2$,
 so replacing the $q$ pairs contributes $2^q$. These give the
 coefficient in \eqref{eq:complete-marker-collapse}; the change of
-labelled support gives $n!/m!$. An ordering of the selected pairs only
+labelled support gives $n!/m!$; here closure under relabelling is
+essential. An ordering of the selected pairs only
 indexes the summation variables $a_i$; it creates no $q!$ factor.
 Projection recovers all the displayed data, proving equality.
 \end{proof}
@@ -79,7 +92,8 @@ For all sufficiently large $N$, at both parities,
  \sum_{\substack{m<n\\m\ \mathrm{even}}}K_{\rm mark}(n,m)
                   \leq2^{-N/10}.
 \end{equation}
-The complete normalized count of the corresponding marker groups
+For collections $\mathcal Y_m$ closed under conjugation by $S_m$,
+the complete normalized count of the corresponding marker groups
 whose collapsed group lies in $\mathcal Y_m$ is at most
 $\sum_mK_{\rm mark}(n,m)|\mathcal Y_m|/L_m$.
 \end{theorem}
@@ -138,7 +152,7 @@ This sum includes all actual critical attachments and both parities.
 Collapse yields only critical binary orbits. Theorem~\ref{thm:critical-intro}
 bounds their complete normalized count uniformly, including all finite
 initial degrees. Apply Theorem~\ref{thm:complete-marker-row} to this
-family. This argument counts already assembled groups, so it also
+conjugation-invariant family. This argument counts already assembled groups, so it also
 includes non-Frattini central attachments.
 \end{proof}
 
@@ -157,7 +171,8 @@ with $u_N,v_N$ from \eqref{eq:uv}. There is no scalar remainder.
 \end{corollary}
 \begin{proof}
 The noncritical binary orbit is unchanged by marker collapse, so the
-noncanonical part targets the complete family defining $E$.
+noncanonical part targets the complete conjugation-invariant family
+defining $E$. Any additional restrictions only decrease the original count.
 The only $D=0$ marker states are no marker in even degree, one fixed
 point, and one $S_3$ in odd degree. The even state belongs to the
 separately counted complete binary family. The exact odd contributions

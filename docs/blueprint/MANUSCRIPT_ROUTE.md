@@ -28,7 +28,14 @@ mathematical and computational inputs are listed in
    complete finite entry menu, and critical/C4/carrier mixture are combined
    in [binary_complete.tex](../../paper/sections/binary_complete.tex).
    Its targets are complete binary counts; it assumes no bounded ordinary
-   subgroup ratio.
+   subgroup ratio. The alternative
+   [original-orbit recurrence](../../paper/sections/binary_original_fusion.tex)
+   treats every binary orbit of degree at least 32 with arbitrary exterior,
+   using a central cut or the original quotient character bound. Its targets
+   are ordinary subgroup counts at degree `n-w+v`; the complete weighted row
+   contracts without a supplied bound on those counts. This route avoids the
+   exceptional rank-moment and adaptive-cut arguments for local acceptance,
+   while keeping the older independent-binary target separate.
 5. **First c=1 application and audits.** The exact surviving-character formula,
    earlier complete source estimates and relative ternary ranks prove the
    split c=1 application. The shared-C3 moment and inverse-complement chart

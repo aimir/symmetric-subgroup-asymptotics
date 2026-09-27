@@ -1,0 +1,198 @@
+\section{Direct fusion for original binary orbits}
+\label{sec:binary-original-fusion}
+The following cut-or-character alternative gives a shorter route to
+original local entries from width $32$. It uses the deterministic
+separator and the actual action kernel, without the rank-moment
+calculation or the adaptive degree-$32$ cut. Its recurrence has complete
+ordinary subgroup counts at smaller degrees as targets. Thus it can be
+inserted directly in the ordinary recurrence; the independent binary
+recurrence of the preceding section has a different target and remains
+a separate statement.
+
+\subsection{An original cut-or-character alternative}
+
+Write $B_j=\binom{j}{\lfloor j/2\rfloor}$ and
+$\gamma=5^{2/7}$. The permutation class estimate used in Proposition~\ref{prop:anchor-count}
+implies the weaker bound $k(P)^7\leq5^{2b}$ for every actual binary
+subgroup $P\leq S_b$.
+Consequently, for a finite binary group $Q$, with
+$z=\dim\Omega_1Z(Q)$, the original character envelope is
+\begin{equation}\label{eq:binary-seven-original-envelope}
+ |\operatorname{Epi}(J,Q)|
+ \leq |\operatorname{Aut}Q|\,2^{\alpha(z)b},
+ \qquad \alpha(z)=\frac{2z}{7}\log_2 5,
+ \qquad J\leq S_b.
+\end{equation}
+Here $J$ is arbitrary: restriction to its original Sylow $2$-subgroup
+is injective on epimorphisms to $Q$ and remains surjective onto $Q$.
+The same bound holds for any specified surviving subfamily by inclusion.
+This is the separate $\gamma$ envelope, not a replacement of every
+previously accepted $38/25$ criterion.
+
+\begin{theorem}[Original cut-or-character alternative]
+\label{thm:binary-original-cut-or-character}
+Let $U\leq S_{2h}$ be transitive and binary, where $h=2^k$ and
+$k\geq4$. Fix an original invariant pair frame, with flip kernel $K$
+and faithful transitive top $T\leq S_h$. For each original
+$N\lhd U$, retain
+\[
+ Q=U/N,\qquad A=K/(K\cap N),\qquad B=U/(KN),
+\]
+including the actual map $T\twoheadrightarrow B$ and the actual
+kernel chart $A\longrightarrow Q\twoheadrightarrow B$.
+At least one of the following alternatives holds.
+\begin{enumerate}
+\item There is a literal subspace $C\leq A^B$ such that
+\[
+ 2\dim C+4\dim(A/C)^B\leq h-2.
+\]
+\item The action of $T$ on $A$ is faithful, the whole center of $Q$
+lies in $A$, and
+\[
+ \Omega_1Z(Q)=A^B,\qquad
+ z=\dim\Omega_1Z(Q)\leq B_k,\qquad
+ 5^{16z}<2^{7(2h)}.
+\]
+\end{enumerate}
+In particular each original $N$ has a same-source fusion entry with
+an even prefix $v<2h$ and a strictly positive gap. No splitting of
+$Q\to B$ is assumed.
+\end{theorem}
+\begin{proof}
+Put $S=A^B$, $t=\dim S$, $\ell=\dim(A/S)^B$, and
+$D_0=2B_{k-1}$. These are dimensions of the same actual section, so
+$t+\ell\leq\dim A$. The original permutation-section bound and its
+one-character kernel restriction give
+$t\leq B_k\leq D_0$ and the complete displacement line-slice bound
+$D_0-t$. The deterministic separator supplies $q$ independent
+functionals on $S$, with annihilator $C$, such that
+\[
+ \dim C=t-q,\qquad \dim(A/C)^B=q,\qquad
+ 2q\leq\ell+\max\{1,D_0-t\}.
+\]
+The fixed-quotient identity uses the full displacement slice; it
+does not merely test each scalar line separately.
+
+If $2\dim A\leq h$, the resulting even cost satisfies
+\[
+ 2\dim C+4\dim(A/C)^B=2t+2q
+ \leq t+\ell+D_0+1.
+\]
+The inequalities $8D_0\leq3h$ and $h\geq16$ make the last expression
+at most $h-1$. Evenness gives the first alternative. The inequality
+$t\leq D_0$ is retained here; truncating a negative difference would
+not justify the displayed estimate.
+
+Suppose instead that $2\dim A>h$. Let $H$ be the actual normal kernel
+of $T$ acting on $A$. If $H\ne1$, its orbits on the original $h$
+points have a common size $2^a\geq2$: normality gives uniformity,
+and faithfulness of $T$ excludes singleton orbits. The original
+permutation preimage of $A$, restricted to $H$, maps onto the trivial
+$H$-module $A$. Applying the orbit-section bound and
+$2B_a\leq2^a$ therefore gives $2\dim A\leq h$, a contradiction.
+Thus $T$ acts faithfully on $A$. Since this action factors through
+the actual surjection $T\to B$, that map is injective as well.
+
+For any central element of the original $Q$, its image in $B$ acts
+trivially on the literal kernel $A$. Faithfulness places the element
+in $A$. The actual kernel chart now identifies $Z(Q)$ with $A^B$;
+in particular this center is elementary. Finally $8B_k\leq3h$ gives
+$16z\leq3(2h)$, and $125<128$ gives the strict integer test.
+\end{proof}
+
+For the first alternative put $c=\dim C$, $r=\dim(A/C)^B$ and choose
+the entry
+\begin{equation}\label{eq:binary-cut-entry-original}
+ v=h+2c,\quad \lambda=r/2,\quad
+ D_C=|A/C|\,|H^1(B,A/C)|,\quad
+ \Phi_C(J)=|\operatorname{Epi}(J,B)|\,2^{c d_2(J)}.
+\end{equation}
+The original central extension and its actual quotient by $C$ give
+the envelope $D_C2^{\lambda b}\Phi_C(J)$. Its full cocycle factor is
+retained. The faithful original cover $T\leq S_h$ mapping onto the
+same $B$ gives all common-source moments
+\[
+ \sum_{J\leq S_b}\Phi_C(J)^q\leq s_{b+qv}
+ \qquad(q\geq1).
+\]
+There is no assertion that $B$ itself has a faithful action of degree
+$h$. In the character alternative take
+\[
+ v=0,\quad\lambda=\alpha(z),\quad
+ D_C=|\operatorname{Aut}Q|,\quad\Phi_C(J)=1.
+\]
+Its moments equal $s_b$. In both alternatives define
+\[
+ e=\frac{2h-v-8\lambda}{16}>0.
+\]
+The cut alternative has $2h-v-8\lambda\geq2$, but no such uniform
+lower bound is asserted for the character alternative. For each fixed
+finite collection of widths, positivity supplies a finite-menu minimum.
+All entries are chosen before the exterior degree and the exterior
+subgroup; the original normalizer is unchanged.
+
+\subsection{The ordinary forward recurrence for binary orbits}
+
+Let $s_n$ denote the number of all subgroups of $S_n$, let
+$L_n>0$ be the exact parity-dependent benchmark, and put
+$\sigma_n=s_n/L_n$. Let $\mathcal A_n$ be the family of
+literal $H\leq S_n$ having an actual orbit of size at least $32$ whose
+restriction image is binary. The entire $H$, its complementary
+restriction, and their correlation are unrestricted.
+
+\begin{theorem}[Original ordinary binary-orbit recurrence]
+\label{thm:binary-original-ordinary-recurrence}
+There is a nonnegative row $K(n,m)$, with $K(n,m)=0$ when $m\geq n$,
+such that for $n\geq2048$,
+\begin{equation}\label{eq:binary-original-ordinary-recurrence}
+ \frac{|\mathcal A_n|}{L_n}
+ \leq\sum_{m<n}K(n,m)\sigma_m.
+\end{equation}
+There are constants $C,\kappa>0$ for which
+\[
+ \sum_{m<n}K(n,m)\leq C2^{-\kappa n}
+\]
+for all sufficiently large $n$. In particular the row sum is eventually
+at most $1/2$. Any subfamily defined by additional conditions on the
+original $H$ obeys the same recurrence by inclusion.
+\end{theorem}
+\begin{proof}
+An actual binary transitive orbit has power-of-two degree. For each
+width $w=2h\in\{32,64,128,256,512\}$, choose one representative of
+each original action-conjugacy class and one invariant pairing for
+each representative. Apply Theorem~\ref{thm:binary-original-cut-or-character}
+to every literal original normal subgroup. Relabelling the actual
+orbit and its actual complement gives physical coverage by these
+families. This is an upper union of original subgroups; no uniqueness
+of the chosen orbit or of its chart is required.
+
+For a fixed representative $U$, normal axis $N$ and exterior degree
+$b=n-w$, use only the first same-source moment. Its exact contribution
+at the target degree $m=b+v$ is
+\begin{equation}\label{eq:binary-original-direct-coefficient}
+ \frac{n!}{b!\,|N_{S_w}(U)|}\,
+ D_C2^{\lambda b}\,
+ \frac{L_{b+v}}{L_n}.
+\end{equation}
+Every original normal is retained, including distinct summands with
+the same target degree. Since $v<w$, every such target is smaller than
+$n$. The exact benchmark ratio and $e>0$ give exponential decay for
+this genuinely fixed finite menu, without an a priori estimate on
+the sequence $s_m$.
+
+The widths $1024$ and $2048$ use their already proved positive zero-cut
+entries and the same finite first-moment argument. For widths at least
+ $4096$ use the original wide zero-cut installation and its proved
+normalizer-weighted menu aggregate. The actual zero entries are bounded
+by that full nonnegative row; numerical acceptance of extra entries
+is not used as a substitute for a local envelope. Its row sum has the
+proved uniform exponential bound.
+
+Add these rows and cover the literal family $\mathcal A_n$ by the
+finite-width and wide sectors. Overlap only enlarges the upper bound.
+Adding their exponential estimates gives the asserted $C,\kappa$ and
+eventual contraction. All denominators in
+\eqref{eq:binary-original-direct-coefficient} remain the original
+symmetric normalizers.
+\end{proof}
+
