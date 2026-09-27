@@ -4,10 +4,10 @@ import SymmetricSubgroupAsymptotics.TernaryHighActionDegrees
 /-!
 # Owner-aware high ternary action menu
 
-The degree-twenty-seven row in the numerical menu is not a new bounded-action
-case.  Its actual minimal block has degree three over an exact rank-two
-degree-nine top, and the inversion dichotomy sends the whole action to the
-existing 3-group owner.
+The degree-nine row closes structurally through its three-by-three minimal
+block system.  The degree-twenty-seven row then has a degree-three fibre over
+that exact rank-two degree-nine top.  The same inversion dichotomy sends both
+whole actions to the existing 3-group owner.
 -/
 
 set_option autoImplicit false
@@ -23,7 +23,6 @@ theorem ternaryHigh_action_owned_menu
     (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
     (hPrimitive : PrimitiveTernaryStrictHeadBound)
     (h18 : DegreeEighteenTernaryHeadBound)
-    (h9Order : DegreeNineRankTwoOrderInput)
     {A Ω : Type} [Group A] [Finite A] [Finite Ω] [MulAction A Ω]
     [FaithfulSMul A Ω] [MulAction.IsPretransitive A Ω]
     (N : Subgroup A) [N.Normal]
@@ -44,8 +43,8 @@ theorem ternaryHigh_action_owned_menu
   · exact Or.inr (Or.inr (Or.inl h4.1))
   · exact Or.inr (Or.inr (Or.inr (Or.inl h6.1)))
   · left
-    exact (degreeNineRankTwoPGroupInput_of_order h9Order)
-      A Ω h9.1 N h9.2
+    exact degreeNine_rankTwo_isPGroup
+      hChief hPrimitive h18 N h9.1 h9.2
   · exact Or.inr (Or.inr (Or.inr (Or.inr h12.1)))
   · left
     have himprimitive : ¬ MulAction.IsPreprimitive A Ω := by
@@ -54,7 +53,7 @@ theorem ternaryHigh_action_owned_menu
       have hSafe := hPrimitive A Ω (by omega) (by omega) (by omega) N
       omega
     exact highDegreeTwentySeven_imprimitive_isPGroup
-      hChief hPrimitive h18 h9Order N himprimitive h27.1 hHigh
+      hChief hPrimitive h18 N himprimitive h27.1 hHigh
 
 /-- The actual orbit witness carried by a high trivial-axis C3 state now
 lands either in the existing 3-group owner or in one of four bounded action
@@ -65,7 +64,6 @@ theorem c3TrivialHigh_action_owned_menu
     (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
     (hPrimitive : PrimitiveTernaryStrictHeadBound)
     (h18 : DegreeEighteenTernaryHeadBound)
-    (h9Order : DegreeNineRankTwoOrderInput)
     (b : ℕ)
     (P : Subgroup (ternaryRegularAction × Equiv.Perm (Fin b)) → Prop)
     (H : Subgroup (ternaryRegularAction × Equiv.Perm (Fin b)))
@@ -87,7 +85,7 @@ theorem c3TrivialHigh_action_owned_menu
   letI : N.Normal := hN
   refine ⟨o, N, hN, hHigh, ?_⟩
   exact ternaryHigh_action_owned_menu
-    hChief hWeight hPrimitive h18 h9Order N hHigh
+    hChief hWeight hPrimitive h18 N hHigh
 
 end SymmetricSubgroupAsymptotics
 
