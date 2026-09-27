@@ -236,4 +236,28 @@ theorem normalized_frame_incidence (n e : ℕ)
           baseDenominator Ω m U) := profile_weight_identity n e _ _
     _ = _ := by ring
 
+/-- On `2*N` points the E8 occurrence budget turns the exact profile factor
+`24 * (e+1)` into the uniform Hall constant `6*N`. -/
+theorem normalized_frame_incidence_six_mul (N n e : ℕ)
+    (htrans : ∀ a (x y : Ω a), ∃ u : U a, (u : Equiv.Perm (Ω a)) x = y)
+    (hsep : OrbitActionTypesSeparated (ExtPoints Ω) (ExtAction Ω U))
+    (hdegree : ∀ a, Fintype.card (Ω a) ≠ 2)
+    (hsize : 2*n + 8*(e+1) + baseDegree Ω m = 2*N) :
+    (∑ H : Physical Ω m U (n+4) e, (Nat.card (Frame H.val 4) : ℚ)) /
+        (2*N).factorial ≤
+      6*N * ((Nat.card (Physical Ω m U n (e+1)) : ℚ) / (2*N).factorial) := by
+  have hsource : 2*(n+4) + 8*e + baseDegree Ω m = 2*N := by omega
+  have hdegrees : 2*(n+4) + 8*e + baseDegree Ω m =
+      2*n + 8*(e+1) + baseDegree Ω m := by omega
+  rw [← hsource, hdegrees]
+  have hinc := normalized_frame_incidence Ω m U n e htrans hsep hdegree
+  rw [hdegrees] at hinc
+  apply hinc.trans
+  have he : 24 * (e+1) ≤ 6*N := by omega
+  have heq : (24 : ℚ) * (e+1) ≤ 6*N := by exact_mod_cast he
+  have hmass : 0 ≤
+      (Nat.card (Physical Ω m U n (e+1)) : ℚ) /
+        ((2*n + 8*(e+1) + baseDegree Ω m).factorial : ℚ) := by positivity
+  exact mul_le_mul_of_nonneg_right heq hmass
+
 end SymmetricSubgroupAsymptotics.BinaryFourPairProfileIncidence
