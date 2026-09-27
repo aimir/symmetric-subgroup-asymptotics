@@ -391,6 +391,14 @@ the binary exterior lift and preserves the original A3 coordinate.
 It proves exact subgroup, survival-predicate and original-weight transport
 for every 2-group exterior, retaining its entire subgroup image.
 The general S3 physical-profile reindexing and weight sum remain separate.
+For repeated markers, the [original joint kernel](SymmetricSubgroupAsymptotics/RepeatedOddMarkerKernel.lean)
+records all signs and the complete exterior together. Each full S3 coordinate
+has a full A3 projection of this kernel; the kernel need not be a product.
+The [diagonal projection theorem](SymmetricSubgroupAsymptotics/DiagonalIsotypeProjection.lean)
+decomposes invariant subspaces by distinct scalar functions using explicit
+separating operators, over any field and with no finite-source assumption.
+The original ternary chart, complete cocycle fibres and physical marker sum
+are additional steps beyond these two foundations.
 
 `CriticalFamilyAsymptotic.criticalSubgroups_relative_error` proves, with one
 constant and threshold for both parities,
@@ -776,6 +784,12 @@ install this dichotomy for every original pair section of pair degree
 at least 16. The large branch identifies the entire central involution
 subgroup of the original nonsplit quotient; it does not assert that the
 small-cut inequality holds in that branch.
+At pair degree eight, the [general small-dimension cut](SymmetricSubgroupAsymptotics/BinaryPairEightSmallSectionCuts.lean)
+has cost at most twice the original section dimension. Together with the
+[eight-pair character alternative](SymmetricSubgroupAsymptotics/BinaryPairEightLargeSectionCharacter.lean),
+every original normal axis admits a strict cut, admits a character entry,
+or has section dimension exactly four. This is a residual dimension
+statement, not complete acceptance of degree-sixteen actions.
 The [cocycle generator bound](SymmetricSubgroupAsymptotics/CocycleGeneratorBound.lean)
 injects actual one-cocycles into their values on a supplied original
 generating tuple, giving `card Z¹ ≤ (card A)^d` and the same upper bound
