@@ -173,6 +173,16 @@ def evenTernaryCoordinate
   OddMarkerTernaryChart.chart.symm.toMonoidHom.comp
     (evenPermutationCoordinate (hb := hb) b e x)
 
+/-- All literal ternary coordinates on the all-even kernel at once. -/
+def evenTernaryCoordinatesHom
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) :
+    evenKernel b hb →* (X → Multiplicative (ZMod 3)) where
+  toFun l x := evenTernaryCoordinate (hb := hb) b e x l
+  map_one' := by funext x; exact map_one (evenTernaryCoordinate (hb := hb) b e x)
+  map_mul' l m := by
+    funext x
+    exact map_mul (evenTernaryCoordinate (hb := hb) b e x) l m
+
 /-- The ternary coordinates retain every correlation but jointly separate
 the original all-even subgroup. -/
 theorem evenTernaryCoordinates_injective
@@ -187,6 +197,27 @@ theorem evenTernaryCoordinates_injective
   have hx := congrFun hlm x
   have hp := OddMarkerTernaryChart.chart.symm.injective hx
   exact congrArg Subtype.val hp
+
+/-- Every ternary coordinate tuple has exponent three. -/
+theorem ternaryCoordinateFunctions_isPGroup :
+    IsPGroup 3 (X → Multiplicative (ZMod 3)) := by
+  intro f
+  refine ⟨1, ?_⟩
+  simp only [pow_one]
+  funext x
+  rw [Pi.pow_apply, Pi.one_apply]
+  apply Multiplicative.toAdd.injective
+  change 3 • (f x).toAdd = 0
+  rw [nsmul_eq_mul, CharP.cast_eq_zero (R := ZMod 3) (p := 3), zero_mul]
+
+/-- The literal all-even block kernel is a 3-group; correlations between
+the fibre rotations are retained by the jointly injective coordinate map. -/
+theorem evenKernel_isPGroup [FaithfulSMul A Ω]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) :
+    IsPGroup 3 (evenKernel b hb) :=
+  (ternaryCoordinateFunctions_isPGroup (X := X)).of_injective
+    (evenTernaryCoordinatesHom (hb := hb) b e)
+    (evenTernaryCoordinates_injective (hb := hb) b e)
 
 omit [∀ x : X, Fintype (originalBlockFibre b x)] in
 /-- On a fixed fibre, conjugation inside the block kernel becomes literal
@@ -507,6 +538,77 @@ theorem originalNormal_degreeTwentySeven_inversion_safe
   have hhead := (originalNormal_primeRelativeHead_le_top (hb := hb)
     b N e x₀ hx₀).trans htop
   exact ⟨hhead, by omega⟩
+
+/-- If every fibre sign is trivial, the literal block kernel itself is a
+3-group. -/
+theorem kernel_isPGroup_of_coordinateSigns_eq_one
+    [FaithfulSMul A Ω]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (hSigns : coordinateSigns b hb = 1) :
+    IsPGroup 3 (Kernel (A := A) (X := X)) := by
+  have heven : evenKernel b hb =
+      (⊤ : Subgroup (Kernel (A := A) (X := X))) := by
+    calc
+      evenKernel b hb = (coordinateSigns b hb).ker :=
+        (coordinateSigns_ker b hb).symm
+      _ = ⊤ := MonoidHom.ker_eq_top_iff.mpr hSigns
+  exact (evenKernel_isPGroup (hb := hb) b e).of_equiv
+    ((MulEquiv.subgroupCongr heven).trans Subgroup.topEquiv)
+
+/-- A ternary block kernel together with a ternary top makes the original
+physical action group a 3-group; no splitting of the extension is used. -/
+theorem originalGroup_isPGroup_of_coordinateSigns_eq_one
+    [FaithfulSMul A Ω]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (hTop : IsPGroup 3 (OriginalBlockClassBound.Top (A := A) (X := X)))
+    (hSigns : coordinateSigns b hb = 1) : IsPGroup 3 A := by
+  let φ := OriginalBlockClassBound.topMap (A := A) (X := X)
+  have hKernel : IsPGroup 3 φ.ker :=
+    kernel_isPGroup_of_coordinateSigns_eq_one (hb := hb) b e hSigns
+  have hPreimage : IsPGroup 3 (φ.range.comap φ) :=
+    hTop.comap_of_ker_isPGroup φ hKernel
+  have htop : φ.range.comap φ = (⊤ : Subgroup A) := by
+    apply top_unique
+    intro a _
+    exact ⟨a, rfl⟩
+  have hTopSubgroup : IsPGroup 3 (⊤ : Subgroup A) := htop ▸ hPreimage
+  exact hTopSubgroup.of_equiv Subgroup.topEquiv
+
+/-- Complete degree-27 structural fork.  When the actual degree-nine top
+is a 3-group with relative head at most two, every original normal pair is
+either strictly below the `3/20` line or the original physical action group
+is itself a 3-group. -/
+theorem originalNormal_degreeTwentySeven_closure
+    [Finite A] [Fintype X] [FaithfulSMul A Ω]
+    [MulAction.IsPretransitive A X]
+    (hb : ∀ (a : A) (ω : Ω), b (a • ω) = a • b ω)
+    (N : Subgroup A) [N.Normal]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (hTopGroup : IsPGroup 3
+      (OriginalBlockClassBound.Top (A := A) (X := X)))
+    (htop : Module.finrank (ZMod 3)
+      (primeRelativeCharacters 3
+        (originalNormalRange
+          (OriginalBlockClassBound.topMap (A := A) (X := X)) N)) ≤ 2) :
+    (20 * Module.finrank (ZMod 3) (primeRelativeCharacters 3 N) < 3 * 27) ∨
+      IsPGroup 3 A := by
+  by_cases hSigns : coordinateSigns b hb = 1
+  · exact Or.inr
+      (originalGroup_isPGroup_of_coordinateSigns_eq_one
+        (hb := hb) b e hTopGroup hSigns)
+  · left
+    have hexists : ∃ x : X, coordinateSign b hb x ≠ 1 := by
+      by_contra h
+      simp only [not_exists, not_ne_iff] at h
+      apply hSigns
+      apply MonoidHom.ext
+      intro k
+      funext x
+      simpa only [coordinateSigns, MonoidHom.one_apply] using
+        DFunLike.congr_fun (h x) k
+    obtain ⟨x₀, hx₀⟩ := hexists
+    exact (originalNormal_degreeTwentySeven_inversion_safe
+      (hb := hb) b N e x₀ hx₀ htop).2
 
 /-- A nontrivial inversion image on one fibre annihilates the complete
 ternary relative head of the literal all-even kernel.  Transitivity spreads
