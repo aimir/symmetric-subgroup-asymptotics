@@ -57,33 +57,36 @@ subgroups, with its corresponding counts.
 \begin{proof}
 Each pair orbit supplies a nonzero character of $Y$. Let $q(Y)$ be
 the number of distinct such characters, $D(Y)$ the number of unordered
-pairs of equal characters, and $I_4(Y)$ the number of unordered sets
+pairs of equal characters, and $J_4(Y)$ the number of ordered selections
 of four pair orbits with independent characters. Then
 \[
  t(Y)-q(Y)\leq D(Y),\qquad
- q(Y)\leq7+(24I_4(Y))^{1/4}.
+ q(Y)\leq7+J_4(Y)^{1/4}.
 \]
-For the second inequality, when $q\geq7$ select distinct characters
-successively: there are at least $q,q-1,q-3,q-7$ choices. Divide by
-$4!$ and use $q(q-1)(q-3)(q-7)\geq(q-7)^4$. The case $q<7$ is immediate.
+For the second inequality, choose one original pair orbit for each
+distinct character. The span of at most three independent characters
+contains at most seven nonzero characters, so each of four successive
+choices has at least $q-7$ possibilities. Thus
+$J_4(Y)\geq(q-7)^4$ when $q\geq7$; the case $q<7$ is immediate.
 
-There is an injection from groups $Y$ with four selected independent
-pair orbits to groups $H$ with one selected $E_8$ orbit, at the same
-degree. On the eight selected points their pair partition
-$\mathcal P$ determines an extraspecial group $E(\mathcal P)$.
+There is an injection from groups $Y$ with four ordered independent
+pair orbits to groups $H$ with one selected $E_8$ orbit and an ordering
+of its four center-pair orbits, at the same degree. For each ordered
+pair partition $\mathcal P$, fix a point chart once and use it to place
+an extraspecial group $E(\mathcal P)$ on the eight selected points.
 Explicitly, inside $C_2^4\rtimes S_4$, take the even flips semidirect
-the regular block $V_4$. Its centre has exactly these four pair orbits;
-its normalizer is $C_2^4\rtimes S_4$. Thus pair partitions correspond
-bijectively to the actual $E_8$ actions. Fix, once for each partition,
+the regular block $V_4$. Its centre has exactly these four pair orbits.
+Fix, once for each ordered partition,
 an isomorphism $E(\mathcal P)/Z(E(\mathcal P))\cong C_2^4$.
 Replace $Y\leq C_2^4\times J$ by its full preimage in
 $E(\mathcal P)\times J$. Independence gives the full $E_8$ projection.
-The centre partition and the fixed isomorphism recover $Y$.
+The centre of this local projection, its retained pair order, and the
+fixed isomorphism recover $Y$.
 The complete exterior projection is unchanged, so its noncritical
 orbit is retained. There are at most $\lfloor N/4\rfloor$ possible
-selected $E_8$ orbits. Consequently
+selected $E_8$ orbits, each with $4!$ possible orders. Consequently
 \[
- \sum_{Y\in\mathcal E_N}I_4(Y)\leq (N/4)|\mathcal E_N|.
+ \sum_{Y\in\mathcal E_N}J_4(Y)\leq 6N|\mathcal E_N|.
 \]
 Concavity of $x^{1/4}$ gives
 $\sum_Yq(Y)\leq[7+(6N)^{1/4}]|\mathcal E_N|$.
