@@ -627,6 +627,13 @@ It counts the unmarked original subgroups with such an orbit chart and
 proves the direct recurrence and aggregate decay at that fixed degree.
 The character class-count premise remains; no constants or thresholds
 are asserted uniformly as `k` grows.
+The [intrinsic orbit formulation](SymmetricSubgroupAsymptotics/BinarySmallOrbitPowerIntrinsic.lean)
+states membership directly through an actual orbit and its faithful image.
+The [orbit chart construction](SymmetricSubgroupAsymptotics/FusionActualOrbitCharts.lean)
+proves the required labelling, exact two-restriction reconstruction and
+image equivalence internally. Its unmarked injection adds no point or
+chart multiplicity and requires no binary assumption on the full original
+subgroup or its complement.
 The [local Schreier adapter](SymmetricSubgroupAsymptotics/BinarySchreierPrunedAdapter.lean)
 reuses complete original word certificates and stops every index-two child
 when the actual source order is at most twice the cutoff.
