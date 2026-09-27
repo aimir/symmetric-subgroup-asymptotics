@@ -404,20 +404,44 @@ top bound two from the finite input, giving $B(18)+2=8<81/10$.
 No separate top-degree $27,54,81,162$ refinement is needed.
 
 The only child degrees still to inspect are $6,9,12,18,27$.
-The first, third and fourth use the retained finite catalogues.
-Degree nine is covered by Theorem~\ref{thm:rank3-stability}.
-At degree 27 a top head at most
-one gives $B(9)+1=4\leq81/20$. Otherwise the top is a whole
-$\mathcal E_9$ action, hence a $3$-group. Embed the action in
-$S_3\wr T$ and put $V=C_3^9$. If the image of the full block kernel
-in $C_2^9$ is nontrivial, its coordinate characters on $V$ are all
-nontrivial, by top transitivity. Maschke's theorem then makes every
-invariant translation subquotient have zero trivial head under
-that binary image. The remaining kernel quotient is binary, so
-its ternary relative head is zero, and the whole head is at most two.
-If that image is trivial, the full block kernel and the top are both
-$3$-groups, making the actual degree-27 action a $3$-group. This
-exhausts the final case and proves the theorem.
+Degrees $6,12,18$ use the retained finite catalogues.  At degree nine,
+the exact rank-two finite seam leaves precisely
+$9T2,9T6,9T7,9T17$, of orders $9,27,27,81$; hence the whole action
+is a $3$-group.
+
+At degree 27 the same recurrence removes an apparent choice of block
+orientation.  If $r$ is the primitive block size, $s$ the number of
+blocks, $d=\delta_A(N)$ and $t$ the relative head of the original normal
+top image, then the high inequality and the stability envelope give
+
+\[
+ r=3,\qquad s=9,\qquad d=5,\qquad t=2.
+\]
+
+Indeed $rs=27$ leaves $(r,s)=(3,9)$ or $(9,3)$.  In the second case
+$v\leq3$, $B(3)=1$ and $t\leq1$, so $d\leq4$, a contradiction.
+In the first case $v\leq1$, $B(9)=3$ and $t\leq2$; the high inequality
+forces equality throughout.  The top is therefore one of the same four
+degree-nine actions and is a $3$-group.
+
+Let $K$ be the literal block kernel and let
+$\epsilon:K\to C_2^9$ be the simultaneous vector of its nine fibre
+signs.  Put $K_0=\ker\epsilon$.  Restriction to the original fibres
+injects $K_0$ into $C_3^9$; this retains every diagonal or proper
+subdirect correlation.  If $\epsilon$ is nontrivial, top transitivity
+makes each coordinate sign nontrivial.  Conjugation through that sign
+acts by inversion on the corresponding ternary coordinate.  Consequently
+every original normal subgroup of $K_0$, including every proper
+nonabelian subdirect core, has zero relative ternary head.  The quotient
+$K/K_0$ is binary and has zero ternary head as well.  Restriction to the
+literal kernel followed by the original top map now gives
+$\delta_A(N)\leq t=2$, contradicting $20d>81$.
+
+If $\epsilon$ is trivial, $K=K_0$ is a $3$-group.  Since the actual top
+is also a $3$-group, the original extension $A$ is a $3$-group, with no
+splitting assumption.  Thus degrees nine and twenty seven enter the same
+existing $3$-group owner, while the genuinely residual bounded degrees are
+$3,4,6,12$.  This exhausts the final case and proves the theorem.
 \end{proof}
 
 For the separate bounded counting argument below, we retain the finite
