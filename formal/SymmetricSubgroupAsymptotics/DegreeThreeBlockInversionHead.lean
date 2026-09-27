@@ -1,5 +1,7 @@
 import SymmetricSubgroupAsymptotics.BlockKernelSignCoordinates
 import SymmetricSubgroupAsymptotics.OddMarkerTernaryChart
+import SymmetricSubgroupAsymptotics.PrimeLayerVanishing
+import SymmetricSubgroupAsymptotics.RelativeSecondIsomorphism
 import SymmetricSubgroupAsymptotics.TernaryRelativeSignHead
 
 /-!
@@ -105,6 +107,47 @@ instance evenKernel_normal : (evenKernel b hb).Normal := by
   intro x
   have hx := Subgroup.mem_iInf.mp hl x
   exact Subgroup.Normal.conj_mem inferInstance _ hx k
+
+/-- All original fibre signs, retained simultaneously on the literal block
+kernel. -/
+def coordinateSigns : Kernel (A := A) (X := X) →*
+    (X → Multiplicative (ZMod 2)) where
+  toFun k x := coordinateSign b hb x k
+  map_one' := by funext x; exact map_one (coordinateSign b hb x)
+  map_mul' k l := by funext x; exact map_mul (coordinateSign b hb x) k l
+
+theorem coordinateSigns_ker : (coordinateSigns b hb).ker = evenKernel b hb := by
+  ext k
+  constructor
+  · intro hk
+    apply Subgroup.mem_iInf.mpr
+    intro x
+    exact congrFun (MonoidHom.mem_ker.mp hk) x
+  · intro hk
+    apply MonoidHom.mem_ker.mpr
+    funext x
+    exact Subgroup.mem_iInf.mp hk x
+
+/-- Every binary sign tuple has exponent two. -/
+theorem binarySignFunctions_isPGroup :
+    IsPGroup 2 (X → Multiplicative (ZMod 2)) := by
+  intro f
+  refine ⟨1, ?_⟩
+  simp only [pow_one]
+  funext x
+  exact binary_mul_pow_two (f x)
+
+/-- The all-even kernel has a literal elementary binary quotient, even when
+the simultaneous sign image is a proper correlated subspace. -/
+theorem quotient_evenKernel_isPGroup :
+    IsPGroup 2 (Kernel (A := A) (X := X) ⧸ evenKernel b hb) := by
+  have hker : IsPGroup 2
+      (Kernel (A := A) (X := X) ⧸ (coordinateSigns b hb).ker) :=
+    ((binarySignFunctions_isPGroup (X := X)).to_subgroup
+    (coordinateSigns b hb).range).of_equiv
+      (QuotientGroup.quotientKerEquivRange (coordinateSigns b hb)).symm
+  exact hker.of_equiv
+    (QuotientGroup.quotientMulEquivOfEq (coordinateSigns_ker b hb))
 
 theorem evenKernel_coordinateSign (l : evenKernel b hb) (x : X) :
     coordinateSign b hb x (l : Kernel (A := A) (X := X)) = 1 := by
@@ -359,6 +402,38 @@ theorem restricted_primeRelativeCharacters_eq_zero
     (all_coordinateSigns_nontrivial b hb x₀ hx₀)
     (fun x => restrictedPrimeCoordinate (hb := hb) b N hN e x)
     (restrictedPrimeCoordinates_injective (hb := hb) b N hN e)
+
+/-- The complete relative ternary head of any normal block-kernel core is
+zero.  Its intersection with the all-even kernel is killed by the signed
+C₃ coordinates, while the remaining quotient is a 2-group. -/
+theorem blockKernelNormal_primeRelativeCharacters_eq_zero
+    [Finite A] [Fintype X] [FaithfulSMul A Ω]
+    [MulAction.IsPretransitive A X]
+    (P : Subgroup (Kernel (A := A) (X := X))) [P.Normal]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (x₀ : X) (hx₀ : coordinateSign b hb x₀ ≠ 1) :
+    Module.finrank (ZMod 3) (primeRelativeCharacters 3 P) = 0 := by
+  let B : Subgroup (Kernel (A := A) (X := X)) := P ⊓ evenKernel b hb
+  letI : B.Normal := inferInstance
+  have hB : B ≤ evenKernel b hb := by
+    intro z hz
+    exact hz.2
+  have hBzero : Module.finrank (ZMod 3)
+      (primeRelativeCharacters 3 B) = 0 :=
+    restricted_primeRelativeCharacters_eq_zero (hb := hb) b B hB e x₀ hx₀
+  have hEvenQuotient : IsPGroup 2
+      (Kernel (A := A) (X := X) ⧸ evenKernel b hb) :=
+    quotient_evenKernel_isPGroup b hb
+  have hImage : IsPGroup 2 (normalChainQuotient (evenKernel b hb) P) :=
+    hEvenQuotient.to_subgroup (normalChainQuotient (evenKernel b hb) P)
+  have hQuotient : IsPGroup 2 (normalChainQuotient B P) := by
+    exact hImage.of_equiv (relativeSecondIsomorphism P (evenKernel b hb)).symm
+  have hQzero : Module.finrank (ZMod 3)
+      (primeRelativeCharacters 3 (normalChainQuotient B P)) = 0 :=
+    primeRelativeHead_power_group 3 (normalChainQuotient B P) 2 (by decide) hQuotient
+  have hchain := primeRelativeHead_chain_le B P 3 inf_le_left
+  rw [hBzero, hQzero] at hchain
+  exact Nat.eq_zero_of_le_zero hchain
 
 /-- A nontrivial inversion image on one fibre annihilates the complete
 ternary relative head of the literal all-even kernel.  Transitivity spreads
