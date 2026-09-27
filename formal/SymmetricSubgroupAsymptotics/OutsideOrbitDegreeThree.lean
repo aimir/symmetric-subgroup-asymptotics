@@ -15,10 +15,23 @@ open scoped Classical
 
 namespace SymmetricSubgroupAsymptotics.RepeatedMarkerOwnerBound
 
+/-- Transitivity is unchanged by a literal relabelling of the point set. -/
+theorem permutationSubgroupTransitive_relabel {Y Z : Type*}
+    (e : Y ≃ Z) (A : Subgroup (Equiv.Perm Y))
+    (hA : PermutationSubgroupTransitive A) :
+    PermutationSubgroupTransitive (relabelSubgroup e A) := by
+  intro x y
+  obtain ⟨g,hg,hxy⟩ := hA (e.symm x) (e.symm y)
+  refine ⟨e.permCongr g, ?_, ?_⟩
+  · change e.permCongr g ∈ A.map e.permCongrHom.toMonoidHom
+    exact ⟨g,hg,rfl⟩
+  · change e (g (e.symm x)) = y
+    rw [hxy,e.apply_symm_apply]
+
 /-- Structural classification on the literal three-point set.  Transitivity
 injects the three points into the subgroup.  Lagrange and properness force
 order three, after which the sign of every element is trivial. -/
-private theorem transitive_proper_degreeThree_eq_alternating :
+theorem transitive_proper_degreeThree_eq_alternating :
     ∀ A : Subgroup (Equiv.Perm (Fin 3)),
       PermutationSubgroupTransitive A → A ≠ ⊤ →
         A = alternatingGroup (Fin 3) := by
