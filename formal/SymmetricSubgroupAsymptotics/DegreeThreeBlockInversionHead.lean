@@ -1,0 +1,268 @@
+import SymmetricSubgroupAsymptotics.BlockKernelSignCoordinates
+import SymmetricSubgroupAsymptotics.OddMarkerTernaryChart
+import SymmetricSubgroupAsymptotics.TernaryRelativeSignHead
+
+/-!
+# The inversion-image branch for blocks of degree three
+
+Inside the literal original block kernel, intersect the kernels of all fibre
+signs.  After relabelling each three-point fibre, every remaining coordinate
+lies in the actual alternating group and hence has an explicit ternary chart.
+The charts jointly separate the retained subgroup and conjugation acts on each
+coordinate by the original binary sign.
+-/
+
+set_option autoImplicit false
+noncomputable section
+open scoped Classical
+
+namespace SymmetricSubgroupAsymptotics
+namespace DegreeThreeBlockInversionHead
+
+open OriginalBlockSignCoordinates OddMarkerTernaryChart
+
+variable {A Ω X : Type} [Group A] [MulAction A Ω] [MulAction A X]
+variable (b : Ω → X) (hb : ∀ (a : A) (ω : Ω), b (a • ω) = a • b ω)
+variable [∀ x : X, Fintype (originalBlockFibre b x)]
+
+abbrev Kernel : Subgroup A := OriginalBlockSignCoordinates.Kernel (A := A) (X := X)
+
+/-- Relabel the literal fibre permutation onto the fixed three-point chart. -/
+def relabeledCoordinate (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) (x : X) :
+    Kernel (A := A) (X := X) →* OddMarkerGroup :=
+  (e x).symm.permCongrHom.toMonoidHom.comp
+    (OriginalBlockClassBound.coordinate b hb x)
+
+theorem relabeledCoordinate_sign
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (x : X) (k : Kernel (A := A) (X := X)) :
+    oddMarkerSign (relabeledCoordinate (hb := hb) b e x k) = coordinateSign b hb x k := by
+  calc
+    oddMarkerSign (relabeledCoordinate (hb := hb) b e x k) =
+        permutationBinarySign (Fin 3) (relabeledCoordinate (hb := hb) b e x k) := by
+      have binary_ext_one (u v : Multiplicative (ZMod 2))
+          (huv : u = 1 ↔ v = 1) : u = v := by
+        apply Multiplicative.toAdd.injective
+        have htwo : ∀ z : ZMod 2, z = 0 ∨ z = 1 := by decide
+        rcases htwo u.toAdd with hu | hu <;> rcases htwo v.toAdd with hv | hv
+        · exact hu.trans hv.symm
+        · exfalso
+          have huOne : u = 1 := Multiplicative.toAdd.injective (by simpa using hu)
+          have hvNotOne : v ≠ 1 := by
+            intro hvOne
+            have := congrArg Multiplicative.toAdd hvOne
+            simp [hv] at this
+          exact hvNotOne (huv.mp huOne)
+        · exfalso
+          have huNotOne : u ≠ 1 := by
+            intro huOne
+            have := congrArg Multiplicative.toAdd huOne
+            simp [hu] at this
+          have hvOne : v = 1 := Multiplicative.toAdd.injective (by simpa using hv)
+          exact huNotOne (huv.mpr hvOne)
+        · exact hu.trans hv.symm
+      apply binary_ext_one
+      constructor
+      · intro hm
+        have hs := (oddMarkerSign_eq_one _).mp hm
+        have hs' : @Equiv.Perm.sign (Fin 3)
+            (fun a b => Classical.propDecidable (a = b)) _
+            (relabeledCoordinate (hb := hb) b e x k) = 1 := by
+          rw [← @Equiv.Perm.sign_eq_sign_of_equiv
+            (Fin 3) (instDecidableEqFin 3) (Fin 3) inferInstance
+            (fun a b => Classical.propDecidable (a = b)) inferInstance
+            (relabeledCoordinate (hb := hb) b e x k)
+            (relabeledCoordinate (hb := hb) b e x k)
+            (Equiv.refl _) (fun _ => rfl)]
+          exact hs
+        exact (permutationBinarySign_eq_one (Fin 3) _).mpr hs'
+      · intro hp
+        have hs := (permutationBinarySign_eq_one (Fin 3) _).mp hp
+        have hs' : @Equiv.Perm.sign (Fin 3) (instDecidableEqFin 3) _
+            (relabeledCoordinate (hb := hb) b e x k) = 1 := by
+          rw [@Equiv.Perm.sign_eq_sign_of_equiv
+            (Fin 3) (instDecidableEqFin 3) (Fin 3) inferInstance
+            (fun a b => Classical.propDecidable (a = b)) inferInstance
+            (relabeledCoordinate (hb := hb) b e x k)
+            (relabeledCoordinate (hb := hb) b e x k)
+            (Equiv.refl _) (fun _ => rfl)]
+          exact hs
+        exact (oddMarkerSign_eq_one _).mpr hs'
+    _ = permutationBinarySign (originalBlockFibre b x)
+        (OriginalBlockClassBound.coordinate b hb x k) :=
+      permutationBinarySign_permCongr (e x).symm
+        (OriginalBlockClassBound.coordinate b hb x k)
+    _ = coordinateSign b hb x k := rfl
+
+/-- The actual subgroup on which every literal fibre permutation is even. -/
+def evenKernel : Subgroup (Kernel (A := A) (X := X)) :=
+  ⨅ x : X, (coordinateSign b hb x).ker
+
+instance evenKernel_normal : (evenKernel b hb).Normal := by
+  constructor
+  intro l hl k
+  apply Subgroup.mem_iInf.mpr
+  intro x
+  have hx := Subgroup.mem_iInf.mp hl x
+  exact Subgroup.Normal.conj_mem inferInstance _ hx k
+
+theorem evenKernel_coordinateSign (l : evenKernel b hb) (x : X) :
+    coordinateSign b hb x (l : Kernel (A := A) (X := X)) = 1 := by
+  exact Subgroup.mem_iInf.mp l.2 x
+
+/-- Each relabelled even coordinate lands in the literal natural `A₃`. -/
+def evenPermutationCoordinate
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) (x : X) :
+    evenKernel b hb →* oddMarkerSign.ker :=
+  ((relabeledCoordinate (hb := hb) b e x).comp (evenKernel b hb).subtype).codRestrict
+    oddMarkerSign.ker (fun l => by
+      change oddMarkerSign (relabeledCoordinate (hb := hb) b e x
+        (l : Kernel (A := A) (X := X))) = 1
+      rw [relabeledCoordinate_sign]
+      exact evenKernel_coordinateSign b hb l x)
+
+/-- Literal ternary rotation coordinate on the actual all-even kernel. -/
+def evenTernaryCoordinate
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) (x : X) :
+    evenKernel b hb →* Multiplicative (ZMod 3) :=
+  OddMarkerTernaryChart.chart.symm.toMonoidHom.comp
+    (evenPermutationCoordinate (hb := hb) b e x)
+
+/-- The ternary coordinates retain every correlation but jointly separate
+the original all-even subgroup. -/
+theorem evenTernaryCoordinates_injective
+    [FaithfulSMul A Ω]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) :
+    Function.Injective (fun l x => evenTernaryCoordinate (hb := hb) b e x l) := by
+  intro l m hlm
+  apply Subtype.ext
+  apply OriginalBlockClassBound.coordinates_injective b hb
+  funext x
+  apply (e x).symm.permCongrHom.injective
+  have hx := congrFun hlm x
+  have hp := OddMarkerTernaryChart.chart.symm.injective hx
+  exact congrArg Subtype.val hp
+
+omit [∀ x : X, Fintype (originalBlockFibre b x)] in
+/-- On a fixed fibre, conjugation inside the block kernel becomes literal
+conjugation of the relabelled three-point permutations. -/
+theorem relabeledCoordinate_conjugation
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (x : X) (k : Kernel (A := A) (X := X))
+    (l : Kernel (A := A) (X := X)) :
+    relabeledCoordinate (hb := hb) b e x (k * l * k⁻¹) =
+      relabeledCoordinate (hb := hb) b e x k *
+        relabeledCoordinate (hb := hb) b e x l *
+        (relabeledCoordinate (hb := hb) b e x k)⁻¹ := by
+  rw [map_mul, map_mul, map_inv]
+
+/-- The subgroup-valued even coordinate carries literal conjugation to
+literal conjugation inside the natural alternating group. -/
+theorem evenPermutationCoordinate_conjugation
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (x : X) (k : Kernel (A := A) (X := X))
+    (l : evenKernel b hb) :
+    evenPermutationCoordinate (hb := hb) b e x (MulAut.conjNormal k l) =
+      MulAut.conjNormal (relabeledCoordinate (hb := hb) b e x k)
+        (evenPermutationCoordinate (hb := hb) b e x l) := by
+  apply Subtype.ext
+  exact relabeledCoordinate_conjugation (hb := hb) b e x k
+    (l : Kernel (A := A) (X := X))
+
+/-- The actual ternary coordinate transforms by the original binary sign on
+that same fibre. -/
+theorem evenTernaryCoordinate_conjugation
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (x : X) (k : Kernel (A := A) (X := X))
+    (l : evenKernel b hb) :
+    (evenTernaryCoordinate (hb := hb) b e x (MulAut.conjNormal k l)).toAdd =
+      signScalar (coordinateSign b hb x k) •
+        (evenTernaryCoordinate (hb := hb) b e x l).toAdd := by
+  change (OddMarkerTernaryChart.chart.symm
+      (evenPermutationCoordinate (hb := hb) b e x (MulAut.conjNormal k l))).toAdd = _
+  rw [evenPermutationCoordinate_conjugation (hb := hb) b e x k l]
+  have hchart := OddMarkerTernaryChart.chart_symm_conjugate
+    (relabeledCoordinate (hb := hb) b e x k)
+      (evenPermutationCoordinate (hb := hb) b e x l)
+  rw [smul_eq_mul, ← relabeledCoordinate_sign (hb := hb) b e x k]
+  exact hchart
+
+/-- Additive form of a literal ternary fibre coordinate. -/
+def evenTernaryAdditiveCoordinate
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) (x : X) :
+    Additive (evenKernel b hb) →+ ZMod 3 :=
+  (evenTernaryCoordinate (hb := hb) b e x).toAdditive
+
+/-- The literal ternary coordinate descends to an equivariant linear
+coordinate on the actual elementary 3-abelianization of the all-even kernel. -/
+def evenPrimeCoordinate [Finite A]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) (x : X) :
+    (primeAbelianizationRepresentation 3
+      (normalChainSourceAction (evenKernel b hb))).IntertwiningMap
+        (ternarySignRepresentation (A := ZMod 3) (coordinateSign b hb x)) where
+  toLinearMap := primeAbelianizationLift 3 (evenKernel b hb)
+    (evenTernaryAdditiveCoordinate (hb := hb) b e x)
+  isIntertwining' := fun k => by
+    apply LinearMap.ext
+    intro v
+    obtain ⟨l, rfl⟩ := primeAbelianizationMap_surjective 3 (evenKernel b hb) v
+    change primeAbelianizationLift 3 (evenKernel b hb)
+        (evenTernaryAdditiveCoordinate (hb := hb) b e x)
+        (primeAbelianizationRepresentation 3
+          (normalChainSourceAction (evenKernel b hb)) k
+            (primeAbelianizationMap 3 (evenKernel b hb)
+              (Additive.ofMul l.toMul))) =
+      signScalar (coordinateSign b hb x k) •
+        primeAbelianizationLift 3 (evenKernel b hb)
+          (evenTernaryAdditiveCoordinate (hb := hb) b e x)
+          (primeAbelianizationMap 3 (evenKernel b hb)
+            (Additive.ofMul l.toMul))
+    rw [primeAbelianizationRepresentation_eval,
+      primeAbelianizationLift_apply, primeAbelianizationLift_apply]
+    exact evenTernaryCoordinate_conjugation (hb := hb) b e x k l.toMul
+
+/-- The descended linear coordinates still jointly separate the entire
+elementary quotient; no direct-product decomposition is used. -/
+theorem evenPrimeCoordinates_injective
+    [Finite A] [FaithfulSMul A Ω]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) :
+    Function.Injective (fun v x => evenPrimeCoordinate (hb := hb) b e x v) := by
+  intro v w hvw
+  obtain ⟨l, rfl⟩ := primeAbelianizationMap_surjective 3 (evenKernel b hb) v
+  obtain ⟨m, rfl⟩ := primeAbelianizationMap_surjective 3 (evenKernel b hb) w
+  have hlm : l = m := by
+    apply evenTernaryCoordinates_injective (hb := hb) b e
+    funext x
+    apply Multiplicative.toAdd.injective
+    have hx := congrFun hvw x
+    change primeAbelianizationLift 3 (evenKernel b hb)
+        (evenTernaryAdditiveCoordinate (hb := hb) b e x)
+          (primeAbelianizationMap 3 (evenKernel b hb) l) =
+      primeAbelianizationLift 3 (evenKernel b hb)
+        (evenTernaryAdditiveCoordinate (hb := hb) b e x)
+          (primeAbelianizationMap 3 (evenKernel b hb) m) at hx
+    simpa only [primeAbelianizationLift_apply] using hx
+  rw [hlm]
+
+/-- A nontrivial inversion image on one fibre annihilates the complete
+ternary relative head of the literal all-even kernel.  Transitivity spreads
+the sign to every fibre, while the actual C₃ coordinates retain all diagonal
+and subdirect correlations. -/
+theorem evenKernel_primeRelativeCharacters_eq_zero
+    [Finite A] [Fintype X] [FaithfulSMul A Ω]
+    [MulAction.IsPretransitive A X]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (x₀ : X) (hx₀ : coordinateSign b hb x₀ ≠ 1) :
+    Module.finrank (ZMod 3)
+      (primeRelativeCharacters 3 (evenKernel b hb)) = 0 := by
+  exact primeRelativeCharacterHead_eq_zero_of_nontrivial_sign_coordinates
+    (N := evenKernel b hb) (fun _ : X => ZMod 3)
+    (fun x => coordinateSign b hb x)
+    (all_coordinateSigns_nontrivial b hb x₀ hx₀)
+    (fun x => evenPrimeCoordinate (hb := hb) b e x)
+    (evenPrimeCoordinates_injective (hb := hb) b e)
+
+end DegreeThreeBlockInversionHead
+end SymmetricSubgroupAsymptotics
+
+end

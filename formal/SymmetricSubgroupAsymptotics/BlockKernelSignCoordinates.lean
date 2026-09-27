@@ -30,6 +30,12 @@ def permutationBinarySign (X : Type) [Fintype X] :
     Equiv.Perm X →* Multiplicative (ZMod 2) :=
   binarySignUnitHom.comp Equiv.Perm.sign
 
+@[simp] theorem permutationBinarySign_eq_one
+    (X : Type) [Fintype X] (g : Equiv.Perm X) :
+    permutationBinarySign X g = 1 ↔ Equiv.Perm.sign g = 1 := by
+  change Multiplicative.ofAdd (if Equiv.Perm.sign g = 1 then 0 else 1) = 1 ↔ _
+  by_cases h : Equiv.Perm.sign g = 1 <;> simp [h]
+
 @[simp] theorem permutationBinarySign_permCongr
     {X Y : Type} [Fintype X] [Fintype Y]
     (e : X ≃ Y) (g : Equiv.Perm X) :
