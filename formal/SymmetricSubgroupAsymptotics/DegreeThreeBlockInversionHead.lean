@@ -244,6 +244,122 @@ theorem evenPrimeCoordinates_injective
     simpa only [primeAbelianizationLift_apply] using hx
   rw [hlm]
 
+/-- Restrict the actual ternary fibre coordinates to an arbitrary retained
+normal subgroup of the all-even kernel. -/
+def restrictedTernaryCoordinate
+    (N : Subgroup (Kernel (A := A) (X := X)))
+    (hN : N ≤ evenKernel b hb)
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) (x : X) :
+    N →* Multiplicative (ZMod 3) :=
+  (evenTernaryCoordinate (hb := hb) b e x).comp (Subgroup.inclusion hN)
+
+/-- The restricted coordinates remain jointly injective on every proper
+subdirect or diagonal retained subgroup. -/
+theorem restrictedTernaryCoordinates_injective
+    [FaithfulSMul A Ω]
+    (N : Subgroup (Kernel (A := A) (X := X)))
+    (hN : N ≤ evenKernel b hb)
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) :
+    Function.Injective (fun n x =>
+      restrictedTernaryCoordinate (hb := hb) b N hN e x n) := by
+  intro n m hnm
+  apply Subgroup.inclusion_injective hN
+  apply evenTernaryCoordinates_injective (hb := hb) b e
+  exact hnm
+
+/-- Conjugation by the whole literal block kernel still acts on each
+restricted coordinate through that fibre's original binary sign. -/
+theorem restrictedTernaryCoordinate_conjugation
+    (N : Subgroup (Kernel (A := A) (X := X))) [N.Normal]
+    (hN : N ≤ evenKernel b hb)
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (x : X) (k : Kernel (A := A) (X := X)) (n : N) :
+    (restrictedTernaryCoordinate (hb := hb) b N hN e x
+      (MulAut.conjNormal k n)).toAdd =
+        signScalar (coordinateSign b hb x k) •
+          (restrictedTernaryCoordinate (hb := hb) b N hN e x n).toAdd := by
+  simpa only [restrictedTernaryCoordinate, MonoidHom.comp_apply] using
+    evenTernaryCoordinate_conjugation (hb := hb) b e x k
+      (Subgroup.inclusion hN n)
+
+/-- Additive form of a restricted literal ternary coordinate. -/
+def restrictedTernaryAdditiveCoordinate
+    (N : Subgroup (Kernel (A := A) (X := X)))
+    (hN : N ≤ evenKernel b hb)
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) (x : X) :
+    Additive N →+ ZMod 3 :=
+  (restrictedTernaryCoordinate (hb := hb) b N hN e x).toAdditive
+
+/-- Equivariant linear coordinate on the actual elementary 3-quotient of
+an arbitrary retained normal subgroup. -/
+def restrictedPrimeCoordinate [Finite A]
+    (N : Subgroup (Kernel (A := A) (X := X))) [N.Normal]
+    (hN : N ≤ evenKernel b hb)
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) (x : X) :
+    (primeAbelianizationRepresentation 3
+      (normalChainSourceAction N)).IntertwiningMap
+        (ternarySignRepresentation (A := ZMod 3) (coordinateSign b hb x)) where
+  toLinearMap := primeAbelianizationLift 3 N
+    (restrictedTernaryAdditiveCoordinate (hb := hb) b N hN e x)
+  isIntertwining' := fun k => by
+    apply LinearMap.ext
+    intro v
+    obtain ⟨n, rfl⟩ := primeAbelianizationMap_surjective 3 N v
+    change primeAbelianizationLift 3 N
+        (restrictedTernaryAdditiveCoordinate (hb := hb) b N hN e x)
+        (primeAbelianizationRepresentation 3 (normalChainSourceAction N) k
+          (primeAbelianizationMap 3 N (Additive.ofMul n.toMul))) =
+      signScalar (coordinateSign b hb x k) •
+        primeAbelianizationLift 3 N
+          (restrictedTernaryAdditiveCoordinate (hb := hb) b N hN e x)
+          (primeAbelianizationMap 3 N (Additive.ofMul n.toMul))
+    rw [primeAbelianizationRepresentation_eval,
+      primeAbelianizationLift_apply, primeAbelianizationLift_apply]
+    exact restrictedTernaryCoordinate_conjugation (hb := hb) b N hN e x k n.toMul
+
+/-- The restricted descended coordinates jointly separate the actual
+elementary 3-quotient. -/
+theorem restrictedPrimeCoordinates_injective
+    [Finite A] [FaithfulSMul A Ω]
+    (N : Subgroup (Kernel (A := A) (X := X))) [N.Normal]
+    (hN : N ≤ evenKernel b hb)
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x) :
+    Function.Injective (fun v x =>
+      restrictedPrimeCoordinate (hb := hb) b N hN e x v) := by
+  intro v w hvw
+  obtain ⟨n, rfl⟩ := primeAbelianizationMap_surjective 3 N v
+  obtain ⟨m, rfl⟩ := primeAbelianizationMap_surjective 3 N w
+  have hnm : n = m := by
+    apply restrictedTernaryCoordinates_injective (hb := hb) b N hN e
+    funext x
+    apply Multiplicative.toAdd.injective
+    have hx := congrFun hvw x
+    change primeAbelianizationLift 3 N
+        (restrictedTernaryAdditiveCoordinate (hb := hb) b N hN e x)
+          (primeAbelianizationMap 3 N n) =
+      primeAbelianizationLift 3 N
+        (restrictedTernaryAdditiveCoordinate (hb := hb) b N hN e x)
+          (primeAbelianizationMap 3 N m) at hx
+    simpa only [primeAbelianizationLift_apply] using hx
+  rw [hnm]
+
+/-- Nontrivial fibre inversion annihilates the complete relative ternary
+head of every retained normal subgroup inside the translation kernel. -/
+theorem restricted_primeRelativeCharacters_eq_zero
+    [Finite A] [Fintype X] [FaithfulSMul A Ω]
+    [MulAction.IsPretransitive A X]
+    (N : Subgroup (Kernel (A := A) (X := X))) [N.Normal]
+    (hN : N ≤ evenKernel b hb)
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (x₀ : X) (hx₀ : coordinateSign b hb x₀ ≠ 1) :
+    Module.finrank (ZMod 3) (primeRelativeCharacters 3 N) = 0 := by
+  exact primeRelativeCharacterHead_eq_zero_of_nontrivial_sign_coordinates
+    (N := N) (fun _ : X => ZMod 3)
+    (fun x => coordinateSign b hb x)
+    (all_coordinateSigns_nontrivial b hb x₀ hx₀)
+    (fun x => restrictedPrimeCoordinate (hb := hb) b N hN e x)
+    (restrictedPrimeCoordinates_injective (hb := hb) b N hN e)
+
 /-- A nontrivial inversion image on one fibre annihilates the complete
 ternary relative head of the literal all-even kernel.  Transitivity spreads
 the sign to every fibre, while the actual C₃ coordinates retain all diagonal
