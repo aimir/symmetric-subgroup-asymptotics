@@ -98,6 +98,44 @@ theorem firstOwned_ownerOrResidual_last_iff {r n : ℕ}
       simpa [ownerOrResidualEligible, hjval, i] using hjEligible
     exact h i hi
 
+/-- On an earlier branch the local complete-source predicate is exactly the
+old first-owner predicate; appending the residual branch changes nothing. -/
+theorem non2FirstOwnerPredicate_ownerOrResidual_castSucc_iff
+    {r w b : ℕ}
+    (Earlier : ∀ d, Fin r → Subgroup (Equiv.Perm (Fin d)) → Prop)
+    (i : Fin r) (U : Non2TransitiveActionClass (Fin w))
+    (L : Subgroup
+      (non2FirstOwnerAction w (i.castSucc, U) × Equiv.Perm (Fin b))) :
+    non2FirstOwnerPredicate (ownerOrResidualEligible Earlier)
+        w (i.castSucc, U) b L ↔
+      ordinaryRemainderFusionPredicate U.representative L ∧
+        FirstOwned (Earlier (w+b)) i
+          (relabelSubgroup finSumFinEquiv
+            (L.map (fusionOrbitAction U.representative))) := by
+  unfold non2FirstOwnerPredicate ordinaryFirstOwnerLocalPredicate
+  simp only [non2FirstOwnerAction]
+  rw [firstOwned_ownerOrResidual_castSucc_iff]
+  rfl
+
+/-- On the last branch the local predicate states the exact unowned residual
+condition on the reconstructed complete physical subgroup. -/
+theorem non2FirstOwnerPredicate_ownerOrResidual_last_iff
+    {r w b : ℕ}
+    (Earlier : ∀ d, Fin r → Subgroup (Equiv.Perm (Fin d)) → Prop)
+    (U : Non2TransitiveActionClass (Fin w))
+    (L : Subgroup
+      (non2FirstOwnerAction w (Fin.last r, U) × Equiv.Perm (Fin b))) :
+    non2FirstOwnerPredicate (ownerOrResidualEligible Earlier)
+        w (Fin.last r, U) b L ↔
+      ordinaryRemainderFusionPredicate U.representative L ∧
+        ∀ i : Fin r, ¬ Earlier (w+b) i
+          (relabelSubgroup finSumFinEquiv
+            (L.map (fusionOrbitAction U.representative))) := by
+  unfold non2FirstOwnerPredicate ordinaryFirstOwnerLocalPredicate
+  simp only [non2FirstOwnerAction]
+  rw [firstOwned_ownerOrResidual_last_iff]
+  rfl
+
 namespace RepeatedMarkerOwnerBound
 
 /-- Earlier owners plus the residual owner cover the whole outside frontier,
