@@ -271,7 +271,11 @@ The older width/branch/action-class index remains a valid conditional union
 bound, but branch-specific estimates use the aligned index.  In particular,
 the degree-twelve prime-base subbranch now consumes the internal A4 top-map
 theorem directly on its canonical physical family; no unmarked cell or
-external top-map premise is used.  The remaining aligned numerical producers
-are the ternary 3-group rows (degree-sensitive at 3, 9 and 27), the two
-degree-six intrinsic owners, the binary-nine degree-twelve owner, and the
+external top-map premise is used.  The coarse branch certificate also refines
+intrinsically on that same retained action to exactly six numerical consumers:
+ternary 3-group, natural A4, odd-index-two, cyclic-binary, prime-base, or
+binary-nine.  This split uses the retained high normal pair and does not rely
+on finite-catalogue action recognition.  The remaining aligned numerical
+producers are the ternary 3-group rows (degree-sensitive at 3, 9 and 27), the
+two degree-six intrinsic owners, the binary-nine degree-twelve owner, and the
 critical natural-A4 packet.
