@@ -92,7 +92,8 @@ $D_U(1+b)2^{\alpha_U b}$, with a fixed constant $D_U$:
 \begin{array}{c|c|c}
  \text{action}&w&\alpha_U\\\hline
  6T1,6T4,6T5,6T6&6&\gamma\\
- 12T20,12T85,12T164,12T194&12&2\gamma\\
+ 12T20,12T85,12T164&12&2\gamma\\
+ 12T194&12&16/15\\
  12T228,12T229,12T265&12&1/2+5\log_2(3)/9\\
  \text{transitive }3\text{-group}&9&5\log_2(3)/9\\
  \text{transitive }3\text{-group}&27&5\log_2(3)/3
@@ -104,11 +105,18 @@ orbit. Every other row permits arbitrary $J$.
 \end{lemma}
 \begin{proof}
 We give the fibre arguments, including the shared source budgets.
-We use the permutation prime-rank bound $d_p(F)\leq b/p$ for every
-literal subgroup $F\leq S_b$, and the abelianization-order bound
-$|J/J'|\leq3^{b/3}$ from \cite{KovacsPraeger1989}. Constants depending
-on a fixed target, including its finite normal menu, are absorbed
-only after its full quotient sum has been written.
+We use the internally proved bounds
+\[
+ d_2(F)\leq b/2,\qquad d_3(F)\leq b/3
+\]
+for every literal permutation subgroup $F\leq S_b$.  They follow by
+restriction to an actual Sylow subgroup and degree induction on faithful
+$p$-group actions, and hence apply unchanged to literal kernels of the top
+maps below.  For the few whole abelian target terms we separately use the
+abelianization-order bound $|J/J'|\leq3^{b/3}$ from
+\cite{KovacsPraeger1989}.  Constants depending on a fixed target, including
+its finite normal menu, are absorbed only after its full quotient sum has
+been written.
 
 For $6T1=C_6$, the full fibre is $|\operatorname{Hom}(J,C_6)|$.
 For $6T5=C_3\wr C_2\cong C_3\times S_3$, its normal quotients
@@ -177,29 +185,59 @@ $\mathbb F_3[S]$-module. For a concrete top map $J\to S$ with
 kernel $F$, the restriction choices are therefore at most
 $3^{d_3(F)}\leq3^{b/3}$. The compatible lift torsor has a fixed
 target-dependent size: after the restriction is fixed, differences
-descend to $S$. The preceding cyclic-module estimate bounds the
-top maps by $D2^{\gamma b}$. This gives $D2^{2\gamma b}$.
+descend to $S$.
 
-For degree-nine $3$-groups, embed $U$ in $C_3\wr C_3$ and put
-$V=U\cap C_3^3$. It is a submodule of the uniserial ring
-$\mathbb F_3[t]/(t^3)$, so $d_3(U)\leq2$. Each quotient is
-elementary ternary of rank at most two, or is an extension of
-$C_3$ by a module $M$ embedding in its regular module.
-For a nonzero $\theta:J\to C_3$, Shapiro's lemma gives
+The quotient menu itself has a shorter structural proof.  If
+$q:A_4\twoheadrightarrow S$ and $N=\ker q$, then $|N|$ divides $12$.
+A normal subgroup of order two is central, whereas $Z(A_4)=1$.
+For $|N|=3,4,6$, the quotient has order $4,3,2$, respectively, and is
+abelian.  Thus
 \[
- |Z^1(J,\mathbb F_3[C_3]_\theta)|
-   =3^{d_3(\ker\theta)+2}.
+ V_4=[A_4,A_4]\leq N.
 \]
-The actual lift set is empty or a torsor for a subspace of this
-cocycle space; this remains valid for a nonsplit target. Thus every
-quotient $Q$ satisfies
+The orders three and six are impossible, and order four forces $N=V_4$.
+Hence $S$ is $A_4$, $C_3$, or trivial.  For the latter two targets the
+internal ternary character-rank bound gives the required top count.  For
+the full target, the cyclic binary-module calculation above gives the
+same-source estimate
+\[
+ |\operatorname{Epi}(J,A_4)|\leq C(b+1)2^{b/2}.
+\]
+Writing $b=30q+r$ and using $q+1\leq2^q$ gives uniformly
+\[
+ (b+1)2^{b/2}\leq30\,2^{8b/15}.
+\]
+For a fixed top map, the literal kernel contributes at most
+$3^{d_3(F)}\leq3^{b/3}\leq2^{8b/15}$.  Summing the three actual quotient
+targets therefore gives $D2^{16b/15}$, as recorded in the table.
+
+For degree-nine $3$-groups, the target chart has two forms: an elementary
+ternary group of rank at most two, or an extension of $C_3$ by a module
+embedding in $\mathbb F_3[C_3]$.  The source pattern is aggregated before
+any target is counted.  If $o_0$ is its unique regular $C_3$ orbit, then for
+every literal orbit image and every original normal axis the local bounds
+have the form
+\[
+ 9\delta_o\leq 2|o|+3{\bf1}_{\{o=o_0\}}.
+\]
+The faithful orbit filtration sums these inequalities on the same complete
+source $J$.  In the present one-regular-$C_3$, no-natural-$A_4$ case,
+\eqref{eq:rank3-pattern} reads
+\[
+ 9d_3(J)\leq 2b+3.
+\]
+For an elementary target, the exact homomorphism count bounds onto maps by
+the corresponding power of $3^{d_3(J)}$.  In the second case, summing first
+over the actual maps $J\twoheadrightarrow C_3$ and their literal kernels,
+then retaining the fixed module and $H^1$ factors, gives uniformly
 \begin{equation}\label{eq:degree-nine-joint}
- |\operatorname{Epi}(J,Q)|\leq3^{d_3(J)+b/3+2}.
+ |\operatorname{Epi}(J,Q)|\leq3^{d_3(J)+b/3+6}.
 \end{equation}
-By \eqref{eq:rank3-pattern}, the stipulated pattern gives
-$d_3(J)\leq(2b+3)/9$, proving the degree-nine row. The more exact
-quantity before compression is the single sum
-$\sum_{\theta\ne0}3^{d_3(\ker\theta)+2}$.
+The constant $3^6$ is target-local and does not affect the row exponent.
+Combining this with \eqref{eq:rank3-pattern} gives the ternary exponent
+$5\log_2(3)/9$; when the descended extension has a binary kernel, the
+internally proved literal-kernel bound $d_2(\ker\beta)\leq b/2$ gives the
+mixed exponent $1/2+5\log_2(3)/9$.
 
 For the three remaining degree-twelve actions, the actual action has
 three blocks of four points, binary translation base $W\leq V_4^3$,
