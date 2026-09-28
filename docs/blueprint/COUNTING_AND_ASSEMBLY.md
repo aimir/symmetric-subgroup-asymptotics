@@ -157,6 +157,13 @@ remain proof data, while the counted index is the finite original-action and
 literal-normal menu. The estimate has zero scalar and an exponentially small
 strictly forward row.
 
+At the formal interface the complete outside frontier is now partitioned
+exactly into the subfamily carrying this orbitwise alphabet and its complement.
+The first subfamily injects unchanged into the E7 hot/cold union and therefore
+has the preceding complete forward estimate. Thus the outside-frontier
+producer needs only one remaining estimate, for the pre-E7 complement; adding
+it to the installed E7 estimate closes the full outside term without overlap.
+
 Orbitwise, the remaining alphabet is binary, natural S3, or a selected UP
 pair orbit. E7 removes the third alternative. Therefore the complete original
 subgroup satisfies the intrinsic `Fits` predicate used by the repeated-marker
