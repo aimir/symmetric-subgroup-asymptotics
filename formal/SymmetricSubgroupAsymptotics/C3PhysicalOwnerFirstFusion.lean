@@ -17,10 +17,10 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace C3HighNestedCarrier
 
-/-- The orbit retained by a high-C3 witness enters the owner-indexed non-2
-family.  First ownership and noncriticality are transported from the complete
-physical subgroup to its exact deleted model; the complement is unchanged. -/
-theorem Data.mem_non2FirstOwnerCanonicalFamily_atWidth
+/-- A specified action chart for the orbit retained by a high-C3 witness
+enters the owner-indexed non-2 family.  Keeping the chart visible lets later
+consumers transport the normal high pair to this exact deleted action. -/
+theorem Data.mem_non2FirstOwnerCanonicalFamily_forAction
     {r b w : ℕ}
     (Eligible : ∀ n, Fin r → Subgroup (Equiv.Perm (Fin n)) → Prop)
     (hEligible : DegreeNaturalOwnerMenu Eligible)
@@ -32,19 +32,17 @@ theorem Data.mem_non2FirstOwnerCanonicalFamily_atWidth
       (relabelSubgroup q (physicalSubgroup H)))
     (owner : Fin r)
     (howner : FirstOwned (Eligible (b + 3)) owner
-      (relabelSubgroup q (physicalSubgroup H))) :
-    ∃ (hn : w ≤ b + 3) (i : Non2TransitiveActionClass (Fin w)),
-      relabelSubgroup q (physicalSubgroup H) ∈
-        FusionWidthCanonicalFamily
-          (non2FirstOwnerAction w (owner, i)) hn
-          (non2FirstOwnerPredicate Eligible w (owner, i) (b + 3 - w)) := by
-  letI : C.normal.Normal := C.normal_normal
-  have hnon2 : ¬ IsPGroup 2
-      (OrbitProfileFromOrbits.orbitImage
-        (C3ComplementSource b H) C.orbit) :=
-    strict_ternaryRelativeHead_not_isPGroup_two C.normal C.high
-  obtain ⟨i, eO, himage⟩ := Non2TransitiveActionClass.orbit_cover
-    (C3ComplementSource b H) C.orbit hw hnon2
+      (relabelSubgroup q (physicalSubgroup H)))
+    (i : Non2TransitiveActionClass (Fin w))
+    (eO : Fin w ≃ C.orbit.orbit)
+    (himage : relabelSubgroup eO i.representative =
+      OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) C.orbit) :
+    relabelSubgroup q (physicalSubgroup H) ∈
+      FusionWidthCanonicalFamily
+        (non2FirstOwnerAction w (owner, i)) (by
+          have hwb := width_le H C.orbit hw
+          omega)
+        (non2FirstOwnerPredicate Eligible w (owner, i) (b + 3 - w)) := by
   have hwb : w ≤ b := width_le H C.orbit hw
   have hn : w ≤ b + 3 := by omega
   let K := relabelSubgroup (chart H C.orbit hw eO).symm
@@ -108,10 +106,44 @@ theorem Data.mem_non2FirstOwnerCanonicalFamily_atWidth
     · unfold ordinaryRemainderFusionPredicate
       exact hphysical.symm ▸ hordinaryL
     · exact hphysical.symm ▸ hownerL
-  refine ⟨hn, i, ?_⟩
   exact mem_widthCanonicalFamily_of_relabel H C hw i.representative
     eO himage q
     (non2FirstOwnerPredicate Eligible w (owner, i) (b + 3 - w)) hlocal
+
+/-- The orbit retained by a high-C3 witness enters the owner-indexed non-2
+family.  First ownership and noncriticality are transported from the complete
+physical subgroup to its exact deleted model; the complement is unchanged. -/
+theorem Data.mem_non2FirstOwnerCanonicalFamily_atWidth
+    {r b w : ℕ}
+    (Eligible : ∀ n, Fin r → Subgroup (Equiv.Perm (Fin n)) → Prop)
+    (hEligible : DegreeNaturalOwnerMenu Eligible)
+    (H : Subgroup (ternaryRegularAction × Equiv.Perm (Fin b)))
+    (C : Data H)
+    (hw : Nat.card C.orbit.orbit = w)
+    (q : TernaryCyclic ⊕ Fin b ≃ Fin (b + 3))
+    (hordinary : ¬ IsCriticalSubgroup (b + 3)
+      (relabelSubgroup q (physicalSubgroup H)))
+    (owner : Fin r)
+    (howner : FirstOwned (Eligible (b + 3)) owner
+      (relabelSubgroup q (physicalSubgroup H))) :
+    ∃ (hn : w ≤ b + 3) (i : Non2TransitiveActionClass (Fin w)),
+      relabelSubgroup q (physicalSubgroup H) ∈
+        FusionWidthCanonicalFamily
+          (non2FirstOwnerAction w (owner, i)) hn
+          (non2FirstOwnerPredicate Eligible w (owner, i) (b + 3 - w)) := by
+  letI : C.normal.Normal := C.normal_normal
+  have hnon2 : ¬ IsPGroup 2
+      (OrbitProfileFromOrbits.orbitImage
+        (C3ComplementSource b H) C.orbit) :=
+    strict_ternaryRelativeHead_not_isPGroup_two C.normal C.high
+  obtain ⟨i, eO, himage⟩ := Non2TransitiveActionClass.orbit_cover
+    (C3ComplementSource b H) C.orbit hw hnon2
+  have hn : w ≤ b + 3 := by
+    have hwb := width_le H C.orbit hw
+    omega
+  refine ⟨hn, i, ?_⟩
+  exact C.mem_non2FirstOwnerCanonicalFamily_forAction Eligible hEligible H hw q
+    hordinary owner howner i eO himage
 
 /-- Existential-width wrapper used when no finite-width classification is
 needed by the caller. -/

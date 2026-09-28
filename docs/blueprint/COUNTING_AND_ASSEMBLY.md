@@ -262,3 +262,16 @@ earlier. The orbit filtration then gives d_3(K)<=3m/20, contradicting the
 residual condition. This is an earlier-consumer-or-capacity application of the
 complete framework, not a direct instance of an arbitrary odd-order action
 on a vector space. Its consumed reserve is never reused in ASM-MAIN.
+
+The formal audit now keeps this marking through the finite continuation.  A
+certified high-C3 cell contains the actual normal subgroup on the selected
+retained action, the strict high inequality for that subgroup, the intrinsic
+earlier-owner witness, and the precise branch property on the same action.
+The older width/branch/action-class index remains a valid conditional union
+bound, but branch-specific estimates use the aligned index.  In particular,
+the degree-twelve prime-base subbranch now consumes the internal A4 top-map
+theorem directly on its canonical physical family; no unmarked cell or
+external top-map premise is used.  The remaining aligned numerical producers
+are the ternary 3-group rows (degree-sensitive at 3, 9 and 27), the two
+degree-six intrinsic owners, the binary-nine degree-twelve owner, and the
+critical natural-A4 packet.

@@ -53,7 +53,7 @@ private theorem point_equivariant (a : A) (x : Ω) :
 
 /-- The natural four-point A4 owner is unchanged by an actual relabelling of
 its points and the induced equivalence of its permutation subgroup. -/
-private theorem naturalA4_relabel
+theorem naturalA4_relabel
     (h : IsNaturalA4Action A Ω) :
     IsNaturalA4Action (relabelSubgroup e A) Ξ := by
   obtain ⟨c, hc⟩ := h
