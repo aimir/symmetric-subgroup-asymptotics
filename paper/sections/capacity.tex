@@ -187,18 +187,22 @@ dimension $t+\ell$ with only trivial composition factors. Hence
 \end{equation}
 by Lemmas~\ref{lem:five-sixteenths} and~\ref{lem:unipotent}.
 
-Choose bases in $S$ and $H^1(B,\F_2)$, so that
-$H^1(B,S)=H^1(B,\F_2)\otimes S$. Row-reduce $\mathcal L_1$ in these
-coordinates. Its $\ell$ pivot positions meet at most $\ell$ coordinate
-blocks indexed by basis vectors of $S$. Let $Z\leq S$ be spanned by
-the other basis vectors. Then
+Use the natural identification
+$H^1(B,\F_2)\otimes S\cong
+\Hom(S^*,H^1(B,\F_2))$ and regard $\mathcal L_1$ as an
+$\ell$-dimensional space of maps out of $S^*$.  The elementary
+evaluation-separator lemma gives a subspace $W\leq S^*$ with
+$\dim W\leq\ell$ such that restriction to $W$ is injective on
+$\mathcal L_1$: starting with the whole map space, choose an input on
+which a nonzero remaining map does not vanish and iterate on the kernel
+of that evaluation.  Put $Z=W^\perp\leq S$. Then
 \[
  \dim Z\geq\max(t-\ell,0),\qquad
  \mathcal L_1\cap H^1(B,Z)=0.
 \]
-A nonzero vector in a row-reduced row space has a nonzero pivot
-coordinate, which proves the second assertion even when nonpivot
-supports overlap. Choose $C\leq Z$ of dimension
+Indeed, a tensor in $H^1(B,Z)$, viewed as a map on $S^*$, vanishes on
+$Z^\perp=W$, so injectivity forces every element of the displayed
+intersection to be zero. Choose $C\leq Z$ of dimension
 \[
  c=\min\{\lfloor t/2\rfloor,\max(t-\ell,0)\}.
 \]
