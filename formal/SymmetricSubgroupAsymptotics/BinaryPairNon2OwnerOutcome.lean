@@ -23,7 +23,7 @@ structure Non2PairAxisData (s : ℕ)
     (N : {N : Subgroup U // N.Normal}) where
   frame : BinaryPairFrame U (Fin s)
   [topPretransitive : MulAction.IsPretransitive frame.top.range (Fin s)]
-  top_non2 : ¬ IsPGroup 2 frame.top.range
+  source_non2 : ¬ IsPGroup 2 U
 
 attribute [instance] Non2PairAxisData.topPretransitive
 
@@ -56,7 +56,8 @@ noncomputable def Non2PairAxisOrEarlier.toFusionOutcome
       let i : Fin s := ⟨0, by omega⟩
       let A := Classical.choice
         (data.frame.exists_non2OriginalFusionAxisPayload_of_arbitraryPairAxis
-          N hTracey hExceptional data.top_non2 i hs heven)
+          N hTracey hExceptional
+          (data.frame.top_not_isPGroup data.source_non2) i hs heven)
       exact .capacity A
   | earlier howned =>
       exact .earlier howned
