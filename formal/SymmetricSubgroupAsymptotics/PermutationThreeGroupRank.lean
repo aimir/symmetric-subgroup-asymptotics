@@ -276,6 +276,34 @@ theorem permutationThreeGroup_primeCharacterRank_le
               (PermutationCharacterRankSplit.kernel_isPGroup S 3 hG₀) hlt.2)
   exact hmain (Nat.card X) G X rfl hG
 
+/-- The prime abelianization of a faithful permutation 3-group has the
+same sharp one-third rank bound as its complete scalar-character space. -/
+theorem permutationThreeGroup_primeAbelianizationRank_le
+    (G X : Type) [Group G] [Finite G] [Finite X] [MulAction G X]
+    [FaithfulSMul G X] (hG : IsPGroup 3 G) :
+    Module.finrank (ZMod 3) (PrimeAbelianization 3 G) ≤ Nat.card X / 3 := by
+  simpa only [PrimeAbelianization, Subspace.dual_finrank_eq] using
+    permutationThreeGroup_primeCharacterRank_le G X hG
+
+/-- The actual Sylow 3-subgroup of the kernel of an original quotient map
+inherits the sharp one-third rank bound on the unchanged source points. -/
+theorem permutationThreeGroup_sylowKernel_primeAbelianizationRank_le
+    {b : ℕ} (J : Subgroup (Equiv.Perm (Fin b))) {B : Type} [Group B]
+    (beta : J →* B) (P : Sylow 3 beta.ker) :
+    (Module.finrank (ZMod 3)
+      (PrimeAbelianization 3 (P : Subgroup beta.ker)) : ℝ) ≤ (b : ℝ) / 3 := by
+  have hnat : Module.finrank (ZMod 3)
+      (PrimeAbelianization 3 (P : Subgroup beta.ker)) ≤ b / 3 := by
+    simpa only [Nat.card_fin] using
+      permutationThreeGroup_primeAbelianizationRank_le
+        (P : Subgroup beta.ker) (Fin b) P.isPGroup'
+  have hthree : 3 * Module.finrank (ZMod 3)
+      (PrimeAbelianization 3 (P : Subgroup beta.ker)) ≤ b := by omega
+  have hreal : (3 : ℝ) * (Module.finrank (ZMod 3)
+      (PrimeAbelianization 3 (P : Subgroup beta.ker)) : ℝ) ≤ (b : ℝ) := by
+    exact_mod_cast hthree
+  linarith
+
 /-- Restriction of complete prime characters to an actual Sylow subgroup. -/
 def primeCharacterSylowRestriction
     (p : ℕ) [Fact p.Prime] {G : Type*} [Group G]
