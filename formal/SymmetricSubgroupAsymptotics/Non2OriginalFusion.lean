@@ -138,6 +138,53 @@ theorem fusionSurvivingEpiCount_le [Finite B] [Finite M]
   exact C.original_survival_localFactor_le π hπ E J
     (fun f => P (fusionFullGoursatEncode N J f).1)
 
+/-- Direct first-moment physical fusion for a complete family of literal
+normal axes.  Each axis may have its own nonbinary quotient, section, cut,
+faithful top cover and nonsplit extension chart; the original action
+normalizer is charged only by the physical counting theorem. -/
+theorem physical_direct_bound
+    (U : Subgroup (Equiv.Perm (Fin (2 * s)))) (b : ℕ)
+    (P : Subgroup (U × Equiv.Perm (Fin b)) → Prop)
+    (hP : FusionOrbitNatural U P)
+    (B₀ : {N : Subgroup U // N.Normal} → Type)
+    [∀ N, Group (B₀ N)] [∀ N, Finite (B₀ N)]
+    (M₀ : ∀ N, Rep (ZMod 2) (B₀ N))
+    [∀ N, Finite (M₀ N)]
+    (C₀ : ∀ N, Non2OriginalFusionCertificate (M₀ N) s)
+    (π : ∀ N, (U ⧸ N.1) →* B₀ N)
+    (hπ : ∀ N, Function.Surjective (π N))
+    (E : ∀ N, OriginalKernelModuleChart (π N) (M₀ N))
+    (T : {N : Subgroup U // N.Normal} → Type)
+    [∀ N, Group (T N)]
+    (ρ : ∀ N, T N →* Equiv.Perm (Fin s))
+    (hρ : ∀ N, Function.Injective (ρ N))
+    (σ : ∀ N, T N →* B₀ N)
+    (hσ : ∀ N, Function.Surjective (σ N)) :
+    (Nat.card (FusionOrbitFamily U (FusionAcceptedOrbitPredicate U P)) : ℝ) /
+        exactBenchmark (b + 2 * s) ≤
+      ∑ N : {N : Subgroup U // N.Normal},
+        fusionDirectKernel b s (C₀ N).prefixDegree (C₀ N).liftConstant
+          (Nat.card (Subgroup.normalizer
+            (U : Set (Equiv.Perm (Fin (2 * s))))) : ℝ)
+          (C₀ N).gapParameter *
+            ((subgroupCount (b + (C₀ N).prefixDegree) : ℝ) /
+              exactBenchmark (b + (C₀ N).prefixDegree)) := by
+  apply SymmetricSubgroupAsymptotics.fusionPhysical_direct_bound
+    U b P hP
+      (fun N => (C₀ N).prefixDegree)
+      (fun N => (C₀ N).liftConstant)
+      (fun N => (C₀ N).gapParameter)
+      (fun N J => (C₀ N).momentWeight J)
+  · intro N
+    exact (C₀ N).liftConstant_nonneg
+  · intro N J
+    exact (C₀ N).fusionSurvivingEpiCount_le
+      U N (π N) (hπ N) (E N) P J
+  · intro N
+    simpa only [pow_one, one_mul] using
+      (C₀ N).momentWeight_moment_le
+        (ρ N) (hρ N) (σ N) (hσ N) b 1
+
 end Non2OriginalFusionCertificate
 
 variable {X : Type} [Finite B] [Finite X] [MulAction B X] [FaithfulSMul B X]
