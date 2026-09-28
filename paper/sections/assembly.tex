@@ -8,50 +8,60 @@ exact disjoint partition
  F_N=C_{2N}^{\crit}+E_N.
 \end{equation}
 
-\begin{proposition}[Independent complete binary error]
-\label{prop:binary-error}
-Both $F_N$ and $E_N$ are bounded, and $E_N=O(2^{-a_BN})$ for
-some $a_B>0$.
+\begin{proposition}[Native binary frontier transport]
+\label{prop:binary-frontier-transport}
+Put
+\[
+ B_{2N}=E_N,\qquad B_{2N+1}=u_NE_N+v_NE_{N-1}.
+\]
+There are nonnegative functions $\eta_B^{\rm amb}(n)$ and
+$K_B^{\rm amb}(n,m)$, supported on $m<n$, and constants
+$a_B',C_B'>0$ such that eventually
+\begin{equation}\label{eq:binary-ambient-recurrence}
+ B_n\leq\eta_B^{\rm amb}(n)
+       +\sum_{m<n}K_B^{\rm amb}(n,m)A_m,
+ \qquad
+ \eta_B^{\rm amb}(n)+\sum_{m<n}K_B^{\rm amb}(n,m)
+       \leq C_B'2^{-a_B'n}.
+\end{equation}
 \end{proposition}
 \begin{proof}
 Theorem~\ref{thm:binary-recurrence} gives
-\begin{equation}\label{eq:binary-recurrence}
+\begin{equation}\label{eq:binary-native-recurrence}
  E_N\leq\eta_B(N)+\sum_{M<N}K_B(N,M)F_M,
  \qquad\eta_B(N)+\sum_{M<N}K_B(N,M)\leq C_B2^{-a_BN}.
 \end{equation}
-The critical ratios are bounded by Theorem~\ref{thm:critical-intro}.
-Choose an onset at which the kernel row is at most $1/2$ and a
-constant at least twice the bounded forcing and at least all finitely
-many earlier values of $F$. Induction in the exact partition proves
-that this constant bounds every $F_N$. Substitution into the same
-recurrence gives the asserted exponential error. This induction uses
-no ordinary subgroup ratio $A_n=s_n/L_n$.
+Every fixed-point-free binary subgroup is an ordinary subgroup, with
+the same normalization, so $F_M\leq A_{2M}$.  In even ambient degree,
+use \eqref{eq:binary-native-recurrence} and pad its even targets by
+zero to the full range $m<2N$.  In odd degree apply the same recurrence
+at $N$ and $N-1$, multiply the two inequalities by $u_N$ and $v_N$,
+and again pad both target rows by zero.  The coefficients are
+nonnegative, and Section~\ref{sec:markers} gives
+\[
+ u_N\leq4(N+1),\qquad v_N\leq2\Phi^{-2}(N+1)^3.
+\]
+These fixed polynomial factors are absorbed by any smaller positive
+exponential rate. Since $n=2N$ or $2N+1$, this proves
+\eqref{eq:binary-ambient-recurrence}.  Thus the binary recurrence is
+transported before any boundedness of $F$, $E$, or $A$ is used.
 \end{proof}
 
 \begin{theorem}[Exhaustive ordinary counting estimate]
 \label{thm:global-counting}
-There are nonnegative functions $\eta_0,\eta_1,K$ and the exact
-marker kernel of \eqref{eq:complete-marker-kernel}, with positive
-constants $a_i,C$, such that eventually
-\begin{align}\label{eq:global-rates}
- \eta_0(n)&\leq C2^{-a_0n},&
- \eta_1(n)&\leq C2^{-a_1n^2},\notag\\
- \sum_{b<n}K(n,b)&\leq C2^{-a_2n},&
- \sum_{\substack{m<n\\m\ \mathrm{even}}}K_{\rm mark}(n,m)
-       &\leq C2^{-a_3n}.
-\end{align}
-They give the complete inequality
-\begin{align}\label{eq:master}
- A_n\leq{}&C_n^{\crit}+\eta_0(n)+\eta_1(n)
-             +\sum_{b<n}K(n,b)A_b
-             +\mathbf1_{n\ \mathrm{even}}E_{n/2}\notag\\
- &+\sum_{\substack{m<n\\m\ \mathrm{even}}}
-              K_{\rm mark}(n,m)E_{m/2}
-   +\mathbf1_{n=2N+1}(u_NE_N+v_NE_{N-1}),
-\end{align}
-where $u_N,v_N$ are the exact coefficients in \eqref{eq:uv}.
-There is a single same-degree binary error, and every forward edge
-has one complete target.
+Write $R_n=A_n-C_n^{\crit}$ for the normalized complement of the
+complete critical family. There are nonnegative functions $\eta(n)$
+and $\mathcal K(n,m)$, supported on $m<n$, and constants $a,C>0$
+such that eventually
+\begin{equation}\label{eq:master}
+ 0\leq R_n\leq\eta(n)+\sum_{m<n}\mathcal K(n,m)A_m,
+ \qquad
+ \eta(n)+\sum_{m<n}\mathcal K(n,m)\leq C2^{-an}.
+\end{equation}
+The kernel is the sum of the outside-action row, the exact positive
+marker row, and the transported binary row of
+Proposition~\ref{prop:binary-frontier-transport}. Every forward edge
+has one complete ordinary target.
 \end{theorem}
 \begin{proof}
 First take all subgroups with an actual transitive orbit outside
@@ -85,15 +95,10 @@ exact collapse of Proposition~\ref{prop:complete-marker-collapse},
 let $q$ be the number of distinct marker signs and put
 $D=(g+f-\eps)/2$. This is an integer, because the binary exterior
 has even degree, and is nonnegative. When $D\geq1$, the complete
-row in Theorem~\ref{thm:complete-marker-row} applies. If the
-collapsed group is critical, its entire contribution is an
-exponentially small scalar by Corollary~\ref{cor:pure-marker-sum}.
-Otherwise it lies in the complete family defining $E_{m/2}$:
-the collapse leaves each pre-existing noncritical binary action
-unchanged, and creates only pair actions. Hence this remaining
-contribution is precisely bounded by the displayed $K_{\rm mark}$
-term. In particular $K_{\rm mark}$ has no unrestricted $A_m$
-target.
+row in Theorem~\ref{thm:complete-marker-row} applies directly with
+the collection of all collapsed subgroups.  It contributes
+$\sum_{m<n}K_{\rm mark}(n,m)A_m$, and its row is exponentially
+small without any boundedness assumption on $A_m$.
 
 When $D=0$, in even degree there are no markers or fixed points.
 The complete binary partition gives $C_{2N}^{\crit}+E_N$, each
@@ -102,8 +107,11 @@ natural $S_3$ orbit. With critical binary orbits these are exactly
 the two disjoint odd parts of $C_n^{\crit}$. Otherwise their exact
 contributions are $\alpha_NE_N$ and $\beta_NpE_N$; the complete
 pair moment of Proposition~\ref{prop:binary-moment} bounds their
-sum by $u_NE_N+v_NE_{N-1}$. No estimate for a restricted binary
-residual is substituted for this complete moment.
+sum by $u_NE_N+v_NE_{N-1}$. Thus the entire zero-defect remainder
+is $B_n$. Proposition~\ref{prop:binary-frontier-transport} replaces
+this term by one exponentially small scalar and one strictly forward
+ordinary row. No estimate for a restricted binary residual is
+substituted for the complete moment.
 
 These sectors exhaust all actual subgroups and are pairwise
 disjoint before their positive enlargements. Within the first
@@ -119,32 +127,25 @@ alternative certificates contribute no new physical factorial.
 All subsequent sectors are restrictions of their proved positive
 envelopes and are likewise paid once.
 
-Define $\eta_0$ to be the pure-marker scalar, $\eta_1$ the sum of
-the nonbinary, macro and small-packet scalars, and $K$ the sum of
-the nonbinary and small-packet ordinary rows. Their proved complete
-rates and the marker-row theorem give \eqref{eq:global-rates}.
-The auxiliary binary kernel $K_B$ is not added to $K$: its role
-was to prove the independent estimate for $E$, and the original
-even binary count has already been paid with coefficient one.
+Define $\eta$ to be the sum of the nonbinary, macro, small-packet,
+and transported binary scalars. Define $\mathcal K$ to be the sum
+of the nonbinary and small-packet ordinary rows, the positive marker
+row, and the transported binary row. Each summand is nonnegative,
+strictly forward, and exponentially small in total mass. Taking the
+minimum of their positive rates gives \eqref{eq:master}.
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{thm:main}]
-By Proposition~\ref{prop:binary-error}, $E_N$ is bounded and
-decays exponentially.  The elementary envelopes
-$u_N\leq4(N+1)$ and $v_N\leq2\Phi^{-2}(N+1)^3$ already suffice:
-fixed polynomial factors preserve exponential decay, and their targets
-are $N,N-1$.  Hence their contributions in \eqref{eq:master} decay
-exponentially. The complete marker row
-times the bounded binary errors is exponentially small as well.
-The forcing in \eqref{eq:master}, excluding its ordinary row,
-is therefore bounded and is $1+O(2^{-cn})$ for some $c>0$.
-
-Choose an onset at which $\sum_{b<n}K(n,b)\leq1/2$ and let
-$M$ exceed all finitely many initial $A_b$ and twice a uniform
-bound on the forcing. Induction gives $A_n\leq M$ for every $n$.
-Substituting this established bound into \eqref{eq:master} now
-gives $A_n\leq1+O(2^{-c'n})$. The critical-family lower bound
-gives $A_n\geq1-O(2^{-c''n})$. Taking the smaller positive rate
-proves the result at both parities. No boundedness premise was
-used in deriving any complete row or scalar.
+The critical ratios $C_n^{\crit}$ are bounded. Choose an onset at
+which the row in \eqref{eq:master} is at most $1/2$, and let $M$
+exceed all finitely many initial $A_m$ and twice a uniform bound for
+$C_n^{\crit}+\eta(n)$.  The exact partition
+$A_n=C_n^{\crit}+R_n$ and induction in $n$ give $A_n\leq M$ for
+every $n$. Substituting this established bound into
+\eqref{eq:master} gives $R_n=O(2^{-cn})$ for some $c>0$.
+The critical-family estimate now yields
+$|A_n-1|=O(2^{-c'n})$. Taking the smaller positive rate proves the
+result at both parities. No boundedness premise was used in deriving
+any row or scalar; boundedness is a consequence of their eventual
+contraction.
 \end{proof}
