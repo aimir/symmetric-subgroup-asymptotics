@@ -170,6 +170,79 @@ theorem dimension_eq_three_of_head_ge_two (x : X) (hcard : Nat.card X=4)
     omega
   omega
 
+/-- A one-dimensional representation over the binary field is trivial.
+This removes the unnecessary p-group hypothesis from the hyperplane
+identification below. -/
+theorem zmodTwo_representation_trivial_of_finrank_eq_one
+    {V : Type} [AddCommGroup V] [Module (ZMod 2) V]
+    [FiniteDimensional (ZMod 2) V]
+    (ρ : Representation (ZMod 2) G V)
+    (hdim : Module.finrank (ZMod 2) V = 1) :
+    ∀ g v, ρ g v = v := by
+  intro g
+  obtain ⟨c, hc, _⟩ :=
+    (ρ g).existsUnique_eq_smul_id_of_finrank_eq_one hdim
+  have hc0 : c ≠ 0 := by
+    intro hzero
+    haveI : Nontrivial V := Module.nontrivial_of_finrank_pos
+      (R := ZMod 2) (by omega)
+    obtain ⟨v, hv⟩ := exists_ne (0 : V)
+    have hinj : Function.Injective (ρ g) := by
+      intro v w hvw
+      have h := congrArg (ρ g⁻¹) hvw
+      change (ρ g⁻¹ * ρ g) v = (ρ g⁻¹ * ρ g) w at h
+      rw [← map_mul, inv_mul_cancel, map_one] at h
+      exact h
+    apply hv
+    apply hinj
+    rw [hc, hzero]
+    simp
+  have hc1 : c = 1 := Fin.eq_one_of_ne_zero c hc0
+  rw [hc, hc1]
+  simp
+
+/-- A three-dimensional invariant subspace of the four-point binary
+permutation module contains the full permutation-displacement kernel,
+without any assumption on the acting group. -/
+private theorem coinvariantsKer_le_of_dimension_three_unconditional
+    (hcard : Nat.card X=4)
+    (hS : Module.finrank (ZMod 2) S.toSubmodule=3) :
+    Representation.Coinvariants.ker
+        (permutationFunctionRepresentation (ZMod 2) G X) ≤ S.toSubmodule := by
+  let ρ := PermutationBinaryFourSection.quotientRepresentation S
+  have hdim : Module.finrank (ZMod 2) (X → ZMod 2)=4 := by
+    simpa only [Module.finrank_pi,Fintype.card_eq_nat_card] using hcard
+  have hsum := S.toSubmodule.finrank_quotient_add_finrank
+  have hquot : Module.finrank (ZMod 2) ((X → ZMod 2) ⧸ S.toSubmodule)=1 := by
+    rw [hS,hdim] at hsum
+    omega
+  have htrivial := zmodTwo_representation_trivial_of_finrank_eq_one ρ hquot
+  apply Submodule.span_le.mpr
+  rintro _ ⟨⟨g,f⟩,rfl⟩
+  apply (Submodule.Quotient.mk_eq_zero S.toSubmodule).mp
+  change S.toSubmodule.mkQ
+      (permutationFunctionRepresentation (ZMod 2) G X g f-f)=0
+  rw [map_sub]
+  change ρ g (S.toSubmodule.mkQ f) - S.toSubmodule.mkQ f = 0
+  rw [htrivial, sub_self]
+
+/-- A head of at least two identifies the literal augmentation hyperplane
+for every transitive four-point action. -/
+theorem eq_augmentation_of_head_ge_two_unconditional
+    (x : X) (hcard : Nat.card X=4)
+    (hhead : 2≤Module.finrank (ZMod 2)
+      (S.toRepresentation.IntertwiningMap
+        (Representation.trivial (ZMod 2) G (ZMod 2)))) :
+    Module.finrank (ZMod 2) S.toSubmodule=3 ∧
+      S.toSubmodule=PermutationAugmentation.space (ZMod 2) X := by
+  have hdim := dimension_eq_three_of_head_ge_two S x hcard hhead
+  have hle := coinvariantsKer_le_of_dimension_three_unconditional S hcard hdim
+  rw [PermutationAugmentation.coinvariantsKer_eq_space x] at hle
+  have haug := PermutationAugmentation.space_finrank_add_one (k := ZMod 2) x
+  refine ⟨hdim,?_⟩
+  apply (Submodule.eq_of_le_of_finrank_le hle ?_).symm
+  omega
+
 /-- The actual hyperplane quotient is trivial under the original binary
 action. Hence every original permutation displacement belongs to S. -/
 private theorem coinvariantsKer_le_of_dimension_three

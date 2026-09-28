@@ -368,7 +368,7 @@ private theorem traceyBinaryFormulaBounds_two_le
       hs0 ho1 h
     omega
 
-private theorem traceyBinaryFormulaBounds_three_eighths
+theorem traceyBinaryFormulaBounds_three_eighths
     {s d : ℕ} (hs : 8 ≤ s) (h : TraceyBinaryFormulaBounds s d) :
     8 * d ≤ 3 * s := by
   by_cases ho1 : ordCompl[2] s = 1
@@ -391,6 +391,44 @@ private theorem traceyBinaryFormulaBounds_three_eighths
         simpa [hsEq] using binary_middle_le_three_eighths a ha3)
     · exact (hnsol.1 ho1).elim
   · have hs0 : s ≠ 0 := by omega
+    have hthree := traceyBinaryFormulaBounds_three_le_of_oddPart_ne_one
+      hs0 ho1 h
+    omega
+
+/-- Apart from degree four, the exact formula gives the `3/8` estimate
+from degree three onward.  The four-point exception is genuinely
+structural: its soluble formula allows the binary width two. -/
+theorem traceyBinaryFormulaBounds_three_eighths_of_three_le_of_ne_four
+    {s d : ℕ} (hs : 3 ≤ s) (hfour : s ≠ 4)
+    (h : TraceyBinaryFormulaBounds s d) :
+    8 * d ≤ 3 * s := by
+  by_cases h8 : 8 ≤ s
+  · exact traceyBinaryFormulaBounds_three_eighths h8 h
+  · have hs7 : s ≤ 7 := by omega
+    have hs0 : s ≠ 0 := by omega
+    have ho1 : ordCompl[2] s ≠ 1 := by
+      have hcases : s = 3 ∨ s = 5 ∨ s = 6 ∨ s = 7 := by omega
+      rcases hcases with rfl | rfl | rfl | rfl
+      · intro he
+        have hd := Nat.dvd_ordCompl_of_dvd_not_dvd
+          (by decide : 3 ∣ 3) (by decide : ¬2 ∣ 3)
+        rw [he] at hd
+        norm_num at hd
+      · intro he
+        have hd := Nat.dvd_ordCompl_of_dvd_not_dvd
+          (by decide : 5 ∣ 5) (by decide : ¬2 ∣ 5)
+        rw [he] at hd
+        norm_num at hd
+      · intro he
+        have hd := Nat.dvd_ordCompl_of_dvd_not_dvd
+          (by decide : 3 ∣ 6) (by decide : ¬2 ∣ 3)
+        rw [he] at hd
+        norm_num at hd
+      · intro he
+        have hd := Nat.dvd_ordCompl_of_dvd_not_dvd
+          (by decide : 7 ∣ 7) (by decide : ¬2 ∣ 7)
+        rw [he] at hd
+        norm_num at hd
     have hthree := traceyBinaryFormulaBounds_three_le_of_oddPart_ne_one
       hs0 ho1 h
     omega
