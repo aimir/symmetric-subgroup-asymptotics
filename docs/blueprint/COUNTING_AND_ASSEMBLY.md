@@ -281,6 +281,12 @@ two degree-six intrinsic owners, the binary-nine degree-twelve owner, and the
 critical natural-A4 packet.  The simultaneous-head part of the ternary
 3-group row is now internal: iterating the literal three-block cover gives
 elementary ternary quotient ranks at most 1, 2 and 5 in degrees 3, 9 and 27.
-The remaining ternary input is the arbitrary-normal block-kernel section
-chart and its invariant-dimension bound, which turns those head estimates
-into the physical source-sum recurrence.
+The complementary structural input is also internal.  Coherent charts transported by the
+literal ternary group identify the complete correlated block kernel with an
+actual subrepresentation of the ternary permutation module on the block set.
+The chart descends through every original normal axis, including proper
+diagonal and subdirect intersections, and every non-base descended section
+has invariant dimension at most one third of the block count.  What remains
+for the ternary 3-group consumer is the numerical Schur/epimorphism source-sum
+recurrence at widths 3, 9 and 27, with the one-block degree-three case kept as
+its separate base row.
