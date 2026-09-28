@@ -330,6 +330,13 @@ and Proposition~\ref{prop:prefix}. With $c=\dim C$,
 \[
  g=2s-(s+2c)-4r(A/C)\geq s/48.
 \]
+If $r_*=s/2+c$ is the shifted half-degree, then the same retained cut
+also satisfies
+\begin{equation}\label{eq:nonbinary-prefix-strength}
+ 32r_*\leq21s.
+\end{equation}
+Indeed $2c\leq t=\dim A^B$ and $16t\leq5s$, so
+$32r_*=16s+32c\leq16s+16t\leq21s$.
 There was no assumption that $N\leq K$, nor that the common quotient
 or its subdirect cores are abelian. For labelled transport, fix one
 witness on each original-normalizer orbit of entries and fixed
@@ -337,6 +344,38 @@ transporters before counting $J$. A normalizer-equivariant choice of
 an individual witness is not needed, and the witnesses are not counted
 as additional decorations.
 \end{proof}
+
+The strengthened prefix bound also makes the growing-width numerical
+sum transparent. Write $D_{s,i}$ for the lift constant of an entry,
+$a_{s,i}$ for its original action normalizer, and $e_{s,i}=g_{s,i}/16$.
+The exact first-moment coefficient at complement degree $b$ obeys
+\begin{equation}\label{eq:nonbinary-direct-coefficient}
+ \Gamma_{s,i}(b)\leq
+ \phi^{-2}\frac{D_{s,i}}{a_{s,i}}
+ (b+2s+1)^{s+r_{s,i}+1}
+ 2^{-sb/384-583s^2/4096+s/4+1/4}.
+\end{equation}
+This follows from \eqref{eq:direct-uniform-coefficient},
+\eqref{eq:nonbinary-prefix-strength}, and $e_{s,i}\geq s/768$.
+Consequently, if the one remaining original-weight input is
+\begin{equation}\label{eq:nonbinary-menu-mass}
+ \sum_i\frac{D_{s,i}}{a_{s,i}}
+ \leq 2^{s^2/32+H}\qquad(s\geq24)
+\end{equation}
+for a constant $H$, then the complete sum over all $s$ with $2s\leq n$
+is
+\begin{equation}\label{eq:nonbinary-wide-decay}
+ O_H\!\left(2^{-3n/512}\right).
+\end{equation}
+For completeness, eventually
+$(n+1)^3 2^{1/2}\leq2^{n/512}$. Raising this inequality to the
+$s$th power absorbs the polynomial in
+\eqref{eq:nonbinary-direct-coefficient}; the remaining exponent is at
+most $-sn/2048$. Since $s\geq24$, summing at most $n+1$ widths and
+absorbing that final factor proves \eqref{eq:nonbinary-wide-decay}.
+Thus all module, fusion, and numerical aggregation steps are internal;
+the physical task is exactly the weighted mass
+\eqref{eq:nonbinary-menu-mass} together with the literal cover.
 
 \begin{remark}[Scope of the positive enlargement]
 The original quotient, extension class, and restricted group
