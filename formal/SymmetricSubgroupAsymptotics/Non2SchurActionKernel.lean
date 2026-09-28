@@ -17,7 +17,8 @@ open scoped MonoidAlgebra
 
 namespace SymmetricSubgroupAsymptotics
 
-variable {k B A : Type} [Field k] [Group B]
+universe u
+variable {k B A : Type u} [Field k] [Group B]
     [AddCommGroup A] [Module k A]
 
 /-- The original group action on the selected simple module. -/

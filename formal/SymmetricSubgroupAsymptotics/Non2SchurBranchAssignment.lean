@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.Non2SchurActionKernel
+import SymmetricSubgroupAsymptotics.Non2SchurMixedSocleDimension
 import SymmetricSubgroupAsymptotics.Non2SchurRowCertificates
 
 /-!
@@ -63,6 +63,38 @@ theorem Non2SchurStructuralBranch.of_actionKernel_budgets
     · exact Or.inr (Or.inl ⟨hscalar hK hq, hq⟩)
     · left
       exact ⟨ht, hnonfaithfulHalf hK, by omega⟩
+
+/-- The same row assignment with the physical-size input derived from the
+literal mixed carrier and an ambient dimension bound. -/
+theorem Non2SchurStructuralBranch.of_actionKernel_budgets_of_finrank_le
+    [FiniteDimensional (ZMod 2) A]
+    (sigma : Representation (ZMod 2) B A)
+    (S : Submodule (ZMod 2)[B] sigma.asModule)
+    [IsSimpleModule (ZMod 2)[B] S]
+    (s t : Nat)
+    (hnonfixed : ¬ representationSubmoduleFixed sigma S)
+    (htdim : t = Module.finrank (ZMod 2) sigma.invariants)
+    (hA : Module.finrank (ZMod 2) A ≤ s)
+    (ht : 32 * t ≤ 11 * s)
+    (hnonfaithfulHalf : schurSimpleActionKernel sigma S ≠ ⊥ →
+      2 * schurMixedSocleDimension sigma S t ≤ s)
+    (hscalar : schurSimpleActionKernel sigma S ≠ ⊥ →
+      schurSimpleProductDegree sigma S = 2 →
+      8 * schurMixedSocleDimension sigma S t ≤ 3 * s)
+    (hfaithfulClass : schurSimpleActionKernel sigma S = ⊥ →
+      schurSimpleProductDegree sigma S = 8 ∨
+        9 ≤ schurSimpleProductDegree sigma S)
+    (hfaithfulSmallFixed : schurSimpleActionKernel sigma S = ⊥ →
+      schurSimpleProductDegree sigma S = 8 → 5 * t ≤ s) :
+    Non2SchurStructuralBranch sigma S s t := by
+  apply Non2SchurStructuralBranch.of_actionKernel_budgets
+    sigma S s t hnonfixed ht
+  · exact schurMixedSocleDimension_le_of_finrank_le
+      sigma S hnonfixed s t htdim hA
+  · exact hnonfaithfulHalf
+  · exact hscalar
+  · exact hfaithfulClass
+  · exact hfaithfulSmallFixed
 
 end SymmetricSubgroupAsymptotics
 
