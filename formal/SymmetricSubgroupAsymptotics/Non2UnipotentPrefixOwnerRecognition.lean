@@ -79,15 +79,19 @@ def EarlierLocal {r : ℕ}
         (L.map (fusionOrbitAction (sourceAction i))))
 
 /-- The exact remaining application-specific bridge to the already ordered
-UP owner.  It states that a certified retained cut is sufficient for that
-owner to accept every reconstruction on the literal axis. -/
+UP owner.  It is deliberately specialized to the payload constructed from
+the chosen physical pair frame.  The historical E7 theorem concerns this
+actual section; it does not assert recognition of an arbitrary payload with
+the same source action and normal axis. -/
 def OwnerRecognizes {r : ℕ}
-    (Earlier : ∀ d, Fin r → Subgroup (Equiv.Perm (Fin d)) → Prop) :
+    (Earlier : ∀ d, Fin r → Subgroup (Equiv.Perm (Fin d)) → Prop)
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput) :
     Prop :=
   ∀ (i : ActionIndex)
     (N : {N : Subgroup (sourceAction i) // N.Normal})
-    (A : Non2OriginalFusionAxisPayload (pairCount i) (sourceAction i) N),
-      FixedCutUPCertified A.M (pairCount i) →
+    (_hcut : FixedCutUPCertified
+      (axisPayload hTracey hExceptional i N).M (pairCount i)),
         ∀ b (J : Subgroup (Equiv.Perm (Fin b)))
           (β : GroupEpimorphism J (sourceAction i ⧸ N.1)),
           EarlierLocal Earlier i b (fusionFullGoursatEncode N J β).1
@@ -98,24 +102,24 @@ is then deliberately not charged as a new recurrence row. -/
 noncomputable def axisOutcome_of_ownerRecognition
     {r : ℕ}
     (Earlier : ∀ d, Fin r → Subgroup (Equiv.Perm (Fin d)) → Prop)
-    (hRecognizes : OwnerRecognizes Earlier)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hRecognizes : OwnerRecognizes Earlier hTracey hExceptional)
     (i : ActionIndex)
     (N : {N : Subgroup (sourceAction i) // N.Normal}) :
     Non2OriginalFusionAxisOutcome (pairCount i) (sourceAction i) N
       (EarlierLocal Earlier i) := by
   let A := axisPayload hTracey hExceptional i N
-  exact .earlier (hRecognizes i N A
+  exact .earlier (hRecognizes i N
     (axisPayload_fixedCutUPCertified hTracey hExceptional i N))
 
 /-- Exact zero-payment conclusion for the appended residual owner. -/
 theorem residualEpiCount_eq_zero_of_ownerRecognition
     {r b : ℕ}
     (Earlier : ∀ d, Fin r → Subgroup (Equiv.Perm (Fin d)) → Prop)
-    (hRecognizes : OwnerRecognizes Earlier)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hRecognizes : OwnerRecognizes Earlier hTracey hExceptional)
     (i : ActionIndex)
     (N : {N : Subgroup (sourceAction i) // N.Normal})
     (J : Subgroup (Equiv.Perm (Fin b))) :
@@ -126,7 +130,7 @@ theorem residualEpiCount_eq_zero_of_ownerRecognition
   apply fusionSurvivingEpiCount_residual_eq_zero_of_earlierOwned
     Earlier (sourceAction i) N J
   intro β
-  exact hRecognizes i N (axisPayload hTracey hExceptional i N)
+  exact hRecognizes i N
     (axisPayload_fixedCutUPCertified hTracey hExceptional i N) b J β
 
 end Non2UnipotentPrefixFiniteMenu
