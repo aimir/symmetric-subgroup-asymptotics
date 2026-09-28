@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.Non2SchurPermutationBranch
+import SymmetricSubgroupAsymptotics.Non2SchurScalarOrbit
 import SymmetricSubgroupAsymptotics.TraceyBinaryOrbitInput
 import SymmetricSubgroupAsymptotics.PermutationBinaryLargeSection
 
@@ -8,8 +9,9 @@ import SymmetricSubgroupAsymptotics.PermutationBinaryLargeSection
 For a faithful transitive original action, a nontrivial normal row kernel has
 no singleton orbit.  The visible binary Tracey input and the arbitrary orbit
 filtration therefore prove the entire nonfaithful half-capacity branch.  In
-the degree-two scalar row, only the concrete lower bound eight on the same
-kernel orbits remains.
+the degree-two scalar row, Schur linearity proves that the image is `C₃`, so
+the same kernel has one or three orbits and the stronger three-eighths bound
+follows at original degree at least 24.
 -/
 
 set_option autoImplicit false
@@ -24,9 +26,9 @@ variable {B X A : Type} [Group B] [Finite B] [Finite X] [MulAction B X]
     [FaithfulSMul B X] [MulAction.IsPretransitive B X]
     [AddCommGroup A] [Module (ZMod 2) A] [FiniteDimensional (ZMod 2) A]
 
-/-- After installing the visible transitive-module input, the four-way row
-assignment needs only the global fixed bound, the scalar orbit lower bound,
-and the two faithful-image facts. -/
+/-- After installing the visible transitive-module input and the proved
+scalar `C₃` orbit theorem, the four-way row assignment needs only original
+degree at least 24, the global fixed bound, and the two faithful-image facts. -/
 theorem Non2SchurStructuralBranch.of_Tracey_orbit_caps
     (hTracey : TraceyBinaryOrbitInput)
     (x : X)
@@ -38,13 +40,9 @@ theorem Non2SchurStructuralBranch.of_Tracey_orbit_caps
       (permutationFunctionRepresentation (ZMod 2) B X))
     (qmap : M.toRepresentation.IntertwiningMap sigma)
     (hqmap : Function.Surjective qmap)
+    (hs : 24 ≤ Nat.card X)
     (ht : 32 * Module.finrank (ZMod 2) sigma.invariants ≤
       11 * Nat.card X)
-    (hscalarOrbit : schurSimpleActionKernel sigma S ≠ ⊥ →
-      schurSimpleProductDegree sigma S = 2 →
-      ∀ o : MulAction.orbitRel.Quotient
-        (schurSimpleActionKernel sigma S) X,
-        8 ≤ Nat.card o.orbit)
     (hfaithfulClass : schurSimpleActionKernel sigma S = ⊥ →
       schurSimpleProductDegree sigma S = 8 ∨
         9 ≤ schurSimpleProductDegree sigma S)
@@ -68,9 +66,10 @@ theorem Non2SchurStructuralBranch.of_Tracey_orbit_caps
       ⟨⟨o.nonempty_orbit.choose, o.nonempty_orbit.choose_spec⟩⟩
     have hpos : 0 < Nat.card o.orbit := Nat.card_pos
     exact traceyBinaryOrbitCap_twice_le _ (by omega)
-  · intro hK hq o
+  · intro _ hq o
     exact traceyBinaryOrbitCap_eight_le_three_mul _
-      (hscalarOrbit hK hq o)
+      (eight_le_schurSimpleActionKernel_orbit_card
+        x sigma S hnonfixed hq hs o)
   · exact hfaithfulClass
   · exact hfaithfulSmallFixed
 
