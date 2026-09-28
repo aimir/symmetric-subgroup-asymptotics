@@ -324,9 +324,27 @@ coordinate, so coordinate-surjectivity alone does not remove it.  It has no
 nonzero $A_4$-invariant linear functional, whereas the diagonal and full
 modules do.  Thus, once the literal fibre-coordinate action is identified
 with this natural module, the retained character forces the block kernel to
-be diagonal or full.  The formal argument keeps this coordinate-action
-identification as the remaining bridge rather than silently replacing the
-physical signed action by the natural permutation module.
+be diagonal or full.
+
+The same four-submodule classification removes a second, potentially
+case-by-case step.  If $B,C\leq\mathbb F_3^4$ are $A_4$-invariant, the
+section $B/(B\cap C)$ embeds $A_4$-equivariantly back into
+$\mathbb F_3^4$: the required maps are the identity, the diagonal and
+augmentation projections, or zero.  Suppose its action factors through an
+actual quotient $A_4\twoheadrightarrow Q$.  Evaluating an embedded vector
+at one coordinate and translating that functional through $Q$ gives an
+injective matrix-coefficient map
+\[
+ B/(B\cap C)\lhook\joinrel\longrightarrow \mathbb F_3[Q].
+\]
+Thus every such descended section lies in one copy of the regular module of
+its actual quotient; no classification of the quotients of $A_4$ is needed.
+The formal argument still keeps the physical bridge explicit: for every
+original normal axis one must construct coherent fibre coordinates,
+identify the relevant physical section with such a $B/(B\cap C)$, and prove
+that its action factors through the displayed quotient.  This avoids
+silently replacing the physical signed action by the natural permutation
+module.
 
 There is a parallel intrinsic reduction in the four-point-fibre branch.
 The physical intersection $N\cap\ker(A\to C_3)$ has relative ternary head
