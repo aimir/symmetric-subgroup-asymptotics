@@ -16,6 +16,22 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace RepeatedMarkerOwnerBound
 
+abbrev OutsideFitsFamilyAt (n : ℕ) :=
+  {H : OrdinaryRemainderSubgroups n //
+    ¬ RepeatedMarkerOrbitProfiles.Fits H.1}
+
+theorem outsideFitsAt_hasOrbit {n : ℕ}
+    (H : OutsideFitsFamilyAt n) : Nonempty (OutsideOrbit H.1.1) := by
+  have hbad := H.2
+  change ¬ ∀ o : OrbitProfileFromOrbits.Orbit H.1.1,
+    IsPGroup 2 (OrbitProfileFromOrbits.orbitImage H.1.1 o) ∨
+      ∃ e : Fin 3 ≃ o.orbit,
+        relabelSubgroup e oddMarkerActionSubgroup =
+          OrbitProfileFromOrbits.orbitImage H.1.1 o at hbad
+  push Not at hbad
+  obtain ⟨o, hp, hs⟩ := hbad
+  exact ⟨⟨o, hp, not_exists.mpr hs⟩⟩
+
 abbrev Non2OutsideDegree (n : ℕ) :=
   {d : Fin (n+1) // 3 ≤ d.1}
 
@@ -51,10 +67,20 @@ theorem non2OutsidePredicate_natural {n : ℕ}
 
 /-- The outside remainder as a literal set of original permutation
 subgroups, rather than as an iterated subtype. -/
-def OutsideFitsSubgroupSet (N epsilon : ℕ) :
-    Set (Subgroup (Equiv.Perm (Fin (2*N+epsilon)))) :=
-  {H | ¬ IsCriticalSubgroup (2*N+epsilon) H ∧
+def OutsideFitsSubgroupSetAt (n : ℕ) :
+    Set (Subgroup (Equiv.Perm (Fin n))) :=
+  {H | ¬ IsCriticalSubgroup n H ∧
     ¬ RepeatedMarkerOrbitProfiles.Fits H}
+
+abbrev OutsideFitsSubgroupSet (N epsilon : ℕ) :=
+  OutsideFitsSubgroupSetAt (2*N+epsilon)
+
+def outsideFitsSubgroupSetAtEquiv (n : ℕ) :
+    OutsideFitsFamilyAt n ≃ OutsideFitsSubgroupSetAt n where
+  toFun H := ⟨H.1.1, H.1.2, H.2⟩
+  invFun H := ⟨⟨H.1, H.2.1⟩, H.2.2⟩
+  left_inv _ := rfl
+  right_inv _ := rfl
 
 def outsideFitsSubgroupSetEquiv (N epsilon : ℕ) :
     OutsideFitsFamily N epsilon ≃ OutsideFitsSubgroupSet N epsilon where
@@ -68,21 +94,57 @@ theorem outsideFitsSubgroupSet_card (N epsilon : ℕ) :
       Nat.card (OutsideFitsFamily N epsilon) := by
   rw [Nat.card_congr (outsideFitsSubgroupSetEquiv N epsilon).symm]
 
-/-- The one selected bad orbit used for ownership and for the small/growing
-width partition.  Keeping this choice named prevents a subgroup with several
-bad orbits from entering both sectors. -/
-def selectedOutsideOrbit (N epsilon : ℕ)
+/-- The one selected bad orbit in arbitrary ambient degree.  Keeping this
+choice named prevents a subgroup with several bad orbits from entering more
+than one width sector. -/
+def selectedOutsideOrbitAt {n : ℕ}
+    (H : OutsideFitsFamilyAt n) : OutsideOrbit H.1.1 :=
+  Classical.choice (outsideFitsAt_hasOrbit H)
+
+def selectedOutsideWidthAt {n : ℕ}
+    (H : OutsideFitsFamilyAt n) : ℕ :=
+  Nat.card (selectedOutsideOrbitAt H).1.orbit
+
+abbrev selectedOutsideOrbit (N epsilon : ℕ)
     (H : OutsideFitsFamily N epsilon) : OutsideOrbit H.1.1 :=
-  Classical.choice (outsideFits_hasOrbit N epsilon H)
+  selectedOutsideOrbitAt H
 
 def selectedOutsideWidth (N epsilon : ℕ)
     (H : OutsideFitsFamily N epsilon) : ℕ :=
-  Nat.card (selectedOutsideOrbit N epsilon H).1.orbit
+  selectedOutsideWidthAt H
+
+theorem selectedOutsideWidthAt_gt_two {n : ℕ}
+    (H : OutsideFitsFamilyAt n) :
+    2 < selectedOutsideWidthAt H :=
+  outsideOrbit_card_gt_two H.1.1 (selectedOutsideOrbitAt H)
 
 theorem selectedOutsideWidth_gt_two (N epsilon : ℕ)
     (H : OutsideFitsFamily N epsilon) :
     2 < selectedOutsideWidth N epsilon H :=
-  outsideOrbit_card_gt_two H.1.1 (selectedOutsideOrbit N epsilon H)
+  selectedOutsideWidthAt_gt_two H
+
+/-- The selected orbit gives a representative of its exact width, and the
+whole original subgroup enters that representative's canonical family. -/
+theorem outsideFitsAt_selected_physical_cover {n : ℕ}
+    (H : OutsideFitsFamilyAt n) :
+    ∃ i : Non2OutsideActionLabel n,
+      non2OutsideWidth i = selectedOutsideWidthAt H ∧
+      H.1.1 ∈ FusionWidthCanonicalFamily (non2OutsideAction i)
+        (non2OutsideWidth_le i) (non2OutsidePredicate i) := by
+  let o : OutsideOrbit H.1.1 := selectedOutsideOrbitAt H
+  have hle : Nat.card o.1.orbit ≤ n := by
+    have hcard := Nat.card_le_card_of_injective
+      (Subtype.val : o.1.orbit → Fin n) Subtype.val_injective
+    simpa only [Nat.card_fin] using hcard
+  let d : Non2OutsideDegree n :=
+    ⟨⟨Nat.card o.1.orbit, Nat.lt_succ_of_le hle⟩,
+      outsideOrbit_card_gt_two H.1.1 o⟩
+  obtain ⟨i, eO, himage⟩ := Non2TransitiveActionClass.orbit_cover
+    H.1.1 o.1 (w := d.1.1) (by rfl) o.2.1
+  refine ⟨⟨d, i⟩, rfl, ?_⟩
+  exact FusionOrbitProfileChart.mem_widthCanonicalFamily_ordinary
+    H.1.1 H.1.2 o.1 (by rfl) (non2OutsideWidth_le ⟨d, i⟩)
+      i.representative eO himage
 
 /-- Every outside subgroup enters one member of the complete non-2 action
 menu.  There is no orbit multiplicity in this cover: one bad orbit is chosen
@@ -93,20 +155,8 @@ theorem outsideFits_physical_cover (N epsilon : ℕ)
     ∃ i : Non2OutsideActionLabel (2*N+epsilon),
       H.1.1 ∈ FusionWidthCanonicalFamily (non2OutsideAction i)
         (non2OutsideWidth_le i) (non2OutsidePredicate i) := by
-  let o : OutsideOrbit H.1.1 := selectedOutsideOrbit N epsilon H
-  have hle : Nat.card o.1.orbit ≤ 2*N+epsilon := by
-    have hcard := Nat.card_le_card_of_injective
-      (Subtype.val : o.1.orbit → Fin (2*N+epsilon)) Subtype.val_injective
-    simpa only [Nat.card_fin] using hcard
-  let d : Non2OutsideDegree (2*N+epsilon) :=
-    ⟨⟨Nat.card o.1.orbit, Nat.lt_succ_of_le hle⟩,
-      outsideOrbit_card_gt_two H.1.1 o⟩
-  obtain ⟨i,eO,himage⟩ := Non2TransitiveActionClass.orbit_cover
-    H.1.1 o.1 (w := d.1.1) (by rfl) o.2.1
-  refine ⟨⟨d,i⟩, ?_⟩
-  exact FusionOrbitProfileChart.mem_widthCanonicalFamily_ordinary
-    H.1.1 H.1.2 o.1 (by rfl) (non2OutsideWidth_le ⟨d,i⟩)
-      i.representative eO himage
+  obtain ⟨i, _, hi⟩ := outsideFitsAt_selected_physical_cover H
+  exact ⟨i, hi⟩
 
 theorem outsideFitsSubgroupSet_physical_cover (N epsilon : ℕ)
     (H : Subgroup (Equiv.Perm (Fin (2*N+epsilon))))

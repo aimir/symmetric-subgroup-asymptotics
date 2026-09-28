@@ -95,6 +95,15 @@ theorem ordinaryRemainder_relabel_iff (n : ℕ) (e : Equiv.Perm (Fin n))
     (¬ IsCriticalSubgroup n (relabelSubgroup e H)) ↔ ¬ IsCriticalSubgroup n H :=
   not_congr (isCriticalSubgroup_relabel_iff n e H)
 
+/-- The same relabelling invariance across two definitionally different
+finite degrees whose cardinalities have been identified. -/
+theorem ordinaryRemainder_relabel_equiv_iff {m n : ℕ} (h : m = n)
+    (e : Fin m ≃ Fin n) (H : Subgroup (Equiv.Perm (Fin m))) :
+    (¬ IsCriticalSubgroup n (relabelSubgroup e H)) ↔
+      ¬ IsCriticalSubgroup m H := by
+  subst n
+  exact ordinaryRemainder_relabel_iff m e H
+
 /-- A relabelling-invariant predicate of actual physical subgroups is natural
 under the original action normalizer and every relabelling of the complete
 complement. The supplied point equivalence is used on the entire subgroup. -/
