@@ -85,8 +85,8 @@ Lemma~\ref{lem:binary-permutation-rank}. This proves \eqref{eq:cocycle}.
 
 \begin{proposition}[Central cut and graph moment]\label{prop:prefix}
 Let $1\to A\to Q\to B\to1$ have elementary binary kernel and let
-$C\leq A^B$, $c=\dim C$. Suppose $T\leq S_s$ is a specified
-permutation cover $\pi:T\to B$. Put
+$C\leq A^B$, $c=\dim C$. Suppose $T\leq S_s$ is a specified faithful
+permutation action with an epimorphism $\pi:T\twoheadrightarrow B$. Put
 \[
  D_C=|A/C|\,|H^1(B,A/C)|,\quad
  \lambda=\tfrac12r(A/C),\quad v=s+2c,\quad
@@ -324,9 +324,23 @@ $g\geq s/48$. Hence every fixed finite menu of these entries admits
 \eqref{eq:finite-fusion}.
 \end{corollary}
 \begin{proof}
-The pair kernel is a submodule of $\F_2^s$; the action on its indicated
-section factors through $B$. Apply Theorem~\ref{thm:capacity-intro}
-and Proposition~\ref{prop:prefix}. With $c=\dim C$,
+Let $K$ be the pair kernel. For arbitrary $N\lhd U$ put
+$A=KN/N\cong K/(K\cap N)$ and $B=U/(KN)$. The original quotient
+$U/N\twoheadrightarrow B$ has kernel $A$, with its literal conjugation
+action. Moreover the faithful top $T=U/K\leq S_s$ maps onto $B$.
+Inflating the $B$-module $A$ along $T\twoheadrightarrow B$ identifies it
+with a section of the binary permutation module on the $s$ pairs.
+
+Apply Theorem~\ref{thm:capacity-intro} to this faithful nonbinary cover.
+Surjective inflation preserves the fixed space and the full
+fixed-quotient displacement dimension. A retained central cut has zero
+displacement slice before inflation exactly when it does afterwards, and
+the Schur capacity of the quotient by that cut is unchanged. The selected
+cut therefore descends to a certificate for the original extension
+$U/N\twoheadrightarrow B$. Proposition~\ref{prop:prefix} uses the same
+cover $T\twoheadrightarrow B$ for every common-source moment.
+
+With $c=\dim C$,
 \[
  g=2s-(s+2c)-4r(A/C)\geq s/48.
 \]
@@ -337,43 +351,52 @@ also satisfies
 \end{equation}
 Indeed $2c\leq t=\dim A^B$ and $16t\leq5s$, so
 $32r_*=16s+32c\leq16s+16t\leq21s$.
-There was no assumption that $N\leq K$, nor that the common quotient
-or its subdirect cores are abelian. For labelled transport, fix one
-witness on each original-normalizer orbit of entries and fixed
-transporters before counting $J$. A normalizer-equivariant choice of
-an individual witness is not needed, and the witnesses are not counted
-as additional decorations.
+For labelled transport, choose one witness on each original-normalizer
+orbit of literal entries and fixed transporters before counting $J$.
+The witness is auxiliary certificate data and contributes no additional
+physical weight.
 \end{proof}
 
-\begin{remark}[Literal pair-kernel axes and residual selection]
-Let $K=\ker(U\to T)$ be the literal kernel of the chosen pair action. If
-$N\lhd U$ satisfies $N\leq K$, then the quotient $U/N$ maps onto the
-unchanged faithful top by
+\begin{remark}[Arbitrary literal pair axes and faithful-cover descent]
+Let $K=\ker(U\to T)$ be the literal kernel of the chosen pair action and
+let $N\lhd U$ be arbitrary. There are canonical epimorphisms
 \[
- \bar\tau_N:U/N\twoheadrightarrow T,\qquad uN\longmapsto\tau(u),
+ q_N:U/N\twoheadrightarrow B_N:=U/(KN),\qquad
+ \sigma_N:T=U/K\twoheadrightarrow B_N,
 \]
-and its kernel is reversibly identified, with the original conjugation
-action, with the retained pair section
+and
 \[
- \ker\bar\tau_N\cong K/N
- \cong \mathcal K_F/\mathcal N_F(N).
+ \ker q_N=KN/N\cong K/(K\cap N)=:A_N.
 \]
-Thus the nonbinary certificate above applies on such an axis without
-replacing the top, splitting the extension, or discarding the original pair
-coordinates.
+The first is the original nonsplit extension attached to the Goursat axis.
+The second is used only as its faithful permutation cover. Under the
+literal kernel chart, the $B_N$-module $A_N$, inflated along $\sigma_N$,
+is the section of the binary permutation module obtained from $K$ by
+quotienting by $K\cap N$.
 
-For a fixed finite physical menu, retain on every literal normal axis either
-the complete capacity payload---certificate, original quotient map, extension
-chart, and faithful moment cover---or a proof that every Goursat
-reconstruction on that axis belongs to an earlier owner. If the residual
-predicate excludes those owners, the latter alternative has an empty
-surviving-epimorphism fibre for every complete source $J$. The axis remains
-in the original normal-axis sum with coefficient zero, while a capacity axis
-keeps its original normalizer divisor and first-moment continuation. The
-resulting residual row is forward and exponentially contractive. This
-dichotomy does not prove the physical axis exhaustion or orbit cover. For
-growing action widths it also leaves the uniform original-weight estimate
-\eqref{eq:nonbinary-menu-mass} as a separate input.
+Surjectivity of $\sigma_N$ preserves the fixed space and the full
+fixed-quotient displacement dimension. For every central subspace $C$,
+the displacement slice for the inflated action is zero if and only if the
+slice for the $B_N$-action is zero; the Schur capacity of $A_N/C$ is also
+unchanged by inflation. Hence the cut selected on the faithful nonbinary
+top descends to a certificate for the actual acting quotient $B_N$.
+Together with $q_N$ and its kernel chart this gives the complete capacity
+payload on every literal normal axis. Neither $N\leq K$ nor faithfulness
+or nonbinaryness of $B_N$ is required, and $N$ is never replaced by
+$K\cap N$ in the original quotient.
+
+For the pair actions of Corollary~\ref{cor:pair-fusion}, every literal
+normal axis therefore carries the capacity payload; no earlier-owner
+alternative is needed to manufacture missing pair data. In a larger
+ordered residual menu one may nevertheless suppress an axis after proving
+that every Goursat reconstruction on it belongs to an earlier physical
+owner. If the residual predicate is disjoint from those owners, its
+surviving-epimorphism fibre is empty for every complete source $J$, so the
+axis remains in the original normal-axis sum with coefficient zero. Given
+a separately proved physical cover, the capacity and zero-fibre branches
+yield the forward residual row. Faithful-cover descent itself does not prove
+that cover, and for growing widths it does not prove the uniform
+original-weight estimate \eqref{eq:nonbinary-menu-mass}.
 \end{remark}
 
 The strengthened prefix bound also makes the growing-width numerical
