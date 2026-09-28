@@ -205,6 +205,97 @@ theorem survivingEpiCount_le_of_retainedCells
     K.checked J Accepted cell Z hcell D eta hcapacity
 
 end FusionAxisCarrier
+
+namespace RepeatedMarkerOwnerBound
+
+/-- Full general non-2 forward estimate from earlier quotient owners and
+annihilator-aware retained cells on every rejected reversible-carrier axis.
+This version has no raw intrinsic cardinal-envelope premise: the caller gives
+an actual comparator-plus-flag cell map, its uniform cell fibre bound, and the
+single numerical capacity inequality charging both the flag and the fibre. -/
+noncomputable def
+    outsideFrontier_exponentialForwardEstimate_of_axisOwnerOrRetainedCells
+    {r : ℕ}
+    (Earlier : ∀ d, Fin r → Subgroup (Equiv.Perm (Fin d)) → Prop)
+    (hEarlier : DegreeNaturalOwnerMenu Earlier)
+    {ρ : ℝ}
+    (R : ∀ w, Non2FirstOwnerIndex (r+1) w → Type*)
+    [∀ w i, Group (R w i)] [∀ w i, Finite (R w i)]
+    (Owned : ∀ w (i : Non2FirstOwnerIndex (r+1) w) (_b : ℕ),
+      {N : Subgroup (non2FirstOwnerAction w i) // N.Normal} → Prop)
+    (C : ∀ w (i : Non2FirstOwnerIndex (r+1) w) (_b : ℕ),
+      {N : Subgroup (non2FirstOwnerAction w i) // N.Normal} → ℝ)
+    (A : ∀ w, Non2FirstOwnerIndex (r+1) w → ℝ)
+    (v : ∀ w, Non2FirstOwnerIndex (r+1) w → ℕ)
+    (η δ c α : ∀ w, Non2FirstOwnerIndex (r+1) w → ℝ)
+    (ρR : ∀ w i, R w i →* Equiv.Perm (Fin (v w i)))
+    (hρR : ∀ w i, Function.Injective (ρR w i))
+    (hC : ∀ w i b N, 0 ≤ C w i b N)
+    (hA : ∀ w i, A w i =
+      (Nat.card (Subgroup.normalizer
+        (non2FirstOwnerAction w i : Set (Equiv.Perm (Fin w)))) : ℝ))
+    (hα : ∀ w i, α w i = η w i + c w i)
+    (hOwned : ∀ w i b N, Owned w i b N →
+      FusionQuotientComparator
+        (non2FirstOwnerAction w i) N (R w i))
+    (K : ∀ w i N,
+      FusionAxisCarrier (non2FirstOwnerAction w i) N)
+    (Accepted : ∀ w i b N,
+      Subgroup ((K w i N).checked.carrier × Equiv.Perm (Fin b)) → Prop)
+    (haccept : ∀ w i b N (J : Subgroup (Equiv.Perm (Fin b)))
+        (γ : GroupEpimorphism J (K w i N).checked.quotient),
+      (K w i N).checked.carrierInverseSurvival
+          (K w i N).source_eq
+          (non2FirstOwnerPredicate
+            (ownerOrResidualEligible Earlier) w i b)
+          (fusionQuotientGraph (K w i N).checked.beta J γ.1) →
+        Accepted w i b N
+          (fusionQuotientGraph (K w i N).checked.beta J γ.1))
+    (Flag : ∀ w (i : Non2FirstOwnerIndex (r+1) w) b
+      (_N : {N : Subgroup (non2FirstOwnerAction w i) // N.Normal})
+      (_J : Subgroup (Equiv.Perm (Fin b))), Type*)
+    (hFlag : ∀ w i b N J, Finite (Flag w i b N J))
+    (cell : ∀ w i b N (J : Subgroup (Equiv.Perm (Fin b))),
+      FusionCarrierAcceptedEpi (K w i N).checked J (Accepted w i b N) →
+        CompleteQuotientMap J (R w i) × Flag w i b N J)
+    (Z : ∀ (w) (i : Non2FirstOwnerIndex (r+1) w) (b)
+      (_N : {N : Subgroup (non2FirstOwnerAction w i) // N.Normal})
+      (_J : Subgroup (Equiv.Perm (Fin b))), ℕ)
+    (hcell : ∀ w i b N (J : Subgroup (Equiv.Perm (Fin b)))
+        (d : CompleteQuotientMap J (R w i) × Flag w i b N J),
+      Nat.card {γ : FusionCarrierAcceptedEpi
+          (K w i N).checked J (Accepted w i b N) //
+        cell w i b N J γ = d} ≤ Z w i b N J)
+    (hcapacity : ∀ w i b N, ¬ Owned w i b N →
+      ∀ J : Subgroup (Equiv.Perm (Fin b)),
+        (Nat.card (Flag w i b N J) * Z w i b N J : ℕ) ≤
+          C w i b N * (2 : ℝ) ^ (η w i * b))
+    (hρ : 0 < ρ) (hρ8 : ρ ≤ 1 / 8)
+    (hp : GrowingQuotientParameterBound ρ v η δ c α)
+    (hmass : GrowingMenuMassBound 3
+      (fun w i b => fusionAxisEnvelopeTotal
+        (non2FirstOwnerAction w i)
+        (fusionOwnerCapacityCoefficient b
+          (non2FirstOwnerAction w i) (Owned w i b) (C w i b) (η w i))) A)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ))) :
+    OrdinaryFrontierClosure.ExponentialForwardEstimate
+      OrdinaryFrontierClosure.outsideFrontierRatio := by
+  apply outsideFrontier_exponentialForwardEstimate_of_axisOwnerOrCarrier
+    Earlier hEarlier R Owned C A v η δ c α ρR hρR hC hA hα hOwned
+      K Accepted haccept
+  · intro w i b N hN J
+    letI : Finite (Flag w i b N J) := hFlag w i b N J
+    exact fusionCarrierAcceptedEpi_card_le_ownerCapacity_of_retainedCells
+      (K w i N).checked J (Accepted w i b N) (cell w i b N J)
+      (Z w i b N J) (hcell w i b N J) (C w i b N) (η w i)
+      (hcapacity w i b N hN J)
+  · exact hρ
+  · exact hρ8
+  · exact hp
+  · exact hmass
+  · exact hcoarse
+
+end RepeatedMarkerOwnerBound
 end SymmetricSubgroupAsymptotics
 
 end
