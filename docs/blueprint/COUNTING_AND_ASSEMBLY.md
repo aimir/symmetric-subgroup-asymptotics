@@ -278,4 +278,9 @@ binary-nine.  This split uses the retained high normal pair and does not rely
 on finite-catalogue action recognition.  The remaining aligned numerical
 producers are the ternary 3-group rows (degree-sensitive at 3, 9 and 27), the
 two degree-six intrinsic owners, the binary-nine degree-twelve owner, and the
-critical natural-A4 packet.
+critical natural-A4 packet.  The simultaneous-head part of the ternary
+3-group row is now internal: iterating the literal three-block cover gives
+elementary ternary quotient ranks at most 1, 2 and 5 in degrees 3, 9 and 27.
+The remaining ternary input is the arbitrary-normal block-kernel section
+chart and its invariant-dimension bound, which turns those head estimates
+into the physical source-sum recurrence.
