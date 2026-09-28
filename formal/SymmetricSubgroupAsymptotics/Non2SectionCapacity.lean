@@ -3,6 +3,8 @@ import SymmetricSubgroupAsymptotics.Non2CentralCutFusion
 import SymmetricSubgroupAsymptotics.Non2CoupledSchurNumerics
 import SymmetricSubgroupAsymptotics.Non2SchurTraceyBranch
 import SymmetricSubgroupAsymptotics.TraceyBinaryFiveSixteenths
+import SymmetricSubgroupAsymptotics.Non2UnipotentSection
+import SymmetricSubgroupAsymptotics.Non2ResidualOrbitCapacity
 
 /-!
 # The retained nonbinary section-capacity theorem
@@ -276,6 +278,86 @@ theorem exists_non2SectionCapacity_cut_of_Tracey_inputs
   · exact binary_permutationSection_invariants_five_sixteenths
       hTracey hExceptional M.ρ P qmap hqmap hs
   · exact hunipotent
+
+/-- Local `3/8` head caps on the literal `O²(B)` orbits now discharge the
+last unipotent premise.  This is the complete section-capacity theorem with
+only the two named Tracey literature inputs and the residual-orbit caps
+visible at its boundary. -/
+theorem exists_non2SectionCapacity_cut_of_residual_orbit_caps
+    {X : Type} [Finite X] [MulAction B X] [FaithfulSMul B X]
+    [MulAction.IsPretransitive B X]
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput) (x : X)
+    (M : Rep (ZMod 2) B) [FiniteDimensional (ZMod 2) M]
+    (P : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) B X))
+    (qmap : P.toRepresentation.IntertwiningMap M.ρ)
+    (hqmap : Function.Surjective qmap)
+    (hs : 24 ≤ Nat.card X) (heven : Even (Nat.card X))
+    (cap : MulAction.orbitRel.Quotient (terminalTwoResidual B) X → ℕ)
+    (hcap : ∀ (o : MulAction.orbitRel.Quotient (terminalTwoResidual B) X)
+      (S : Subrepresentation
+        (permutationFunctionRepresentation (ZMod 2)
+          (terminalTwoResidual B) o.orbit)),
+      Module.finrank (ZMod 2) (S.toRepresentation.IntertwiningMap
+        (Representation.trivial (ZMod 2)
+          (terminalTwoResidual B) (ZMod 2))) ≤ cap o)
+    (hweight : ∀ o : MulAction.orbitRel.Quotient (terminalTwoResidual B) X,
+      8 * cap o ≤ 3 * Nat.card o.orbit) :
+    let t := Module.finrank (ZMod 2) M.ρ.invariants
+    let ell := Module.finrank (ZMod 2)
+      (displacementSlice M.ρ M.ρ.invariants)
+    ∃ C : {C : Submodule (ZMod 2) M // C ≤ M.ρ.invariants},
+      Module.finrank (ZMod 2) C.1 = non2CentralCutDimension t ell ∧
+      displacementSlice M.ρ C.1 = ⊥ ∧
+      Module.finrank (ZMod 2)
+          (OriginalCentralCutExtension.quotientModule M C).ρ.invariants =
+        t - non2CentralCutDimension t ell ∧
+      2 * (Module.finrank (ZMod 2) C.1 : ℝ) +
+          4 * OriginalCentralCutFusion.capacity M C ≤
+        47 * (Nat.card X : ℝ) / 48 ∧
+      (Nat.card X : ℝ) / 768 ≤
+        OriginalCentralCutFusion.gapParameter M C (2 * Nat.card X)
+          (Nat.card X) := by
+  apply exists_non2SectionCapacity_cut_of_Tracey_inputs
+    hTracey hExceptional x M P qmap hqmap hs heven
+  exact binary_permutationSection_unipotent_of_residual_orbit_caps
+    M.ρ P qmap hqmap cap hcap hweight
+
+/-- Complete nonbinary section capacity from the two named Tracey inputs.
+The exact two-step preimage and the literal `O²(B)` orbit theorem now derive
+the former unipotent premise internally. -/
+theorem exists_non2SectionCapacity_cut_of_Tracey_inputs_full
+    {X : Type} [Finite X] [MulAction B X] [FaithfulSMul B X]
+    [MulAction.IsPretransitive B X]
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hB : ¬IsPGroup 2 B) (x : X)
+    (M : Rep (ZMod 2) B) [FiniteDimensional (ZMod 2) M]
+    (P : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) B X))
+    (qmap : P.toRepresentation.IntertwiningMap M.ρ)
+    (hqmap : Function.Surjective qmap)
+    (hs : 24 ≤ Nat.card X) (heven : Even (Nat.card X)) :
+    let t := Module.finrank (ZMod 2) M.ρ.invariants
+    let ell := Module.finrank (ZMod 2)
+      (displacementSlice M.ρ M.ρ.invariants)
+    ∃ C : {C : Submodule (ZMod 2) M // C ≤ M.ρ.invariants},
+      Module.finrank (ZMod 2) C.1 = non2CentralCutDimension t ell ∧
+      displacementSlice M.ρ C.1 = ⊥ ∧
+      Module.finrank (ZMod 2)
+          (OriginalCentralCutExtension.quotientModule M C).ρ.invariants =
+        t - non2CentralCutDimension t ell ∧
+      2 * (Module.finrank (ZMod 2) C.1 : ℝ) +
+          4 * OriginalCentralCutFusion.capacity M C ≤
+        47 * (Nat.card X : ℝ) / 48 ∧
+      (Nat.card X : ℝ) / 768 ≤
+        OriginalCentralCutFusion.gapParameter M C (2 * Nat.card X)
+          (Nat.card X) := by
+  apply exists_non2SectionCapacity_cut_of_Tracey_inputs
+    hTracey hExceptional x M P qmap hqmap hs heven
+  exact binary_permutationSection_unipotent_of_Tracey
+    hTracey hB M.ρ P qmap hqmap
 
 end SymmetricSubgroupAsymptotics
 
