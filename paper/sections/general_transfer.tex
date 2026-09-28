@@ -84,12 +84,11 @@ Take one any-hot union and its cold complement as in
 Theorem~\ref{thm:fusion}.
 \end{proof}
 
-\begin{theorem}[Growing-parameter quotient transfer]\label{thm:parametric}
-Fix $w_0\geq5$, $0<\theta<1$, and $0<\rho\leq1/8$.
+\begin{theorem}[Growing-parameter comparator transfer]\label{thm:parametric}
+Fix $w_0\geq5$ and $0<\rho\leq1/8$.
 For each accepted transitive action $U$ of degree $w\geq w_0$, choose
-one certificate consisting of a quotient $R$, a faithful action of
-$R$ on $v_0\leq\theta h(w)$ points, and $\eta_U\geq0$.
-Require $v_0=0$ only when $R=1$, and
+one certificate consisting of a finite comparator $R$, a faithful action of
+$R$ on $v_0$ points, and $\eta_U\geq0$. Require
 \[
  \frac{h(w)-v_0}{8}-\eta_U\geq\rho w.
 \]
@@ -115,7 +114,12 @@ $v=\max(v_0,\lfloor4\rho h(w)\rfloor)$ and put
 \]
 Then $\delta\geq\rho w/2$, $v\leq(1-4\rho)w$, and
 $\eta_U+a=h(w)/8-\delta/2$. If $R\ne1$, also $v\geq\rho w$:
-use $v_0\geq2$ when $\rho w\leq1$, and otherwise
+indeed the original margin and $\eta_U\geq0$ give
+$v_0\leq h(w)-8\rho w\leq(1-4\rho)w$, while
+$\lfloor4\rho h(w)\rfloor\leq(1-4\rho)w$.
+The loss from padding is at most $4\rho w/8$, proving the stated lower
+bound on $\delta$. Faithfulness gives $v_0\geq2$ when $R\ne1$; use this
+when $\rho w\leq1$, and otherwise
 $\lfloor4\rho h(w)\rfloor\geq4\rho w-4\rho-1>\rho w$.
 For $R=1$ the hot event below is empty, so no lower bound on $v$ is
 needed. This controlled padding preserves the original margin.
