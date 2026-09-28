@@ -34,6 +34,13 @@ Directly from these formulas,
 For a nontrivial odd part use $E\leq u/3$. For powers of two the
 degrees $2,4,8,16,32$ give respectively $1,2,3,6,11$; from $64$
 onward the square-root expression is less than $u/3$.
+The last bound in \eqref{eq:E-consequences} also has a direct
+formula-level proof. If the odd part is nontrivial, the nonsoluble
+alternative has largest prime-power divisor at least three, while the
+soluble alternative has binary part at most $u/3$. If the odd part is
+one, a Sylow $2$-subgroup is transitive; writing $u=2^a$, one has
+$a\geq5$, and Pascal's recurrence propagates
+$32\binom a{\lfloor a/2\rfloor}\leq11\cdot2^a$ from $a=5$.
 
 \begin{lemma}[Orbit filtration]\label{lem:orbit-filtration}
 Let $H\lhd T$ have $k$ orbits of length $u\geq2$ in a transitive
@@ -151,7 +158,8 @@ If $H=1$, the group embeds in $\GL_d(2^f)$. Since its degree is
 even, $d\ne1$. The values $hd=fd^2<9$ are $4$ and $8$.
 The first would give $|T|\leq6$, impossible. In the second case
 $T\leq\GL_2(4)$, of order $180$. Since $s\mid |T|$ and $s\geq24$,
-the odd part of $s$ has largest prime-power divisor at least five.
+the even possibilities are $s\in\{30,36,60,90,180\}$, so the odd part
+of $s$ has largest prime-power divisor at least five.
 Thus $t\leq s/5$, and $L\leq s$ gives
 $2t+4m/d\leq s/2+3t/2\leq4s/5$.
 For $hd\geq9$, the same dimension bound gives

@@ -1,7 +1,9 @@
 import SymmetricSubgroupAsymptotics.Non2SchurPermutationBranch
 import SymmetricSubgroupAsymptotics.Non2SchurFaithfulDegree
+import SymmetricSubgroupAsymptotics.Non2SchurDegreeEightOrder
 import SymmetricSubgroupAsymptotics.Non2SchurScalarOrbit
 import SymmetricSubgroupAsymptotics.TraceyBinaryOrbitInput
+import SymmetricSubgroupAsymptotics.TraceyBinaryFormulaInput
 import SymmetricSubgroupAsymptotics.PermutationBinaryLargeSection
 
 /-!
@@ -74,6 +76,39 @@ theorem Non2SchurStructuralBranch.of_Tracey_orbit_caps
     exact schurSimpleProductDegree_eq_eight_or_nine_le_of_faithful
       x sigma S hK heven hs
   · exact hfaithfulSmallFixed
+
+/-- The exact retained Tracey formula closes both numerical fixed-space
+premises of `of_Tracey_orbit_caps`.  In the faithful degree-eight branch,
+the original group embeds in `GL₂(4)`, so the transitive degree divides
+`180` and the formula gives the sharper one-fifth bound. -/
+theorem Non2SchurStructuralBranch.of_Tracey_formula
+    (hTracey : TraceyBinaryFormulaInput)
+    (x : X)
+    (sigma : Representation (ZMod 2) B A)
+    (S : Submodule (ZMod 2)[B] sigma.asModule)
+    [IsSimpleModule (ZMod 2)[B] S]
+    (hnonfixed : ¬ representationSubmoduleFixed sigma S)
+    (M : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) B X))
+    (qmap : M.toRepresentation.IntertwiningMap sigma)
+    (hqmap : Function.Surjective qmap)
+    (hs : 24 ≤ Nat.card X)
+    (heven : Even (Nat.card X)) :
+    Non2SchurStructuralBranch sigma S (Nat.card X)
+      (Module.finrank (ZMod 2) sigma.invariants) := by
+  have hBounds := traceyBinaryFormulaBounds_section_invariants
+    hTracey sigma M qmap hqmap
+  apply Non2SchurStructuralBranch.of_Tracey_orbit_caps
+    hTracey.toOrbitInput x sigma S hnonfixed M qmap hqmap hs heven
+  · exact traceyBinaryFormulaBounds_eleven_thirtySecond hs hBounds
+  · intro hfaithful height
+    have hB180 := group_natCard_dvd_180_of_faithful_schurProductDegree_eight
+      x sigma S hfaithful heven height
+    have hX180 : Nat.card X ∣ 180 :=
+      (transitive_natCard_dvd_group_natCard (B := B) x).trans hB180
+    have hfive := largestPrimePower_ordCompl_two_ge_five_of_dvd_180
+      hX180 hs heven
+    exact traceyBinaryFormulaBounds_five_le hfive hBounds
 
 end SymmetricSubgroupAsymptotics
 
