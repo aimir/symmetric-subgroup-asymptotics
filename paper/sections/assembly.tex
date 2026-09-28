@@ -130,9 +130,11 @@ even binary count has already been paid with coefficient one.
 
 \begin{proof}[Proof of Theorem~\ref{thm:main}]
 By Proposition~\ref{prop:binary-error}, $E_N$ is bounded and
-decays exponentially. The coefficients $u_N,v_N$ are bounded,
-and their targets are $N,N-1$, so their contributions in
-\eqref{eq:master} decay exponentially. The complete marker row
+decays exponentially.  The elementary envelopes
+$u_N\leq4(N+1)$ and $v_N\leq2\Phi^{-2}(N+1)^3$ already suffice:
+fixed polynomial factors preserve exponential decay, and their targets
+are $N,N-1$.  Hence their contributions in \eqref{eq:master} decay
+exponentially. The complete marker row
 times the bounded binary errors is exponentially small as well.
 The forcing in \eqref{eq:master}, excluding its ordinary row,
 is therefore bounded and is $1+O(2^{-cn})$ for some $c>0$.
