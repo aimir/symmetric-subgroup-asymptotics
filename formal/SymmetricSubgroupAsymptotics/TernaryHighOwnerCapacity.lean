@@ -3,6 +3,7 @@ import SymmetricSubgroupAsymptotics.DegreeSixBinaryBlockOwner
 import SymmetricSubgroupAsymptotics.DegreeTwelveTopGeometry
 import SymmetricSubgroupAsymptotics.C1TernaryPrimeBaseOwner
 import SymmetricSubgroupAsymptotics.C1BinaryNineTopOwner
+import SymmetricSubgroupAsymptotics.C3HighOrbitDichotomy
 
 /-!
 # Earlier ownership or capacity on the high ternary frontier
@@ -120,6 +121,43 @@ theorem ternaryHigh_earlierOwner_or_capacity
       · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr hNine))))
   · right
     omega
+
+/-- Every high trivial-axis C3 state exposes a literal original orbit pair
+accepted by one of the structural earlier owners.  This retains the complete
+physical complement subgroup and makes no owner-counting assertion. -/
+theorem c3TrivialHigh_enters_ternaryEarlierOwner
+    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
+    (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    (h18 : DegreeEighteenTernaryHeadBound)
+    (b : ℕ)
+    (P : Subgroup (ternaryRegularAction × Equiv.Perm (Fin b)) → Prop)
+    (H : Subgroup (ternaryRegularAction × Equiv.Perm (Fin b)))
+    (hH : C3TrivialHighPredicate b P H) :
+    ∃ o : OrbitProfileFromOrbits.Orbit (C3ComplementSource b H),
+      ∃ (N : Subgroup
+          (OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o))
+        (hN : N.Normal),
+        TernaryHighEarlierOwner
+          (OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o)
+          o.orbit := by
+  let Owner := fun
+      (o : OrbitProfileFromOrbits.Orbit (C3ComplementSource b H))
+      (_N : Subgroup
+        (OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o))
+      (_hN : _N.Normal) =>
+        TernaryHighEarlierOwner
+          (OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o)
+          o.orbit
+  apply c3TrivialHigh_enters_orbitPairOwner b P H Owner
+  · intro o N hN
+    let A := OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o
+    letI : MulAction.IsPretransitive A o.orbit :=
+      orbitImage_pretransitive (C3ComplementSource b H) o
+    letI : N.Normal := hN
+    exact ternaryHigh_earlierOwner_or_capacity
+      hChief hWeight hPrimitive h18 N
+  · exact hH
 
 end SymmetricSubgroupAsymptotics
 
