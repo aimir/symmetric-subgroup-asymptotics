@@ -69,19 +69,21 @@ variable {G X A : Type} [Group G] [Finite G] [Finite X] [MulAction G X]
     [MulAction.IsPretransitive G X]
     [AddCommGroup A] [Module (ZMod 2) A] [FiniteDimensional (ZMod 2) A]
 
-/-- Pull the fixed space of an arbitrary quotient section back to its actual
-preimage in the original permutation submodule.  Its trivial quotient factors
-through the intrinsic coinvariants of that preimage, so the published head
-bound applies without embedding the section into the permutation module. -/
-theorem traceyBinaryFormulaBounds_section_invariants
-    (hTracey : TraceyBinaryFormulaInput)
+/-- The fixed space of an arbitrary quotient section is dominated by the
+head of one literal subrepresentation of the original permutation module.
+This is the reusable pullback step behind every formula-level fixed-space
+estimate. -/
+theorem exists_permutationSubrepresentation_head_ge_section_invariants
     (sigma : Representation (ZMod 2) G A)
     (M : Subrepresentation
       (permutationFunctionRepresentation (ZMod 2) G X))
     (q : M.toRepresentation.IntertwiningMap sigma)
     (hq : Function.Surjective q) :
-    TraceyBinaryFormulaBounds (Nat.card X)
-      (Module.finrank (ZMod 2) sigma.invariants) := by
+    ∃ P : Subrepresentation
+        (permutationFunctionRepresentation (ZMod 2) G X),
+      Module.finrank (ZMod 2) sigma.invariants ≤
+        Module.finrank (ZMod 2) (P.toRepresentation.IntertwiningMap
+          (Representation.trivial (ZMod 2) G (ZMod 2))) := by
   let P0 : Submodule (ZMod 2) M.toSubmodule :=
     sigma.invariants.comap q.toLinearMap
   let P : Subrepresentation
@@ -134,13 +136,27 @@ theorem traceyBinaryFormulaBounds_section_invariants
     intro w
     obtain ⟨v, hv⟩ := hqP w
     exact ⟨Representation.Coinvariants.mk P.toRepresentation v, hv⟩
-  have hdim : Module.finrank (ZMod 2) sigma.invariants ≤
-      Module.finrank (ZMod 2)
-        (P.toRepresentation.IntertwiningMap
-          (Representation.trivial (ZMod 2) G (ZMod 2))) := by
-    have h := LinearMap.finrank_le_finrank_of_surjective hqcoin
-    rw [← representationHead_finrank_eq_coinvariants] at h
-    exact h
+  refine ⟨P, ?_⟩
+  have hdim := LinearMap.finrank_le_finrank_of_surjective hqcoin
+  rw [← representationHead_finrank_eq_coinvariants] at hdim
+  exact hdim
+
+/-- Pull the fixed space of an arbitrary quotient section back to its actual
+preimage in the original permutation submodule.  Its trivial quotient factors
+through the intrinsic coinvariants of that preimage, so the published head
+bound applies without embedding the section into the permutation module. -/
+theorem traceyBinaryFormulaBounds_section_invariants
+    (hTracey : TraceyBinaryFormulaInput)
+    (sigma : Representation (ZMod 2) G A)
+    (M : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) G X))
+    (q : M.toRepresentation.IntertwiningMap sigma)
+    (hq : Function.Surjective q) :
+    TraceyBinaryFormulaBounds (Nat.card X)
+      (Module.finrank (ZMod 2) sigma.invariants) := by
+  obtain ⟨P, hdim⟩ :=
+    exists_permutationSubrepresentation_head_ge_section_invariants
+      sigma M q hq
   exact traceyBinaryFormulaBounds_mono (hTracey G X P) hdim
 
 theorem traceyBinaryK_two_pow (a : ℕ) :
