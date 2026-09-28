@@ -23,6 +23,8 @@ variable {B : Type} [Group B]
 its module-theoretic properties and the numerical original-weight reserve. -/
 structure Non2OriginalFusionCertificate
     (M : Rep (ZMod 2) B) (s : ℕ) where
+  fixed_budget :
+    16 * Module.finrank (ZMod 2) M.ρ.invariants ≤ 5 * s
   cut : {C : Submodule (ZMod 2) M // C ≤ M.ρ.invariants}
   cut_finrank : Module.finrank (ZMod 2) cut.1 =
     non2CentralCutDimension
@@ -71,6 +73,24 @@ theorem prefixDegree_eq_two_mul_markerHalf
     C.prefixDegree = 2 * C.markerHalf := by
   obtain ⟨k, hk⟩ := heven
   unfold prefixDegree markerHalf OriginalCentralCutFusion.prefixDegree
+  omega
+
+/-- The retained cut is at most half the fixed space.  Together with the
+`5/16` permutation-section bound, this puts the shifted half-width below
+`21/32` of the original half-width.  This is the quantitative prefix bound
+used by the varying-width direct aggregate. -/
+theorem markerHalf_strong
+    (C : Non2OriginalFusionCertificate M s) :
+    32 * C.markerHalf ≤ 21 * s := by
+  let t := Module.finrank (ZMod 2) M.ρ.invariants
+  let ell := Module.finrank (ZMod 2)
+    (displacementSlice M.ρ M.ρ.invariants)
+  have hcut : 2 * Module.finrank (ZMod 2) C.cut.1 ≤ t := by
+    rw [C.cut_finrank]
+    exact non2CentralCutDimension_le_half t ell
+  have hfixed := C.fixed_budget
+  unfold markerHalf
+  dsimp only [t] at hcut hfixed
   omega
 
 theorem prefixDegree_lt [Finite M]
@@ -203,14 +223,19 @@ theorem exists_non2OriginalFusionCertificate
     (hqmap : Function.Surjective qmap)
     (hs : 24 ≤ Nat.card X) (heven : Even (Nat.card X)) :
     Nonempty (Non2OriginalFusionCertificate M (Nat.card X)) := by
-  obtain ⟨C, hCdim, hzero, hfixed, hcost, hgap⟩ :=
+  have hfixed :
+      16 * Module.finrank (ZMod 2) M.ρ.invariants ≤ 5 * Nat.card X :=
+    binary_permutationSection_invariants_five_sixteenths
+      hTracey hExceptional M.ρ P qmap hqmap hs
+  obtain ⟨C, hCdim, hzero, hQfixed, hcost, hgap⟩ :=
     exists_non2SectionCapacity_cut_of_Tracey_inputs_full
       hTracey hExceptional hB x M P qmap hqmap hs heven
   exact ⟨{
+    fixed_budget := hfixed
     cut := C
     cut_finrank := hCdim
     displacement_zero := hzero
-    quotient_invariants := hfixed
+    quotient_invariants := hQfixed
     cost_le := hcost
     gap_ge := hgap }⟩
 
