@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.C3PhysicalStructuralOwner
+import SymmetricSubgroupAsymptotics.C3PhysicalOwnerBranches
 import SymmetricSubgroupAsymptotics.C3PhysicalFrontier
 
 /-!
@@ -30,8 +30,8 @@ def C3FinalResidualPredicate (b : ℕ)
       (relabelSubgroup (c3ResidualPointEquiv b)
         (H.map (fusionOrbitAction ternaryRegularAction))) ∧
     FirstOwned
-      (ownerOrResidualEligible c3PhysicalStructuralOwnerMenu (3+b))
-      (Fin.last 1)
+      (ownerOrResidualEligible c3PhysicalStructuralBranchMenu (3+b))
+      (Fin.last 4)
       (relabelSubgroup (c3ResidualPointEquiv b)
         (H.map (fusionOrbitAction ternaryRegularAction)))
 
@@ -42,15 +42,15 @@ theorem c3FinalResidualPredicate_natural (b : ℕ) :
     (c3ResidualPointEquiv b)
     (fun G => ¬ IsCriticalSubgroup (3+b) G ∧
       FirstOwned
-        (ownerOrResidualEligible c3PhysicalStructuralOwnerMenu (3+b))
-        (Fin.last 1) G)
+        (ownerOrResidualEligible c3PhysicalStructuralBranchMenu (3+b))
+        (Fin.last 4) G)
   intro s G
   exact ordinaryRemainder_firstOwned_relabel_iff (3+b)
-    (ownerOrResidualEligible c3PhysicalStructuralOwnerMenu (3+b))
+    (ownerOrResidualEligible c3PhysicalStructuralBranchMenu (3+b))
     (fun i t K => ownerOrResidualEligible_natural
-      c3PhysicalStructuralOwnerMenu
-      c3PhysicalStructuralOwnerMenu_natural rfl t i K)
-    (Fin.last 1) s G
+      c3PhysicalStructuralBranchMenu
+      c3PhysicalStructuralBranchMenu_natural rfl t i K)
+    (Fin.last 4) s G
 
 /-- The sole formerly open high trivial-axis branch cannot survive the
 physical residual owner predicate. -/
@@ -63,9 +63,17 @@ theorem not_c3TrivialHigh_finalResidual
     (H : Subgroup (ternaryRegularAction × Equiv.Perm (Fin b))) :
     ¬ C3TrivialHighPredicate b (C3FinalResidualPredicate b) H := by
   intro hHigh
-  exact not_firstOwned_residual_of_c3TrivialHigh
+  have hResidual := hHigh.1.2.2
+  have hRejects : ∀ i : Fin 4,
+      ¬ c3PhysicalStructuralBranchMenu (3+b) i
+        (relabelSubgroup (c3ResidualPointEquiv b)
+          (H.map (fusionOrbitAction ternaryRegularAction))) :=
+    (firstOwned_ownerOrResidual_last_iff
+      c3PhysicalStructuralBranchMenu _).mp hResidual
+  obtain ⟨i, hi⟩ := c3TrivialHigh_enters_physicalStructuralBranchMenu
     hChief hWeight hPrimitive h18 b (3+b) (c3ResidualPointEquiv b)
-    (C3FinalResidualPredicate b) H hHigh hHigh.1.2.2
+    (C3FinalResidualPredicate b) H hHigh
+  exact hRejects i hi
 
 theorem c3FinalResidual_highFamily_eq_empty
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
