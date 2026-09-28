@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.FusionOrbitRepresentativeCharts
 import SymmetricSubgroupAsymptotics.FusionWidthPhysical
+import SymmetricSubgroupAsymptotics.OrbitProfileFromOrbits
 import Mathlib.Data.Quot
 
 /-!
@@ -88,6 +89,66 @@ theorem representative_cover (U : Subgroup (Equiv.Perm X))
   refine ⟨i, c⁻¹, ?_⟩
   change MulAut.conj c • i.representative = U at hc
   rw [← hc, ← mul_smul, ← map_mul, inv_mul_cancel, map_one, one_smul]
+
+private theorem relabel_eq_conj (c : Equiv.Perm X)
+    (V : Subgroup (Equiv.Perm X)) :
+    relabelSubgroup c V = MulAut.conj c • V := by
+  change V.map c.permCongrHom.toMonoidHom = _
+  rw [Subgroup.pointwise_smul_def]
+  congr 1
+
+section OriginalOrbits
+
+variable [Fintype X] (H : Subgroup (Equiv.Perm X))
+
+/-- Every literal non-2 orbit image is conjugate to one chosen original
+action representative of the same exact degree.  The target equivalence is
+kept explicit so that the complementary action can later be charted without
+forgetting any correlations with this orbit. -/
+theorem orbit_cover {w : ℕ} (o : OrbitProfileFromOrbits.Orbit H)
+    (hcard : Nat.card o.orbit = w)
+    (hnon2 : ¬ IsPGroup 2 (OrbitProfileFromOrbits.orbitImage H o)) :
+    ∃ i : Non2TransitiveActionClass (Fin w), ∃ e : Fin w ≃ o.orbit,
+      relabelSubgroup e i.representative =
+        OrbitProfileFromOrbits.orbitImage H o := by
+  letI : Fintype o.orbit := Fintype.ofFinite _
+  let e : Fin w ≃ o.orbit := (Finite.equivFinOfCardEq hcard).symm
+  let V : Subgroup (Equiv.Perm (Fin w)) :=
+    relabelSubgroup e.symm (OrbitProfileFromOrbits.orbitImage H o)
+  have hV : ¬ IsPGroup 2 V := by
+    intro hp
+    have hp' := hp.map e.permCongrHom.toMonoidHom
+    change IsPGroup 2 (relabelSubgroup e V) at hp'
+    have heV : relabelSubgroup e V =
+        OrbitProfileFromOrbits.orbitImage H o := by
+      dsimp only [V]
+      exact relabelSubgroup_symm e.symm _
+    rw [heV] at hp'
+    exact hnon2 hp'
+  have htrans : MulAction.IsPretransitive V (Fin w) := by
+    constructor
+    intro x y
+    obtain ⟨h,hh⟩ := MulAction.exists_smul_eq H (e x) (e y)
+    let v : V := ⟨e.symm.permCongr (MulAction.toPermHom H o.orbit h), by
+      change _ ∈ (OrbitProfileFromOrbits.orbitImage H o).map
+        e.symm.permCongrHom.toMonoidHom
+      exact ⟨MulAction.toPermHom H o.orbit h, ⟨h,rfl⟩, rfl⟩⟩
+    refine ⟨v, ?_⟩
+    change e.symm (h • e x) = y
+    rw [hh, Equiv.symm_apply_apply]
+  obtain ⟨i,c,hc⟩ := representative_cover V hV htrans
+  have hc' : relabelSubgroup c V = i.representative :=
+    (relabel_eq_conj c V).trans hc
+  refine ⟨i, c.symm.trans e, ?_⟩
+  change relabelSubgroup (c.symm.trans e) i.representative = _
+  calc
+    _ = relabelSubgroup e (relabelSubgroup c.symm i.representative) :=
+      (relabelSubgroup_trans c.symm e i.representative).symm
+    _ = relabelSubgroup e V := by rw [← hc', relabelSubgroup_symm]
+    _ = _ := relabelSubgroup_symm e.symm
+      (OrbitProfileFromOrbits.orbitImage H o)
+
+end OriginalOrbits
 
 end Non2TransitiveActionClass
 
