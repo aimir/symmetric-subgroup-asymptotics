@@ -66,6 +66,25 @@ All target normal subgroups in this sum are literal. Fixing each target
 quotient map is the asymmetric Goursat convention, so there is no
 additional automorphism divisor.
 
+We use one fixed-source reduction throughout these rows.  Suppose an actual
+target extension has elementary $p$-kernel module $M$ and top $B$, and that
+$M$ embeds equivariantly in one copy of $\mathbb F_p[B]$.  For an onto top map
+$\beta:J\twoheadrightarrow B$, evaluation at the identity coefficient injects
+the equivariant homomorphisms from $\ker\beta$ to $M$ into
+$\operatorname{Hom}(\ker\beta,\mathbb F_p)$.  Indeed, equivariance and the
+surjectivity of $\beta$ recover every regular coordinate from that one
+coefficient.  Consequently every surviving lift fibre has size at most
+\[
+ |M|\,|H^1(B,M)|\,
+ |\operatorname{Hom}(\ker\beta,\mathbb F_p)|.
+\]
+This remains valid for empty and nonsplit fibres.  We first sum these character
+masses over the actual top epimorphisms, and only then over every literal
+original normal axis.  The same complete source $J$ is retained in all terms;
+the fixed module and cohomology factors are absorbed into $D_U$.  Thus the
+row-specific numerical work below concerns only the top maps and the character
+ranks of their actual kernels.
+
 \begin{lemma}[Finite earlier orbit fibres]\label{lem:c1-earlier-fibres}
 For the following actual actions, $Z_J(U)/a(U)$ is at most
 $D_U(1+b)2^{\alpha_U b}$, with a fixed constant $D_U$:
@@ -393,8 +412,17 @@ translations forces the local permutation into the Klein group, and then
 faithfulness on the original points identifies the intrinsic core.  Full
 local $A_4$ images make this action transitive.  Hence the whole $3$-group
 quotient $A/W$, rather than only the three-block top, has a faithful
-transitive degree-nine action.  The remaining step in this orientation is
-its fixed-source owner count.
+transitive degree-nine action.  The elementary group $W$ also supplies its
+intrinsic binary conjugation module.  For every original $N\triangleleft A$,
+the arbitrary-normal construction retains the literal extension
+\[
+ A/N\longrightarrow A/(WN),
+ \qquad \ker=W/(W\cap N),
+\]
+with the original representatives and conjugation action; the descended top
+is still a $3$-group.  No containment $N\leq W$, complement, full-product, or
+cyclic-module assumption is used.  The remaining step in this orientation is
+its fixed-source top-character estimate.
 
 The bounded degree-twelve certificate constructs $W=O_2(U)$ and a
 Sylow $3$-complement for $12T20,85,164,228,229,265$. It verifies
