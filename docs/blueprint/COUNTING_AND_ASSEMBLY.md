@@ -278,15 +278,17 @@ binary-nine.  This split uses the retained high normal pair and does not rely
 on finite-catalogue action recognition.  The remaining aligned numerical
 producers are the ternary 3-group rows (degree-sensitive at 3, 9 and 27), the
 two degree-six intrinsic owners, the binary-nine degree-twelve owner, and the
-critical natural-A4 packet.  The simultaneous-head part of the ternary
-3-group row is now internal: iterating the literal three-block cover gives
-elementary ternary quotient ranks at most 1, 2 and 5 in degrees 3, 9 and 27.
-The complementary structural input is also internal.  Coherent charts transported by the
-literal ternary group identify the complete correlated block kernel with an
-actual subrepresentation of the ternary permutation module on the block set.
-The chart descends through every original normal axis, including proper
-diagonal and subdirect intersections, and every non-base descended section
-has invariant dimension at most one third of the block count.  What remains
-for the ternary 3-group consumer is the numerical Schur/epimorphism source-sum
-recurrence at widths 3, 9 and 27, with the one-block degree-three case kept as
-its separate base row.
+critical natural-A4 packet.  The ternary quotient recurrence is now internal.
+Coherent charts identify the complete correlated block kernel with an actual
+subrepresentation of the ternary permutation module and descend through every
+original normal axis, including proper diagonal and subdirect intersections.
+The exact one-layer inequality retains the quotient top, section module and
+first-cohomology factor before summing the finite normal menu.  Keeping the
+complete source rank visible gives `d`, `d+b/3`, and `d+4b/3` in degrees 3,
+9, and 27.  Consequently the generic binary slopes are `8/15`, `16/15`, and
+`8/3`; the marked one-regular-`C3`, no-natural-`A4` degree-nine source improves
+its slope to `8/9`.  The generic degree-27 and source-restricted degree-nine
+original-weight physical owners are checked.  The remaining aligned work is
+structural: prove that every surviving degree-nine map retains that source
+pattern, while the noncontractive degree-three cell must enter an earlier
+character owner or the exact post-consumer empty residual.

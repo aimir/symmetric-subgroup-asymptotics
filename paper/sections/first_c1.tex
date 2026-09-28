@@ -245,14 +245,14 @@ source $J$.  In the present one-regular-$C_3$, no-natural-$A_4$ case,
 \[
  9d_3(J)\leq 2b+3.
 \]
-For an elementary target, the exact homomorphism count bounds onto maps by
-the corresponding power of $3^{d_3(J)}$.  In the second case, summing first
-over the actual maps $J\twoheadrightarrow C_3$ and their literal kernels,
-then retaining the fixed module and $H^1$ factors, gives uniformly
+The arbitrary-normal block-section theorem below applies to both target
+forms at once.  Specialised to degree nine, and retaining the same complete
+source $J$ on every normal axis, it gives a constant $D_U$ depending only on
+the fixed retained action such that
 \begin{equation}\label{eq:degree-nine-joint}
- |\operatorname{Epi}(J,Q)|\leq3^{d_3(J)+b/3+6}.
+ |\operatorname{Epi}(J,Q)|\leq D_U3^{d_3(J)+b/3}
 \end{equation}
-The constant $3^6$ is target-local and does not affect the row exponent.
+for every actual quotient target $Q$.
 Combining this with \eqref{eq:rank3-pattern} gives the ternary exponent
 $5\log_2(3)/9$; when the descended extension has a binary kernel, the
 internally proved literal-kernel bound $d_2(\ker\beta)\leq b/2$ gives the
@@ -277,30 +277,40 @@ Apply \eqref{eq:degree-nine-joint} to the same source $J$ and the
 actual nine-point action of $P$, before enlarging the pattern class
 of sources. This gives the exponent $1/2+5\log_2(3)/9$.
 
-Finally we prove the degree-27 row without any classification of
-its $3$-groups. More generally, for a transitive $3$-group of degree
-$w=3^k$, every quotient satisfies
-\begin{equation}\label{eq:ternary-quotient-small}
- |\operatorname{Epi}(J,Q)|\leq D_w3^{(w+3)b/18},
+Finally we prove the degree-27 row without classifying its $3$-groups.
+Let $U$ be transitive of degree $w=3s$, choose the literal three-point
+block cover, and write $K$ for its complete correlated block kernel.  For
+every original normal subgroup $N\triangleleft U$, put
+$M_N=K/(K\cap N)$ and $T_N=U/(KN)$.  The reversible block chart retains
+this exact section, including proper diagonal and subdirect intersections.
+Its invariant dimension is at most $s/3$.  The Schur lift count and the
+one-third rank bound for the actual Sylow subgroup of each source kernel give
+\begin{equation}\label{eq:ternary-one-layer}
+ |\operatorname{Epi}(J,U/N)|
+ \leq |\operatorname{Epi}(J,T_N)|\,
+       |M_N|\,|H^1(T_N,M_N)|\,3^{sb/9}.
 \end{equation}
-where $D_w$ is independent of $J$ and $U$. Choose a central
-semiregular $C_3$ in $U$; its blocks have full elementary ternary
-kernel $V\leq\mathbb F_3^s$, $s=w/3$, and transitive $3$-group
-top $T$. A central semiregular $C_3$ of $T$ makes this permutation
-module free of rank $s/3$ on restriction. Every subquotient $M$
-therefore has socle dimension at most $s/3$. If its action factors
-through $S$, it embeds in at most $s/3$ copies of the regular
-$\mathbb F_3[S]$-module: the group algebra is a self-injective
-algebra with its unique simple module trivial. Hence, over a fixed
-map $J\to S$, restrictions from its literal kernel number at most
-$3^{sb/9}$. After fixing a restriction, lift differences descend
-to $S$ and have a bounded target-dependent cost. Induction on $k$
-gives \eqref{eq:ternary-quotient-small}, since
-$(s+3)/18+s/9=(w+3)/18$. If $S=1$, use the simultaneous head
-bound $d_3(U)\leq(w+3)/6$, obtained from the same block filtration.
-The base $w=3$ is the elementary rank bound. For $w\leq27$ the
-normal menus and target sizes are finite, so their uniform constants
-are finite. At $w=27$ the coefficient is $5/3$, as required.
+The module and cohomology factors are retained on each normal axis and are
+absorbed only after the finite original-normal sum.
+
+It is useful to keep $d=d_3(J)$ visible.  If the quotient envelope in degree
+$w$ is $D_U3^{d+a_wb}$, then \eqref{eq:ternary-one-layer} gives
+$a_{3s}=a_s+s/9$, with $a_3=0$.  Thus the relevant coefficients are
+\[
+\begin{array}{c|c|c|c}
+ w&\text{source class}&d+a_wb\text{ after the source bound}
+   &\text{binary exponent}\\ \hline
+ 3&\text{unrestricted base}&b/3&8b/15\\
+ 9&\text{marked }c=1&5b/9+O(1)&8b/9\\
+ 9&\text{unrestricted internal}&2b/3&16b/15\\
+ 27&\text{unrestricted}&5b/3&8b/3.
+\end{array}
+\]
+The unrestricted degree-nine line is the one used inside degree twenty
+seven; the marked improvement is not imported into that recursion.  For a
+fixed action all normal-axis module and cohomology factors are finite, and
+the original-weight physical sum gives the degree-27 row with exponent
+$8b/3$.
 \end{proof}
 
 \begin{lemma}[Actual action membership]\label{lem:c1-actual-membership}
@@ -514,9 +524,13 @@ label. They are separate from the exhaustive normal-pair computation
 which produced the high list.  The structural three-by-three block argument
 in Theorem~\ref{thm:three-twentieths} places every degree-nine rank-two pair
 in the transitive $3$-group owner, and its iterated reversible block-sign
-dichotomy places the degree-27 row in that same owner.  Their counting proof therefore
-applies uniformly to every actual transitive $3$-group in those degrees;
-no further finite action classification is introduced here.
+dichotomy places the degree-27 row in that same owner.  The arbitrary-normal
+one-layer theorem applies uniformly to every actual transitive $3$-group in
+those degrees and every literal quotient target.  At degree nine the $8/9$
+row is used only after the surviving complete source is proved to retain its
+one-regular-$C_3$, no-natural-$A_4$ pattern.  Degree twenty seven uses the
+unrestricted internal degree-nine envelope.  No further finite action
+classification is introduced here.
 \end{proof}
 
 \begin{corollary}[Ternary owner or capacity]
