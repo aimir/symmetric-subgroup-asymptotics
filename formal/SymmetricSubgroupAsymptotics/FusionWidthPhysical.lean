@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.FusionPhysicalUnion
+import SymmetricSubgroupAsymptotics.FusionPhysicalCharts
 import SymmetricSubgroupAsymptotics.FusionWidthContinuation
 
 /-! Original-weight physical continuation for mixed odd/even widths.
@@ -65,6 +66,30 @@ def FusionWidthCanonicalFamily {w n : ℕ} (U : Subgroup (Equiv.Perm (Fin w)))
     Set (Subgroup (Equiv.Perm (Fin n))) :=
   FusionRelabelledFamily (fusionWidthPointEquiv w n hn)
     (FusionOrbitFamily U (FusionAcceptedOrbitPredicate U P))
+
+/-- An arbitrary complete physical chart of width `w` enters the fixed
+canonical width family.  The survival predicate is evaluated on the same
+deleted subgroup, so the full complementary action and all correlations are
+retained. -/
+theorem fusionWidthCanonicalFamily_of_chart {w n : ℕ}
+    (U : Subgroup (Equiv.Perm (Fin w))) (hn : w ≤ n)
+    (H : Subgroup (Equiv.Perm (Fin n)))
+    (e : Fin w ⊕ Fin (n-w) ≃ Fin n)
+    (hblock : ∀ k ∈ relabelSubgroup e.symm H,
+      Set.MapsTo k (Set.range (Sum.inl : Fin w → Fin w ⊕ Fin (n-w)))
+        (Set.range (Sum.inl : Fin w → Fin w ⊕ Fin (n-w))))
+    (hprojection : (fusionPhysicalBlockPullback (relabelSubgroup e.symm H)).map
+      (MonoidHom.fst (Equiv.Perm (Fin w)) (Equiv.Perm (Fin (n-w)))) = U)
+    (P : Subgroup (U × Equiv.Perm (Fin (n-w))) → Prop)
+    (hP : P (fusionDeletedModel U (relabelSubgroup e.symm H))) :
+    H ∈ FusionWidthCanonicalFamily U hn P := by
+  have hm := fusionDeletedModel_mem_family U (relabelSubgroup e.symm H)
+    hblock hprojection P hP
+  have hr := fusionRelabelledFamily_of_chart
+    (FusionOrbitModel U (FusionAcceptedOrbitPredicate U P))
+    e (fusionWidthPointEquiv w n hn) (relabelSubgroup e.symm H) hm
+  simpa only [relabelSubgroup_trans, Equiv.symm_trans_self,
+    relabelSubgroup_refl] using hr
 
 theorem fusionWidthCanonicalFamily_card {w n : ℕ}
     (U : Subgroup (Equiv.Perm (Fin w))) (hn : w≤n)

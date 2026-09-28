@@ -1,20 +1,24 @@
 import SymmetricSubgroupAsymptotics.C1FiniteOwnerWitness
+import SymmetricSubgroupAsymptotics.C1TernaryPrimeBaseOwner
 
 /-!
 # Transport of the bounded c=1 owners
 
 The finite certificates construct owner witnesses on executable row groups.
 Coverage, however, recognizes an arbitrary original faithful permutation
-group only up to an actual group equivalence.  This file proves that both
+group only up to an actual group equivalence.  This file proves that the
 intrinsic owner structures transport across that equivalence.  In particular,
 the cyclic binary-module condition retains the same distinguished vector and
-the same conjugate words; it is not replaced by an order comparison.
+the same conjugate words, while the ternary prime-base condition transports
+the actual top kernel and its equivariant coordinates.
 -/
 
 set_option autoImplicit false
 noncomputable section
 
 namespace SymmetricSubgroupAsymptotics
+
+open TernaryA4InvariantSubmodules
 
 variable {G H : Type*} [Group G] [Group H]
 
@@ -30,6 +34,68 @@ def map (W : C1OddIndexTwoOwnerWitness G) (e : G ≃* H) :
   index_two := (Subgroup.index_map_equiv W.ternary e).trans W.index_two
 
 end C1OddIndexTwoOwnerWitness
+
+namespace C1TernaryPrimeBaseOwnerWitness
+
+variable (W : C1TernaryPrimeBaseOwnerWitness G) (e : G ≃* H)
+
+/-- The transported natural-A4 top.  Its kernel is identified below with the
+literal original kernel, rather than replaced by an abstract isomorphic
+ternary group. -/
+private def mappedTop : H →* A4 :=
+  W.top.comp e.symm.toMonoidHom
+
+/-- Pull the kernel of the transported top back to the actual original top
+kernel. -/
+private def mappedKernel : (W.mappedTop e).ker →* W.top.ker where
+  toFun k := ⟨e.symm k, by
+    change W.top (e.symm k) = 1
+    exact k.2⟩
+  map_one' := by
+    apply Subtype.ext
+    exact e.symm.map_one
+  map_mul' x y := by
+    apply Subtype.ext
+    exact e.symm.map_mul x y
+
+private theorem mappedKernel_injective :
+    Function.Injective (W.mappedKernel e) := by
+  intro x y hxy
+  apply Subtype.ext
+  apply e.symm.injective
+  exact congrArg Subtype.val hxy
+
+private theorem mappedKernel_conj (g : H) (k : (W.mappedTop e).ker) :
+    W.mappedKernel e (MulAut.conjNormal g k) =
+      MulAut.conjNormal (e.symm g) (W.mappedKernel e k) := by
+  apply Subtype.ext
+  simp only [MulAut.conjNormal_apply, mappedKernel, MonoidHom.coe_mk,
+    OneHom.coe_mk, map_mul, map_inv]
+
+/-- The nonsplit ternary prime-base owner transports across an ambient group
+equivalence.  The new coordinate map is the old one on the canonically pulled
+back kernel, so injectivity and the full conjugation identity are retained. -/
+def map : C1TernaryPrimeBaseOwnerWitness H where
+  top := W.mappedTop e
+  top_surjective := by
+    intro a
+    obtain ⟨g, hg⟩ := W.top_surjective a
+    refine ⟨e g, ?_⟩
+    change W.top (e.symm (e g)) = a
+    simpa using hg
+  coordinates := W.coordinates.comp (W.mappedKernel e)
+  coordinates_injective :=
+    W.coordinates_injective.comp (W.mappedKernel_injective e)
+  coordinates_conjugation := by
+    intro g k
+    change
+      (W.coordinates (W.mappedKernel e (MulAut.conjNormal g k))).toAdd =
+        coordinateAction (W.top (e.symm g)).1
+          (W.coordinates (W.mappedKernel e k)).toAdd
+    rw [W.mappedKernel_conj e]
+    exact W.coordinates_conjugation (e.symm g) (W.mappedKernel e k)
+
+end C1TernaryPrimeBaseOwnerWitness
 
 namespace C1CyclicBinaryModuleOwnerWitness
 
