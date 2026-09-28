@@ -131,6 +131,77 @@ theorem fusionCarrierSubdirectGraph_injective
   rw [h] at hm
   exact hu.symm.trans hm
 
+/-- The uncompressed carrier cell retains both the chosen complete
+comparator and the literal pullback core.  It is therefore reversible for
+every comparator map, before any radical or transgression data are
+compressed. -/
+def fusionCarrierReversibleCell
+    {w q b : ℕ}
+    (C : CheckedPermutationCarrier w q)
+    (J : Subgroup (Equiv.Perm (Fin b)))
+    (Accepted : Subgroup (C.carrier × Equiv.Perm (Fin b)) → Prop)
+    {R : Type*} [Group R]
+    (f : FusionCarrierAcceptedEpi C J Accepted →
+      CompleteQuotientMap J R) :
+    FusionCarrierAcceptedEpi C J Accepted →
+      CompleteQuotientMap J R × Subgroup (C.carrier × J) := fun δ ↦
+  (f δ, fusionCarrierSubdirectGraph C J δ.1)
+
+theorem fusionCarrierReversibleCell_injective
+    {w q b : ℕ}
+    (C : CheckedPermutationCarrier w q)
+    (J : Subgroup (Equiv.Perm (Fin b)))
+    (Accepted : Subgroup (C.carrier × Equiv.Perm (Fin b)) → Prop)
+    {R : Type*} [Group R]
+    (f : FusionCarrierAcceptedEpi C J Accepted →
+      CompleteQuotientMap J R) :
+    Function.Injective (fusionCarrierReversibleCell C J Accepted f) := by
+  intro δ ε h
+  apply Subtype.ext
+  apply fusionCarrierSubdirectGraph_injective C J
+  exact congrArg Prod.snd h
+
+/-- Every exact carrier cell has at most one accepted epimorphism.  Later
+annihilator-aware cells may merge these exact cells only after proving the
+corresponding uniform fibre bound. -/
+theorem fusionCarrierReversibleCell_fibre_le_one
+    {w q b : ℕ}
+    (C : CheckedPermutationCarrier w q)
+    (J : Subgroup (Equiv.Perm (Fin b)))
+    (Accepted : Subgroup (C.carrier × Equiv.Perm (Fin b)) → Prop)
+    {R : Type*} [Group R] [Finite R]
+    (f : FusionCarrierAcceptedEpi C J Accepted →
+      CompleteQuotientMap J R)
+    (d : CompleteQuotientMap J R × Subgroup (C.carrier × J)) :
+    Nat.card {δ : FusionCarrierAcceptedEpi C J Accepted //
+      fusionCarrierReversibleCell C J Accepted f δ = d} ≤ 1 := by
+  apply Finite.card_le_one_iff_subsingleton.mpr
+  constructor
+  intro δ ε
+  apply Subtype.ext
+  apply fusionCarrierReversibleCell_injective C J Accepted f
+  exact δ.2.trans ε.2.symm
+
+/-- Direct incidence with the exact reversible core.  This deliberately
+charges all literal cores; a useful quadratic deficit must replace that raw
+flag count by a coarser retained radical/annihilator flag together with a
+proved fibre bound. -/
+theorem fusionCarrierAcceptedEpi_card_le_exactCoreCells
+    {w q b : ℕ}
+    (C : CheckedPermutationCarrier w q)
+    (J : Subgroup (Equiv.Perm (Fin b)))
+    (Accepted : Subgroup (C.carrier × Equiv.Perm (Fin b)) → Prop)
+    {R : Type*} [Group R] [Finite R]
+    (f : FusionCarrierAcceptedEpi C J Accepted →
+      CompleteQuotientMap J R) :
+    (Nat.card (FusionCarrierAcceptedEpi C J Accepted) : ℝ) ≤
+      (Nat.card (Subgroup (C.carrier × J)) : ℝ) *
+        completeQuotientWeight (R := R) J := by
+  simpa only [Nat.mul_one] using
+    fusionCarrierAcceptedEpi_card_le_of_retainedCells
+      C J Accepted (fusionCarrierReversibleCell C J Accepted f) 1
+        (fusionCarrierReversibleCell_fibre_le_one C J Accepted f)
+
 /-- The literal first axis is exactly the retained carrier kernel. -/
 @[simp] theorem fusionCarrierSubdirectGraph_axis
     {w q b : ℕ}
