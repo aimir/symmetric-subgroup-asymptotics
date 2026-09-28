@@ -519,6 +519,33 @@ applies uniformly to every actual transitive $3$-group in those degrees;
 no further finite action classification is introduced here.
 \end{proof}
 
+\begin{corollary}[Ternary owner or capacity]
+\label{cor:c1-owner-or-capacity}
+Let $(A,N)$ be a transitive normal pair of degree $w$.  Then at least
+one of the following holds:
+\begin{enumerate}
+\item $A$ is the natural $C_3$ or natural $A_4$ action;
+\item the original action of $A$ is accepted by an earlier physical
+  family in Lemma~\ref{lem:c1-earlier-fibres};
+\item
+\[
+  20\delta_A(N)\leq3w.
+\]
+\end{enumerate}
+The owner in the second alternative is attached to the original
+permutation action, so deleting that actual orbit retains the complete
+complementary subgroup.
+\end{corollary}
+\begin{proof}
+If the capacity inequality fails, Theorem~\ref{thm:three-twentieths}
+puts the actual action on its necessary high list.  The two natural
+actions give the first alternative, and
+Lemma~\ref{lem:c1-actual-membership} gives the second for every other
+entry.  The structural degree-six and degree-twelve arguments in that
+lemma identify the owner intrinsically; the finite certificates only
+audit the resulting action charts.
+\end{proof}
+
 \begin{theorem}[First split one-triple estimate]\label{thm:c1-first}
 The family of split one-triple graphs with exactly one actual regular
 $C_3$ orbit and no natural $A_4$ orbit admits a positive forward bound
@@ -566,11 +593,12 @@ eligible orbits give only the positive pointing multiplicity.
 Suppose now that a high graph survives. Its residual $K$ has
 $20d_3(K)>3m$. Because projection of the complete graph onto $K$
 is an isomorphism, the actual nonexternal orbit actions of the graph
-are exactly those of $K$. None is natural $C_3$ or $A_4$ by the
-pattern, and none is one of the other actions in
-Theorem~\ref{thm:three-twentieths}, by
-Lemma~\ref{lem:c1-actual-membership} and the preceding removals.
-Apply \eqref{eq:orbit-relative-head} to its actual orbit filtration:
+are exactly those of $K$. Apply
+Corollary~\ref{cor:c1-owner-or-capacity} to each original orbit pair.
+The retained pattern excludes its first alternative, and the preceding
+physical removals exclude its second.  Thus every orbit pair satisfies
+the capacity inequality.  Equation~\eqref{eq:orbit-relative-head} now
+gives
 \[
  20d_3(K)\leq\sum_i20\delta_{A_i}(N_i)
        \leq\sum_i3\deg A_i=3m,
