@@ -163,6 +163,13 @@ The first subfamily injects unchanged into the E7 hot/cold union and therefore
 has the preceding complete forward estimate. Thus the outside-frontier
 producer needs only one remaining estimate, for the pre-E7 complement; adding
 it to the installed E7 estimate closes the full outside term without overlap.
+The complement now has its own exact physical cover: choose an orbit that
+violates the post-E7 alphabet and transport its action to the fixed conjugacy
+representative. The retained index proves that this representative admits no
+selected UP pair frame, since a frame would transport back to the violating
+orbit. Thus the remaining numerical owner/capacity theorem is quantified only
+over these restricted pre-E7 action classes; it no longer carries irrelevant
+selected-UP cells.
 
 Orbitwise, the remaining alphabet is binary, natural S3, or a selected UP
 pair orbit. E7 removes the third alternative. Therefore the complete original
