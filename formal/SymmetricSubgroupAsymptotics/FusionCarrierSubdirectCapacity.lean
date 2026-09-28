@@ -71,6 +71,66 @@ theorem fusionCarrierSubdirectGraph_snd_surjective
   obtain ⟨u, hu⟩ := C.beta_surjective (δ.1 j)
   exact ⟨⟨(u, j), hu⟩, rfl⟩
 
+/-- Include the literal source subgroup into its ambient symmetric group,
+leaving every carrier coordinate untouched. -/
+def fusionCarrierSubdirectEmbedding
+    {w q b : ℕ}
+    (C : CheckedPermutationCarrier w q)
+    (J : Subgroup (Equiv.Perm (Fin b))) :
+    C.carrier × J →* C.carrier × Equiv.Perm (Fin b) :=
+  (MonoidHom.id C.carrier).prodMap J.subtype
+
+theorem fusionCarrierSubdirectEmbedding_injective
+    {w q b : ℕ}
+    (C : CheckedPermutationCarrier w q)
+    (J : Subgroup (Equiv.Perm (Fin b))) :
+    Function.Injective (fusionCarrierSubdirectEmbedding C J) := by
+  intro x y h
+  apply Prod.ext
+  · exact congrArg
+      (fun z : C.carrier × Equiv.Perm (Fin b) => z.1) h
+  · apply Subtype.ext
+    exact congrArg
+      (fun z : C.carrier × Equiv.Perm (Fin b) => z.2) h
+
+/-- The intrinsic full subdirect core maps to the exact ambient quotient
+graph used by carrier survival.  Thus the capacity core and the accepted
+physical graph are two literal presentations of the same state. -/
+theorem fusionCarrierSubdirectGraph_map_eq_ambient
+    {w q b : ℕ}
+    (C : CheckedPermutationCarrier w q)
+    (J : Subgroup (Equiv.Perm (Fin b)))
+    (δ : GroupEpimorphism J C.quotient) :
+    (fusionCarrierSubdirectGraph C J δ).map
+        (fusionCarrierSubdirectEmbedding C J) =
+      fusionQuotientGraph C.beta J δ.1 := by
+  ext x
+  constructor
+  · rintro ⟨y, hy, rfl⟩
+    exact ⟨y.2, rfl, hy⟩
+  · rintro ⟨j, hj, hβ⟩
+    refine ⟨(x.1, j), hβ, ?_⟩
+    apply Prod.ext
+    · rfl
+    · exact hj
+
+/-- The literal pullback core recovers its epimorphism.  This is the
+reversibility needed before any coarser radical or annihilator signature is
+allowed to merge cells. -/
+theorem fusionCarrierSubdirectGraph_injective
+    {w q b : ℕ}
+    (C : CheckedPermutationCarrier w q)
+    (J : Subgroup (Equiv.Perm (Fin b))) :
+    Function.Injective (fusionCarrierSubdirectGraph C J) := by
+  intro δ ε h
+  apply Subtype.ext
+  apply MonoidHom.ext
+  intro j
+  obtain ⟨u, hu⟩ := C.beta_surjective (δ.1 j)
+  have hm : (u, j) ∈ fusionCarrierSubdirectGraph C J δ := hu
+  rw [h] at hm
+  exact hu.symm.trans hm
+
 /-- The literal first axis is exactly the retained carrier kernel. -/
 @[simp] theorem fusionCarrierSubdirectGraph_axis
     {w q b : ℕ}
