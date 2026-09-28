@@ -86,25 +86,32 @@ Theorem~\ref{thm:fusion}.
 
 \begin{theorem}[Growing-parameter comparator transfer]\label{thm:parametric}
 Fix $w_0\geq3$ and $0<\rho\leq1/8$.
-For each accepted transitive action $U$ of degree $w\geq w_0$, choose
-one certificate consisting of a finite comparator $R$, a faithful action of
-$R$ on $v_0$ points, and $\eta_U\geq0$. Require
+For each $w\geq w_0$, let $\Sigma_w$ be a finite certificate menu.
+Each $\sigma\in\Sigma_w$ carries an actual transitive action $U_\sigma$
+of degree $w$, a finite comparator $R_\sigma$, a faithful action of
+$R_\sigma$ on $v_{0,\sigma}$ points, a relabelling-invariant acceptance
+predicate on its complete physical fibres, and $\eta_\sigma\geq0$.
+The same action may occur with several certificate labels. Require
 \[
- \frac{h(w)-v_0}{8}-\eta_U\geq\rho w.
+ \frac{h(w)-v_{0,\sigma}}{8}-\eta_\sigma\geq\rho w.
 \]
-Suppose that, for every $J\leq S_b$,
+Write $Z_{J,\sigma}(U_\sigma)$ for the literal quotient-map weight of
+the accepted part of the complete source $J$. Suppose that, for every
+$J\leq S_b$,
 \begin{equation}\label{eq:parametric-fibre}
- Z_J(U)\leq D_U(b)2^{\eta_Ub}Z_J(R),\qquad D_U(b)\geq0.
+ Z_{J,\sigma}(U_\sigma)\leq
+ D_\sigma(b)2^{\eta_\sigma b}Z_J(R_\sigma),
+ \qquad D_\sigma(b)\geq0.
 \end{equation}
-Write $a(U)$ for the original action normalizer and assume the direct
+Write $a(U_\sigma)$ for the original action normalizer and assume the direct
 original-weight menu bound
 \begin{equation}\label{eq:parametric-menu-mass}
  \text{for every $\gamma>0$, eventually uniformly for $w_0\leq w\leq n$,}
  \qquad
- \sum_{\substack{U\text{ accepted}\\\deg U=w}}
-       \frac{D_U(n-w)}{a(U)}\leq2^{\gamma wn}.
+ \sum_{\sigma\in\Sigma_w}
+       \frac{D_\sigma(n-w)}{a(U_\sigma)}\leq2^{\gamma wn}.
 \end{equation}
-Then the complete accepted-orbit family has a forward kernel and scalar
+Then the complete accepted physical union has a forward kernel and scalar
 with the uniform eventual bounds
 \begin{equation}\label{eq:parametric-rates}
  K(n,n-w)\leq2^{-\rho wn/8},\qquad
@@ -114,26 +121,27 @@ with the uniform eventual bounds
 \end{theorem}
 \begin{proof}
 Pad the given representation by fixed points to
-$v=\max(v_0,\lfloor4\rho h(w)\rfloor)$ and put
+$v=\max(v_{0,\sigma},\lfloor4\rho h(w)\rfloor)$ and put
 \[
- \delta=(h(w)-v)/8-\eta_U,\qquad a=v/8+\delta/2.
+ \delta=(h(w)-v)/8-\eta_\sigma,\qquad a=v/8+\delta/2.
 \]
 Then $\delta\geq\rho w/2$, $v\leq(1-4\rho)w$, and
-$\eta_U+a=h(w)/8-\delta/2$. If $R\ne1$, also $v\geq\rho w$:
-indeed the original margin and $\eta_U\geq0$ give
-$v_0\leq h(w)-8\rho w\leq(1-4\rho)w$, while
+$\eta_\sigma+a=h(w)/8-\delta/2$. If $R_\sigma\ne1$, also
+$v\geq\rho w$: indeed the original margin and $\eta_\sigma\geq0$ give
+$v_{0,\sigma}\leq h(w)-8\rho w\leq(1-4\rho)w$, while
 $\lfloor4\rho h(w)\rfloor\leq(1-4\rho)w$.
 The loss from padding is at most $4\rho w/8$, proving the stated lower
-bound on $\delta$. Faithfulness gives $v_0\geq2$ when $R\ne1$; use this
+bound on $\delta$. Faithfulness gives $v_{0,\sigma}\geq2$ when
+$R_\sigma\ne1$; use this
 when $\rho w\leq1$, and otherwise
 $\lfloor4\rho h(w)\rfloor\geq4\rho w-4\rho-1>\rho w$.
-For $R=1$ the hot event below is empty, so no lower bound on $v$ is
+For $R_\sigma=1$ the hot event below is empty, so no lower bound on $v$ is
 needed. This controlled padding preserves the original margin.
 
-Split at $Z_J(R)>2^{ab}$. The cold kernel is
+Split at $Z_J(R_\sigma)>2^{ab}$. The cold kernel is
 \[
- K(n,b)=\Delta(n,b)\sum_{\substack{U\text{ accepted}\\\deg U=n-b}}
-         \frac{D_U(b)2^{(\eta_U+a)b}}{a(U)}.
+ K(n,b)=\Delta(n,b)\sum_{\sigma\in\Sigma_{n-b}}
+         \frac{D_\sigma(b)2^{(\eta_\sigma+a)b}}{a(U_\sigma)}.
 \]
 By \eqref{eq:uniform-delta} its main exponent is at most
 $-\rho wb/4-w^2/16\leq-\rho wn/4-w^2/32$.
@@ -147,11 +155,13 @@ the labelled form quoted in the introduction of
 \cite{RoneyDougalTracey2025}. Thus the formerly used sufficient
 conditions
 \[
- D_U(b)\leq2^{\beta(w)+Cw\log^2(w+b+1)},
- \qquad \beta(w)=o(w^2)
+ D_\sigma(b)\leq2^{\beta(w)+Cw\log^2(w+b+1)},
+ \qquad \beta(w)=o(w^2),\qquad
+ \max_U|\{\sigma:U_\sigma=U\}|=2^{o(w^2)}
 \]
-imply \eqref{eq:parametric-menu-mass}: the class entropy and $\beta(w)$
-are $o(w^2)$, while the logarithmic term is $o(wn)$ uniformly for
+imply \eqref{eq:parametric-menu-mass}: the logarithms of the class count
+and the certificate multiplicity, together with $\beta(w)$, are $o(w^2)$,
+while the logarithmic term is $o(wn)$ uniformly for
 $w_0\leq w\leq n$. In the present formulation the direct menu bound
 absorbs these terms together with the pointing polynomial. This proves
 the first bound in \eqref{eq:parametric-rates}. Sum the geometric tail
@@ -160,12 +170,12 @@ over $w\geq w_0$ to obtain the second.
 For a nonempty hot part use
 $q=\max(1,\lceil4\delta b/v^2\rceil)$, $q_*=4\delta b/v^2$,
 and $M=b+qv$. Lemma~\ref{lem:quotient-moment} gives
-$\sum_{J\ {\rm hot}}Z_J(R)\leq2^{-(q-1)ab}s_M$.
+$\sum_{J\ {\rm hot}}Z_J(R_\sigma)\leq2^{-(q-1)ab}s_M$.
 The exact main exponent, including the lift factor, is
 \begin{align*}
- \frac{M^2}{16}-(q-1)ab+\eta_Ub-\frac{n^2}{16}
+ \frac{M^2}{16}-(q-1)ab+\eta_\sigma b-\frac{n^2}{16}
  &=-\frac{\delta^2b^2}{v^2}
-   +(\eta_U+a-w/8)b-\frac{w^2}{16}
+   +(\eta_\sigma+a-w/8)b-\frac{w^2}{16}
                       +\frac{v^2}{16}(q-q_*)^2\\
  &\leq-\frac{\rho^2b^2}{4}-\frac{\rho wb}{4}
                  -(\rho/2-\rho^2)w^2
@@ -176,9 +186,10 @@ $(h(w)-w)b/8$ is nonpositive. Moreover
 $M\leq(1+1/(2\rho))b+w$, so the coarse error is uniformly
 $O_\rho(n^{3/2})$. The original hot sum is
 \[
- \sum_{w=w_0}^n\sum_{\deg U=w}
- \frac{D_U(b)2^{\eta_Ub}}{b!a(U)p_nG_{\lfloor n/2\rfloor}}
-       \sum_{J\ {\rm hot}}Z_J(R),\qquad b=n-w.
+ \sum_{w=w_0}^n\sum_{\sigma\in\Sigma_w}
+ \frac{D_\sigma(b)2^{\eta_\sigma b}}
+      {b!a(U_\sigma)p_nG_{\lfloor n/2\rfloor}}
+       \sum_{J\ {\rm hot}}Z_J(R_\sigma),\qquad b=n-w.
 \]
 Its remaining normalization costs $O(n\log(n+2))$.
 Equation~\eqref{eq:parametric-menu-mass}, first at each width and then
@@ -188,6 +199,18 @@ quadratic reserve proves the last bound in
 \eqref{eq:parametric-rates}. No normalized-count boundedness has been
 assumed.
 \end{proof}
+
+The repeated action labels in Theorem~\ref{thm:parametric} implement the
+owner-or-capacity dichotomy.  Take a finite ordered list of predicates
+invariant under relabelling of the complete physical subgroup and assign each
+subgroup to its first eligible predicate.  Pair that owner with the single
+selected bad-orbit action $U$.  First ownership makes these pairs disjoint,
+while a final catch-all predicate holds precisely on the residual capacity
+branch.  Thus earlier owners and the retained-annihilator branch may use
+different local certificates $\sigma=(\text{owner},U)$; only their combined
+original-weight mass in \eqref{eq:parametric-menu-mass} is charged.  The
+degree-three $C_3$ action is the first required application of these same
+local bounds.
 
 \begin{lemma}[Central nonbinary pair sections]\label{lem:central-pair}
 For a faithful nonbinary transitive action of even degree $s\geq4$,
