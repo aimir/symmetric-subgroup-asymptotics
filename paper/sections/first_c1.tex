@@ -102,6 +102,13 @@ $D_U(1+b)2^{\alpha_U b}$, with a fixed constant $D_U$:
 The degree-nine row and the three final degree-twelve actions require
 $J$ to have exactly one regular $C_3$ orbit and no natural $A_4$
 orbit. Every other row permits arbitrary $J$.
+More precisely, the degree-nine numerical estimate consumes only the
+conjugacy-invariant consequence
+\[
+  9d_3(J)\leq 2b+3;
+\]
+the displayed orbit pattern is the structural hypothesis which produces
+that budget on the retained source.
 \end{lemma}
 \begin{proof}
 We give the fibre arguments, including the shared source budgets.
@@ -527,10 +534,11 @@ in the transitive $3$-group owner, and its iterated reversible block-sign
 dichotomy places the degree-27 row in that same owner.  The arbitrary-normal
 one-layer theorem applies uniformly to every actual transitive $3$-group in
 those degrees and every literal quotient target.  At degree nine the $8/9$
-row is used only after the surviving complete source is proved to retain its
-one-regular-$C_3$, no-natural-$A_4$ pattern.  Degree twenty seven uses the
-unrestricted internal degree-nine envelope.  No further finite action
-classification is introduced here.
+row is used only after the surviving complete source is proved to satisfy
+$9d_3(J)\leq2b+3$.  The one-regular-$C_3$, no-natural-$A_4$ pattern proves
+this inequality uniformly; the numerical row itself depends only on the
+inequality.  Degree twenty seven uses the unrestricted internal degree-nine
+envelope.  No further finite action classification is introduced here.
 \end{proof}
 
 \begin{corollary}[Ternary owner or capacity]
@@ -592,10 +600,15 @@ comparison is
 \]
 Here the surviving fibre retains the preceding exclusions on the complete
 pointed graph. The unrestricted fibre is used only for the upper bound.
-If required, the pattern is retained on each $J$ before using its
-rank bound. Deleting any of the indicated nonmarker actions preserves
-the unique-$C_3$, no-natural-$A_4$ pattern. Only after the fibre has
-been bounded do we enlarge the number of such $J$ to $s_b$.
+For each deletion, the second projection of the actual deleted fusion model
+is exactly the literal permutation image on the complementary points.  The
+complement orbits correspond injectively to the undeleted original orbits,
+and their complete induced actions are conjugate through the literal point
+charts.  Deleting any indicated nonmarker action therefore preserves the
+unique-$C_3$, no-natural-$A_4$ pattern on this exact source, which yields
+$9d_3(J)\leq2b+3$.  The degree-nine row then consumes that numerical budget
+without carrying the stronger orbit description further.  Only after the
+fibre has been bounded do we enlarge the number of such $J$ to $s_b$.
 Normalize once, obtaining terms
 \[
  D_U(1+b)\Delta(n,b)2^{\alpha_Ub}\frac{s_b}{L_b}.

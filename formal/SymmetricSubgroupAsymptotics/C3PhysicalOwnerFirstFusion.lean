@@ -17,6 +17,91 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace C3HighNestedCarrier
 
+/-- The exact deleted model attached to a chosen high-C3 action chart retains
+the complete-subgroup first-owner predicate.  This is exposed separately so
+later source restrictions can be conjoined on the same literal model. -/
+theorem Data.deletedModel_non2FirstOwnerPredicate_forAction
+    {r b w : ℕ}
+    (Eligible : ∀ n, Fin r → Subgroup (Equiv.Perm (Fin n)) → Prop)
+    (hEligible : DegreeNaturalOwnerMenu Eligible)
+    (H : Subgroup (ternaryRegularAction × Equiv.Perm (Fin b)))
+    (C : Data H)
+    (hw : Nat.card C.orbit.orbit = w)
+    (q : TernaryCyclic ⊕ Fin b ≃ Fin (b + 3))
+    (hordinary : ¬ IsCriticalSubgroup (b + 3)
+      (relabelSubgroup q (physicalSubgroup H)))
+    (owner : Fin r)
+    (howner : FirstOwned (Eligible (b + 3)) owner
+      (relabelSubgroup q (physicalSubgroup H)))
+    (i : Non2TransitiveActionClass (Fin w))
+    (eO : Fin w ≃ C.orbit.orbit)
+    (himage : relabelSubgroup eO i.representative =
+      OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) C.orbit) :
+    non2FirstOwnerPredicate Eligible w (owner, i) (b + 3 - w)
+      (fusionDeletedModel i.representative
+        (relabelSubgroup (chart H C.orbit hw eO).symm
+          (physicalSubgroup H))) := by
+  have hwb : w ≤ b := width_le H C.orbit hw
+  let K := relabelSubgroup (chart H C.orbit hw eO).symm
+    (physicalSubgroup H)
+  have hblock := FusionOrbitProfileChart.chart_preserves
+    (physicalSubgroup H) (liftedOrbit H C.orbit)
+      (pointEquiv H C.orbit eO) (complementEquiv H C.orbit hw)
+  have hprojection := FusionOrbitProfileChart.chart_projection_eq
+    (physicalSubgroup H) (liftedOrbit H C.orbit) i.representative
+      (pointEquiv H C.orbit eO) (complementEquiv H C.orbit hw)
+      (pointEquiv_image H C.orbit i.representative eO himage)
+  have hrec := fusionDeletedModel_recovers i.representative K
+    hblock hprojection
+  let r₀ : Fin w ⊕ Fin (b + 3 - w) ≃ Fin (w + (b + 3 - w)) :=
+    finSumFinEquiv
+  let e : Fin w ⊕ Fin (b + 3 - w) ≃ TernaryCyclic ⊕ Fin b :=
+    chart H C.orbit hw eO
+  let s : Fin (w + (b + 3 - w)) ≃ Fin (b + 3) :=
+    r₀.symm.trans (e.trans q)
+  let L : Subgroup (Equiv.Perm (Fin (w + (b + 3 - w)))) :=
+    relabelSubgroup r₀ K
+  have hs : relabelSubgroup s L =
+      relabelSubgroup q (physicalSubgroup H) := by
+    dsimp only [L]
+    rw [relabelSubgroup_trans]
+    have hrs : r₀.trans s = e.trans q := by
+      apply Equiv.ext
+      intro x
+      change q (e (r₀.symm (r₀ x))) = q (e x)
+      exact congrArg (fun y => q (e y)) (r₀.symm_apply_apply x)
+    rw [hrs]
+    dsimp only [K, e]
+    rw [← relabelSubgroup_trans]
+    exact congrArg (relabelSubgroup q)
+      (relabelSubgroup_symm
+        (chart H C.orbit hw eO).symm (physicalSubgroup H))
+  have hordinaryL : ¬ IsCriticalSubgroup (w + (b + 3 - w)) L := by
+    apply (ordinaryRemainder_relabel_equiv_iff
+      (show w + (b + 3 - w) = b + 3 by omega) s L).mp
+    rwa [hs]
+  have hownerL : FirstOwned (Eligible (w + (b + 3 - w))) owner L := by
+    have htransport := firstOwned_transport_iff
+      (Eligible (w + (b + 3 - w))) (Eligible (b + 3))
+      (relabelSubgroup s)
+      (fun j M => (hEligible
+        (show w + (b + 3 - w) = b + 3 by omega) s j M).symm)
+      owner L
+    apply htransport.mpr
+    rwa [hs]
+  have hphysical :
+      relabelSubgroup r₀
+        ((fusionDeletedModel i.representative K).map
+          (fusionOrbitAction i.representative)) = L := by
+    dsimp only [L]
+    exact congrArg (relabelSubgroup r₀) hrec
+  unfold non2FirstOwnerPredicate ordinaryFirstOwnerLocalPredicate
+  simp only [non2FirstOwnerAction]
+  constructor
+  · unfold ordinaryRemainderFusionPredicate
+    exact hphysical.symm ▸ hordinaryL
+  · exact hphysical.symm ▸ hownerL
+
 /-- A specified action chart for the orbit retained by a high-C3 witness
 enters the owner-indexed non-2 family.  Keeping the chart visible lets later
 consumers transport the normal high pair to this exact deleted action. -/
