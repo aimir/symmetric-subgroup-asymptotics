@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.C1FiniteOwnerWitness
 import SymmetricSubgroupAsymptotics.C1TernaryPrimeBaseOwner
+import SymmetricSubgroupAsymptotics.C1BinaryNineTopOwner
 
 /-!
 # Transport of the bounded c=1 owners
@@ -96,6 +97,114 @@ def map : C1TernaryPrimeBaseOwnerWitness H where
     exact W.coordinates_conjugation (e.symm g) (W.mappedKernel e k)
 
 end C1TernaryPrimeBaseOwnerWitness
+
+namespace C1BinaryNineTopOwnerWitness
+
+variable {G₀ H₀ Ω Ξ : Type} [Group G₀] [Group H₀]
+    [MulAction G₀ Ω] [MulAction H₀ Ξ]
+    (W : C1BinaryNineTopOwnerWitness G₀ Ω) (e : G₀ ≃* H₀)
+
+private abbrev mappedBase : Subgroup H₀ := W.base.map e.toMonoidHom
+
+private instance mappedBase_normal : (W.mappedBase e).Normal :=
+  W.base_normal.map e.toMonoidHom e.surjective
+
+private instance mappedBase_finite : Finite (W.mappedBase e) :=
+  Finite.of_equiv W.base (e.subgroupMap W.base).toEquiv
+
+/-- The equivalence of whole quotients induced by the ambient group
+equivalence.  This retains the literal image of the original binary base. -/
+private def mappedQuotientEquiv :
+    (G₀ ⧸ W.base) ≃* (H₀ ⧸ W.mappedBase e) :=
+  QuotientGroup.congr W.base (W.mappedBase e) e rfl
+
+@[simp] private theorem mappedQuotientEquiv_mk (g : G₀) :
+    W.mappedQuotientEquiv e (QuotientGroup.mk' W.base g) =
+      QuotientGroup.mk' (W.mappedBase e) (e g) := rfl
+
+@[simp] private theorem mappedQuotientEquiv_symm_mk (h : H₀) :
+    (W.mappedQuotientEquiv e).symm
+        (QuotientGroup.mk' (W.mappedBase e) h) =
+      QuotientGroup.mk' W.base (e.symm h) := rfl
+
+variable (r : Ω ≃ Ξ)
+    (hr : ∀ (g : G₀) (x : Ω), r (g • x) = e g • r x)
+
+/-- Conjugating the original action permutation by the point equivalence is
+the transported action permutation. -/
+private theorem permCongr_toPerm
+    (hr : ∀ (g : G₀) (x : Ω), r (g • x) = e g • r x) (g : G₀) :
+    r.permCongr (MulAction.toPermHom G₀ Ω g) =
+      MulAction.toPermHom H₀ Ξ (e g) := by
+  apply Equiv.ext
+  intro x
+  change r (g • r.symm x) = e g • x
+  simpa only [r.apply_symm_apply] using hr g (r.symm x)
+
+/-- The binary-base/nine-top owner transports simultaneously across an
+ambient group equivalence and an equivariant equivalence of point actions.
+The base is its literal image, the whole quotient action is conjugated through
+the induced quotient equivalence, and all nine ambient translations are
+conjugated through the point equivalence. -/
+def map : C1BinaryNineTopOwnerWitness H₀ Ξ where
+  base := W.mappedBase e
+  base_normal := W.mappedBase_normal e
+  base_finite := W.mappedBase_finite e
+  base_exponent_two := by
+    intro x
+    let x' := (e.subgroupMap W.base).symm x
+    have hx := W.base_exponent_two x'
+    simpa only [map_pow, map_one, x', MulEquiv.apply_symm_apply] using
+      congrArg (e.subgroupMap W.base) hx
+  base_card_le := by
+    calc
+      Nat.card (W.mappedBase e) = Nat.card W.base :=
+        (Nat.card_congr (e.subgroupMap W.base).toEquiv).symm
+      _ ≤ 64 := W.base_card_le
+  quotient_three_group :=
+    W.quotient_three_group.of_equiv (W.mappedQuotientEquiv e)
+  Label := W.Label
+  label_card := W.label_card
+  translation s := r.permCongr (W.translation s)
+  translation_injective :=
+    r.permCongr.injective.comp W.translation_injective
+  action := W.action.comp (W.mappedQuotientEquiv e).symm.toMonoidHom
+  action_injective :=
+    W.action_injective.comp (W.mappedQuotientEquiv e).symm.injective
+  action_transitive := by
+    intro s t
+    obtain ⟨q, hq⟩ := W.action_transitive s t
+    exact ⟨W.mappedQuotientEquiv e q, by simpa using hq⟩
+  conjugation := by
+    intro h s
+    have hc := congrArg r.permCongr (W.conjugation (e.symm h) s)
+    change
+      r.permCongr
+          (W.translation
+            (W.action
+              ((W.mappedQuotientEquiv e).symm
+                (QuotientGroup.mk' (W.mappedBase e) h)) s)) =
+        MulAction.toPermHom H₀ Ξ h * r.permCongr (W.translation s) *
+          (MulAction.toPermHom H₀ Ξ h)⁻¹
+    rw [W.mappedQuotientEquiv_symm_mk e]
+    calc
+      _ = r.permCongr
+          (MulAction.toPermHom G₀ Ω (e.symm h) * W.translation s *
+            (MulAction.toPermHom G₀ Ω (e.symm h))⁻¹) := hc
+      _ = r.permCongr (MulAction.toPermHom G₀ Ω (e.symm h)) *
+          r.permCongr (W.translation s) *
+            (r.permCongr (MulAction.toPermHom G₀ Ω (e.symm h)))⁻¹ := by
+        change r.permCongrHom
+            (MulAction.toPermHom G₀ Ω (e.symm h) * W.translation s *
+              (MulAction.toPermHom G₀ Ω (e.symm h))⁻¹) =
+          r.permCongrHom (MulAction.toPermHom G₀ Ω (e.symm h)) *
+            r.permCongrHom (W.translation s) *
+              (r.permCongrHom (MulAction.toPermHom G₀ Ω (e.symm h)))⁻¹
+        rw [map_mul, map_mul, map_inv]
+      _ = _ := by
+        rw [permCongr_toPerm e r hr, e.apply_symm_apply]
+
+end C1BinaryNineTopOwnerWitness
 
 namespace C1CyclicBinaryModuleOwnerWitness
 

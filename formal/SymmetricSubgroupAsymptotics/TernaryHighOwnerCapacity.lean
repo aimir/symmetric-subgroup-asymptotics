@@ -3,6 +3,7 @@ import SymmetricSubgroupAsymptotics.DegreeSixBinaryBlockOwner
 import SymmetricSubgroupAsymptotics.DegreeTwelveTopGeometry
 import SymmetricSubgroupAsymptotics.C1TernaryPrimeBaseOwner
 import SymmetricSubgroupAsymptotics.C1BinaryNineTopOwner
+import SymmetricSubgroupAsymptotics.C1FiniteOwnerTransport
 import SymmetricSubgroupAsymptotics.C3HighOrbitDichotomy
 
 /-!
@@ -35,6 +36,82 @@ def TernaryHighEarlierOwner (A Ω : Type) [Group A] [MulAction A Ω] : Prop :=
         Nonempty (C1CyclicBinaryModuleOwnerWitness A) ∨
           IsC1TernaryPrimeBaseOwner A ∨
             IsC1BinaryNineTopOwner A Ω
+
+namespace TernaryHighEarlierOwner
+
+variable {Ω Ξ : Type} (e : Ω ≃ Ξ)
+    (A : Subgroup (Equiv.Perm Ω))
+
+private abbrev groupEquiv : A ≃* relabelSubgroup e A :=
+  e.permCongrHom.subgroupMap A
+
+private theorem point_equivariant (a : A) (x : Ω) :
+    e (a • x) = (groupEquiv e A a) • e x := by
+  change e ((a : Equiv.Perm Ω) x) =
+    e ((a : Equiv.Perm Ω) (e.symm (e x)))
+  rw [e.symm_apply_apply]
+
+/-- The natural four-point A4 owner is unchanged by an actual relabelling of
+its points and the induced equivalence of its permutation subgroup. -/
+private theorem naturalA4_relabel
+    (h : IsNaturalA4Action A Ω) :
+    IsNaturalA4Action (relabelSubgroup e A) Ξ := by
+  obtain ⟨c, hc⟩ := h
+  refine ⟨e.symm.trans c, ?_⟩
+  have hhom (a : A) :
+      labelledActionHom (A := relabelSubgroup e A) (e.symm.trans c)
+          (groupEquiv e A a) =
+        labelledActionHom (A := A) c a := by
+    apply Equiv.ext
+    intro x
+    obtain ⟨y, rfl⟩ := c.surjective x
+    calc
+      labelledActionHom (A := relabelSubgroup e A) (e.symm.trans c)
+          (groupEquiv e A a) (c y) =
+        labelledActionHom (A := relabelSubgroup e A) (e.symm.trans c)
+          (groupEquiv e A a) ((e.symm.trans c) (e y)) := by simp
+      _ = (e.symm.trans c) ((groupEquiv e A a) • e y) :=
+        labelledActionHom_apply (A := relabelSubgroup e A)
+          (e.symm.trans c) (groupEquiv e A a) (e y)
+      _ = c (a • y) := by
+        change c (e.symm ((groupEquiv e A a : Equiv.Perm Ξ) (e y))) = _
+        apply congrArg c
+        apply e.injective
+        rw [e.apply_symm_apply]
+        exact (point_equivariant e A a y).symm
+      _ = labelledActionHom (A := A) c a (c y) :=
+        (labelledActionHom_apply (A := A) c a y).symm
+  have himage :
+      labelledActionImage (A := relabelSubgroup e A) (e.symm.trans c) =
+        labelledActionImage (A := A) c := by
+    apply le_antisymm
+    · rintro p ⟨b, rfl⟩
+      obtain ⟨a, rfl⟩ := (groupEquiv e A).surjective b
+      exact ⟨a, (hhom a).symm⟩
+    · rintro p ⟨a, rfl⟩
+      exact ⟨groupEquiv e A a, hhom a⟩
+  rw [himage, hc]
+
+/-- Every structural owner in the high-ternary disjunction survives point
+relabelling.  The nine-top branch transports the literal binary base, its
+whole quotient action, all nine translations, and the conjugation identity. -/
+theorem relabel (h : TernaryHighEarlierOwner A Ω) :
+    TernaryHighEarlierOwner (relabelSubgroup e A) Ξ := by
+  rcases h with hP | hA4 | hOdd | hCyclic | hPrime | hNine
+  · exact Or.inl (hP.of_equiv (groupEquiv e A))
+  · exact Or.inr (Or.inl (naturalA4_relabel e A hA4))
+  · obtain ⟨W⟩ := hOdd
+    exact Or.inr (Or.inr (Or.inl ⟨W.map (groupEquiv e A)⟩))
+  · obtain ⟨W⟩ := hCyclic
+    exact Or.inr (Or.inr (Or.inr (Or.inl ⟨W.map (groupEquiv e A)⟩)))
+  · obtain ⟨W⟩ := hPrime
+    exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl
+      ⟨W.map (groupEquiv e A)⟩))))
+  · obtain ⟨W⟩ := hNine
+    exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+      ⟨W.map (groupEquiv e A) e (point_equivariant e A)⟩))))
+
+end TernaryHighEarlierOwner
 
 namespace OriginalMinimalBlock
 
