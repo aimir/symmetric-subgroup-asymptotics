@@ -197,16 +197,35 @@ abelian.  Thus
 \]
 The orders three and six are impossible, and order four forces $N=V_4$.
 Hence $S$ is $A_4$, $C_3$, or trivial.  For the latter two targets the
-internal ternary character-rank bound gives the required top count.  For
-the full target, the cyclic binary-module calculation above gives the
-same-source estimate
+internal ternary character-rank bound gives the required top count.  The
+full target has a shorter same-source argument.  Put $D=[J,J]$, identify
+$[A_4,A_4]$ with $V_4$, and fix one nonzero binary character
+$\eta:V_4\to C_2$.  Label an epimorphism $f:J\twoheadrightarrow A_4$ by
 \[
- |\operatorname{Epi}(J,A_4)|\leq C(b+1)2^{b/2}.
+ \chi_f=\eta\circ f|_D\in\operatorname{Hom}(D,C_2).
 \]
-Writing $b=30q+r$ and using $q+1\leq2^q$ gives uniformly
+This label determines the literal kernel of $f$.  Indeed, if
+$\chi_f=\chi_g$ and $x\in\ker f$, then surjectivity of $g$ gives, for
+every $a\in A_4$,
 \[
- (b+1)2^{b/2}\leq30\,2^{8b/15}.
+ \eta([g(x),a])=\eta(g([x,y]))=\eta(f([x,y]))=0
+ \qquad(a=g(y)).
 \]
+The action of $A_4/V_4\cong C_3$ permutes the three nonzero elements and
+the three nonzero characters of $V_4$ freely.  Consequently
+$\eta([v,a])=0$ for every $a\in A_4$ forces $v=1$.  Thus
+$x\in\ker g$, and symmetry gives $\ker f=\ker g$.
+
+Every fixed kernel supports exactly $|\operatorname{Aut}(A_4)|$ literal
+epimorphisms.  Applying the internal binary half-rank theorem to the same
+derived subgroup $D\leq S_b$ therefore gives
+\[
+ |\operatorname{Epi}(J,A_4)|
+ \leq |\operatorname{Aut}(A_4)|\,|\operatorname{Hom}(D,C_2)|
+ \leq |\operatorname{Aut}(A_4)|\,2^{\lfloor b/2\rfloor}.
+\]
+Since $1/2<8/15$, this embeds directly in the required quotient-top
+exponent, without a polynomial loss.
 For a fixed top map, the literal kernel contributes at most
 $3^{d_3(F)}\leq3^{b/3}\leq2^{8b/15}$.  Summing the three actual quotient
 targets therefore gives $D2^{16b/15}$, as recorded in the table.
