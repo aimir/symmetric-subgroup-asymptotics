@@ -324,7 +324,14 @@ coordinate, so coordinate-surjectivity alone does not remove it.  It has no
 nonzero $A_4$-invariant linear functional, whereas the diagonal and full
 modules do.  Thus, once the literal fibre-coordinate action is identified
 with this natural module, the retained character forces the block kernel to
-be diagonal or full.
+be diagonal or full.  This identification is now intrinsic.  Choose one
+actual triple-fibre chart and transport it to the other fibres by ambient
+group elements.  The vanished fibre signs make every transition even, so
+the resulting coordinate map injects the original block kernel
+$A_4$-equivariantly into $\mathbb F_3^4$.  Its image and the image of every
+physical intersection with an original normal subgroup are invariant.  The
+retained character therefore applies to the actual coordinate image, rather
+than to a substituted product module.
 
 The same four-submodule classification removes a second, potentially
 case-by-case step.  If $B,C\leq\mathbb F_3^4$ are $A_4$-invariant, the
@@ -339,12 +346,18 @@ injective matrix-coefficient map
 \]
 Thus every such descended section lies in one copy of the regular module of
 its actual quotient; no classification of the quotients of $A_4$ is needed.
-The formal argument still keeps the physical bridge explicit: for every
-original normal axis one must construct coherent fibre coordinates,
-identify the relevant physical section with such a $B/(B\cap C)$, and prove
-that its action factors through the displayed quotient.  This avoids
-silently replacing the physical signed action by the natural permutation
-module.
+The arbitrary-normal quotient construction retains the other presentation
+of the same physical section.  From an original kernel chart
+$\pi:G\twoheadrightarrow A_4$ and any $N\triangleleft G$, it constructs
+the literal extension
+\[
+ G/N\longrightarrow G/(\ker\pi\,N)
+\]
+with kernel $\ker\pi/(N\cap\ker\pi)$, its quotient module and the original
+conjugation action.  It makes no assumption $N\leq\ker\pi$ and chooses no
+splitting.  The remaining counting interface identifies this quotient-module
+presentation with the invariant coordinate section above and feeds its
+regular-module bound into the fixed-source owner sum.
 
 There is a parallel intrinsic reduction in the four-point-fibre branch.
 The physical intersection $N\cap\ker(A\to C_3)$ has relative ternary head
@@ -365,10 +378,19 @@ fullness to the other fibres.  Cubing an arbitrary lift of a local Klein
 translation kills every ternary coordinate and leaves the prescribed
 translation, so each literal map $W\to V_4$ is onto.
 This statement deliberately allows the proper submodules occurring in the
-degree-twelve rows: it does not replace $W$ by all of $V_4^3$.  The remaining
-bridge in this orientation is to package the whole quotient $A/W$, rather
-than only the three-block top, as a faithful transitive action on the nine
-ambient local translations and then install that action in the owner count.
+degree-twelve rows: it does not replace $W$ by all of $V_4^3$.  Put
+\[
+ \mathcal T=X\times(V_4\setminus\{1\}),
+\]
+where $X$ is the set of three actual four-point fibres.  Ambient conjugation,
+written in arbitrary local point charts, defines an action on the nine
+elements of $\mathcal T$.  Its kernel is exactly $W$: fixing all local
+translations forces the local permutation into the Klein group, and then
+faithfulness on the original points identifies the intrinsic core.  Full
+local $A_4$ images make this action transitive.  Hence the whole $3$-group
+quotient $A/W$, rather than only the three-block top, has a faithful
+transitive degree-nine action.  The remaining step in this orientation is
+its fixed-source owner count.
 
 The bounded degree-twelve certificate constructs $W=O_2(U)$ and a
 Sylow $3$-complement for $12T20,85,164,228,229,265$. It verifies
