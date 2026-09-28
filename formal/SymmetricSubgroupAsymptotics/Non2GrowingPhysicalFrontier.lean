@@ -184,6 +184,22 @@ theorem outsideFrontierRatio_selectedWidth_partition (n : ℕ) :
   unfold smallSelectedOutsideRatio growingSelectedOutsideRatio
   rw [add_div]
 
+/-- The arbitrary-degree literal outside ratio.  This is definitionally the
+whole source to which the cutoff-three non-2 theorem is applied. -/
+def outsideFitsAtRatio (n : ℕ) : ℝ :=
+  (Nat.card (OutsideFitsSubgroupSetAt n) : ℝ) / exactBenchmark n
+
+theorem outsideFrontierRatio_eq_outsideFitsAtRatio (n : ℕ) :
+    OrdinaryFrontierClosure.outsideFrontierRatio n =
+      outsideFitsAtRatio n := by
+  rw [outsideFrontierRatio_eq_subgroupSet]
+  have hcard :
+      Nat.card (OutsideFitsSubgroupSet (halfDegree n) (parity n)) =
+        Nat.card (OutsideFitsSubgroupSetAt n) :=
+    Nat.card_congr (outsideFitsSubgroupSetDegreeEquiv n)
+  rw [hcard]
+  rfl
+
 /-- Every growing outside subgroup enters the exact sigma index used by the
 uniform quotient assembly.  The same selected orbit determines both its
 sector and its action label. -/
@@ -213,6 +229,37 @@ theorem growingSelectedOutside_physical_cover (n : ℕ)
   exact FusionOrbitProfileChart.mem_widthCanonicalFamily_non2Growing
     G.1.1.1 G.1.1.2 o.1 hw hwn i eO himage
 
+/-- Every outside subgroup, including the degree-three `C₃` and both
+degree-four audit directions, enters the uniform cutoff-three sigma menu. -/
+theorem outsideFitsAt_physical_cover (n : ℕ)
+    (H : Subgroup (Equiv.Perm (Fin n)))
+    (hH : H ∈ OutsideFitsSubgroupSetAt n) :
+    ∃ j : GrowingQuotientPhysicalIndex
+        (ι := fun w => Non2TransitiveActionClass (Fin w)) 3 n,
+      H ∈ GrowingQuotientCanonicalFamily 3 n non2GrowingAction
+        non2GrowingPredicate j := by
+  let G : OutsideFitsFamilyAt n := ⟨⟨H, hH.1⟩, hH.2⟩
+  let o : OutsideOrbit H := selectedOutsideOrbitAt G
+  let w : ℕ := selectedOutsideWidthAt G
+  have hw : Nat.card o.1.orbit = w := rfl
+  have hw3 : 3 ≤ w := by
+    have := selectedOutsideWidthAt_gt_two G
+    omega
+  have hwn : w ≤ n := by
+    have hcard := Nat.card_le_card_of_injective
+      (Subtype.val : o.1.orbit → Fin n) Subtype.val_injective
+    simpa only [hw, Nat.card_fin] using hcard
+  obtain ⟨i, eO, himage⟩ := Non2TransitiveActionClass.orbit_cover
+    H o.1 hw o.2.1
+  have hmem : w ∈ Finset.Ico 3 (n + 1) :=
+    Finset.mem_Ico.mpr ⟨hw3, Nat.lt_succ_of_le hwn⟩
+  let j : GrowingQuotientPhysicalIndex
+      (ι := fun d => Non2TransitiveActionClass (Fin d)) 3 n :=
+    ⟨⟨w, hmem⟩, i⟩
+  refine ⟨j, ?_⟩
+  exact FusionOrbitProfileChart.mem_widthCanonicalFamily_non2Growing
+    H hH.1 o.1 hw hwn i eO himage
+
 /-- Once the complete-source local envelope has been proved for every
 non-2 transitive action, the growing selected-width ratio satisfies exactly
 the physical hypothesis consumed by the numerical forward theorem. -/
@@ -231,6 +278,26 @@ theorem growingSelectedOutside_physicalBound_of_local
       non2GrowingPredicate D A v η δ c α
   · exact Filter.Eventually.of_forall (fun _ => le_rfl)
   · exact growingSelectedOutside_physical_cover
+  · exact hlocal
+
+/-- The reusable general non-2 theorem now consumes the complete remaining
+outside frontier directly.  Its local premise includes the `C₃` case and is
+therefore the promised first audit of every proposed capacity estimate. -/
+theorem outsideFitsAt_physicalBound_of_local
+    (D : ∀ w, Non2TransitiveActionClass (Fin w) → ℕ → ℝ)
+    (A : ∀ w, Non2TransitiveActionClass (Fin w) → ℝ)
+    (v : ∀ w, Non2TransitiveActionClass (Fin w) → ℕ)
+    (η δ c α : ∀ w, Non2TransitiveActionClass (Fin w) → ℝ)
+    (hlocal : GrowingQuotientLocalPhysicalBound 3 non2GrowingAction
+      non2GrowingPredicate D A v η δ c α) :
+    GrowingQuotientPhysicalBound outsideFitsAtRatio 3
+      D A v η δ c α := by
+  apply growingQuotientPhysicalBound_of_local
+    outsideFitsAtRatio 3 (by omega)
+      OutsideFitsSubgroupSetAt non2GrowingAction
+      non2GrowingPredicate D A v η δ c α
+  · exact Filter.Eventually.of_forall (fun _ => le_rfl)
+  · exact outsideFitsAt_physical_cover
   · exact hlocal
 
 end RepeatedMarkerOwnerBound
