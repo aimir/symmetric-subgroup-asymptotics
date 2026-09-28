@@ -68,6 +68,22 @@ theorem outsideFitsSubgroupSet_card (N epsilon : ℕ) :
       Nat.card (OutsideFitsFamily N epsilon) := by
   rw [Nat.card_congr (outsideFitsSubgroupSetEquiv N epsilon).symm]
 
+/-- The one selected bad orbit used for ownership and for the small/growing
+width partition.  Keeping this choice named prevents a subgroup with several
+bad orbits from entering both sectors. -/
+def selectedOutsideOrbit (N epsilon : ℕ)
+    (H : OutsideFitsFamily N epsilon) : OutsideOrbit H.1.1 :=
+  Classical.choice (outsideFits_hasOrbit N epsilon H)
+
+def selectedOutsideWidth (N epsilon : ℕ)
+    (H : OutsideFitsFamily N epsilon) : ℕ :=
+  Nat.card (selectedOutsideOrbit N epsilon H).1.orbit
+
+theorem selectedOutsideWidth_gt_two (N epsilon : ℕ)
+    (H : OutsideFitsFamily N epsilon) :
+    2 < selectedOutsideWidth N epsilon H :=
+  outsideOrbit_card_gt_two H.1.1 (selectedOutsideOrbit N epsilon H)
+
 /-- Every outside subgroup enters one member of the complete non-2 action
 menu.  There is no orbit multiplicity in this cover: one bad orbit is chosen
 only to produce the label, and the covered object is the original subgroup.
@@ -77,8 +93,7 @@ theorem outsideFits_physical_cover (N epsilon : ℕ)
     ∃ i : Non2OutsideActionLabel (2*N+epsilon),
       H.1.1 ∈ FusionWidthCanonicalFamily (non2OutsideAction i)
         (non2OutsideWidth_le i) (non2OutsidePredicate i) := by
-  let o : OutsideOrbit H.1.1 :=
-    Classical.choice (outsideFits_hasOrbit N epsilon H)
+  let o : OutsideOrbit H.1.1 := selectedOutsideOrbit N epsilon H
   have hle : Nat.card o.1.orbit ≤ 2*N+epsilon := by
     have hcard := Nat.card_le_card_of_injective
       (Subtype.val : o.1.orbit → Fin (2*N+epsilon)) Subtype.val_injective

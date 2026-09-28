@@ -85,7 +85,7 @@ Theorem~\ref{thm:fusion}.
 \end{proof}
 
 \begin{theorem}[Growing-parameter comparator transfer]\label{thm:parametric}
-Fix $w_0\geq5$ and $0<\rho\leq1/8$.
+Fix $w_0\geq3$ and $0<\rho\leq1/8$.
 For each accepted transitive action $U$ of degree $w\geq w_0$, choose
 one certificate consisting of a finite comparator $R$, a faithful action of
 $R$ on $v_0$ points, and $\eta_U\geq0$. Require
@@ -137,6 +137,10 @@ Split at $Z_J(R)>2^{ab}$. The cold kernel is
 \]
 By \eqref{eq:uniform-delta} its main exponent is at most
 $-\rho wb/4-w^2/16\leq-\rho wn/4-w^2/32$.
+The estimate is uniform from $w=3$: if $r=\lfloor w/2\rfloor$, then
+$w\leq3r$ and hence $3w^2\leq32r^2$; together with
+$\rho\leq1/8$ this supplies the floor-term comparison used in the last
+inequality.
 The number of transitive action classes is $2^{o(w^2)}$ by the
 transitive-subgroup bound of \cite{LucchiniMenegazzoMorigi2000}, in
 the labelled form quoted in the introduction of

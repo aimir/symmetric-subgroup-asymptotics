@@ -73,10 +73,34 @@ theorem growingQuotientColdRow_sum (w₀ : ℕ) (hw₀ : 1 ≤ w₀)
   rw [Finset.sum_eq_single (n - w)]
   · rw [if_pos (Nat.sub_add_cancel hwn)]
   · intro b _ hne
-    exact if_neg (by
-      intro h
-      have : b = n - w := by omega
-      exact hne this)
+    by_cases h : b + w = n
+    · exact False.elim (hne (by omega))
+    · exact if_neg h
+  · simp [hb]
+
+/-- Weighted reindexing retains each literal complement degree exactly.
+This is the identity used when local physical bounds are assembled into the
+global forward recurrence. -/
+theorem growingQuotientColdRow_weighted_sum (w₀ : ℕ) (hw₀ : 1 ≤ w₀)
+    (D : ∀ w, ι w → ℕ → ℝ) (A α : ∀ w, ι w → ℝ)
+    (a : ℕ → ℝ) (n : ℕ) :
+    (∑ b ∈ Finset.range n,
+      growingQuotientColdRow w₀ D A α n b * a b) =
+      ∑ w ∈ Finset.Ico w₀ (n + 1),
+        growingQuotientColdWidthSum (n - w) w (D w) (A w) (α w) *
+          a (n - w) := by
+  unfold growingQuotientColdRow
+  simp only [Finset.sum_mul, ite_mul, zero_mul]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro w hw
+  have hww := Finset.mem_Ico.mp hw
+  have hwn : w ≤ n := by omega
+  have hb : n - w < n := by omega
+  rw [Finset.sum_eq_single (n - w)]
+  · rw [if_pos (Nat.sub_add_cancel hwn)]
+  · intro b _ hne
+    rw [if_neg (show b + w ≠ n from fun h => hne (by omega))]
   · simp only [Finset.mem_range, hb, not_true_eq_false, false_implies]
 
 /-- The geometric tail of the pointwise width bounds costs at most a factor
@@ -84,7 +108,7 @@ two once its ratio is at most one half. -/
 theorem growingQuotientColdTotal_le
     {ρ : ℝ} (w₀ n : ℕ)
     (D : ∀ w, ι w → ℕ → ℝ) (A α : ∀ w, ι w → ℝ)
-    (hρ : 0 < ρ) (hρ8 : ρ ≤ 1 / 8) (hw₀ : 5 ≤ w₀)
+    (hρ : 0 < ρ) (hρ8 : ρ ≤ 1 / 8) (hw₀ : 3 ≤ w₀)
     (hD : ∀ w i b, 0 ≤ D w i b) (hA : ∀ w i, 0 < A w i)
     (hgap : ∀ w i,
       α w i ≤ (halfDegree w : ℝ) / 4 - ρ * w / 4)
@@ -141,7 +165,7 @@ theorem growingQuotientColdTotal_le
 theorem growingQuotientColdRow_sum_le
     {ρ : ℝ} (w₀ n : ℕ)
     (D : ∀ w, ι w → ℕ → ℝ) (A α : ∀ w, ι w → ℝ)
-    (hρ : 0 < ρ) (hρ8 : ρ ≤ 1 / 8) (hw₀ : 5 ≤ w₀)
+    (hρ : 0 < ρ) (hρ8 : ρ ≤ 1 / 8) (hw₀ : 3 ≤ w₀)
     (hD : ∀ w i b, 0 ≤ D w i b) (hA : ∀ w i, 0 < A w i)
     (hgap : ∀ w i,
       α w i ≤ (halfDegree w : ℝ) / 4 - ρ * w / 4)

@@ -215,7 +215,7 @@ noncomputable def growingQuotient_exponentialForwardEstimate
     (error : ℕ → ℝ) {ρ : ℝ} (w₀ : ℕ)
     (D : ∀ w, ι w → ℕ → ℝ) (A : ∀ w, ι w → ℝ)
     (v : ∀ w, ι w → ℕ) (η δ c α : ∀ w, ι w → ℝ)
-    (hρ : 0 < ρ) (hρ8 : ρ ≤ 1 / 8) (hw₀ : 5 ≤ w₀)
+    (hρ : 0 < ρ) (hρ8 : ρ ≤ 1 / 8) (hw₀ : 3 ≤ w₀)
     (hD : ∀ w i b, 0 ≤ D w i b) (hA : ∀ w i, 0 < A w i)
     (hp : GrowingQuotientParameterBound ρ v η δ c α)
     (hmass : GrowingMenuMassBound w₀ D A)
@@ -312,7 +312,7 @@ noncomputable def growingQuotient_exponentialForwardEstimate
       hD hA hp.cold_gap hcoldn hration
     have hrate : ρ ^ 2 ≤ ρ * w₀ := by
       have hwR : ρ ≤ (w₀ : ℝ) := by
-        have : (5 : ℝ) ≤ w₀ := by exact_mod_cast hw₀
+        have : (3 : ℝ) ≤ w₀ := by exact_mod_cast hw₀
         nlinarith
       nlinarith [mul_nonneg hρ.le (sub_nonneg.mpr hwR)]
     calc
@@ -329,7 +329,7 @@ contractive forward estimate. -/
 noncomputable def growingColdOnly_exponentialForwardEstimate
     (error : ℕ → ℝ) {ρ : ℝ} (w₀ : ℕ)
     (D : ∀ w, ι w → ℕ → ℝ) (A α : ∀ w, ι w → ℝ)
-    (hρ : 0 < ρ) (hρ8 : ρ ≤ 1 / 8) (hw₀ : 5 ≤ w₀)
+    (hρ : 0 < ρ) (hρ8 : ρ ≤ 1 / 8) (hw₀ : 3 ≤ w₀)
     (hD : ∀ w i b, 0 ≤ D w i b) (hA : ∀ w i, 0 < A w i)
     (hgap : ∀ w i,
       α w i ≤ (halfDegree w : ℝ) / 4 - ρ * w / 4)

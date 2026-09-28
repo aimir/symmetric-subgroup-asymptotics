@@ -80,7 +80,7 @@ every retained width. -/
 theorem growingMenuMass_cold_overhead
     {ρ : ℝ} (w₀ : ℕ)
     (D : ∀ w, ι w → ℕ → ℝ) (A : ∀ w, ι w → ℝ)
-    (hρ : 0 < ρ) (hw₀ : 5 ≤ w₀)
+    (hρ : 0 < ρ) (hw₀ : 3 ≤ w₀)
     (hD : ∀ w i b, 0 ≤ D w i b) (hA : ∀ w i, 0 < A w i)
     (hmass : GrowingMenuMassBound w₀ D A) :
     ∀ᶠ n : ℕ in atTop, ∀ w, w ∈ Finset.Ico w₀ (n + 1) →
@@ -97,7 +97,7 @@ theorem growingMenuMass_cold_overhead
   intro w hw
   have hww := Finset.mem_Ico.mp hw
   have hwn : w ≤ n := by omega
-  have hw5 : 5 ≤ w := hw₀.trans hww.1
+  have hw3 : 3 ≤ w := hw₀.trans hww.1
   have hn1 : 1 ≤ n := (le_max_left _ _).trans hn
   have hnR : (1 : ℝ) ≤ n := by exact_mod_cast hn1
   have hγn : (1 : ℝ) ≤ γ * n := by

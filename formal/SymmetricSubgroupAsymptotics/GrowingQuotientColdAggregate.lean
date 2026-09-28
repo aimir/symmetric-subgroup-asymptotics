@@ -38,7 +38,7 @@ theorem growingQuotientColdWidthSum_le
     {ι : Type*} [Fintype ι]
     {ρ : ℝ} (n w : ℕ) (D : ι → ℕ → ℝ) (A α : ι → ℝ)
     (hρ : 0 < ρ) (hρ8 : ρ ≤ 1 / 8)
-    (hw : 5 ≤ w) (hwn : w ≤ n)
+    (hw : 3 ≤ w) (hwn : w ≤ n)
     (hD : ∀ i b, 0 ≤ D i b) (hA : ∀ i, 0 < A i)
     (hgap : ∀ i,
       α i ≤ (halfDegree w : ℝ) / 4 - ρ * w / 4)
@@ -115,10 +115,14 @@ theorem growingQuotientColdWidthSum_le
     apply hsum.trans
     rw [hsplit]
     exact mul_le_mul_of_nonneg_right hoverhead' (by positivity)
-  have hrw : (2 : ℝ) * w ≤ 5 * r := by
-    exact_mod_cast (show 2 * w ≤ 5 * r by dsimp [r, halfDegree]; omega)
-  have hsq : 4 * (w : ℝ) ^ 2 ≤ 25 * (r : ℝ) ^ 2 := by
-    nlinarith [sq_nonneg (5 * (r : ℝ) - 2 * w)]
+  have hwr : w ≤ 3 * r := by
+    dsimp [r, halfDegree]
+    omega
+  have hwrR : (w : ℝ) ≤ 3 * r := by exact_mod_cast hwr
+  have hsq : 3 * (w : ℝ) ^ 2 ≤ 32 * (r : ℝ) ^ 2 := by
+    have hw0 : (0 : ℝ) ≤ w := by positivity
+    have hr0 : (0 : ℝ) ≤ r := by positivity
+    nlinarith [sq_nonneg (3 * (r : ℝ) - w)]
   have hρ0 : 0 ≤ ρ := hρ.le
   have hnterm : 0 ≤ ρ * w * ((n : ℝ) - w) :=
     mul_nonneg (mul_nonneg hρ0 (by positivity))
