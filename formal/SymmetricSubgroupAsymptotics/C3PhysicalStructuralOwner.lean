@@ -32,9 +32,11 @@ def C3PhysicalStructuralOwner (n : ℕ)
             (OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o))
           (hN : N.Normal),
           letI := hN
-          TernaryHighEarlierOwner
-            (OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o)
-            o.orbit
+          3 * Nat.card o.orbit <
+              20 * Module.finrank (ZMod 3) (primeRelativeCharacters 3 N) ∧
+            TernaryHighEarlierOwner
+              (OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o)
+              o.orbit
 
 /-- The retained chart makes the complete physical owner invariant under an
 arbitrary relabelling.  No orbit representative or abstract isomorphism
@@ -46,8 +48,8 @@ theorem c3PhysicalStructuralOwner_relabel_iff {m n : ℕ}
       C3PhysicalStructuralOwner m G := by
   subst n
   constructor
-  · rintro ⟨b, c, H, hc, o, N, hN, hOwner⟩
-    refine ⟨b, c.trans e.symm, H, ?_, o, N, hN, hOwner⟩
+  · rintro ⟨b, c, H, hc, o, N, hN, hHigh, hOwner⟩
+    refine ⟨b, c.trans e.symm, H, ?_, o, N, hN, hHigh, hOwner⟩
     calc
       relabelSubgroup (c.trans e.symm)
           (H.map (fusionOrbitAction ternaryRegularAction)) =
@@ -57,8 +59,8 @@ theorem c3PhysicalStructuralOwner_relabel_iff {m n : ℕ}
               rw [relabelSubgroup_trans]
       _ = relabelSubgroup e.symm (relabelSubgroup e G) := by rw [hc]
       _ = G := relabelSubgroup_symm e G
-  · rintro ⟨b, c, H, hc, o, N, hN, hOwner⟩
-    refine ⟨b, c.trans e, H, ?_, o, N, hN, hOwner⟩
+  · rintro ⟨b, c, H, hc, o, N, hN, hHigh, hOwner⟩
+    refine ⟨b, c.trans e, H, ?_, o, N, hN, hHigh, hOwner⟩
     calc
       relabelSubgroup (c.trans e)
           (H.map (fusionOrbitAction ternaryRegularAction)) =
@@ -93,10 +95,17 @@ theorem c3TrivialHigh_enters_physicalStructuralOwner
     C3PhysicalStructuralOwner n
       (relabelSubgroup e
         (H.map (fusionOrbitAction ternaryRegularAction))) := by
-  obtain ⟨o, N, hN, hOwner⟩ :=
-    c3TrivialHigh_enters_ternaryEarlierOwner
-      hChief hWeight hPrimitive h18 b P H hH
-  exact ⟨b, e, H, rfl, o, N, hN, hOwner⟩
+  obtain ⟨o, N, hN, hHigh⟩ :=
+    c3TrivialHigh_actualOrbit_witness b P H hH
+  let A := OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o
+  letI : MulAction.IsPretransitive A o.orbit :=
+    orbitImage_pretransitive (C3ComplementSource b H) o
+  letI : N.Normal := hN
+  rcases ternaryHigh_earlierOwner_or_capacity
+      hChief hWeight hPrimitive h18 (A := A) (Ω := o.orbit) N with
+    hOwner | hCapacity
+  · exact ⟨b, e, H, rfl, o, N, hN, hHigh, hOwner⟩
+  · exact False.elim ((Nat.not_lt_of_ge hCapacity) hHigh)
 
 /-- First ownership by the appended residual branch is impossible for a
 high trivial-axis C3 state.  This is the first required application of the
