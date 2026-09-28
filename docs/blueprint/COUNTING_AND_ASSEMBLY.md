@@ -145,34 +145,47 @@ Substitute that bound into the SAME recurrence to obtain
 This auxiliary theorem estimates the complete binary family. It is proved
 once and used on the appropriate disjoint source families in the main count.
 
-## NB-EXHAUST: the surviving binary handoff
+## NB-EXHAUST: the post-E7 alphabet and binary handoff
 
 Earlier complete consumers reduce the residual nonbinary alphabet to selected
 pair tops of sizes 24,32,48,64,96,128,192,256. CAP-SECTION proves an already
 admissible certificate for every selected actual normal entry. This recognizes
 an existing menu; it does not pay a new copy of that menu's scalar or kernel.
 
-The unmarked residual is empty. The marked residual consists of natural S3
-markers, fixed points and binary orbits, with at least one noncritical binary
-orbit. Its whole mass is bounded by one positive transfer H_E into E. For
-n=2j+epsilon, define
+Orbitwise, the remaining alphabet is binary, natural S3, or a selected UP
+pair orbit. E7 removes the third alternative. Therefore the complete original
+subgroup satisfies the intrinsic `Fits` predicate used by the repeated-marker
+owner. In particular an outside-`Fits` residual is empty. If the state also
+has no fixed or natural-S3 marker orbit and claims nontrivial O^2, simultaneous
+restriction to all actual orbits makes the whole group binary and gives a
+contradiction. This is the O02 branch, including proper subdirect products.
+
+The marked O03 branch enters the already counted complete `Fits` owner with
+the original subgroup unchanged. Its positive marker-defect part uses the
+strictly forward complete row K_mark against ordinary counts. Its zero-defect
+part uses the typed binary frontier. For n=2j+epsilon, define
 
     p_odd(j)=c_j+c_(j-1)/6,
     alpha_j=c_j/p_odd(j), beta_j=c_j/(3p_odd(j)),
     r_j=(j-1)/4 * (c_(j-1)/c_j) * (G_(j-1)/G_j)    (j>=2),
     u_j=alpha_j+beta_j*(7+(6j)^(1/4)), v_j=beta_j*r_j,
 
-with r_0=r_1=0 and absent negative targets. The transfer is
+with r_0=r_1=0 and absent negative targets. The zero-defect target is
 
-    H_E(n,m)=K_mark(n,m)
-       + 1_(n odd)*(u_j 1_(m=n-1)+v_j 1_(m=n-3)),
+    B_(2j)=E_j,
+    B_(2j+1)=u_j E_j+v_j E_(j-1).
 
-where K_mark has exponentially small complete row. The coefficients u_j,v_j
-are bounded, u_j->1 and v_j->0. This row is not a strict contraction on complete
-counts. Its two shifted terms multiply the already proved error E, so H_E E
-is exponentially small. The same-family marked-moment estimate underlying it
-must retain the factor 1/4 in duplicate-pair collapse and the joint ternary
-character fibres.
+The row K_mark is exponentially small. The coefficients u_j,v_j have
+polynomial bounds, with u_j->1 and v_j->0. First apply the proved native
+binary recurrence to E_j and E_(j-1), then pad their even targets to the full
+ambient-degree range. This converts B_n into an exponentially small scalar and
+strictly forward ordinary row before the main boundedness induction.
+
+There is also a sharper historical positive transfer H_E directly into E,
+obtained by retaining a noncritical binary orbit through marker collapse. It
+is valid but unnecessary for the compositional main proof. The formal and
+manuscript assembly use the earlier `Fits` partition above, avoiding a second
+residual predicate and a duplicated marker route.
 
 ## ASM-OLD: the consumer aggregate
 
@@ -197,16 +210,19 @@ coverage is a separate hypothesis of the master inequality.
 ## ASM-MAIN and THM-MAIN: the exact master
 
 Given the exhaustive physical partition and the stated complete consumer
-bounds, the master inequality is
+bounds, before transporting the binary target the master inequality is
 
     A_n <= Ccrit_n + epsilon_old(n) + epsilon_F(n)
           + sum_(b<n) K_F(n,b) A_b
-          + 1_(n even) E_(n/2)
-          + sum_(even m<n) H_E(n,m) E_(m/2).
+          + sum_(m<n) K_mark(n,m) A_m
+          + B_n.
 
-There is one inherited aggregate, one same-degree even binary error and one
-typed H_E. Each physical atom keeps one terminal attachment. The auxiliary
-binary kernels are not also added directly to K_F.
+Substitute the native binary recurrence in B_n before induction. Its current
+and predecessor coefficients introduce only polynomial factors, which are
+absorbed by a smaller exponential rate. The result is one exponentially small
+scalar and one nonnegative strictly forward ordinary kernel. Each physical
+atom keeps one terminal attachment, and no binary or marker kernel is paid
+twice.
 
 The forcing excluding K_F is bounded and tends to one. The complete row of
 K_F tends to zero; choosing an onset with row at most 1/2 and using finite

@@ -61,7 +61,7 @@ corollaries; their proofs do not depend on the subgroup asymptotic.
 | CAP-SECTION | Coupled fixed/nontrivial socle bound and retained-annihilator cut | Actual-section module bounds, nonbinary trivial-section budget |
 | CNT-FUSION | Original-weight hot/cold scalar and forward kernel | CNT-LIFT, CNT-GRAPH, ANA-GAUSS, ANA-COEF, independent coarse subgroup bound |
 | APP-C1 | Exact surviving-character/inverse-complement interface and high-c1 exhaustion | Relative ternary filtration, earlier complete consumers and primitive inputs |
-| NB-EXHAUST | Every remaining selected nonbinary orbit is accepted; one typed binary handoff remains | CAP-SECTION, CNT-FUSION, earlier alphabet reduction, APP-C1, marker collapse |
+| NB-EXHAUST | E7 removes every selected UP orbit; the remaining orbitwise alphabet is `Fits`, with O02 empty and O03 routed to the existing marker/binary owner | CAP-SECTION, CNT-FUSION, earlier alphabet reduction, APP-C1, marker collapse |
 | BIN-LARGE | Complete width-at-least-32 binary reduction, with growing-width entropy paid | Binary separators, width32/top16 and width64/top32 boundaries, CNT-FUSION |
 | BIN-MIX | Complete C4/carrier/critical mixed family, with support-sensitive reserves | Retained-factor splitting, joint mixed subgroup bounds, original profile coefficients |
 | BIN-TRANSPORT | Reversible simultaneous full-preimage transport and decoration bound | BIN-MIX profile reserves, literal common-quotient maps, positive retained support |
