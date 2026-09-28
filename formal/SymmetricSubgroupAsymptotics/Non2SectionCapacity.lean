@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.Non2RetainedAnnihilatorCut
 import SymmetricSubgroupAsymptotics.Non2CentralCutFusion
 import SymmetricSubgroupAsymptotics.Non2CoupledSchurNumerics
+import SymmetricSubgroupAsymptotics.Non2SchurTraceyBranch
 
 /-!
 # The retained nonbinary section-capacity theorem
@@ -20,6 +21,22 @@ open scoped MonoidAlgebra
 namespace SymmetricSubgroupAsymptotics
 
 variable {B : Type} [Group B] [Finite B]
+
+/-- The canonical projection to a retained central quotient is an
+intertwining map for the unchanged original `B`-action. -/
+def non2CentralCutProjection
+    (M : Rep (ZMod 2) B)
+    (C : {C : Submodule (ZMod 2) M // C ≤ M.ρ.invariants}) :
+    M.ρ.IntertwiningMap
+      (OriginalCentralCutExtension.quotientModule M C).ρ where
+  toLinearMap := C.1.mkQ
+  isIntertwining' := fun _ => rfl
+
+theorem non2CentralCutProjection_surjective
+    (M : Rep (ZMod 2) B)
+    (C : {C : Submodule (ZMod 2) M // C ≤ M.ρ.invariants}) :
+    Function.Surjective (non2CentralCutProjection M C) :=
+  C.1.mkQ_surjective
 
 /-- The actual retained cut satisfies the full `47/48` Schur-capacity
 bound and leaves the explicit fusion reserve.  The coupled hypothesis is
@@ -164,6 +181,60 @@ theorem exists_non2SectionCapacity_cut_of_certificates
     (by positivity) hbase
   intro S hS hnonfixed
   exact hcert C hCdim hCslice S hS hnonfixed
+
+/-- The exact Tracey formula and one original faithful transitive
+permutation section discharge every nonfixed Schur-row certificate in every
+retained central quotient.  The fixed and unipotent budgets remain the two
+separate inputs to the final central-cut calculation. -/
+theorem exists_non2SectionCapacity_cut_of_Tracey_formula
+    {X : Type} [Finite X] [MulAction B X] [FaithfulSMul B X]
+    [MulAction.IsPretransitive B X]
+    (hTracey : TraceyBinaryFormulaInput) (x : X)
+    (M : Rep (ZMod 2) B) [FiniteDimensional (ZMod 2) M]
+    (P : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) B X))
+    (qmap : P.toRepresentation.IntertwiningMap M.ρ)
+    (hqmap : Function.Surjective qmap)
+    (hs : 24 ≤ Nat.card X) (heven : Even (Nat.card X))
+    (hfixed :
+      16 * Module.finrank (ZMod 2) M.ρ.invariants ≤ 5 * Nat.card X)
+    (hunipotent :
+      8 * (Module.finrank (ZMod 2) M.ρ.invariants +
+        Module.finrank (ZMod 2)
+          (displacementSlice M.ρ M.ρ.invariants)) ≤ 3 * Nat.card X) :
+    let t := Module.finrank (ZMod 2) M.ρ.invariants
+    let ell := Module.finrank (ZMod 2)
+      (displacementSlice M.ρ M.ρ.invariants)
+    ∃ C : {C : Submodule (ZMod 2) M // C ≤ M.ρ.invariants},
+      Module.finrank (ZMod 2) C.1 = non2CentralCutDimension t ell ∧
+      displacementSlice M.ρ C.1 = ⊥ ∧
+      Module.finrank (ZMod 2)
+          (OriginalCentralCutExtension.quotientModule M C).ρ.invariants =
+        t - non2CentralCutDimension t ell ∧
+      2 * (Module.finrank (ZMod 2) C.1 : ℝ) +
+          4 * OriginalCentralCutFusion.capacity M C ≤
+        47 * (Nat.card X : ℝ) / 48 ∧
+      (Nat.card X : ℝ) / 768 ≤
+        OriginalCentralCutFusion.gapParameter M C (2 * Nat.card X)
+          (Nat.card X) := by
+  apply exists_non2SectionCapacity_cut_of_certificates M (Nat.card X)
+    hs hfixed hunipotent
+  intro C _ _ S hS hnonfixed
+  letI : FiniteDimensional (ZMod 2)
+      (OriginalCentralCutExtension.quotientModule M C) :=
+    FiniteDimensional.of_surjective C.1.mkQ C.1.mkQ_surjective
+  letI : IsSimpleModule (ZMod 2)[B] S := hS
+  let qcut := non2CentralCutProjection M C
+  have hqcut : Function.Surjective qcut :=
+    non2CentralCutProjection_surjective M C
+  have hbranch := Non2SchurStructuralBranch.of_Tracey_formula
+    hTracey x (OriginalCentralCutExtension.quotientModule M C).ρ S
+    hnonfixed P (qcut.comp qmap) (hqcut.comp hqmap) hs heven
+  exact hbranch.rowCertificate
+    (OriginalCentralCutExtension.quotientModule M C).ρ S
+    (Nat.card X)
+    (Module.finrank (ZMod 2)
+      (OriginalCentralCutExtension.quotientModule M C).ρ.invariants)
 
 end SymmetricSubgroupAsymptotics
 
