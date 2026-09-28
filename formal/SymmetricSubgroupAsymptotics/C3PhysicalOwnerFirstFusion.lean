@@ -20,42 +20,41 @@ namespace C3HighNestedCarrier
 /-- The orbit retained by a high-C3 witness enters the owner-indexed non-2
 family.  First ownership and noncriticality are transported from the complete
 physical subgroup to its exact deleted model; the complement is unchanged. -/
-theorem Data.mem_non2FirstOwnerCanonicalFamily
-    {r b : ℕ}
+theorem Data.mem_non2FirstOwnerCanonicalFamily_atWidth
+    {r b w : ℕ}
     (Eligible : ∀ n, Fin r → Subgroup (Equiv.Perm (Fin n)) → Prop)
     (hEligible : DegreeNaturalOwnerMenu Eligible)
     (H : Subgroup (ternaryRegularAction × Equiv.Perm (Fin b)))
     (C : Data H)
+    (hw : Nat.card C.orbit.orbit = w)
     (q : TernaryCyclic ⊕ Fin b ≃ Fin (b + 3))
     (hordinary : ¬ IsCriticalSubgroup (b + 3)
       (relabelSubgroup q (physicalSubgroup H)))
     (owner : Fin r)
     (howner : FirstOwned (Eligible (b + 3)) owner
       (relabelSubgroup q (physicalSubgroup H))) :
-    ∃ (w : ℕ) (hn : w ≤ b + 3)
-      (i : Non2TransitiveActionClass (Fin w)),
+    ∃ (hn : w ≤ b + 3) (i : Non2TransitiveActionClass (Fin w)),
       relabelSubgroup q (physicalSubgroup H) ∈
         FusionWidthCanonicalFamily
           (non2FirstOwnerAction w (owner, i)) hn
           (non2FirstOwnerPredicate Eligible w (owner, i) (b + 3 - w)) := by
-  let w := Nat.card C.orbit.orbit
   letI : C.normal.Normal := C.normal_normal
   have hnon2 : ¬ IsPGroup 2
       (OrbitProfileFromOrbits.orbitImage
         (C3ComplementSource b H) C.orbit) :=
     strict_ternaryRelativeHead_not_isPGroup_two C.normal C.high
   obtain ⟨i, eO, himage⟩ := Non2TransitiveActionClass.orbit_cover
-    (C3ComplementSource b H) C.orbit rfl hnon2
-  have hwb : w ≤ b := width_le H C.orbit rfl
+    (C3ComplementSource b H) C.orbit hw hnon2
+  have hwb : w ≤ b := width_le H C.orbit hw
   have hn : w ≤ b + 3 := by omega
-  let K := relabelSubgroup (chart H C.orbit rfl eO).symm
+  let K := relabelSubgroup (chart H C.orbit hw eO).symm
     (physicalSubgroup H)
   have hblock := FusionOrbitProfileChart.chart_preserves
     (physicalSubgroup H) (liftedOrbit H C.orbit)
-      (pointEquiv H C.orbit eO) (complementEquiv H C.orbit rfl)
+      (pointEquiv H C.orbit eO) (complementEquiv H C.orbit hw)
   have hprojection := FusionOrbitProfileChart.chart_projection_eq
     (physicalSubgroup H) (liftedOrbit H C.orbit) i.representative
-      (pointEquiv H C.orbit eO) (complementEquiv H C.orbit rfl)
+      (pointEquiv H C.orbit eO) (complementEquiv H C.orbit hw)
       (pointEquiv_image H C.orbit i.representative eO himage)
   have hrec := fusionDeletedModel_recovers i.representative K
     hblock hprojection
@@ -64,7 +63,7 @@ theorem Data.mem_non2FirstOwnerCanonicalFamily
     let r₀ : Fin w ⊕ Fin (b + 3 - w) ≃ Fin (w + (b + 3 - w)) :=
       finSumFinEquiv
     let e : Fin w ⊕ Fin (b + 3 - w) ≃ TernaryCyclic ⊕ Fin b :=
-      chart H C.orbit rfl eO
+      chart H C.orbit hw eO
     let s : Fin (w + (b + 3 - w)) ≃ Fin (b + 3) :=
       r₀.symm.trans (e.trans q)
     let L : Subgroup (Equiv.Perm (Fin (w + (b + 3 - w)))) :=
@@ -83,7 +82,7 @@ theorem Data.mem_non2FirstOwnerCanonicalFamily
       rw [← relabelSubgroup_trans]
       exact congrArg (relabelSubgroup q)
         (relabelSubgroup_symm
-          (chart H C.orbit rfl eO).symm (physicalSubgroup H))
+          (chart H C.orbit hw eO).symm (physicalSubgroup H))
     have hordinaryL : ¬ IsCriticalSubgroup (w + (b + 3 - w)) L := by
       apply (ordinaryRemainder_relabel_equiv_iff
         (show w + (b + 3 - w) = b + 3 by omega) s L).mp
@@ -109,10 +108,35 @@ theorem Data.mem_non2FirstOwnerCanonicalFamily
     · unfold ordinaryRemainderFusionPredicate
       exact hphysical.symm ▸ hordinaryL
     · exact hphysical.symm ▸ hownerL
-  refine ⟨w, hn, i, ?_⟩
-  exact mem_widthCanonicalFamily_of_relabel H C rfl i.representative
+  refine ⟨hn, i, ?_⟩
+  exact mem_widthCanonicalFamily_of_relabel H C hw i.representative
     eO himage q
     (non2FirstOwnerPredicate Eligible w (owner, i) (b + 3 - w)) hlocal
+
+/-- Existential-width wrapper used when no finite-width classification is
+needed by the caller. -/
+theorem Data.mem_non2FirstOwnerCanonicalFamily
+    {r b : ℕ}
+    (Eligible : ∀ n, Fin r → Subgroup (Equiv.Perm (Fin n)) → Prop)
+    (hEligible : DegreeNaturalOwnerMenu Eligible)
+    (H : Subgroup (ternaryRegularAction × Equiv.Perm (Fin b)))
+    (C : Data H)
+    (q : TernaryCyclic ⊕ Fin b ≃ Fin (b + 3))
+    (hordinary : ¬ IsCriticalSubgroup (b + 3)
+      (relabelSubgroup q (physicalSubgroup H)))
+    (owner : Fin r)
+    (howner : FirstOwned (Eligible (b + 3)) owner
+      (relabelSubgroup q (physicalSubgroup H))) :
+    ∃ (w : ℕ) (hn : w ≤ b + 3)
+      (i : Non2TransitiveActionClass (Fin w)),
+      relabelSubgroup q (physicalSubgroup H) ∈
+        FusionWidthCanonicalFamily
+          (non2FirstOwnerAction w (owner, i)) hn
+          (non2FirstOwnerPredicate Eligible w (owner, i) (b + 3 - w)) := by
+  let w := Nat.card C.orbit.orbit
+  obtain ⟨hn, i, hmem⟩ := C.mem_non2FirstOwnerCanonicalFamily_atWidth
+    Eligible hEligible H rfl q hordinary owner howner
+  exact ⟨w, hn, i, hmem⟩
 
 end C3HighNestedCarrier
 
