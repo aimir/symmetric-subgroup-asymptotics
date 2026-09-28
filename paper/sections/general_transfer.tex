@@ -200,6 +200,35 @@ quadratic reserve proves the last bound in
 assumed.
 \end{proof}
 
+\begin{lemma}[Retained-cell incidence]\label{lem:retained-cell-incidence}
+For a complete source $J$ and finite comparator $R$, put
+\[
+ \mathcal Q_J(R)=\coprod_{N\lhd R}\Epi(J,R/N),
+ \qquad |\mathcal Q_J(R)|=Z_J(R).
+\]
+Let $\mathcal E$ be an accepted intrinsic carrier-epimorphism family and
+let $A$ be a finite set of retained invariant flags.  If
+\[
+ \kappa:\mathcal E\longrightarrow\mathcal Q_J(R)\times A
+ \quad\hbox{has every fibre of size at most }L,
+\]
+then
+\begin{equation}\label{eq:retained-cell-incidence}
+ |\mathcal E|\leq |A|LZ_J(R).
+\end{equation}
+Consequently $|A|L\leq D(b)2^{\eta b}$ proves
+\eqref{eq:parametric-fibre}.  The same conclusion holds on the original
+literal normal axis whenever the carrier transport reconstructs the original
+subgroup and acceptance is tested after that inverse reconstruction.
+\end{lemma}
+\begin{proof}
+Partition $\mathcal E$ into the fibres of $\kappa$ and sum the bound $L$
+over the $Z_J(R)|A|$ possible cells.  Reversible transport is injective on
+the original axis, preserves the complete exterior source $J$, and tests the
+same original acceptance predicate, so the transported family is a subset
+of $\mathcal E$ with no additional multiplicity.
+\end{proof}
+
 The repeated action labels in Theorem~\ref{thm:parametric} implement the
 owner-or-capacity dichotomy.  Take a finite ordered list of predicates
 invariant under relabelling of the complete physical subgroup and assign each
