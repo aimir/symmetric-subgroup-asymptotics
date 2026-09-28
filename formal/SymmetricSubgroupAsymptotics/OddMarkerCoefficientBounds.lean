@@ -173,6 +173,25 @@ theorem predecessorCoefficient_le (N : ℕ) (hN : 1 ≤ N) :
         (by positivity)
     _ = 2 * eulerProduct⁻¹ ^ 2 * ((N : ℝ) + 1) ^ 3 := by ring
 
+theorem predecessorErrorCoefficient_nonneg (N : ℕ) :
+    0 ≤ predecessorErrorCoefficient N := by
+  unfold predecessorErrorCoefficient
+  exact mul_nonneg (OddMarkerBinaryErrorTransfer.beta_nonneg N)
+    (predecessorCoefficient_nonneg N)
+
+theorem predecessorErrorCoefficient_le_predecessorCoefficient (N : ℕ) :
+    predecessorErrorCoefficient N ≤ predecessorCoefficient N := by
+  unfold predecessorErrorCoefficient
+  have hb : beta N ≤ 1 := (beta_le_third N).trans (by norm_num)
+  simpa only [one_mul] using
+    mul_le_mul_of_nonneg_right hb (predecessorCoefficient_nonneg N)
+
+theorem predecessorErrorCoefficient_le (N : ℕ) (hN : 1 ≤ N) :
+    predecessorErrorCoefficient N ≤
+      2 * eulerProduct⁻¹ ^ 2 * ((N : ℝ) + 1) ^ 3 :=
+  (predecessorErrorCoefficient_le_predecessorCoefficient N).trans
+    (predecessorCoefficient_le N hN)
+
 /-- Linear growth costs at most half of any prescribed exponential rate. -/
 theorem eventually_currentCoefficient_mul_exponential_le {c : ℝ} (hc : 0 < c) :
     ∀ᶠ N : ℕ in atTop,
@@ -213,6 +232,17 @@ theorem eventually_predecessorCoefficient_mul_exponential_le
       mul_le_mul_of_nonneg_left hpoly (by positivity)
     _ = (16 * eulerProduct⁻¹ ^ 2) *
         (2 : ℝ) ^ (-(c / 2) * (N : ℝ)) := by norm_num; ring
+
+theorem eventually_predecessorErrorCoefficient_mul_exponential_le
+    {c : ℝ} (hc : 0 < c) :
+    ∀ᶠ N : ℕ in atTop,
+      predecessorErrorCoefficient N * (2 : ℝ) ^ (-c * (N : ℝ)) ≤
+        (16 * eulerProduct⁻¹ ^ 2) *
+          (2 : ℝ) ^ (-(c / 2) * (N : ℝ)) := by
+  filter_upwards [eventually_predecessorCoefficient_mul_exponential_le hc]
+    with N hN
+  exact (mul_le_mul_of_nonneg_right
+    (predecessorErrorCoefficient_le_predecessorCoefficient N) (by positivity)).trans hN
 
 end SymmetricSubgroupAsymptotics.OddMarkerCoefficientBounds
 
