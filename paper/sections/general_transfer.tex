@@ -94,10 +94,16 @@ $R$ on $v_0$ points, and $\eta_U\geq0$. Require
 \]
 Suppose that, for every $J\leq S_b$,
 \begin{equation}\label{eq:parametric-fibre}
- Z_J(U)\leq2^{\eta_Ub+B_U(b)}Z_J(R),\qquad
- B_U(b)\leq\beta(w)+Cw\log^2(w+b+1),
+ Z_J(U)\leq D_U(b)2^{\eta_Ub}Z_J(R),\qquad D_U(b)\geq0.
 \end{equation}
-where $C$ is fixed and $\beta(w)=o(w^2)$ uniformly over the certificates.
+Write $a(U)$ for the original action normalizer and assume the direct
+original-weight menu bound
+\begin{equation}\label{eq:parametric-menu-mass}
+ \text{for every $\gamma>0$, eventually uniformly for $w_0\leq w\leq n$,}
+ \qquad
+ \sum_{\substack{U\text{ accepted}\\\deg U=w}}
+       \frac{D_U(n-w)}{a(U)}\leq2^{\gamma wn}.
+\end{equation}
 Then the complete accepted-orbit family has a forward kernel and scalar
 with the uniform eventual bounds
 \begin{equation}\label{eq:parametric-rates}
@@ -127,19 +133,25 @@ needed. This controlled padding preserves the original margin.
 Split at $Z_J(R)>2^{ab}$. The cold kernel is
 \[
  K(n,b)=\Delta(n,b)\sum_{\substack{U\text{ accepted}\\\deg U=n-b}}
-         \frac{2^{(\eta_U+a)b+B_U(b)}}{a(U)}.
+         \frac{D_U(b)2^{(\eta_U+a)b}}{a(U)}.
 \]
 By \eqref{eq:uniform-delta} its main exponent is at most
 $-\rho wb/4-w^2/16\leq-\rho wn/4-w^2/32$.
 The number of transitive action classes is $2^{o(w^2)}$ by the
 transitive-subgroup bound of \cite{LucchiniMenegazzoMorigi2000}, in
 the labelled form quoted in the introduction of
-\cite{RoneyDougalTracey2025}. Consequently, after increasing a finite
-constant, $\beta(w)$ plus this class entropy is at most
-$w^2/64+C_1w$ for every $w$. The remaining error is
-$O(w\log^2(n+2))+C_1w=o(wn)$ uniformly. This proves the first bound
-in \eqref{eq:parametric-rates}. Sum the geometric tail over $w\geq w_0$
-to obtain the second.
+\cite{RoneyDougalTracey2025}. Thus the formerly used sufficient
+conditions
+\[
+ D_U(b)\leq2^{\beta(w)+Cw\log^2(w+b+1)},
+ \qquad \beta(w)=o(w^2)
+\]
+imply \eqref{eq:parametric-menu-mass}: the class entropy and $\beta(w)$
+are $o(w^2)$, while the logarithmic term is $o(wn)$ uniformly for
+$w_0\leq w\leq n$. In the present formulation the direct menu bound
+absorbs these terms together with the pointing polynomial. This proves
+the first bound in \eqref{eq:parametric-rates}. Sum the geometric tail
+over $w\geq w_0$ to obtain the second.
 
 For a nonempty hot part use
 $q=\max(1,\lceil4\delta b/v^2\rceil)$, $q_*=4\delta b/v^2$,
@@ -161,16 +173,16 @@ $M\leq(1+1/(2\rho))b+w$, so the coarse error is uniformly
 $O_\rho(n^{3/2})$. The original hot sum is
 \[
  \sum_{w=w_0}^n\sum_{\deg U=w}
- \frac{2^{\eta_Ub+B_U(b)}}{b!a(U)p_nG_{\lfloor n/2\rfloor}}
+ \frac{D_U(b)2^{\eta_Ub}}{b!a(U)p_nG_{\lfloor n/2\rfloor}}
        \sum_{J\ {\rm hot}}Z_J(R),\qquad b=n-w.
 \]
-Its remaining normalization costs $O(n\log(n+2))$. For any prescribed
-small positive coefficient, the uniform $o(w^2)$ errors and class
-entropy are bounded by that coefficient times $w^2$ plus $O(w)$.
-All errors, including the sum over widths and $Cw\log^2(n+1)$, are
-$o(n^2)$ uniformly. Retaining half the quadratic reserve proves the
-last bound in \eqref{eq:parametric-rates}. No normalized-count
-boundedness has been assumed.
+Its remaining normalization costs $O(n\log(n+2))$.
+Equation~\eqref{eq:parametric-menu-mass}, first at each width and then
+after the sum over at most $n+1$ widths, absorbs the original weighted
+menu into an arbitrarily small multiple of $n^2$. Retaining half the
+quadratic reserve proves the last bound in
+\eqref{eq:parametric-rates}. No normalized-count boundedness has been
+assumed.
 \end{proof}
 
 \begin{lemma}[Central nonbinary pair sections]\label{lem:central-pair}
