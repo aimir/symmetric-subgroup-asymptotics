@@ -300,6 +300,31 @@ theorem outsideFitsAt_physicalBound_of_local
   · exact outsideFitsAt_physical_cover
   · exact hlocal
 
+/-- Numerical parameters, original weighted menu mass, the published coarse
+count, and the one complete-source local theorem now produce the exact
+outside-frontier certificate required by the final ordinary recurrence. -/
+noncomputable def outsideFrontier_exponentialForwardEstimate_of_non2
+    { ρ : ℝ }
+    (D : ∀ w, Non2TransitiveActionClass (Fin w) → ℕ → ℝ)
+    (A : ∀ w, Non2TransitiveActionClass (Fin w) → ℝ)
+    (v : ∀ w, Non2TransitiveActionClass (Fin w) → ℕ)
+    (η δ c α : ∀ w, Non2TransitiveActionClass (Fin w) → ℝ)
+    (hρ : 0 < ρ) (hρ8 : ρ ≤ 1 / 8)
+    (hD : ∀ w i b, 0 ≤ D w i b) (hA : ∀ w i, 0 < A w i)
+    (hp : GrowingQuotientParameterBound ρ v η δ c α)
+    (hmass : GrowingMenuMassBound 3 D A)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
+    (hlocal : GrowingQuotientLocalPhysicalBound 3 non2GrowingAction
+      non2GrowingPredicate D A v η δ c α) :
+    OrdinaryFrontierClosure.ExponentialForwardEstimate
+      OrdinaryFrontierClosure.outsideFrontierRatio := by
+  let E := growingQuotient_exponentialForwardEstimate
+    outsideFitsAtRatio 3 D A v η δ c α hρ hρ8 (by omega)
+      hD hA hp hmass hcoarse
+      (outsideFitsAt_physicalBound_of_local D A v η δ c α hlocal)
+  exact OrdinaryFrontierClosure.ExponentialForwardEstimate.of_le E 0
+    (fun n _ => (outsideFrontierRatio_eq_outsideFitsAtRatio n).le)
+
 end RepeatedMarkerOwnerBound
 end SymmetricSubgroupAsymptotics
 
