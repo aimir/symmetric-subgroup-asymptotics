@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.Non2SchurPermutationBranch
+import SymmetricSubgroupAsymptotics.Non2SchurFaithfulDegree
 import SymmetricSubgroupAsymptotics.Non2SchurScalarOrbit
 import SymmetricSubgroupAsymptotics.TraceyBinaryOrbitInput
 import SymmetricSubgroupAsymptotics.PermutationBinaryLargeSection
@@ -28,7 +29,8 @@ variable {B X A : Type} [Group B] [Finite B] [Finite X] [MulAction B X]
 
 /-- After installing the visible transitive-module input and the proved
 scalar `C₃` orbit theorem, the four-way row assignment needs only original
-degree at least 24, the global fixed bound, and the two faithful-image facts. -/
+even degree at least 24, the global fixed bound, and the degree-eight fixed
+bound. -/
 theorem Non2SchurStructuralBranch.of_Tracey_orbit_caps
     (hTracey : TraceyBinaryOrbitInput)
     (x : X)
@@ -41,11 +43,9 @@ theorem Non2SchurStructuralBranch.of_Tracey_orbit_caps
     (qmap : M.toRepresentation.IntertwiningMap sigma)
     (hqmap : Function.Surjective qmap)
     (hs : 24 ≤ Nat.card X)
+    (heven : Even (Nat.card X))
     (ht : 32 * Module.finrank (ZMod 2) sigma.invariants ≤
       11 * Nat.card X)
-    (hfaithfulClass : schurSimpleActionKernel sigma S = ⊥ →
-      schurSimpleProductDegree sigma S = 8 ∨
-        9 ≤ schurSimpleProductDegree sigma S)
     (hfaithfulSmallFixed : schurSimpleActionKernel sigma S = ⊥ →
       schurSimpleProductDegree sigma S = 8 →
       5 * Module.finrank (ZMod 2) sigma.invariants ≤ Nat.card X) :
@@ -70,7 +70,9 @@ theorem Non2SchurStructuralBranch.of_Tracey_orbit_caps
     exact traceyBinaryOrbitCap_eight_le_three_mul _
       (eight_le_schurSimpleActionKernel_orbit_card
         x sigma S hnonfixed hq hs o)
-  · exact hfaithfulClass
+  · intro hK
+    exact schurSimpleProductDegree_eq_eight_or_nine_le_of_faithful
+      x sigma S hK heven hs
   · exact hfaithfulSmallFixed
 
 end SymmetricSubgroupAsymptotics
