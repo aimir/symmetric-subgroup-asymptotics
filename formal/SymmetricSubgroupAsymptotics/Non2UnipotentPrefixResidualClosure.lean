@@ -130,6 +130,27 @@ structure AfterE7Residual
     (Fin.last 2) subgroup
   orbitCovered : UPResidualOrbitCovered subgroup
 
+local instance afterE7ResidualFinite
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (n : ℕ) : Finite (AfterE7Residual hTracey hExceptional n) :=
+  Finite.of_injective
+    (fun S : AfterE7Residual hTracey hExceptional n =>
+      (S.subgroup : Set (Equiv.Perm (Fin n))))
+    (by
+      intro S T h
+      have hsub : S.subgroup = T.subgroup := SetLike.coe_injective h
+      cases S
+      cases T
+      simp_all)
+
+local instance ordinaryFullFamilyFinite (N epsilon : ℕ) :
+    Finite (RepeatedMarkerOwnerBound.OrdinaryFullFamily N epsilon) :=
+  Finite.of_injective
+    (fun H : RepeatedMarkerOwnerBound.OrdinaryFullFamily N epsilon =>
+      (H.1 : Set (Equiv.Perm (Fin (2 * N + epsilon)))))
+    (fun _ _ h => Subtype.ext (SetLike.coe_injective h))
+
 theorem AfterE7Residual.fits
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
@@ -155,6 +176,59 @@ def afterE7ResidualEmbedding
     cases S
     cases T
     simp_all
+
+theorem afterE7Residual_card_le_ordinaryFull
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (N epsilon : ℕ) :
+    Nat.card (AfterE7Residual hTracey hExceptional (2 * N + epsilon)) ≤
+      Nat.card (RepeatedMarkerOwnerBound.OrdinaryFullFamily N epsilon) :=
+  Nat.card_le_card_of_injective
+    (afterE7ResidualEmbedding hTracey hExceptional N epsilon)
+    (afterE7ResidualEmbedding hTracey hExceptional N epsilon).injective
+
+/-- Complete even O03 handoff after E7.  Positive marker defect uses the
+existing strict ordinary row; zero defect uses the unchanged binary error. -/
+theorem afterE7Residual_even_normalized_le
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (N : ℕ) :
+    (Nat.card (AfterE7Residual hTracey hExceptional (2 * N)) : ℝ) /
+        exactBenchmark (2 * N) ≤
+      (∑ m ∈ Finset.range (2 * N),
+        MarkerDegreeForwardRow.kernel (2 * N) m * ordinarySubgroupRatio m) +
+        binaryErrorRatio N := by
+  have hcard :
+      (Nat.card (AfterE7Residual hTracey hExceptional (2 * N)) : ℝ) ≤
+        Nat.card (RepeatedMarkerOwnerBound.OrdinaryFullFamily N 0) := by
+    exact_mod_cast afterE7Residual_card_le_ordinaryFull
+      hTracey hExceptional N 0
+  exact (div_le_div_of_nonneg_right hcard
+    (exactBenchmark_pos (2 * N)).le).trans
+      (RepeatedMarkerOwnerBound.even_normalized_le N)
+
+/-- Complete odd O03 handoff after E7, with the checked current and
+predecessor binary-error coefficients. -/
+theorem afterE7Residual_odd_normalized_le
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (N : ℕ) (hN : 1 ≤ N) :
+    (Nat.card (AfterE7Residual hTracey hExceptional (2 * N + 1)) : ℝ) /
+        exactBenchmark (2 * N + 1) ≤
+      (∑ m ∈ Finset.range (2 * N + 1),
+        MarkerDegreeForwardRow.kernel (2 * N + 1) m * ordinarySubgroupRatio m) +
+        (OddMarkerBinaryErrorTransfer.currentCoefficient N * binaryErrorRatio N +
+          OddMarkerBinaryErrorTransfer.predecessorErrorCoefficient N *
+            binaryErrorRatio (N - 1)) := by
+  have hcard :
+      (Nat.card
+        (AfterE7Residual hTracey hExceptional (2 * N + 1)) : ℝ) ≤
+        Nat.card (RepeatedMarkerOwnerBound.OrdinaryFullFamily N 1) := by
+    exact_mod_cast afterE7Residual_card_le_ordinaryFull
+      hTracey hExceptional N 1
+  exact (div_le_div_of_nonneg_right hcard
+    (exactBenchmark_pos (2 * N + 1)).le).trans
+      (RepeatedMarkerOwnerBound.odd_normalized_le N hN)
 
 /-- The complete marker-free O02 state after E7.  Every hypothesis is an
 intrinsic property of the same original subgroup. -/
