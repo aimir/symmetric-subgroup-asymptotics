@@ -150,7 +150,12 @@ once and used on the appropriate disjoint source families in the main count.
 Earlier complete consumers reduce the residual nonbinary alphabet to selected
 pair tops of sizes 24,32,48,64,96,128,192,256. CAP-SECTION proves an already
 admissible certificate for every selected actual normal entry. This recognizes
-an existing menu; it does not pay a new copy of that menu's scalar or kernel.
+an existing menu; it does not pay a second copy of that menu's scalar or
+kernel. The literal E7 hot/cold union is now itself installed as a complete
+original-weight forward estimate. Its existential pointing and pair frame
+remain proof data, while the counted index is the finite original-action and
+literal-normal menu. The estimate has zero scalar and an exponentially small
+strictly forward row.
 
 Orbitwise, the remaining alphabet is binary, natural S3, or a selected UP
 pair orbit. E7 removes the third alternative. Therefore the complete original
