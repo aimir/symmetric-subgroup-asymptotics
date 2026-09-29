@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.C3PhysicalOwnerFiniteFusion
 import SymmetricSubgroupAsymptotics.ForwardEstimateAlgebra
+import SymmetricSubgroupAsymptotics.C1DegreeNineSourcePatternRelabel
 
 /-!
 # Finite continuation for the high-C3 physical owners
@@ -9,6 +10,12 @@ possible retained widths, their actual non-2 action classes, and the four
 first-owner branches form one finite index.  Any exponentially decaying
 bound for each resulting canonical physical family therefore gives a single
 complete forward estimate for the high-C3 owner sector.
+
+The sector is the split c=1 owner of the manuscript: the complete physical
+subgroup has exactly one regular `C3` orbit and no natural `A4` orbit.  This
+source pattern is carried by every cell predicate as a conjunct of the
+first-owner menu.  The unrestricted branch menu, and therefore the final
+residual row, are unchanged.
 -/
 
 set_option autoImplicit false
@@ -17,6 +24,31 @@ open Filter
 open scoped BigOperators Classical
 
 namespace SymmetricSubgroupAsymptotics
+
+/-- The high-C3 branch menu evaluated only on complete physical subgroups
+with the exact c=1 source pattern. -/
+def c3PatternStructuralBranchMenu
+    (n : ℕ) (i : Fin 4) (G : Subgroup (Equiv.Perm (Fin n))) : Prop :=
+  c3PhysicalStructuralBranchMenu n i G ∧ C1DegreeNineSourcePattern G
+
+theorem c3PatternStructuralBranchMenu_natural :
+    DegreeNaturalOwnerMenu c3PatternStructuralBranchMenu := by
+  intro m n hmn e i G
+  exact and_congr (c3PhysicalStructuralBranchMenu_natural hmn e i G)
+    (c1DegreeNineSourcePattern_relabel_iff e G)
+
+/-- The pattern does not depend on the branch, so it commutes with first
+ownership. -/
+theorem firstOwned_c3PatternStructuralBranchMenu_iff
+    {n : ℕ} (i : Fin 4) (G : Subgroup (Equiv.Perm (Fin n))) :
+    FirstOwned (c3PatternStructuralBranchMenu n) i G ↔
+      FirstOwned (c3PhysicalStructuralBranchMenu n) i G ∧
+        C1DegreeNineSourcePattern G := by
+  constructor
+  · rintro ⟨⟨hi, hpattern⟩, hprev⟩
+    exact ⟨⟨hi, fun j hj hp => hprev j hj ⟨hp, hpattern⟩⟩, hpattern⟩
+  · rintro ⟨⟨hi, hprev⟩, hpattern⟩
+    exact ⟨⟨hi, hpattern⟩, fun j hj hp => hprev j hj hp.1⟩
 
 abbrev C3HighFirstOwnerIndex :=
   Σ d : C3HighWidthLabel,
@@ -31,7 +63,7 @@ def c3HighFirstOwnerAction (j : C3HighFirstOwnerIndex) :
 
 def c3HighFirstOwnerPredicate (j : C3HighFirstOwnerIndex) (b : ℕ) :
     Subgroup (c3HighFirstOwnerAction j × Equiv.Perm (Fin b)) → Prop :=
-  non2FirstOwnerPredicate c3PhysicalStructuralBranchMenu
+  non2FirstOwnerPredicate c3PatternStructuralBranchMenu
     (c3HighFirstOwnerWidth j) (j.2.1, j.2.2) b
 
 theorem c3HighFirstOwnerWidth_pos (j : C3HighFirstOwnerIndex) :
@@ -50,15 +82,67 @@ theorem c3HighFirstOwnerPredicate_natural
       (c3HighFirstOwnerPredicate j b) := by
   apply non2FirstOwnerPredicate_natural
   intro n owner e G
-  exact c3PhysicalStructuralBranchMenu_natural rfl e owner G
+  exact c3PatternStructuralBranchMenu_natural rfl e owner G
 
-/-- Complete noncritical physical subgroups accepted by the high-C3 owner. -/
+/-- Complete noncritical physical subgroups accepted by the high-C3 owner,
+with the exact one-regular-`C3`, no-natural-`A4` c=1 source pattern. -/
 def C3PhysicalStructuralOwnerSet (n : ℕ) :
     Set (Subgroup (Equiv.Perm (Fin n))) :=
-  {G | ¬ IsCriticalSubgroup n G ∧ C3PhysicalStructuralOwner n G}
+  {G | ¬ IsCriticalSubgroup n G ∧ C3PhysicalStructuralOwner n G ∧
+    C1DegreeNineSourcePattern G}
 
 def c3PhysicalStructuralOwnerRatio (n : ℕ) : ℝ :=
   (Nat.card (C3PhysicalStructuralOwnerSet n) : ℝ) / exactBenchmark n
+
+/-- A first owner of the pattern menu enters the finite canonical family of
+the same menu.  The branch data are taken from the unrestricted branch, and
+the retained pattern is carried unchanged by the local predicate. -/
+theorem c3PatternStructuralBranch_firstOwner_mem_finiteNon2CanonicalFamily
+    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
+    (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    (h18 : DegreeEighteenTernaryHeadBound)
+    {n : ℕ} {G : Subgroup (Equiv.Perm (Fin n))}
+    (hordinary : ¬ IsCriticalSubgroup n G)
+    (owner : Fin 4)
+    (howner : FirstOwned (c3PatternStructuralBranchMenu n) owner G) :
+    ∃ (d : C3HighWidthLabel) (hn : d.width ≤ n)
+      (i : Non2TransitiveActionClass (Fin d.width)),
+      G ∈ FusionWidthCanonicalFamily
+        (non2FirstOwnerAction d.width (owner, i)) hn
+        (non2FirstOwnerPredicate c3PatternStructuralBranchMenu
+          d.width (owner, i) (n - d.width)) := by
+  rcases howner.1.1 with ⟨b, e, H, hphysical, o, N, hN,
+    hHigh, hEarlier, hk⟩
+  let A := OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o
+  letI : MulAction.IsPretransitive A o.orbit :=
+    orbitImage_pretransitive (C3ComplementSource b H) o
+  letI : N.Normal := hN
+  have hdegrees : Nat.card o.orbit = 3 ∨ Nat.card o.orbit = 4 ∨
+      Nat.card o.orbit = 6 ∨ Nat.card o.orbit = 9 ∨
+      Nat.card o.orbit = 12 ∨ Nat.card o.orbit = 27 :=
+    ternaryHigh_action_degree_menu
+      hChief hWeight hPrimitive h18 N hHigh
+  obtain ⟨d, hd⟩ := C3HighWidthLabel.exists_of_degree_menu hdegrees
+  have hdegree : b + 3 = n := by
+    have hcard := Nat.card_congr e
+    have hternary : Nat.card TernaryCyclic = 3 := by
+      rw [Nat.card_congr RepeatedMarkerOwnerBound.ternaryFinEquiv,
+        Nat.card_fin]
+    rw [Nat.card_sum, hternary, Nat.card_fin, Nat.card_fin] at hcard
+    omega
+  subst n
+  let C : C3HighNestedCarrier.Data H := ⟨o, N, hN, hHigh⟩
+  have hordinary' : ¬ IsCriticalSubgroup (b + 3)
+      (relabelSubgroup e (C3HighNestedCarrier.physicalSubgroup H)) := by
+    rwa [hphysical]
+  have howner' : FirstOwned (c3PatternStructuralBranchMenu (b + 3)) owner
+      (relabelSubgroup e (C3HighNestedCarrier.physicalSubgroup H)) := by
+    rwa [hphysical]
+  obtain ⟨hn, i, hmem⟩ := C.mem_non2FirstOwnerCanonicalFamily_atWidth
+    c3PatternStructuralBranchMenu c3PatternStructuralBranchMenu_natural
+      H hd.symm e hordinary' owner howner'
+  exact ⟨d, hn, i, by simpa only [hphysical] using hmem⟩
 
 /-- The finite first-owner/action families cover the complete high-C3 owner
 set.  Each subgroup is assigned to its first branch before its retained orbit
@@ -78,11 +162,12 @@ theorem c3PhysicalStructuralOwner_finiteFusionCover
         (c3HighFirstOwnerPredicate j (n - c3HighFirstOwnerWidth j)) := by
   obtain ⟨ownerEligible, hEligible⟩ :=
     c3PhysicalStructuralBranchMenu_cover
-      hChief hWeight hPrimitive h18 hG.2
+      hChief hWeight hPrimitive h18 hG.2.1
   obtain ⟨owner, howner⟩ := firstOwned_exists
-    (c3PhysicalStructuralBranchMenu n) G ⟨ownerEligible, hEligible⟩
+    (c3PatternStructuralBranchMenu n) G
+      ⟨ownerEligible, hEligible, hG.2.2⟩
   obtain ⟨d, hd, i, hmem⟩ :=
-    c3PhysicalStructuralBranch_firstOwner_mem_finiteNon2CanonicalFamily
+    c3PatternStructuralBranch_firstOwner_mem_finiteNon2CanonicalFamily
       hChief hWeight hPrimitive h18 hG.1 owner howner
   let j : C3HighFirstOwnerIndex := ⟨d, owner, i⟩
   refine ⟨j, ?_⟩

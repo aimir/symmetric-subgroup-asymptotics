@@ -4,7 +4,10 @@ import SymmetricSubgroupAsymptotics.C3ResidualForwardEstimate
 /-!
 # Complete continuation for the regular-C3 audit
 
-The noncritical regular-C3 family is split on the complete physical subgroup.
+The noncritical regular-C3 family with the exact split c=1 source pattern
+(one regular `C3` orbit, no natural `A4` orbit) is split on the complete
+physical subgroup.  Subgroups outside that pattern belong to the natural
+`C3/A4` packet sectors and are not counted here.
 If the invariant high-C3 structural owner accepts it, it enters the finite
 first-owner continuation. Otherwise every earlier structural branch rejects
 it, so the same local chart belongs to the already closed final residual row.
@@ -19,10 +22,14 @@ open scoped BigOperators Classical
 
 namespace SymmetricSubgroupAsymptotics
 
-/-- The complete ordinary filter in the fixed regular-C3 chart. -/
+/-- The complete ordinary filter in the fixed regular-C3 chart, restricted
+to the exact split c=1 source pattern of the complete physical subgroup. -/
 def C3CompleteOrdinaryPredicate (b : ℕ)
     (H : Subgroup (ternaryRegularAction × Equiv.Perm (Fin b))) : Prop :=
   ¬ IsCriticalSubgroup (3+b)
+      (relabelSubgroup (c3ResidualPointEquiv b)
+        (H.map (fusionOrbitAction ternaryRegularAction))) ∧
+    C1DegreeNineSourcePattern
       (relabelSubgroup (c3ResidualPointEquiv b)
         (H.map (fusionOrbitAction ternaryRegularAction)))
 
@@ -31,9 +38,10 @@ theorem c3CompleteOrdinaryPredicate_natural (b : ℕ) :
       (C3CompleteOrdinaryPredicate b) := by
   apply fusionOrbitNatural_of_relabel_invariant ternaryRegularAction
     (c3ResidualPointEquiv b)
-    (fun G => ¬ IsCriticalSubgroup (3+b) G)
+    (fun G => ¬ IsCriticalSubgroup (3+b) G ∧ C1DegreeNineSourcePattern G)
   intro s G
-  exact ordinaryRemainder_relabel_iff (3+b) s G
+  exact and_congr (ordinaryRemainder_relabel_iff (3+b) s G)
+    (c1DegreeNineSourcePattern_relabel_iff s G)
 
 /-- Put the complete labelled regular-C3 family on the fixed physical labels
 used by its structural owner and residual predicates. -/
@@ -80,7 +88,14 @@ theorem c3CompleteOrdinaryPhysical_owner_or_residual
     simp only [relabelSubgroup_trans, ht]
   have hnoncritical₀ :
       ¬ IsCriticalSubgroup (3+b)
-        (relabelSubgroup (c3ResidualPointEquiv b) K₀) := H.2.2
+        (relabelSubgroup (c3ResidualPointEquiv b) K₀) := H.2.2.1
+  have hpattern₀ : C1DegreeNineSourcePattern
+      (relabelSubgroup (c3ResidualPointEquiv b) K₀) := H.2.2.2
+  have hpattern : C1DegreeNineSourcePattern
+      (relabelSubgroup (c3ResidualPointEquiv b)
+        (relabelSubgroup s K₀)) := by
+    rw [hphysical]
+    exact hpattern₀.relabel t
   have hnoncritical :
       ¬ IsCriticalSubgroup (3+b)
         (relabelSubgroup (c3ResidualPointEquiv b)
@@ -90,7 +105,7 @@ theorem c3CompleteOrdinaryPhysical_owner_or_residual
   by_cases hOwner : C3PhysicalStructuralOwner (3+b)
       (relabelSubgroup (c3ResidualPointEquiv b)
         (relabelSubgroup s K₀))
-  · exact Or.inl ⟨hnoncritical, hOwner⟩
+  · exact Or.inl ⟨hnoncritical, hOwner, hpattern⟩
   · right
     have hOwner₀ : ¬ C3PhysicalStructuralOwner (3+b)
         (relabelSubgroup (c3ResidualPointEquiv b) K₀) := by
