@@ -113,7 +113,8 @@ theorem eight_rank_two_original_orders [Finite X] [Finite I]
       (Nat.card U=512 ∨ Nat.card U=1024 ∨ Nat.card U=2048) ∧
       (Nat.card F.top.range=8 → Nat.card (U ⧸ N)≤128) ∧
       (∀ h : (F.sectionTopRepresentation N).ker,h^2=1) ∧
-      N.map F.top.rangeRestrict≤(F.sectionTopRepresentation N).ker := by
+      N.map F.top.rangeRestrict≤(F.sectionTopRepresentation N).ker ∧
+      Nat.card U=64*Nat.card F.top.range := by
   rcases hres with ⟨hd,_,_,⟨data⟩,_,_,hN⟩
   have hnonempty : Nonempty I := (Nat.card_pos_iff.mp (by rw [hI]; decide)).1
   let i : I := Classical.choice hnonempty
@@ -135,7 +136,7 @@ theorem eight_rank_two_original_orders [Finite X] [Finite I]
       _ = 64 := by change Module.finrank (ZMod 2) F.kernelSpace=6 at hM; rw [hM]; norm_num
   have hsource := F.top.ker.card_mul_index
   rw [Subgroup.index_ker,hker] at hsource
-  refine ⟨htop,?_,?_,hsquare,hN⟩
+  refine ⟨htop,?_,?_,hsquare,hN,hsource.symm⟩
   · rcases htop with ht | ht | ht <;> omega
   · intro ht
     have hbase : Nat.card (U ⧸ (F.top.ker⊔N))≤8 :=

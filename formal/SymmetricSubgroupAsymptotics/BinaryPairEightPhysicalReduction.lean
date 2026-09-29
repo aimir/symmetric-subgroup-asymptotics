@@ -28,7 +28,8 @@ theorem eight_rank_two_order_character_or_split
     Nonempty (BinarySevenCharacterCriterion (U ⧸ N) (Nat.card X)) ∨
     (∃ a : I → ZMod 2,
       U.map (MulAut.conj (F.physicalFlip a)).toMonoidHom = F.splitAffineAction) := by
-  obtain ⟨htop,hsource,htarget,_,_⟩ := F.eight_rank_two_original_orders N hU hI hres
+  obtain ⟨htop,hsource,htarget,_,_,_⟩ :=
+    F.eight_rank_two_original_orders N hU hI hres
   by_cases hsmall : Nat.card F.top.range = 8
   · exact Or.inl ⟨by rcases hsource with h | h | h <;> omega, htarget hsmall⟩
   have hlarge : 8 < Nat.card F.top.range := by
