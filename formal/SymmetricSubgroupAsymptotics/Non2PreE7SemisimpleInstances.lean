@@ -104,6 +104,28 @@ theorem preE7_nsaprimFamilyAction
     preE7NoPairNoC3EarlierFamilyAction .nsaprim w i :=
   ⟨preE7_nsaprimCertificate S⟩
 
+theorem preE7_ssLocalFamilyAction
+    (S : SemisimpleCertificateSourceData .ss w i) :
+    preE7NoPairNoC3EarlierLocalFamilyAction .ss w i :=
+  preE7EarlierLocalFamilyAction_ofComparator (preE7_ssCertificate S)
+
+theorem preE7_soLocalFamilyAction
+    (hgen : PermutationSubgroupGeneratorBound)
+    (S : SemisimpleCertificateSourceData .so w i) :
+    preE7NoPairNoC3EarlierLocalFamilyAction .so w i :=
+  preE7EarlierLocalFamilyAction_ofComparator (preE7_soCertificate hgen S)
+
+theorem preE7_snsLocalFamilyAction
+    (hgen : PermutationSubgroupGeneratorBound)
+    (S : SemisimpleCertificateSourceData .sns w i) :
+    preE7NoPairNoC3EarlierLocalFamilyAction .sns w i :=
+  preE7EarlierLocalFamilyAction_ofComparator (preE7_snsCertificate hgen S)
+
+theorem preE7_nsaprimLocalFamilyAction
+    (S : SemisimpleCertificateSourceData .nsaprim w i) :
+    preE7NoPairNoC3EarlierLocalFamilyAction .nsaprim w i :=
+  preE7EarlierLocalFamilyAction_ofComparator (preE7_nsaprimCertificate S)
+
 /-- SNS2 lands in the mixed local certificate, retaining the weighted
 rank-tail split rather than pretending to be pointwise. -/
 def preE7_sns2LocalCertificate

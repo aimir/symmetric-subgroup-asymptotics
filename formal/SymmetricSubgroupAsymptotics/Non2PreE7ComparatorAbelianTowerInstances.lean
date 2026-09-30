@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7ComparatorAbelianTowerTemplate
+import SymmetricSubgroupAsymptotics.Non2PreE7ExceptionalCatalogue
 
 /-!
 # The sixteen comparator/abelian-tower families
@@ -185,6 +186,18 @@ theorem preE7_comparatorAbelianTowerFamilyAction
     (source : ComparatorAbelianTowerCertificateSourceData family w i) :
     preE7NoPairNoC3EarlierFamilyAction family w i :=
   ⟨preE7_comparatorAbelianTowerCertificate family hfamily w i source⟩
+
+/-- The same dispatched source lands directly in the mixed physical
+catalogue; its exceptional scalar is identically zero. -/
+theorem preE7_comparatorAbelianTowerLocalFamilyAction
+    (family : PreE7NoPairNoC3EarlierOwnerFamily)
+    (hfamily : IsPreE7ComparatorAbelianTowerFamily family)
+    (w : ℕ) (i : PreE7NonPairActionClass w)
+    (source : ComparatorAbelianTowerCertificateSourceData family w i) :
+    preE7NoPairNoC3EarlierLocalFamilyAction family w i :=
+  preE7EarlierLocalFamilyAction_ofComparator
+    (preE7_comparatorAbelianTowerCertificate
+      family hfamily w i source)
 
 /-- The source dispatcher cannot accept a label outside the audited
 sixteen-family list. -/
