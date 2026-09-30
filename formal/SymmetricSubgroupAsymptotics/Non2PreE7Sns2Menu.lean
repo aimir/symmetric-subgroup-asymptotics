@@ -19,7 +19,7 @@ namespace Non2UnipotentPrefixFiniteMenu
 
 abbrev PreE7Sns2MenuIndex (w : ℕ) :=
   {i : PreE7NonPairActionClass w //
-    Nonempty (PreE7Sns2RankTailCertificate w i)}
+    Nonempty (PreE7Sns2SourceData w i)}
 
 /-- Use one named enumeration instance throughout the all-width SNS2
 aggregation.  This prevents unrelated generic finite-category instances
@@ -28,10 +28,19 @@ noncomputable instance preE7Sns2MenuIndexFintype (w : ℕ) :
     Fintype (PreE7Sns2MenuIndex w) :=
   Fintype.ofFinite (PreE7Sns2MenuIndex w)
 
+noncomputable def preE7Sns2MenuSource {w : ℕ}
+    (i : PreE7Sns2MenuIndex w) :
+    PreE7Sns2SourceData w i.1 :=
+  Classical.choice i.2
+
+/-- The numerical rank-tail certificate is built from the retained literal
+semisimple source.  Keeping the source, rather than merely this projection,
+allows the menu-mass proof to apply the subgroup-count and outer-factor
+inputs to the actual quotient and chart. -/
 noncomputable def preE7Sns2MenuCertificate {w : ℕ}
     (i : PreE7Sns2MenuIndex w) :
     PreE7Sns2RankTailCertificate w i.1 :=
-  Classical.choice i.2
+  preE7_sns2RankTailCertificate (preE7Sns2MenuSource i)
 
 def preE7Sns2MenuAction {w : ℕ} (i : PreE7Sns2MenuIndex w) :=
   preE7NonPairAction w i.1

@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7Sns2HotScalar
+import SymmetricSubgroupAsymptotics.Non2PreE7Sns2MenuMass
 
 /-!
 # Complete all-width SNS2 forward estimate
@@ -35,6 +36,22 @@ noncomputable def preE7Sns2Secondary_exponentialForwardEstimate
       growingQuotientExceptionalTotal 5
         (fun w i => preE7Sns2MenuExceptional (w := w) i) n)
   exact OrdinaryFrontierClosure.ExponentialForwardEstimate.add Ecold Ehot
+
+/-- The closed SNS2 forward row from its three named inputs.  In particular,
+no menu-mass hypothesis remains in this application. -/
+noncomputable def preE7Sns2Secondary_exponentialForwardEstimate_of_inputs
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
+    (hFS : FusariSpigaBinaryNormalSubgroupInput)
+    (hOuter : SemisimpleOuterFactorPermutationBound)
+    (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput) :
+    OrdinaryFrontierClosure.ExponentialForwardEstimate
+      (growingQuotientSecondaryError 5
+        (fun w i => preE7Sns2MenuCoefficient (w := w) i)
+        (fun w i => preE7Sns2MenuExceptional (w := w) i)
+        (fun w i => preE7Sns2MenuNormalizer (w := w) i)
+        (fun w i => preE7Sns2MenuSlope (w := w) i)) :=
+  preE7Sns2Secondary_exponentialForwardEstimate hcoarse
+    (preE7Sns2_normalizedMenuMass hFS hOuter hLMM)
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
