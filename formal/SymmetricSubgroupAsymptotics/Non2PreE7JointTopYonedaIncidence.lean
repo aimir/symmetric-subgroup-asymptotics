@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.FusionCarrierWeightedIncidence
+import SymmetricSubgroupAsymptotics.FusionCarrierYonedaTopFamily
 import SymmetricSubgroupAsymptotics.Non2PreE7ResidualAbelianTowerChoice
 
 /-!
@@ -194,6 +195,94 @@ noncomputable def PreE7ResidualJointTopCellSourceData.ofAbelianTowers
       (Nat.cast_le.mpr hcap).trans (D.joint_capacity b N J)
     simpa only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul,
       Fintype.card_eq_nat_card] using hcast
+
+/-! ## Construction from a finite family of possible tops -/
+
+/-- Concrete varying-top input.  Every accepted epimorphism selects one
+member of a finite family of actual Yoneda towers on its reversible carrier.
+The numerical hypothesis is already the correlated sum of the capacities of
+those towers. -/
+structure PreE7ResidualYonedaTopFamilySourceData
+    (w : ℕ) (U : PreE7NonPairActionClass w) where
+  R : Type
+  [groupR : Group R]
+  [finiteR : Finite R]
+  v : ℕ
+  action : R →* Equiv.Perm (Fin v)
+  action_injective : Function.Injective action
+  C : ℕ → {N : Subgroup (preE7NonPairAction w U) // N.Normal} → ℝ
+  eta : ℝ
+  delta : ℝ
+  cutoff : ℝ
+  alpha : ℝ
+  theta : ℝ
+  alpha_eq : alpha = eta + cutoff
+  coefficient_nonneg : ∀ b N, 0 ≤ C b N
+  carrier : ∀ _b N, FusionAxisCarrier (preE7NonPairAction w U) N
+  Accepted : ∀ b N,
+    Subgroup ((carrier b N).checked.carrier × Equiv.Perm (Fin b)) → Prop
+  accept_inverse : ∀ b N (J : Subgroup (Equiv.Perm (Fin b)))
+      (γ : GroupEpimorphism J (carrier b N).checked.quotient),
+    (carrier b N).checked.carrierInverseSurvival
+        (carrier b N).source_eq
+        (preE7NoPairNoC3CertifiedFirstOwnerPredicate
+          preE7NoPairNoC3EarlierFamilyAction w
+          (Fin.last preE7NoPairNoC3EarlierOwnerCount, U) b)
+        (fusionQuotientGraph (carrier b N).checked.beta J γ.1) →
+      Accepted b N
+        (fusionQuotientGraph (carrier b N).checked.beta J γ.1)
+  family : ∀ b N, AxisYonedaTopFamily (carrier b N) R
+  select : ∀ b N (J : Subgroup (Equiv.Perm (Fin b))),
+    FusionCarrierAcceptedEpi (carrier b N).checked J (Accepted b N) →
+      (family b N).Index
+  joint_capacity : ∀ b N (J : Subgroup (Equiv.Perm (Fin b))),
+    (((∑ s : (family b N).Index,
+      ((family b N).tower s).tower.capacity J : ℕ)) : ℝ) ≤
+        C b N * (2 : ℝ) ^ (eta * b)
+
+attribute [instance]
+  PreE7ResidualYonedaTopFamilySourceData.groupR
+  PreE7ResidualYonedaTopFamilySourceData.finiteR
+
+/-- A finite epimorphism-selected family of actual Yoneda tops produces the
+joint weighted cells required by the terminal pre-E7 interface. -/
+noncomputable def
+    PreE7ResidualYonedaTopFamilySourceData.toJointTopCellSourceData
+    {w : ℕ} {U : PreE7NonPairActionClass w}
+    (D : PreE7ResidualYonedaTopFamilySourceData w U) :
+    PreE7ResidualJointTopCellSourceData w U where
+  R := D.R
+  groupR := D.groupR
+  finiteR := D.finiteR
+  v := D.v
+  action := D.action
+  action_injective := D.action_injective
+  C := D.C
+  eta := D.eta
+  delta := D.delta
+  cutoff := D.cutoff
+  alpha := D.alpha
+  theta := D.theta
+  alpha_eq := D.alpha_eq
+  coefficient_nonneg := D.coefficient_nonneg
+  carrier := D.carrier
+  Accepted := D.Accepted
+  accept_inverse := D.accept_inverse
+  Cell := fun b N J ↦ (D.family b N).Flag (D.carrier b N) D.R J
+  cell := fun b N J ↦
+    (D.family b N).cell (D.carrier b N) D.R J (D.Accepted b N)
+      (D.select b N J)
+  fibreCost := fun b N J ↦
+    (D.family b N).fibreCost (D.carrier b N) D.R J
+  fibre_card := by
+    intro b N J d a
+    exact (D.family b N).cell_fibre_card_le
+      (D.carrier b N) D.R J (D.Accepted b N) (D.select b N J) d a
+  joint_capacity := by
+    intro b N J
+    have hsum := (D.family b N).sum_fibreCost_le_capacity
+      (D.carrier b N) D.R J
+    exact (Nat.cast_le.mpr hsum).trans (D.joint_capacity b N J)
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
