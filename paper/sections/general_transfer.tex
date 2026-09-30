@@ -200,6 +200,29 @@ quadratic reserve proves the last bound in
 assumed.
 \end{proof}
 
+\begin{lemma}[Concrete menu-mass certificate]
+\label{lem:concrete-menu-mass}
+Suppose $w_0\geq1$ and that, for every $\epsilon>0$, there are
+$B_\epsilon\geq0$ and $p_\epsilon\in\mathbb N$ such that, uniformly for
+$w_0\leq w\leq n$,
+\[
+ \sum_{\sigma\in\Sigma_w}
+       \frac{D_\sigma(n-w)}{a(U_\sigma)}
+ \leq B_\epsilon(n+1)^{p_\epsilon}2^{\epsilon w^2}.
+\]
+Then the direct menu bound \eqref{eq:parametric-menu-mass} holds.
+\end{lemma}
+\begin{proof}
+Given $\gamma>0$, take $\epsilon=\gamma/3$.  Eventually the fixed constant
+and the fixed polynomial are each at most $2^{\epsilon n}$.  Since
+$1\leq w\leq n$,
+\[
+ 2\epsilon n+\epsilon w^2\leq\gamma wn.
+\]
+The threshold depends on $\gamma$, but is uniform in $w$ on the indicated
+triangle.
+\end{proof}
+
 \begin{lemma}[Retained-cell incidence]\label{lem:retained-cell-incidence}
 For a complete source $J$ and finite comparator $R$, put
 \[
@@ -264,6 +287,38 @@ different local certificates $\sigma=(\text{owner},U)$; only their combined
 original-weight mass in \eqref{eq:parametric-menu-mass} is charged.  The
 degree-three $C_3$ action is the first required application of these same
 local bounds.
+
+\begin{proposition}[Pre-$E_7$ owner-or-cell transfer]
+\label{prop:pre-e7-owner-cell-transfer}
+Restrict the first-owner action menu to the nonbinary orbit actions that admit
+no selected $E_7$ pair frame.  On a literal normal axis $N$, suppose either
+an earlier owner gives a quotient comparator, or there is a reversible
+carrier and a retained-cell map as in
+Lemma~\ref{lem:retained-cell-incidence}, with flag set $A_N$, cell-fibre bound
+$L_N$, and
+\[
+ |A_N|L_N\leq C_N(b)2^{\eta b}.
+\]
+Give an owned axis the extracted coefficient $2^{-\eta b}$ and an unowned
+axis the coefficient $C_N(b)$.  If the resulting complete normal-axis sum,
+divided by the original action normalizer, satisfies the concrete hypothesis
+of Lemma~\ref{lem:concrete-menu-mass}, and the comparator parameters satisfy
+the hypotheses of Theorem~\ref{thm:parametric}, then the exact pre-$E_7$
+physical family has the forward kernel and scalar bounds
+\eqref{eq:parametric-rates}.
+\end{proposition}
+\begin{proof}
+On an owned axis the quotient comparator bounds the surviving epimorphisms by
+the complete quotient-map weight.  Multiplication by the extracted common
+factor $2^{\eta b}$ cancels $2^{-\eta b}$, so this contribution has coefficient
+exactly one.  On every other axis reversibility returns the retained-cell
+bound to the same original source and normal axis, and
+Lemma~\ref{lem:retained-cell-incidence} gives coefficient
+$C_N(b)2^{\eta b}$.  Sum over the literal normal axes before dividing by the
+original action normalizer.  Lemma~\ref{lem:concrete-menu-mass} supplies
+\eqref{eq:parametric-menu-mass}, so Theorem~\ref{thm:parametric} applies to the
+restricted physical cover.
+\end{proof}
 
 \begin{lemma}[Central nonbinary pair sections]\label{lem:central-pair}
 For a faithful nonbinary transitive action of even degree $s\geq4$,

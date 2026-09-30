@@ -171,6 +171,20 @@ orbit. Thus the remaining numerical owner/capacity theorem is quantified only
 over these restricted pre-E7 action classes; it no longer carries irrelevant
 selected-UP cells.
 
+That restricted numerical theorem is now installed. On every literal normal
+axis it keeps coefficient one when an earlier quotient owner accepts the
+axis. Otherwise a reversible carrier maps each surviving epimorphism to a
+complete quotient map together with its retained radical/transgression flag;
+the flag cardinality and the remaining Yoneda-fibre bound are charged as one
+capacity. After summing these coefficients with the original action
+normalizer, a concrete bound
+`B_epsilon * (n+1)^p_epsilon * 2^(epsilon*w^2)` for every positive epsilon
+implies the uniform growing-menu hypothesis used by the hot/cold transfer.
+Thus the pre-E7 numerical `haxis`/menu-mass bridge is complete. The action
+consumers need only supply their physical comparator-or-cell data and this
+concrete weighted mass certificate; those are the aligned structural inputs,
+not a second numerical aggregation.
+
 Orbitwise, the remaining alphabet is binary, natural S3, or a selected UP
 pair orbit. E7 removes the third alternative. Therefore the complete original
 subgroup satisfies the intrinsic `Fits` predicate used by the repeated-marker
