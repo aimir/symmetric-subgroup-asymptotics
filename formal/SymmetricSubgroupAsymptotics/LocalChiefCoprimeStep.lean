@@ -10,7 +10,8 @@ set_option backward.isDefEq.respectTransparency false
 noncomputable section
 namespace SymmetricSubgroupAsymptotics
 
-theorem primeModule_isPGroup (p : ℕ) (W : Type*) [AddCommGroup W] [Module (ZMod p) W] :
+theorem primeModuleAdditive_isPGroup (p : ℕ) (W : Type*)
+    [AddCommGroup W] [Module (ZMod p) W] :
     IsPGroup p (Multiplicative W) := by
   intro w
   refine ⟨1,?_⟩
@@ -40,7 +41,7 @@ theorem actualPrimeChiefIntersection_isPGroup :
   have hker : localChiefIntersection N θ B=π.ker.map C.subtype :=
     (localChiefIntersectionSection_kernel (p:=p) N H θ β hθ B L e hBL).symm
   let eq := normalSectionQuotientEquiv C (localChiefIntersection N θ B) π hπ hker
-  exact (primeModule_isPGroup p
+  exact (primeModuleAdditive_isPGroup p
     (localChiefInducedImage H (normalChainSourceAction C) ρ φ he).toSubmodule).of_equiv eq.symm
 
 include hθ hBL e in
