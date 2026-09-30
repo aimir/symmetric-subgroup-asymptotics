@@ -177,6 +177,33 @@ def preE7_comparatorAbelianTowerCertificate
   case s3cent => exact preE7_s3centCertificate source
   case cb => exact preE7_cbCertificate source
 
+/-- Every one of the sixteen dispatched certificates carries the complete
+global hot/cold parameter record.  For `CB` and `S3WR` this includes the
+literal additive tail slope; the other fourteen have a zero tail. -/
+theorem preE7_comparatorAbelianTower_entryParameters
+    (family : PreE7NoPairNoC3EarlierOwnerFamily)
+    (hfamily : IsPreE7ComparatorAbelianTowerFamily family)
+    (w : ℕ) (i : PreE7NonPairActionClass w)
+    (source : ComparatorAbelianTowerCertificateSourceData family w i) :
+    let C := preE7_comparatorAbelianTowerCertificate
+      family hfamily w i source
+    PreE7CharacterEntryParameters preE7CharacterRho w C.v C.eta C.delta
+      C.cutoff C.alpha C.theta := by
+  cases family
+  all_goals first
+    | exact absurd hfamily (by decide)
+    | skip
+  all_goals
+    simp only [preE7_comparatorAbelianTowerCertificate,
+      preE7_itCertificate, preE7_invCertificate, preE7_pcsCertificate,
+      preE7_asCertificate, preE7_cmCertificate, preE7_multCertificate,
+      preE7_pcsStarCertificate, preE7_cp3Certificate,
+      preE7_towerCertificate, preE7_compCertificate,
+      preE7_binirrCertificate, preE7_s3wrCertificate,
+      preE7_c3sixCertificate, preE7_s3isoCertificate,
+      preE7_s3centCertificate, preE7_cbCertificate]
+  all_goals exact source.entryParameters
+
 /-- Every dispatched source supplies the catalogue's actual action
 predicate. -/
 theorem preE7_comparatorAbelianTowerFamilyAction

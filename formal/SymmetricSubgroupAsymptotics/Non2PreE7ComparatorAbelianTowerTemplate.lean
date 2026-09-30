@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.FusionCarrierAnnihilatorYonedaIncidence
 import SymmetricSubgroupAsymptotics.Non2PreE7NoPairNoC3EarlierComparators
+import SymmetricSubgroupAsymptotics.Non2PreE7PaddedCertificateNumerics
 
 /-!
 # Comparator certificates from abelian Yoneda towers
@@ -141,16 +142,15 @@ structure PreE7ComparatorAbelianTowerSourceData
   R : Type
   [groupR : Group R]
   [finiteR : Finite R]
-  v : ℕ
-  action : R →* Equiv.Perm (Fin v)
+  sourceDegree : ℕ
+  sourceDegree_two : 2 ≤ sourceDegree
+  action : R →* Equiv.Perm (Fin sourceDegree)
   action_injective : Function.Injective action
   C : ℕ → {N : Subgroup (preE7NonPairAction w i) // N.Normal} → ℝ
   eta : ℝ
-  delta : ℝ
-  cutoff : ℝ
-  alpha : ℝ
-  theta : ℝ
-  alpha_eq : alpha = eta + cutoff
+  eta_nonneg : 0 ≤ eta
+  exponent_margin : preE7CharacterRho * w ≤
+    ((evenWidth w : ℝ) - sourceDegree) / 8 - eta
   coefficient_nonneg : ∀ b N, 0 ≤ C b N
   tower : ∀ _b N,
     FusionQuotientAbelianYonedaTower (preE7NonPairAction w i) N R
@@ -161,6 +161,37 @@ structure PreE7ComparatorAbelianTowerSourceData
 attribute [instance]
   PreE7ComparatorAbelianTowerSourceData.groupR
   PreE7ComparatorAbelianTowerSourceData.finiteR
+
+namespace PreE7ComparatorAbelianTowerSourceData
+
+variable {family : PreE7NoPairNoC3EarlierOwnerFamily}
+  {w : ℕ} {i : PreE7NonPairActionClass w}
+  (D : PreE7ComparatorAbelianTowerSourceData family w i)
+
+def degree : ℕ :=
+  paddedComparatorDegree preE7CharacterRho D.sourceDegree w
+
+def delta : ℝ :=
+  paddedComparatorDelta preE7CharacterRho D.eta D.sourceDegree w
+
+def cutoff : ℝ := (D.degree : ℝ) / 8 + D.delta / 2
+
+def alpha : ℝ := D.eta + D.cutoff
+
+def paddedAction : D.R →* Equiv.Perm (Fin D.degree) :=
+  (characterComparatorPadHom (le_max_left _ _)).comp D.action
+
+theorem paddedAction_injective : Function.Injective D.paddedAction :=
+  (characterComparatorPadHom_injective _).comp D.action_injective
+
+theorem entryParameters :
+    PreE7CharacterEntryParameters preE7CharacterRho w D.degree D.eta D.delta
+      D.cutoff D.alpha 0 := by
+  simpa [degree, delta, cutoff, alpha] using
+    (preE7Padded_entryParameters (w := w) (v0 := D.sourceDegree)
+      (eta := D.eta) D.eta_nonneg D.sourceDegree_two D.exponent_margin)
+
+end PreE7ComparatorAbelianTowerSourceData
 
 /-- Every comparator/abelian-layer source datum gives the common earlier
 action certificate.  The pure cold tail is zero; families with a genuine
@@ -173,17 +204,17 @@ noncomputable def PreE7EarlierActionComparatorCertificate.ofAbelianYonedaTowers
   R := D.R
   groupR := D.groupR
   finiteR := D.finiteR
-  v := D.v
-  action := D.action
-  action_injective := D.action_injective
+  v := D.degree
+  action := D.paddedAction
+  action_injective := D.paddedAction_injective
   C := D.C
   tailCoefficient := fun _ _ => 0
   eta := D.eta
   delta := D.delta
   cutoff := D.cutoff
   alpha := D.alpha
-  theta := D.theta
-  alpha_eq := D.alpha_eq
+  theta := 0
+  alpha_eq := rfl
   coefficient_nonneg := D.coefficient_nonneg
   tail_nonneg := fun _ _ => le_rfl
   broad_axis_envelope := by
@@ -203,7 +234,7 @@ noncomputable def PreE7EarlierActionComparatorCertificate.ofAbelianYonedaTowers
           (completeQuotientWeight_nonneg (R := D.R) J)
       _ = (D.C b N * (2 : ℝ) ^ (D.eta * b)) *
             completeQuotientWeight (R := D.R) J +
-          0 * (2 : ℝ) ^ (D.theta * b) := by ring
+          0 * (2 : ℝ) ^ ((0 : ℝ) * b) := by ring
 
 /-- The additive version of the tower template.  A family instance provides
 an exhaustive main/tail split on the literal broad source.  The main branch
@@ -216,18 +247,19 @@ structure PreE7ComparatorAbelianTowerAdditiveSourceData
   R : Type
   [groupR : Group R]
   [finiteR : Finite R]
-  v : ℕ
-  action : R →* Equiv.Perm (Fin v)
+  sourceDegree : ℕ
+  sourceDegree_two : 2 ≤ sourceDegree
+  action : R →* Equiv.Perm (Fin sourceDegree)
   action_injective : Function.Injective action
   C : ℕ → {N : Subgroup (preE7NonPairAction w i) // N.Normal} → ℝ
   tailCoefficient :
     ℕ → {N : Subgroup (preE7NonPairAction w i) // N.Normal} → ℝ
   eta : ℝ
-  delta : ℝ
-  cutoff : ℝ
-  alpha : ℝ
+  eta_nonneg : 0 ≤ eta
+  exponent_margin : preE7CharacterRho * w ≤
+    ((evenWidth w : ℝ) - sourceDegree) / 8 - eta
   theta : ℝ
-  alpha_eq : alpha = eta + cutoff
+  tail_gap : theta ≤ preE7CharacterWindow w
   coefficient_nonneg : ∀ b N, 0 ≤ C b N
   tail_nonneg : ∀ b N, 0 ≤ tailCoefficient b N
   Main : ∀ b (_N : {N : Subgroup
@@ -255,6 +287,50 @@ attribute [instance]
   PreE7ComparatorAbelianTowerAdditiveSourceData.groupR
   PreE7ComparatorAbelianTowerAdditiveSourceData.finiteR
 
+namespace PreE7ComparatorAbelianTowerAdditiveSourceData
+
+variable {family : PreE7NoPairNoC3EarlierOwnerFamily}
+  {w : ℕ} {i : PreE7NonPairActionClass w}
+  (D : PreE7ComparatorAbelianTowerAdditiveSourceData family w i)
+
+def degree : ℕ :=
+  paddedComparatorDegree preE7CharacterRho D.sourceDegree w
+
+def delta : ℝ :=
+  paddedComparatorDelta preE7CharacterRho D.eta D.sourceDegree w
+
+def cutoff : ℝ := (D.degree : ℝ) / 8 + D.delta / 2
+
+def alpha : ℝ := D.eta + D.cutoff
+
+def paddedAction : D.R →* Equiv.Perm (Fin D.degree) :=
+  (characterComparatorPadHom (le_max_left _ _)).comp D.action
+
+theorem paddedAction_injective : Function.Injective D.paddedAction :=
+  (characterComparatorPadHom_injective _).comp D.action_injective
+
+theorem entryParameters :
+    PreE7CharacterEntryParameters preE7CharacterRho w D.degree D.eta D.delta
+      D.cutoff D.alpha D.theta := by
+  let P := preE7Padded_entryParameters (w := w) (v0 := D.sourceDegree)
+    (eta := D.eta) D.eta_nonneg D.sourceDegree_two D.exponent_margin
+  exact
+    { delta_nonneg := P.delta_nonneg
+      degree_pos := P.degree_pos
+      ratio := P.ratio
+      degree_upper := P.degree_upper
+      delta_lower := P.delta_lower
+      hot_margin := P.hot_margin
+      threshold_eq := P.threshold_eq
+      delta_upper := P.delta_upper
+      degree_lower := P.degree_lower
+      degree_width := P.degree_width
+      cold_slope := P.cold_slope
+      cold_gap := P.cold_gap
+      tail_gap := D.tail_gap }
+
+end PreE7ComparatorAbelianTowerAdditiveSourceData
+
 /-- Install an exhaustive tower-plus-cold-tail split in the common earlier
 action certificate. -/
 noncomputable def
@@ -266,9 +342,9 @@ noncomputable def
   R := D.R
   groupR := D.groupR
   finiteR := D.finiteR
-  v := D.v
-  action := D.action
-  action_injective := D.action_injective
+  v := D.degree
+  action := D.paddedAction
+  action_injective := D.paddedAction_injective
   C := D.C
   tailCoefficient := D.tailCoefficient
   eta := D.eta
@@ -276,7 +352,7 @@ noncomputable def
   cutoff := D.cutoff
   alpha := D.alpha
   theta := D.theta
-  alpha_eq := D.alpha_eq
+  alpha_eq := rfl
   coefficient_nonneg := D.coefficient_nonneg
   tail_nonneg := D.tail_nonneg
   broad_axis_envelope := by
