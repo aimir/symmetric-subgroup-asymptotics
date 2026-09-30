@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7ExceptionalCatalogue
 import SymmetricSubgroupAsymptotics.Non2PreE7NoPairNoC3ExceptionalInterface
 import SymmetricSubgroupAsymptotics.GrowingQuotientExceptionalAggregation
+import SymmetricSubgroupAsymptotics.Non2PreE7EmptyCellNumerics
 
 /-!
 # Assemble the mixed pre-E7 owner catalogue
@@ -104,13 +105,14 @@ noncomputable def emptyEarlier
   D := fun _ => 0
   T := fun _ => 0
   X := fun _ => 0
-  v := 1
+  v := preE7EmptyCellDegree w
   eta := 0
-  delta := 0
-  cutoff := 0
-  alpha := 0
+  delta := preE7EmptyCellDelta w
+  cutoff := preE7EmptyCellCutoff w
+  alpha := preE7EmptyCellAlpha w
   theta := 0
-  alpha_eq := by norm_num
+  alpha_eq := by
+    simp [preE7EmptyCellAlpha]
   D_nonneg := fun _ => le_rfl
   T_nonneg := fun _ => le_rfl
   exceptional := fun _ =>
