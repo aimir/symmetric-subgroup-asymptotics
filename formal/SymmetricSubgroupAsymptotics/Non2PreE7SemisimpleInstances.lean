@@ -1,6 +1,9 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7SemisimpleTemplate
 import SymmetricSubgroupAsymptotics.Non2PreE7Sns2RankTailInstance
 import SymmetricSubgroupAsymptotics.Non2PreE7Sns2ExceptionalCatalogue
+import SymmetricSubgroupAsymptotics.Non2PreE7SmallOrderSemisimple
+import SymmetricSubgroupAsymptotics.Non2PreE7ActualSemisimple
+import SymmetricSubgroupAsymptotics.Non2PreE7SemisimpleSmallQuotient
 
 /-!
 # The five semisimple-family certificate shapes
@@ -37,29 +40,6 @@ theorem isPreE7SemisimpleFamily_iff
         family = .sns2 ∨ family = .nsaprim := by
   cases family <;> decide
 
-/-- `SS`: the displayed semisimple layer is the entire nontrivial action. -/
-structure PreE7SsSourceData (w : ℕ) (i : PreE7NonPairActionClass w) where
-  outer : PreE7SemisimpleOuterSourceData .ss w i
-  layer_eq_top : outer.E = ⊤
-  layer_ne_bot : outer.E ≠ ⊥
-
-/-- `SNS`: a nontrivial semisimple normal layer with a genuinely smaller
-outer quotient.  The numerical quotient-size margin is retained in the
-outer certificate's comparator parameters. -/
-structure PreE7SnsSourceData (w : ℕ) (i : PreE7NonPairActionClass w) where
-  outer : PreE7SemisimpleOuterSourceData .sns w i
-  width_lower : 64 ≤ w
-  layer_ne_bot : outer.E ≠ ⊥
-
-/-- `SO`: the direct small-order all-source theorem.  Its proof is not a
-semisimple-layer reduction, so the complete direct comparator certificate is
-retained together with the exact audited order scope. -/
-structure PreE7SoSourceData (w : ℕ) (i : PreE7NonPairActionClass w) where
-  width_lower : 64 ≤ w
-  order_not_two_power : ¬ IsPGroup 2 (preE7NonPairAction w i)
-  order_log_small : 8 * Nat.log 2 (Nat.card (preE7NonPairAction w i)) ≤ w
-  certificate : PreE7EarlierActionComparatorCertificate .so w i
-
 /-- `NSAPRIM`: one action in the fixed nonsoluble primitive-affine range.
 The bounded catalogue-completeness premise is a separate coverage input;
 this datum retains only the literal action's checked pointwise certificate. -/
@@ -76,9 +56,9 @@ def SemisimpleCertificateSourceData
     (family : PreE7NoPairNoC3EarlierOwnerFamily)
     (w : ℕ) (i : PreE7NonPairActionClass w) : Type 1 :=
   match family with
-  | .ss => PreE7SsSourceData w i
-  | .so => PreE7SoSourceData w i
-  | .sns => PreE7SnsSourceData w i
+  | .ss => PreE7SsActionCertificate w i
+  | .so => ULift.{1, 0} (PreE7SoOrderSourceData w i)
+  | .sns => PreE7SnsActionCertificate w i
   | .sns2 => PreE7Sns2SourceData w i
   | .nsaprim => PreE7NsaprimSourceData w i
   | _ => PEmpty
@@ -88,17 +68,19 @@ variable {w : ℕ} {i : PreE7NonPairActionClass w}
 def preE7_ssCertificate
     (S : SemisimpleCertificateSourceData .ss w i) :
     PreE7EarlierActionComparatorCertificate .ss w i :=
-  S.outer.certificate
+  S.direct.certificate
 
 def preE7_soCertificate
+    (hgen : PermutationSubgroupGeneratorBound)
     (S : SemisimpleCertificateSourceData .so w i) :
     PreE7EarlierActionComparatorCertificate .so w i :=
-  S.certificate
+  S.down.certificate hgen
 
 def preE7_snsCertificate
+    (hgen : PermutationSubgroupGeneratorBound)
     (S : SemisimpleCertificateSourceData .sns w i) :
     PreE7EarlierActionComparatorCertificate .sns w i :=
-  S.outer.certificate
+  (S.direct hgen).certificate
 
 def preE7_nsaprimCertificate
     (S : SemisimpleCertificateSourceData .nsaprim w i) :
@@ -116,14 +98,16 @@ theorem preE7_ssFamilyAction
   ⟨preE7_ssCertificate S⟩
 
 theorem preE7_soFamilyAction
+    (hgen : PermutationSubgroupGeneratorBound)
     (S : SemisimpleCertificateSourceData .so w i) :
     preE7NoPairNoC3EarlierFamilyAction .so w i :=
-  ⟨preE7_soCertificate S⟩
+  ⟨preE7_soCertificate hgen S⟩
 
 theorem preE7_snsFamilyAction
+    (hgen : PermutationSubgroupGeneratorBound)
     (S : SemisimpleCertificateSourceData .sns w i) :
     preE7NoPairNoC3EarlierFamilyAction .sns w i :=
-  ⟨preE7_snsCertificate S⟩
+  ⟨preE7_snsCertificate hgen S⟩
 
 theorem preE7_nsaprimFamilyAction
     (S : SemisimpleCertificateSourceData .nsaprim w i) :
