@@ -300,10 +300,10 @@ external top-map premise is used.  The coarse branch certificate also refines
 intrinsically on that same retained action to exactly six numerical consumers:
 ternary 3-group, natural A4, odd-index-two, cyclic-binary, prime-base, or
 binary-nine.  This split uses the retained high normal pair and does not rely
-on finite-catalogue action recognition.  The remaining aligned numerical
-producers are the ternary 3-group rows (degree-sensitive at 3, 9 and 27), the
-two degree-six intrinsic owners, the binary-nine degree-twelve owner, and the
-critical natural-A4 packet.  The ternary quotient recurrence is now internal.
+on finite-catalogue action recognition.  The aligned numerical producers are
+the ternary 3-group rows, the two degree-six intrinsic owners, the binary-nine
+degree-twelve owner, and the critical natural-A4 packet.  The ternary quotient
+recurrence is internal.
 Coherent charts identify the complete correlated block kernel with an actual
 subrepresentation of the ternary permutation module and descend through every
 original normal axis, including proper diagonal and subdirect intersections.
@@ -313,7 +313,16 @@ complete source rank visible gives `d`, `d+b/3`, and `d+4b/3` in degrees 3,
 9, and 27.  Consequently the generic binary slopes are `8/15`, `16/15`, and
 `8/3`; the marked one-regular-`C3`, no-natural-`A4` degree-nine source improves
 its slope to `8/9`.  The generic degree-27 and source-restricted degree-nine
-original-weight physical owners are checked.  The remaining aligned work is
-structural: prove that every surviving degree-nine map retains that source
-pattern, while the noncontractive degree-three cell must enter an earlier
-character owner or the exact post-consumer empty residual.
+original-weight physical owners are checked.  The owner witness now retains
+full projection onto the displayed outer regular `C3`.  On the actual nested
+carrier this makes the displayed triple an orbit, so the retained one-`C3`
+source pattern forbids a selected second width-three ternary orbit.  The
+width-three ternary-p-group label is therefore removed from the aligned index
+before the carrier is enlarged; the enlarged canonical cell itself is not
+asserted empty.  A transitive 3-group has odd degree, so the surviving ternary
+labels in the six-width menu are exactly 9 and 27 and use the two checked
+positive-width rows.  Together with the natural-A4, degree-six, prime-base and
+binary-nine rows, this exhausts the refined index and gives unconditional
+exponentially decaying forward estimates for both the high structural owner
+and the complete regular-`C3` ordinary audit, relative only to the named
+ternary and Kovács--Praeger inputs.
