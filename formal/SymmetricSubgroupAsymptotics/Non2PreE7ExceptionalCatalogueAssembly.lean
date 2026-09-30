@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7ExceptionalCatalogue
 import SymmetricSubgroupAsymptotics.Non2PreE7NoPairNoC3ExceptionalInterface
+import SymmetricSubgroupAsymptotics.GrowingQuotientExceptionalAggregation
 
 /-!
 # Assemble the mixed pre-E7 owner catalogue
@@ -34,6 +35,9 @@ structure PreE7NoPairNoC3LocalExceptionalChoice
   alpha_eq : alpha = eta + cutoff
   D_nonneg : ∀ b, 0 ≤ D b
   T_nonneg : ∀ b, 0 ≤ T b
+  exceptional : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)) →
+    ExponentialScalarBound X
+  exceptional_support : X = 0 ∨ w ≤ 12288
   local_bound : ∀ b,
     (Nat.card (FusionOrbitFamily
         (preE7NonPairFirstOwnerAction w j)
@@ -66,22 +70,24 @@ first-owner predicate. -/
 noncomputable def ofEarlierCertificate
     (k : Fin preE7NoPairNoC3EarlierOwnerCount)
     {w : ℕ} (U : PreE7NonPairActionClass w)
-    (C : PreE7EarlierLocalCertificate
+    (C : PreE7EarlierLocalPackage
       (preE7NoPairNoC3EarlierOwnerEquiv k) w U) :
     PreE7NoPairNoC3LocalExceptionalChoice w (k.castSucc, U) where
-  D := C.D
-  T := C.T
-  X := C.X
-  v := C.v
-  eta := C.eta
-  delta := C.delta
-  cutoff := C.cutoff
-  alpha := C.alpha
-  theta := C.theta
-  alpha_eq := C.alpha_eq
-  D_nonneg := C.D_nonneg
-  T_nonneg := C.T_nonneg
-  local_bound := fun b => C.local_bound b _
+  D := C.certificate.D
+  T := C.certificate.T
+  X := C.certificate.X
+  v := C.certificate.v
+  eta := C.certificate.eta
+  delta := C.certificate.delta
+  cutoff := C.certificate.cutoff
+  alpha := C.certificate.alpha
+  theta := C.certificate.theta
+  alpha_eq := C.certificate.alpha_eq
+  D_nonneg := C.certificate.D_nonneg
+  T_nonneg := C.certificate.T_nonneg
+  exceptional := C.exceptional
+  exceptional_support := C.exceptional_support
+  local_bound := fun b => C.certificate.local_bound b _
     (preE7NoPairNoC3CertifiedFirstOwnerPredicate_natural _ w
       (k.castSucc, U) b)
     (preE7NoPairNoC3LocalCertifiedFirstOwnerPredicate_implies_broad
@@ -107,6 +113,14 @@ noncomputable def emptyEarlier
   alpha_eq := by norm_num
   D_nonneg := fun _ => le_rfl
   T_nonneg := fun _ => le_rfl
+  exceptional := fun _ =>
+    { threshold := 0
+      rate := 1
+      constant := 1
+      rate_pos := by norm_num
+      constant_pos := by norm_num
+      bound := by simp }
+  exceptional_support := Or.inl rfl
   local_bound := by
     intro b
     let U' := preE7NonPairFirstOwnerAction w (k.castSucc, U)
@@ -203,6 +217,31 @@ noncomputable def preE7NoPairNoC3_localExceptionalData_of_residual
     have h := C.local_bound (n - w)
     rw [GrowingQuotientCanonicalFamily, fusionWidthCanonicalFamily_card]
     simpa only [w, C, Nat.sub_add_cancel hwn] using h
+
+/-- The complete exceptional menu is exponentially small.  This conclusion
+uses the explicit width support stored in every local package; it does not
+turn a collection of unrelated, unbounded-width cell estimates into a
+spurious uniform bound. -/
+noncomputable def
+    preE7NoPairNoC3_localExceptionalData_exceptionalTotal
+    (Residual : ∀ w (U : PreE7NonPairActionClass w),
+      PreE7NoPairNoC3LocalExceptionalChoice w
+        (Fin.last preE7NoPairNoC3EarlierOwnerCount, U))
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ))) :
+    ExponentialScalarBound
+      (growingQuotientExceptionalTotal 3
+        (preE7NoPairNoC3_localExceptionalData_of_residual Residual).X) := by
+  apply exponentialScalarBound_growingQuotientExceptionalTotal 3 12288
+  · intro w j
+    exact (preE7NoPairNoC3LocalExceptionalChoice
+      Residual w j.1 j.2).exceptional hcoarse
+  · intro w j hw
+    change (preE7NoPairNoC3LocalExceptionalChoice
+      Residual w j.1 j.2).X = 0
+    rcases (preE7NoPairNoC3LocalExceptionalChoice
+      Residual w j.1 j.2).exceptional_support with hzero | hwidth
+    · exact hzero
+    · omega
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

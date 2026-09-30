@@ -97,6 +97,14 @@ noncomputable def
         fusionAxisEnvelopeTotal_nonneg _ _ (Q.coefficient_nonneg b)
       T_nonneg := fun b =>
         fusionAxisEnvelopeTotal_nonneg _ _ (Q.tail_nonneg b)
+      exceptional := fun _ =>
+        { threshold := 0
+          rate := 1
+          constant := 1
+          rate_pos := by norm_num
+          constant_pos := by norm_num
+          bound := by simp }
+      exceptional_support := Or.inl rfl
       local_bound := by
         intro b
         let Pnew := preE7NoPairNoC3CertifiedFirstOwnerPredicate

@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7NoPairNoC3EarlierComparators
 import SymmetricSubgroupAsymptotics.Non2PreE7B6RankTailPhysical
+import SymmetricSubgroupAsymptotics.GrowingQuotientAdditiveExceptional
 
 /-!
 # Unified ordinary and source-summed pre-E7 owner certificates
@@ -135,19 +136,18 @@ def preE7B6ExceptionalDelta : ℝ := preE7CharacterRho * 12 / 2
 def preE7B6ExceptionalCutoff : ℝ :=
   (1 : ℝ) / 8 + preE7B6ExceptionalDelta / 2
 
-/-- The already source-summed B6 physical right-hand side. -/
+/-- The genuinely exceptional B6 rank-tail scalar.  The cold source term is
+installed separately in the ordinary cold row. -/
 def preE7B6ExceptionalScalar {w : ℕ} {i : PreE7NonPairActionClass w}
     (C : PreE7B6RankTailCertificate w i) (b : ℕ) : ℝ :=
   growingQuotientNormalizedPointing b w
       (Nat.card (Subgroup.normalizer
         (preE7NonPairAction w i : Set (Equiv.Perm (Fin w)))) : ℝ) *
-    (C.coldConstant * (1 + b) *
-          (2 : ℝ) ^ ((4 / 3 : ℝ) * b) * (subgroupCount b : ℝ) +
-      C.normalCount * ((Nat.factorial b : ℕ) : ℝ) ^ 16 *
-        ((2 : ℝ) ^
-            (-((b6RankTailExponent b : ℝ) * (13 / 50) * b)) *
-          (subgroupCount
-            (b + 2 * b6RankTailExponent b) : ℝ)))
+    (C.normalCount * ((Nat.factorial b : ℕ) : ℝ) ^ 16 *
+      ((2 : ℝ) ^
+          (-((b6RankTailExponent b : ℝ) * (13 / 50) * b)) *
+        (subgroupCount
+          (b + 2 * b6RankTailExponent b) : ℝ)))
 
 /-- B6 inhabits the unified catalogue through its correlated source sum,
 with both ordinary coefficients set to zero. -/
@@ -156,31 +156,89 @@ noncomputable def PreE7EarlierLocalCertificate.ofB6
     (C : PreE7B6RankTailCertificate w i) :
     PreE7EarlierLocalCertificate .b6 w i where
   D := fun _ => 0
-  T := fun _ => 0
+  T := fun b => C.coldConstant * (1 + b)
   X := preE7B6ExceptionalScalar C
   v := 1
   eta := 0
   delta := preE7B6ExceptionalDelta
   cutoff := preE7B6ExceptionalCutoff
   alpha := preE7B6ExceptionalCutoff
-  theta := 0
+  theta := 4 / 3
   alpha_eq := by simp
   D_nonneg := fun _ => le_rfl
-  T_nonneg := fun _ => le_rfl
+  T_nonneg := fun b => mul_nonneg C.coldConstant_nonneg (by positivity)
   local_bound := by
     intro b P hP _hPbroad
     have h := C.physical_normalized_bound b P hP
-    simpa only [preE7B6ExceptionalScalar, growingQuotientHotKernel,
-      fusionWidthColdKernel, zero_div, mul_zero, zero_mul, add_zero,
-      zero_add] using h
+    have hcold := growingQuotient_cold_identity (subgroupCount b : ℝ)
+      b w (C.coldConstant * (1 + b))
+      (Nat.card (Subgroup.normalizer
+        (preE7NonPairAction w i : Set (Equiv.Perm (Fin w)))) : ℝ)
+      (4 / 3) 0
+    rw [show (4 / 3 : ℝ) + 0 = 4 / 3 by ring] at hcold
+    simp only [growingQuotientThreshold, zero_mul, Real.rpow_zero,
+      mul_one] at hcold
+    have hhotzero : growingQuotientHotKernel
+        (fun n => (subgroupCount n : ℝ)) b w 1 0
+        (Nat.card (Subgroup.normalizer
+          (preE7NonPairAction w i : Set (Equiv.Perm (Fin w)))) : ℝ)
+        0 preE7B6ExceptionalDelta preE7B6ExceptionalCutoff = 0 := by
+      simp [growingQuotientHotKernel]
+    have hcoldzero : fusionWidthColdKernel b w 0
+        (Nat.card (Subgroup.normalizer
+          (preE7NonPairAction w i : Set (Equiv.Perm (Fin w)))) : ℝ)
+        preE7B6ExceptionalCutoff = 0 := by
+      simp [fusionWidthColdKernel]
+    simp only [preE7B6ExceptionalScalar, hhotzero, hcoldzero, zero_add]
+    rw [ordinarySubgroupRatio, ← hcold]
+    calc
+      _ ≤ growingQuotientNormalizedPointing b w
+          (Nat.card (Subgroup.normalizer
+            (preE7NonPairAction w i : Set (Equiv.Perm (Fin w)))) : ℝ) *
+          (C.coldConstant * (1 + b) *
+                (2 : ℝ) ^ ((4 / 3 : ℝ) * b) *
+                (subgroupCount b : ℝ) +
+            C.normalCount * ((Nat.factorial b : ℕ) : ℝ) ^ 16 *
+              ((2 : ℝ) ^
+                  (-((b6RankTailExponent b : ℝ) * (13 / 50) * b)) *
+                (subgroupCount
+                  (b + 2 * b6RankTailExponent b) : ℝ))) := h
+      _ = _ := by ring
+
+/-- A local physical certificate together with the numerical decay of its
+source-summed exceptional term.  The coarse subgroup estimate remains an
+explicit published input. -/
+structure PreE7EarlierLocalPackage
+    (family : PreE7NoPairNoC3EarlierOwnerFamily)
+    (w : ℕ) (i : PreE7NonPairActionClass w) where
+  certificate : PreE7EarlierLocalCertificate family w i
+  exceptional : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)) →
+    ExponentialScalarBound certificate.X
+  exceptional_support : certificate.X = 0 ∨ w ≤ 12288
+
+/-- Every ordinary certificate has identically zero exceptional scalar. -/
+noncomputable def PreE7EarlierLocalPackage.ofComparator
+    {family : PreE7NoPairNoC3EarlierOwnerFamily}
+    {w : ℕ} {i : PreE7NonPairActionClass w}
+    (C : PreE7EarlierActionComparatorCertificate family w i) :
+    PreE7EarlierLocalPackage family w i where
+  certificate := .ofComparator C
+  exceptional := fun _ =>
+    { threshold := 0
+      rate := 1
+      constant := 1
+      rate_pos := by norm_num
+      constant_pos := by norm_num
+      bound := by simp [PreE7EarlierLocalCertificate.ofComparator] }
+  exceptional_support := Or.inl rfl
 
 /-- The action predicate used by the mixed catalogue.  It means that the
-displayed original action carries a valid physical certificate of the family
-named by the owner label. -/
+displayed original action carries a valid physical certificate and decay
+certificate of the family named by the owner label. -/
 def preE7NoPairNoC3EarlierLocalFamilyAction
     (family : PreE7NoPairNoC3EarlierOwnerFamily)
     (w : ℕ) (i : PreE7NonPairActionClass w) : Prop :=
-  Nonempty (PreE7EarlierLocalCertificate family w i)
+  Nonempty (PreE7EarlierLocalPackage family w i)
 
 /-- Any ordinary action certificate is accepted by the mixed catalogue. -/
 theorem preE7EarlierLocalFamilyAction_ofComparator
@@ -189,14 +247,6 @@ theorem preE7EarlierLocalFamilyAction_ofComparator
     (C : PreE7EarlierActionComparatorCertificate family w i) :
     preE7NoPairNoC3EarlierLocalFamilyAction family w i :=
   ⟨.ofComparator C⟩
-
-/-- Any B6 rank-tail certificate is accepted by the mixed catalogue without
-being coerced to a pointwise complete-source estimate. -/
-theorem preE7EarlierLocalFamilyAction_ofB6
-    {w : ℕ} {i : PreE7NonPairActionClass w}
-    (C : PreE7B6RankTailCertificate w i) :
-    preE7NoPairNoC3EarlierLocalFamilyAction .b6 w i :=
-  ⟨.ofB6 C⟩
 
 /-- The mixed certified first-owner predicate still restricts to the broad
 source.  This proof uses only the structural part of the first-owner
