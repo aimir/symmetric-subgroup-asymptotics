@@ -530,7 +530,7 @@ earlier-owner catalogue, or its carrier quotient has an abelian-layer
 tower down to a fixed comparator top.  Nonabelian chief factors must
 therefore be owned.  The joint capacity is the tower capacity. -/
 noncomputable def PreE7NoPairNoC3RetainedCellData.ofAbelianYonedaTowers
-    {r : ℕ} (D : PreE7NonPairOwnerComparatorData r)
+    {r : ℕ} (D : PreE7NoPairNoC3OwnerData r)
     (carrier : ∀ w i N,
       FusionAxisCarrier (preE7NonPairFirstOwnerAction w i) N)
     (Accepted : ∀ w i b N,

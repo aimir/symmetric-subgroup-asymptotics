@@ -1,5 +1,4 @@
-import SymmetricSubgroupAsymptotics.Non2PreE7NoPairNoC3PhysicalFrontier
-import SymmetricSubgroupAsymptotics.Non2PreE7NonPairConcreteInterface
+import SymmetricSubgroupAsymptotics.Non2PreE7NoPairNoC3NumericalClosure
 
 /-!
 # Shared concrete interface for the final pre-E7 residual
@@ -35,7 +34,7 @@ structure PreE7NoPairNoC3EarlierComparatorCore (r : ℕ) where
   owned_envelope : ∀ w i b N, Owned w i b N →
     ∀ J : Subgroup (Equiv.Perm (Fin b)),
       fusionSurvivingEpiCount (preE7NonPairFirstOwnerAction w i)
-          (preE7NonPairFirstOwnerPredicate
+          (preE7NoPairNoC3FirstOwnerPredicate
             (ownerOrResidualEligible Earlier) w i b) N J ≤
         completeQuotientWeight (R := R w i) J
 
@@ -55,12 +54,43 @@ structure PreE7NoPairNoC3OwnerNumerics {r : ℕ}
   coefficient_nonneg : ∀ w i b N, 0 ≤ C w i b N
   alpha_eq : ∀ w i, alpha w i = eta w i + cutoff w i
 
-/-- Reassemble the existing owner-envelope datum after its structural and
+/-- Complete owner-envelope datum for the narrowed no-pair/no-`C3` frontier. -/
+structure PreE7NoPairNoC3OwnerData (r : ℕ) where
+  Earlier : ∀ d, Fin r → Subgroup (Equiv.Perm (Fin d)) → Prop
+  earlier_natural : DegreeNaturalOwnerMenu Earlier
+  R : ∀ w, PreE7NonPairFirstOwnerIndex (r + 1) w → Type
+  [groupR : ∀ w i, Group (R w i)]
+  [finiteR : ∀ w i, Finite (R w i)]
+  Owned : ∀ w (i : PreE7NonPairFirstOwnerIndex (r + 1) w) (_b : ℕ),
+    {N : Subgroup (preE7NonPairFirstOwnerAction w i) // N.Normal} → Prop
+  C : ∀ w (i : PreE7NonPairFirstOwnerIndex (r + 1) w) (_b : ℕ),
+    {N : Subgroup (preE7NonPairFirstOwnerAction w i) // N.Normal} → ℝ
+  v : ∀ w, PreE7NonPairFirstOwnerIndex (r + 1) w → ℕ
+  eta : ∀ w, PreE7NonPairFirstOwnerIndex (r + 1) w → ℝ
+  delta : ∀ w, PreE7NonPairFirstOwnerIndex (r + 1) w → ℝ
+  cutoff : ∀ w, PreE7NonPairFirstOwnerIndex (r + 1) w → ℝ
+  alpha : ∀ w, PreE7NonPairFirstOwnerIndex (r + 1) w → ℝ
+  action : ∀ w i, R w i →* Equiv.Perm (Fin (v w i))
+  action_injective : ∀ w i, Function.Injective (action w i)
+  coefficient_nonneg : ∀ w i b N, 0 ≤ C w i b N
+  alpha_eq : ∀ w i, alpha w i = eta w i + cutoff w i
+  owned_envelope : ∀ w i b N, Owned w i b N →
+    ∀ J : Subgroup (Equiv.Perm (Fin b)),
+      fusionSurvivingEpiCount (preE7NonPairFirstOwnerAction w i)
+          (preE7NoPairNoC3FirstOwnerPredicate
+            (ownerOrResidualEligible Earlier) w i b) N J ≤
+        completeQuotientWeight (R := R w i) J
+
+attribute [instance]
+  PreE7NoPairNoC3OwnerData.groupR
+  PreE7NoPairNoC3OwnerData.finiteR
+
+/-- Reassemble the narrowed owner-envelope datum after its structural and
 numerical halves have been proved. -/
 noncomputable def PreE7NoPairNoC3EarlierComparatorCore.withNumerics
     {r : ℕ} (Core : PreE7NoPairNoC3EarlierComparatorCore r)
     (Numerics : PreE7NoPairNoC3OwnerNumerics Core) :
-    PreE7NonPairOwnerComparatorData r where
+    PreE7NoPairNoC3OwnerData r where
   Earlier := Core.Earlier
   earlier_natural := Core.earlier_natural
   R := Core.R
@@ -83,7 +113,7 @@ noncomputable def PreE7NoPairNoC3EarlierComparatorCore.withNumerics
 records its complete quotient map and retained flag together; the required
 capacity is the product of flag cardinality and Yoneda fibre size. -/
 structure PreE7NoPairNoC3RetainedCellData {r : ℕ}
-    (D : PreE7NonPairOwnerComparatorData r) where
+    (D : PreE7NoPairNoC3OwnerData r) where
   carrier : ∀ w i N,
     FusionAxisCarrier (preE7NonPairFirstOwnerAction w i) N
   Accepted : ∀ w i b N,
@@ -125,6 +155,48 @@ structure PreE7NoPairNoC3RetainedCellData {r : ℕ}
         D.C w i b N * (2 : ℝ) ^ (D.eta w i * b)
 
 attribute [instance] PreE7NoPairNoC3RetainedCellData.flag_finite
+
+/-- Uniform numerical package for the narrowed physical frontier. -/
+structure PreE7NoPairNoC3NumericalCertificate {r : ℕ}
+    (D : PreE7NoPairNoC3OwnerData r) where
+  rho : ℝ
+  rho_pos : 0 < rho
+  rho_le_eighth : rho ≤ 1 / 8
+  parameters : GrowingQuotientParameterBound rho
+    D.v D.eta D.delta D.cutoff D.alpha
+  menuMass : PolynomialSubquadraticMenuMassBound 3
+    (fun w i b => fusionAxisEnvelopeTotal
+      (preE7NonPairFirstOwnerAction w i)
+      (fusionOwnerCapacityCoefficient b
+        (preE7NonPairFirstOwnerAction w i)
+        (D.Owned w i b) (D.C w i b) (D.eta w i)))
+    (fun w i =>
+      (Nat.card (Subgroup.normalizer
+        (preE7NonPairFirstOwnerAction w i :
+          Set (Equiv.Perm (Fin w)))) : ℝ))
+
+/-- Exact integration of the narrowed owner, retained-cell and numerical
+packages into its ambient-degree forward estimate. -/
+noncomputable def preE7NoPairNoC3_exponentialForwardEstimate_of_data
+    {r : ℕ}
+    (D : PreE7NoPairNoC3OwnerData r)
+    (Cells : PreE7NoPairNoC3RetainedCellData D)
+    (Numerics : PreE7NoPairNoC3NumericalCertificate D)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ))) :
+    OrdinaryFrontierClosure.ExponentialForwardEstimate
+      preE7NoPairNoC3ResidualRatio :=
+  preE7NoPairNoC3_exponentialForwardEstimate_of_axisOwnerOrRetainedCells
+    D.Earlier D.earlier_natural D.R D.Owned D.C
+    (fun w i =>
+      (Nat.card (Subgroup.normalizer
+        (preE7NonPairFirstOwnerAction w i :
+          Set (Equiv.Perm (Fin w)))) : ℝ))
+    D.v D.eta D.delta D.cutoff D.alpha D.action D.action_injective
+    D.coefficient_nonneg (fun _ _ => rfl) D.alpha_eq D.owned_envelope
+    Cells.carrier Cells.Accepted Cells.accept_inverse Cells.Flag
+    (fun _ _ _ _ _ => inferInstance) Cells.cell Cells.fibreBound
+    Cells.fibre_card Cells.joint_capacity Numerics.rho_pos
+    Numerics.rho_le_eighth Numerics.parameters Numerics.menuMass hcoarse
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.BinaryNativeRecurrence
 import SymmetricSubgroupAsymptotics.Non2PreE7ResidualPairPartition
 import SymmetricSubgroupAsymptotics.Non2PreE7NonPairConcreteInterface
 import SymmetricSubgroupAsymptotics.Non2PreE7C3Partition
+import SymmetricSubgroupAsymptotics.Non2PreE7NoPairNoC3ConcreteInterface
 
 /-!
 # The final relative closure of T1
@@ -128,6 +129,46 @@ theorem allTargets_of_preE7_noPairNoC3_estimate
   allTargets_iff_T1.mpr
     (T1_of_preE7_noPairNoC3_estimate hTracey hExceptional
       hChief hWeight hPrimitive h18 hKP P)
+
+/-- Concrete narrowed owner, retained-cell and numerical packages close T1
+through the paid regular-`C3`, residual-pair, post-`E7` and binary rows. -/
+theorem T1_of_preE7_noPairNoC3_data
+    {r : ℕ}
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
+    (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    (h18 : DegreeEighteenTernaryHeadBound)
+    (hKP : KovacsPraegerAbelianizationBound)
+    (D : PreE7NoPairNoC3OwnerData r)
+    (Cells : PreE7NoPairNoC3RetainedCellData D)
+    (Numerics : PreE7NoPairNoC3NumericalCertificate D)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ))) : T1 :=
+  T1_of_preE7_noPairNoC3_estimate hTracey hExceptional
+    hChief hWeight hPrimitive h18 hKP
+    (preE7NoPairNoC3_exponentialForwardEstimate_of_data
+      D Cells Numerics hcoarse)
+
+/-- The same concrete narrowed packages close the complete approved theorem
+package through the proved implications `T1 → T2` and `T1 → T3`. -/
+theorem allTargets_of_preE7_noPairNoC3_data
+    {r : ℕ}
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
+    (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    (h18 : DegreeEighteenTernaryHeadBound)
+    (hKP : KovacsPraegerAbelianizationBound)
+    (D : PreE7NoPairNoC3OwnerData r)
+    (Cells : PreE7NoPairNoC3RetainedCellData D)
+    (Numerics : PreE7NoPairNoC3NumericalCertificate D)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ))) :
+    AllTargets :=
+  allTargets_iff_T1.mpr
+    (T1_of_preE7_noPairNoC3_data hTracey hExceptional
+      hChief hWeight hPrimitive h18 hKP D Cells Numerics hcoarse)
 
 end SymmetricSubgroupAsymptotics
 
