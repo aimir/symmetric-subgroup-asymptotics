@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryNativeRecurrence
-import SymmetricSubgroupAsymptotics.Non2UnipotentPrefixOutsidePartition
+import SymmetricSubgroupAsymptotics.Non2PreE7ResidualPairPartition
 
 /-!
 # The final relative closure of T1
@@ -46,6 +46,26 @@ theorem allTargets_of_preE7_estimate
     (P : OrdinaryFrontierClosure.ExponentialForwardEstimate
       preE7UnresolvedOutsideRatio) : AllTargets :=
   allTargets_iff_T1.mpr (T1_of_preE7_estimate hTracey hExceptional P)
+
+/-- After removing the four residual pair widths, a forward estimate for the
+exact non-pair complement is the sole remaining input needed for T1. -/
+theorem T1_of_preE7_nonPair_estimate
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (P : OrdinaryFrontierClosure.ExponentialForwardEstimate
+      preE7NonPairResidualRatio) : T1 :=
+  T1_of_preE7_estimate hTracey hExceptional
+    (preE7Unresolved_exponentialForwardEstimate_of_nonPair
+      hTracey hExceptional P)
+
+/-- The exact non-pair pre-`E7` estimate closes all three approved targets. -/
+theorem allTargets_of_preE7_nonPair_estimate
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (P : OrdinaryFrontierClosure.ExponentialForwardEstimate
+      preE7NonPairResidualRatio) : AllTargets :=
+  allTargets_iff_T1.mpr
+    (T1_of_preE7_nonPair_estimate hTracey hExceptional P)
 
 end SymmetricSubgroupAsymptotics
 
