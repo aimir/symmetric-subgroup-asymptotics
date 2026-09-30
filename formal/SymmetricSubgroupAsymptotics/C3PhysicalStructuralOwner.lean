@@ -19,14 +19,17 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 
 /-- A complete physical subgroup has a high-C3 structural owner when it has
-an actual regular-C3 fusion chart whose untouched complement contains a
-literal orbit pair accepted by the already constructed structural menu. -/
+an actual regular-C3 fusion chart, with full projection onto the displayed
+regular `C3`, whose untouched complement contains a literal orbit pair
+accepted by the already constructed structural menu.  Fullness makes the
+displayed triple an actual orbit, so the owned orbit is never that triple. -/
 def C3PhysicalStructuralOwner (n : ℕ)
     (G : Subgroup (Equiv.Perm (Fin n))) : Prop :=
   ∃ (b : ℕ)
     (e : TernaryCyclic ⊕ Fin b ≃ Fin n)
     (H : Subgroup (ternaryRegularAction × Equiv.Perm (Fin b))),
       relabelSubgroup e (H.map (fusionOrbitAction ternaryRegularAction)) = G ∧
+      H.map (MonoidHom.fst ternaryRegularAction (Equiv.Perm (Fin b))) = ⊤ ∧
       ∃ o : OrbitProfileFromOrbits.Orbit (C3ComplementSource b H),
         ∃ (N : Subgroup
             (OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o))
@@ -48,8 +51,8 @@ theorem c3PhysicalStructuralOwner_relabel_iff {m n : ℕ}
       C3PhysicalStructuralOwner m G := by
   subst n
   constructor
-  · rintro ⟨b, c, H, hc, o, N, hN, hHigh, hOwner⟩
-    refine ⟨b, c.trans e.symm, H, ?_, o, N, hN, hHigh, hOwner⟩
+  · rintro ⟨b, c, H, hc, hfull, o, N, hN, hHigh, hOwner⟩
+    refine ⟨b, c.trans e.symm, H, ?_, hfull, o, N, hN, hHigh, hOwner⟩
     calc
       relabelSubgroup (c.trans e.symm)
           (H.map (fusionOrbitAction ternaryRegularAction)) =
@@ -59,8 +62,8 @@ theorem c3PhysicalStructuralOwner_relabel_iff {m n : ℕ}
               rw [relabelSubgroup_trans]
       _ = relabelSubgroup e.symm (relabelSubgroup e G) := by rw [hc]
       _ = G := relabelSubgroup_symm e G
-  · rintro ⟨b, c, H, hc, o, N, hN, hHigh, hOwner⟩
-    refine ⟨b, c.trans e, H, ?_, o, N, hN, hHigh, hOwner⟩
+  · rintro ⟨b, c, H, hc, hfull, o, N, hN, hHigh, hOwner⟩
+    refine ⟨b, c.trans e, H, ?_, hfull, o, N, hN, hHigh, hOwner⟩
     calc
       relabelSubgroup (c.trans e)
           (H.map (fusionOrbitAction ternaryRegularAction)) =
@@ -104,7 +107,7 @@ theorem c3TrivialHigh_enters_physicalStructuralOwner
   rcases ternaryHigh_earlierOwner_or_capacity
       hChief hWeight hPrimitive h18 (A := A) (Ω := o.orbit) N with
     hOwner | hCapacity
-  · exact ⟨b, e, H, rfl, o, N, hN, hHigh, hOwner⟩
+  · exact ⟨b, e, H, rfl, hH.1.1, o, N, hN, hHigh, hOwner⟩
   · exact False.elim ((Nat.not_lt_of_ge hCapacity) hHigh)
 
 /-- First ownership by the appended residual branch is impossible for a

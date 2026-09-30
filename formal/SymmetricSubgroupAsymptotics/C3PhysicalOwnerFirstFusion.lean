@@ -271,7 +271,7 @@ theorem c3PhysicalStructuralBranch_firstOwner_mem_non2CanonicalFamily
         (non2FirstOwnerAction w (owner, i)) hn
         (non2FirstOwnerPredicate c3PhysicalStructuralBranchMenu
           w (owner, i) (n - w)) := by
-  rcases howner.1 with ⟨b, e, H, hphysical, o, N, hN,
+  rcases howner.1 with ⟨b, e, H, hphysical, _, o, N, hN,
     hHigh, hEarlier, hk⟩
   have hdegree : b + 3 = n := by
     have hcard := Nat.card_congr e

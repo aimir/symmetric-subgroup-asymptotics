@@ -67,7 +67,7 @@ theorem c3PhysicalStructuralBranch_firstOwner_mem_finiteNon2CanonicalFamily
         (non2FirstOwnerAction d.width (owner, i)) hn
         (non2FirstOwnerPredicate c3PhysicalStructuralBranchMenu
           d.width (owner, i) (n - d.width)) := by
-  rcases howner.1 with ⟨b, e, H, hphysical, o, N, hN,
+  rcases howner.1 with ⟨b, e, H, hphysical, _, o, N, hN,
     hHigh, hEarlier, hk⟩
   let A := OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o
   letI : MulAction.IsPretransitive A o.orbit :=

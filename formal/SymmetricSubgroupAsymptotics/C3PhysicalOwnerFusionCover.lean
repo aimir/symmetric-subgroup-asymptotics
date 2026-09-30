@@ -78,7 +78,7 @@ theorem c3PhysicalStructuralOwnerBranch_mem_non2CanonicalFamily
     ∃ (w : ℕ) (hn : w ≤ n)
       (i : Non2TransitiveActionClass (Fin w)),
       G ∈ FusionWidthCanonicalFamily i.representative hn (fun _ => True) := by
-  rcases hG with ⟨b, e, H, hphysical, o, N, hN, hHigh, hOwner, hk⟩
+  rcases hG with ⟨b, e, H, hphysical, _, o, N, hN, hHigh, hOwner, hk⟩
   have hdegree : b + 3 = n := by
     have hcard := Nat.card_congr e
     have hternary : Nat.card TernaryCyclic = 3 := by

@@ -31,14 +31,15 @@ def C3PhysicalOwnerKind.property
   | .degreeTwelve => Nat.card Ω = 12
 
 /-- One classified branch of the complete high-C3 physical owner.  The
-normal pair, strict high inequality and intrinsic structural owner remain
-part of the witness. -/
+normal pair, full displayed projection, strict high inequality and intrinsic
+structural owner remain part of the witness. -/
 def C3PhysicalStructuralOwnerBranch (k : C3PhysicalOwnerKind) (n : ℕ)
     (G : Subgroup (Equiv.Perm (Fin n))) : Prop :=
   ∃ (b : ℕ)
     (e : TernaryCyclic ⊕ Fin b ≃ Fin n)
     (H : Subgroup (ternaryRegularAction × Equiv.Perm (Fin b))),
       relabelSubgroup e (H.map (fusionOrbitAction ternaryRegularAction)) = G ∧
+      H.map (MonoidHom.fst ternaryRegularAction (Equiv.Perm (Fin b))) = ⊤ ∧
       ∃ o : OrbitProfileFromOrbits.Orbit (C3ComplementSource b H),
         ∃ (N : Subgroup
             (OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o))
@@ -58,8 +59,8 @@ theorem c3PhysicalStructuralOwnerBranch_owner
     {G : Subgroup (Equiv.Perm (Fin n))}
     (h : C3PhysicalStructuralOwnerBranch k n G) :
     C3PhysicalStructuralOwner n G := by
-  rcases h with ⟨b, e, H, hG, o, N, hN, hHigh, hOwner, _⟩
-  exact ⟨b, e, H, hG, o, N, hN, hHigh, hOwner⟩
+  rcases h with ⟨b, e, H, hG, hfull, o, N, hN, hHigh, hOwner, _⟩
+  exact ⟨b, e, H, hG, hfull, o, N, hN, hHigh, hOwner⟩
 
 theorem c3PhysicalStructuralOwnerBranch_relabel_iff
     (k : C3PhysicalOwnerKind) {m n : ℕ}
@@ -69,8 +70,8 @@ theorem c3PhysicalStructuralOwnerBranch_relabel_iff
       C3PhysicalStructuralOwnerBranch k m G := by
   subst n
   constructor
-  · rintro ⟨b, c, H, hc, o, N, hN, hHigh, hOwner, hk⟩
-    refine ⟨b, c.trans e.symm, H, ?_, o, N, hN, hHigh, hOwner, hk⟩
+  · rintro ⟨b, c, H, hc, hfull, o, N, hN, hHigh, hOwner, hk⟩
+    refine ⟨b, c.trans e.symm, H, ?_, hfull, o, N, hN, hHigh, hOwner, hk⟩
     calc
       relabelSubgroup (c.trans e.symm)
           (H.map (fusionOrbitAction ternaryRegularAction)) =
@@ -80,8 +81,8 @@ theorem c3PhysicalStructuralOwnerBranch_relabel_iff
               rw [relabelSubgroup_trans]
       _ = relabelSubgroup e.symm (relabelSubgroup e G) := by rw [hc]
       _ = G := relabelSubgroup_symm e G
-  · rintro ⟨b, c, H, hc, o, N, hN, hHigh, hOwner, hk⟩
-    refine ⟨b, c.trans e, H, ?_, o, N, hN, hHigh, hOwner, hk⟩
+  · rintro ⟨b, c, H, hc, hfull, o, N, hN, hHigh, hOwner, hk⟩
+    refine ⟨b, c.trans e, H, ?_, hfull, o, N, hN, hHigh, hOwner, hk⟩
     calc
       relabelSubgroup (c.trans e)
           (H.map (fusionOrbitAction ternaryRegularAction)) =
@@ -101,7 +102,7 @@ theorem c3PhysicalStructuralOwner_branch_cover
     {n : ℕ} {G : Subgroup (Equiv.Perm (Fin n))}
     (hG : C3PhysicalStructuralOwner n G) :
     ∃ k, C3PhysicalStructuralOwnerBranch k n G := by
-  rcases hG with ⟨b, e, H, hphysical, o, N, hN, hHigh, hOwner⟩
+  rcases hG with ⟨b, e, H, hphysical, hfull, o, N, hN, hHigh, hOwner⟩
   let A := OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o
   letI : MulAction.IsPretransitive A o.orbit :=
     orbitImage_pretransitive (C3ComplementSource b H) o
@@ -109,13 +110,13 @@ theorem c3PhysicalStructuralOwner_branch_cover
   rcases ternaryHigh_action_owned_menu hChief hWeight hPrimitive h18
       (A := A) (Ω := o.orbit) N hHigh with hThree | hA4 | hSix | hTwelve
   · exact ⟨.ternaryPGroup,
-      b, e, H, hphysical, o, N, hN, hHigh, hOwner, hThree⟩
+      b, e, H, hphysical, hfull, o, N, hN, hHigh, hOwner, hThree⟩
   · exact ⟨.naturalA4,
-      b, e, H, hphysical, o, N, hN, hHigh, hOwner, hA4⟩
+      b, e, H, hphysical, hfull, o, N, hN, hHigh, hOwner, hA4⟩
   · exact ⟨.degreeSix,
-      b, e, H, hphysical, o, N, hN, hHigh, hOwner, hSix⟩
+      b, e, H, hphysical, hfull, o, N, hN, hHigh, hOwner, hSix⟩
   · exact ⟨.degreeTwelve,
-      b, e, H, hphysical, o, N, hN, hHigh, hOwner, hTwelve⟩
+      b, e, H, hphysical, hfull, o, N, hN, hHigh, hOwner, hTwelve⟩
 
 def c3PhysicalOwnerKindEquiv : Fin 4 ≃ C3PhysicalOwnerKind :=
   (Fintype.equivFin C3PhysicalOwnerKind).symm

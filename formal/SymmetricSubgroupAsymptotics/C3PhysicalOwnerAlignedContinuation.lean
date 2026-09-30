@@ -183,7 +183,7 @@ theorem c3PhysicalStructuralOwner_alignedFiniteFusionCover
   obtain ⟨owner, howner⟩ := firstOwned_exists
     (c3PatternStructuralBranchMenu n) G
       ⟨ownerEligible, hEligible, hG.2.2⟩
-  rcases howner.1.1 with ⟨b, e, H, hphysical, o, N, hN,
+  rcases howner.1.1 with ⟨b, e, H, hphysical, _, o, N, hN,
     hHigh, hEarlier, hk⟩
   let A := OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o
   letI : MulAction.IsPretransitive A o.orbit :=
