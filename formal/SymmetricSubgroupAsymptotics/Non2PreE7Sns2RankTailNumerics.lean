@@ -52,7 +52,7 @@ theorem sns2_halfDegree_cold_main_gap {b w l : ℕ}
     (-(halfDegree w : ℝ) * b / 4 - (halfDegree w : ℝ) ^ 2 / 4 +
         (halfDegree w : ℝ) / 4 + 1 / 4 +
         (l : ℝ) * (51 / 200) * b + (l : ℝ) ^ 2 / 4) ≤
-      -(w : ℝ) * b / 80 - (w : ℝ) ^ 2 / 200 + 2 := by
+      -(w : ℝ) * b / 80 - (w : ℝ) ^ 2 / 80 + 2 := by
   let r := halfDegree w
   have hrw : 2 * r ≤ w := by
     dsimp [r, halfDegree]
@@ -85,7 +85,7 @@ theorem sns2_halfDegree_cold_main_gap {b w l : ℕ}
   have hsquare :
       -(r : ℝ) ^ 2 / 4 + (r : ℝ) / 4 + 1 / 4 +
           (l : ℝ) ^ 2 / 4 ≤
-        -(w : ℝ) ^ 2 / 200 + 2 := by
+        -(w : ℝ) ^ 2 / 80 + 2 := by
     nlinarith
   dsimp [r] at hcross hsquare ⊢
   linarith
