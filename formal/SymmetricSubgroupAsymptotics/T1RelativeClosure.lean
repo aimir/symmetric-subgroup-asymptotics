@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.BinaryNativeRecurrence
 import SymmetricSubgroupAsymptotics.Non2PreE7ResidualPairPartition
+import SymmetricSubgroupAsymptotics.Non2PreE7NonPairConcreteInterface
 
 /-!
 # The final relative closure of T1
@@ -66,6 +67,34 @@ theorem allTargets_of_preE7_nonPair_estimate
       preE7NonPairResidualRatio) : AllTargets :=
   allTargets_iff_T1.mpr
     (T1_of_preE7_nonPair_estimate hTracey hExceptional P)
+
+/-- Concrete non-pair owner, retained-cell, and numerical packages close T1
+through the already proved binary, post-E7, and residual-pair estimates. -/
+theorem T1_of_preE7_nonPair_data
+    {r : ℕ}
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (D : PreE7NonPairOwnerComparatorData r)
+    (Cells : PreE7NonPairRetainedCellData D)
+    (Numerics : PreE7NonPairNumericalCertificate D)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ))) : T1 :=
+  T1_of_preE7_nonPair_estimate hTracey hExceptional
+    (preE7NonPair_exponentialForwardEstimate_of_data
+      D Cells Numerics hcoarse)
+
+/-- The same concrete non-pair packages close all three approved targets. -/
+theorem allTargets_of_preE7_nonPair_data
+    {r : ℕ}
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (D : PreE7NonPairOwnerComparatorData r)
+    (Cells : PreE7NonPairRetainedCellData D)
+    (Numerics : PreE7NonPairNumericalCertificate D)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ))) :
+    AllTargets :=
+  allTargets_iff_T1.mpr
+    (T1_of_preE7_nonPair_data
+      hTracey hExceptional D Cells Numerics hcoarse)
 
 end SymmetricSubgroupAsymptotics
 
