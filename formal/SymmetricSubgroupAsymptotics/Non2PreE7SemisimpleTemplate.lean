@@ -42,6 +42,11 @@ structure PreE7SemisimpleOuterSourceData
   theta : ℝ
   alpha_eq : alpha = eta + cutoff
   coefficient_nonneg : ∀ b, 0 ≤ coefficient b
+  coefficient_total_bound : ∀ b,
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i)
+        (fun _ => coefficient b) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
   outer_bound : ∀ b (J : Subgroup (Equiv.Perm (Fin b))),
     chart.outerFactor (Real.logb 2 (Nat.card J)) ≤
       coefficient b * (2 : ℝ) ^ (eta * b)
@@ -145,6 +150,11 @@ structure PreE7SemisimpleDirectSourceData
   theta : ℝ
   alpha_eq : alpha = eta + cutoff
   coefficient_nonneg : ∀ b, 0 ≤ coefficient b
+  coefficient_total_bound : ∀ b,
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i)
+        (fun _ => coefficient b) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
   combined_bound : ∀ b (J : Subgroup (Equiv.Perm (Fin b))),
     completeQuotientWeight
         (R := preE7NonPairAction w i ⧸ E) J *

@@ -36,6 +36,11 @@ structure PreE7SoOrderSourceData
   m : ℕ
   order_le : Nat.card (preE7NonPairAction w i) ≤ 2 ^ m
   exponent_small : 8 * m ≤ w
+  coefficient_total_bound : ∀ b,
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i)
+        (fun _ => (2 : ℝ) ^ m) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
 
 namespace PreE7SoOrderSourceData
 
@@ -44,7 +49,7 @@ variable {w : ℕ} {i : PreE7NonPairActionClass w}
 
 def eta : ℝ := (D.m : ℝ) / 2
 
-def degree (D : PreE7SoOrderSourceData w i) : ℕ :=
+def degree (_D : PreE7SoOrderSourceData w i) : ℕ :=
   paddedComparatorDegree preE7CharacterRho 2 w
 
 def delta : ℝ :=

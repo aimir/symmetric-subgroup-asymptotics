@@ -22,6 +22,11 @@ structure PreE7SsActionCertificate
   chart : SemisimpleNormalChart
     (⊤ : Subgroup (preE7NonPairAction w i))
   layer_ne_bot : (⊤ : Subgroup (preE7NonPairAction w i)) ≠ ⊥
+  coefficient_total_bound : ∀ b,
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i)
+        (fun _ => chart.outerFactor (Real.logb 2 (Nat.factorial b))) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
 
 namespace PreE7SsActionCertificate
 
@@ -81,6 +86,7 @@ noncomputable def direct :
       theta := 0
       alpha_eq := by simp
       coefficient_nonneg := C.coefficient_nonneg
+      coefficient_total_bound := C.coefficient_total_bound
       combined_bound := by
         intro b J
         letI := QuotientGroup.subsingleton_quotient_top (G := U)

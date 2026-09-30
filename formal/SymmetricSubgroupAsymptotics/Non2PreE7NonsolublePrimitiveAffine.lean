@@ -35,6 +35,11 @@ structure PreE7NsaprimActionCertificate
   complete_fibre : ∀ b (J : Subgroup (Equiv.Perm (Fin b))),
     completeQuotientWeight (R := preE7NonPairAction w i) J ≤
       coefficient b * (2 : ℝ) ^ (eta * b)
+  coefficient_total_bound : ∀ b,
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i)
+        (fun _ => coefficient b) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
   exponent_margin : preE7CharacterRho * w ≤
     ((evenWidth w : ℝ) - 2) / 8 - eta
 

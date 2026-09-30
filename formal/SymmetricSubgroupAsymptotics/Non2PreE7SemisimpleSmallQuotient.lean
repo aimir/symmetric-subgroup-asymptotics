@@ -120,6 +120,12 @@ structure PreE7SnsActionCertificate
   l : ℕ
   quotient_order_le : Nat.card (preE7NonPairAction w i ⧸ E) ≤ 2 ^ l
   quotient_small : 8 * l ≤ w
+  coefficient_total_bound : ∀ b,
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i)
+        (fun _ => (2 : ℝ) ^ (l * l + l) *
+          chart.outerFactor (Real.logb 2 (Nat.factorial b))) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
 
 attribute [instance] PreE7SnsActionCertificate.E_normal
 
@@ -183,6 +189,7 @@ noncomputable def direct (hgen : PermutationSubgroupGeneratorBound) :
   theta := 0
   alpha_eq := rfl
   coefficient_nonneg := C.coefficient_nonneg
+  coefficient_total_bound := C.coefficient_total_bound
   combined_bound := by
     intro b J
     have hquot := completeQuotientWeight_le_of_order hgen C.l b
