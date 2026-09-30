@@ -39,6 +39,15 @@ namespace BinaryNormalState
 variable {generators : ι → G} (S : BinaryNormalState generators)
     (hgen : Subgroup.closure (Set.range generators)=⊤)
 
+/-- The checked quotient-row count is the actual index of the retained
+normal subgroup.  This numerical bridge avoids reopening the quotient
+enumeration when a later finite classifier supplies an index condition. -/
+theorem index_eq_quotientCount : S.kernel.index=S.quotientCount := by
+  have hindex := S.kernel.card_mul_index
+  have hpositive : 0<Nat.card S.kernel := Nat.card_pos
+  apply Nat.eq_of_mul_eq_mul_left hpositive
+  exact hindex.trans S.cardinal.symm
+
 abbrev Row := FiniteGroupRow S.quotientCount
 
 @[reducible] def group : Group S.Row :=

@@ -125,7 +125,7 @@ private theorem generator_checked{b} : ∀ j,
             i,j=info
             s+=f'''  · intro _ hs _
     exact False.elim ((show characters.values (binaryAssignment ({b} : Fin {2**d})) (C.next {i} {j}) ≠
-      (characters.values (binaryAssignment ({b} : Fin {2**d})) {i} == binaryAssignment ({b} : Fin {2**d}) {j})
+      (characters.values (binaryAssignment ({b} : Fin {2**d})) {i} == binaryAssignment (d := {d}) ({b} : Fin {2**d}) {j})
       from by decide +kernel) (hs {i} {j}))
 '''
         elif kind=='intransitive':
