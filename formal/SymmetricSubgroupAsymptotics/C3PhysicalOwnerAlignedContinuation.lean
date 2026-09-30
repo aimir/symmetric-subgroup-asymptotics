@@ -179,10 +179,11 @@ theorem c3PhysicalStructuralOwner_alignedFiniteFusionCover
           (n - c3HighAlignedFirstOwnerWidth j)) := by
   obtain ⟨ownerEligible, hEligible⟩ :=
     c3PhysicalStructuralBranchMenu_cover
-      hChief hWeight hPrimitive h18 hG.2
+      hChief hWeight hPrimitive h18 hG.2.1
   obtain ⟨owner, howner⟩ := firstOwned_exists
-    (c3PhysicalStructuralBranchMenu n) G ⟨ownerEligible, hEligible⟩
-  rcases howner.1 with ⟨b, e, H, hphysical, o, N, hN,
+    (c3PatternStructuralBranchMenu n) G
+      ⟨ownerEligible, hEligible, hG.2.2⟩
+  rcases howner.1.1 with ⟨b, e, H, hphysical, o, N, hN,
     hHigh, hEarlier, hk⟩
   let A := OrbitProfileFromOrbits.orbitImage (C3ComplementSource b H) o
   letI : MulAction.IsPretransitive A o.orbit :=
@@ -207,7 +208,7 @@ theorem c3PhysicalStructuralOwner_alignedFiniteFusionCover
       (relabelSubgroup e (C3HighNestedCarrier.physicalSubgroup H)) := by
     rw [hphysical]
     exact hG.1
-  have howner' : FirstOwned (c3PhysicalStructuralBranchMenu (b + 3)) owner
+  have howner' : FirstOwned (c3PatternStructuralBranchMenu (b + 3)) owner
       (relabelSubgroup e (C3HighNestedCarrier.physicalSubgroup H)) := by
     rwa [hphysical]
   have hnon2 : ¬ IsPGroup 2 A := by
@@ -222,7 +223,7 @@ theorem c3PhysicalStructuralOwner_alignedFiniteFusionCover
   let j : C3HighAlignedFirstOwnerIndex := ⟨j0, by
     simpa only [j0, c3HighFirstOwnerAction] using haligned⟩
   have hmem := C.mem_non2FirstOwnerCanonicalFamily_forAction
-    c3PhysicalStructuralBranchMenu c3PhysicalStructuralBranchMenu_natural
+    c3PatternStructuralBranchMenu c3PatternStructuralBranchMenu_natural
       H hd.symm e hordinary' owner howner' i eO himage
   refine ⟨j, ?_⟩
   simpa only [j, j0, c3HighAlignedFirstOwnerAction,

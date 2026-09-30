@@ -181,7 +181,7 @@ theorem c3CompleteOrdinaryPhysical_mem_outsideFits
     simp only [relabelSubgroup_trans, ht]
   have hnoncritical₀ :
       ¬ IsCriticalSubgroup (3+b)
-        (relabelSubgroup (c3ResidualPointEquiv b) K₀) := H.2.2
+        (relabelSubgroup (c3ResidualPointEquiv b) K₀) := H.2.2.1
   have hnoncritical :
       ¬ IsCriticalSubgroup (3+b)
         (relabelSubgroup (c3ResidualPointEquiv b)
