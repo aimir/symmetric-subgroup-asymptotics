@@ -301,11 +301,14 @@ The repeated action labels in Theorem~\ref{thm:parametric} implement the
 owner-or-capacity dichotomy.  Take a finite ordered list of predicates
 invariant under relabelling of the complete physical subgroup and assign each
 subgroup to its first eligible predicate.  Pair that owner with the single
-selected bad-orbit action $U$.  First ownership makes these pairs disjoint,
-while a final catch-all predicate holds precisely on the residual capacity
-branch.  Thus earlier owners and the retained-annihilator branch may use
-different local certificates $\sigma=(\text{owner},U)$; only their combined
-original-weight mass in \eqref{eq:parametric-menu-mass} is charged.  The
+family orbit carrying its certificate whenever such an orbit exists; only
+the final catch-all branch uses an arbitrary selected bad orbit.  First
+ownership makes these pairs disjoint, while the local action check makes an
+owner paired with an unrelated orbit an empty cell.  Hence the catch-all
+branch holds precisely when no family orbit exists.  Earlier owners and the
+retained-annihilator branch may use different local certificates
+$\sigma=(\text{owner},U)$; only their combined original-weight mass in
+\eqref{eq:parametric-menu-mass} is charged.  The
 complete one-triple family is the first required application of these same
 local bounds.  In its independent finite-owner audit, full projection onto
 the displayed outer $C_3$ and the retained one-$C_3$ source pattern remove the
@@ -352,9 +355,11 @@ the restricted physical cover.
 The owner order in this proposition serves only to make the physical
 partition disjoint.  None of the local estimates needs the assertion that an
 earlier predicate failed: one may choose any valid certificate for the
-retained action class.  The residual catch-all must, however, keep a family
-orbit whenever one exists, because only that branch is allowed to infer the
-absence of every family orbit.
+retained action class.  Formally, the family predicate says that such a
+certificate exists on a literal orbit.  Transporting that orbit under an
+ambient relabelling proves degree naturality, and the cover displays it before
+forming the local fusion cell.  The residual catch-all may therefore infer
+the absence of every family orbit without a separate precedence theorem.
 
 The following additive form is used for families whose sharp estimate has a
 source-independent remainder.  It avoids forcing that remainder through the
