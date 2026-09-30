@@ -223,6 +223,27 @@ The threshold depends on $\gamma$, but is uniform in $w$ on the indicated
 triangle.
 \end{proof}
 
+\begin{lemma}[Index--entry menu aggregation]
+\label{lem:index-entry-menu-mass}
+Suppose that, for every $\epsilon>0$, there are constants
+$B_{1,\epsilon},B_{2,\epsilon}\geq0$ and
+$p_\epsilon\in\mathbb N$ such that
+\[
+ |\Sigma_w|\leq B_{1,\epsilon}2^{\epsilon w^2}
+\]
+and, uniformly for $w_0\leq w\leq n$ and $\sigma\in\Sigma_w$,
+\[
+ \frac{D_\sigma(n-w)}{a(U_\sigma)}
+ \leq B_{2,\epsilon}(n+1)^{p_\epsilon}2^{\epsilon w^2}.
+\]
+Then the hypothesis of Lemma~\ref{lem:concrete-menu-mass} holds.
+\end{lemma}
+\begin{proof}
+Apply the two hypotheses with $\epsilon/2$ and sum the common entry bound
+over $\Sigma_w$.  The constants multiply, the polynomial degree is unchanged,
+and the two width exponents add to $\epsilon w^2$.
+\end{proof}
+
 \begin{lemma}[Retained-cell incidence]\label{lem:retained-cell-incidence}
 For a complete source $J$ and finite comparator $R$, put
 \[
@@ -300,12 +321,12 @@ $L_N$, and
  |A_N|L_N\leq C_N(b)2^{\eta b}.
 \]
 Give an owned axis the extracted coefficient $2^{-\eta b}$ and an unowned
-axis the coefficient $C_N(b)$.  If the resulting complete normal-axis sum,
-divided by the original action normalizer, satisfies the concrete hypothesis
-of Lemma~\ref{lem:concrete-menu-mass}, and the comparator parameters satisfy
-the hypotheses of Theorem~\ref{thm:parametric}, then the exact pre-$E_7$
-physical family has the forward kernel and scalar bounds
-\eqref{eq:parametric-rates}.
+axis the coefficient $C_N(b)$.  Suppose each resulting complete normal-axis
+sum, divided by its original action normalizer, satisfies the uniform
+one-entry hypothesis of Lemma~\ref{lem:index-entry-menu-mass}, and the
+comparator parameters satisfy the hypotheses of
+Theorem~\ref{thm:parametric}.  Then the exact pre-$E_7$ physical family has
+the forward kernel and scalar bounds \eqref{eq:parametric-rates}.
 \end{proposition}
 \begin{proof}
 On an owned axis the quotient comparator bounds the surviving epimorphisms by
@@ -315,9 +336,13 @@ exactly one.  On every other axis reversibility returns the retained-cell
 bound to the same original source and normal axis, and
 Lemma~\ref{lem:retained-cell-incidence} gives coefficient
 $C_N(b)2^{\eta b}$.  Sum over the literal normal axes before dividing by the
-original action normalizer.  Lemma~\ref{lem:concrete-menu-mass} supplies
-\eqref{eq:parametric-menu-mass}, so Theorem~\ref{thm:parametric} applies to the
-restricted physical cover.
+original action normalizer.  The transitive-subgroup theorem gives
+$2^{o(w^2)}$ labelled actions.  Passing to conjugacy classes and imposing the
+pre-$E_7$ restriction can only decrease their number, while the fixed
+first-owner menu adds only a constant factor.  Lemma~\ref{lem:index-entry-menu-mass}
+therefore supplies Lemma~\ref{lem:concrete-menu-mass}, which gives
+\eqref{eq:parametric-menu-mass}.  Theorem~\ref{thm:parametric} now applies to
+the restricted physical cover.
 \end{proof}
 
 \begin{lemma}[Central nonbinary pair sections]\label{lem:central-pair}

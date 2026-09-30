@@ -177,13 +177,16 @@ axis. Otherwise a reversible carrier maps each surviving epimorphism to a
 complete quotient map together with its retained radical/transgression flag;
 the flag cardinality and the remaining Yoneda-fibre bound are charged as one
 capacity. After summing these coefficients with the original action
-normalizer, a concrete bound
-`B_epsilon * (n+1)^p_epsilon * 2^(epsilon*w^2)` for every positive epsilon
-implies the uniform growing-menu hypothesis used by the hot/cold transfer.
-Thus the pre-E7 numerical `haxis`/menu-mass bridge is complete. The action
-consumers need only supply their physical comparator-or-cell data and this
-concrete weighted mass certificate; those are the aligned structural inputs,
-not a second numerical aggregation.
+normalizer, the LIT-TRANSITIVE-COUNT input bounds the restricted action-class
+index by `2^(o(w^2))`; quotienting by conjugacy, imposing the pre-E7 predicate
+and adjoining the fixed first-owner label can only decrease that count up to
+the constant owner factor. A uniform one-entry bound
+`B_epsilon * (n+1)^p_epsilon * 2^(epsilon*w^2)` therefore gives the complete
+weighted sum, which in turn implies the growing-menu hypothesis used by the
+hot/cold transfer. Thus the pre-E7 numerical `haxis`/menu-mass bridge and its
+aggregation are complete. The action consumers need supply their physical
+comparator-or-cell data, parameter bounds, and the per-entry axis-envelope
+estimate with the original normalizer divisor retained.
 
 Orbitwise, the remaining alphabet is binary, natural S3, or a selected UP
 pair orbit. E7 removes the third alternative. Therefore the complete original
