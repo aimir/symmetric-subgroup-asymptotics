@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.FusionCarrierSubdirectCapacity
 import SymmetricSubgroupAsymptotics.FusionEpimorphismLifts
 import SymmetricSubgroupAsymptotics.Non2LiftBound
+import SymmetricSubgroupAsymptotics.Non2PreE7NoPairNoC3ConcreteInterface
 
 /-!
 # Annihilator-aware Yoneda incidence for reversible carrier cells
@@ -424,6 +425,168 @@ theorem fusionCarrierAcceptedEpi_card_le_abelianTower
       exact Subtype.ext (Subtype.ext hγ'))
   refine h.trans (mul_le_mul_of_nonneg_right ?_ (completeQuotientWeight_nonneg J))
   exact_mod_cast t.card_flag_mul_bound_le_capacity J
+
+/-! ### Installation on the frozen pre-E7 retained-cell interface -/
+
+/-- The trivial complete quotient map, used as the cell of an owned axis. -/
+def trivialCompleteQuotientMap (J R : Type*) [Group J] [Group R] :
+    CompleteQuotientMap J R :=
+  haveI := QuotientGroup.subsingleton_quotient_top (G := R)
+  ⟨⟨⊤, inferInstance⟩, ⟨1, fun _ => ⟨1, Subsingleton.elim _ _⟩⟩⟩
+
+namespace Non2UnipotentPrefixFiniteMenu
+
+/-- The fixed top `τ : Q ↠ R/M` and the abelian-layer tower of one rejected
+axis.  It depends only on the axis carrier, never on an epimorphism. -/
+structure AxisYonedaTower {w : ℕ} {U : Subgroup (Equiv.Perm (Fin w))}
+    {N : {N : Subgroup U // N.Normal}} (K : FusionAxisCarrier U N)
+    (R : Type) [Group R] where
+  M : Subgroup R
+  [normal : M.Normal]
+  top : K.checked.quotient →* R ⧸ M
+  tower : AbelianYonedaTower (R ⧸ M) K.checked.quotient top
+
+attribute [instance] AxisYonedaTower.normal
+
+section AxisCells
+
+variable {w b : ℕ} {U : Subgroup (Equiv.Perm (Fin w))}
+  {N : {N : Subgroup U // N.Normal}} (K : FusionAxisCarrier U N)
+  {R : Type} [Group R]
+
+/-- The retained flag of an axis: nothing on an owned axis, the tower flag
+on a rejected axis. -/
+def axisYonedaFlag (o : Option (AxisYonedaTower K R))
+    (J : Subgroup (Equiv.Perm (Fin b))) : Type :=
+  match o with
+  | none => Unit
+  | some T => T.tower.Flag J
+
+instance axisYonedaFlag_finite (o : Option (AxisYonedaTower K R))
+    (J : Subgroup (Equiv.Perm (Fin b))) : Finite (axisYonedaFlag K o J) :=
+  match o with
+  | none => inferInstanceAs (Finite Unit)
+  | some T => inferInstanceAs (Finite (T.tower.Flag J))
+
+/-- The retained cell of an axis. -/
+def axisYonedaCell (o : Option (AxisYonedaTower K R))
+    (J : Subgroup (Equiv.Perm (Fin b)))
+    (Accepted : Subgroup (K.checked.carrier × Equiv.Perm (Fin b)) → Prop)
+    (γ : FusionCarrierAcceptedEpi K.checked J Accepted) :
+    CompleteQuotientMap J R × axisYonedaFlag K o J :=
+  match o with
+  | none => (trivialCompleteQuotientMap J R, ())
+  | some T => (fusionCarrierTopQuotientMap T.M T.top T.tower.top_surjective γ.1,
+      T.tower.flag J γ.1.1)
+
+/-- The fibre bound of an axis: the whole accepted family on an owned axis,
+the tower's Yoneda bound on a rejected axis. -/
+def axisYonedaFibreBound (o : Option (AxisYonedaTower K R))
+    (J : Subgroup (Equiv.Perm (Fin b)))
+    (Accepted : Subgroup (K.checked.carrier × Equiv.Perm (Fin b)) → Prop) : ℕ :=
+  match o with
+  | none => Nat.card (FusionCarrierAcceptedEpi K.checked J Accepted)
+  | some T => T.tower.bound
+
+theorem axisYonedaCell_fibre_card_le (o : Option (AxisYonedaTower K R))
+    (J : Subgroup (Equiv.Perm (Fin b)))
+    (Accepted : Subgroup (K.checked.carrier × Equiv.Perm (Fin b)) → Prop)
+    (x : CompleteQuotientMap J R × axisYonedaFlag K o J) :
+    Nat.card {γ : FusionCarrierAcceptedEpi K.checked J Accepted //
+      axisYonedaCell K o J Accepted γ = x} ≤
+        axisYonedaFibreBound K o J Accepted := by
+  cases o with
+  | none =>
+      exact Nat.card_le_card_of_injective Subtype.val Subtype.val_injective
+  | some T =>
+      change Nat.card {γ : FusionCarrierAcceptedEpi K.checked J Accepted //
+          (fusionCarrierTopQuotientMap T.M T.top T.tower.top_surjective γ.1,
+            T.tower.flag J γ.1.1) = x} ≤ T.tower.bound
+      refine fusionCarrierTopCell_fibre_card_le T.M T.top T.tower.top_surjective
+        (fun γ : FusionCarrierAcceptedEpi K.checked J Accepted => γ.1)
+        (fun γ => T.tower.flag J γ.1.1) _ ?_ x
+      intro top a
+      refine le_trans (Nat.card_le_card_of_injective
+        (fun γ => (⟨γ.1.1, γ.2⟩ : {γ : GroupEpimorphism J K.checked.quotient //
+          T.top.comp γ.1 = top ∧ T.tower.flag J γ.1 = a})) ?_)
+        (T.tower.fibre_card_le J top a)
+      intro γ γ' hγ
+      have hγ' := congrArg Subtype.val hγ
+      simp only at hγ'
+      exact Subtype.ext (Subtype.ext hγ')
+
+theorem axisYonedaCell_joint_capacity (T : AxisYonedaTower K R)
+    (J : Subgroup (Equiv.Perm (Fin b)))
+    (Accepted : Subgroup (K.checked.carrier × Equiv.Perm (Fin b)) → Prop) :
+    Nat.card (axisYonedaFlag K (some T) J) *
+        axisYonedaFibreBound K (some T) J Accepted ≤ T.tower.capacity J :=
+  T.tower.card_flag_mul_bound_le_capacity J
+
+end AxisCells
+
+/-- Rejected-axis retained cells for the narrowed pre-E7 predicate, from an
+explicit dichotomy on every literal axis: either the axis is owned by the
+earlier comparator catalogue, or its carrier quotient has an abelian-layer
+tower down to a fixed comparator top.  Nonabelian chief factors must
+therefore be owned.  The joint capacity is the tower capacity. -/
+noncomputable def PreE7NoPairNoC3RetainedCellData.ofAbelianYonedaTowers
+    {r : ℕ} (D : PreE7NonPairOwnerComparatorData r)
+    (carrier : ∀ w i N,
+      FusionAxisCarrier (preE7NonPairFirstOwnerAction w i) N)
+    (Accepted : ∀ w i b N,
+      Subgroup ((carrier w i N).checked.carrier ×
+        Equiv.Perm (Fin b)) → Prop)
+    (accept_inverse : ∀ w i b N
+        (J : Subgroup (Equiv.Perm (Fin b)))
+        (gamma : GroupEpimorphism J (carrier w i N).checked.quotient),
+      (carrier w i N).checked.carrierInverseSurvival
+          (carrier w i N).source_eq
+          (preE7NoPairNoC3FirstOwnerPredicate
+            (ownerOrResidualEligible D.Earlier) w i b)
+          (fusionQuotientGraph
+            (carrier w i N).checked.beta J gamma.1) →
+        Accepted w i b N
+          (fusionQuotientGraph
+            (carrier w i N).checked.beta J gamma.1))
+    (tower : ∀ w i b N, ¬ D.Owned w i b N →
+      AxisYonedaTower (carrier w i N) (D.R w i))
+    (capacity : ∀ w i b N (h : ¬ D.Owned w i b N)
+        (J : Subgroup (Equiv.Perm (Fin b))),
+      ((tower w i b N h).tower.capacity J : ℝ) ≤
+        D.C w i b N * (2 : ℝ) ^ (D.eta w i * b)) :
+    PreE7NoPairNoC3RetainedCellData D :=
+  let choice : ∀ w (i : PreE7NonPairFirstOwnerIndex (r + 1) w) b
+      (N : {N : Subgroup (preE7NonPairFirstOwnerAction w i) // N.Normal}),
+      Option (AxisYonedaTower (carrier w i N) (D.R w i)) :=
+    fun w i b N => if h : D.Owned w i b N then none else some (tower w i b N h)
+  { carrier := carrier
+    Accepted := Accepted
+    accept_inverse := accept_inverse
+    Flag := fun w i b N J => axisYonedaFlag (carrier w i N) (choice w i b N) J
+    flag_finite := fun w i b N J =>
+      axisYonedaFlag_finite (carrier w i N) (choice w i b N) J
+    cell := fun w i b N J =>
+      axisYonedaCell (carrier w i N) (choice w i b N) J (Accepted w i b N)
+    fibreBound := fun w i b N J =>
+      axisYonedaFibreBound (carrier w i N) (choice w i b N) J (Accepted w i b N)
+    fibre_card := fun w i b N J x =>
+      axisYonedaCell_fibre_card_le (carrier w i N) (choice w i b N) J
+        (Accepted w i b N) x
+    joint_capacity := by
+      intro w i b N h J
+      have hchoice : choice w i b N = some (tower w i b N h) := dif_neg h
+      have hcap := axisYonedaCell_joint_capacity (carrier w i N)
+        (tower w i b N h) J (Accepted w i b N)
+      have hcapR : ((Nat.card (axisYonedaFlag (carrier w i N)
+            (some (tower w i b N h)) J) *
+          axisYonedaFibreBound (carrier w i N) (some (tower w i b N h)) J
+            (Accepted w i b N) : ℕ) : ℝ) ≤
+          D.C w i b N * (2 : ℝ) ^ (D.eta w i * b) :=
+        (Nat.cast_le.mpr hcap).trans (capacity w i b N h J)
+      simp only [hchoice]
+      exact hcapR }
+
+end Non2UnipotentPrefixFiniteMenu
 
 end SymmetricSubgroupAsymptotics
 
