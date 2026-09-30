@@ -152,6 +152,10 @@ structure PreE7ComparatorAbelianTowerSourceData
   exponent_margin : preE7CharacterRho * w ≤
     ((evenWidth w : ℝ) - sourceDegree) / 8 - eta
   coefficient_nonneg : ∀ b N, 0 ≤ C b N
+  coefficient_total_bound : ∀ b,
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i) (C b) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
   tower : ∀ _b N,
     FusionQuotientAbelianYonedaTower (preE7NonPairAction w i) N R
   joint_capacity : ∀ b N (J : Subgroup (Equiv.Perm (Fin b))),
@@ -262,6 +266,15 @@ structure PreE7ComparatorAbelianTowerAdditiveSourceData
   tail_gap : theta ≤ preE7CharacterWindow w
   coefficient_nonneg : ∀ b N, 0 ≤ C b N
   tail_nonneg : ∀ b N, 0 ≤ tailCoefficient b N
+  coefficient_total_bound : ∀ b,
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i) (C b) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
+  tail_total_bound : ∀ b,
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i)
+        (tailCoefficient b) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
   Main : ∀ b (_N : {N : Subgroup
     (preE7NonPairAction w i) // N.Normal}),
       Subgroup (preE7NonPairAction w i × Equiv.Perm (Fin b)) → Prop
