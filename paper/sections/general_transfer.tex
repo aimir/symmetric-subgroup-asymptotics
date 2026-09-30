@@ -349,6 +349,53 @@ therefore supplies Lemma~\ref{lem:concrete-menu-mass}, which gives
 the restricted physical cover.
 \end{proof}
 
+The owner order in this proposition serves only to make the physical
+partition disjoint.  None of the local estimates needs the assertion that an
+earlier predicate failed: one may choose any valid certificate for the
+retained action class.  The residual catch-all must, however, keep a family
+orbit whenever one exists, because only that branch is allowed to infer the
+absence of every family orbit.
+
+The following additive form is used for families whose sharp estimate has a
+source-independent remainder.  It avoids forcing that remainder through the
+complete-quotient threshold.
+
+\begin{proposition}[Additive-tail pre-$E_7$ transfer]
+\label{prop:pre-e7-additive-tail-transfer}
+In the setting of Proposition~\ref{prop:pre-e7-owner-cell-transfer}, suppose
+the literal normal axis $N$ has the unconditional envelope
+\[
+ Z_{J,N}\leq C_N(b)2^{\eta b}Z_J(R)
+                 +T_N(b)2^{\theta b},
+ \qquad C_N(b),T_N(b)\geq0.
+\]
+Sum $C_N$ and $T_N$ over the literal normal axes before applying the original
+action-normalizer divisor.  Assume both resulting weighted menus satisfy
+\eqref{eq:parametric-menu-mass}, the main parameters satisfy
+Theorem~\ref{thm:parametric}, and uniformly
+\[
+ \theta\leq \frac{h(w)}8-\frac{\rho w}4.
+\]
+Then this family has a complete exponentially contractive forward estimate.
+The scalar is exactly the scalar of the comparator-weighted main term; the
+additive remainder contributes only a cold row.
+\end{proposition}
+\begin{proof}
+For fixed $J$, sum the displayed inequality over the original normal axes.
+Apply the complete quotient moment and its hot/cold split only to the first
+sum.  The second sum is independent of $J$, so summing it over all complete
+$J\leq S_b$ gives
+\[
+ s_b\Bigl(\sum_NT_N(b)\Bigr)2^{\theta b}.
+\]
+After the exact pointing and benchmark normalization this is the usual cold
+kernel with exponent $\theta$.  Equation~\eqref{eq:uniform-delta}, the
+displayed gap, and the second menu-mass hypothesis give an exponentially
+decaying row.  Add this cold-only forward estimate to the estimate supplied
+by Theorem~\ref{thm:parametric}.  No quotient threshold, hot scalar, or
+independent worst-case value of $Z_J(R)$ is introduced for the tail.
+\end{proof}
+
 \begin{lemma}[Central nonbinary pair sections]\label{lem:central-pair}
 For a faithful nonbinary transitive action of even degree $s\geq4$,
 every trivial section of its binary permutation module has dimension
