@@ -21,8 +21,9 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 
 /-- Kovács--Praeger, *Finite permutation groups with large abelian
-quotients* (1989): every permutation group of degree `b` has abelianization
-of order at most `3^(b/3)`. -/
+quotients*, Pacific J. Math. 136 (1989), Corollary on p.284 (register entry
+LIT-KP): every permutation group of degree `b` has abelianization of order
+at most `3^(b/3)`. -/
 def KovacsPraegerAbelianizationBound : Prop :=
   ∀ (b : ℕ) (J : Subgroup (Equiv.Perm (Fin b))),
     (Nat.card (Abelianization J) : ℝ) ≤ (3 : ℝ) ^ ((b : ℝ) / 3)
