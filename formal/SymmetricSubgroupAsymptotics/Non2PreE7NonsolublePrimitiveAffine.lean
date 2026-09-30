@@ -30,6 +30,7 @@ structure PreE7NsaprimActionCertificate
     (preE7NonPairAction w i) (Fin w)
   coefficient : ℕ → ℝ
   eta : ℝ
+  eta_nonneg : 0 ≤ eta
   coefficient_nonneg : ∀ b, 0 ≤ coefficient b
   complete_fibre : ∀ b (J : Subgroup (Equiv.Perm (Fin b))),
     completeQuotientWeight (R := preE7NonPairAction w i) J ≤
