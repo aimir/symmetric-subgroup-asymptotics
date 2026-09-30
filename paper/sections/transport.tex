@@ -48,13 +48,39 @@ Realize each replacement on the same labelled points as its original
 orbit. To reconstruct the decorated block structure, select and group
 the target orbits into the changed bounded blocks, and record the
 finitely many local action types, coordinate bijections, normal axes,
-and map choices. There are $O(b)$ selected orbits, grouping slots, and
-finite labels. Allowing $n+2$ choices at each slot bounds all these
-possibilities by $(n+2)^{K b}$. For fixed decorations the original
-subgroup is unique by \eqref{eq:transport-inverse}.
+and map choices.  Once this complete decoration is fixed, the fixed-chart
+physical realization is injective and recovers the simultaneous carrier
+subgroup.  Equation~\eqref{eq:transport-inverse}, followed by the recorded
+complete point chart, then recovers the original labelled subgroup.
+
+There are $O(b)$ selected orbits, grouping slots, and finite labels.
+Allowing $n+2$ choices at each slot bounds all these possibilities by
+$(n+2)^{K b}$.
 This counts labelled groups directly, so division by $n!$ retains
 the original action-normalizer weights and occurrence factorials.
 \end{proof}
+
+For the degree-eight/degree-sixteen application, the local construction
+removes most of this generic decoration before counting.  Pulling a
+certificate to the canonical orbit axis preserves its underlying slot and
+therefore all of its numerical support data.  The retained route also gives
+an exact chart from that slot's displayed output points to the corresponding
+original local action.  These charts assemble along the canonical orbit
+chart to a single fusion-natural chart on the original ambient labels, and
+the resulting supplied-chart physical realization is injective.  Thus the
+proposed mixed record needs only nineteen symbols per changed block: degree
+tag, least point, route tag, and labelled point representatives.  Since at
+most $b/2$ records occur, twenty available symbols per record would give
+$K=10$.
+
+This numerical packing is separate from the variable-word reconstruction
+step.  Equality of the mixed table aligns all changed routes, and the retained
+route-output charts transport equality of the fusion-natural physical targets
+back to the native point sets.  Indexed full-preimage reflection then recovers
+the complete correlated word, including quotient-identity slots, while the
+slot-preserving source reindex and faithfulness recover the two canonical
+sources.  Thus the application below has fibre one without recording an
+extra point chart.
 
 The original denominator can also be retained directly when only an
 upper bound is needed; uniqueness of the orbit presentation is unnecessary.
@@ -113,18 +139,22 @@ and \eqref{eq:support-transport}, the full original family with a
 noncritical orbit has normalized mass $2^{-\Omega(N)}$.
 \end{proposition}
 \begin{proof}
-First remove the original range $0<C_{\rm old}\leq\sqrt N/4$ by
-Theorem~\ref{thm:small-support}, before charging any decorations.
-Indeed its noncritical degree is at most $\sqrt N/2$, and its critical
-degree is at least $N$ for large $N$. The remaining range satisfies
-$C_{\rm new}>\delta\sqrt N/4$. By
-Proposition~\ref{prop:decoration}, after summing over original supports
-the additional factor is $2^{O_\delta(C_{\rm new}\log(N+2))}$.
+First consider the target range
+$0<C_{\rm new}\leq\sqrt N/4$.  Theorem~\ref{thm:small-support}
+gives its normalized completed-mixture mass a factor $2^{-N/4}$.
+By \eqref{eq:support-transport},
+$C_{\rm old}\leq C_{\rm new}/\delta$, so
+Proposition~\ref{prop:decoration} contributes only
+$2^{O_\delta(\sqrt N\log(N+2))}$.  Thus this entire decorated range is
+still exponentially small.  In the remaining range
+$C_{\rm new}>\sqrt N/4$.  After summing over original supports the
+additional decoration factor is
+$2^{O_\delta(C_{\rm new}\log(N+2))}$.
 
 If $T\leq a/140$, then $C_{\rm new}<3a$. This factor is absorbed by
 the first error in \eqref{eq:mixture-envelopes}, and the negative term
 is at most $-N/25$ before the smaller error. If $T>a/140$, then
-$C_{\rm new}<284T$, so $T>\delta\sqrt N/1136$. The negative term
+$C_{\rm new}<284T$, so $T>\sqrt N/1136$. The negative term
 in the second envelope has order at least $N^{3/2}$ and absorbs both
 the displayed error and the decoration cost. There are only polynomially
 many profiles and support sizes. Their sum retains the exponential gain.

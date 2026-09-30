@@ -23,7 +23,7 @@ Read the [statement and normalization](SPEC.md),
 
 The [manuscript reading guide](docs/blueprint/MANUSCRIPT_ROUTE.md) follows the
 complete argument through its local estimates, exhaustive partition and final
-boundedness inductions. The blueprint describes exact counting, the critical model, capacity and fusion,
+ordinary-target boundedness induction. The blueprint describes exact counting, the critical model, capacity and fusion,
 the c=1 application, binary control, global assembly and analytic corollaries.
 It supplies mathematical interfaces rather than a self-contained proof of the
 main theorem.

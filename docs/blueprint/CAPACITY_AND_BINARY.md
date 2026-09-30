@@ -220,8 +220,10 @@ simultaneously and preserve every outside relation. From Hnew recover Hbar
 and then H; the actual proper subgroups P_i remain in the construction.
 For fixed decorations this is injective. If b is the original noncritical
 degree, the decoration fibre is at most (2N+2)^(K*b), and retained support
-satisfies delta*C_old<=C_new<=C_old. The mixed-family profile reserves absorb
-this factor after the original small-support strip is handled separately.
+satisfies delta*C_old<=C_new<=C_old. First handle the target strip
+0<C_new<=sqrt(N)/4 with the completed-mixture small-support estimate; the
+decoration cost there is only 2^O(sqrt(N) log(N+2)). The Hall and reserve
+profile envelopes absorb the fibre on the complementary target range.
 
 ## FIN-MENU and BIN-SMALL: coverage is an independent theorem
 
@@ -241,9 +243,109 @@ At the finite boundary, local map correctness, completeness of the normal
 list and completeness of the action list are distinct mathematical claims;
 a check of the first does not imply the other two.
 
-On the complete small-width family, partition into any-hot, no-hot with an
-accepted cold entry, and no-local-entry. The first is one negligible scalar;
-the second is one forward kernel with shifts N-4 or N-8; the third is bounded
-by simultaneous transport. This proves BIN-SMALL without summing duplicate
-physical copies of the same source. Combine it with BIN-LARGE to obtain the
-complete binary recurrence in [the assembly blueprint](COUNTING_AND_ASSEMBLY.md).
+On the complete small-width family, partition intrinsically into a direct
+family and a carrier family.  The direct family uses the first same-source
+moment and points to complete ordinary degree `2N-w+v`, where the installed
+even prefix satisfies `0<=v<w`; at width sixteen this is the full half-degree
+range `N-8,...,N-1`.  The carrier family is bounded by simultaneous transport.
+This proves BIN-SMALL without summing duplicate physical copies of the same
+source. Combine it with BIN-LARGE to obtain the complete ordinary-target
+binary frontier in [the assembly blueprint](COUNTING_AND_ASSEMBLY.md).
+
+The exact formal route now has a common local interface in degrees eight and
+sixteen: direct owner or an `AxisSlot` whose quotient kernel is the transported
+literal normal. The 16T1086 branch is its proper four-cell carrier; 16T1332 is
+one unchanged noncritical colour and therefore uses a quotient-identity slot.
+A direct owner in degree sixteen now also gives one
+`BinaryOriginalWeightedDirectEntry` on the literal original action and
+normal.  This common entry proves its exact forward recurrence, exponential
+row decay, and eventual contraction.  The order/seven-character alternative
+discharges the binary permutation class bound internally, while catalogue
+entries are pulled back through their recorded point conjugacy before
+counting.  Entry existence is now transported through arbitrary action-group
+equivalences, so the accepted-axis predicate is stable under the full original
+normalizer.  Selecting entries on precisely those axes and assigning a literal
+zero coefficient elsewhere gives the unmarked degree-sixteen direct family an
+exact forward recurrence, an exponentially decaying aggregate row, eventual
+contraction, and arbitrary first-owner filtering.  No normalizer element,
+orbit, chart, or catalogue representative is added to the counted object.
+In degree eight all 190 pair certificates now retain their checked even cover
+degree (always 0, 2, or 4), the ten character rows use the same adapter, and
+the three exceptional rows enter their carrier owners.  Pulling the result
+back through the action-registry conjugacy gives the complete direct-or-carrier
+theorem on every literal transitive degree-eight action and normal axis.
+On actual ambient subgroups this produces an intrinsic unmarked direct/carrier
+split for eight-point orbits.  The direct part has an exact ordinary-count
+forward recurrence, exponentially decaying aggregate row, contraction and
+arbitrary first-owner filtering.  Every witness in the carrier residual
+retains its exact routed slot and the positive-support-or-pure-E8
+classification.
+
+A full product subgroup determines its own normal-axis profile. After direct
+owners are removed, route each fixed profile simultaneously and sum the
+actual fixed-profile transport images. The profile partition is canonical,
+but its raw cardinality is not an admissible multiplicative factor. Instead,
+forget all route, block, and changed-axis data in one map and apply the finite
+decoration-fibre theorem. Axes on untouched quotient-identity coordinates are
+recovered from the target and contribute fibre one. Do not replace each image
+by the whole completed family before this step, and do not assert
+cross-profile injectivity. The pure E8 identity word has no noncritical cell
+and stays in the critical family.
+
+The corrected aggregate consumer is a joint injection from actual residual
+subgroups into `Decoration x Target`, where `Target` is the sigma type of
+actual physical subgroups over the retained `(a,T)` bins and
+`C_new<=C_old<=4*C_new`.  Its cardinal is exactly the sum of those literal bin
+families.  Profile/chart/model witnesses occur only in propositions, and a
+fixed target fibre injects into the decoration type.  Per-slot inequalities
+`C_new(i)<=C_old(i)<=4*C_new(i)` aggregate to the required retention window;
+the word's physical transport lands injectively in the exact retained bin,
+without assuming abelian or direct-product carriers.
+
+The complete fixed-point-free binary orbit split below width sixteen is now
+checked: the only orbit sizes are `2,4,8,16`; the width-two and width-four
+rows are the literal `C2,C4,V4,D8` mixture actions; every residual width-eight
+or width-sixteen orbit has a routed slot; and the zero-positive-support branch
+is the existing complete critical owner.  This dichotomy is also installed as
+an injective unmarked partition of the actual residual family, so neither
+branch counts a profile or owner witness.  Changed degree-eight and
+degree-sixteen blocks have one common canonical table.  A mixed record uses
+nineteen alphabet symbols, at most `C_old` records occur, and the table packs
+injectively into `DecorationCode N C_old 10`.  Hence every joint injection into
+that table and the retained physical target has the exact bound
+`(2N+2)^(10*(2*C_old))` times the literal retained-bin sum.
+
+The numerical support is now tied to the literal orbit partition.  A positive
+`C4`, degree-eight, or degree-sixteen colour contributes respectively
+`2,4,8` half-points, so twice its contribution is exactly the size of its
+original orbit; critical colours contribute zero.  Hence every positive
+residual has one deterministic support value `1 <= C_old <= N`.  The entire
+positive family is exactly the sigma of these fixed-support fibres.  Applying
+the table/target injection separately in each fibre gives the exact outer sum
+over `C_old`, with no orbit-profile, action-type, or chart multiplicity.  The
+unmarked residual family is bounded by this sum plus the existing complete
+critical owner.
+
+The final direct incidence theorem is now installed in every fixed support and
+fixed table/target fibre.  The mixed table intentionally omits unchanged
+critical and cyclic-four point charts, so the truncated axis/route key alone
+is not used as a source code.  Equality of the table aligns the changed routes;
+their retained output charts identify the native point sets with fixed original
+labels.  Action naturality transports equal fixed-label physical targets back
+to equal native targets.  Indexed full-preimage reflection recovers the entire
+correlated word, including quotient-identity slots and their kernel axes; the
+slot-preserving binary source reindex recovers the canonical flat source, and
+faithfulness recovers the literal subgroup.  Every fixed
+`(C_old, table, target)` fibre therefore has size one, including the proper
+nonabelian `16T1086` carrier.
+
+The actual orbit-weight support equals `Retention.old_sum`, every slot obeys
+the quarter-retention window, and the bounded mixed table packs at `K=10`.
+The small-support, Hall, and carrier-reserve envelopes absorb the full
+`(2N+2)^(20*C_old)` decoration.  After the cubic support/bin index is absorbed,
+the formal bound has rate `29/2980864` in half-degree.  Finally a deterministic
+first-owner injection assigns every noncritical binary subgroup to a wide
+orbit, a direct degree-eight owner, a direct degree-sixteen owner, or this
+positive residual.  The three direct rows and the residual scalar form the
+native `BinaryFrontierTransport.RankForwardEstimate`; its kernel is strictly
+forward and its aggregate row decays exponentially.

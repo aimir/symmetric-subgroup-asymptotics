@@ -22,8 +22,10 @@ Then
 
 Here Ccrit_n is a normalized subgroup-family count, not an EGF coefficient.
 At odd degree its critical model includes one singleton or natural S3 marker,
-along with critical even actions. The complete ordinary sequence A and the
-complete binary sequence F are never interchangeable without a proved bound.
+along with critical even actions. The sequences A, F and E record different
+physical families and are never interchangeable. The binary theorem below
+uses E only as a source count and has complete ordinary counts A on its right
+side; it does not require a prior estimate for F.
 
 ## CNT-WEIGHT: recovered orbits and the exact labelled weight
 
@@ -123,27 +125,25 @@ lift argument applies. Thus, for some a>0,
 at both parities. This is proved inside the critical family and supplies both
 an independent bounded term and the matching lower bound for the final proof.
 
-## BIN-ERROR: close the complete binary family before the main induction
+## BIN-ERROR: send the complete binary error directly to ordinary targets
 
 Actual transitive 2-group orbit sizes are powers of two. Partition E into
 the disjoint families with an orbit of width at least 64, with width 32 but no
 larger orbit, and with every orbit of width at most 16. The large and small
 theorems give one scalar epsilon_B and one nonnegative forward kernel K_B:
 
-    E_N <= epsilon_B(N) + sum_(M<N) K_B(N,M) F_M.
+    E_N <= epsilon_B(N) + sum_(m<2N) K_B(N,m) A_m.
 
 The full scalar and full row are O(2^(-a*N)) for fixed positive rates, after
 all widths, normals, witnesses and profiles have been summed. Their derivation
-does not assume F is bounded.
-
-Use F=Ccrit+E. Since Ccrit is bounded, the forcing is bounded. Once the row
-is at most 1/2, induction from finitely many initial values bounds E and F.
-Substitute that bound into the SAME recurrence to obtain
-
-    E_N = O(2^(-a_E*N)).
-
-This auxiliary theorem estimates the complete binary family. It is proved
-once and used on the appropriate disjoint source families in the main count.
+does not assume that A, E or F is bounded. In the degree-sixteen direct
+sector an entry of prefix degree 2r<16 targets ordinary degree
+2N-16+2r; hence its half-degree ranges from N-8 through N-1. The carrier
+sector, degree-32 boundary and unbounded-width sectors have the same complete
+ordinary-target form. The displayed recurrence is substituted into the main
+ordinary recurrence before induction. After A is bounded it also implies the
+corollary E_N=O(2^(-a_E*N)), but that corollary is not an input to the proof
+of boundedness.
 
 ## NB-EXHAUST: the post-E7 alphabet and binary handoff
 
@@ -195,10 +195,10 @@ with r_0=r_1=0 and absent negative targets. The zero-defect target is
     B_(2j+1)=u_j E_j+v_j E_(j-1).
 
 The row K_mark is exponentially small. The coefficients u_j,v_j have
-polynomial bounds, with u_j->1 and v_j->0. First apply the proved native
-binary recurrence to E_j and E_(j-1), then pad their even targets to the full
+polynomial bounds, with u_j->1 and v_j->0. Apply the ordinary-target binary
+recurrence to E_j and E_(j-1), then pad their target rows to the full
 ambient-degree range. This converts B_n into an exponentially small scalar and
-strictly forward ordinary row before the main boundedness induction.
+strictly forward ordinary row before the one boundedness induction.
 
 There is also a sharper historical positive transfer H_E directly into E,
 obtained by retaining a noncritical binary orbit through marker collapse. It
@@ -236,17 +236,18 @@ bounds, before transporting the binary target the master inequality is
           + sum_(m<n) K_mark(n,m) A_m
           + B_n.
 
-Substitute the native binary recurrence in B_n before induction. Its current
+Substitute the ordinary-target binary recurrence in B_n before induction. Its current
 and predecessor coefficients introduce only polynomial factors, which are
 absorbed by a smaller exponential rate. The result is one exponentially small
 scalar and one nonnegative strictly forward ordinary kernel. Each physical
 atom keeps one terminal attachment, and no binary or marker kernel is paid
 twice.
 
-The forcing excluding K_F is bounded and tends to one. The complete row of
-K_F tends to zero; choosing an onset with row at most 1/2 and using finite
-initial values first proves boundedness of A. The assumed complete estimates give
-exponential scalar and row bounds. Substitution then gives A_n<=1+O(2^(-cn)).
+After this substitution the forcing is bounded and tends to one. The complete
+ordinary row tends to zero; choosing an onset with row at most 1/2 and using
+finite initial values first proves boundedness of A. The complete estimates
+give exponential scalar and row bounds. Substitution then gives
+A_n<=1+O(2^(-cn)).
 The critical lower family gives A_n>=1-O(2^(-cn)), proving THM-MAIN with a
 common positive c at both parities. No effective starting degree or optimized
 c is claimed.

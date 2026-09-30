@@ -27,15 +27,14 @@ flowchart TD
   U[Actual-section annihilator capacity] --> W
   P[Earlier complete consumers and c=1 application] --> N[Nonbinary exhaustion and typed binary handoff]
   W --> N
-  W --> B[Complete binary recurrence]
+  W --> B[Binary error to ordinary forward row]
   V[Large-width bounds and finite entry coverage] --> B
   M[Mixed-family estimate and reversible transport] --> B
   C --> B
-  B --> E[Exponential binary error]
   C --> T[Exact global master and boundedness-first argument]
   D --> T
   N --> T
-  E --> T
+  B --> T
   T --> S[Both-parity exponential relative error]
   G --> X[Sharp saddle expansion]
   S --> F[Elementary asymptotic with first correction]
@@ -67,15 +66,16 @@ corollaries; their proofs do not depend on the subgroup asymptotic.
 | BIN-TRANSPORT | Reversible simultaneous full-preimage transport and decoration bound | BIN-MIX profile reserves, literal common-quotient maps, positive retained support |
 | FIN-MENU | Every small-width action/normal entry has a strict certificate or replacement | Generic regular case; complete finite coverage; literal local charts |
 | BIN-SMALL | Complete small-width hot/cold/transport partition | FIN-MENU, CNT-FUSION, BIN-TRANSPORT |
-| BIN-ERROR | E_N=O(2^(-aN)) for the complete noncritical binary family | CRT-MODEL, BIN-LARGE, BIN-SMALL, boundedness-first recurrence |
+| BIN-ERROR | E_N is bounded by an exponentially small scalar plus an exponentially small strictly forward row of complete ordinary counts A_m, m<2N | CRT-MODEL, BIN-LARGE, BIN-SMALL; no boundedness hypothesis on A or F |
 | ASM-OLD | Exact old scalar sum and inherited forward aggregate | Every active consumer, its scope and its quantitative rate |
-| ASM-MAIN | Exact exhaustive both-parity master inequality | CNT-WEIGHT, CRT-MODEL, APP-C1, NB-EXHAUST, ASM-OLD, BIN-ERROR |
+| ASM-MAIN | Exact exhaustive both-parity ordinary-target master inequality | CNT-WEIGHT, CRT-MODEL, APP-C1, NB-EXHAUST, ASM-OLD, BIN-ERROR |
 | THM-MAIN | s_n/L_n=1+O(2^(-cn)), uniformly in parity | ASM-MAIN, boundedness-first induction, critical lower family |
 | ANA-SADDLE | Exact-saddle coefficient formula with relative O(1/n) remainder | Independent central/minor-arc estimates |
 | ANA-EXPLICIT | Four residue-class constants and first elementary correction | ANA-GAUSS, ANA-SADDLE, Stirling expansion |
 | THM-EXPLICIT | Exact-saddle and elementary formulas for the total subgroup count | THM-MAIN, ANA-SADDLE, ANA-EXPLICIT |
 
-The word "complete" in BIN-ERROR and ASM-MAIN is essential. The binary target
-includes groups accepted by earlier binary estimates. The source
-partition pays the relevant original families once, even when a common
-auxiliary estimate bounds more than one of them.
+The word "complete" in BIN-ERROR and ASM-MAIN is essential. The binary error
+is a complete source family, while every target of its recurrence is a
+complete ordinary count. The source partition pays the relevant original
+families once, even when a common auxiliary estimate bounds more than one of
+them.

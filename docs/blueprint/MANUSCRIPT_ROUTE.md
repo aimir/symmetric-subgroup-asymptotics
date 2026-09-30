@@ -24,18 +24,19 @@ mathematical and computational inputs are listed in
    theorem in [nonbinary_alphabet.tex](../../paper/sections/nonbinary_alphabet.tex).
    The bounded zero-ternary cases use the
    [literal induced-frame package](../../computations/frames/README.md).
-4. **Independent binary recurrence.** The degree-32 boundary, unbounded widths,
-   complete finite entry menu, and critical/C4/carrier mixture are combined
-   in [binary_complete.tex](../../paper/sections/binary_complete.tex).
-   Its targets are complete binary counts; it assumes no bounded ordinary
-   subgroup ratio. The alternative
-   [original-orbit recurrence](../../paper/sections/binary_original_fusion.tex)
-   treats every binary orbit of degree at least 32 with arbitrary exterior,
-   using a central cut or the original quotient character bound. Its targets
-   are ordinary subgroup counts at degree `n-w+v`; the complete weighted row
-   contracts without a supplied bound on those counts. This route avoids the
-   exceptional rank-moment and adaptive-cut arguments for local acceptance,
-   while keeping the older independent-binary target separate.
+4. **Ordinary-target binary recurrence.** The degree-32 boundary, unbounded
+   widths, complete finite entry menu, normalizer-saturated degree-16 direct
+   entries, and critical/C4/carrier mixture are combined in
+   [binary_complete.tex](../../paper/sections/binary_complete.tex). The result
+   bounds the complete binary error `E_N` by an exponentially small scalar
+   plus an exponentially small row of complete ordinary counts `A_m`, with
+   `m<2N`. No bounded ordinary subgroup ratio is used to prove the row.
+   The [original-orbit recurrence](../../paper/sections/binary_original_fusion.tex)
+   records a parallel generic width-at-least-32 statement, using a central cut
+   or the original quotient character bound. Its row has the same complete
+   ordinary targets and can be inserted directly into the ordinary master
+   when used. Neither route creates a separate induction that first closes
+   the complete binary count.
 5. **First c=1 application and audits.** The exact surviving-character formula,
    earlier complete source estimates and relative ternary ranks prove the
    split c=1 application. The shared-C3 moment and inverse-complement chart
@@ -45,11 +46,14 @@ mathematical and computational inputs are listed in
    ternary predicate needed by the small natural C3/A4 packet theorem holds
    intrinsically. The small and macroscopic packet estimates remove every
    positive packet. Marker collapse then has only complete binary-error
-   targets, with one same-degree even error and the exact two odd shifts.
+   sources, with one even term and the exact two odd terms. The binary
+   recurrence is applied to those terms immediately, producing a strictly
+   forward ordinary row before the global induction.
 7. **Boundedness and asymptotics.**
    [assembly.tex](../../paper/sections/assembly.tex) proves the exhaustive
-   ordinary counting inequality, first establishes boundedness, and then
-   obtains exponential convergence. The analytic section evaluates the exact
+   ordinary counting inequality. Its one ordinary-target recurrence first
+   establishes boundedness and then obtains exponential convergence. The
+   analytic section evaluates the exact
    benchmark by a positive saddle and gives the elementary four-periodic
    expansion and its first correction.
 

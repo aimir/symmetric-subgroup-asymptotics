@@ -3,8 +3,9 @@
 Let $F_N$ be the number of all fixed-point-free $2$-subgroups of
 $S_{2N}$ divided by $L_{2N}=(2N)!c_NG_N$, and let $E_N$ be the
 same normalized count restricted to groups with a noncritical orbit.
-Thus $F_N=C_{2N}^{\crit}+E_N$ exactly. We prove the complete recurrence
-needed in Section~\ref{sec:assembly}.
+Write also $A_m=s_m/L_m$ for the complete normalized ordinary count.
+Thus $F_N=C_{2N}^{\crit}+E_N$ exactly. We prove the strictly forward
+ordinary-target recurrence needed in Section~\ref{sec:assembly}.
 
 \subsection{The original degree-thirty-two boundary}
 \begin{theorem}[Adaptive cover at degree sixteen]\label{thm:binary16-cover}
@@ -401,7 +402,13 @@ The last branch needs only the following four entries:
 \end{array}
 \]
 In the last row the cover is a proper full-subdirect subgroup of order
-$256$ in the displayed product, not that whole product.
+$256$ in the displayed product, not that whole product.  Its four literal
+restriction images are, under explicit point relabellings, the original
+regular $C_4$ action and three copies of the critical $D_8$ action.  Thus
+the carrier itself is the full physical profile with critical half-rank
+$R=6$ and noncritical half-support $C=2$.  Reversible transport preserves
+fullness on all four blocks while retaining arbitrary correlations with
+the exterior coordinate.
 \end{lemma}
 \begin{proof}
 This is the finite computer-assisted lemma recorded by the literal
@@ -437,6 +444,32 @@ and each displayed projection of the actual cover group equals its
 assigned action. The degree and noncritical fraction are then checked
 on the actual orbit partition. The four exceptional charts satisfy
 these conditions, including the retained proper cover in degree sixteen.
+For $16T1086$, generator intertwiners identify the first restriction with
+the original regular $C_4$ and each of the other three restrictions with
+the canonical critical $D_8$.  Surjectivity of the transported subgroup
+onto the actual carrier then gives fullness on every one of these four
+physical blocks.  This argument never enlarges the proper subdirect carrier
+to the displayed product, and it leaves the exterior coordinate of every
+lift unchanged.  Consequently this branch enters the same complete
+original-action profile family used in the carrier-mixture estimate, with
+the local increment $(R,C)=(6,2)$, equivalently the parameter-bin
+coordinates $(R,a,T)=(6,1,0)$.
+
+The other surviving split catalogue endpoint, $16T1332$, needs no
+replacement action.  Its literal degree-sixteen action is already one of
+the original carrier colours, with the one-occurrence coordinates
+$(R,a,T)=(0,0,2)$.  The explicit point chart puts that same subgroup in
+the complete carrier-mixture family, and conjugating the catalogue model
+changes only its physical labels.  Simultaneously, every transported
+normal axis retains its effective bound by the fixed master-envelope menu.
+For global transport, use the quotient map by that transported normal on
+both sides of the same one-cell colour.  This is a quotient-identity slot:
+its kernel is exactly the original axis, and its source equivalence is the
+same catalogue conjugacy.  Thus this endpoint composes with the proper
+$16T1086$ slot and all degree-eight slots while preserving every exterior
+correlation.  The physical-family witness and master-envelope row remain
+the upstream audit receipts; local membership in the mixture is not used as
+a substitute for the reversible slot.
 The committed finite records and checker in
 Appendix~\ref{sec:certificates} supply these finite identities.
 
@@ -468,73 +501,201 @@ For $Q=1$ use $e_Q(J)=1$. These assertions concern the actual source
 $J$; no faithful action of an abstract quotient on its points is assumed.
 
 \subsection{Small widths and the complete recurrence}
-\begin{theorem}[Complete binary recurrence]\label{thm:binary-recurrence}
+\begin{theorem}[Binary recurrence from the native S16 fibre]
+\label{thm:binary-recurrence}
 There are nonnegative $\eta_B(N)$ and $K_B(N,M)$, supported on
-$0\leq M<N$, and constants $a_B,C_B>0$, such that eventually
+$0\leq M<2N$, and constants $a_B,C_B>0$, such that eventually
 \begin{equation}\label{eq:proved-binary-recurrence}
- E_N\leq\eta_B(N)+\sum_{M<N}K_B(N,M)F_M,\qquad
- \eta_B(N)+\sum_{M<N}K_B(N,M)\leq C_B2^{-a_BN}.
+ E_N\leq\eta_B(N)+\sum_{M<2N}K_B(N,M)A_M,\qquad
+ \eta_B(N)+\sum_{M<2N}K_B(N,M)\leq C_B2^{-a_BN}.
 \end{equation}
-In particular $F_N$ is bounded and $E_N=O(2^{-a_BN})$.
 \end{theorem}
 \begin{proof}
-Power-of-two orbit sizes give the exact disjoint partition
-\[
- E_N=T_{64}(N)+T_{32}(N)+S_{16}(N),
-\]
-where $S_{16}$ has all actual orbit widths at most sixteen and at least
-one noncritical orbit. The first two parts are bounded by
+Assign each noncritical binary subgroup to its first applicable owner: an
+actual orbit of width at least thirty-two, a direct degree-eight axis, a
+direct degree-sixteen axis, or the residual family in which every orbit has
+width at most sixteen and neither direct owner applies. Power-of-two orbit
+sizes prove that these cases cover the whole error family. In the residual
+case, zero old support is exactly the complete critical family, so the
+noncritical source has positive old support. This gives an injection into
+the sum of the four unmarked owner families. The first family is bounded by
 \eqref{eq:binary-unbounded} and \eqref{eq:binary32-fusion}.
 
-For $S_{16}$ consider a nonbase orbit $U$ and its actual axis
-$N=H\cap U$. Include a fixed finite invariant menu of all witness
-transports in Lemma~\ref{lem:binary-finite-menu}; choose the transports
-before counting the complementary source. First take the union in
-which some actual graph entry is hot. Theorem~\ref{thm:fusion}
-bounds this complete union by a scalar $2^{-\Omega(N^2)}$.
-On its complement, point any orbit with an accepted strict local
-entry. For graph entries the cold coefficient is
+Make the degree-sixteen split on the original unmarked subgroup: the direct
+family consists of those subgroups for which some actual sixteen-point orbit
+and its literal Goursat axis has a direct witness.  In the complementary
+family every such orbit-axis witness has a carrier witness; no distinguished
+orbit, point, chart, or normal axis is charged.  This complement is
+automatically disjoint from the order-at-most-$256$ sector.  Indeed the
+complete order/seven-character selection of
+Lemma~\ref{lem:binary-sixteen-order-stop} would make any such axis direct.
+Thus every surviving carrier witness has original restriction-image order
+greater than $256$.
+
+For the direct part of $S_{16}$, fix a literal transitive binary action
+$U\leq S_{16}$ and call a raw axis accepted when an original-weight direct
+entry exists on it.  Entry existence transports through every equivalence of
+action groups, by the induced equivalence of the complete quotient.  It is
+therefore invariant under the full normalizer of $U$.  Consequently the
+predicate
 \[
- \Delta(2N,2N-w)\frac{D}{a(U)}
-      2^{(w/8-g/16)(2N-w)}.
+ K\longmapsto \{\text{the literal Goursat axis of }K\text{ is accepted}\}
 \]
-For the direct character entry it is the same coefficient with
-$D=|\Aut Q|$ and exponent $z\log(38/25)(2N-w)$.
-Their original Gaussian ratio leaves respectively
-$-g(2N-w)/16$ or
-$-(w/8-z\log(38/25))(2N-w)$, with error $O(\log(N+2))$.
-The fixed finite menu has a positive minimum gap. Summing every literal
-normal and every witness thus yields a kernel $K_s$ with row
-$2^{-\Omega(N)}$, supported at $N-4,N-8$; only nonnegative targets
-are included. Entries with zero prefix degree have a direct bound and
-need no hot moment. Deleting the original orbit again leaves the
-complete fixed-point-free binary count $F_{N-w/2}$.
+is natural for physical pointing.  Choose one entry on each accepted normal
+axis and assign the coefficient zero to every other axis.  The latter
+coefficient is exact: its retained Goursat fibre is empty because decoding an
+epimorphism recovers that same rejected axis.
+
+The original-normalizer physical count may now be applied before the axis
+sum.  The first same-source moment of each selected entry gives its shifted
+complete count directly; no hot/cold split is needed.  There are only finitely
+many literal subgroups of $S_{16}$ and finitely many normals in each, while
+every active entry has a strict positive gap.  Thus their complete row is
+$2^{-\Omega(N)}$.  An entry of even prefix degree $2r<16$ points to ambient
+degree $2N-16+2r$, so its half-degree lies between $N-8$ and $N-1$.
+The hypotheses only give $0\leq r\leq7$, so the aggregate support must allow
+the entire interval $N-8,N-7,\ldots,N-1$; no argument reduces it to two
+special shifts. Only nonnegative targets are included. Zero-prefix character
+entries give the $N-8$ endpoint and are covered by the same first-moment row.
+The actual orbit chart proves coverage of the original unmarked direct
+family, so no orbit, point, chart, action representative, or normalizer element
+is counted.  Any preceding first-owner filter only decreases this family and
+uses the identical row.
 
 In the remaining family every nonbase orbit has a transport witness
 for its exact axis. Apply all these maps simultaneously, leaving
-$\mathcal A$ factors untouched. The product of the embedded axes lies
+$\mathcal A$ factors as quotient-identity slots. The product of the embedded axes lies
 in $H$, so Proposition~\ref{prop:transport} recovers $H$ as the full
 preimage of the joint quotient image. Every replacement has the same
 physical degree, and retains at least one quarter of its noncritical
-support. Theorem~\ref{thm:binary-mixture} and the stronger profile
-envelopes \eqref{eq:proved-mixture-envelopes}, inserted in
-Proposition~\ref{prop:absorb-decorations}, give a scalar
-$2^{-\Omega(N)}$ for the entire remaining family. This also includes
-words already contained in $\mathcal A$, by identity transport.
-The small original noncritical-support range is removed before
-charging the decoration factor.
+support.  The route is retained as Type-valued data until its local output
+chart has been formed.  On a regular-$C_4$ route this chart removes the
+unique cell coordinate and applies the retained four-point chart.  A
+degree-eight base route then applies its fixed base-action chart and the
+inverse catalogue conjugacy; each exceptional degree-eight route has one
+literal $8T27$ cell and applies only that inverse conjugacy.  The $16T1332$
+route is the analogous one-cell construction.  For $16T1086$, the four
+displayed cells are first identified with the exact one-$C_4$/three-$D_8$
+model, then carried through its checked sixteen-point physical chart and
+the inverse catalogue conjugacy.  Thus each routed slot supplies an exact
+equivalence from its displayed output points to the points of the same
+original local action.
 
-Consequently
-$S_{16}(N)\leq\eta_s(N)+\sum_MK_s(N,M)F_M$, with both its scalar
-and complete row exponentially small. Add this to the two disjoint
-large-width bounds to obtain \eqref{eq:proved-binary-recurrence}.
-No estimate of $F_M$ has been used to prove the kernel rows.
+To identify the profile, enumerate the displayed cells of all replacement
+carriers by their original-action colours.  More explicitly, if $X$ is the
+finite set of displayed cells and $\chi:X\to\mathcal A$ is the colour map,
+put $m(A)=|\chi^{-1}(A)|$.  Enumerating each colour fibre gives the canonical
+equivalence
+\[
+ X\simeq\coprod_{A\in\mathcal A}\{1,\ldots,m(A)\}.
+\]
+Reindexing the dependent product along this equivalence turns cellwise
+fullness into full projection on every occurrence of the exact profile
+$m$.  Pullback along the resulting type equalities restores the literal
+original colour on every cell, so no independently chosen occurrence
+matching remains in the data.  The pullback from a witness action and axis
+to the canonical orbit axis leaves the underlying slot literally unchanged.
+Consequently its physical half-degree, retained support, old-support charge,
+and the two retention inequalities are reused verbatim; no numerical
+recalculation or profile comparison is hidden in this reindexing.
 
-Finally $C_{2M}^{\crit}$ is bounded by the independently proved
-critical-family theorem. Substitute
-$F_M=C_{2M}^{\crit}+E_M$ in the recurrence. Beyond an onset its row
-is at most $1/2$, and its forcing is bounded. A constant dominating
-twice that forcing and all finitely many initial $E_M$ bounds $E_N$
-by induction. Thus $F_N$ is bounded. Substituting this established
-bound back into the same recurrence proves exponential decay.
+Finally assemble the local route-output charts along the canonical complete
+orbit chart of the original subgroup.  This gives one fusion-natural
+equivalence from the completed-mixture point set directly to the original
+labels $\{1,\ldots,2N\}$.  Simultaneous carrier transport may therefore be
+realized on those labels before insertion into the retained parameter bin.
+For a fixed supplied chart this original-label physical realization is
+injective, and it uses exactly the same critical-rank identity and the same
+retained bin as the canonical-label word target.  The point chart is a
+deterministic composite of the retained routes and the original orbit chart,
+not a separately counted mark.
+
+This gives a single whole-word closure statement.  For arbitrary source
+groups $U_i$, arbitrary full proper subdirect carriers
+$C_i\leq\prod_j A_{\chi(i,j)}$, and surjections
+$U_i\twoheadrightarrow Q_i$ and $C_i\twoheadrightarrow Q_i$ onto the same quotients,
+the simultaneous full-preimage construction is injective on source
+subgroups with their exact kernel axes.  If one displayed cell is
+noncritical, the fibre counts themselves make the completed-mixture
+support positive.  Hence the whole decorated source family injects into
+the one physical parameter bin determined by $m$, and then into the
+completed mixture.  This applies without commutativity to a proper
+nonabelian subdirect carrier such as the $16T1086$ cover.  No carrier,
+orbit, chart, quotient, axis, or occurrence choice is counted as an
+additional marking.  In the three degree-eight exceptional rows the checked
+full physical block is the original $8T27$ action, so it is a one-cell
+carrier; the $16T1086$ row remains its proper four-cell subdirect carrier.
+An original factor that is left in place is handled by the same one-cell
+construction, using its actual epimorphism to $Q$ on both sides.  Thus its
+normal axis is retained rather than forced to be trivial.  These identity
+slots and the four exceptional slots may be interleaved in one heterogeneous
+word, and one noncritical slot makes its completed-mixture support positive.
+The partition before this construction is intrinsic.  A full source
+subgroup determines its complete tuple of embedded normal axes.  Excluding
+the first direct owner therefore partitions the carrier residual by this
+canonical axis profile, without choosing or counting an axis.  On each
+profile, the finite local theorem chooses a routed slot in every coordinate
+and the preceding whole-word injection applies.  Retain the actual image of
+every fixed-profile transport until all route, block, and changed-axis data
+are forgotten together.  Enlarging each fixed-profile image to the whole
+completed mixture before this step would charge arbitrary axes on untouched
+critical coordinates and is not used.  The only routed word with no
+noncritical cell is the pure critical $E_8$ word, which belongs to the already
+counted critical family rather than to $S_{16}$.
+
+It remains to identify the fibres after the auxiliary data are forgotten.
+Equality of the mixed table first aligns every changed route.  The retained
+route-output charts identify the two native point sets with the same fixed
+original labels.  Naturality of the displayed carrier action then transports
+equality of the fixed-label physical targets back to equality of the native
+targets.  The indexed full-preimage reflection theorem recovers the complete
+correlated word source, including every quotient-identity slot and its exact
+kernel axis.  Finally the slot-preserving binary source reindex recovers the
+canonical flat source, and faithfulness of its literal orbit action recovers
+the original subgroup.  Thus every fixed mixed-table/physical-target fibre
+has size one, also for the proper nonabelian $16T1086$ carrier and for
+unchanged critical coordinates.
+
+For the simultaneous degree-eight/degree-sixteen word, each changed block is
+stored in a fixed nineteen-symbol record (degree tag, least point, route tag,
+and point representatives).  At most one record is charged per unit of old
+half-support, so the common twenty-slot packing gives the explicit decoration
+factor $(2N+2)^{20C_{\rm old}}$, namely the $K=10$ instance of
+Proposition~\ref{prop:decoration}.  The retained route-output charts show that
+no further point-chart field is needed in this record: the local charts
+assemble directly to the fusion-natural original-label target.
+
+This construction is applied after disintegrating the unmarked positive
+family by its canonical old half-support.  A positive regular-$C_4$,
+degree-eight, or degree-sixteen orbit contributes respectively $2,4,8$;
+twice this contribution is its literal orbit size, while a critical orbit
+contributes zero.  Therefore every positive source has a unique integer
+$1\leq C_{\rm old}\leq N$, and the positive family is exactly the disjoint
+sum of these fixed-support fibres.  On each fibre the coordinate index,
+action types, and carrier products may depend on the already counted pair
+consisting of the mixed table and the physical target.  The fibre-one result
+just proved gives the exact table-cardinality times target-cardinality bound.
+The outer aggregation is only the displayed sum over $C_{\rm old}$; it
+contains no factor counting orbit profiles or presentations.
+
+The stronger profile envelopes \eqref{eq:proved-mixture-envelopes} absorb the
+decoration before any of them is weakened.  If the retained noncritical
+half-support is at most $\sqrt N/4$, the small-support estimate pays a
+subexponential decoration.  Otherwise the Hall range pays it from the
+$aN$ reserve, and the complementary range pays it from the $TN$ carrier
+reserve.  The remaining support and bin indices have cardinality at most
+$(N+1)^3$.  Absorbing this polynomial leaves, in the explicit formal
+normalization, the rate $29/2980864$ in $N$.  Hence the complete positive
+residual has normalized mass at most
+$2^{-(29/2980864)N}$ eventually.  This includes unchanged cells by identity
+transport and uses the exact factor $(2N+2)^{20C_{\rm old}}$ above.
+
+Consequently the residual $S_{16}$ family supplies the exponentially small
+scalar.  The degree-eight and degree-sixteen direct owners supply their
+strictly forward original-weight rows, and the width-at-least-thirty-two owner
+supplies the remaining direct row.  Every target is an ordinary subgroup
+count of degree $M<2N$.  Adding these four intrinsic owner families gives
+\eqref{eq:proved-binary-recurrence}, with exponentially small scalar and
+aggregate row.  No boundedness estimate for $A_M$ has been used to construct
+the recurrence; it is substituted directly into the ordinary master.
 \end{proof}

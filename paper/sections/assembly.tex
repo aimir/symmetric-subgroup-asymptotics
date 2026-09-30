@@ -8,7 +8,7 @@ exact disjoint partition
  F_N=C_{2N}^{\crit}+E_N.
 \end{equation}
 
-\begin{proposition}[Native binary frontier transport]
+\begin{proposition}[Ordinary-target binary frontier transport]
 \label{prop:binary-frontier-transport}
 Put
 \[
@@ -28,15 +28,13 @@ $a_B',C_B'>0$ such that eventually
 \begin{proof}
 Theorem~\ref{thm:binary-recurrence} gives
 \begin{equation}\label{eq:binary-native-recurrence}
- E_N\leq\eta_B(N)+\sum_{M<N}K_B(N,M)F_M,
- \qquad\eta_B(N)+\sum_{M<N}K_B(N,M)\leq C_B2^{-a_BN}.
+ E_N\leq\eta_B(N)+\sum_{m<2N}K_B(N,m)A_m,
+ \qquad\eta_B(N)+\sum_{m<2N}K_B(N,m)\leq C_B2^{-a_BN}.
 \end{equation}
-Every fixed-point-free binary subgroup is an ordinary subgroup, with
-the same normalization, so $F_M\leq A_{2M}$.  In even ambient degree,
-use \eqref{eq:binary-native-recurrence} and pad its even targets by
-zero to the full range $m<2N$.  In odd degree apply the same recurrence
+In even ambient degree use \eqref{eq:binary-native-recurrence} directly.
+In odd degree apply the same recurrence
 at $N$ and $N-1$, multiply the two inequalities by $u_N$ and $v_N$,
-and again pad both target rows by zero.  The coefficients are
+and pad both target rows by zero to the full range $m<2N+1$.  The coefficients are
 nonnegative, and Section~\ref{sec:markers} gives
 \[
  u_N\leq4(N+1),\qquad v_N\leq2\Phi^{-2}(N+1)^3.

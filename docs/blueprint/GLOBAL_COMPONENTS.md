@@ -36,20 +36,28 @@ rho₃(c+1), juxtaposition means the product rho₃·(c+1).
 **ASM-COMPONENTS.** Let E_N count all fixed-point-free binary subgroups of
 S_(2N) with at least one actual noncritical orbit, divided by (2N)!c_NG_N.
 Let Ccrit_n be the normalized complete critical family, including its
-noncanonical lifts. The intended
-exhaustive master is
+noncanonical lifts. The binary theorem has the ordinary-target form
+
+    E_N <= eta_B(N)+Σ_{m<2N}K_B(N,m)A_m,
+    eta_B(N)+row(K_B)(N)=O(2^(-a_B N)).                    (B1)
+
+It is proved without assuming that A, E or the complete fixed-point-free
+binary count is bounded. Before substitution, marker collapse produces E_j
+in even degree and a polynomially weighted combination of E_j and E_(j-1)
+in odd degree. Applying (B1) to those terms and padding by zero gives an
+ambient scalar eta_B^amb and a strictly forward ordinary kernel K_B^amb,
+whose combined mass is O(2^(-a'_B n)). The exhaustive master used for
+induction is therefore
 
     A_n <= Ccrit_n + epsilon_sep(n) + epsilon_fwd(n)
-              + Σ_{b<n}K(n,b)A_b
-              + 1_{n even}E_(n/2)
-              + Σ_{even m<n}H(n,m)E_(m/2).              (1.1)
+              + eta_B^amb(n)
+              + Σ_{b<n}[K(n,b)+K_B^amb(n,b)]A_b.       (1.1)
 
-The positive kernel K targets complete lower-degree subgroup counts.
-The separate transfer H targets complete binary errors. They cannot be
-combined and treated as one contractive row. The even E term includes
-both the complete fixed carrier-cylinder subfamily and the remaining
-marker-free binary subfamily, with coefficient one on their disjoint union.
-It is valid forcing only after the independent theorem for complete E.
+Thus every recurrence target at the induction stage is a complete ordinary
+count. There is no preliminary induction closing E or the complete binary
+family. Here K includes the already ordinary-target rows, including the
+positive marker row; the transported binary row is displayed separately only
+to record where it enters the aggregate.
 
 The required aggregate conclusions are
 
@@ -419,15 +427,18 @@ Set E_0=pE_0=r_0=r_1=0. For n=2j+epsilon put
     Codd_j=c_j+c_(j-1)/6,
     alpha_j=c_j/Codd_j, beta_j=c_j/(3Codd_j),
     u_j=alpha_j+beta_j[7+(6j)^(1/4)], v_j=beta_jr_j,
-    H(n,m)=K_mark(n,m)
-       +1_{n odd}[u_j1_{m=n-1}+v_j1_{m=n-3}].            (7.1)
+    B_(2j)=E_j,
+    B_(2j+1)=u_jE_j+v_jE_(j-1).                          (7.1)
 
 Negative targets are omitted. The complete noncanonical marker row
 obeys row(K_mark)<=2^(-j/10) eventually. Also u_j→1 and v_j→0.
-Thus H has bounded row and finite-target escape, but its odd row tends
-to one. Once E_j=O(2^(-a_E j)) is independently established, both shifted
-targets and the small marker row contribute exponentially small error.
-No convergence rate for u_j is needed.
+The coefficients u_j and v_j have polynomial bounds. Apply (B1) at j and,
+when present, j-1, multiply by these coefficients, and pad the ordinary
+target rows by zero to degrees below n. Polynomial factors are absorbed by a
+smaller exponential rate. Hence B_n is bounded by an exponentially small
+ambient scalar and an exponentially small strictly forward ordinary row.
+Together with K_mark this is the binary contribution in (1.1). No independent
+estimate of E is used, and no convergence rate for u_j is needed.
 
 ## 8. Trivial sections in an even nonbinary transitive action
 
