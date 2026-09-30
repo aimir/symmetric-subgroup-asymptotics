@@ -4,6 +4,7 @@ import SymmetricSubgroupAsymptotics.Non2PreE7Sns2ExceptionalCatalogue
 import SymmetricSubgroupAsymptotics.Non2PreE7SmallOrderSemisimple
 import SymmetricSubgroupAsymptotics.Non2PreE7ActualSemisimple
 import SymmetricSubgroupAsymptotics.Non2PreE7SemisimpleSmallQuotient
+import SymmetricSubgroupAsymptotics.Non2PreE7NonsolublePrimitiveAffine
 
 /-!
 # The five semisimple-family certificate shapes
@@ -40,17 +41,6 @@ theorem isPreE7SemisimpleFamily_iff
         family = .sns2 ∨ family = .nsaprim := by
   cases family <;> decide
 
-/-- `NSAPRIM`: one action in the fixed nonsoluble primitive-affine range.
-The bounded catalogue-completeness premise is a separate coverage input;
-this datum retains only the literal action's checked pointwise certificate. -/
-structure PreE7NsaprimSourceData
-    (w : ℕ) (i : PreE7NonPairActionClass w) where
-  width_lower : 5 ≤ w
-  width_upper : w ≤ 1024
-  primitive : MulAction.IsPreprimitive
-    (preE7NonPairAction w i) (Fin w)
-  certificate : PreE7EarlierActionComparatorCertificate .nsaprim w i
-
 /-- Exact source type of all five semisimple families. -/
 def SemisimpleCertificateSourceData
     (family : PreE7NoPairNoC3EarlierOwnerFamily)
@@ -60,7 +50,7 @@ def SemisimpleCertificateSourceData
   | .so => ULift.{1, 0} (PreE7SoOrderSourceData w i)
   | .sns => PreE7SnsActionCertificate w i
   | .sns2 => PreE7Sns2SourceData w i
-  | .nsaprim => PreE7NsaprimSourceData w i
+  | .nsaprim => ULift.{1, 0} (PreE7NsaprimActionCertificate w i)
   | _ => PEmpty
 
 variable {w : ℕ} {i : PreE7NonPairActionClass w}
@@ -85,7 +75,7 @@ def preE7_snsCertificate
 def preE7_nsaprimCertificate
     (S : SemisimpleCertificateSourceData .nsaprim w i) :
     PreE7EarlierActionComparatorCertificate .nsaprim w i :=
-  S.certificate
+  S.down.certificate
 
 def preE7_sns2Certificate
     (S : SemisimpleCertificateSourceData .sns2 w i) :
