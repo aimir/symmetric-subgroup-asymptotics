@@ -21,6 +21,13 @@ abbrev PreE7Sns2MenuIndex (w : ℕ) :=
   {i : PreE7NonPairActionClass w //
     Nonempty (PreE7Sns2RankTailCertificate w i)}
 
+/-- Use one named enumeration instance throughout the all-width SNS2
+aggregation.  This prevents unrelated generic finite-category instances
+from changing the definitional presentation of the finite sums. -/
+noncomputable instance preE7Sns2MenuIndexFintype (w : ℕ) :
+    Fintype (PreE7Sns2MenuIndex w) :=
+  Fintype.ofFinite (PreE7Sns2MenuIndex w)
+
 noncomputable def preE7Sns2MenuCertificate {w : ℕ}
     (i : PreE7Sns2MenuIndex w) :
     PreE7Sns2RankTailCertificate w i.1 :=
