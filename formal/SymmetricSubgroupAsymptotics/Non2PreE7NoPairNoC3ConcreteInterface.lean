@@ -4,7 +4,7 @@ import SymmetricSubgroupAsymptotics.Non2PreE7NonPairConcreteInterface
 /-!
 # Shared concrete interface for the final pre-E7 residual
 
-The structural owner/comparator catalogue, its numerical decoration, and the
+The structural owner-envelope catalogue, its numerical decoration, and the
 rejected-axis retained cells are separated so their proofs can be developed
 in disjoint modules.  They retain the existing non-pair action and normal-axis
 types; only the complete-source predicate carries the additional no-`C3`
@@ -19,7 +19,7 @@ namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
 
 /-- Structural part of the earlier-owner catalogue.  Numerical exponents and
-coefficients are deliberately absent so the comparator and numerical proofs
+coefficients are deliberately absent so the owner-envelope and numerical proofs
 can be developed independently after the catalogue itself is fixed. -/
 structure PreE7NoPairNoC3EarlierComparatorCore (r : ℕ) where
   Earlier : ∀ d, Fin r → Subgroup (Equiv.Perm (Fin d)) → Prop
@@ -32,8 +32,12 @@ structure PreE7NoPairNoC3EarlierComparatorCore (r : ℕ) where
   v : ∀ w, PreE7NonPairFirstOwnerIndex (r + 1) w → ℕ
   action : ∀ w i, R w i →* Equiv.Perm (Fin (v w i))
   action_injective : ∀ w i, Function.Injective (action w i)
-  owned_comparator : ∀ w i b N, Owned w i b N →
-    FusionQuotientComparator (preE7NonPairFirstOwnerAction w i) N (R w i)
+  owned_envelope : ∀ w i b N, Owned w i b N →
+    ∀ J : Subgroup (Equiv.Perm (Fin b)),
+      fusionSurvivingEpiCount (preE7NonPairFirstOwnerAction w i)
+          (preE7NonPairFirstOwnerPredicate
+            (ownerOrResidualEligible Earlier) w i b) N J ≤
+        completeQuotientWeight (R := R w i) J
 
 attribute [instance]
   PreE7NoPairNoC3EarlierComparatorCore.groupR
@@ -51,7 +55,7 @@ structure PreE7NoPairNoC3OwnerNumerics {r : ℕ}
   coefficient_nonneg : ∀ w i b N, 0 ≤ C w i b N
   alpha_eq : ∀ w i, alpha w i = eta w i + cutoff w i
 
-/-- Reassemble the existing owner/comparator datum after its structural and
+/-- Reassemble the existing owner-envelope datum after its structural and
 numerical halves have been proved. -/
 noncomputable def PreE7NoPairNoC3EarlierComparatorCore.withNumerics
     {r : ℕ} (Core : PreE7NoPairNoC3EarlierComparatorCore r)
@@ -73,10 +77,10 @@ noncomputable def PreE7NoPairNoC3EarlierComparatorCore.withNumerics
   action_injective := Core.action_injective
   coefficient_nonneg := Numerics.coefficient_nonneg
   alpha_eq := Numerics.alpha_eq
-  owned_comparator := Core.owned_comparator
+  owned_envelope := Core.owned_envelope
 
 /-- Rejected-axis data for the narrowed complete-source predicate.  The cell
-records its quotient comparator and retained flag together; the required
+records its complete quotient map and retained flag together; the required
 capacity is the product of flag cardinality and Yoneda fibre size. -/
 structure PreE7NoPairNoC3RetainedCellData {r : ℕ}
     (D : PreE7NonPairOwnerComparatorData r) where

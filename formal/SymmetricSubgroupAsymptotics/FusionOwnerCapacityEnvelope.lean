@@ -39,9 +39,47 @@ theorem fusionOwnerCapacityCoefficient_nonneg {w b : ℕ}
     exact Real.rpow_nonneg (by norm_num) _
   · simpa only [fusionOwnerCapacityCoefficient, if_neg hN] using hC N
 
-/-- The exact local dichotomy.  An owned axis is injected into one literal
-quotient summand of the comparator.  Only an unowned axis invokes the
-capacity estimate. -/
+/-- The exact local dichotomy.  An owned axis supplies a direct bound by the
+common complete-quotient weight.  Only an unowned axis invokes the capacity
+estimate. -/
+theorem fusionSurvivingEpiCount_le_ownerCapacityEnvelope_of_ownedBound
+    {w b : ℕ}
+    (U : Subgroup (Equiv.Perm (Fin w)))
+    (P : Subgroup (U × Equiv.Perm (Fin b)) → Prop)
+    {R : Type*} [Group R] [Finite R]
+    (Owned : {N : Subgroup U // N.Normal} → Prop)
+    (C : {N : Subgroup U // N.Normal} → ℝ)
+    (eta : ℝ)
+    (hOwned : ∀ N, Owned N →
+      ∀ J : Subgroup (Equiv.Perm (Fin b)),
+        fusionSurvivingEpiCount U P N J ≤
+          completeQuotientWeight (R := R) J)
+    (hCapacity : ∀ N, ¬ Owned N →
+      ∀ J : Subgroup (Equiv.Perm (Fin b)),
+        fusionSurvivingEpiCount U P N J ≤
+          (C N * (2 : ℝ) ^ (eta * b)) *
+            completeQuotientWeight (R := R) J)
+    (N : {N : Subgroup U // N.Normal})
+    (J : Subgroup (Equiv.Perm (Fin b))) :
+    fusionSurvivingEpiCount U P N J ≤
+      (fusionOwnerCapacityCoefficient b U Owned C eta N *
+          (2 : ℝ) ^ (eta * b)) *
+        completeQuotientWeight (R := R) J := by
+  by_cases hN : Owned N
+  · have hcompare := hOwned N hN J
+    have hcancel :
+        (2 : ℝ) ^ (-(eta * b)) * (2 : ℝ) ^ (eta * b) = 1 := by
+      rw [← Real.rpow_add (by norm_num : (0 : ℝ) < 2)]
+      ring_nf
+      norm_num
+    simpa only [fusionOwnerCapacityCoefficient, if_pos hN, hcancel,
+      one_mul] using hcompare
+  · simpa only [fusionOwnerCapacityCoefficient, if_neg hN] using
+      hCapacity N hN J
+
+/-- A quotient comparator is one way to discharge the direct owned-axis
+envelope.  This adapter keeps the earlier comparator API available without
+requiring every earlier owner to arise from such a comparator. -/
 theorem fusionSurvivingEpiCount_le_ownerCapacityEnvelope
     {w b : ℕ}
     (U : Subgroup (Equiv.Perm (Fin w)))
@@ -62,19 +100,12 @@ theorem fusionSurvivingEpiCount_le_ownerCapacityEnvelope
       (fusionOwnerCapacityCoefficient b U Owned C eta N *
           (2 : ℝ) ^ (eta * b)) *
         completeQuotientWeight (R := R) J := by
-  by_cases hN : Owned N
-  · have hcompare :=
-      fusionSurvivingEpiCount_le_completeQuotientWeight_of_comparator
-        U P N (hOwned N hN) J
-    have hcancel :
-        (2 : ℝ) ^ (-(eta * b)) * (2 : ℝ) ^ (eta * b) = 1 := by
-      rw [← Real.rpow_add (by norm_num : (0 : ℝ) < 2)]
-      ring_nf
-      norm_num
-    simpa only [fusionOwnerCapacityCoefficient, if_pos hN, hcancel,
-      one_mul] using hcompare
-  · simpa only [fusionOwnerCapacityCoefficient, if_neg hN] using
-      hCapacity N hN J
+  apply fusionSurvivingEpiCount_le_ownerCapacityEnvelope_of_ownedBound
+    U P Owned C eta
+  · intro M hM L
+    exact fusionSurvivingEpiCount_le_completeQuotientWeight_of_comparator
+      U P M (hOwned M hM) L
+  · exact hCapacity
 
 /-- Summing the dichotomy over the literal normal axes keeps coefficient one
 on every earlier-owned axis and sums only the supplied coefficients on the

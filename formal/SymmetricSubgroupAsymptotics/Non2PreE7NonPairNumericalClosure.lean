@@ -33,7 +33,11 @@ theorem preE7NonPair_survivingEpiCount_le_ownerOrRetainedCells
     (C : {N : Subgroup (preE7NonPairFirstOwnerAction w i) // N.Normal} → ℝ)
     (eta : ℝ)
     (hOwned : ∀ M, Owned M →
-      FusionQuotientComparator (preE7NonPairFirstOwnerAction w i) M R)
+      ∀ L : Subgroup (Equiv.Perm (Fin b)),
+        fusionSurvivingEpiCount (preE7NonPairFirstOwnerAction w i)
+            (preE7NonPairFirstOwnerPredicate
+              (ownerOrResidualEligible Earlier) w i b) M L ≤
+          completeQuotientWeight (R := R) L)
     (K : ∀ M, FusionAxisCarrier (preE7NonPairFirstOwnerAction w i) M)
     (Accepted : ∀ M,
       Subgroup ((K M).checked.carrier × Equiv.Perm (Fin b)) → Prop)
@@ -68,7 +72,7 @@ theorem preE7NonPair_survivingEpiCount_le_ownerOrRetainedCells
       (fusionOwnerCapacityCoefficient b
           (preE7NonPairFirstOwnerAction w i) Owned C eta N *
         (2 : ℝ) ^ (eta * b)) * completeQuotientWeight (R := R) J := by
-  apply fusionSurvivingEpiCount_le_ownerCapacityEnvelope
+  apply fusionSurvivingEpiCount_le_ownerCapacityEnvelope_of_ownedBound
     (preE7NonPairFirstOwnerAction w i)
     (preE7NonPairFirstOwnerPredicate
       (ownerOrResidualEligible Earlier) w i b)
@@ -104,7 +108,11 @@ noncomputable def
           Set (Equiv.Perm (Fin w)))) : ℝ))
     (hα : ∀ w i, α w i = η w i + c w i)
     (hOwned : ∀ w i b N, Owned w i b N →
-      FusionQuotientComparator (preE7NonPairFirstOwnerAction w i) N (R w i))
+      ∀ J : Subgroup (Equiv.Perm (Fin b)),
+        fusionSurvivingEpiCount (preE7NonPairFirstOwnerAction w i)
+            (preE7NonPairFirstOwnerPredicate
+              (ownerOrResidualEligible Earlier) w i b) N J ≤
+          completeQuotientWeight (R := R w i) J)
     (K : ∀ w i N,
       FusionAxisCarrier (preE7NonPairFirstOwnerAction w i) N)
     (Accepted : ∀ w i b N,

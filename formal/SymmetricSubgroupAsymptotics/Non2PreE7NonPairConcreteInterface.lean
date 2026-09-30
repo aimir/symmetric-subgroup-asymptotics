@@ -4,7 +4,7 @@ import SymmetricSubgroupAsymptotics.Non2PreE7NonPairNumericalClosure
 # Concrete interface for the non-pair pre-E7 action consumers
 
 These are the three packages which the remaining action exhaustion must
-construct after both pair menus have been removed: the ordered comparator
+construct after both pair menus have been removed: the ordered owner-envelope
 catalogue, rejected-axis reversible cells, and the uniform numerical
 certificate.
 -/
@@ -37,8 +37,12 @@ structure PreE7NonPairOwnerComparatorData (r : ℕ) where
   action_injective : ∀ w i, Function.Injective (action w i)
   coefficient_nonneg : ∀ w i b N, 0 ≤ C w i b N
   alpha_eq : ∀ w i, alpha w i = eta w i + cutoff w i
-  owned_comparator : ∀ w i b N, Owned w i b N →
-    FusionQuotientComparator (preE7NonPairFirstOwnerAction w i) N (R w i)
+  owned_envelope : ∀ w i b N, Owned w i b N →
+    ∀ J : Subgroup (Equiv.Perm (Fin b)),
+      fusionSurvivingEpiCount (preE7NonPairFirstOwnerAction w i)
+          (preE7NonPairFirstOwnerPredicate
+            (ownerOrResidualEligible Earlier) w i b) N J ≤
+        completeQuotientWeight (R := R w i) J
 
 attribute [instance]
   PreE7NonPairOwnerComparatorData.groupR
@@ -122,7 +126,7 @@ noncomputable def preE7NonPair_exponentialForwardEstimate_of_data
         (preE7NonPairFirstOwnerAction w i :
           Set (Equiv.Perm (Fin w)))) : ℝ))
     D.v D.eta D.delta D.cutoff D.alpha D.action D.action_injective
-    D.coefficient_nonneg (fun _ _ => rfl) D.alpha_eq D.owned_comparator
+    D.coefficient_nonneg (fun _ _ => rfl) D.alpha_eq D.owned_envelope
     Cells.carrier Cells.Accepted Cells.accept_inverse Cells.Flag
     (fun _ _ _ _ _ => inferInstance) Cells.cell Cells.fibreBound
     Cells.fibre_card Cells.joint_capacity Numerics.rho_pos

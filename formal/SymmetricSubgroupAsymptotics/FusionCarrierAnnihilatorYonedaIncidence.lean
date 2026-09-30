@@ -526,7 +526,7 @@ end AxisCells
 
 /-- Rejected-axis retained cells for the narrowed pre-E7 predicate, from an
 explicit dichotomy on every literal axis: either the axis is owned by the
-earlier comparator catalogue, or its carrier quotient has an abelian-layer
+earlier-owner catalogue, or its carrier quotient has an abelian-layer
 tower down to a fixed comparator top.  Nonabelian chief factors must
 therefore be owned.  The joint capacity is the tower capacity. -/
 noncomputable def PreE7NoPairNoC3RetainedCellData.ofAbelianYonedaTowers
