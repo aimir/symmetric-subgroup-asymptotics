@@ -86,6 +86,49 @@ theorem fusionSurvivingEpiCount_le_abelianYonedaTower
     (completeQuotientWeight_nonneg (R := R) J))
   exact_mod_cast T.tower.card_flag_mul_bound_le_capacity J
 
+/-- Split a literal surviving-epimorphism family across two exhaustive local
+branches.  No disjointness is needed: choosing the first branch when both
+hold gives an injection into the disjoint sum of the two counted families. -/
+theorem fusionSurvivingEpiCount_le_add_of_cover
+    {w b : ℕ}
+    (U : Subgroup (Equiv.Perm (Fin w)))
+    (P Main Tail : Subgroup (U × Equiv.Perm (Fin b)) → Prop)
+    (N : {N : Subgroup U // N.Normal})
+    (J : Subgroup (Equiv.Perm (Fin b)))
+    (cover : ∀ β : GroupEpimorphism J (U ⧸ N.1),
+      P (fusionFullGoursatEncode N J β).1 →
+        Main (fusionFullGoursatEncode N J β).1 ∨
+          Tail (fusionFullGoursatEncode N J β).1) :
+    fusionSurvivingEpiCount U P N J ≤
+      fusionSurvivingEpiCount U Main N J +
+        fusionSurvivingEpiCount U Tail N J := by
+  let X := {β : GroupEpimorphism J (U ⧸ N.1) //
+    P (fusionFullGoursatEncode N J β).1}
+  let Y := {β : GroupEpimorphism J (U ⧸ N.1) //
+    Main (fusionFullGoursatEncode N J β).1}
+  let Z := {β : GroupEpimorphism J (U ⧸ N.1) //
+    Tail (fusionFullGoursatEncode N J β).1}
+  let f : X → Y ⊕ Z := fun β =>
+    if h : Main (fusionFullGoursatEncode N J β.1).1 then
+      Sum.inl ⟨β.1, h⟩
+    else
+      Sum.inr ⟨β.1, (cover β.1 β.2).resolve_left h⟩
+  let underlying : Y ⊕ Z → GroupEpimorphism J (U ⧸ N.1) :=
+    Sum.elim Subtype.val Subtype.val
+  have h_underlying (β : X) : underlying (f β) = β.1 := by
+    simp only [f, underlying]
+    split <;> rfl
+  have hf : Function.Injective f := by
+    intro β γ hβγ
+    apply Subtype.ext
+    have hu := congrArg underlying hβγ
+    exact (h_underlying β).symm.trans (hu.trans (h_underlying γ))
+  have hnat : Nat.card X ≤ Nat.card Y + Nat.card Z := by
+    simpa only [Nat.card_sum] using Nat.card_le_card_of_injective f hf
+  unfold fusionSurvivingEpiCount
+  change (Nat.card X : ℝ) ≤ (Nat.card Y : ℝ) + (Nat.card Z : ℝ)
+  exact_mod_cast hnat
+
 namespace Non2UnipotentPrefixFiniteMenu
 
 /-- Family-independent source data for the comparator/abelian-layer
@@ -161,6 +204,97 @@ noncomputable def PreE7EarlierActionComparatorCertificate.ofAbelianYonedaTowers
       _ = (D.C b N * (2 : ℝ) ^ (D.eta * b)) *
             completeQuotientWeight (R := D.R) J +
           0 * (2 : ℝ) ^ (D.theta * b) := by ring
+
+/-- The additive version of the tower template.  A family instance provides
+an exhaustive main/tail split on the literal broad source.  The main branch
+is controlled by the retained abelian tower, while the second branch is paid
+as a pure cold row and never forced through a complete-quotient moment. -/
+structure PreE7ComparatorAbelianTowerAdditiveSourceData
+    (family : PreE7NoPairNoC3EarlierOwnerFamily)
+    (w : ℕ) (i : PreE7NonPairActionClass w) where
+  template_eq : family.template = .comparatorAbelianTower
+  R : Type
+  [groupR : Group R]
+  [finiteR : Finite R]
+  v : ℕ
+  action : R →* Equiv.Perm (Fin v)
+  action_injective : Function.Injective action
+  C : ℕ → {N : Subgroup (preE7NonPairAction w i) // N.Normal} → ℝ
+  tailCoefficient :
+    ℕ → {N : Subgroup (preE7NonPairAction w i) // N.Normal} → ℝ
+  eta : ℝ
+  delta : ℝ
+  cutoff : ℝ
+  alpha : ℝ
+  theta : ℝ
+  alpha_eq : alpha = eta + cutoff
+  coefficient_nonneg : ∀ b N, 0 ≤ C b N
+  tail_nonneg : ∀ b N, 0 ≤ tailCoefficient b N
+  Main : ∀ b (_N : {N : Subgroup
+    (preE7NonPairAction w i) // N.Normal}),
+      Subgroup (preE7NonPairAction w i × Equiv.Perm (Fin b)) → Prop
+  Tail : ∀ b (_N : {N : Subgroup
+    (preE7NonPairAction w i) // N.Normal}),
+      Subgroup (preE7NonPairAction w i × Equiv.Perm (Fin b)) → Prop
+  cover : ∀ b N (J : Subgroup (Equiv.Perm (Fin b)))
+      (β : GroupEpimorphism J (preE7NonPairAction w i ⧸ N.1)),
+    preE7NoPairNoC3BroadActionPredicate w i b
+        (fusionFullGoursatEncode N J β).1 →
+      Main b N (fusionFullGoursatEncode N J β).1 ∨
+        Tail b N (fusionFullGoursatEncode N J β).1
+  tower : ∀ _b N,
+    FusionQuotientAbelianYonedaTower (preE7NonPairAction w i) N R
+  main_joint_capacity : ∀ b N (J : Subgroup (Equiv.Perm (Fin b))),
+    (((tower b N).tower.capacity J : ℕ) : ℝ) ≤
+      C b N * (2 : ℝ) ^ (eta * b)
+  tail_envelope : ∀ b N (J : Subgroup (Equiv.Perm (Fin b))),
+    fusionSurvivingEpiCount (preE7NonPairAction w i) (Tail b N) N J ≤
+      tailCoefficient b N * (2 : ℝ) ^ (theta * b)
+
+attribute [instance]
+  PreE7ComparatorAbelianTowerAdditiveSourceData.groupR
+  PreE7ComparatorAbelianTowerAdditiveSourceData.finiteR
+
+/-- Install an exhaustive tower-plus-cold-tail split in the common earlier
+action certificate. -/
+noncomputable def
+    PreE7EarlierActionComparatorCertificate.ofAbelianYonedaTowersAdditive
+    {family : PreE7NoPairNoC3EarlierOwnerFamily}
+    {w : ℕ} {i : PreE7NonPairActionClass w}
+    (D : PreE7ComparatorAbelianTowerAdditiveSourceData family w i) :
+    PreE7EarlierActionComparatorCertificate family w i where
+  R := D.R
+  groupR := D.groupR
+  finiteR := D.finiteR
+  v := D.v
+  action := D.action
+  action_injective := D.action_injective
+  C := D.C
+  tailCoefficient := D.tailCoefficient
+  eta := D.eta
+  delta := D.delta
+  cutoff := D.cutoff
+  alpha := D.alpha
+  theta := D.theta
+  alpha_eq := D.alpha_eq
+  coefficient_nonneg := D.coefficient_nonneg
+  tail_nonneg := D.tail_nonneg
+  broad_axis_envelope := by
+    intro b N J
+    have hsplit := fusionSurvivingEpiCount_le_add_of_cover
+      (preE7NonPairAction w i)
+      (preE7NoPairNoC3BroadActionPredicate w i b)
+      (D.Main b N) (D.Tail b N) N J (D.cover b N J)
+    have hmain0 := fusionSurvivingEpiCount_le_abelianYonedaTower
+      (preE7NonPairAction w i) (D.Main b N) N J (D.tower b N)
+    have hmain : fusionSurvivingEpiCount (preE7NonPairAction w i)
+        (D.Main b N) N J ≤
+        (D.C b N * (2 : ℝ) ^ (D.eta * b)) *
+          completeQuotientWeight (R := D.R) J :=
+      hmain0.trans (mul_le_mul_of_nonneg_right
+        (D.main_joint_capacity b N J)
+        (completeQuotientWeight_nonneg (R := D.R) J))
+    exact hsplit.trans (add_le_add hmain (D.tail_envelope b N J))
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

@@ -3,6 +3,7 @@ import SymmetricSubgroupAsymptotics.Non2PreE7ResidualPairPartition
 import SymmetricSubgroupAsymptotics.Non2PreE7NonPairConcreteInterface
 import SymmetricSubgroupAsymptotics.Non2PreE7C3Partition
 import SymmetricSubgroupAsymptotics.Non2PreE7NoPairNoC3ConcreteInterface
+import SymmetricSubgroupAsymptotics.Non2PreE7NoPairNoC3AdditiveTailInterface
 
 /-!
 # The final relative closure of T1
@@ -169,6 +170,46 @@ theorem allTargets_of_preE7_noPairNoC3_data
   allTargets_iff_T1.mpr
     (T1_of_preE7_noPairNoC3_data hTracey hExceptional
       hChief hWeight hPrimitive h18 hKP D Cells Numerics hcoarse)
+
+/-- The certificate-retaining additive-tail package closes T1 through the
+same already-paid regular-`C3`, residual-pair, post-`E7`, and binary rows.
+This is the final assembly used by the historical families whose sharp local
+bound contains a source-independent cold remainder. -/
+theorem T1_of_preE7_noPairNoC3_localAdditive_data
+    {r : ℕ}
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
+    (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    (h18 : DegreeEighteenTernaryHeadBound)
+    (hKP : KovacsPraegerAbelianizationBound)
+    (D : PreE7NoPairNoC3LocalAdditiveAxisData r)
+    (Numerics : PreE7NoPairNoC3LocalAdditiveNumericalCertificate D)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ))) : T1 :=
+  T1_of_preE7_noPairNoC3_estimate hTracey hExceptional
+    hChief hWeight hPrimitive h18 hKP
+    (preE7NoPairNoC3_exponentialForwardEstimate_of_localAdditiveAxisData
+      D Numerics hcoarse)
+
+/-- The same concrete additive-tail package proves all three approved
+targets, using the already proved implications from `T1`. -/
+theorem allTargets_of_preE7_noPairNoC3_localAdditive_data
+    {r : ℕ}
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
+    (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    (h18 : DegreeEighteenTernaryHeadBound)
+    (hKP : KovacsPraegerAbelianizationBound)
+    (D : PreE7NoPairNoC3LocalAdditiveAxisData r)
+    (Numerics : PreE7NoPairNoC3LocalAdditiveNumericalCertificate D)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ))) :
+    AllTargets :=
+  allTargets_iff_T1.mpr
+    (T1_of_preE7_noPairNoC3_localAdditive_data hTracey hExceptional
+      hChief hWeight hPrimitive h18 hKP D Numerics hcoarse)
 
 end SymmetricSubgroupAsymptotics
 
