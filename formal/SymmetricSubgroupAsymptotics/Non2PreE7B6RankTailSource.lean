@@ -156,54 +156,54 @@ theorem fusionSurvivingEpiCount_le_groupEpimorphism_card {w b : ℕ}
 /-- A permutation group preserving a literal system of six two-point blocks
 has order at most `2^6 · 6! = 46080`: an element is determined by the images
 of one point from each block, and those images lie in distinct blocks. -/
-theorem sixPairBlock_card_le (e : Fin 12 ≃ Fin 6 × Fin 2)
-    (U : Subgroup (Equiv.Perm (Fin 12)))
-    (hU : ∀ u ∈ U, ∀ x y : Fin 12, (e x).1 = (e y).1 →
+theorem sixPairBlock_card_le {w : ℕ} (e : Fin w ≃ Fin 6 × Fin 2)
+    (U : Subgroup (Equiv.Perm (Fin w)))
+    (hU : ∀ u ∈ U, ∀ x y : Fin w, (e x).1 = (e y).1 →
       (e (u x)).1 = (e (u y)).1) :
     Nat.card U ≤ 46080 := by
-  let p : Fin 6 → Fin 12 := fun k => e.symm (k, 0)
+  let p : Fin 6 → Fin w := fun k => e.symm (k, 0)
   let T := {g : Fin 6 → Fin 6 × Fin 2 // Function.Injective (Prod.fst ∘ g)}
-  let Φ : U → T := fun u => ⟨fun k => e ((u : Equiv.Perm (Fin 12)) (p k)), by
+  let Φ : U → T := fun u => ⟨fun k => e ((u : Equiv.Perm (Fin w)) (p k)), by
     intro k l hkl
     have hinv := hU (u⁻¹ : U) (u⁻¹ : U).2 _ _ hkl
     simpa [p] using hinv⟩
   have hΦ : Function.Injective Φ := by
     intro u v huv
-    have hp : ∀ k, (u : Equiv.Perm (Fin 12)) (p k) =
-        (v : Equiv.Perm (Fin 12)) (p k) := by
+    have hp : ∀ k, (u : Equiv.Perm (Fin w)) (p k) =
+        (v : Equiv.Perm (Fin w)) (p k) := by
       intro k
       have := congrFun (congrArg Subtype.val huv) k
       exact e.injective this
-    have hq : ∀ k, (u : Equiv.Perm (Fin 12)) (e.symm (k, 1)) =
-        (v : Equiv.Perm (Fin 12)) (e.symm (k, 1)) := by
+    have hq : ∀ k, (u : Equiv.Perm (Fin w)) (e.symm (k, 1)) =
+        (v : Equiv.Perm (Fin w)) (e.symm (k, 1)) := by
       intro k
       let q := e.symm (k, 1)
       have hpq : (e q).1 = (e (p k)).1 := by simp [q, p]
       have hbu := hU u u.2 q (p k) hpq
       have hbv := hU v v.2 q (p k) hpq
-      have hne : ∀ w : U, (e ((w : Equiv.Perm (Fin 12)) q)).2 ≠
-          (e ((w : Equiv.Perm (Fin 12)) (p k))).2 := by
-        intro w h2
-        have hb := hU w w.2 q (p k) hpq
-        have heq : e ((w : Equiv.Perm (Fin 12)) q) =
-            e ((w : Equiv.Perm (Fin 12)) (p k)) := Prod.ext hb h2
-        have := (w : Equiv.Perm (Fin 12)).injective (e.injective heq)
+      have hne : ∀ z : U, (e ((z : Equiv.Perm (Fin w)) q)).2 ≠
+          (e ((z : Equiv.Perm (Fin w)) (p k))).2 := by
+        intro z h2
+        have hb := hU z z.2 q (p k) hpq
+        have heq : e ((z : Equiv.Perm (Fin w)) q) =
+            e ((z : Equiv.Perm (Fin w)) (p k)) := Prod.ext hb h2
+        have := (z : Equiv.Perm (Fin w)).injective (e.injective heq)
         have h' := congrArg e this
         simp [q, p] at h'
-      have hsnd : (e ((u : Equiv.Perm (Fin 12)) q)).2 =
-          (e ((v : Equiv.Perm (Fin 12)) q)).2 := by
+      have hsnd : (e ((u : Equiv.Perm (Fin w)) q)).2 =
+          (e ((v : Equiv.Perm (Fin w)) q)).2 := by
         have h1 := hne u
         have h2 := hne v
         rw [← hp k] at h2
         apply Fin.ext
-        have a1 := (e ((u : Equiv.Perm (Fin 12)) q)).2.isLt
-        have a2 := (e ((v : Equiv.Perm (Fin 12)) q)).2.isLt
-        have a3 := (e ((u : Equiv.Perm (Fin 12)) (p k))).2.isLt
+        have a1 := (e ((u : Equiv.Perm (Fin w)) q)).2.isLt
+        have a2 := (e ((v : Equiv.Perm (Fin w)) q)).2.isLt
+        have a3 := (e ((u : Equiv.Perm (Fin w)) (p k))).2.isLt
         have n1 := Fin.val_ne_of_ne h1
         have n2 := Fin.val_ne_of_ne h2
         omega
-      have hfst : (e ((u : Equiv.Perm (Fin 12)) q)).1 =
-          (e ((v : Equiv.Perm (Fin 12)) q)).1 := by
+      have hfst : (e ((u : Equiv.Perm (Fin w)) q)).1 =
+          (e ((v : Equiv.Perm (Fin w)) q)).1 := by
         rw [hbu, hbv, hp k]
       exact e.injective (Prod.ext hfst hsnd)
     apply Subtype.ext
@@ -364,14 +364,14 @@ end PreE7B6QuotientCertificate
 
 namespace Non2UnipotentPrefixFiniteMenu
 
-/-- A literal width-twelve action with a fixed system of six two-point
-blocks and one fixed A/B/C certificate on every literal normal quotient.
-The block chart is part of the certificate; alternative block systems do
-not create further certificates. -/
-structure PreE7B6ActionCertificate (U : Subgroup (Equiv.Perm (Fin 12))) :
-    Type 1 where
-  blockChart : Fin 12 ≃ Fin 6 × Fin 2
-  preserves : ∀ u ∈ U, ∀ x y : Fin 12,
+/-- A literal action with a fixed chart onto six two-point blocks, hence of
+width twelve, and one fixed A/B/C certificate on every literal normal
+quotient.  The block chart is part of the certificate; alternative block
+systems do not create further certificates. -/
+structure PreE7B6ActionCertificate {w : ℕ}
+    (U : Subgroup (Equiv.Perm (Fin w))) : Type 1 where
+  blockChart : Fin w ≃ Fin 6 × Fin 2
+  preserves : ∀ u ∈ U, ∀ x y : Fin w,
     (blockChart x).1 = (blockChart y).1 →
       (blockChart (u x)).1 = (blockChart (u y)).1
   quotient : ∀ N : {N : Subgroup U // N.Normal},
@@ -379,7 +379,8 @@ structure PreE7B6ActionCertificate (U : Subgroup (Equiv.Perm (Fin 12))) :
 
 namespace PreE7B6ActionCertificate
 
-variable {U : Subgroup (Equiv.Perm (Fin 12))} (C : PreE7B6ActionCertificate U)
+variable {w : ℕ} {U : Subgroup (Equiv.Perm (Fin w))}
+  (C : PreE7B6ActionCertificate U)
 
 /-- The fixed constant `C_U`, summed over the literal normal partition. -/
 def constant : ℝ := ∑ N, (C.quotient N).constant
@@ -388,8 +389,14 @@ theorem constant_nonneg : 0 ≤ C.constant :=
   Finset.sum_nonneg (fun N _ => (C.quotient N).constant_nonneg)
 
 /-- The number `ν(U)` of literal normal subgroups. -/
-def normalCount (U : Subgroup (Equiv.Perm (Fin 12))) : ℕ :=
+def normalCount (U : Subgroup (Equiv.Perm (Fin w))) : ℕ :=
   Nat.card {N : Subgroup U // N.Normal}
+
+include C in
+/-- The six-pair chart fixes the width at twelve. -/
+theorem width_eq : w = 12 := by
+  have := Fintype.card_congr C.blockChart
+  simpa using this
 
 include C in
 theorem card_le : Nat.card U ≤ 46080 :=
