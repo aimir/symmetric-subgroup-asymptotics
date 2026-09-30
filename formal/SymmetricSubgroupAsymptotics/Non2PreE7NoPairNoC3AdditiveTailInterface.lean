@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7NoPairNoC3ConcreteInterface
+import SymmetricSubgroupAsymptotics.Non2PreE7NonPairMenuMassAggregation
 import SymmetricSubgroupAsymptotics.GrowingQuotientAdditiveTail
 
 /-!
@@ -133,6 +134,113 @@ structure PreE7NoPairNoC3LocalAdditiveNumericalCertificate {r : ℕ}
     D.theta w i ≤ (halfDegree w : ℝ) / 4 - rho * w / 4
   main_menu : GrowingMenuMassBound 3 D.mainTotal D.normalizer
   tail_menu : GrowingMenuMassBound 3 D.tailTotal D.normalizer
+
+/-- One-entry original-weight estimate for the comparator-weighted main
+coefficient. -/
+def PreE7NoPairNoC3LocalAdditiveMainEntryBound {r : ℕ}
+    (D : PreE7NoPairNoC3LocalAdditiveAxisData r) : Prop :=
+  PolynomialSubquadraticMenuEntryBound 3 D.mainTotal D.normalizer
+
+/-- One-entry original-weight estimate for the pure cold coefficient. -/
+def PreE7NoPairNoC3LocalAdditiveTailEntryBound {r : ℕ}
+    (D : PreE7NoPairNoC3LocalAdditiveAxisData r) : Prop :=
+  PolynomialSubquadraticMenuEntryBound 3 D.tailTotal D.normalizer
+
+/-- A stronger numerator estimate for the main coefficient. -/
+def PreE7NoPairNoC3LocalAdditiveMainNumeratorBound {r : ℕ}
+    (D : PreE7NoPairNoC3LocalAdditiveAxisData r) : Prop :=
+  PolynomialSubquadraticMenuNumeratorBound 3 D.mainTotal
+
+/-- A stronger numerator estimate for the pure cold coefficient. -/
+def PreE7NoPairNoC3LocalAdditiveTailNumeratorBound {r : ℕ}
+    (D : PreE7NoPairNoC3LocalAdditiveAxisData r) : Prop :=
+  PolynomialSubquadraticMenuNumeratorBound 3 D.tailTotal
+
+private theorem localAdditive_normalizer_one_le {r : ℕ}
+    (D : PreE7NoPairNoC3LocalAdditiveAxisData r) (w i) :
+    1 ≤ D.normalizer w i := by
+  unfold PreE7NoPairNoC3LocalAdditiveAxisData.normalizer
+  exact_mod_cast (Nat.card_pos (α := Subgroup.normalizer
+    (preE7NonPairFirstOwnerAction w i : Set (Equiv.Perm (Fin w)))))
+
+theorem preE7NoPairNoC3LocalAdditiveMainEntryBound_of_numerator
+    {r : ℕ} (D : PreE7NoPairNoC3LocalAdditiveAxisData r)
+    (h : PreE7NoPairNoC3LocalAdditiveMainNumeratorBound D) :
+    PreE7NoPairNoC3LocalAdditiveMainEntryBound D :=
+  polynomialSubquadraticMenuEntryBound_of_numerator
+    D.mainTotal D.normalizer D.mainTotal_nonneg
+    (localAdditive_normalizer_one_le D) h
+
+theorem preE7NoPairNoC3LocalAdditiveTailEntryBound_of_numerator
+    {r : ℕ} (D : PreE7NoPairNoC3LocalAdditiveAxisData r)
+    (h : PreE7NoPairNoC3LocalAdditiveTailNumeratorBound D) :
+    PreE7NoPairNoC3LocalAdditiveTailEntryBound D :=
+  polynomialSubquadraticMenuEntryBound_of_numerator
+    D.tailTotal D.normalizer D.tailTotal_nonneg
+    (localAdditive_normalizer_one_le D) h
+
+theorem preE7NoPairNoC3LocalAdditiveMainMenuMassBound
+    {r : ℕ} (D : PreE7NoPairNoC3LocalAdditiveAxisData r)
+    (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
+    (hentry : PreE7NoPairNoC3LocalAdditiveMainEntryBound D) :
+    GrowingMenuMassBound 3 D.mainTotal D.normalizer :=
+  growingMenuMassBound_of_polynomialSubquadratic (by omega)
+    D.mainTotal D.normalizer
+    (polynomialSubquadraticMenuMassBound_of_index_entry
+      D.mainTotal D.normalizer
+      (preE7NonPairFirstOwnerIndex_subquadratic hLMM r) hentry)
+
+theorem preE7NoPairNoC3LocalAdditiveTailMenuMassBound
+    {r : ℕ} (D : PreE7NoPairNoC3LocalAdditiveAxisData r)
+    (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
+    (hentry : PreE7NoPairNoC3LocalAdditiveTailEntryBound D) :
+    GrowingMenuMassBound 3 D.tailTotal D.normalizer :=
+  growingMenuMassBound_of_polynomialSubquadratic (by omega)
+    D.tailTotal D.normalizer
+    (polynomialSubquadraticMenuMassBound_of_index_entry
+      D.tailTotal D.normalizer
+      (preE7NonPairFirstOwnerIndex_subquadratic hLMM r) hentry)
+
+/-- Build the complete additive numerical certificate from the two uniform
+one-entry estimates.  The published transitive-action bound pays the common
+finite action index once for each menu. -/
+noncomputable def PreE7NoPairNoC3LocalAdditiveNumericalCertificate.ofEntryBounds
+    {r : ℕ} (D : PreE7NoPairNoC3LocalAdditiveAxisData r)
+    (rho : ℝ) (rho_pos : 0 < rho) (rho_le_eighth : rho ≤ 1 / 8)
+    (parameters : GrowingQuotientParameterBound rho
+      D.v D.eta D.delta D.cutoff D.alpha)
+    (tail_gap : ∀ w i,
+      D.theta w i ≤ (halfDegree w : ℝ) / 4 - rho * w / 4)
+    (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
+    (hmain : PreE7NoPairNoC3LocalAdditiveMainEntryBound D)
+    (htail : PreE7NoPairNoC3LocalAdditiveTailEntryBound D) :
+    PreE7NoPairNoC3LocalAdditiveNumericalCertificate D where
+  rho := rho
+  rho_pos := rho_pos
+  rho_le_eighth := rho_le_eighth
+  parameters := parameters
+  tail_gap := tail_gap
+  main_menu := preE7NoPairNoC3LocalAdditiveMainMenuMassBound D hLMM hmain
+  tail_menu := preE7NoPairNoC3LocalAdditiveTailMenuMassBound D hLMM htail
+
+/-- Numerator estimates are sufficient because every original action
+normalizer has cardinality at least one. -/
+noncomputable def
+    PreE7NoPairNoC3LocalAdditiveNumericalCertificate.ofNumeratorBounds
+    {r : ℕ} (D : PreE7NoPairNoC3LocalAdditiveAxisData r)
+    (rho : ℝ) (rho_pos : 0 < rho) (rho_le_eighth : rho ≤ 1 / 8)
+    (parameters : GrowingQuotientParameterBound rho
+      D.v D.eta D.delta D.cutoff D.alpha)
+    (tail_gap : ∀ w i,
+      D.theta w i ≤ (halfDegree w : ℝ) / 4 - rho * w / 4)
+    (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
+    (hmain : PreE7NoPairNoC3LocalAdditiveMainNumeratorBound D)
+    (htail : PreE7NoPairNoC3LocalAdditiveTailNumeratorBound D) :
+    PreE7NoPairNoC3LocalAdditiveNumericalCertificate D :=
+  PreE7NoPairNoC3LocalAdditiveNumericalCertificate.ofEntryBounds
+    D rho rho_pos rho_le_eighth parameters tail_gap hLMM
+    (preE7NoPairNoC3LocalAdditiveMainEntryBound_of_numerator D hmain)
+    (preE7NoPairNoC3LocalAdditiveTailEntryBound_of_numerator D htail)
 
 /-- The additive transfer with a certificate-retaining physical cover. -/
 noncomputable def
