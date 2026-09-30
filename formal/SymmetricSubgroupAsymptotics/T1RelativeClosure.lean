@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.BinaryNativeRecurrence
 import SymmetricSubgroupAsymptotics.Non2PreE7ResidualPairPartition
 import SymmetricSubgroupAsymptotics.Non2PreE7NonPairConcreteInterface
+import SymmetricSubgroupAsymptotics.Non2PreE7C3Partition
 
 /-!
 # The final relative closure of T1
@@ -95,6 +96,38 @@ theorem allTargets_of_preE7_nonPair_data
   allTargets_iff_T1.mpr
     (T1_of_preE7_nonPair_data
       hTracey hExceptional D Cells Numerics hcoarse)
+
+/-- After the complete regular-C3 family is also paid, an estimate for the
+exact remaining complement closes T1. -/
+theorem T1_of_preE7_noPairNoC3_estimate
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
+    (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    (h18 : DegreeEighteenTernaryHeadBound)
+    (hKP : KovacsPraegerAbelianizationBound)
+    (P : OrdinaryFrontierClosure.ExponentialForwardEstimate
+      preE7NoPairNoC3ResidualRatio) : T1 :=
+  T1_of_preE7_nonPair_estimate hTracey hExceptional
+    (preE7NonPair_exponentialForwardEstimate_of_noC3
+      hChief hWeight hPrimitive h18 hKP P)
+
+/-- The exact complement after the pair and regular-C3 cuts closes all three
+approved targets. -/
+theorem allTargets_of_preE7_noPairNoC3_estimate
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
+    (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    (h18 : DegreeEighteenTernaryHeadBound)
+    (hKP : KovacsPraegerAbelianizationBound)
+    (P : OrdinaryFrontierClosure.ExponentialForwardEstimate
+      preE7NoPairNoC3ResidualRatio) : AllTargets :=
+  allTargets_iff_T1.mpr
+    (T1_of_preE7_noPairNoC3_estimate hTracey hExceptional
+      hChief hWeight hPrimitive h18 hKP P)
 
 end SymmetricSubgroupAsymptotics
 
