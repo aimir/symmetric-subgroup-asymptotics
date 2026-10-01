@@ -5,6 +5,7 @@ import SymmetricSubgroupAsymptotics.Non2PreE7SaprimBinaryAffine
 import SymmetricSubgroupAsymptotics.Non2PreE7SaprimOddCyclicAffine
 import SymmetricSubgroupAsymptotics.Non2PreE7SaprimOddLargeAffine
 import SymmetricSubgroupAsymptotics.Non2PreE7SaprimExceptionalOdd
+import SymmetricSubgroupAsymptotics.Non2PreE7S3LocalAdditive
 import SymmetricSubgroupAsymptotics.Non2PreE7RankTailSourceDichotomyClosure
 
 /-!
@@ -40,6 +41,9 @@ def PreE7CompletedSmallOwnerSourceData :
               (PreE7SaprimOddLargeAffineSource w i ⊕
                 (PreE7SaprimDegreeNineSource w i ⊕
                   PreE7SaprimDegreeTwentyFiveSource w i)))))
+  | .s3two => fun w i => PreE7S3TwoSource w i
+  | .s3cycl => fun w i => PreE7S3CyclicSource w i
+  | .s3syl => fun w i => PreE7S3SylowSource w i
   | .tf => fun w i => PreE7TFSource w i
   | _ => fun _ _ => PEmpty
 
@@ -74,6 +78,9 @@ noncomputable def PreE7CompletedSmallOwnerSourceData.numericalData
             · rcases S with S | S
               · exact S.numericalData
               · exact S.numericalData
+  case s3two => exact PreE7S3LocalAdditiveSource.numericalData S
+  case s3cycl => exact PreE7S3LocalAdditiveSource.numericalData S
+  case s3syl => exact PreE7S3LocalAdditiveSource.numericalData S
   case tf => exact preE7_tf_numericalData w i S
 
 /-- A completed small action as an ordinary numerical source. -/
