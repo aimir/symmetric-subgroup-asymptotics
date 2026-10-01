@@ -41,6 +41,7 @@ noncomputable def
 theorem T1_of_preE7_actualBlockCompression_or_sourceOrYonedaTop_data
     (lit : PreE7CharacterLiterature)
     (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
@@ -55,7 +56,7 @@ theorem T1_of_preE7_actualBlockCompression_or_sourceOrYonedaTop_data
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   T1_of_preE7_semisimpleCompression_or_sourceOrYonedaTop_data
-    lit hgen hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
+    lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     hOuter
     (fun w U => (D w U).toCompressionOrSourceOrYonedaTopData)
     hcoarse hFS
@@ -88,6 +89,7 @@ or an actual primitive block component. -/
 theorem T1_of_preE7_localCompression_or_sourceOrYonedaTop_data
     (lit : PreE7CharacterLiterature)
     (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
@@ -102,7 +104,7 @@ theorem T1_of_preE7_localCompression_or_sourceOrYonedaTop_data
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   T1_of_preE7_semisimpleCompression_or_sourceOrYonedaTop_data
-    lit hgen hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
+    lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     hOuter
     (fun w U => (D w U).toCompressionOrSourceOrYonedaTopData)
     hcoarse hFS
@@ -132,6 +134,7 @@ integrated affine/soluble/exceptional/Yoneda source. -/
 theorem T1_of_preE7_primitiveCompression_or_sourceOrYonedaTop_data
     (lit : PreE7CharacterLiterature)
     (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
@@ -146,7 +149,7 @@ theorem T1_of_preE7_primitiveCompression_or_sourceOrYonedaTop_data
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   T1_of_preE7_localCompression_or_sourceOrYonedaTop_data
-    lit hgen hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
+    lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     hOuter
     (fun w U => (D w U).toLocalCompressionOrSourceOrYonedaTopData)
     hcoarse hFS

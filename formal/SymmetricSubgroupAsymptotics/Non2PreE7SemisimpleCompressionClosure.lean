@@ -37,6 +37,7 @@ noncomputable def
 theorem T1_of_preE7_semisimpleCompression_or_sourceOrYonedaTop_data
     (lit : PreE7CharacterLiterature)
     (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
@@ -50,7 +51,7 @@ theorem T1_of_preE7_semisimpleCompression_or_sourceOrYonedaTop_data
       PreE7CompressionOrSourceOrYonedaTopData w U)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
-  T1_of_preE7_rankTail_sourceOrYonedaTop_data lit hgen
+  T1_of_preE7_rankTail_sourceOrYonedaTop_data lit hgen hRDT
     hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     (fun w U => (D w U).toSourceOrYonedaTopData hOuter)
     hcoarse hFS hOuter

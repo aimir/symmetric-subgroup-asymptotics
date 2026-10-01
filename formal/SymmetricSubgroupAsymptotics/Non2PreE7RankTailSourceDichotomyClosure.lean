@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7RankTailOwnerOrJointTopClosure
 import SymmetricSubgroupAsymptotics.Non2PreE7OrdinaryNumericalInstances
+import SymmetricSubgroupAsymptotics.MarkedC4RDTAssembly
 
 /-!
 # Source-level rank-tail dichotomy for T1
@@ -26,12 +27,14 @@ inductive PreE7RankTailOwnerSourceData
   | b6 (source : PreE7B6SourceData w U)
   | y1 (source : PreE7Y1SourceData w U)
   | sns2 (source : PreE7Sns2SourceData w U)
+  | f20 (source : PreE7F20Source w U)
 
 /-- Every concrete source constructs the literal numerical owner consumed by
 the first-owner catalogue. -/
 noncomputable def PreE7RankTailOwnerSourceData.toActionOwner
     (lit : PreE7CharacterLiterature)
     (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     {w : ℕ} {U : PreE7NonPairActionClass w}
     (S : PreE7RankTailOwnerSourceData w U) :
     PreE7NumericalRankTailActionOwner w U := by
@@ -60,6 +63,8 @@ noncomputable def PreE7RankTailOwnerSourceData.toActionOwner
         preE7NoPairNoC3EarlierOwnerEquiv.apply_symm_apply] using
         (Or.inr (Or.inr (Or.inr ⟨rfl, ⟨source⟩⟩)) :
           preE7NoPairNoC3EarlierNumericalRankTailFamilyAction .sns2 w U)
+  | f20 source =>
+      exact source.rankTailActionOwner hRDT.globalMarkedC4MomentBound
 
 /-- Exact source-facing remaining theorem on one retained action. -/
 abbrev PreE7RankTailSourceOrJointTopData
@@ -77,11 +82,12 @@ abbrev PreE7RankTailSourceOrYonedaTopData
 noncomputable def PreE7RankTailSourceOrJointTopData.toOwnerOrJointTopData
     (lit : PreE7CharacterLiterature)
     (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     {w : ℕ} {U : PreE7NonPairActionClass w}
     (D : PreE7RankTailSourceOrJointTopData w U) :
     PreE7NumericalRankTailOwnerOrJointTopData w U :=
   match D with
-  | .inl source => .inl (source.toActionOwner lit hgen)
+  | .inl source => .inl (source.toActionOwner lit hgen hRDT)
   | .inr cells => .inr cells
 
 noncomputable def PreE7RankTailSourceOrYonedaTopData.toSourceOrJointTopData
@@ -96,6 +102,7 @@ noncomputable def PreE7RankTailSourceOrYonedaTopData.toSourceOrJointTopData
 theorem T1_of_preE7_rankTail_sourceOrJointTop_data
     (lit : PreE7CharacterLiterature)
     (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
@@ -111,13 +118,14 @@ theorem T1_of_preE7_rankTail_sourceOrJointTop_data
     (hOuter : SemisimpleOuterFactorPermutationBound) : T1 :=
   T1_of_preE7_numericalRankTail_ownerOrJointTop_data lit
     hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
-    (fun w U => (D w U).toOwnerOrJointTopData lit hgen)
+    (fun w U => (D w U).toOwnerOrJointTopData lit hgen hRDT)
     hcoarse hFS hOuter
 
 /-- T1 from the equivalent explicit Yoneda-top-family construction. -/
 theorem T1_of_preE7_rankTail_sourceOrYonedaTop_data
     (lit : PreE7CharacterLiterature)
     (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
@@ -131,7 +139,7 @@ theorem T1_of_preE7_rankTail_sourceOrYonedaTop_data
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput)
     (hOuter : SemisimpleOuterFactorPermutationBound) : T1 :=
-  T1_of_preE7_rankTail_sourceOrJointTop_data lit hgen
+  T1_of_preE7_rankTail_sourceOrJointTop_data lit hgen hRDT
     hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     (fun w U => (D w U).toSourceOrJointTopData)
     hcoarse hFS hOuter
