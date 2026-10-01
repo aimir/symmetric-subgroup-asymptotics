@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7ActualBlockCompression
 import SymmetricSubgroupAsymptotics.Non2PreE7LocalSemisimpleCompression
 import SymmetricSubgroupAsymptotics.Non2PreE7SemisimpleCompressionClosure
+import SymmetricSubgroupAsymptotics.PrimitiveSemisimpleCompressionProfile
 
 /-!
 # T1 from local exact-block compression
@@ -104,6 +105,50 @@ theorem T1_of_preE7_localCompression_or_sourceOrYonedaTop_data
     lit hgen hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     hOuter
     (fun w U => (D w U).toCompressionOrSourceOrYonedaTopData)
+    hcoarse hFS
+
+/-- Primitive-socle-facing final alternatives.  The uniform branches retain
+the factor count, least index and outer order; only the bounded almost-simple
+branch uses a direct finite certificate. -/
+inductive PreE7PrimitiveCompressionOrSourceOrYonedaTopData
+    (w : ℕ) (U : PreE7NonPairActionClass w) : Type 1 where
+  | primitive (data : PreE7PrimitiveCompressionCertificateData w U)
+  | imprimitive
+      (data : PreE7OriginalMinimalBlockCompressionCertificateData w U)
+  | source (data : PreE7RankTailSourceOrYonedaTopData w U)
+
+noncomputable def
+    PreE7PrimitiveCompressionOrSourceOrYonedaTopData.toLocalCompressionOrSourceOrYonedaTopData
+    {w : ℕ} {U : PreE7NonPairActionClass w}
+    (D : PreE7PrimitiveCompressionOrSourceOrYonedaTopData w U) :
+    PreE7LocalCompressionOrSourceOrYonedaTopData w U :=
+  match D with
+  | .primitive data => .primitive data.toPrimitiveLocalCompressionData
+  | .imprimitive data => .imprimitive data.toLocalCompressionData
+  | .source data => .source data
+
+/-- T1 from the exact primitive-socle compression certificate or an already
+integrated affine/soluble/exceptional/Yoneda source. -/
+theorem T1_of_preE7_primitiveCompression_or_sourceOrYonedaTop_data
+    (lit : PreE7CharacterLiterature)
+    (hgen : PermutationSubgroupGeneratorBound)
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
+    (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    (h18 : DegreeEighteenTernaryHeadBound)
+    (hKP : KovacsPraegerAbelianizationBound)
+    (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
+    (hOuter : SemisimpleOuterFactorPermutationBound)
+    (D : ∀ w (U : PreE7NonPairActionClass w),
+      PreE7PrimitiveCompressionOrSourceOrYonedaTopData w U)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
+    (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
+  T1_of_preE7_localCompression_or_sourceOrYonedaTop_data
+    lit hgen hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
+    hOuter
+    (fun w U => (D w U).toLocalCompressionOrSourceOrYonedaTopData)
     hcoarse hFS
 
 end Non2UnipotentPrefixFiniteMenu
