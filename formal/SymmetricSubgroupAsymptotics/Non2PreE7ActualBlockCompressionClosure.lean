@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7ActualBlockCompression
+import SymmetricSubgroupAsymptotics.Non2PreE7LocalSemisimpleCompression
 import SymmetricSubgroupAsymptotics.Non2PreE7SemisimpleCompressionClosure
 
 /-!
@@ -50,6 +51,53 @@ theorem T1_of_preE7_actualBlockCompression_or_sourceOrYonedaTop_data
     (hOuter : SemisimpleOuterFactorPermutationBound)
     (D : ∀ w (U : PreE7NonPairActionClass w),
       PreE7ActualBlockCompressionOrSourceOrYonedaTopData w U)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
+    (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
+  T1_of_preE7_semisimpleCompression_or_sourceOrYonedaTop_data
+    lit hgen hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
+    hOuter
+    (fun w U => (D w U).toCompressionOrSourceOrYonedaTopData)
+    hcoarse hFS
+
+/-- Final local structural alternatives.  Primitive actions use their own
+local quotient; imprimitive actions use one actual minimal block; all affine,
+soluble and exceptional branches may instead supply an already integrated
+source or the terminal Yoneda family. -/
+inductive PreE7LocalCompressionOrSourceOrYonedaTopData
+    (w : ℕ) (U : PreE7NonPairActionClass w) : Type 1 where
+  | primitive (data : PreE7PrimitiveLocalCompressionData w U)
+  | imprimitive (data : PreE7OriginalMinimalBlockLocalCompressionData w U)
+  | source (data : PreE7RankTailSourceOrYonedaTopData w U)
+
+/-- Every local structural alternative enters the already checked global
+compression/source frontier. -/
+noncomputable def
+    PreE7LocalCompressionOrSourceOrYonedaTopData.toCompressionOrSourceOrYonedaTopData
+    {w : ℕ} {U : PreE7NonPairActionClass w}
+    (D : PreE7LocalCompressionOrSourceOrYonedaTopData w U) :
+    PreE7CompressionOrSourceOrYonedaTopData w U :=
+  match D with
+  | .primitive data => .inl data.toSemisimpleCompressionData
+  | .imprimitive data => .inl data.toSemisimpleCompressionData
+  | .source data => .inr data
+
+/-- T1 after all global compression and exact-block arguments have been
+discharged.  The remaining exhaustion theorem is local on a primitive action
+or an actual primitive block component. -/
+theorem T1_of_preE7_localCompression_or_sourceOrYonedaTop_data
+    (lit : PreE7CharacterLiterature)
+    (hgen : PermutationSubgroupGeneratorBound)
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
+    (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    (h18 : DegreeEighteenTernaryHeadBound)
+    (hKP : KovacsPraegerAbelianizationBound)
+    (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
+    (hOuter : SemisimpleOuterFactorPermutationBound)
+    (D : ∀ w (U : PreE7NonPairActionClass w),
+      PreE7LocalCompressionOrSourceOrYonedaTopData w U)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   T1_of_preE7_semisimpleCompression_or_sourceOrYonedaTop_data
