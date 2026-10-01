@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveCatalogueAffineReduction
 import SymmetricSubgroupAsymptotics.SemisimpleOuterFactorPublished
+import SymmetricSubgroupAsymptotics.PrimitiveTernaryChiefWeightPublished
 import SymmetricSubgroupAsymptotics.MarkedC4RDTAssembly
 
 /-!
@@ -102,8 +103,8 @@ theorem T1_of_preE7_primitiveCatalogueClassification
     (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
-    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
     (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hDegreeNine : PublishedPrimitiveDegreeNineClassification)
     (hPrimitive : PrimitiveTernaryStrictHeadBound)
     (h18 : DegreeEighteenTernaryHeadBound)
     (hKP : KovacsPraegerAbelianizationBound)
@@ -114,7 +115,9 @@ theorem T1_of_preE7_primitiveCatalogueClassification
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   (preE7PrimitiveCatalogueExhaustionData classification affine).T1_of_preE7_primitiveCatalogueExhaustion
-    lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
+    lit hgen hRDT hTracey hExceptional
+    (primitiveTernaryChiefWeightBound_of_published hWeight hDegreeNine)
+    hWeight hPrimitive h18 hKP hLMM
     (semisimpleOuterFactorPermutationBound_of_primitiveGenerator
       hHoltRoneyDougal) hcoarse hFS
 

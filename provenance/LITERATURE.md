@@ -381,6 +381,16 @@ gives the classification provenance, including Sims and C. M. Roney-Dougal,
 The paper's publisher abstract and institutional record state its range as
 degrees below 2500; the 2011 extension is a separate publication.
 
+The degree-nine slice has eleven rows, of orders
+`36, 72, 72, 72, 144, 216, 432, 504, 1512, 181440, 362880`; the last two are
+the natural `A9` and `S9` actions.  The formal interface
+`PublishedPrimitiveDegreeNineClassification` records exactly this published
+slice.  `primitiveTernaryChiefWeightBound_of_published` checks the ternary
+order valuations of the first nine rows and uses symbolic chief series for
+`A9` and `S9`.  Thus `PrimitiveTernaryChiefWeightBound` is derived from the
+already stronger three-tenths weight bound plus this published classification
+slice, rather than retained as an independent research assumption.
+
 ### Software representatives and classification scope
 
 The computational interfaces use GAP 4.13.1 with these releases:
