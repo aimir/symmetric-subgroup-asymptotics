@@ -300,6 +300,15 @@ For a primitive group G of degree w, LIT-PRIM-ORDER gives at least one of:
    <w^(1+floor(log_2 w)).
 
 The semisimple-normal argument uses this actual permutation embedding.
+The formal outer-factor endpoint uses the following direct corollary of
+LIT-PRIM-GEN.  A finite centerless simple group with a faithful permutation
+action of degree `w` has a generating set of size at most `floor(log_2 w)`:
+choose a nontrivial orbit, enlarge a point stabilizer to a maximal subgroup,
+and apply Theorem 1.1 to the resulting faithful primitive action.  Its sole
+exception is `S_3`, which is not simple.  The Lean theorem
+`semisimpleOuterFactorPermutationBound_of_primitiveGenerator` then proves the
+complete outer-factor product bound; that product bound is not retained as an
+independent literature assumption.
 For m>=5 the normal subgroup A_m^r and the quotient bound
 |G/A_m^r|<=2^r r! follow from it; m<=4 is handled by the small-order
 bound. An abstract alternating socle without the specified subset action

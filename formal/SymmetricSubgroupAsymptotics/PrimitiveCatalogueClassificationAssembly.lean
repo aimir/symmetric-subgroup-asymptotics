@@ -1,4 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveCatalogueAffineReduction
+import SymmetricSubgroupAsymptotics.SemisimpleOuterFactorPublished
+import SymmetricSubgroupAsymptotics.MarkedC4RDTAssembly
 
 /-!
 # Literal primitive classification and affine-consumer assembly
@@ -106,14 +108,15 @@ theorem T1_of_preE7_primitiveCatalogueClassification
     (h18 : DegreeEighteenTernaryHeadBound)
     (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
-    (hOuter : SemisimpleOuterFactorPermutationBound)
+    (hHoltRoneyDougal : FaithfulSimplePermutationGeneratorBound)
     (classification : PreE7PrimitiveCatalogueClassificationInput)
     (affine : PreE7PrimitiveAffineConsumerData)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   (preE7PrimitiveCatalogueExhaustionData classification affine).T1_of_preE7_primitiveCatalogueExhaustion
     lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
-    hOuter hcoarse hFS
+    (semisimpleOuterFactorPermutationBound_of_primitiveGenerator
+      hHoltRoneyDougal) hcoarse hFS
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
