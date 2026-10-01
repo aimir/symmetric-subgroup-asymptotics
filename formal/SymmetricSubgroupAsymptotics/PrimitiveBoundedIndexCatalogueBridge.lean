@@ -137,6 +137,7 @@ matches, and the already integrated action-source alternatives. -/
 theorem T1_of_preE7_primitiveCatalogueExhaustion
     (lit : PreE7CharacterLiterature)
     (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
@@ -150,7 +151,7 @@ theorem T1_of_preE7_primitiveCatalogueExhaustion
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   D.toBoundedIndexExhaustion.T1_of_preE7_primitiveBoundedIndexExhaustion
-    lit hgen hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
+    lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     hOuter hcoarse hFS
 
 end PreE7PrimitiveCatalogueExhaustionData

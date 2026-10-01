@@ -97,6 +97,7 @@ consumer exposed as distinct assumptions. -/
 theorem T1_of_preE7_primitiveCatalogueClassification
     (lit : PreE7CharacterLiterature)
     (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
@@ -111,7 +112,7 @@ theorem T1_of_preE7_primitiveCatalogueClassification
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   (preE7PrimitiveCatalogueExhaustionData classification affine).T1_of_preE7_primitiveCatalogueExhaustion
-    lit hgen hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
+    lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     hOuter hcoarse hFS
 
 end Non2UnipotentPrefixFiniteMenu

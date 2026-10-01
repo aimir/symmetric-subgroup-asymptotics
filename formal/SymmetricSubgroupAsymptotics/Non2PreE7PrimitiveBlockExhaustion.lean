@@ -79,6 +79,7 @@ primitive classification and the already integrated source alternatives. -/
 theorem T1_of_preE7_primitiveComponentExhaustion
     (lit : PreE7CharacterLiterature)
     (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
@@ -92,7 +93,7 @@ theorem T1_of_preE7_primitiveComponentExhaustion
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   T1_of_preE7_primitiveCompression_or_sourceOrYonedaTop_data
-    lit hgen hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
+    lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     hOuter D.classify hcoarse hFS
 
 end PreE7PrimitiveComponentExhaustionData

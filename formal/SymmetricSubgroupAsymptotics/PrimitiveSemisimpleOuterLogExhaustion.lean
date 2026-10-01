@@ -94,6 +94,7 @@ integrated affine/exceptional/Yoneda sources. -/
 theorem T1_of_preE7_primitiveOuterLogExhaustion
     (lit : PreE7CharacterLiterature)
     (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     (hTracey : TraceyBinaryFormulaInput)
     (hExceptional : TraceyBinaryExceptionalThreeInput)
     (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
@@ -107,7 +108,7 @@ theorem T1_of_preE7_primitiveOuterLogExhaustion
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   D.toPrimitiveComponentExhaustion.T1_of_preE7_primitiveComponentExhaustion
-    lit hgen hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
+    lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     hOuter hcoarse hFS
 
 end PreE7PrimitiveOuterLogExhaustionData
