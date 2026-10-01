@@ -25,7 +25,7 @@ theorem sum_le_uniformFiber_mul_sum
     (M : ℕ) (C : ℝ)
     (hpoint : ∀ a, sourceWeight a ≤ C * targetWeight (code a))
     (hC : 0 ≤ C) (htarget : ∀ b, 0 ≤ targetWeight b)
-    (hfibre : ∀ b, Fintype.card {a : A // code a = b} ≤ M) :
+    (hfibre : ∀ b, Nat.card {a : A // code a = b} ≤ M) :
     (∑ a, sourceWeight a) ≤ (M : ℝ) * C * ∑ b, targetWeight b := by
   calc
     (∑ a, sourceWeight a) =
@@ -46,7 +46,9 @@ theorem sum_le_uniformFiber_mul_sum
       apply Finset.sum_le_sum
       intro b hb
       apply mul_le_mul_of_nonneg_right
-      · exact_mod_cast hfibre b
+      · have hcard := hfibre b
+        rw [Nat.card_eq_fintype_card] at hcard
+        exact_mod_cast hcard
       · exact mul_nonneg hC (htarget b)
     _ = (M : ℝ) * C * ∑ b, targetWeight b := by
       rw [Finset.mul_sum]
@@ -61,7 +63,7 @@ theorem sum_le_uniformFiber_mul_twoPow_mul_sum
     (M e : ℕ)
     (hpoint : ∀ a, sourceWeight a ≤ (2 : ℝ) ^ e * targetWeight (code a))
     (htarget : ∀ b, 0 ≤ targetWeight b)
-    (hfibre : ∀ b, Fintype.card {a : A // code a = b} ≤ M) :
+    (hfibre : ∀ b, Nat.card {a : A // code a = b} ≤ M) :
     (∑ a, sourceWeight a) ≤
       (M : ℝ) * (2 : ℝ) ^ e * ∑ b, targetWeight b := by
   exact sum_le_uniformFiber_mul_sum code sourceWeight targetWeight M
@@ -85,7 +87,7 @@ theorem homMoment_sum_le_of_relativeGenerator_encoding
     (hrestrict : ∀ a,
       (Nat.card (K a →* Multiplicative (ZMod 4)) : ℝ) ^ r ≤
         targetWeight (code a))
-    (hfibre : ∀ b, Fintype.card {a : A // code a = b} ≤ M) :
+    (hfibre : ∀ b, Nat.card {a : A // code a = b} ≤ M) :
     (∑ a, (Nat.card (G a →* Multiplicative (ZMod 4)) : ℝ) ^ r) ≤
       (M : ℝ) * (2 : ℝ) ^ (2 * r * l) * ∑ b, targetWeight b := by
   apply sum_le_uniformFiber_mul_twoPow_mul_sum code
