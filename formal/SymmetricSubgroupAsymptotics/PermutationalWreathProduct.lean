@@ -144,6 +144,30 @@ theorem toFinPerm_injective [FaithfulSMul D (Fin u)]
 
 end FiniteDegree
 
+section ArbitraryFiniteTop
+
+variable {u : ℕ}
+  (D Q I : Type*) [Group D] [Group Q] [Fintype I]
+  [MulAction D (Fin u)] [MulAction Q I]
+
+/-- Relabel the product-point action when the actual top point set is an
+arbitrary finite type.  This avoids replacing the literal block top by a
+regular action merely to obtain a `Fin`-indexed permutation group. -/
+def toFintypePerm :
+    PermutationalWreathProduct D Q I →*
+      Equiv.Perm (Fin (u * Fintype.card I)) :=
+  ((Equiv.prodCongr (Equiv.refl (Fin u)) (Fintype.equivFin I)).trans
+      finProdFinEquiv).permCongrHom.toMonoidHom.comp
+    (toPerm (D := D) (Q := Q) (I := I) (Lambda := Fin u))
+
+theorem toFintypePerm_injective [FaithfulSMul D (Fin u)]
+    [FaithfulSMul Q I] [Nonempty (Fin u)] [Nonempty I] :
+    Function.Injective (toFintypePerm (u := u) D Q I) :=
+  ((Equiv.prodCongr (Equiv.refl (Fin u)) (Fintype.equivFin I)).trans
+      finProdFinEquiv).permCongrHom.injective.comp toPerm_injective
+
+end ArbitraryFiniteTop
+
 end PermutationalWreathProduct
 end SymmetricSubgroupAsymptotics
 
