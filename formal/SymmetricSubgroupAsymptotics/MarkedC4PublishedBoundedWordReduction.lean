@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.MarkedC4BoundedWordAssembly
 import SymmetricSubgroupAsymptotics.MarkedC4CaseIComplete
 import SymmetricSubgroupAsymptotics.MarkedC4CaseIIPeel
+import SymmetricSubgroupAsymptotics.MarkedC4PublishedCaseIEncoding
 
 /-!
 # The published RDT bounded-word rows imply the marked recurrence
@@ -176,6 +177,82 @@ theorem bound
 
 end PublishedBoundedWordCaseIIPeelRow
 
+/-! ## The literal Case-I input -/
+
+/-- All data for one physical degree in Case I.  Unlike
+`PublishedBoundedWordCaseIRow`, this structure is independent of the mark
+count `r`.  Its only counting datum is the finite injection into the actual
+Hall fibres; `row` below derives the former `enumeration` field for every
+`r`.
+-/
+structure PublishedBoundedWordLiteralCaseI
+    (caseI : ℕ → ℝ) (A : ℝ) (b : ℕ) where
+  c : ℕ → ℝ
+  n : ℕ → ℝ
+  d : ℕ → ℝ
+  t : ℕ
+  a : ℝ
+  sourceFirst : ℝ
+  sourceSecond : ℝ
+  A₀ : ℝ
+  A_eq : A = A₀ + 6
+  A₀_nonneg : 0 ≤ A₀
+  a_nonneg : 0 ≤ a
+  a_le_degree : a ≤ b
+  sourceFirst_nonneg : 0 ≤ sourceFirst
+  sourceSecond_nonneg : 0 ≤ sourceSecond
+  sourceSecond_le_first : sourceSecond ≤ sourceFirst
+  first_cap : sourceFirst ≤ ∑ m ∈ Finset.range t, d m
+  joint_cap : sourceFirst + sourceSecond ≤
+    ∑ m ∈ Finset.range t, min (2 * d m) (c m * n m)
+  n_nonneg : ∀ m < t, 0 ≤ n m
+  c_nonneg : ∀ m < t, 0 ≤ c m
+  c_le_one : ∀ m < t, c m ≤ 1
+  c_mono : ∀ j m, j ≤ m → m < t → c j ≤ c m
+  d_nonneg : ∀ m < t, 0 ≤ d m
+  d_le_quarter : ∀ m < t, d m ≤ n m / 4
+  d_le_density : ∀ m < t, d m ≤ c m * n m
+  degree_eq : a + prefixWeight n t = (b : ℝ)
+  encoding : PublishedCaseIHallEncoding caseI a sourceFirst sourceSecond
+    (∑ m ∈ Finset.range t,
+      ∑ j ∈ Finset.range m, (c m - c j) * n j * d m)
+    A₀ b
+
+namespace PublishedBoundedWordLiteralCaseI
+
+/-- The literal finite Hall encoding supplies the old row for every `r`.
+The marked Hall exponent and all polynomial losses are conclusions. -/
+noncomputable def row
+    {caseI : ℕ → ℝ} {A : ℝ} {b : ℕ}
+    (D : PublishedBoundedWordLiteralCaseI caseI A b) (r : ℕ) :
+    PublishedBoundedWordCaseIRow (caseI r) A b r where
+  c := D.c
+  n := D.n
+  d := D.d
+  t := D.t
+  a := D.a
+  sourceFirst := D.sourceFirst
+  sourceSecond := D.sourceSecond
+  a_nonneg := D.a_nonneg
+  sourceFirst_nonneg := D.sourceFirst_nonneg
+  sourceSecond_nonneg := D.sourceSecond_nonneg
+  sourceSecond_le_first := D.sourceSecond_le_first
+  first_cap := D.first_cap
+  joint_cap := D.joint_cap
+  n_nonneg := D.n_nonneg
+  c_nonneg := D.c_nonneg
+  c_le_one := D.c_le_one
+  c_mono := D.c_mono
+  d_nonneg := D.d_nonneg
+  d_le_quarter := D.d_le_quarter
+  d_le_density := D.d_le_density
+  degree_eq := D.degree_eq
+  enumeration := by
+    have h := D.encoding.bound D.a_nonneg D.a_le_degree D.A₀_nonneg r
+    simpa only [publishedCaseIExponent, D.A_eq] using h
+
+end PublishedBoundedWordLiteralCaseI
+
 /-- The literal RDT Proposition 7.4 partition, before either marked
 optimization.  The zero-degree row is stated as the exact unmarked bound
 `count 0 r ≤ 1`. -/
@@ -191,7 +268,7 @@ structure PublishedBoundedWordCaseDecomposition
   zero_unmarked : ∀ r, count 0 r ≤ 1
   partition : ∀ b r, 0 < b →
     count b r ≤ caseI b r + ∑ k ∈ Finset.range b, peel b k r
-  caseIRow : ∀ b r, PublishedBoundedWordCaseIRow (caseI b r) A b r
+  caseILiteral : ∀ b, PublishedBoundedWordLiteralCaseI (caseI b) A b
   peelRow : ∀ b k r, k < b →
     PublishedBoundedWordCaseIIPeelRow count (peel b k r) A b k r
 
@@ -217,7 +294,7 @@ noncomputable def toBoundedWordCaseDecomposition
         (Real.one_le_rpow (by norm_num : (1 : ℝ) ≤ 2)
           (by positivity : (0 : ℝ) ≤ (r : ℝ) ^ 2 / 2)))
   partition := D.partition
-  caseI_bound := fun b r ↦ (D.caseIRow b r).bound
+  caseI_bound := fun b r ↦ (D.caseILiteral b |>.row r).bound
   peel_bound := fun b k r hk ↦
     (D.peelRow b k r hk).bound (D.count_nonneg k r)
 
