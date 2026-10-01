@@ -8,8 +8,9 @@ import SymmetricSubgroupAsymptotics.Non2PreE7CharacterCertificateMenu
 
 This dispatcher is the exact integration boundary for the 37 families
 covered by refined capacity, comparator/abelian towers, character
-certificates, and ordinary semisimple estimates.  `SNS2` and the fifteen
-small fixed-degree families remain on their special-moment lane.
+certificates, and ordinary semisimple estimates.  `SNS2` is closed by its
+correlated rank-tail lane; the fifteen small fixed-degree families remain on
+their separate lane.
 -/
 
 set_option autoImplicit false
