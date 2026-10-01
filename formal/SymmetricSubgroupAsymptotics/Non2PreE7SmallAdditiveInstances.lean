@@ -20,19 +20,19 @@ families whose complete fixed-source estimates are proved formally here.
 Both use Kovács--Praeger's abelian quotient bound and the tail slope
 `log₂ 3 / 3`, which meets the cold gap at every width at least six.
 
-The other rows of the small additive menu have no source here, and their
-dispatcher source type is empty:
+The other rows of the small additive menu have no source in this particular
+dispatcher.  Natural S4, A4W2, LIN and TF are proved in their dedicated
+modules and joined to DIH and the regular-prime SAPRIM row by
+`Non2PreE7SmallAdditiveNumericalInstances`.  The still-open historical rows
+are:
 
-* S4 and A4W2: the `J''` head count at slope `b/4`;
-* LIN: the literal normal menu of `SL₂(3)` (SL mode) and the S4 bound
-  (GL mode);
 * SAPRIM, other rows: `d₅(J) ≤ b/5` (regular `C₅`, natural `D₁₀`),
   the `H¹` bound for binary primitive affine modules, and the abelian
   and prime-power rows;
 * INV12all: the joint `d₂`/`d₃` proper-`V₄`-base estimate;
 * S3EXC: the constants of `B₃(s, H)`;
-* S3TWO, S3CYCL, S3SYL and TF: literal normal-menu certificates of
-  their degree `8`, `9` and `12` classes;
+* S3TWO, S3CYCL and S3SYL: literal normal-menu certificates of their
+  degree `8`, `9` and `12` classes;
 * 5EXC: the comparator-list moment.
 -/
 
