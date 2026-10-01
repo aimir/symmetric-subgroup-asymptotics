@@ -391,6 +391,18 @@ order valuations of the first nine rows and uses symbolic chief series for
 already stronger three-tenths weight bound plus this published classification
 slice, rather than retained as an independent research assumption.
 
+`PublishedPrimitiveSocleDichotomyInput` records the standard O'Nan--Scott
+affine/nonaffine alternative at exactly the two primitive-action scopes used
+by the proof (the original action and an actual minimal-block component).
+`PublishedBoundedPrimitiveCatalogueCorrespondence` records only the
+permutation-isomorphism locator in the degree-5--29 Roney-Dougal/PrimGrp
+slice and the induced equality of the natural socle-quotient order.  Lean
+proves that a profile needing this lookup has degree below 30 and separately
+kernel-checks `2 * outerOrder <= degree` on all 116 retained rows.  Hence
+`preE7PrimitiveCatalogueClassificationInput_of_published` derives the former
+monolithic `PreE7PrimitiveCatalogueClassificationInput`; no project-owned
+counting assertion is included in the published classification premise.
+
 ### Software representatives and classification scope
 
 The computational interfaces use GAP 4.13.1 with these releases:
