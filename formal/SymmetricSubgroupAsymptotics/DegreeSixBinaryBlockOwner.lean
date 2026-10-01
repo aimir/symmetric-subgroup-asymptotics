@@ -353,12 +353,13 @@ theorem binaryBlockFrame_kernelChart_conjugateWord
 
 /-- A finite binary pair frame on three blocks whose actual top has order
 three supplies the intrinsic cyclic binary-module earlier owner. -/
-theorem binaryBlockFrame_cyclicOwner
+theorem binaryBlockFrame_cyclicOwnerWithCard
     [Finite Ω]
     {U : Subgroup (Equiv.Perm Ω)}
     (F : BinaryPairFrame U (Fin 3))
     (hTop : Nat.card F.top.range = 3) :
-    Nonempty (C1CyclicBinaryModuleOwnerWitness U) := by
+    ∃ W : C1CyclicBinaryModuleOwnerWitness U,
+      Nat.card W.complement = 3 := by
   obtain ⟨P, hP⟩ := binaryBlockFrame_complement_exists F hTop
   let topEquiv : P ≃* F.top.range :=
     binaryBlockFrame_complementTopEquiv F P hTop hP
@@ -440,7 +441,18 @@ theorem binaryBlockFrame_cyclicOwner
           intro g hg
           rw [Function.comp_apply, topEquiv_symm_top g]
         _ = (F.kernelChart x).toAdd := topWord_eq x
-  }⟩
+  }, hPcard⟩
+
+/-- Forgetting the retained complement cardinal recovers the original
+owner interface. -/
+theorem binaryBlockFrame_cyclicOwner
+    [Finite Ω]
+    {U : Subgroup (Equiv.Perm Ω)}
+    (F : BinaryPairFrame U (Fin 3))
+    (hTop : Nat.card F.top.range = 3) :
+    Nonempty (C1CyclicBinaryModuleOwnerWitness U) := by
+  obtain ⟨W, _⟩ := binaryBlockFrame_cyclicOwnerWithCard F hTop
+  exact ⟨W⟩
 
 include D in
 /-- The actual two-point-fibre degree-six branch has the cyclic
@@ -461,6 +473,28 @@ theorem degreeSix_binaryBlock_owner
   obtain ⟨W⟩ := binaryBlockFrame_cyclicOwner F hTop
   exact ⟨W.map D.originalPermutationEquiv.symm⟩
 
+include D in
+/-- The refined binary-block owner retains the literal order-three
+complement through transport back to the original group. -/
+theorem degreeSix_binaryBlock_ownerWithCard
+    [Finite A] [Finite Ω] [FaithfulSMul A Ω]
+    (N : Subgroup A) [N.Normal]
+    (hFibre : Nat.card D.Fibre = 2)
+    (hPoints : Nat.card D.Points = 3)
+    (hHigh : 3 * Nat.card Ω <
+      20 * Module.finrank (ZMod 3) (primeRelativeCharacters 3 N)) :
+    ∃ W : C1CyclicBinaryModuleOwnerWitness A,
+      Nat.card W.complement = 3 := by
+  let points : D.Points ≃ Fin 3 := Finite.equivFinOfCardEq hPoints
+  let F := D.binaryBlockFrame hFibre points
+  have hTop : Nat.card F.top.range = 3 :=
+    D.binaryBlockFrame_top_card N hFibre hPoints hHigh points
+  obtain ⟨W, hW⟩ := binaryBlockFrame_cyclicOwnerWithCard F hTop
+  let e := D.originalPermutationEquiv.symm
+  refine ⟨W.map e, ?_⟩
+  change Nat.card (W.complement.map e.toMonoidHom) = 3
+  rw [Subgroup.card_map_of_injective e.injective, hW]
+
 end OriginalMinimalBlock
 
 /-- Every high degree-six pair has one of the two intrinsic structural
@@ -479,6 +513,24 @@ theorem degreeSix_high_structuralOwner
       hPrimitive N hDegree hHigh with hOdd | ⟨ω₀, D, hFibre, hPoints⟩
   · exact Or.inl hOdd
   · exact Or.inr (D.degreeSix_binaryBlock_owner N hFibre hPoints hHigh)
+
+/-- The high degree-six split with the complement cardinal retained for
+the sharp induced-head estimate. -/
+theorem degreeSix_high_structuralOwnerWithComplementCard
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    {A Ω : Type} [Group A] [Finite A] [Finite Ω] [MulAction A Ω]
+    [FaithfulSMul A Ω] [MulAction.IsPretransitive A Ω]
+    (N : Subgroup A) [N.Normal]
+    (hDegree : Nat.card Ω = 6)
+    (hHigh : 3 * Nat.card Ω <
+      20 * Module.finrank (ZMod 3) (primeRelativeCharacters 3 N)) :
+    Nonempty (C1OddIndexTwoOwnerWitness A) ∨
+      ∃ W : C1CyclicBinaryModuleOwnerWitness A,
+        Nat.card W.complement = 3 := by
+  rcases degreeSix_high_oddIndexOwner_or_binaryBlock
+      hPrimitive N hDegree hHigh with hOdd | ⟨ω₀, D, hFibre, hPoints⟩
+  · exact Or.inl hOdd
+  · exact Or.inr (D.degreeSix_binaryBlock_ownerWithCard N hFibre hPoints hHigh)
 
 end SymmetricSubgroupAsymptotics
 
