@@ -234,15 +234,36 @@ use $20j<3\cdot2^j$ for $j\geq6$. The composition-length bound
 \cite[Theorem~1.3]{GlasbyPraegerRosaVerret2018} gives
 $a_3(R)\leq(8/3)\log_2r-4/3<3r/10$ for $r\geq45$.
 At $45$ this follows from $45^{16}<2^{89}$, and the difference
-is increasing thereafter. The bounded inputs enumerate all primitive
-normal pairs through degree 33 and all primitive composition series
-through degree 44. These are respectively 945 normal pairs in 253
-actions and 336 actions, with exactly the exceptions stated above.
-The weaker $r/3$ assertion follows immediately, including those
-exceptions. Classification completeness uses
-\cite{RoneyDougal2005Primitive,PrimGrp344}; the finite computations
-count order-three composition factors, rather than the ternary
-valuation of group order.
+is increasing thereafter.
+
+For the bounded strict-head range, put $E=\operatorname{Soc}(R)$.
+This is a minimal self-centralizing normal subgroup. Its relative
+ternary evaluation radical is $R$-normal, hence is either $1$ or $E$.
+In the latter case the relative ternary head of $E$ is zero. In the
+former case evaluation separates $E$; invariance then centralizes $E$,
+self-centralization gives $E=R$, and $R$ is a $3$-group. A point
+stabilizer is maximal in a primitive group, so its index is three.
+Thus this former case has degree three. Outside degree three the
+relative head of $E$ therefore vanishes.
+
+For any $N\triangleleft R$, minimality gives $N\cap E=1$ or $E$.
+The first alternative makes $N$ trivial by self-centralization. In the
+second, inflation--restriction bounds the relative head of $N$ by
+$v_3(|R/E|)$. The complete 253-row primitive alphabet in degrees
+$2$--$33$ records only the exact quotient order $|R/E|$; kernel-checked
+integer arithmetic verifies
+\[
+ 20v_3(|R/E|)<3r
+\]
+outside degrees $3,4,18$. Hence no primitive normal-subgroup census is
+used. Classification completeness and the actual socle correspondence
+use \cite{RoneyDougal2005Primitive,PrimGrp344}.
+
+The composition-factor statement still uses all primitive composition
+series through degree 44: 336 actions, with exactly the exceptions stated
+above. The weaker $r/3$ assertion follows immediately, including those
+exceptions. The finite computation counts order-three composition factors,
+rather than the ternary valuation of group order.
 
 Here is the common ternary head bound used in the block argument.
 Write $s_3=3^t$. Restrict to a Sylow $3$-subgroup and decompose the
