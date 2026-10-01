@@ -339,6 +339,23 @@ complete primitive catalogue. The exporter rejects nonprime composition
 edges; recognition of all actions, nonabelian simple factors, primitive
 normal-rank bounds and global coverage remain separate obligations.
 
+## Bounded primitive index receipt
+
+The bounded almost-simple compression endpoint needs only the numerical
+inequality `2 |G:S| <= degree(G)`. Regenerate its complete 116-row receipt
+from the committed primitive/rank stream with:
+
+```sh
+python3 -B computations/python/export_lean_primitive_bounded_index.py --check
+python3 -B scripts/check_lean.py SymmetricSubgroupAsymptotics/PrimitiveBoundedIndexReceipt.lean --log-dir ../lean-check-logs
+```
+
+The exporter selects the simple nonabelian socle rows in primitive degrees
+5 through 29, rejects duplicate catalogue locators or a failed inequality,
+and records the compressed dataset hash. Lean checks every individual
+integer inequality. The receipt does not assert primitive-catalogue
+completeness or identify an arbitrary literal action with a locator.
+
 ## Original degree-eight normal-state certificates
 
 ```sh
