@@ -80,7 +80,7 @@ def render(rows: list[tuple[int, int, int, int]]) -> str:
     entries = "\n".join(
         "  { degree := %d, catalogueIndex := %d, quotientOrder := %d,\n"
         "    ternaryValuation := %d, valuation_eq := by decide +kernel,\n"
-        "    strict_of_nonexceptional := by omega },"
+        "    eighteen_zero := by omega, strict_of_nonexceptional := by omega },"
         % (degree, index, quotient_order, value)
         for degree, index, quotient_order, value in rows
     )
@@ -111,6 +111,7 @@ structure PrimitiveStrictHeadRow where
   quotientOrder : ℕ
   ternaryValuation : ℕ
   valuation_eq : quotientOrder.factorization 3 = ternaryValuation
+  eighteen_zero : degree = 18 → ternaryValuation = 0
   strict_of_nonexceptional : degree ≠ 3 → degree ≠ 4 → degree ≠ 18 →
     20 * ternaryValuation < 3 * degree
 
@@ -132,6 +133,11 @@ theorem primitiveStrictHeadRow_valuation (i : Fin 253) :
     (primitiveStrictHeadRow i).quotientOrder.factorization 3 =
       (primitiveStrictHeadRow i).ternaryValuation :=
   (primitiveStrictHeadRow i).valuation_eq
+
+theorem primitiveStrictHeadRow_eighteen_zero (i : Fin 253)
+    (h18 : (primitiveStrictHeadRow i).degree = 18) :
+    (primitiveStrictHeadRow i).ternaryValuation = 0 :=
+  (primitiveStrictHeadRow i).eighteen_zero h18
 
 theorem primitiveStrictHeadRow_strict (i : Fin 253)
     (h3 : (primitiveStrictHeadRow i).degree ≠ 3)

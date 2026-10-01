@@ -86,6 +86,29 @@ theorem strict
     _ < 3 * (primitiveStrictHeadRow M.row).degree := hstrict
     _ = 3 * Nat.card X := by rw [M.degree_eq]
 
+/-- At the exceptional degree eighteen the published primitive rows are
+actually stronger than the uniform strict inequality: their socle quotients
+have order prime to three, so every normal ternary relative head vanishes. -/
+theorem degreeEighteen_eq_zero
+    (h18 : Nat.card X = 18)
+    (N : Subgroup L) [N.Normal] :
+    Module.finrank (ZMod 3) (primeRelativeCharacters 3 N) = 0 := by
+  have hthree : Nat.card X ≠ 3 := by omega
+  have hzero : Module.finrank (ZMod 3)
+      (primeRelativeCharacters 3 M.E) = 0 :=
+    primeRelativeHead_minimalSelfCentralizing_eq_zero_of_primitive
+      3 M.E M.minimal M.selfCentralizing hthree
+  have hhead :=
+    primeRelativeHead_le_quotientFactorization_of_minimalHeadZero
+      3 M.E M.minimal M.selfCentralizing hzero N
+  have hrow18 : (primitiveStrictHeadRow M.row).degree = 18 := by
+    rw [M.degree_eq, h18]
+  have hval : (primitiveStrictHeadRow M.row).ternaryValuation = 0 :=
+    primitiveStrictHeadRow_eighteen_zero M.row hrow18
+  have hquot : (Nat.card (L ⧸ M.E)).factorization 3 = 0 := by
+    rw [M.quotientOrder_eq, primitiveStrictHeadRow_valuation, hval]
+  omega
+
 end PrimitiveStrictHeadSocleMatch
 
 /-- **Published bounded primitive input.**  Every finite faithful primitive
@@ -113,6 +136,18 @@ theorem primitiveTernaryStrictHeadBound_of_published
   · exact c1_primitive_relative_tail_faithful hgen hlarge N
   · obtain ⟨M⟩ := catalogue G X (by omega)
     exact M.strict h3 h4 h18 N
+
+/-- Published primitive degree-eighteen actions have zero ternary normal
+head.  This is the primitive part of the all-transitive degree-eighteen
+theorem; the imprimitive cases are handled separately. -/
+theorem primitive_degreeEighteen_ternaryHead_eq_zero
+    (catalogue : PublishedPrimitiveStrictHeadCatalogueCorrespondence)
+    (G X : Type) [Group G] [Finite G] [Finite X] [MulAction G X]
+    [FaithfulSMul G X] [MulAction.IsPreprimitive G X] [Nontrivial X]
+    (h18 : Nat.card X = 18) (N : Subgroup G) [N.Normal] :
+    Module.finrank (ZMod 3) (primeRelativeCharacters 3 N) = 0 := by
+  obtain ⟨M⟩ := catalogue G X (by omega)
+  exact M.degreeEighteen_eq_zero h18 N
 
 end SymmetricSubgroupAsymptotics
 
