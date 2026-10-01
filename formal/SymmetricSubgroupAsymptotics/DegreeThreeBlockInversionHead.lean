@@ -539,6 +539,39 @@ theorem originalNormal_degreeTwentySeven_inversion_safe
     b N e x₀ hx₀).trans htop
   exact ⟨hhead, by omega⟩
 
+/-- If every fibre sign is trivial, the literal block kernel is
+abelian.  The proof keeps all correlated coordinates and uses only their
+joint injection into the abelian product of the six ternary fibres. -/
+theorem kernel_isMulCommutative_of_coordinateSigns_eq_one
+    [FaithfulSMul A Ω]
+    (e : ∀ x : X, Fin 3 ≃ originalBlockFibre b x)
+    (hSigns : coordinateSigns b hb = 1) :
+    IsMulCommutative (Kernel (A := A) (X := X)) := by
+  apply isMulCommutative_iff.mpr
+  intro k l
+  have hk : k ∈ evenKernel b hb := by
+    rw [← coordinateSigns_ker b hb]
+    apply MonoidHom.mem_ker.mpr
+    rw [hSigns]
+    rfl
+  have hl : l ∈ evenKernel b hb := by
+    rw [← coordinateSigns_ker b hb]
+    apply MonoidHom.mem_ker.mpr
+    rw [hSigns]
+    rfl
+  let ke : evenKernel b hb := ⟨k, hk⟩
+  let le : evenKernel b hb := ⟨l, hl⟩
+  have hcomm : ke * le = le * ke := by
+    apply evenTernaryCoordinates_injective (hb := hb) b e
+    funext x
+    change evenTernaryCoordinate (hb := hb) b e x (ke * le) =
+      evenTernaryCoordinate (hb := hb) b e x (le * ke)
+    rw [map_mul, map_mul]
+    exact mul_comm
+      (evenTernaryCoordinate (hb := hb) b e x ke)
+      (evenTernaryCoordinate (hb := hb) b e x le)
+  exact congrArg (fun z : evenKernel b hb => (z : Kernel (A := A) (X := X))) hcomm
+
 /-- If every fibre sign is trivial, the literal block kernel itself is a
 3-group. -/
 theorem kernel_isPGroup_of_coordinateSigns_eq_one

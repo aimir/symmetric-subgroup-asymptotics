@@ -27,7 +27,7 @@ variable (p : ℕ) [Fact p.Prime]
 by the relative heads of literal normal subgroups in the same coordinate
 groups.  No direct-product replacement or independence of coordinates is
 used. -/
-theorem primeRelativeHead_coordinate_le (n : ℕ)
+theorem primeRelativeHead_fullCoordinate_le (n : ℕ)
     (A : Fin n → Type*) [∀ i, Group (A i)] [∀ i, Finite (A i)]
     (c : Fin n → ℕ)
     (hbound : ∀ i (N : Subgroup (A i)) (hN : N.Normal),
@@ -136,7 +136,7 @@ theorem primeRelativeHead_faithful_family_le
     intro i a
     obtain ⟨g, hg⟩ := honto i a
     exact ⟨⟨f g, ⟨g, rfl⟩⟩, hg⟩
-  have hK := primeRelativeHead_coordinate_le p n A c hbound K hfull MK
+  have hK := primeRelativeHead_fullCoordinate_le p n A c hbound K hfull MK
   have heq : Module.finrank (ZMod p) (primeRelativeCharacters p MK) =
       Module.finrank (ZMod p) (primeRelativeCharacters p M) :=
     (relativeCharacterAmbientCongr p e M MK rfl).finrank_eq
