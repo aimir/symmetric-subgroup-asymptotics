@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7RefinedCapacityInstances
 import SymmetricSubgroupAsymptotics.GrowingMenuMassLogSquared
 import SymmetricSubgroupAsymptotics.Non2PreE7NonPairMenuMassAggregation
+import SymmetricSubgroupAsymptotics.Non2PreE7NumericalEarlierPackage
 
 /-!
 # Complete numerical menu for the refined-capacity template
@@ -253,6 +254,20 @@ theorem preE7RefinedCapacityParameters :
   intro w j
   exact source_parameters j.1.1.1 j.1.1.2
     (preE7RefinedCapacityMenuSource j)
+
+/-- One refined-capacity source supplies the exact numerically complete
+package used by the mixed catalogue. -/
+noncomputable def preE7RefinedCapacityNumericalPackage
+    (family : PreE7NoPairNoC3EarlierOwnerFamily)
+    (hfamily : IsPreE7RefinedCapacityFamily family)
+    {w : ℕ} {i : PreE7NonPairActionClass w}
+    (source : RefinedCapacityCertificateSourceData family w i) :
+    PreE7EarlierNumericalPackage family w i :=
+  .ofComparator
+    (preE7_refinedCapacityCertificate family hfamily w i source)
+    (source_parameters family hfamily source)
+    (source_main_total_bound family hfamily source)
+    (source_tail_total_bound family hfamily source)
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

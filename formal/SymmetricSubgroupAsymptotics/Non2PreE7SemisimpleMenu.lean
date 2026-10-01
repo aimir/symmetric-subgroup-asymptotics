@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7SemisimpleNumerics
 import SymmetricSubgroupAsymptotics.GrowingMenuMassLogSquared
 import SymmetricSubgroupAsymptotics.Non2PreE7NonPairMenuMassAggregation
+import SymmetricSubgroupAsymptotics.Non2PreE7NumericalEarlierPackage
 
 /-!
 # Complete ordinary semisimple menu
@@ -117,6 +118,32 @@ private theorem source_total_bound
   case sns2 => exact absurd rfl hne
   case nsaprim => exact S.down.coefficient_total_bound b
 
+private theorem source_tail_total_bound
+    (hgen : PermutationSubgroupGeneratorBound)
+    (family : PreE7NoPairNoC3EarlierOwnerFamily)
+    (hfamily : IsPreE7OrdinarySemisimpleFamily family)
+    {w : ℕ} {i : PreE7NonPairActionClass w}
+    (S : SemisimpleCertificateSourceData family w i) (b : ℕ) :
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i)
+        ((ordinarySemisimpleCertificate hgen family hfamily S).tailCoefficient b) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2) := by
+  rcases hfamily with ⟨hsemisimple, hne⟩
+  cases family
+  all_goals first
+    | exact absurd hsemisimple (by decide)
+    | skip
+  case sns2 => exact absurd rfl hne
+  all_goals
+    simp [ordinarySemisimpleCertificate, preE7_ssCertificate,
+      preE7_soCertificate, preE7_snsCertificate,
+      preE7_nsaprimCertificate,
+      PreE7SemisimpleDirectSourceData.certificate,
+      PreE7SoOrderSourceData.certificate,
+      PreE7NsaprimActionCertificate.certificate,
+      fusionAxisEnvelopeTotal]
+  all_goals positivity
+
 private theorem ordinarySemisimpleEntryParameters
     (hgen : PermutationSubgroupGeneratorBound)
     (family : PreE7NoPairNoC3EarlierOwnerFamily)
@@ -222,6 +249,21 @@ theorem preE7OrdinarySemisimpleParameters
   intro w j
   exact ordinarySemisimpleEntryParameters hgen j.1.1.1 j.1.1.2
     (preE7OrdinarySemisimpleMenuSource j)
+
+/-- One ordinary semisimple source supplies the exact numerically complete
+package used by the mixed catalogue. -/
+noncomputable def preE7OrdinarySemisimpleNumericalPackage
+    (hgen : PermutationSubgroupGeneratorBound)
+    (family : PreE7NoPairNoC3EarlierOwnerFamily)
+    (hfamily : IsPreE7OrdinarySemisimpleFamily family)
+    {w : ℕ} {i : PreE7NonPairActionClass w}
+    (source : SemisimpleCertificateSourceData family w i) :
+    PreE7EarlierNumericalPackage family w i :=
+  .ofComparator
+    (ordinarySemisimpleCertificate hgen family hfamily source)
+    (ordinarySemisimpleEntryParameters hgen family hfamily source)
+    (source_total_bound hgen family hfamily source)
+    (source_tail_total_bound hgen family hfamily source)
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

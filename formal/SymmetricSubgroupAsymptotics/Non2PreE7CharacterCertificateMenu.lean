@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7CharacterCertificateInstances
 import SymmetricSubgroupAsymptotics.GrowingMenuMassLogSquared
 import SymmetricSubgroupAsymptotics.Non2PreE7NonPairMenuMassAggregation
+import SymmetricSubgroupAsymptotics.Non2PreE7NumericalEarlierPackage
 
 /-!
 # Complete numerical menu for the character-certificate template
@@ -213,6 +214,28 @@ theorem preE7CharacterParameters (lit : PreE7CharacterLiterature) :
   intro w j
   exact (preE7_characterCertificate_numerics j.1.1.1 j.1.1.2 w j.1.2
     (preE7CharacterMenuSource j).source lit).parameters
+
+/-- One retained character-menu source supplies the exact numerically
+complete package used by the mixed catalogue. -/
+noncomputable def preE7CharacterNumericalPackage
+    (lit : PreE7CharacterLiterature)
+    (family : PreE7NoPairNoC3EarlierOwnerFamily)
+    (hfamily : IsPreE7CharacterFamily family)
+    {w : ℕ} {i : PreE7NonPairActionClass w}
+    (source : PreE7CharacterMenuSourceData family hfamily w i) :
+    PreE7EarlierNumericalPackage family w i :=
+  .ofComparator
+    (preE7_characterCertificate family hfamily w i source.source lit)
+    (preE7_characterCertificate_numerics
+      family hfamily w i source.source lit).parameters
+    (by
+      intro b
+      rw [preE7_characterCertificate_eq]
+      exact source.main_total_bound b)
+    (by
+      intro b
+      rw [preE7_characterCertificate_eq]
+      exact source.tail_total_bound b)
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

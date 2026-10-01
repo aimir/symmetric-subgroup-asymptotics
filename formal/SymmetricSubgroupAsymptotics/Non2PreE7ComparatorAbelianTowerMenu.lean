@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7ComparatorAbelianTowerInstances
 import SymmetricSubgroupAsymptotics.GrowingMenuMassLogSquared
 import SymmetricSubgroupAsymptotics.Non2PreE7NonPairMenuMassAggregation
+import SymmetricSubgroupAsymptotics.Non2PreE7NumericalEarlierPackage
 
 /-!
 # Complete numerical menu for the comparator/abelian-tower template
@@ -252,6 +253,21 @@ theorem preE7ComparatorAbelianTowerParameters :
   exact preE7_comparatorAbelianTower_entryParameters
     j.1.1.1 j.1.1.2 w j.1.2
       (preE7ComparatorAbelianTowerMenuSource j)
+
+/-- One comparator/tower source supplies the exact numerically complete
+package used by the mixed catalogue. -/
+noncomputable def preE7ComparatorAbelianTowerNumericalPackage
+    (family : PreE7NoPairNoC3EarlierOwnerFamily)
+    (hfamily : IsPreE7ComparatorAbelianTowerFamily family)
+    (w : ℕ) (i : PreE7NonPairActionClass w)
+    (source : ComparatorAbelianTowerCertificateSourceData family w i) :
+    PreE7EarlierNumericalPackage family w i :=
+  .ofComparator
+    (preE7_comparatorAbelianTowerCertificate family hfamily w i source)
+    (preE7_comparatorAbelianTower_entryParameters
+      family hfamily w i source)
+    (source_main_total_bound family hfamily source)
+    (source_tail_total_bound family hfamily source)
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
