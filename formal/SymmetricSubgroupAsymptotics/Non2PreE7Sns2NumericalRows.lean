@@ -38,10 +38,11 @@ structure PreE7NumericalSns2ResidualChoice
   delta : ℝ
   cutoff : ℝ
   alpha : ℝ
+  theta : ℝ
   alpha_eq : alpha = eta + cutoff
   D_nonneg : ∀ b, 0 ≤ D b
   parameters : PreE7CharacterEntryParameters preE7CharacterRho w v eta
-    delta cutoff alpha 0
+    delta cutoff alpha theta
   main_total_bound : ∀ b,
     D b ≤ (2 : ℝ) ^
       (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)

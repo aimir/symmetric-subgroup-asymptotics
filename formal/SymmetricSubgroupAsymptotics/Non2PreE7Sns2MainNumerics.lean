@@ -112,7 +112,7 @@ private def preE7NumericalSns2ParameterTheta (w : ℕ) :
     PreE7NumericalSns2Index w → ℝ
   | .inl a => (preE7NumericalOwnedPackage a).package.certificate.theta
   | .inr (.inl _) => 0
-  | .inr (.inr _) => 0
+  | .inr (.inr U) => (Residual w U).theta
 
 private theorem preE7NumericalSns2_entryParameters :
     ∀ w j, PreE7CharacterEntryParameters preE7CharacterRho w
@@ -121,7 +121,7 @@ private theorem preE7NumericalSns2_entryParameters :
       (preE7NumericalSns2Delta Residual w j)
       (preE7NumericalSns2Cutoff Residual w j)
       (preE7NumericalSns2Alpha Residual w j)
-      (preE7NumericalSns2ParameterTheta w j) := by
+      (preE7NumericalSns2ParameterTheta Residual w j) := by
   intro w j
   rcases j with a | a
   · exact (preE7NumericalOwnedPackage a).parameters
