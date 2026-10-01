@@ -39,6 +39,7 @@ inductive PreE7OrdinaryNumericalSourceData
       (source : SemisimpleCertificateSourceData family w i)
   | completeSource (source : PreE7CompleteSourceNumericalData family w i)
   | small (source : PreE7SmallAdditiveNumericalData family w i)
+  | package (source : PreE7EarlierNumericalPackage family w i)
 
 /-- Dispatch an ordinary source to its numerically complete catalogue
 package. -/
@@ -78,6 +79,7 @@ noncomputable def PreE7OrdinaryNumericalSourceData.toPackage
           ⟨hsemisimple, hne⟩ source
   | completeSource source => exact source.toPackage
   | small source => exact source.toPackage
+  | package source => exact source
 
 /-- Every source in the four ordinary templates is accepted by the exact
 numerically certified family predicate used by the T1 catalogue. -/

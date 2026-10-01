@@ -57,6 +57,39 @@ theorem preE7Padded_entryParameters
   have hv0nonneg : (0 : ℝ) ≤ v0 := by positivity
   nlinarith
 
+/-- The same padded comparator record with an independently bounded additive
+tail.  Padding controls the main comparator row; the final field is exactly
+the cold-window inequality supplied by the finite-group source theorem. -/
+theorem preE7Padded_entryParameters_withTail
+    {w v0 : ℕ} {eta theta : ℝ}
+    (heta : 0 ≤ eta) (hv0 : 2 ≤ v0)
+    (hmargin : preE7CharacterRho * w ≤
+      ((evenWidth w : ℝ) - v0) / 8 - eta)
+    (htheta : theta ≤ preE7CharacterWindow w) :
+    PreE7CharacterEntryParameters preE7CharacterRho w
+      (paddedComparatorDegree preE7CharacterRho v0 w) eta
+      (paddedComparatorDelta preE7CharacterRho eta v0 w)
+      ((paddedComparatorDegree preE7CharacterRho v0 w : ℝ) / 8 +
+        paddedComparatorDelta preE7CharacterRho eta v0 w / 2)
+      (eta + ((paddedComparatorDegree preE7CharacterRho v0 w : ℝ) / 8 +
+        paddedComparatorDelta preE7CharacterRho eta v0 w / 2)) theta := by
+  have h := preE7Padded_entryParameters (w := w) (v0 := v0) (eta := eta)
+    heta hv0 hmargin
+  exact
+    { delta_nonneg := h.delta_nonneg
+      degree_pos := h.degree_pos
+      ratio := h.ratio
+      degree_upper := h.degree_upper
+      delta_lower := h.delta_lower
+      hot_margin := h.hot_margin
+      threshold_eq := h.threshold_eq
+      delta_upper := h.delta_upper
+      degree_lower := h.degree_lower
+      degree_width := h.degree_width
+      cold_slope := h.cold_slope
+      cold_gap := h.cold_gap
+      tail_gap := htheta }
+
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
 
