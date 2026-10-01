@@ -225,6 +225,14 @@ theorem minimal (hirr : Irreducible R) (W : Subgroup (Aff R)) (hW : W.Normal)
       exact AddSubgroup.mem_top _
     exact this
 
+/-- In a faithful irreducible affine group, every nontrivial normal subgroup
+contains the translation subgroup.  This is the literal normal-menu fact
+used by all soluble primitive affine owners. -/
+theorem Vsub_le_normal (hirr : Irreducible R) (N : Subgroup (Aff R))
+    [hN : N.Normal] (hNb : N ≠ ⊥) : Vsub R ≤ N :=
+  le_of_minimal_selfCentralizing (Vsub R) (minimal hirr)
+    (selfCentralizing R) N hNb
+
 /-! ## The derived series -/
 
 /-- A nontrivial element of the linear part moves some vector, so it has a
