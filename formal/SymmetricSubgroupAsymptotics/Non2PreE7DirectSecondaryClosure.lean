@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7NoPairNoC3ExceptionalInterface
 import SymmetricSubgroupAsymptotics.GrowingQuotientSecondaryForwardEstimate
+import SymmetricSubgroupAsymptotics.T1RelativeClosure
 
 /-!
 # Direct secondary closure for the final pre-E7 catalogue
@@ -77,6 +78,25 @@ noncomputable def
       D.cutoff D.alpha D.theta N.rho_pos N.rho_le_eighth (by omega)
       D.D_nonneg D.A_pos N.parameters N.main_menu hcoarse N.secondary
       D.physical_bound
+
+/-- Publication-facing T1 boundary for a catalogue with a directly proved
+secondary sector. -/
+theorem T1_of_preE7_noPairNoC3_directSecondary_data
+    {r : ℕ}
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
+    (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    (h18 : DegreeEighteenTernaryHeadBound)
+    (hKP : KovacsPraegerAbelianizationBound)
+    (D : PreE7NoPairNoC3LocalExceptionalData r)
+    (N : PreE7NoPairNoC3DirectSecondaryNumericalCertificate D)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ))) : T1 :=
+  T1_of_preE7_noPairNoC3_estimate hTracey hExceptional hChief hWeight
+    hPrimitive h18 hKP
+    (preE7NoPairNoC3_exponentialForwardEstimate_of_directSecondaryData
+      D N hcoarse)
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
