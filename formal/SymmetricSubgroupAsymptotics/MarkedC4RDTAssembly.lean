@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.MarkedC4BoundedWordAssembly
 import SymmetricSubgroupAsymptotics.MarkedC4PublishedEncodingReduction
+import SymmetricSubgroupAsymptotics.MarkedC4PublishedBoundedWordReduction
 
 /-!
 # Assembly of the RDT structural inputs into the global marked moment
@@ -8,9 +9,9 @@ This is the formal boundary with Roney-Dougal--Tracey.  The input below does
 not contain the global marked moment.  It retains exactly three structural
 outputs of the cited proof:
 
-1. Proposition 7.4's bounded binary-word partition into the Case-I total and
-   Case-II peel totals.  The marked estimates for those rows were proved in
-   the preceding files and are packaged as `BoundedWordCaseDecomposition`.
+1. Proposition 7.4's bounded binary-word partition into its literal
+   unoptimized Case-I tableau rows and Case-II excessive-factor rows.  The
+   marked estimates are derived in `MarkedC4PublishedBoundedWordReduction`.
 2. Lemma 2.7, Theorem 7 and Lemma 8.5's fixed-cutoff encodings, after applying
    the generic relative-generator and product-encoding theorems.  Their exact
    cost is a `MarkedMomentReduction` with a proved negligible error.
@@ -38,8 +39,8 @@ namespace MarkedC4
 structure RDTMarkedC4ReductionInput where
   oneGenerator : RDTOneGeneratorSolubleInput
   boundedWordCount : ℕ → ℕ → ℕ → ℝ
-  boundedWordCases : ∀ C,
-    BoundedWordCaseDecomposition (boundedWordCount C)
+  boundedWordPublished : ∀ C,
+    PublishedBoundedWordCaseDecomposition (boundedWordCount C)
   smallSourceCount : ℕ → ℕ → ℕ → ℝ
   fixedCutoff : ∀ C,
     PublishedFixedCutoffReduction (smallSourceCount C) (boundedWordCount C)
@@ -48,6 +49,10 @@ structure RDTMarkedC4ReductionInput where
 namespace RDTMarkedC4ReductionInput
 
 variable (D : RDTMarkedC4ReductionInput)
+
+noncomputable def boundedWordCases (C : ℕ) :
+    BoundedWordCaseDecomposition (D.boundedWordCount C) :=
+  (D.boundedWordPublished C).toBoundedWordCaseDecomposition
 
 /-- The local Case-I/Case-II proof gives the bounded-word main term with its
 explicit logarithmic error. -/
