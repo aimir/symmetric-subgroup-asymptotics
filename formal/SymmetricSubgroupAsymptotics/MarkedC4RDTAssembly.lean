@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.MarkedC4BoundedWordAssembly
-import SymmetricSubgroupAsymptotics.MarkedC4ProductEncoding
+import SymmetricSubgroupAsymptotics.MarkedC4PublishedEncodingReduction
 
 /-!
 # Assembly of the RDT structural inputs into the global marked moment
@@ -42,11 +42,8 @@ structure RDTMarkedC4ReductionInput where
     BoundedWordCaseDecomposition (boundedWordCount C)
   smallSourceCount : ℕ → ℕ → ℕ → ℝ
   fixedCutoff : ∀ C,
-    MarkedMomentReduction (smallSourceCount C) (boundedWordCount C)
-  largeOrbit : ∀ δ : ℝ, 0 < δ → ∀ K : ℝ,
-    ∃ C : ℕ, ∀ᶠ b : ℕ in atTop, ∀ r : ℕ, (r : ℝ) ≤ K * b →
-      solubleMarkedC4Moment b r ≤
-        (2 : ℝ) ^ (δ * ((b : ℝ) + r) ^ 2) * smallSourceCount C b r
+    PublishedFixedCutoffReduction (smallSourceCount C) (boundedWordCount C)
+  largeOrbit : PublishedLargeOrbitEncoding smallSourceCount
 
 namespace RDTMarkedC4ReductionInput
 
@@ -69,12 +66,14 @@ theorem smallSource_bound (C : ℕ) :
       D.smallSourceCount C b r ≤
         (2 : ℝ) ^ (markedF b r + ε * ((b : ℝ) + r) ^ 2) := by
   let e : ℕ → ℕ → ℝ := fun b r =>
-    (D.fixedCutoff C).error b r + boundedWordError (D.boundedWordCases C).A b r
+    (D.fixedCutoff C).toMarkedMomentReduction.error b r +
+      boundedWordError (D.boundedWordCases C).A b r
   have he : UniformQuadraticNegligible e :=
-    (D.fixedCutoff C).negligible.add
+    (D.fixedCutoff C).toMarkedMomentReduction.negligible.add
       (boundedWordError_negligible (D.boundedWordCases C).A_nonneg)
   have hb : MarkedMomentErrorBound (D.smallSourceCount C) e :=
-    (D.fixedCutoff C).errorBound (D.boundedWord_errorBound C)
+    (D.fixedCutoff C).toMarkedMomentReduction.errorBound
+      (D.boundedWord_errorBound C)
   exact markedMomentBound_of_error hb he
 
 /-- The published large-orbit reduction and the fixed-cutoff proof give the
@@ -84,7 +83,7 @@ theorem solubleGlobalMarkedC4MomentBound
     SolubleGlobalMarkedC4MomentBound := by
   intro ε hε K
   have hthird : 0 < ε / 3 := by positivity
-  obtain ⟨C, hlarge⟩ := R.largeOrbit (ε / 3) hthird K
+  obtain ⟨C, hlarge⟩ := R.largeOrbit.marked_bound (ε / 3) hthird K
   filter_upwards [hlarge, R.smallSource_bound C (ε / 3) hthird K]
       with b hlargeb hsmallb
   intro r hr
