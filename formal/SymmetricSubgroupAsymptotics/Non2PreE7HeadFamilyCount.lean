@@ -144,7 +144,7 @@ theorem GHom.card_le {m q : ℕ} {W₀ W₁ : Submodule K E}
     omega
   rw [not_forall] at hall
   obtain ⟨f₀, hall⟩ := hall
-  rw [_root_.not_imp] at hall
+  rw [Classical.not_imp] at hall
   obtain ⟨hf₀, hf₀ne⟩ := hall
   -- `f₀` is injective
   have hker : GHom.kerSub f₀ = ⊥ := by

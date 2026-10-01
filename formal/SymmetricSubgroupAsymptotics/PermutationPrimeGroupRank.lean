@@ -50,16 +50,19 @@ variable (z : U) (hz : z ∈ Subgroup.center U) (hzp : orderOf z = p)
 /-- The central permutation. -/
 abbrev σ : Perm X := (z : Perm X)
 
+omit [Finite X] [MulAction.IsPretransitive U X] in
 include hz in
 theorem commute_σ (u : U) : (u : Perm X) * σ z = σ z * u := by
   have := Subgroup.mem_center_iff.mp hz u
   exact congrArg Subtype.val this
 
+omit [Finite X] [MulAction.IsPretransitive U X] in
 include hz in
 theorem commute_σ_zpow (u : U) (n : ℤ) : (u : Perm X) * σ z ^ n = σ z ^ n * u :=
   (Commute.zpow_right (commute_σ z hz u) n)
 
 include hz in
+omit [Finite X] in
 /-- A power of the central permutation with a fixed point is trivial. -/
 theorem zpow_eq_one_of_fixed (n : ℤ) (x : X) (hx : (σ z ^ n) x = x) : σ z ^ n = 1 := by
   ext y
@@ -69,6 +72,7 @@ theorem zpow_eq_one_of_fixed (n : ℤ) (x : X) (hx : (σ z ^ n) x = x) : σ z ^ 
   simp only [Perm.mul_apply] at this
   rw [← this, hx]
 
+omit hp [Finite X] [MulAction.IsPretransitive U X] in
 include hzp in
 theorem orderOf_σ : orderOf (σ z) = p := by
   rw [Subgroup.orderOf_coe, hzp]
@@ -76,14 +80,17 @@ theorem orderOf_σ : orderOf (σ z) = p := by
 /-- The blocks: orbits of the central permutation. -/
 abbrev Blocks := MulAction.orbitRel.Quotient (Subgroup.zpowers (σ z)) X
 
+omit [Finite X] [MulAction.IsPretransitive U X] in
 theorem mem_orbit_zpow (x : X) (n : ℤ) :
     (σ z ^ n) x ∈ MulAction.orbit (Subgroup.zpowers (σ z)) x :=
   ⟨⟨σ z ^ n, n, rfl⟩, rfl⟩
 
+omit [Finite X] [MulAction.IsPretransitive U X] in
 theorem mk_zpow (x : X) (n : ℤ) :
     (⟦(σ z ^ n) x⟧ : Blocks z) = ⟦x⟧ :=
   Quotient.sound (mem_orbit_zpow z x n)
 
+omit [Finite X] [MulAction.IsPretransitive U X] in
 theorem mk_pow (x : X) (n : ℕ) : (⟦(σ z ^ n) x⟧ : Blocks z) = ⟦x⟧ := by
   have := mk_zpow z x (n : ℤ)
   rwa [zpow_natCast] at this
@@ -101,8 +108,10 @@ def topFun (u : U) : Blocks z → Blocks z :=
     simp only [Perm.mul_apply] at this
     exact this.symm)
 
+omit [Finite X] [MulAction.IsPretransitive U X] in
 theorem topFun_mk (u : U) (x : X) : topFun z hz u ⟦x⟧ = ⟦(u : Perm X) x⟧ := rfl
 
+omit [Finite X] [MulAction.IsPretransitive U X] in
 include hz in
 theorem topFun_mul (u v : U) (i : Blocks z) :
     topFun z hz (u * v) i = topFun z hz u (topFun z hz v i) := by
@@ -110,6 +119,7 @@ theorem topFun_mul (u v : U) (i : Blocks z) :
   | h x => rfl
 
 include hz in
+omit [Finite X] [MulAction.IsPretransitive U X] in
 theorem topFun_one (i : Blocks z) : topFun z hz 1 i = i := by
   induction i using Quotient.inductionOn with
   | h x => rfl
@@ -128,6 +138,7 @@ def topHom : U →* Perm (Blocks z) where
     refine Equiv.ext fun i => ?_
     exact topFun_mul z hz u v i
 
+omit [Finite X] [MulAction.IsPretransitive U X] in
 theorem topHom_apply (u : U) (i : Blocks z) : topHom z hz u i = topFun z hz u i := rfl
 
 theorem topHom_transitive (i j : Blocks z) : ∃ u : U, topHom z hz u i = j := by
@@ -142,12 +153,14 @@ theorem topHom_transitive (i j : Blocks z) : ∃ u : U, topHom z hz u i = j := b
 def frameFun (q : Blocks z × ZMod p) : X := (σ z ^ q.2.val) (Quotient.out q.1)
 
 include hzp in
+omit [Finite X] [MulAction.IsPretransitive U X] in
 theorem zpow_eq_pow_val (n : ℤ) : σ z ^ n = σ z ^ ((n : ZMod p).val) := by
   rw [← zpow_natCast, ZMod.val_intCast]
   have hp0 : (p : ℤ) = (orderOf (σ z) : ℤ) := by rw [orderOf_σ z hzp]
   rw [hp0, zpow_mod_orderOf]
 
 include hz hzp in
+omit [Finite X] in
 theorem frameFun_bijective : Function.Bijective (frameFun (p := p) z) := by
   constructor
   · rintro ⟨i, a⟩ ⟨j, b⟩ h
