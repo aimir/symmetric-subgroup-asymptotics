@@ -268,21 +268,42 @@ mixed exponent $1/2+5\log_2(3)/9$.
 For the three remaining degree-twelve actions, the actual action has
 three blocks of four points, binary translation base $W\leq V_4^3$,
 and a $3$-group top $P$ acting transitively on the nine nonzero local
-translations. The full module $V_4^3$ is cyclic: a nonzero local
-translation generates its local plane under the block stabilizer,
-and its top translates generate all three planes. Every invariant
-submodule is cyclic by Maschke's theorem. Consequently, for every
-normal quotient $Q$, its binary kernel $M$ is cyclic for its top
-quotient $S$ of $P$. Put $F=O^3(J)$ and $E=J/F$. For a fixed
-map $J\to S$, the pulled-back $M$ embeds in the regular
-$\mathbb F_2[E]$-module. It follows that
+translations.  Let $c$ be the number of actual regular-$C_3$ orbits
+of the complete source $J\leq S_b$.  The relative orbit filtration and
+the binary rank bound after deleting those same $3c$ points give the
+compatible inequalities
+\begin{equation}\label{eq:inv12-joint-support}
+ 4d_3(J)\leq b+c,
+ \qquad
+ 2d_2(\ker\theta)+3c\leq b
+\end{equation}
+for every retained top epimorphism $\theta:J\twoheadrightarrow S$.
+The second inequality applies to the literal kernel of each $\theta$;
+it does not replace those kernels by $O^3(J)$.
+
+The full module $V_4^3$ is cyclic: a nonzero local translation generates
+its local plane under the block stabilizer, and its top translates generate
+all three planes.  Maschke's theorem makes every invariant submodule and
+quotient cyclic.  Consequently the binary kernel $M$ of every normal
+quotient embeds, as an $\mathbb F_2[S]$-module, in one regular module.
+For fixed $\theta$ the regular-module evaluation theorem and the coprime
+cocycle torsor therefore give
 \[
- |\operatorname{Hom}_E(H_1(F;\mathbb F_2),M)|\leq2^{b/2}.
+ \#\{\hbox{lifts over }\theta\}
+ \leq 2^6 2^{d_2(\ker\theta)}.
 \]
-Coprime lift torsors on $E$ cost at most $|M|\leq2^6$.
-Apply \eqref{eq:degree-nine-joint} to the same source $J$ and the
-actual nine-point action of $P$, before enlarging the pattern class
-of sources. This gives the exponent $1/2+5\log_2(3)/9$.
+Apply \eqref{eq:degree-nine-joint} to the same $J$ and the actual
+nine-point action before enlarging the source class.  With
+$L=\log_2 3$, the combined exponent is
+\[
+ \frac{b-3c}{2}+L\left(\frac{b+c}{4}+\frac b3\right)
+ =\left(\frac12+\frac{7L}{12}\right)b
+   +\left(-\frac32+\frac L4\right)c.
+\]
+The coefficient of $c$ is negative.  Since $L<8/5$, the complete
+all-normal row has the uniform binary slope $43/30<3/2$.  Thus the
+binary lift and ternary top are combined on one source before their common
+support parameter is discarded.
 
 Finally we prove the degree-27 row without classifying its $3$-groups.
 Let $U$ be transitive of degree $w=3s$, choose the literal three-point
