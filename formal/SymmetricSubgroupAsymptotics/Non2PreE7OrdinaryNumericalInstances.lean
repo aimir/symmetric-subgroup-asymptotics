@@ -2,6 +2,8 @@ import SymmetricSubgroupAsymptotics.Non2PreE7ComparatorAbelianTowerMenu
 import SymmetricSubgroupAsymptotics.Non2PreE7SemisimpleMenu
 import SymmetricSubgroupAsymptotics.Non2PreE7RefinedCapacityMenu
 import SymmetricSubgroupAsymptotics.Non2PreE7CharacterCertificateMenu
+import SymmetricSubgroupAsymptotics.Non2PreE7CompleteSourceComparator
+import SymmetricSubgroupAsymptotics.Non2PreE7SemisimpleCompleteSourceInstances
 
 /-!
 # Unified numerical instances for the four ordinary templates
@@ -33,6 +35,7 @@ inductive PreE7OrdinaryNumericalSourceData
       (source : PreE7CharacterMenuSourceData family hfamily w i)
   | semisimple (hfamily : IsPreE7OrdinarySemisimpleFamily family)
       (source : SemisimpleCertificateSourceData family w i)
+  | completeSource (source : PreE7CompleteSourceNumericalData family w i)
 
 /-- Dispatch an ordinary source to its numerically complete catalogue
 package. -/
@@ -52,8 +55,25 @@ noncomputable def PreE7OrdinaryNumericalSourceData.toPackage
   | character hfamily source =>
       exact preE7CharacterNumericalPackage lit family hfamily source
   | semisimple hfamily source =>
-      exact preE7OrdinarySemisimpleNumericalPackage
-        hgen family hfamily source
+      rcases hfamily with ⟨hsemisimple, hne⟩
+      cases family
+      all_goals first
+        | exact absurd hsemisimple (by decide)
+        | skip
+      case ss =>
+        exact (source.direct.completeNumericalData
+          source.entryParameters).toPackage
+      case so =>
+        exact preE7OrdinarySemisimpleNumericalPackage hgen .so
+          ⟨hsemisimple, hne⟩ source
+      case sns =>
+        exact ((source.direct hgen).completeNumericalData
+          source.entryParameters).toPackage
+      case sns2 => exact absurd rfl hne
+      case nsaprim =>
+        exact preE7OrdinarySemisimpleNumericalPackage hgen .nsaprim
+          ⟨hsemisimple, hne⟩ source
+  | completeSource source => exact source.toPackage
 
 /-- Every source in the four ordinary templates is accepted by the exact
 numerically certified family predicate used by the T1 catalogue. -/
