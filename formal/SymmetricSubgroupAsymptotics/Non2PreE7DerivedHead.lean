@@ -287,33 +287,42 @@ theorem epi_card_le_characters [Finite J] [Finite Q] {p : ℕ} [NeZero p]
 
 /-! ## The derived-series target -/
 
-/-- A target whose `(n+1)`-st derived term is abelian, self-centralizing,
-absorbing below the `n`-th term, and has one separating character. -/
-structure DerivedCyclicTarget (Q : Type*) [Group Q] (n p : ℕ) where
-  character : derivedSeries Q (n + 1) →* Multiplicative (ZMod p)
-  self_centralizing : ∀ q : Q, (∀ v ∈ derivedSeries Q (n + 1), q * v = v * q) →
-    q ∈ derivedSeries Q (n + 1)
-  absorbing : ∀ W : Subgroup Q, W.Normal → W ≤ derivedSeries Q (n + 1) →
-    W ≤ ⁅derivedSeries Q n, W⁆
-  separating : ∀ v : derivedSeries Q (n + 1),
-    (∀ q : Q, character (MulAut.conjNormal q v) = 1) → v = 1
+/-- A target whose `(n+1)`-st derived term is a literal subgroup `V` which is
+abelian, self-centralizing, absorbing below the `n`-th term, and has one
+separating character. -/
+structure DerivedCyclicTarget (Q : Type*) [Group Q] (V : Subgroup Q) [V.Normal]
+    (n p : ℕ) where
+  derived_eq : derivedSeries Q (n + 1) = V
+  character : V →* Multiplicative (ZMod p)
+  self_centralizing : ∀ q : Q, (∀ v ∈ V, q * v = v * q) → q ∈ V
+  absorbing : ∀ W : Subgroup Q, W.Normal → W ≤ V → W ≤ ⁅derivedSeries Q n, W⁆
+  separating : ∀ v : V, (∀ q : Q, character (MulAut.conjNormal q v) = 1) → v = 1
+
+instance derivedSeries_normal_inst (G : Type*) [Group G] (k : ℕ) :
+    (derivedSeries G k).Normal :=
+  derivedSeries_normal G k
+
+/-- The derived recovery in terms of a literal `V = Q^(n+1)`. -/
+theorem derived_lift_of_eq (n : ℕ) {V : Subgroup Q} (hV : derivedSeries Q (n + 1) = V)
+    (habs : ∀ W : Subgroup Q, W.Normal → W ≤ V → W ≤ ⁅derivedSeries Q n, W⁆)
+    (ψ : J →* Q) (hψ : Function.Surjective ψ)
+    (K : Subgroup J) (hK : K.Normal) (hKV : K.map ψ ≤ V) :
+    K.map ψ ≤ (K ⊓ derivedSeries J (n + 1)).map ψ :=
+  derived_lift n (fun W hW hWV => habs W hW (hWV.trans hV.le)) ψ hψ K hK (hKV.trans hV.ge)
 
 namespace DerivedCyclicTarget
 
-variable {n p : ℕ}
-
-instance (G : Type*) [Group G] (k : ℕ) : (derivedSeries G k).Normal :=
-  derivedSeries_normal G k
+variable {V : Subgroup Q} [V.Normal] {n p : ℕ}
 
 /-- `|Epi(J, Q)| ≤ |Hom(J^(n+1), C_p)| · |Aut Q|`. -/
-theorem epi_card_le (D : DerivedCyclicTarget Q n p) [Finite J] [Finite Q] [NeZero p] :
+theorem epi_card_le (D : DerivedCyclicTarget Q V n p) [Finite J] [Finite Q] [NeZero p] :
     Nat.card (GroupEpimorphism J Q) ≤
       Nat.card (derivedSeries J (n + 1) →* Multiplicative (ZMod p)) *
         Nat.card (Q ≃* Q) :=
-  epi_card_le_characters (derivedSeries J (n + 1)) (derivedSeries Q (n + 1))
+  epi_card_le_characters (derivedSeries J (n + 1)) V
     D.character D.separating D.self_centralizing
-    (fun φ => map_derivedSeries_eq φ.2 (n + 1))
-    (fun φ K hK hKV => derived_lift n D.absorbing φ.1 φ.2 K hK hKV)
+    (fun φ => (map_derivedSeries_eq φ.2 (n + 1)).trans D.derived_eq)
+    (fun φ K hK hKV => derived_lift_of_eq n D.derived_eq D.absorbing φ.1 φ.2 K hK hKV)
 
 end DerivedCyclicTarget
 

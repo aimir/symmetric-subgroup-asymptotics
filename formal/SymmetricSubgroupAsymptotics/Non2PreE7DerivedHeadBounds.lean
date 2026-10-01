@@ -53,10 +53,10 @@ theorem pow_floor_div_le_rpow (p b : ℕ) (hp : 1 ≤ p) :
 
 namespace DerivedCyclicTarget
 
-variable {Q : Type*} [Group Q] [Finite Q] {n : ℕ}
+variable {Q : Type*} [Group Q] [Finite Q] {V : Subgroup Q} [V.Normal] {n : ℕ}
 
 /-- Binary cyclic-dual targets: `|Epi(J, Q)| ≤ |Aut Q| · 2^(b/2)`. -/
-theorem epi_card_le_binary (D : DerivedCyclicTarget Q n 2) {b : ℕ}
+theorem epi_card_le_binary (D : DerivedCyclicTarget Q V n 2) {b : ℕ}
     (J : Subgroup (Equiv.Perm (Fin b))) :
     (Nat.card (GroupEpimorphism J Q) : ℝ) ≤
       (Nat.card (Q ≃* Q) : ℝ) * (2 : ℝ) ^ ((1 / 2 : ℝ) * b) := by
@@ -81,7 +81,7 @@ theorem epi_card_le_binary (D : DerivedCyclicTarget Q n 2) {b : ℕ}
     _ ≤ _ := mul_le_mul_of_nonneg_left hpow (Nat.cast_nonneg _)
 
 /-- Ternary cyclic-dual targets: `|Epi(J, Q)| ≤ |Aut Q| · 3^(b/3)`. -/
-theorem epi_card_le_ternary (D : DerivedCyclicTarget Q n 3) {b : ℕ}
+theorem epi_card_le_ternary (D : DerivedCyclicTarget Q V n 3) {b : ℕ}
     (J : Subgroup (Equiv.Perm (Fin b))) :
     (Nat.card (GroupEpimorphism J Q) : ℝ) ≤
       (Nat.card (Q ≃* Q) : ℝ) * (2 : ℝ) ^ ((Real.logb 2 3 / 3) * b) := by
@@ -107,11 +107,11 @@ end DerivedCyclicTarget
 
 namespace DerivedHeadTarget
 
-variable {Q : Type} [Group Q] [Finite Q] {n m q : ℕ}
+variable {Q : Type} [Group Q] [Finite Q] {V : Subgroup Q} [V.Normal] {n m q : ℕ}
 
 /-- Binary common-head targets:
 `|Epi(J, Q)| ≤ 2 |Aut Q| · 2^((log₂ q / (2m)) b)`. -/
-theorem epi_card_le_binary (D : DerivedHeadTarget 2 Q n m q) (hq : 2 ≤ q) {b : ℕ}
+theorem epi_card_le_binary (D : DerivedHeadTarget 2 Q V n m q) (hq : 2 ≤ q) {b : ℕ}
     (J : Subgroup (Equiv.Perm (Fin b))) :
     (Nat.card (GroupEpimorphism J Q) : ℝ) ≤
       (2 * Nat.card (Q ≃* Q) : ℝ) * (2 : ℝ) ^ ((Real.logb 2 q / (2 * m)) * b) := by

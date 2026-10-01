@@ -90,6 +90,46 @@ theorem characters_separate (V : Subgroup Q)
     (Additive.ofMul v) (fun χ => h χ)
   exact Additive.ofMul.injective h0
 
+/-- An additive group of exponent `p` has as many characters as elements. -/
+theorem additive_characters_card (A : Type) [AddCommGroup A] [Finite A]
+    (h : ∀ x : A, p • x = 0) : Nat.card (A →+ ZMod p) = Nat.card A := by
+  letI : Module (ZMod p) A := AddCommGroup.zmodModule (n := p) h
+  have hbij : Function.Bijective (AddMonoidHom.toZModLinearMap p (M := A) (M₁ := ZMod p)) :=
+    ⟨AddMonoidHom.toZModLinearMap_injective p, fun φ => ⟨φ.toAddMonoidHom, by ext; rfl⟩⟩
+  rw [Nat.card_eq_of_bijective _ hbij]
+  haveI : Module.Finite (ZMod p) A := Module.Finite.of_finite
+  rw [Module.natCard_eq_pow_finrank (K := ZMod p) (V := A →ₗ[ZMod p] ZMod p),
+    Module.natCard_eq_pow_finrank (K := ZMod p) (V := A)]
+  congr 1
+  exact Subspace.dual_finrank_eq
+
+/-- An elementary abelian subgroup of order `p^m` has character rank `m`. -/
+theorem finrank_characters_eq (V : Subgroup Q) [Finite V]
+    (hcomm : ∀ v ∈ V, ∀ w ∈ V, v * w = w * v) (hexp : ∀ v ∈ V, v ^ p = 1)
+    (m : ℕ) (hcard : Nat.card V = p ^ m) :
+    Module.finrank (ZMod p) (PrimeCharacters p V) = m := by
+  letI : AddCommGroup (Additive V) :=
+    { (inferInstance : AddGroup (Additive V)) with
+      add_comm := fun a b => by
+        change Additive.ofMul (Additive.toMul a * Additive.toMul b) =
+          Additive.ofMul (Additive.toMul b * Additive.toMul a)
+        congr 1
+        exact Subtype.ext (hcomm _ (Additive.toMul a).2 _ (Additive.toMul b).2) }
+  have h1 := additive_characters_card p (Additive V) (fun x => by
+      change Additive.ofMul ((Additive.toMul x) ^ p) = Additive.ofMul 1
+      congr 1
+      apply Subtype.ext
+      simp only [SubgroupClass.coe_pow, OneMemClass.coe_one]
+      exact hexp _ (Additive.toMul x).2)
+  have h2 : Nat.card (PrimeCharacters p V) =
+      p ^ Module.finrank (ZMod p) (PrimeCharacters p V) := by
+    rw [Module.natCard_eq_pow_finrank (K := ZMod p) (V := PrimeCharacters p V), Nat.card_zmod]
+  have h3 : Nat.card (PrimeCharacters p V) = p ^ m := by
+    rw [show Nat.card (PrimeCharacters p V) = Nat.card (Additive V →+ ZMod p) from rfl, h1]
+    exact (Nat.card_congr (Additive.toMul : Additive V ≃ V)).trans hcard
+  have hp : 1 < p := (Fact.out : p.Prime).one_lt
+  exact Nat.pow_right_injective hp (h2.symm.trans h3)
+
 /-- An invariant subspace of the characters of a minimal normal elementary
 abelian subgroup is zero or everything. -/
 theorem characters_invariant_dichotomy [Finite Q] (V : Subgroup Q) [hVn : V.Normal]
@@ -214,38 +254,33 @@ theorem mem_ker_iff_headSpace (F : Subgroup J) (V : Subgroup Q)
 
 /-! ## The target structure and the count -/
 
-instance derivedSeries_normal' (G : Type*) [Group G] (k : ℕ) : (derivedSeries G k).Normal :=
-  derivedSeries_normal G k
-
-/-- A target whose `(n+1)`-st derived term is an elementary abelian minimal
-normal, self-centralizing, absorbed subgroup of dimension `m`, with one
-nonzero character whose stabilizer fixes at most `q` characters. -/
-structure DerivedHeadTarget (Q : Type*) [Group Q] (n m q : ℕ) : Prop where
-  self_centralizing : ∀ x : Q, (∀ v ∈ derivedSeries Q (n + 1), x * v = v * x) →
-    x ∈ derivedSeries Q (n + 1)
-  absorbing : ∀ W : Subgroup Q, W.Normal → W ≤ derivedSeries Q (n + 1) →
-    W ≤ ⁅derivedSeries Q n, W⁆
-  commutative : ∀ v ∈ derivedSeries Q (n + 1), ∀ w ∈ derivedSeries Q (n + 1), v * w = w * v
-  exponent : ∀ v ∈ derivedSeries Q (n + 1), v ^ p = 1
-  minimal : ∀ W : Subgroup Q, W.Normal → W ≤ derivedSeries Q (n + 1) →
-    W = ⊥ ∨ W = derivedSeries Q (n + 1)
-  finrank_eq : Module.finrank (ZMod p) (PrimeCharacters p (derivedSeries Q (n + 1))) = m
-  witness : ∃ χ₀ : PrimeCharacters p (derivedSeries Q (n + 1)), χ₀ ≠ 0 ∧
-    Nat.card {χ : PrimeCharacters p (derivedSeries Q (n + 1)) //
-      ∀ x : Q, conjRep p Q _ x χ₀ = χ₀ → conjRep p Q _ x χ = χ} ≤ q
+/-- A target whose `(n+1)`-st derived term is a literal elementary abelian
+minimal normal, self-centralizing, absorbed subgroup `V` of dimension `m`,
+with one nonzero character whose stabilizer fixes at most `q` characters. -/
+structure DerivedHeadTarget (Q : Type) [Group Q] (V : Subgroup Q) [V.Normal]
+    (n m q : ℕ) : Prop where
+  derived_eq : derivedSeries Q (n + 1) = V
+  self_centralizing : ∀ x : Q, (∀ v ∈ V, x * v = v * x) → x ∈ V
+  absorbing : ∀ W : Subgroup Q, W.Normal → W ≤ V → W ≤ ⁅derivedSeries Q n, W⁆
+  commutative : ∀ v ∈ V, ∀ w ∈ V, v * w = w * v
+  exponent : ∀ v ∈ V, v ^ p = 1
+  minimal : ∀ W : Subgroup Q, W.Normal → W ≤ V → W = ⊥ ∨ W = V
+  finrank_eq : Module.finrank (ZMod p) (PrimeCharacters p V) = m
+  witness : ∃ χ₀ : PrimeCharacters p V, χ₀ ≠ 0 ∧
+    Nat.card {χ : PrimeCharacters p V //
+      ∀ x : Q, conjRep p Q V x χ₀ = χ₀ → conjRep p Q V x χ = χ} ≤ q
 
 namespace DerivedHeadTarget
 
-variable {p} {n m q : ℕ}
+variable {p} {V : Subgroup Q} [V.Normal] {n m q : ℕ}
 
 /-- Every onto map gives a member of the common head of `F = J^(n+1)`. -/
-theorem headMember [Finite Q] (D : DerivedHeadTarget p Q n m q) (φ : GroupEpimorphism J Q) :
+theorem headMember [Finite Q] (D : DerivedHeadTarget p Q V n m q) (φ : GroupEpimorphism J Q) :
     HeadMember (conjRep p J (derivedSeries J (n + 1))) m q
-      (headSpace p (derivedSeries J (n + 1)) (derivedSeries Q (n + 1)) φ.1
-        (map_derivedSeries_eq φ.2 (n + 1))) := by
+      (headSpace p (derivedSeries J (n + 1)) V φ.1
+        ((map_derivedSeries_eq φ.2 (n + 1)).trans D.derived_eq)) := by
   set F := derivedSeries J (n + 1)
-  set V := derivedSeries Q (n + 1)
-  have hφ : F.map φ.1 = V := map_derivedSeries_eq φ.2 (n + 1)
+  have hφ : F.map φ.1 = V := (map_derivedSeries_eq φ.2 (n + 1)).trans D.derived_eq
   set L := pullback p F V φ.1 hφ
   have hL := pullback_injective p F V φ.1 hφ
   obtain ⟨χ₀, hχ₀, hcard⟩ := D.witness
@@ -301,47 +336,46 @@ theorem headMember [Finite Q] (D : DerivedHeadTarget p Q n m q) (φ : GroupEpimo
     exact (Nat.card_le_card_of_injective back hback).trans hcard
 
 /-- **The common-head onto count.** -/
-theorem epi_card_le [Finite J] [Finite Q] (D : DerivedHeadTarget p Q n m q) :
+theorem epi_card_le [Finite J] [Finite Q] (D : DerivedHeadTarget p Q V n m q) :
     Nat.card (GroupEpimorphism J Q) ≤
       (∑ j ∈ Finset.range
           (Module.finrank (ZMod p) (PrimeCharacters p (derivedSeries J (n + 1))) / m + 1),
         q ^ j) * Nat.card (Q ≃* Q) := by
   set F := derivedSeries J (n + 1)
-  set V := derivedSeries Q (n + 1)
   letI : Finite (J →* Q) :=
     Finite.of_injective (fun f : J →* Q => (f : J → Q)) DFunLike.coe_injective
   letI : Fintype (GroupEpimorphism J Q) := Fintype.ofFinite _
   let label : GroupEpimorphism J Q → Submodule (ZMod p) (PrimeCharacters p F) :=
-    fun φ => headSpace p F V φ.1 (map_derivedSeries_eq φ.2 (n + 1))
+    fun φ => headSpace p F V φ.1 ((map_derivedSeries_eq φ.2 (n + 1)).trans D.derived_eq)
   let X : Finset (Submodule (ZMod p) (PrimeCharacters p F)) := Finset.univ.image label
   let label' : GroupEpimorphism J Q → X := fun φ =>
     ⟨label φ, Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩
   have hker : ∀ φ ψ : GroupEpimorphism J Q, label' φ = label' ψ → φ.1.ker = ψ.1.ker := by
     intro φ ψ hl
     have hl' : label φ = label ψ := congrArg Subtype.val hl
-    apply ker_eq_of_inf_eq F V φ.1 ψ.1 (map_derivedSeries_eq φ.2 (n + 1))
-      (map_derivedSeries_eq ψ.2 (n + 1)) D.self_centralizing
-      (fun K hK hKV => derived_lift n D.absorbing φ.1 φ.2 K hK hKV)
-      (fun K hK hKV => derived_lift n D.absorbing ψ.1 ψ.2 K hK hKV)
+    apply ker_eq_of_inf_eq F V φ.1 ψ.1 ((map_derivedSeries_eq φ.2 (n + 1)).trans D.derived_eq)
+      ((map_derivedSeries_eq ψ.2 (n + 1)).trans D.derived_eq) D.self_centralizing
+      (fun K hK hKV => derived_lift_of_eq n D.derived_eq D.absorbing φ.1 φ.2 K hK hKV)
+      (fun K hK hKV => derived_lift_of_eq n D.derived_eq D.absorbing ψ.1 ψ.2 K hK hKV)
     ext x
     simp only [Subgroup.mem_inf, MonoidHom.mem_ker]
     constructor
     · rintro ⟨hx, hxF⟩
       refine ⟨?_, hxF⟩
       have h1 := (mem_ker_iff_headSpace p F V D.commutative D.exponent φ.1
-        (map_derivedSeries_eq φ.2 (n + 1)) ⟨x, hxF⟩).mp hx
+        ((map_derivedSeries_eq φ.2 (n + 1)).trans D.derived_eq) ⟨x, hxF⟩).mp hx
       change ∀ ℓ ∈ label φ, _ at h1
       rw [hl'] at h1
       exact (mem_ker_iff_headSpace p F V D.commutative D.exponent ψ.1
-        (map_derivedSeries_eq ψ.2 (n + 1)) ⟨x, hxF⟩).mpr h1
+        ((map_derivedSeries_eq ψ.2 (n + 1)).trans D.derived_eq) ⟨x, hxF⟩).mpr h1
     · rintro ⟨hx, hxF⟩
       refine ⟨?_, hxF⟩
       have h1 := (mem_ker_iff_headSpace p F V D.commutative D.exponent ψ.1
-        (map_derivedSeries_eq ψ.2 (n + 1)) ⟨x, hxF⟩).mp hx
+        ((map_derivedSeries_eq ψ.2 (n + 1)).trans D.derived_eq) ⟨x, hxF⟩).mp hx
       change ∀ ℓ ∈ label ψ, _ at h1
       rw [← hl'] at h1
       exact (mem_ker_iff_headSpace p F V D.commutative D.exponent φ.1
-        (map_derivedSeries_eq φ.2 (n + 1)) ⟨x, hxF⟩).mpr h1
+        ((map_derivedSeries_eq φ.2 (n + 1)).trans D.derived_eq) ⟨x, hxF⟩).mpr h1
   have h1 := groupEpimorphism_card_le_kernel_labels label' hker
   have hX : X.card ≤ ∑ j ∈ Finset.range
       (Module.finrank (ZMod p) (PrimeCharacters p F) / m + 1), q ^ j := by

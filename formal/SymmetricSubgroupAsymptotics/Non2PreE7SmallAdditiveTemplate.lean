@@ -221,15 +221,19 @@ namespace Non2UnipotentPrefixFiniteMenu
 
 /-! ## The per-axis certificates -/
 
-/-- One fixed certificate on a literal normal axis: either the quotient is a
-literal quotient of the comparator, or its onto maps obey a proved tail of
-slope `θ`. -/
+/-- One fixed certificate on a literal normal axis: the quotient is a literal
+quotient of the comparator, or its onto maps obey a proved tail of slope `θ`,
+or they obey a mixed bound `B Z_J(R) + C 2^(θ b)`. -/
 inductive PreE7SmallAxisCertificate {w : ℕ} (U : Subgroup (Equiv.Perm (Fin w)))
     (N : {N : Subgroup U // N.Normal}) (R : Type) [Group R] (θ : ℝ) : Type
   | comparator (M : {M : Subgroup R // M.Normal}) (e : (U ⧸ N.1) ≃* (R ⧸ M.1))
   | tail (C : ℝ) (hC : 0 ≤ C)
       (bound : ∀ (b : ℕ) (J : Subgroup (Equiv.Perm (Fin b))),
         (Nat.card (GroupEpimorphism J (U ⧸ N.1)) : ℝ) ≤ C * (2 : ℝ) ^ (θ * b))
+  | bounded (B C : ℝ) (hB : 0 ≤ B) (hC : 0 ≤ C)
+      (bound : ∀ (b : ℕ) (J : Subgroup (Equiv.Perm (Fin b))) [Finite R],
+        (Nat.card (GroupEpimorphism J (U ⧸ N.1)) : ℝ) ≤
+          B * completeQuotientWeight (R := R) J + C * (2 : ℝ) ^ (θ * b))
 
 namespace PreE7SmallAxisCertificate
 
@@ -240,21 +244,27 @@ variable {w : ℕ} {U : Subgroup (Equiv.Perm (Fin w))}
 def mainCoefficient : PreE7SmallAxisCertificate U N R θ → ℝ
   | .comparator _ _ => 1
   | .tail _ _ _ => 0
+  | .bounded B _ _ _ _ => B
 
 /-- The tail coefficient. -/
 def tailCoefficient : PreE7SmallAxisCertificate U N R θ → ℝ
   | .comparator _ _ => 0
   | .tail C _ _ => C
+  | .bounded _ C _ _ _ => C
 
 theorem mainCoefficient_nonneg (c : PreE7SmallAxisCertificate U N R θ) :
     0 ≤ c.mainCoefficient := by
-  cases c <;> simp [mainCoefficient]
+  cases c with
+  | comparator => simp [mainCoefficient]
+  | tail => simp [mainCoefficient]
+  | bounded B C hB _ _ => exact hB
 
 theorem tailCoefficient_nonneg (c : PreE7SmallAxisCertificate U N R θ) :
     0 ≤ c.tailCoefficient := by
   cases c with
   | comparator => simp [tailCoefficient]
   | tail C hC _ => exact hC
+  | bounded B C _ hC _ => exact hC
 
 theorem envelope [Finite R] (c : PreE7SmallAxisCertificate U N R θ) {b : ℕ}
     (J : Subgroup (Equiv.Perm (Fin b))) :
@@ -269,6 +279,9 @@ theorem envelope [Finite R] (c : PreE7SmallAxisCertificate U N R θ) {b : ℕ}
     exact card_groupEpimorphism_le_completeQuotientWeight J M e
   | tail C hC hbound =>
     simp only [mainCoefficient, tailCoefficient, zero_mul, zero_add]
+    exact hbound b J
+  | bounded B C hB hC hbound =>
+    simp only [mainCoefficient, tailCoefficient, zero_mul, Real.rpow_zero, mul_one]
     exact hbound b J
 
 end PreE7SmallAxisCertificate
@@ -386,16 +399,18 @@ theorem entryParameters (family : PreE7NoPairNoC3EarlierOwnerFamily) :
 /-- All coefficients are bounded independently of the complement degree. -/
 theorem coefficient_bounded :
     ∃ K : ℝ, ∀ N, (D.axis N).mainCoefficient ≤ K ∧ (D.axis N).tailCoefficient ≤ K := by
-  refine ⟨1 + ∑ N, (D.axis N).tailCoefficient, fun N => ?_⟩
+  refine ⟨∑ N, (D.axis N).mainCoefficient + ∑ N, (D.axis N).tailCoefficient, fun N => ?_⟩
+  have hmain : (D.axis N).mainCoefficient ≤ ∑ N, (D.axis N).mainCoefficient :=
+    Finset.single_le_sum (f := fun N => (D.axis N).mainCoefficient)
+      (fun N _ => (D.axis N).mainCoefficient_nonneg) (Finset.mem_univ N)
   have hsum : (D.axis N).tailCoefficient ≤ ∑ N, (D.axis N).tailCoefficient :=
     Finset.single_le_sum (f := fun N => (D.axis N).tailCoefficient)
       (fun N _ => (D.axis N).tailCoefficient_nonneg) (Finset.mem_univ N)
-  have hnonneg : 0 ≤ ∑ N, (D.axis N).tailCoefficient :=
+  have hm0 : 0 ≤ ∑ N, (D.axis N).mainCoefficient :=
+    Finset.sum_nonneg (fun N _ => (D.axis N).mainCoefficient_nonneg)
+  have ht0 : 0 ≤ ∑ N, (D.axis N).tailCoefficient :=
     Finset.sum_nonneg (fun N _ => (D.axis N).tailCoefficient_nonneg)
-  constructor
-  · cases h : D.axis N <;> simp [PreE7SmallAxisCertificate.mainCoefficient] <;>
-      linarith
-  · linarith
+  exact ⟨by linarith, by linarith⟩
 
 end PreE7SmallAdditiveData
 
