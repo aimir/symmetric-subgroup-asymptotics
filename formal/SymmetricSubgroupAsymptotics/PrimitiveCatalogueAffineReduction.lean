@@ -25,16 +25,50 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
 
-/-- Exact finite-catalogue matching for every semisimple profile which can
-occur on the original primitive action or on the selected literal minimal
-block component.  The hypotheses `hone` and `hsmall` restrict the request to
-the 116-row bounded almost-simple slice. -/
+/-- Failure of the direct bounded-index inequality confines a one-factor
+profile with least index below thirty to an actual degree below thirty.  This
+is the branch on which the finite primitive catalogue is used in the
+manuscript. -/
+theorem PrimitiveSemisimpleOuterLogProfile.degree_lt_thirty_of_index_failure
+    {L : Type} [Group L] {r : ℕ}
+    (profile : PrimitiveSemisimpleOuterLogProfile L r)
+    (_hone : profile.factorCount = 1) (hsmall : profile.leastIndex < 30)
+    (hfail : ¬ 2 * profile.outerOrder ≤ r) : r < 30 := by
+  have hell : profile.leastIndex ≤ 29 := by omega
+  have hpNat : profile.leastIndex ^ 3 < 2 ^ 15 := by
+    have hmono := Nat.pow_le_pow_left hell 3
+    norm_num at hmono ⊢
+    omega
+  have hp : ((profile.leastIndex : ℝ) ^ 3) < (2 : ℝ) ^ (15 : ℕ) := by
+    exact_mod_cast hpNat
+  have hellposR : (0 : ℝ) < (profile.leastIndex : ℝ) := by
+    exact_mod_cast ((by norm_num : 0 < 5).trans_le profile.leastIndex_five_le)
+  have hlog := Real.logb_lt_logb (by norm_num : (1 : ℝ) < 2)
+    (pow_pos hellposR 3) hp
+  simp only [Real.logb_pow,
+    Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2), mul_one] at hlog
+  have hqReal : (profile.outerOrder : ℝ) < 15 :=
+    profile.outerOrder_log_bound.trans_lt hlog
+  have hqLt : profile.outerOrder < 15 := by exact_mod_cast hqReal
+  have hq : profile.outerOrder ≤ 14 := by omega
+  by_contra hr
+  apply hfail
+  have hr30 : 30 ≤ r := by omega
+  calc
+    2 * profile.outerOrder ≤ 28 := by omega
+    _ ≤ r := by omega
+
+/-- Exact finite-catalogue matching for every semisimple profile in the
+genuinely unresolved bounded branch.  The extra failure hypothesis is
+essential: `hone` and `hsmall` alone do not imply that the action degree is
+below thirty. -/
 structure PreE7PrimitiveCatalogueMatchData where
   primitive : ∀ w (U : PreE7NonPairActionClass w), 5 ≤ w →
     MulAction.IsPreprimitive (preE7NonPairAction w U) (Fin w) →
     (profile : PrimitiveSemisimpleOuterLogProfile
       (preE7NonPairAction w U) w) →
     profile.factorCount = 1 → profile.leastIndex < 30 →
+    (¬ 2 * profile.outerOrder ≤ w) →
     PrimitiveBoundedIndexCatalogueMatch profile
   imprimitive : ∀ w (U : PreE7NonPairActionClass w), 5 ≤ w →
     (basePoint : Fin w) →
@@ -43,6 +77,7 @@ structure PreE7PrimitiveCatalogueMatchData where
     (profile : PrimitiveSemisimpleOuterLogProfile block.Component
       (Nat.card block.Fibre)) →
     profile.factorCount = 1 → profile.leastIndex < 30 →
+    (¬ 2 * profile.outerOrder ≤ Nat.card block.Fibre) →
     PrimitiveBoundedIndexCatalogueMatch profile
 
 /-- The project-owned complement of the nonaffine primitive profile.  It asks
@@ -81,7 +116,12 @@ noncomputable def PreE7PrimitiveCatalogueExhaustionData.ofMatchAndAffine
     · let profile := Classical.choice hprofile
       exact .inl
         { profile := profile
-          boundedMatch := M.primitive w U hw hp profile }
+          boundedMatch := by
+            intro hone hsmall
+            by_cases hindex : 2 * profile.outerOrder ≤ w
+            · exact .direct hindex
+            · exact .catalogue
+                (M.primitive w U hw hp profile hone hsmall hindex) }
     · exact .inr (A.primitive w U hw hp hprofile)
   imprimitive := by
     intro w U hw basePoint block
@@ -90,7 +130,12 @@ noncomputable def PreE7PrimitiveCatalogueExhaustionData.ofMatchAndAffine
     · let profile := Classical.choice hprofile
       exact .inl
         { profile := profile
-          boundedMatch := M.imprimitive w U hw basePoint block profile }
+          boundedMatch := by
+            intro hone hsmall
+            by_cases hindex : 2 * profile.outerOrder ≤ Nat.card block.Fibre
+            · exact .direct hindex
+            · exact .catalogue
+                (M.imprimitive w U hw basePoint block profile hone hsmall hindex) }
     · exact .inr (A.imprimitive w U hw basePoint block hprofile)
 
 /-- T1 with the finite primitive catalogue correspondence and the affine

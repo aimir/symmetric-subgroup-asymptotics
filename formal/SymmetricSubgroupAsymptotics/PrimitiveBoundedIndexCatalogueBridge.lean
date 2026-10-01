@@ -46,13 +46,35 @@ theorem index_bound : 2 * C.outerOrder ≤ r := by
 
 end PrimitiveBoundedIndexCatalogueMatch
 
-/-- Natural outer-log data in which each bounded one-factor branch is matched
-to an exact row of the finite primitive receipt. -/
+/-- Resolution of the bounded one-factor branch.  Profiles whose degree is
+already large enough use the literal inequality directly; only a failing
+profile is sent to a row of the degree-5--29 catalogue. -/
+inductive PrimitiveBoundedIndexCatalogueResolution
+    {L : Type} [Group L] {r : ℕ}
+    (C : PrimitiveSemisimpleOuterLogProfile L r) : Type where
+  | direct (index_bound : 2 * C.outerOrder ≤ r)
+  | catalogue (catalogueMatch : PrimitiveBoundedIndexCatalogueMatch C)
+
+namespace PrimitiveBoundedIndexCatalogueResolution
+
+variable {L : Type} [Group L] {r : ℕ}
+  {C : PrimitiveSemisimpleOuterLogProfile L r}
+
+theorem index_bound (R : PrimitiveBoundedIndexCatalogueResolution C) :
+    2 * C.outerOrder ≤ r := by
+  cases R with
+  | direct h => exact h
+  | catalogue M => exact M.index_bound
+
+end PrimitiveBoundedIndexCatalogueResolution
+
+/-- Natural outer-log data in which every bounded one-factor branch is either
+closed directly or matched to an exact row of the finite primitive receipt. -/
 structure PrimitiveSemisimpleCatalogueCertificateData
     (L : Type) [Group L] (r : ℕ) where
   profile : PrimitiveSemisimpleOuterLogProfile L r
   boundedMatch : profile.factorCount = 1 → profile.leastIndex < 30 →
-    PrimitiveBoundedIndexCatalogueMatch profile
+    PrimitiveBoundedIndexCatalogueResolution profile
 
 namespace PrimitiveSemisimpleCatalogueCertificateData
 
@@ -64,7 +86,7 @@ noncomputable def toBoundedIndexCertificateData :
     PrimitiveSemisimpleBoundedIndexCertificateData L r where
   profile := D.profile
   boundedIndex := fun hone hsmall =>
-    PrimitiveBoundedIndexCatalogueMatch.index_bound
+    PrimitiveBoundedIndexCatalogueResolution.index_bound
       (D.boundedMatch hone hsmall)
 
 noncomputable def certificate :
