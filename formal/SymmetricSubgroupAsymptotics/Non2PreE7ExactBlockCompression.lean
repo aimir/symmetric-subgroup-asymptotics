@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7SemisimpleCompression
 import SymmetricSubgroupAsymptotics.PermutationalWreathProduct
+import SymmetricSubgroupAsymptotics.PermutationalWreathQuotient
 
 /-!
 # Exact block compression into the COMP source
@@ -116,6 +117,77 @@ noncomputable def toSemisimpleCompressionData :
   quotientDegree_small := D.quotientDegree_small
 
 end PreE7ExactBlockCompressionData
+
+/-- Construction-facing exact block data.  The actual action embeds in the
+permutational wreath product with its literal top, and the displayed local
+map has a semisimple kernel.  Exact-component fullness is enough to build
+the global semisimple intersection and quotient embedding; neither is an
+input. -/
+structure PreE7ExactBlockWreathData
+    (w : ℕ) (i : PreE7NonPairActionClass w) where
+  width_lower : 5 ≤ w
+  blockSize : ℕ
+  blockCount : ℕ
+  blockCount_pos : 0 < blockCount
+  localDegree : ℕ
+  localDegree_pos : 0 < localDegree
+  width_eq : w = blockSize * blockCount
+  localGroup : Subgroup (Equiv.Perm (Fin blockSize))
+  blockTop : Subgroup (Equiv.Perm (Fin blockCount))
+  localQuotient : Subgroup (Equiv.Perm (Fin localDegree))
+  localMap : localGroup →* localQuotient
+  localChart : SemisimpleNormalChart localMap.ker
+  ambientEmbedding :
+    preE7NonPairAction w i →*
+      PermutationalWreathProduct localGroup blockTop (Fin blockCount)
+  ambientEmbedding_injective : Function.Injective ambientEmbedding
+  fullComponent :
+    PermutationalWreathProduct.Compression.FullComponent ambientEmbedding
+  localDegree_small : 2 * localDegree ≤ evenWidth blockSize
+
+namespace PreE7ExactBlockWreathData
+
+variable {w : ℕ} {i : PreE7NonPairActionClass w}
+  (D : PreE7ExactBlockWreathData w i)
+
+abbrev E : Subgroup (preE7NonPairAction w i) :=
+  PermutationalWreathProduct.Compression.kernel
+    D.ambientEmbedding D.localMap
+
+/-- Exact block lifting now constructs every field of the numerical
+compression interface. -/
+noncomputable def toExactBlockCompressionData :
+    PreE7ExactBlockCompressionData w i where
+  width_lower := D.width_lower
+  blockSize := D.blockSize
+  blockCount := D.blockCount
+  blockCount_pos := D.blockCount_pos
+  localDegree := D.localDegree
+  localDegree_pos := D.localDegree_pos
+  width_eq := D.width_eq
+  E := D.E
+  E_normal := inferInstance
+  chart :=
+    PermutationalWreathProduct.Compression.kernelSemisimpleChartOfFullComponent
+      D.ambientEmbedding D.localMap D.ambientEmbedding_injective
+      D.fullComponent D.localChart
+  localQuotient := D.localQuotient
+  blockTop := D.blockTop
+  quotientEmbedding :=
+    PermutationalWreathProduct.Compression.quotientEmbedding
+      D.ambientEmbedding D.localMap
+  quotientEmbedding_injective :=
+    PermutationalWreathProduct.Compression.quotientEmbedding_injective
+      D.ambientEmbedding D.localMap
+  localDegree_small := D.localDegree_small
+
+/-- The construction-facing exact block certificate enters the final COMP
+source directly. -/
+noncomputable def toSemisimpleCompressionData :
+    PreE7SemisimpleCompressionData w i :=
+  D.toExactBlockCompressionData.toSemisimpleCompressionData
+
+end PreE7ExactBlockWreathData
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
