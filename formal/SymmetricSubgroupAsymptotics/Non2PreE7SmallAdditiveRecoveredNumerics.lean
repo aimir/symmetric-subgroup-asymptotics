@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.Non2PreE7SmallModelNumerics
 import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveS4
 import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveA4W2
 import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveLin
+import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveTF
 
 /-!
 # Numerical completion of the recovered small additive owners
@@ -190,6 +191,133 @@ noncomputable def preE7_lin_numericalData (w : ℕ)
       · intro b
         change (0 : ℝ) ≤ _
         positivity
+
+private def xsPairBlockEquiv : TwoFourDiagonal.Xs ≃
+    {p : Equiv.Perm (Fin 4) × Equiv.Perm (Fin 4) // p ∈ TwoFourDiagonal.xsPairs} ×
+      Multiplicative (ZMod 2) where
+  toFun x := (⟨(x : TwoFourDiagonal.W4).left, TwoFourDiagonal.mem_xsPairs x.2⟩,
+    (x : TwoFourDiagonal.W4).right)
+  invFun y := ⟨SemidirectProduct.inl y.1.1 * SemidirectProduct.inr y.2,
+    TwoFourDiagonal.mem_Xs_of_pair y.1.2 y.2⟩
+  left_inv x := Subtype.ext (SemidirectProduct.inl_left_mul_inr_right
+    (x : TwoFourDiagonal.W4))
+  right_inv y := by
+    apply Prod.ext
+    · apply Subtype.ext
+      show (SemidirectProduct.inl y.1.1 * SemidirectProduct.inr y.2 :
+        TwoFourDiagonal.W4).left = y.1.1
+      simp
+    · show (SemidirectProduct.inl y.1.1 * SemidirectProduct.inr y.2 :
+        TwoFourDiagonal.W4).right = y.2
+      simp
+
+private theorem xsPairs_card : TwoFourDiagonal.xsPairs.card = 96 := by
+  native_decide
+
+private theorem xs_card : Nat.card TwoFourDiagonal.Xs = 192 := by
+  rw [Nat.card_congr xsPairBlockEquiv, Nat.card_prod, Nat.card_eq_fintype_card]
+  simp [xsPairs_card]
+
+private theorem xc_card_le : Nat.card TwoFourDiagonal.Xc ≤ 192 := by
+  calc
+    Nat.card TwoFourDiagonal.Xc ≤ Nat.card TwoFourDiagonal.Xs :=
+      Nat.card_le_card_of_injective (Subgroup.inclusion TwoFourDiagonal.Xc_le_Xs)
+        (Subgroup.inclusion_injective _)
+    _ = 192 := xs_card
+
+private theorem xg_card_le : Nat.card TwoFourDiagonal.Xg ≤ 192 := by
+  calc
+    Nat.card TwoFourDiagonal.Xg ≤ Nat.card TwoFourDiagonal.Xs :=
+      Nat.card_le_card_of_injective (Subgroup.inclusion TwoFourDiagonal.Xg_le_Xs)
+        (Subgroup.inclusion_injective _)
+    _ = 192 := xs_card
+
+private theorem tf_aut_tail_le (G : Type*) [Group G] [Finite G]
+    (hcard : Nat.card G ≤ 192) :
+    (Nat.card (G ≃* G) : ℝ) ≤ (2 : ℝ) ^ (512 : ℝ) := by
+  have hlog : Nat.log 2 (Nat.card G) ≤ 7 :=
+    (Nat.log_mono_right hcard).trans (by norm_num)
+  have hnat : Nat.card (G ≃* G) ≤ 2 ^ 512 :=
+    (mulEquiv_card_le_card_pow_log G).trans <| calc
+      Nat.card G ^ Nat.log 2 (Nat.card G) ≤ 192 ^ Nat.log 2 (Nat.card G) :=
+        Nat.pow_le_pow_left hcard _
+      _ ≤ 192 ^ 7 := Nat.pow_le_pow_right (by norm_num) hlog
+      _ ≤ 2 ^ 64 := by norm_num
+      _ ≤ 2 ^ 512 := Nat.pow_le_pow_right (by norm_num) (by norm_num)
+  exact_mod_cast hnat
+
+/-- The three actual TF modes with their complete numerical totals. -/
+noncomputable def preE7_tf_numericalData (w : ℕ)
+    (i : PreE7NonPairActionClass w) (S : PreE7TFSource w i) :
+    PreE7SmallAdditiveNumericalData .tf w i := by
+  cases S with
+  | xc e h =>
+      have hw := tf_width e
+      subst w
+      let M := tfXcModel i e h
+      apply M.numericalData .tf
+      · intro b
+        calc
+          (Nat.card {N : Subgroup (preE7NonPairAction 8 i) // N.Normal} : ℝ) ≤
+              (2 : ℝ) ^ (Nat.card M.G : ℝ) := M.normalAxis_card_cast_le_modelRpow
+          _ ≤ (2 : ℝ) ^ (192 : ℝ) := by
+            apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+            exact_mod_cast xc_card_le
+          _ ≤ (2 : ℝ) ^ (64 * (8 : ℝ)) := by
+            apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+            norm_num
+          _ ≤ _ := two_rpow_sixtyFour_width_le_menuMass (w := 8) (by norm_num) b
+      · intro b
+        change (Nat.card (TwoFourDiagonal.Xc ≃* TwoFourDiagonal.Xc) : ℝ) ≤ _
+        calc
+          _ ≤ (2 : ℝ) ^ (512 : ℝ) := tf_aut_tail_le _ xc_card_le
+          _ ≤ _ := by
+            convert two_rpow_sixtyFour_width_le_menuMass (w := 8) (by norm_num) b using 1 <;>
+              norm_num
+  | xg e h =>
+      have hw := tf_width e
+      subst w
+      let M := tfXgModel i e h
+      apply M.numericalData .tf
+      · intro b
+        calc
+          (Nat.card {N : Subgroup (preE7NonPairAction 8 i) // N.Normal} : ℝ) ≤
+              (2 : ℝ) ^ (Nat.card M.G : ℝ) := M.normalAxis_card_cast_le_modelRpow
+          _ ≤ (2 : ℝ) ^ (192 : ℝ) := by
+            apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+            exact_mod_cast xg_card_le
+          _ ≤ (2 : ℝ) ^ (64 * (8 : ℝ)) := by
+            apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+            norm_num
+          _ ≤ _ := two_rpow_sixtyFour_width_le_menuMass (w := 8) (by norm_num) b
+      · intro b
+        change (Nat.card (TwoFourDiagonal.Xg ≃* TwoFourDiagonal.Xg) : ℝ) ≤ _
+        calc
+          _ ≤ (2 : ℝ) ^ (512 : ℝ) := tf_aut_tail_le _ xg_card_le
+          _ ≤ _ := by
+            convert two_rpow_sixtyFour_width_le_menuMass (w := 8) (by norm_num) b using 1 <;>
+              norm_num
+  | xs e h =>
+      have hw := tf_width e
+      subst w
+      let M := tfXsModel i e h
+      apply M.numericalData .tf
+      · intro b
+        calc
+          (Nat.card {N : Subgroup (preE7NonPairAction 8 i) // N.Normal} : ℝ) ≤
+              (2 : ℝ) ^ (Nat.card M.G : ℝ) := M.normalAxis_card_cast_le_modelRpow
+          _ = (2 : ℝ) ^ (192 : ℝ) := by congr 1; exact_mod_cast xs_card
+          _ ≤ (2 : ℝ) ^ (64 * (8 : ℝ)) := by
+            apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+            norm_num
+          _ ≤ _ := two_rpow_sixtyFour_width_le_menuMass (w := 8) (by norm_num) b
+      · intro b
+        change (Nat.card (TwoFourDiagonal.Xs ≃* TwoFourDiagonal.Xs) : ℝ) ≤ _
+        calc
+          _ ≤ (2 : ℝ) ^ (512 : ℝ) := tf_aut_tail_le _ (by rw [xs_card])
+          _ ≤ _ := by
+            convert two_rpow_sixtyFour_width_le_menuMass (w := 8) (by norm_num) b using 1 <;>
+              norm_num
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

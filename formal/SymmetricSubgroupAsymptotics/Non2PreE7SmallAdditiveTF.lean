@@ -65,12 +65,18 @@ theorem closure_map_eq (X : Subgroup W4) (S : Set W4) (h : X = Subgroup.closure 
     (Subgroup.closure S).map TwoFourDiagonal.natural = (TwoFourDiagonal.natural.comp X.subtype).range := by
   rw [MonoidHom.range_comp, Subgroup.range_subtype, h]
 
-/-- The TF family: one of the three named classes, up to relabeling. -/
-structure PreE7TFSource (w : ℕ) (i : PreE7NonPairActionClass w) : Prop where
-  named : ∃ e : Fin 4 ⊕ Fin 4 ≃ Fin w,
-    preE7NonPairAction w i = relabelSubgroup e ((Subgroup.closure XcGens).map natural) ∨
-    preE7NonPairAction w i = relabelSubgroup e ((Subgroup.closure XgGens).map natural) ∨
-    preE7NonPairAction w i = relabelSubgroup e ((Subgroup.closure XsGens).map natural)
+/-- The TF family with the selected literal named class and its relabelling
+retained as data. -/
+inductive PreE7TFSource (w : ℕ) (i : PreE7NonPairActionClass w) : Type
+  | xc (chart : Fin 4 ⊕ Fin 4 ≃ Fin w)
+      (action_eq : preE7NonPairAction w i =
+        relabelSubgroup chart ((Subgroup.closure XcGens).map natural))
+  | xg (chart : Fin 4 ⊕ Fin 4 ≃ Fin w)
+      (action_eq : preE7NonPairAction w i =
+        relabelSubgroup chart ((Subgroup.closure XgGens).map natural))
+  | xs (chart : Fin 4 ⊕ Fin 4 ≃ Fin w)
+      (action_eq : preE7NonPairAction w i =
+        relabelSubgroup chart ((Subgroup.closure XsGens).map natural))
 
 theorem tf_width {w : ℕ} (e : Fin 4 ⊕ Fin 4 ≃ Fin w) : w = 8 := by
   rw [width_eq_of_relabel e]
@@ -168,10 +174,10 @@ def tfXsModel {w : ℕ} (i : PreE7NonPairActionClass w) (e : Fin 4 ⊕ Fin 4 ≃
 catalogue. -/
 theorem preE7_tf_localFamilyAction (w : ℕ) (i : PreE7NonPairActionClass w)
     (S : PreE7TFSource w i) : preE7NoPairNoC3EarlierLocalFamilyAction .tf w i := by
-  obtain ⟨e, h | h | h⟩ := S.named
-  · exact (tfXcModel i e h).localFamilyAction .tf
-  · exact (tfXgModel i e h).localFamilyAction .tf
-  · exact (tfXsModel i e h).localFamilyAction .tf
+  cases S with
+  | xc e h => exact (tfXcModel i e h).localFamilyAction .tf
+  | xg e h => exact (tfXgModel i e h).localFamilyAction .tf
+  | xs e h => exact (tfXsModel i e h).localFamilyAction .tf
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
