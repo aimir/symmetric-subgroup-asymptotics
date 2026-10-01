@@ -157,6 +157,28 @@ theorem T1_of_preE7_numericalSns2_jointTopCell_data
     hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM hcoarse
     hFS hOuter
 
+/-- The annihilator-aware Yoneda-top-family presentation gives the same
+closed T1 boundary.  The retained flag and its Yoneda fibre are still charged
+jointly before the complete quotient moment is applied. -/
+theorem T1_of_preE7_numericalSns2_yonedaTopFamily_data
+    (hTracey : TraceyBinaryFormulaInput)
+    (hExceptional : TraceyBinaryExceptionalThreeInput)
+    (hChief : PrimitiveTernaryChiefWeightBound (fun r => r / 3))
+    (hWeight : PrimitiveTernaryThreeTenthsWeightBound)
+    (hPrimitive : PrimitiveTernaryStrictHeadBound)
+    (h18 : DegreeEighteenTernaryHeadBound)
+    (hKP : KovacsPraegerAbelianizationBound)
+    (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
+    (D : ∀ w (U : PreE7NonPairActionClass w),
+      PreE7NumericalResidualYonedaTopFamilySourceData w U)
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
+    (hFS : FusariSpigaBinaryNormalSubgroupInput)
+    (hOuter : SemisimpleOuterFactorPermutationBound) : T1 :=
+  T1_of_preE7_numericalSns2_jointTopCell_data
+    hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
+    (fun w U => (D w U).toJointTopCellSourceData)
+    hcoarse hFS hOuter
+
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
 
