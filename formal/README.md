@@ -1528,6 +1528,12 @@ using the already checked normal rows at the original physical scales.
 
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
+The primitive endgame now separates the finite nonaffine catalogue match from
+the affine remainder: the checked 116-row receipt is used only after a literal
+semisimple outer-log profile exists, while the complementary primitive and
+minimal-block cases must construct an already integrated source.  This prevents
+the project-owned affine action exhaustion from being hidden inside the
+published primitive-catalogue input.
 The [verification boundary](../ASSUMPTIONS.md#formal-theorem-boundary)
 distinguishes conditional assembly, proofs relative to named published inputs,
 and closed theorems. T1 remains unproved in Lean. The unconditional subgroup
