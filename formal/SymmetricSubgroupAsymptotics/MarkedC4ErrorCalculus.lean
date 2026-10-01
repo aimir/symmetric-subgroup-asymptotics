@@ -55,6 +55,57 @@ theorem UniformQuadraticNegligible.mono
   intro r hr
   exact (hle b r).trans (hb r hr)
 
+/-- Explicit error delivered by the bounded-word recurrence. -/
+def boundedWordError (A : ℝ) (b r : ℕ) : ℝ :=
+  ((A + 1) / Real.log 2) * b * Real.log ((b : ℝ) + r + 2)
+
+theorem boundedWordError_nonneg {A : ℝ} (hA : 0 ≤ A) (b r : ℕ) :
+    0 ≤ boundedWordError A b r := by
+  unfold boundedWordError
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hlog : 0 ≤ Real.log ((b : ℝ) + r + 2) :=
+    Real.log_nonneg (by
+      have hb0 : (0 : ℝ) ≤ b := Nat.cast_nonneg b
+      have hr0 : (0 : ℝ) ≤ r := Nat.cast_nonneg r
+      linarith)
+  positivity
+
+/-- The explicit bounded-word error is uniformly quadratically negligible. -/
+theorem boundedWordError_negligible {A : ℝ} (hA : 0 ≤ A) :
+    UniformQuadraticNegligible (boundedWordError A) := by
+  intro ε hε K
+  let C : ℝ := (A + 1) / Real.log 2
+  have hC : 0 ≤ C := by
+    dsimp [C]
+    have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+    positivity
+  obtain ⟨B, hB⟩ := eventually_atTop.mp
+    (MarkerDefectSum.eventually_log_error_le_linear C hC hε)
+  filter_upwards [eventually_ge_atTop B] with b hb
+  intro r hr
+  have hBr : B ≤ b + r := hb.trans (Nat.le_add_right b r)
+  have hlog := hB (b + r) hBr
+  have hb0 : (0 : ℝ) ≤ b := Nat.cast_nonneg b
+  have hr0 : (0 : ℝ) ≤ r := Nat.cast_nonneg r
+  have hbbr : (b : ℝ) ≤ (b : ℝ) + r := le_add_of_nonneg_right hr0
+  push_cast at hlog
+  unfold boundedWordError
+  dsimp [C] at hlog
+  have hm := mul_le_mul_of_nonneg_right hlog hb0
+  calc
+    (A + 1) / Real.log 2 * (b : ℝ) *
+        Real.log ((b : ℝ) + r + 2) =
+      ((A + 1) / Real.log 2 * Real.log ((b : ℝ) + r + 2)) * b := by
+        ring
+    _ ≤ ε * ((b : ℝ) + r) * b := hm
+    _ ≤ ε * ((b : ℝ) + r) ^ 2 := by
+      calc
+        ε * ((b : ℝ) + r) * b ≤
+            ε * ((b : ℝ) + r) * ((b : ℝ) + r) :=
+          mul_le_mul_of_nonneg_left hbbr
+            (mul_nonneg hε.le (add_nonneg hb0 hr0))
+        _ = ε * ((b : ℝ) + r) ^ 2 := by ring
+
 /-- A count has the marked quadratic with an explicit error. -/
 def MarkedMomentErrorBound (count : ℕ → ℕ → ℝ)
     (e : ℕ → ℕ → ℝ) : Prop :=
