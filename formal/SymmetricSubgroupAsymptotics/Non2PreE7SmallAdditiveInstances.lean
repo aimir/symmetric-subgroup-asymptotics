@@ -26,9 +26,9 @@ modules and joined to DIH and the regular-prime SAPRIM row by
 `Non2PreE7SmallAdditiveNumericalInstances`.  The still-open historical rows
 are:
 
-* SAPRIM, other rows: the odd abelian and higher prime-power rows; regular
-  `C₅`, natural `D₁₀` and the generic binary primitive affine row are
-  now closed separately;
+* SAPRIM, other rows: the nonabelian odd prime-power rows; regular `C₅`,
+  natural `D₁₀`, the generic binary primitive affine row and every odd
+  cyclic-complement row are now closed separately;
 * INV12all: the joint `d₂`/`d₃` proper-`V₄`-base estimate;
 * S3EXC: the constants of `B₃(s, H)`;
 * S3TWO, S3CYCL and S3SYL: literal normal-menu certificates of their
