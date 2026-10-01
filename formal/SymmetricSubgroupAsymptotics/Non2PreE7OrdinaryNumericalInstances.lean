@@ -4,15 +4,17 @@ import SymmetricSubgroupAsymptotics.Non2PreE7RefinedCapacityMenu
 import SymmetricSubgroupAsymptotics.Non2PreE7CharacterCertificateMenu
 import SymmetricSubgroupAsymptotics.Non2PreE7CompleteSourceComparator
 import SymmetricSubgroupAsymptotics.Non2PreE7SemisimpleCompleteSourceInstances
+import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveNumerics
 
 /-!
 # Unified numerical instances for the four ordinary templates
 
-This dispatcher is the exact integration boundary for the 37 families
-covered by refined capacity, comparator/abelian towers, character
-certificates, and ordinary semisimple estimates.  `SNS2` is closed by its
-correlated rank-tail lane; the fifteen small fixed-degree families remain on
-their separate lane.
+This dispatcher is the exact integration boundary for every pointwise or
+complete-source owner.  It includes refined capacity, comparator/abelian
+towers, character certificates, ordinary semisimple estimates, and the
+small fixed-degree additive owners after their finite coefficient totals
+have been checked. `SNS2`, `Y1`, and `B6` retain their separate correlated
+rank-tail lanes.
 -/
 
 set_option autoImplicit false
@@ -36,6 +38,7 @@ inductive PreE7OrdinaryNumericalSourceData
   | semisimple (hfamily : IsPreE7OrdinarySemisimpleFamily family)
       (source : SemisimpleCertificateSourceData family w i)
   | completeSource (source : PreE7CompleteSourceNumericalData family w i)
+  | small (source : PreE7SmallAdditiveNumericalData family w i)
 
 /-- Dispatch an ordinary source to its numerically complete catalogue
 package. -/
@@ -74,6 +77,7 @@ noncomputable def PreE7OrdinaryNumericalSourceData.toPackage
         exact preE7OrdinarySemisimpleNumericalPackage hgen .nsaprim
           ⟨hsemisimple, hne⟩ source
   | completeSource source => exact source.toPackage
+  | small source => exact source.toPackage
 
 /-- Every source in the four ordinary templates is accepted by the exact
 numerically certified family predicate used by the T1 catalogue. -/
