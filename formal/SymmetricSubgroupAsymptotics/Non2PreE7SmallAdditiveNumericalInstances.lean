@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveBasicNumerics
 import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveRecoveredNumerics
+import SymmetricSubgroupAsymptotics.Non2PreE7SaprimDegreeFive
 import SymmetricSubgroupAsymptotics.Non2PreE7RankTailSourceDichotomyClosure
 
 /-!
@@ -27,7 +28,8 @@ def PreE7CompletedSmallOwnerSourceData :
   | .s4 => fun w i => PLift (PreE7S4Source w i)
   | .a4w2 => fun w i => PreE7A4W2Source w i
   | .lin => fun w i => PreE7LinSource w i
-  | .saprim => fun w i => PreE7SaprimRegularPrimeSource w i
+  | .saprim => fun w i =>
+      PreE7SaprimRegularPrimeSource w i ⊕ PreE7SaprimDegreeFiveSource w i
   | .tf => fun w i => PreE7TFSource w i
   | _ => fun _ _ => PEmpty
 
@@ -47,7 +49,10 @@ noncomputable def PreE7CompletedSmallOwnerSourceData.numericalData
   case s4 => exact preE7_s4_numericalData w i S.down
   case a4w2 => exact preE7_a4w2_numericalData w i S
   case lin => exact preE7_lin_numericalData w i S
-  case saprim => exact PreE7SaprimRegularPrimeSource.numericalData S hKP
+  case saprim =>
+    rcases S with S | S
+    · exact PreE7SaprimRegularPrimeSource.numericalData S hKP
+    · exact S.numericalData
   case tf => exact preE7_tf_numericalData w i S
 
 /-- A completed small action as an ordinary numerical source. -/
