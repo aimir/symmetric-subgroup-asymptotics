@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.MarkedC4BoundedWordAssembly
 import SymmetricSubgroupAsymptotics.MarkedC4CaseIComplete
 import SymmetricSubgroupAsymptotics.MarkedC4CaseIIPeel
 import SymmetricSubgroupAsymptotics.MarkedC4PublishedCaseIEncoding
+import SymmetricSubgroupAsymptotics.MarkedC4PublishedCaseIIEncoding
 
 /-!
 # The published RDT bounded-word rows imply the marked recurrence
@@ -253,6 +254,68 @@ noncomputable def row
 
 end PublishedBoundedWordLiteralCaseI
 
+/-! ## The literal Case-II input -/
+
+/-- One excessive-factor peel, independent of the auxiliary mark count.
+The actual quotient and the finite injection into residual-object/epimorphism
+pairs are retained in `encoding`; `row` derives the exponential estimate.
+-/
+structure PublishedBoundedWordLiteralCaseII
+    (count : ℕ → ℕ → ℝ) (peel : ℕ → ℝ) (A : ℝ) (b k : ℕ) where
+  e : ℝ
+  w : ℝ
+  bThree : ℝ
+  bFour : ℝ
+  d : ℕ
+  n : ℕ
+  A₀ : ℝ
+  encoding : PublishedCaseIIEpiEncoding peel (count k) b d n A₀ A
+  bThree_nonneg : 0 ≤ bThree
+  bFour_nonneg : 0 ≤ bFour
+  residual_width : bThree + bFour = (b : ℝ) - w
+  remaining_degree : (k : ℝ) = (b : ℝ) - w
+  excessive :
+    e * Nat.log 2 (Nat.card (Subgroup.center encoding.target.Carrier)) +
+        Nat.log 2 (Nat.card (commutator encoding.target.Carrier)) ≤ w / 2
+  z_cap : (Nat.log 2 (Nat.card (Subgroup.center encoding.target.Carrier)) : ℝ) ≤ w / 4
+  source_rank : (d : ℝ) ≤ e * bThree / 4 + bFour / 2
+  normal_rank : (n : ℝ) ≤ bThree / 4
+
+namespace PublishedBoundedWordLiteralCaseII
+
+/-- The literal finite epimorphism encoding supplies the old peel row for
+every auxiliary rank `r`. -/
+noncomputable def row
+    {count : ℕ → ℕ → ℝ} {peel : ℕ → ℝ} {A : ℝ} {b k : ℕ}
+    (D : PublishedBoundedWordLiteralCaseII count peel A b k) (r : ℕ) :
+    PublishedBoundedWordCaseIIPeelRow count (peel r) A b k r where
+  e := D.e
+  z := Nat.log 2 (Nat.card (Subgroup.center D.encoding.target.Carrier))
+  g := Nat.log 2 (Nat.card (commutator D.encoding.target.Carrier))
+  w := D.w
+  bThree := D.bThree
+  bFour := D.bFour
+  dSource := D.d + r
+  dNormal := D.n
+  z_nonneg := by positivity
+  g_nonneg := by positivity
+  bThree_nonneg := D.bThree_nonneg
+  bFour_nonneg := D.bFour_nonneg
+  residual_width := D.residual_width
+  remaining_degree := D.remaining_degree
+  excessive := D.excessive
+  z_cap := D.z_cap
+  source_rank := by
+    have := D.source_rank
+    linarith
+  normal_rank := D.normal_rank
+  enumeration := by
+    have h := D.encoding.bound r
+    rw [← Real.rpow_natCast] at h
+    simpa only [publishedCaseIIPeelExponent, Nat.cast_add, Nat.cast_mul] using h
+
+end PublishedBoundedWordLiteralCaseII
+
 /-- The literal RDT Proposition 7.4 partition, before either marked
 optimization.  The zero-degree row is stated as the exact unmarked bound
 `count 0 r ≤ 1`. -/
@@ -269,8 +332,8 @@ structure PublishedBoundedWordCaseDecomposition
   partition : ∀ b r, 0 < b →
     count b r ≤ caseI b r + ∑ k ∈ Finset.range b, peel b k r
   caseILiteral : ∀ b, PublishedBoundedWordLiteralCaseI (caseI b) A b
-  peelRow : ∀ b k r, k < b →
-    PublishedBoundedWordCaseIIPeelRow count (peel b k r) A b k r
+  peelLiteral : ∀ b k, k < b →
+    PublishedBoundedWordLiteralCaseII count (peel b k) A b k
 
 namespace PublishedBoundedWordCaseDecomposition
 
@@ -296,7 +359,7 @@ noncomputable def toBoundedWordCaseDecomposition
   partition := D.partition
   caseI_bound := fun b r ↦ (D.caseILiteral b |>.row r).bound
   peel_bound := fun b k r hk ↦
-    (D.peelRow b k r hk).bound (D.count_nonneg k r)
+    (D.peelLiteral b k hk |>.row r).bound (D.count_nonneg k r)
 
 end PublishedBoundedWordCaseDecomposition
 
