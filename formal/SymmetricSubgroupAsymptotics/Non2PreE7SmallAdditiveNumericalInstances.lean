@@ -3,6 +3,7 @@ import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveRecoveredNumerics
 import SymmetricSubgroupAsymptotics.Non2PreE7SaprimDegreeFive
 import SymmetricSubgroupAsymptotics.Non2PreE7SaprimBinaryAffine
 import SymmetricSubgroupAsymptotics.Non2PreE7SaprimOddCyclicAffine
+import SymmetricSubgroupAsymptotics.Non2PreE7SaprimOddLargeAffine
 import SymmetricSubgroupAsymptotics.Non2PreE7RankTailSourceDichotomyClosure
 
 /-!
@@ -33,13 +34,16 @@ def PreE7CompletedSmallOwnerSourceData :
   | .saprim => fun w i =>
       PreE7SaprimRegularPrimeSource w i ⊕
         (PreE7SaprimDegreeFiveSource w i ⊕
-          (PreE7SaprimBinaryAffineSource w i ⊕ PreE7SaprimOddCyclicAffineSource w i))
+          (PreE7SaprimBinaryAffineSource w i ⊕
+            (PreE7SaprimOddCyclicAffineSource w i ⊕
+              PreE7SaprimOddLargeAffineSource w i)))
   | .tf => fun w i => PreE7TFSource w i
   | _ => fun _ _ => PEmpty
 
 /-- Every completed small action supplies the exact numerical data expected
 by the ordinary owner package. -/
 noncomputable def PreE7CompletedSmallOwnerSourceData.numericalData
+    (hgen : PermutationSubgroupGeneratorBound)
     (hKP : KovacsPraegerAbelianizationBound)
     (family : PreE7NoPairNoC3EarlierOwnerFamily)
     {w : ℕ} {i : PreE7NonPairActionClass w}
@@ -60,26 +64,30 @@ noncomputable def PreE7CompletedSmallOwnerSourceData.numericalData
       · exact S.numericalData
       · rcases S with S | S
         · exact S.numericalData
-        · exact S.numericalData hKP
+        · rcases S with S | S
+          · exact S.numericalData hKP
+          · exact S.numericalData hgen
   case tf => exact preE7_tf_numericalData w i S
 
 /-- A completed small action as an ordinary numerical source. -/
 noncomputable def PreE7CompletedSmallOwnerSourceData.toOrdinarySource
+    (hgen : PermutationSubgroupGeneratorBound)
     (hKP : KovacsPraegerAbelianizationBound)
     (family : PreE7NoPairNoC3EarlierOwnerFamily)
     {w : ℕ} {i : PreE7NonPairActionClass w}
     (S : PreE7CompletedSmallOwnerSourceData family w i) :
     PreE7OrdinaryNumericalSourceData family w i :=
-  .small (S.numericalData hKP family)
+  .small (S.numericalData hgen hKP family)
 
 /-- A completed small action in the concrete owner sum used by T1. -/
 noncomputable def PreE7CompletedSmallOwnerSourceData.toRankTailOwnerSource
+    (hgen : PermutationSubgroupGeneratorBound)
     (hKP : KovacsPraegerAbelianizationBound)
     (family : PreE7NoPairNoC3EarlierOwnerFamily)
     {w : ℕ} {i : PreE7NonPairActionClass w}
     (S : PreE7CompletedSmallOwnerSourceData family w i) :
     PreE7RankTailOwnerSourceData w i :=
-  .ordinary family (S.toOrdinarySource hKP family)
+  .ordinary family (S.toOrdinarySource hgen hKP family)
 
 /-- The six completed small predicates enter the exact numerical earlier
 family predicate, with no appeal to owner precedence. -/
@@ -91,7 +99,7 @@ theorem preE7_completedSmallNumericalFamilyAction
     {w : ℕ} {i : PreE7NonPairActionClass w}
     (S : PreE7CompletedSmallOwnerSourceData family w i) :
     preE7NoPairNoC3EarlierNumericalFamilyAction family w i :=
-  preE7OrdinaryNumericalFamilyAction lit hgen (S.toOrdinarySource hKP family)
+  preE7OrdinaryNumericalFamilyAction lit hgen (S.toOrdinarySource hgen hKP family)
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
