@@ -44,6 +44,12 @@ structure PreE7RefinedCapacitySourceData
   theta : ℝ
   alpha_eq : alpha = eta + cutoff
   coefficient_nonneg : ∀ b N, 0 ≤ C b N
+  parameters : PreE7CharacterEntryParameters preE7CharacterRho w v eta
+    delta cutoff alpha theta
+  coefficient_total_bound : ∀ b,
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i) (C b) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
   carrier : ∀ N, FusionAxisCarrier (preE7NonPairAction w i) N
   Accepted : ∀ b N,
     Subgroup ((carrier N).checked.carrier × Equiv.Perm (Fin b)) → Prop
@@ -144,6 +150,16 @@ structure PreE7RefinedCapacityAdditiveSourceData
   alpha_eq : alpha = eta + cutoff
   coefficient_nonneg : ∀ b N, 0 ≤ C b N
   tail_nonneg : ∀ b N, 0 ≤ tailCoefficient b N
+  parameters : PreE7CharacterEntryParameters preE7CharacterRho w v eta
+    delta cutoff alpha theta
+  coefficient_total_bound : ∀ b,
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i) (C b) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
+  tail_total_bound : ∀ b,
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i) (tailCoefficient b) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
   Main : ∀ b (_N : {N : Subgroup
     (preE7NonPairAction w i) // N.Normal}),
       Subgroup (preE7NonPairAction w i × Equiv.Perm (Fin b)) → Prop
