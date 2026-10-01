@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7SmallModelNumerics
 import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveS4
 import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveA4W2
+import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveLin
 
 /-!
 # Numerical completion of the recovered small additive owners
@@ -116,6 +117,79 @@ noncomputable def preE7_a4w2_numericalData (w : ℕ)
       _ ≤ _ := by
         convert two_rpow_sixtyFour_width_le_menuMass (w := 8) (by norm_num) b using 1 <;>
           norm_num
+
+private def gl3MatrixEquiv : LinearThree.GL3 ≃
+    {A : LinearThree.M2 // A ∈ LinearThree.glSet} where
+  toFun g := ⟨g, LinearThree.coe_mem_glSet g⟩
+  invFun A := LinearThree.ofGL A.1 A.2
+  left_inv g := Units.ext rfl
+  right_inv A := Subtype.ext rfl
+
+private theorem gl3_card : Nat.card LinearThree.GL3 = 48 := by
+  rw [Nat.card_congr gl3MatrixEquiv, Nat.card_eq_finsetCard]
+  decide
+
+private def sl3MatrixEquiv : LinearThree.SL3 ≃
+    {A : LinearThree.M2 // A ∈ LinearThree.slSet} where
+  toFun g := ⟨g.1, (LinearThree.mem_slSub g.1).mp g.2⟩
+  invFun A := ⟨LinearThree.ofGL A.1 (LinearThree.slSet_sub A.1 A.2),
+    (LinearThree.mem_slSub _).mpr A.2⟩
+  left_inv g := Subtype.ext (Units.ext rfl)
+  right_inv A := Subtype.ext rfl
+
+private theorem sl3_card : Nat.card LinearThree.SL3 = 24 := by
+  rw [Nat.card_congr sl3MatrixEquiv, Nat.card_eq_finsetCard]
+  decide
+
+/-- Both actual LIN modes with their complete numerical totals. -/
+noncomputable def preE7_lin_numericalData (w : ℕ)
+    (i : PreE7NonPairActionClass w) (S : PreE7LinSource w i) :
+    PreE7SmallAdditiveNumericalData .lin w i := by
+  cases S with
+  | gl e h =>
+      have hw := lin_width e
+      subst w
+      let M := linGLModel i e h
+      apply M.numericalData .lin
+      · intro b
+        calc
+          (Nat.card {N : Subgroup (preE7NonPairAction 8 i) // N.Normal} : ℝ) ≤
+              (2 : ℝ) ^ (Nat.card M.G : ℝ) := M.normalAxis_card_cast_le_modelRpow
+          _ = (2 : ℝ) ^ (48 : ℝ) := by
+            congr 1
+            exact_mod_cast gl3_card
+          _ ≤ (2 : ℝ) ^ (64 * (8 : ℝ)) := by
+            apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+            norm_num
+          _ ≤ _ := two_rpow_sixtyFour_width_le_menuMass (w := 8) (by norm_num) b
+      · intro b
+        change (2 : ℝ) * Nat.card (Equiv.Perm (Fin 4) ≃* Equiv.Perm (Fin 4)) ≤ _
+        calc
+          _ ≤ (2 : ℝ) ^ (144 : ℝ) := s4_aut_tail_le
+          _ ≤ (2 : ℝ) ^ (64 * (8 : ℝ)) := by
+            apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+            norm_num
+          _ ≤ _ := two_rpow_sixtyFour_width_le_menuMass (w := 8) (by norm_num) b
+  | sl e h =>
+      have hw := lin_width e
+      subst w
+      let M := linSLModel i e h
+      apply M.numericalData .lin
+      · intro b
+        have haxis := M.normalAxis_card_cast_le_modelRpow
+        rw [show Nat.card M.G = 24 by exact sl3_card] at haxis
+        calc
+          _ ≤ (2 : ℝ) ^ (24 : ℝ) + 1 := by
+            rw [show M.mainConstant = 1 by rfl]
+            simpa only [add_comm] using add_le_add_right haxis 1
+          _ ≤ (2 : ℝ) ^ (25 : ℝ) := by norm_num
+          _ ≤ (2 : ℝ) ^ (64 * (8 : ℝ)) := by
+            apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+            norm_num
+          _ ≤ _ := two_rpow_sixtyFour_width_le_menuMass (w := 8) (by norm_num) b
+      · intro b
+        change (0 : ℝ) ≤ _
+        positivity
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

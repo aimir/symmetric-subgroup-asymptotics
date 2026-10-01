@@ -234,12 +234,14 @@ namespace Non2UnipotentPrefixFiniteMenu
 
 open Equiv LinearThree
 
-/-- The LIN family: `GL₂(3)` or `SL₂(3)` in their actions on the eight nonzero
-vectors of `F₃²`, up to relabeling. -/
-structure PreE7LinSource (w : ℕ) (i : PreE7NonPairActionClass w) : Prop where
-  natural : (∃ e : NV ≃ Fin w, preE7NonPairAction w i = relabelSubgroup e natural.range) ∨
-    (∃ e : NV ≃ Fin w,
-      preE7NonPairAction w i = relabelSubgroup e (natural.comp slSub.subtype).range)
+/-- The LIN family with the selected literal action and its relabelling
+retained as data. -/
+inductive PreE7LinSource (w : ℕ) (i : PreE7NonPairActionClass w) : Type
+  | gl (chart : NV ≃ Fin w)
+      (action_eq : preE7NonPairAction w i = relabelSubgroup chart natural.range)
+  | sl (chart : NV ≃ Fin w)
+      (action_eq : preE7NonPairAction w i =
+        relabelSubgroup chart (natural.comp slSub.subtype).range)
 
 theorem lin_width {w : ℕ} (e : NV ≃ Fin w) : w = 8 := by
   rw [width_eq_of_relabel e, card_NV]
@@ -332,9 +334,9 @@ def linSLModel {w : ℕ} (i : PreE7NonPairActionClass w) (e : NV ≃ Fin w)
 catalogue. -/
 theorem preE7_lin_localFamilyAction (w : ℕ) (i : PreE7NonPairActionClass w)
     (S : PreE7LinSource w i) : preE7NoPairNoC3EarlierLocalFamilyAction .lin w i := by
-  rcases S.natural with ⟨e, h⟩ | ⟨e, h⟩
-  · exact (linGLModel i e h).localFamilyAction .lin
-  · exact (linSLModel i e h).localFamilyAction .lin
+  cases S with
+  | gl e h => exact (linGLModel i e h).localFamilyAction .lin
+  | sl e h => exact (linSLModel i e h).localFamilyAction .lin
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
