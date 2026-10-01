@@ -25,10 +25,13 @@ namespace Non2UnipotentPrefixFiniteMenu
 
 open Equiv A4WreathC2
 
-/-- The A4W2 family: the natural action of `A₄ ≀ C₂` on two blocks of four. -/
-structure PreE7A4W2Source (w : ℕ) (i : PreE7NonPairActionClass w) : Prop where
-  natural : ∃ e : Fin 4 ⊕ Fin 4 ≃ Fin w,
-    preE7NonPairAction w i = relabelSubgroup e A4WreathC2.natural.range
+/-- The A4W2 family: the natural action of `A₄ ≀ C₂` on two blocks of four.
+The relabelling is retained as data because the numerical owner must reuse
+the same literal model. -/
+structure PreE7A4W2Source (w : ℕ) (i : PreE7NonPairActionClass w) : Type where
+  chart : Fin 4 ⊕ Fin 4 ≃ Fin w
+  action_eq : preE7NonPairAction w i =
+    relabelSubgroup chart A4WreathC2.natural.range
 
 /-- The comparator model of natural `A₄ ≀ C₂`. -/
 def a4w2Model {w : ℕ} (i : PreE7NonPairActionClass w) (e : Fin 4 ⊕ Fin 4 ≃ Fin w)
@@ -72,8 +75,7 @@ def a4w2Model {w : ℕ} (i : PreE7NonPairActionClass w) (e : Fin 4 ⊕ Fin 4 ≃
 catalogue. -/
 theorem preE7_a4w2_localFamilyAction (w : ℕ) (i : PreE7NonPairActionClass w)
     (S : PreE7A4W2Source w i) : preE7NoPairNoC3EarlierLocalFamilyAction .a4w2 w i := by
-  obtain ⟨e, h⟩ := S.natural
-  exact (a4w2Model i e h).localFamilyAction .a4w2
+  exact (a4w2Model i S.chart S.action_eq).localFamilyAction .a4w2
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
