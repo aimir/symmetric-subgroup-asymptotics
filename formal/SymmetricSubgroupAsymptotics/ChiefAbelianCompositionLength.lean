@@ -25,6 +25,24 @@ theorem chiefAbelianLength_nonabelian (Q : Type) [Group Q]
     (hn : ¬ IsMulCommutative Q) : chiefAbelianLength Q = 0 := by
   simp [chiefAbelianLength, hn]
 
+theorem chiefAbelianLength_congr
+    {G Q : Type} [Group G] [Group Q] (e : G ≃* Q) :
+    chiefAbelianLength G = chiefAbelianLength Q := by
+  have hc : IsMulCommutative G ↔ IsMulCommutative Q := by
+    constructor
+    · intro h
+      letI := h
+      exact ⟨⟨fun x y => e.symm.injective (by rw [map_mul, map_mul, mul_comm])⟩⟩
+    · intro h
+      letI := h
+      exact ⟨⟨fun x y => e.injective (by rw [map_mul, map_mul, mul_comm])⟩⟩
+  classical
+  by_cases h : IsMulCommutative G
+  · have hq := hc.mp h
+    simp [chiefAbelianLength, h, hq, Nat.card_congr e.toEquiv]
+  · have hq : ¬ IsMulCommutative Q := fun hq => h (hc.mpr hq)
+    simp [chiefAbelianLength, h, hq]
+
 theorem chiefAbelianLength_elementary
     {Q V : Type} [Group Q] [AddCommGroup V]
     {p : ℕ} [hp : Fact p.Prime]
