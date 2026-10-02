@@ -78,8 +78,8 @@ namespace Non2UnipotentPrefixFiniteMenu
 /-- Final local exhaustion with the bounded primitive package reduced to its
 actual numerical output `2 |L/E| <= r`. -/
 structure PreE7PrimitiveBoundedIndexExhaustionData where
-  small : ∀ w (U : PreE7NonPairActionClass w), w < 5 →
-    PreE7RankTailSourceOrYonedaTopData w U
+  small : ∀ U : PreE7NonPairActionClass 4,
+    PreE7RankTailSourceOrYonedaTopData 4 U
   primitive : ∀ w (U : PreE7NonPairActionClass w), 5 ≤ w →
     MulAction.IsPreprimitive (preE7NonPairAction w U) (Fin w) →
     PrimitiveSemisimpleBoundedIndexCertificateData

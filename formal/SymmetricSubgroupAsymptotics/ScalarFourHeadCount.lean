@@ -1,3 +1,4 @@
+import SymmetricSubgroupAsymptotics.ScalarFourHeadDefinitions
 import SymmetricSubgroupAsymptotics.BinaryTargetOrderEnvelope
 import SymmetricSubgroupAsymptotics.JointSourceGraphs
 import SymmetricSubgroupAsymptotics.EpimorphismKernelLabels
@@ -25,28 +26,6 @@ open scoped Classical commutatorElement
 namespace SymmetricSubgroupAsymptotics
 
 /-! ## The natural module `F₄ = F₂²` -/
-
-/-- `F₄` as a multiplicative group. -/
-abbrev ScalarFour := Multiplicative (ZMod 2 × ZMod 2)
-
-/-- Multiplication by a primitive cube root of unity. -/
-def scalarFourOmegaAdd : ZMod 2 × ZMod 2 →+ ZMod 2 × ZMod 2 :=
-  (AddMonoidHom.snd (ZMod 2) (ZMod 2)).prod
-    (AddMonoidHom.fst (ZMod 2) (ZMod 2) + AddMonoidHom.snd (ZMod 2) (ZMod 2))
-
-/-- Multiplication by `ω^c`. -/
-def scalarFourTwistAdd (c : ZMod 3) : ZMod 2 × ZMod 2 →+ ZMod 2 × ZMod 2 :=
-  if c = 0 then AddMonoidHom.id _
-  else if c = 1 then scalarFourOmegaAdd
-  else scalarFourOmegaAdd.comp scalarFourOmegaAdd
-
-/-- Multiplication by `ω^c`, multiplicatively. -/
-def scalarFourTwist (c : ZMod 3) : ScalarFour →* ScalarFour :=
-  AddMonoidHom.toMultiplicative (scalarFourTwistAdd c)
-
-/-- The first binary coordinate. -/
-def scalarFourFst : ScalarFour →* Multiplicative (ZMod 2) :=
-  AddMonoidHom.toMultiplicative (AddMonoidHom.fst (ZMod 2) (ZMod 2))
 
 private theorem twistAdd_add :
     ∀ (c d : ZMod 3) (v : ZMod 2 × ZMod 2),
@@ -160,9 +139,6 @@ theorem twistedHom_card_le {F : Type*} [Group F] [Finite F] (α : F → F)
 
 /-! ## Heads over index-three kernels -/
 
-/-- The cyclic target of an index-three top. -/
-abbrev CyclicThree := Multiplicative (ZMod 3)
-
 /-- Two index-three tops of the same finite group have kernels of the same
 order. -/
 theorem cyclicThree_ker_card_eq {J : Type*} [Group J] [Finite J]
@@ -177,17 +153,6 @@ theorem cyclicThree_ker_card_eq {J : Type*} [Group J] [Finite J]
     at h'
   have hpos : 0 < Nat.card CyclicThree := Nat.card_pos
   exact Nat.eq_of_mul_eq_mul_left hpos (h.symm.trans h')
-
-/-- An index-three quotient whose kernel carries a nonzero twisted `F₄`
-map: conjugation by `g` acts as `ω^θ(g)`. -/
-structure ScalarFourHead (J : Type*) [Group J] where
-  top : J →* CyclicThree
-  top_surjective : Function.Surjective top
-  map : top.ker →* ScalarFour
-  twisted : ∀ (g : J) (f : top.ker),
-    map (MulAut.conjNormal g f) =
-      scalarFourTwist (Multiplicative.toAdd (top g)) (map f)
-  map_ne_one : map ≠ 1
 
 namespace ScalarFourHead
 
@@ -467,30 +432,9 @@ theorem cyclicThree_aut_card_le : Nat.card (CyclicThree ≃* CyclicThree) ≤ 2 
 
 /-! ## Index-three extensions of a central binary layer by `F₄` layers -/
 
-/-- A quotient `Q` with an index-three top whose kernel `P` has a central
-binary subgroup `Z` and coordinates `P → F₄` with joint kernel `Z`, each
-twisted by the top.  The first coordinate is onto. -/
-structure ScalarFourHeadedQuotient (Q : Type) [Group Q] where
-  top : Q →* CyclicThree
-  top_surjective : Function.Surjective top
-  center : Subgroup top.ker
-  center_comm : ∀ z ∈ center, ∀ p : top.ker, z * p = p * z
-  center_twoGroup : IsPGroup 2 center
-  layers : ℕ
-  coord : Fin (layers + 1) → (top.ker →* ScalarFour)
-  coord_center : ∀ j, ∀ z ∈ center, coord j z = 1
-  coord_joint : ∀ p : top.ker, (∀ j, coord j p = 1) → p ∈ center
-  coord_twisted : ∀ (q : Q) (p : top.ker) j,
-    coord j (MulAut.conjNormal q p) =
-      scalarFourTwist (Multiplicative.toAdd (top q)) (coord j p)
-  coord_zero_surjective : Function.Surjective (coord 0)
-
 namespace ScalarFourHeadedQuotient
 
 variable {Q : Type} [Group Q] (h : ScalarFourHeadedQuotient Q)
-
-/-- The binary exponent per unit of `d₂` of an index-three kernel. -/
-def weight : ℕ := (h.layers + 1) + Nat.log 2 (Nat.card h.center)
 
 variable {J : Type*} [Group J] [Finite J] [Finite Q]
 

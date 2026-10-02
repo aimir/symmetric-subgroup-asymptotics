@@ -39,7 +39,7 @@ theorem preE7NumericalSns2_terminal_implies_numerical_terminal
       preE7NoPairNoC3CertifiedFirstOwnerPredicate
         preE7NoPairNoC3EarlierNumericalFamilyAction w
         (Fin.last preE7NoPairNoC3EarlierOwnerCount, U) b H := by
-  rintro ⟨⟨howner, hnoC3⟩, _hselected⟩
+  rintro ⟨⟨howner, hnoC3⟩, hselected⟩
   rcases howner with ⟨hordinary, hfirst⟩
   let K : Subgroup (Equiv.Perm (Fin (w + b))) :=
     relabelSubgroup finSumFinEquiv
@@ -66,9 +66,10 @@ theorem preE7NumericalSns2_terminal_implies_numerical_terminal
       (preE7NoPairNoC3EarlierFamilyPredicate
         preE7NoPairNoC3EarlierNumericalFamilyAction) K).mpr
       hunownedNumerical
-  refine ⟨⟨⟨hordinary, ?_⟩, hnoC3⟩,
-    preE7NoPairNoC3SelectedActionEligible_last _ U⟩
-  simpa only [K] using hfirstNumerical
+  refine ⟨⟨⟨hordinary, ?_⟩, hnoC3⟩, ?_⟩
+  · simpa only [K] using hfirstNumerical
+  · exact (preE7NoPairNoC3SelectedActionEligible_last _ U).2
+      ((preE7NoPairNoC3SelectedActionEligible_last _ U).1 hselected)
 
 /-- Existing numerical joint top/Yoneda cells give the terminal local row of
 the enlarged numerical-plus-SNS2 catalogue. -/

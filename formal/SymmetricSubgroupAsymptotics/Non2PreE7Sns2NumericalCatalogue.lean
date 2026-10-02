@@ -239,7 +239,10 @@ theorem preE7NumericalSns2_physical_cover
     have hselected : preE7NoPairNoC3SelectedActionEligible
         preE7NoPairNoC3EarlierNumericalSns2FamilyAction w
           (Fin.last preE7NoPairNoC3EarlierOwnerCount, U) :=
-      preE7NoPairNoC3SelectedActionEligible_last _ U
+      (preE7NoPairNoC3SelectedActionEligible_last _ U).2
+        (preE7NoPairNoC3TerminalActionEligible_of_violation
+          H o hbad U eO (by
+            simpa only [U, a, preE7NonPairAction, preE7Action] using himage))
     have hpredicate :
         preE7NoPairNoC3CertifiedFirstOwnerPredicate
             preE7NoPairNoC3EarlierNumericalSns2FamilyAction w

@@ -1527,6 +1527,19 @@ complement. The [master rank-gap theorem](SymmetricSubgroupAsymptotics/BinaryCar
 supplies the gap for all eight literal masters and their actual onto images,
 using the already checked normal rows at the original physical scales.
 
+The finite terminal menu below width five is now closed without a pointwise
+width-three hypothesis. The
+[complete degree-three packet](SymmetricSubgroupAsymptotics/Non2PreE7SmallC3PacketNumerics.lean)
+extracts all literal regular-$C_3$ violation orbits at once, proves the retained
+tail capacity, and gives a complete exponentially decaying forward estimate.
+The [exact partition](SymmetricSubgroupAsymptotics/Non2PreE7SmallC3PacketPartition.lean)
+splits it from the no-pair/no-$C_3$ residual, so every remaining terminal index
+carries `4 ≤ w`. At width four the
+[finite menu](SymmetricSubgroupAsymptotics/Non2PreE7SmallWidthMenu.lean)
+classifies the retained action as natural $A_4$ or $S_4$ and installs its
+checked row. `PreE7PrimitiveAffineConsumerData` therefore has no small-width
+field; the primitive-catalogue assembler supplies this menu internally.
+
 The abstract recurrence results retain their kernel and counting hypotheses;
 they do not establish a subgroup asymptotic without those estimates.
 The primitive endgame now separates the finite nonaffine catalogue match from

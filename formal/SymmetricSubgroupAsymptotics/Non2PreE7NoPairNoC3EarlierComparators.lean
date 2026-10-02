@@ -127,10 +127,32 @@ theorem preE7NoPairNoC3EarlierFamilyPredicate_natural
   · rintro ⟨W⟩
     exact ⟨W.relabel e⟩
 
+/-- A terminal action must itself be a possible pre-`E7` violation action.
+In particular, the natural full `S₃` marker is excluded up to relabelling.
+The physical cover already supplies exactly this fact. -/
+def preE7NoPairNoC3TerminalActionEligible
+    (w : ℕ) (U : PreE7NonPairActionClass w) : Prop :=
+  ∀ e : Fin 3 ≃ Fin w,
+    relabelSubgroup e oddMarkerActionSubgroup ≠ preE7NonPairAction w U
+
+/-- The selected action on an actual violation orbit is terminal-eligible. -/
+theorem preE7NoPairNoC3TerminalActionEligible_of_violation
+    {n w : ℕ} (H : Subgroup (Equiv.Perm (Fin n)))
+    (o : OrbitProfileFromOrbits.Orbit H)
+    (hbad : IsPreE7ViolationOrbit H o)
+    (U : PreE7NonPairActionClass w)
+    (eO : Fin w ≃ o.orbit)
+    (himage : relabelSubgroup eO (preE7NonPairAction w U) =
+      OrbitProfileFromOrbits.orbitImage H o) :
+    preE7NoPairNoC3TerminalActionEligible w U := by
+  intro e he
+  apply hbad.2.1
+  refine ⟨e.trans eO, ?_⟩
+  rw [← relabelSubgroup_trans, he, himage]
+
 /-- On an earlier branch the displayed original action must carry the same
-family certificate.  The appended terminal branch accepts every displayed
-action; its global first-owner condition already says that no earlier family
-orbit exists. -/
+family certificate.  The appended terminal branch retains only actions that
+can occur on a genuine pre-`E7` violation orbit. -/
 def preE7NoPairNoC3SelectedActionEligible
     (FamilyAction : PreE7NoPairNoC3EarlierOwnerFamily →
       ∀ w, PreE7NonPairActionClass w → Prop)
@@ -140,7 +162,7 @@ def preE7NoPairNoC3SelectedActionEligible
   if h : j.1.val < preE7NoPairNoC3EarlierOwnerCount then
     FamilyAction
       (preE7NoPairNoC3EarlierOwnerEquiv ⟨j.1.val, h⟩) w j.2
-  else True
+  else preE7NoPairNoC3TerminalActionEligible w j.2
 
 @[simp] theorem preE7NoPairNoC3SelectedActionEligible_castSucc
     (FamilyAction : PreE7NoPairNoC3EarlierOwnerFamily →
@@ -156,7 +178,8 @@ def preE7NoPairNoC3SelectedActionEligible
       ∀ w, PreE7NonPairActionClass w → Prop)
     {w : ℕ} (U : PreE7NonPairActionClass w) :
     preE7NoPairNoC3SelectedActionEligible FamilyAction w
-      (Fin.last preE7NoPairNoC3EarlierOwnerCount, U) := by
+      (Fin.last preE7NoPairNoC3EarlierOwnerCount, U) ↔
+        preE7NoPairNoC3TerminalActionEligible w U := by
   simp [preE7NoPairNoC3SelectedActionEligible]
 
 /-- The first-owner source with the indispensable local action check.  This
@@ -302,7 +325,10 @@ theorem preE7NoPairNoC3_certifiedOwnerOrResidual_physical_cover
     have hselected : preE7NoPairNoC3SelectedActionEligible
         FamilyAction w (owner, a') := by
       rw [howner_eq]
-      exact preE7NoPairNoC3SelectedActionEligible_last FamilyAction a'
+      exact (preE7NoPairNoC3SelectedActionEligible_last FamilyAction a').2
+        (preE7NoPairNoC3TerminalActionEligible_of_violation
+          H o hbad a' eO (by
+            simpa only [a', a, preE7NonPairAction, preE7Action] using himage))
     change H ∈ FusionWidthCanonicalFamily
       (preE7NonPairFirstOwnerAction w (owner, a')) _
       (preE7NoPairNoC3CertifiedFirstOwnerPredicate

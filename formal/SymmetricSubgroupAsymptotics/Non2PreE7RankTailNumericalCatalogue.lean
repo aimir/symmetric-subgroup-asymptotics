@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7Sns2NumericalCatalogue
 import SymmetricSubgroupAsymptotics.Non2PreE7B6Y1Secondary
+import SymmetricSubgroupAsymptotics.Non2PreE7SmallC3PacketPartition
 
 /-!
 # Numerical catalogue with all three binary rank-tail owners
@@ -44,6 +45,14 @@ abbrev PreE7Y1OwnedIndex (w : ℕ) :=
       preE7NoPairNoC3EarlierOwnerEquiv k = .y1 ∧
         Nonempty (PreE7Y1SourceData w U)}
 
+/-- A terminal action exists only at width at least four.  Keeping the lower
+bound in the index makes the removal of the global width-three packet true
+by construction, including in menu-mass and exceptional sums. -/
+structure PreE7NumericalTerminalIndex (w : ℕ) where
+  action : PreE7NonPairActionClass w
+  width_four : 4 ≤ w
+  deriving Fintype
+
 /-- Ordinary numerical owners, the three correlated rank-tail menus, and
 the terminal action.  A named inductive keeps dependent reduction small. -/
 inductive PreE7NumericalRankTailIndex (w : ℕ) : Type
@@ -51,7 +60,8 @@ inductive PreE7NumericalRankTailIndex (w : ℕ) : Type
   | b6 : PreE7B6OwnedIndex w → PreE7NumericalRankTailIndex w
   | y1 : PreE7Y1OwnedIndex w → PreE7NumericalRankTailIndex w
   | sns2 : PreE7Sns2OwnedIndex w → PreE7NumericalRankTailIndex w
-  | terminal : PreE7NonPairActionClass w → PreE7NumericalRankTailIndex w
+  | terminal : PreE7NumericalTerminalIndex w →
+      PreE7NumericalRankTailIndex w
   deriving Fintype
 
 /-- The exact family predicate represented by the disjoint menu. -/
@@ -79,7 +89,7 @@ def preE7NumericalRankTailActionClass {w : ℕ} :
   | .b6 j => j.2.1
   | .y1 j => j.2.1
   | .sns2 j => j.2.1
-  | .terminal U => U
+  | .terminal t => t.action
 
 def preE7NumericalRankTailAction (w : ℕ)
     (j : PreE7NumericalRankTailIndex w) :
@@ -128,13 +138,13 @@ theorem preE7NumericalRankTailPredicate_natural
         (preE7NoPairNoC3CertifiedFirstOwnerPredicate_natural
           preE7NoPairNoC3EarlierNumericalRankTailFamilyAction w
           (a.1.castSucc, a.2.1) b)
-  | terminal U =>
+  | terminal t =>
       simpa only [preE7NumericalRankTailAction,
         preE7NumericalRankTailPredicate, preE7NumericalRankTailOwner,
         preE7NumericalRankTailActionClass, preE7NonPairFirstOwnerAction] using
         (preE7NoPairNoC3CertifiedFirstOwnerPredicate_natural
           preE7NoPairNoC3EarlierNumericalRankTailFamilyAction w
-          (Fin.last preE7NoPairNoC3EarlierOwnerCount, U) b)
+          (Fin.last preE7NoPairNoC3EarlierOwnerCount, t.action) b)
 
 theorem preE7NumericalRankTailPredicate_implies_broad
     (w : ℕ) (j : PreE7NumericalRankTailIndex w) (b : ℕ)
@@ -226,11 +236,12 @@ private theorem numericalRankTail_owner_cell
 /-- Literal coverage by the ordinary/B6/Y1/SNS2/terminal menu. -/
 theorem preE7NumericalRankTail_physical_cover
     (n : ℕ) (H : Subgroup (Equiv.Perm (Fin n)))
-    (hH : H ∈ PreE7NoPairNoC3ResidualSubgroupSet n) :
+    (hH : H ∈ PreE7NoPairNoC3LargeResidualSubgroupSet n) :
     ∃ j : GrowingQuotientPhysicalIndex
         (ι := PreE7NumericalRankTailIndex) 3 n,
       H ∈ GrowingQuotientCanonicalFamily 3 n
         preE7NumericalRankTailAction preE7NumericalRankTailPredicate j := by
+  obtain ⟨hResidual, hnotPacket⟩ := hH
   let Earlier := preE7NoPairNoC3EarlierFamilyPredicate
     preE7NoPairNoC3EarlierNumericalRankTailFamilyAction
   obtain ⟨owner, hownerspec⟩ := firstOwned_exists
@@ -245,28 +256,33 @@ theorem preE7NumericalRankTail_physical_cover
     obtain ⟨W⟩ := hearlier
     rcases W.applies with hordinary | hb6 | hy1 | hsns2
     · let a : PreE7NumericalOwnedIndex W.width := ⟨k, W.action, hordinary⟩
-      exact numericalRankTail_owner_cell H hH k
+      exact numericalRankTail_owner_cell H hResidual k
         (by simpa only [howner_eq] using hownerspec) W (.ordinary a) rfl howner_eq
     · let a : PreE7B6OwnedIndex W.width := ⟨k, W.action, hb6⟩
-      exact numericalRankTail_owner_cell H hH k
+      exact numericalRankTail_owner_cell H hResidual k
         (by simpa only [howner_eq] using hownerspec) W (.b6 a)
         rfl howner_eq
     · let a : PreE7Y1OwnedIndex W.width := ⟨k, W.action, hy1⟩
-      exact numericalRankTail_owner_cell H hH k
+      exact numericalRankTail_owner_cell H hResidual k
         (by simpa only [howner_eq] using hownerspec) W
         (.y1 a) rfl howner_eq
     · let a : PreE7Sns2OwnedIndex W.width := ⟨k, W.action, hsns2⟩
-      exact numericalRankTail_owner_cell H hH k
+      exact numericalRankTail_owner_cell H hResidual k
         (by simpa only [howner_eq] using hownerspec) W
         (.sns2 a) rfl howner_eq
   · have howner_eq : owner = Fin.last preE7NoPairNoC3EarlierOwnerCount :=
       Fin.eq_last_of_not_lt ho
-    obtain ⟨o, hbad⟩ := exists_preE7ViolationOrbit H hH.1.1.2
+    simp only [AllPreE7ViolationOrbitsDegreeThree, not_forall, _root_.not_imp]
+      at hnotPacket
+    obtain ⟨o, hbad, hcard_ne⟩ := hnotPacket
     let w : ℕ := Nat.card o.orbit
     let outside : OutsideOrbit H := ⟨o, hbad.1, hbad.2.1⟩
     have hw3 : 3 ≤ w := by
       have h := outsideOrbit_card_gt_two H outside
       change 2 < Nat.card o.orbit at h
+      omega
+    have hw4 : 4 ≤ w := by
+      change Nat.card o.orbit ≠ 3 at hcard_ne
       omega
     have hwn : w ≤ n := by
       have hcard := Nat.card_le_card_of_injective
@@ -277,7 +293,8 @@ theorem preE7NumericalRankTail_physical_cover
     let a : PreE7ActionClass w :=
       ⟨i, isPreE7ActionClass_of_violation H o hbad i eO himage⟩
     let U : PreE7NonPairActionClass w :=
-      ⟨a, isPreE7NonPairActionClass_of_violation H hH.1.1.1.1 hH.1.2
+      ⟨a, isPreE7NonPairActionClass_of_violation H hResidual.1.1.1.1
+        hResidual.1.2
         o hbad rfl hwn i eO himage⟩
     have hmem : w ∈ Finset.Ico 3 (n + 1) :=
       Finset.mem_Ico.mpr ⟨hw3, Nat.lt_succ_of_le hwn⟩
@@ -285,16 +302,21 @@ theorem preE7NumericalRankTail_physical_cover
       (ownerOrResidualEligible Earlier)
       (ownerOrResidualEligible_natural Earlier
         (preE7NoPairNoC3EarlierFamilyPredicate_natural _))
-      H hH.1.1.1.1 hH.2 (Fin.last preE7NoPairNoC3EarlierOwnerCount)
+      H hResidual.1.1.1.1 hResidual.2
+        (Fin.last preE7NoPairNoC3EarlierOwnerCount)
         (by simpa only [← howner_eq] using hownerspec) o rfl hwn U eO
         (by simpa only [U, a, preE7NonPairAction, preE7Action] using himage)
     let x : PreE7NumericalRankTailIndex w :=
-      .terminal U
+      .terminal ⟨U, hw4⟩
     let j : GrowingQuotientPhysicalIndex
         (ι := PreE7NumericalRankTailIndex) 3 n := ⟨⟨w, hmem⟩, x⟩
     refine ⟨j, ?_⟩
-    have hselected := preE7NoPairNoC3SelectedActionEligible_last
-      preE7NoPairNoC3EarlierNumericalRankTailFamilyAction U
+    have hselected :=
+      (preE7NoPairNoC3SelectedActionEligible_last
+        preE7NoPairNoC3EarlierNumericalRankTailFamilyAction U).2
+        (preE7NoPairNoC3TerminalActionEligible_of_violation
+          H o hbad U eO (by
+            simpa only [U, a, preE7NonPairAction, preE7Action] using himage))
     have hpredicate :
         preE7NoPairNoC3CertifiedFirstOwnerPredicate
             preE7NoPairNoC3EarlierNumericalRankTailFamilyAction w

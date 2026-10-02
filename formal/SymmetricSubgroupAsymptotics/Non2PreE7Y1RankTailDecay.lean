@@ -1,5 +1,7 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7B6RankTailDecay
 import SymmetricSubgroupAsymptotics.Non2PreE7Y1RankTailPhysical
+import SymmetricSubgroupAsymptotics.Non2PreE7PaddedCertificateNumerics
+import SymmetricSubgroupAsymptotics.Non2PreE7SmallModelNumerics
 
 /-!
 # Quadratic decay of the Y1 index-three rank tail
@@ -173,7 +175,7 @@ theorem preE7Y1ExceptionalScalar_eventually
         congr 1
         push_cast
         ring
-  have hsquare := C.square_completion b
+  have hsquare := y1RankTail_squareCompletion b
   have hexponent :
       (-((b + 8 : ℕ) : ℝ) ^ 2 / 16 +
           5 * ((b + 8 : ℕ) : ℝ) / 8 + 1 / 4) +
@@ -333,6 +335,348 @@ theorem preE7EarlierLocalFamilyAction_ofY1
     (C : PreE7Y1RankTailCertificate w i) :
     preE7NoPairNoC3EarlierLocalFamilyAction .y1 w i :=
   ⟨.ofY1 C⟩
+
+/-- The correlated hot scalar of the natural width-four `A4` row. -/
+def preE7NaturalA4ExceptionalScalar {w : ℕ} {i : PreE7NonPairActionClass w}
+    (C : PreE7NaturalA4RankTailCertificate w i) (b : ℕ) : ℝ :=
+  growingQuotientNormalizedPointing b w
+      (Nat.card (Subgroup.normalizer
+        (preE7NonPairAction w i : Set (Equiv.Perm (Fin w)))) : ℝ) *
+    (C.normalCount * ((Nat.factorial b : ℕ) : ℝ) ^ 16 *
+      ((Nat.factorial b : ℝ) *
+        ((2 : ℝ) ^ (-((rankTail51Tilt b : ℝ) * (51 / 200) * b)) *
+          (subgroupCount (b + 2 * rankTail51Tilt b) : ℝ))))
+
+/-- The natural `A4` exceptional term has a fixed quadratic deficit after
+the `(b!)^17` fibre factor and exact width-four pointing are charged. -/
+theorem preE7NaturalA4ExceptionalScalar_eventually
+    (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
+    {w : ℕ} {i : PreE7NonPairActionClass w}
+    (C : PreE7NaturalA4RankTailCertificate w i) :
+    ∀ᶠ b : ℕ in atTop,
+      preE7NaturalA4ExceptionalScalar C b ≤
+        (eulerProduct⁻¹ * C.normalCount) *
+          (2 : ℝ) ^ (-((b : ℝ) ^ 2) / 100000) := by
+  have hw := C.width_eq
+  subst w
+  let epsilon : ℝ := 1 / 10000000
+  let gamma : ℝ := 1 / 10000000
+  have hepsilon : 0 < epsilon := by norm_num [epsilon]
+  have hgamma : 0 < gamma := by norm_num [gamma]
+  obtain ⟨N, hN⟩ := eventually_atTop.mp (hcoarse epsilon hepsilon)
+  filter_upwards [eventually_ge_atTop (max N 20000),
+    eventually_succ_le_two_rpow hgamma] with b hb hsucc
+  let q : ℕ := rankTail51Tilt b
+  let M : ℕ := b + 2 * q
+  have hbN : N ≤ b := (le_max_left _ _).trans hb
+  have hbLarge : 20000 ≤ b := (le_max_right _ _).trans hb
+  have hbLargeR : (20000 : ℝ) ≤ b := by exact_mod_cast hbLarge
+  have hb4 : 4 ≤ b := by omega
+  have hb1 : 1 ≤ b := by omega
+  have hbM : b ≤ M := Nat.le_add_right _ _
+  have hMN : N ≤ M := hbN.trans hbM
+  have hM3 : M ≤ 3 * b := by
+    simpa only [M, q] using y1_rankTail_degree_le_three_mul b hb1
+  have hM3R : (M : ℝ) ≤ 3 * (b : ℝ) := by exact_mod_cast hM3
+  have hM0 : (0 : ℝ) ≤ M := by positivity
+  have hb0 : (0 : ℝ) ≤ b := by positivity
+  have hM2 : (M : ℝ) ^ 2 ≤ 9 * (b : ℝ) ^ 2 := by
+    nlinarith [sq_nonneg (3 * (b : ℝ) - M)]
+  have hs := hN M hMN
+  have hpoint0 := fusionHot_pointing_denominator_le b 2 (by omega)
+  have hA : (1 : ℝ) ≤ Nat.card (Subgroup.normalizer
+      (preE7NonPairAction 4 i : Set (Equiv.Perm (Fin 4)))) := by
+    exact_mod_cast (Nat.card_pos (α := Subgroup.normalizer
+      (preE7NonPairAction 4 i : Set (Equiv.Perm (Fin 4)))))
+  have hpoint : growingQuotientNormalizedPointing b 4
+      (Nat.card (Subgroup.normalizer
+        (preE7NonPairAction 4 i : Set (Equiv.Perm (Fin 4)))) : ℝ) ≤
+      eulerProduct⁻¹ *
+        (2 : ℝ) ^ (-((b + 4 : ℕ) : ℝ) ^ 2 / 16 +
+          5 * ((b + 4 : ℕ) : ℝ) / 8 + 1 / 4) := by
+    unfold growingQuotientNormalizedPointing
+    calc
+      _ ≤ (((b + 4).factorial : ℝ) / (b.factorial : ℝ)) /
+          exactBenchmark (b + 4) := by
+        have hnum : 0 ≤ (((b + 4).factorial : ℝ) /
+            (b.factorial : ℝ)) := by positivity
+        have hbench : 0 < exactBenchmark (b + 4) :=
+          exactBenchmark_pos (b + 4)
+        apply div_le_div_of_nonneg_right _ hbench.le
+        exact div_le_self hnum hA
+      _ ≤ _ := hpoint0
+  have hfacNat := factorial_le_succ_pow b
+  have hfac : ((b.factorial : ℕ) : ℝ) ^ 17 ≤
+      (2 : ℝ) ^ (17 * gamma * (b : ℝ) ^ 2) := by
+    have hfacR : ((b.factorial : ℕ) : ℝ) ≤
+        (((b + 1 : ℕ) : ℝ) ^ b) := by exact_mod_cast hfacNat
+    have hpow := pow_le_pow_left₀ (by positivity) hfacR 17
+    have hsuccpow := pow_le_pow_left₀ (by positivity) hsucc (17 * b)
+    calc
+      ((b.factorial : ℕ) : ℝ) ^ 17 ≤
+          ((((b + 1 : ℕ) : ℝ) ^ b) ^ 17) := hpow
+      _ = (((b + 1 : ℕ) : ℝ) ^ (17 * b)) := by ring
+      _ ≤ (((2 : ℝ) ^ (gamma * b)) ^ (17 * b)) := hsuccpow
+      _ = (2 : ℝ) ^ (17 * gamma * (b : ℝ) ^ 2) := by
+        rw [← Real.rpow_natCast,
+          ← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 2)]
+        congr 1
+        push_cast
+        ring
+  have hsquare := y1RankTail_squareCompletion b
+  have hexponent :
+      (-((b + 4 : ℕ) : ℝ) ^ 2 / 16 +
+          5 * ((b + 4 : ℕ) : ℝ) / 8 + 1 / 4) +
+        17 * gamma * (b : ℝ) ^ 2 +
+        (-((q : ℝ) * (51 / 200) * b)) +
+        (1 / 16 + epsilon) * (M : ℝ) ^ 2 ≤
+          -((b : ℝ) ^ 2) / 100000 := by
+    have heM : epsilon * (M : ℝ) ^ 2 ≤
+        9 * epsilon * (b : ℝ) ^ 2 := by
+      calc
+        _ ≤ epsilon * (9 * (b : ℝ) ^ 2) :=
+          mul_le_mul_of_nonneg_left hM2 hepsilon.le
+        _ = _ := by ring
+    have hsquare' :
+        (M : ℝ) ^ 2 / 16 - (q : ℝ) * (51 / 200) * b ≤
+          (b : ℝ) ^ 2 / 16 - (b : ℝ) ^ 2 / 40000 + 1 / 4 := by
+      simpa only [M, q, Nat.cast_add, Nat.cast_mul, Nat.cast_ofNat] using
+        hsquare
+    dsimp [epsilon, gamma] at heM ⊢
+    push_cast at hsquare' ⊢
+    nlinarith
+  have hconst : 0 ≤ eulerProduct⁻¹ * C.normalCount :=
+    mul_nonneg (inv_nonneg.mpr euler_positive.le) C.normalCount_nonneg
+  unfold preE7NaturalA4ExceptionalScalar
+  dsimp only [q, M] at hs
+  have hsource :
+      C.normalCount * ((Nat.factorial b : ℕ) : ℝ) ^ 16 *
+          ((Nat.factorial b : ℝ) *
+            ((2 : ℝ) ^ (-((q : ℝ) * (51 / 200) * b)) *
+              (subgroupCount M : ℝ))) ≤
+        C.normalCount * ((Nat.factorial b : ℕ) : ℝ) ^ 16 *
+          ((Nat.factorial b : ℝ) *
+            ((2 : ℝ) ^ (-((q : ℝ) * (51 / 200) * b)) *
+              (2 : ℝ) ^ ((1 / 16 + epsilon) * (M : ℝ) ^ 2))) := by
+    exact mul_le_mul_of_nonneg_left
+      (mul_le_mul_of_nonneg_left
+        (mul_le_mul_of_nonneg_left hs (by positivity)) (by positivity))
+      (mul_nonneg C.normalCount_nonneg (by positivity))
+  have hpointUpper : 0 ≤ eulerProduct⁻¹ *
+      (2 : ℝ) ^ (-((b + 4 : ℕ) : ℝ) ^ 2 / 16 +
+        5 * ((b + 4 : ℕ) : ℝ) / 8 + 1 / 4) :=
+    mul_nonneg (inv_nonneg.mpr euler_positive.le) (by positivity)
+  have hsourceLower : 0 ≤
+      C.normalCount * ((Nat.factorial b : ℕ) : ℝ) ^ 16 *
+        ((Nat.factorial b : ℝ) *
+          ((2 : ℝ) ^ (-((q : ℝ) * (51 / 200) * b)) *
+            (subgroupCount M : ℝ))) := by
+    have hsub : (0 : ℝ) ≤ subgroupCount M := by
+      exact_mod_cast (subgroupCount_pos M).le
+    exact mul_nonneg (mul_nonneg C.normalCount_nonneg (by positivity))
+      (mul_nonneg (by positivity) (mul_nonneg (by positivity) hsub))
+  have hrpow4 (a c d f : ℝ) :
+      (2 : ℝ) ^ a * (2 : ℝ) ^ f *
+          ((2 : ℝ) ^ c * (2 : ℝ) ^ d) =
+        (2 : ℝ) ^ (a + f + c + d) := by
+    rw [← Real.rpow_add (by norm_num : (0 : ℝ) < 2),
+      ← Real.rpow_add (by norm_num : (0 : ℝ) < 2),
+      ← Real.rpow_add (by norm_num : (0 : ℝ) < 2)]
+    congr 1
+    ring
+  calc
+    _ ≤ (eulerProduct⁻¹ *
+          (2 : ℝ) ^ (-((b + 4 : ℕ) : ℝ) ^ 2 / 16 +
+            5 * ((b + 4 : ℕ) : ℝ) / 8 + 1 / 4)) *
+        (C.normalCount * ((Nat.factorial b : ℕ) : ℝ) ^ 16 *
+          ((Nat.factorial b : ℝ) *
+            ((2 : ℝ) ^ (-((q : ℝ) * (51 / 200) * b)) *
+              (2 : ℝ) ^ ((1 / 16 + epsilon) * (M : ℝ) ^ 2)))) := by
+      exact mul_le_mul hpoint hsource hsourceLower hpointUpper
+    _ ≤ (eulerProduct⁻¹ *
+          (2 : ℝ) ^ (-((b + 4 : ℕ) : ℝ) ^ 2 / 16 +
+            5 * ((b + 4 : ℕ) : ℝ) / 8 + 1 / 4)) *
+        (C.normalCount *
+          (2 : ℝ) ^ (17 * gamma * (b : ℝ) ^ 2) *
+          ((2 : ℝ) ^ (-((q : ℝ) * (51 / 200) * b)) *
+            (2 : ℝ) ^ ((1 / 16 + epsilon) * (M : ℝ) ^ 2))) := by
+      have hfac' : ((Nat.factorial b : ℕ) : ℝ) ^ 16 *
+          (Nat.factorial b : ℝ) ≤
+          (2 : ℝ) ^ (17 * gamma * (b : ℝ) ^ 2) := by
+        calc
+          _ = ((Nat.factorial b : ℕ) : ℝ) ^ 17 := by ring
+          _ ≤ _ := hfac
+      apply mul_le_mul_of_nonneg_left _ hpointUpper
+      calc
+        _ = C.normalCount *
+            (((Nat.factorial b : ℕ) : ℝ) ^ 16 *
+              (Nat.factorial b : ℝ)) *
+            ((2 : ℝ) ^ (-((q : ℝ) * (51 / 200) * b)) *
+              (2 : ℝ) ^ ((1 / 16 + epsilon) * (M : ℝ) ^ 2)) := by ring
+        _ ≤ C.normalCount *
+            (2 : ℝ) ^ (17 * gamma * (b : ℝ) ^ 2) *
+            ((2 : ℝ) ^ (-((q : ℝ) * (51 / 200) * b)) *
+              (2 : ℝ) ^ ((1 / 16 + epsilon) * (M : ℝ) ^ 2)) := by
+          exact mul_le_mul_of_nonneg_right
+            (mul_le_mul_of_nonneg_left hfac' C.normalCount_nonneg)
+            (by positivity)
+    _ = (eulerProduct⁻¹ * C.normalCount) *
+        (2 : ℝ) ^
+          ((-((b + 4 : ℕ) : ℝ) ^ 2 / 16 +
+              5 * ((b + 4 : ℕ) : ℝ) / 8 + 1 / 4) +
+            17 * gamma * (b : ℝ) ^ 2 +
+            (-((q : ℝ) * (51 / 200) * b)) +
+            (1 / 16 + epsilon) * (M : ℝ) ^ 2) := by
+      rw [← hrpow4]
+      ring
+    _ ≤ _ := mul_le_mul_of_nonneg_left
+      (Real.rpow_le_rpow_of_exponent_le (by norm_num) hexponent) hconst
+
+def preE7NaturalA4Delta : ℝ :=
+  paddedComparatorDelta preE7CharacterRho 0 3 4
+
+def preE7NaturalA4Cutoff : ℝ :=
+  (paddedComparatorDegree preE7CharacterRho 3 4 : ℝ) / 8 +
+    preE7NaturalA4Delta / 2
+
+/-- The natural `A4` source sum enters the ordinary catalogue with a regular
+`C3` comparator, a cold slope-`1/3` row, and only the retained rank tail in
+the exceptional scalar. -/
+noncomputable def PreE7EarlierLocalCertificate.ofNaturalA4
+    {w : ℕ} {i : PreE7NonPairActionClass w}
+    (C : PreE7NaturalA4RankTailCertificate w i) :
+    PreE7EarlierLocalCertificate .saprim w i := by
+  have hw := C.width_eq
+  subst w
+  exact
+    { D := fun _ => C.normalCount
+      T := fun _ => 156 * C.normalCount
+      X := preE7NaturalA4ExceptionalScalar C
+      v := paddedComparatorDegree preE7CharacterRho 3 4
+      eta := 0
+      delta := preE7NaturalA4Delta
+      cutoff := preE7NaturalA4Cutoff
+      alpha := preE7NaturalA4Cutoff
+      theta := 1 / 3
+      alpha_eq := by simp
+      D_nonneg := fun _ => C.normalCount_nonneg
+      T_nonneg := fun _ => mul_nonneg (by norm_num) C.normalCount_nonneg
+      local_bound := by
+        intro b P hP _hPbroad
+        have hv : paddedComparatorDegree preE7CharacterRho 3 4 = 3 := by
+          norm_num [paddedComparatorDegree, preE7CharacterRho, evenWidth,
+            halfDegree]
+        let E : ℝ := C.normalCount * ((Nat.factorial b : ℕ) : ℝ) ^ 16 *
+          ((Nat.factorial b : ℝ) *
+            ((2 : ℝ) ^ (-((rankTail51Tilt b : ℝ) * (51 / 200) * b)) *
+              (subgroupCount (b + 2 * rankTail51Tilt b) : ℝ)))
+        have h :=
+          fusionPhysical_growingQuotient_additiveTail_summedExceptional_kernel_bound
+            (preE7NonPairAction 4 i) P hP NaturalA4RankTail.comparatorAction
+            NaturalA4RankTail.comparatorAction_injective
+            C.normalCount (156 * C.normalCount) 0 (1 / 3)
+            preE7NaturalA4Delta preE7NaturalA4Cutoff E
+            C.normalCount_nonneg (by
+              simpa only [zero_mul, Real.rpow_zero, mul_one] using C.summed b P)
+        simpa only [hv, ordinarySubgroupRatio,
+          preE7NaturalA4ExceptionalScalar, E, zero_add] using h }
+
+/-- The exceptional natural-`A4` scalar has finite width support and
+exponential decay. -/
+noncomputable def PreE7EarlierLocalPackage.ofNaturalA4
+    {w : ℕ} {i : PreE7NonPairActionClass w}
+    (C : PreE7NaturalA4RankTailCertificate w i) :
+    PreE7EarlierLocalPackage .saprim w i := by
+  have hw := C.width_eq
+  subst w
+  refine
+   { certificate := .ofNaturalA4 C
+     exceptional := ?_
+     exceptional_support := Or.inr (by norm_num) }
+  intro hcoarse
+  let h := eventually_atTop.mp
+    (preE7NaturalA4ExceptionalScalar_eventually hcoarse C)
+  let N : ℕ := Classical.choose h
+  have hN := Classical.choose_spec h
+  let K : ℝ := eulerProduct⁻¹ * C.normalCount
+  refine
+    { threshold := max N 1
+      rate := 1 / 100000
+      constant := K + 1
+      rate_pos := by norm_num
+      constant_pos := by
+        have hK : 0 ≤ K := by
+          dsimp [K]
+          exact mul_nonneg (inv_nonneg.mpr euler_positive.le)
+            C.normalCount_nonneg
+        linarith
+      bound := ?_ }
+  intro b hb
+  have hbN : N ≤ b := (le_max_left _ _).trans hb
+  have hb1 : 1 ≤ b := (le_max_right _ _).trans hb
+  have hquad := hN b hbN
+  have hK : 0 ≤ K := by
+    dsimp [K]
+    exact mul_nonneg (inv_nonneg.mpr euler_positive.le)
+      C.normalCount_nonneg
+  have hKle : K ≤ K + 1 := by linarith
+  have hbR : (1 : ℝ) ≤ b := by exact_mod_cast hb1
+  have hexp : -((b : ℝ) ^ 2) / 100000 ≤
+      -(1 / 100000 : ℝ) * b := by
+    nlinarith [mul_nonneg (show (0 : ℝ) ≤ b by positivity)
+      (sub_nonneg.mpr hbR)]
+  change preE7NaturalA4ExceptionalScalar C b ≤ _ at hquad ⊢
+  exact hquad.trans (mul_le_mul hKle
+    (Real.rpow_le_rpow_of_exponent_le (by norm_num) hexp)
+    (by positivity) (by linarith))
+
+/-- Complete numerical ordinary-owner package for the literal natural
+width-four `A4` action. -/
+noncomputable def PreE7NaturalA4Source.numericalPackage
+    {w : ℕ} {i : PreE7NonPairActionClass w}
+    (S : PreE7NaturalA4Source w i) :
+    PreE7EarlierNumericalPackage .saprim w i := by
+  let C := S.rankTailCertificate
+  have hw := S.degree
+  subst w
+  refine
+    { package := .ofNaturalA4 C
+      parameters := ?_
+      main_total_growth := ?_
+      tail_total_bound := ?_ }
+  · change PreE7CharacterEntryParameters preE7CharacterRho 4
+      (paddedComparatorDegree preE7CharacterRho 3 4) 0
+      preE7NaturalA4Delta preE7NaturalA4Cutoff preE7NaturalA4Cutoff
+      (1 / 3)
+    simpa [preE7NaturalA4Delta, preE7NaturalA4Cutoff] using
+      (preE7Padded_entryParameters_withTail
+      (w := 4) (v0 := 3) (eta := (0 : ℝ)) (theta := (1 / 3 : ℝ))
+      (by norm_num) (by norm_num)
+      (by norm_num [preE7CharacterRho, evenWidth, halfDegree])
+      (by norm_num [preE7CharacterWindow, preE7CharacterRho, halfDegree]))
+  · exact Or.inr ⟨by norm_num, C.normalCount, 0, C.normalCount_nonneg, by
+      intro b
+      simpa [PreE7EarlierLocalPackage.ofNaturalA4,
+        PreE7EarlierLocalCertificate.ofNaturalA4] using
+        (le_refl C.normalCount)⟩
+  · intro b
+    have haxes := normalAxis_card_le_two_pow_card (preE7NonPairAction 4 i)
+    have hcard : Nat.card (preE7NonPairAction 4 i) = 12 := by
+      rw [Nat.card_congr (MulEquiv.subgroupCongr S.alternating).toEquiv]
+      exact alternatingGroup.card_of_card_eq_four (by simp)
+    rw [hcard] at haxes
+    have haxesR : C.normalCount ≤ (2 : ℝ) ^ (12 : ℝ) := by
+      change (Nat.card {N : Subgroup (preE7NonPairAction 4 i) // N.Normal} : ℝ) ≤ _
+      calc
+        _ ≤ ((2 ^ 12 : ℕ) : ℝ) := by exact_mod_cast haxes
+        _ = _ := by norm_num
+    change 156 * C.normalCount ≤ _
+    calc
+      156 * C.normalCount ≤ 156 * (2 : ℝ) ^ (12 : ℝ) :=
+        mul_le_mul_of_nonneg_left haxesR (by norm_num)
+      _ ≤ (2 : ℝ) ^ (16 * (4 : ℝ)) := by norm_num
+      _ ≤ _ := two_rpow_sixteen_width_le_menuMass (w := 4) (by norm_num) b
+
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

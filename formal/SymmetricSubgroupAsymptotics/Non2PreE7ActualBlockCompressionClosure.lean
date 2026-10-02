@@ -51,14 +51,14 @@ theorem T1_of_preE7_actualBlockCompression_or_sourceOrYonedaTop_data
     (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
     (hOuter : SemisimpleOuterFactorPermutationBound)
-    (D : ∀ w (U : PreE7NonPairActionClass w),
-      PreE7ActualBlockCompressionOrSourceOrYonedaTopData w U)
+    (D : ∀ w (t : PreE7NumericalTerminalIndex w),
+      PreE7ActualBlockCompressionOrSourceOrYonedaTopData w t.action)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   T1_of_preE7_semisimpleCompression_or_sourceOrYonedaTop_data
     lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     hOuter
-    (fun w U => (D w U).toCompressionOrSourceOrYonedaTopData)
+    (fun w t => (D w t).toCompressionOrSourceOrYonedaTopData)
     hcoarse hFS
 
 /-- Final local structural alternatives.  Primitive actions use their own
@@ -99,14 +99,14 @@ theorem T1_of_preE7_localCompression_or_sourceOrYonedaTop_data
     (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
     (hOuter : SemisimpleOuterFactorPermutationBound)
-    (D : ∀ w (U : PreE7NonPairActionClass w),
-      PreE7LocalCompressionOrSourceOrYonedaTopData w U)
+    (D : ∀ w (t : PreE7NumericalTerminalIndex w),
+      PreE7LocalCompressionOrSourceOrYonedaTopData w t.action)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   T1_of_preE7_semisimpleCompression_or_sourceOrYonedaTop_data
     lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     hOuter
-    (fun w U => (D w U).toCompressionOrSourceOrYonedaTopData)
+    (fun w t => (D w t).toCompressionOrSourceOrYonedaTopData)
     hcoarse hFS
 
 /-- Primitive-socle-facing final alternatives.  The uniform branches retain
@@ -144,14 +144,14 @@ theorem T1_of_preE7_primitiveCompression_or_sourceOrYonedaTop_data
     (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
     (hOuter : SemisimpleOuterFactorPermutationBound)
-    (D : ∀ w (U : PreE7NonPairActionClass w),
-      PreE7PrimitiveCompressionOrSourceOrYonedaTopData w U)
+    (D : ∀ w (t : PreE7NumericalTerminalIndex w),
+      PreE7PrimitiveCompressionOrSourceOrYonedaTopData w t.action)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   T1_of_preE7_localCompression_or_sourceOrYonedaTop_data
     lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
     hOuter
-    (fun w U => (D w U).toLocalCompressionOrSourceOrYonedaTopData)
+    (fun w t => (D w t).toLocalCompressionOrSourceOrYonedaTopData)
     hcoarse hFS
 
 end Non2UnipotentPrefixFiniteMenu

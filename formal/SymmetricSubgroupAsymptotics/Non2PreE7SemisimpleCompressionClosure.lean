@@ -47,13 +47,13 @@ theorem T1_of_preE7_semisimpleCompression_or_sourceOrYonedaTop_data
     (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
     (hOuter : SemisimpleOuterFactorPermutationBound)
-    (D : ∀ w (U : PreE7NonPairActionClass w),
-      PreE7CompressionOrSourceOrYonedaTopData w U)
+    (D : ∀ w (t : PreE7NumericalTerminalIndex w),
+      PreE7CompressionOrSourceOrYonedaTopData w t.action)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
   T1_of_preE7_rankTail_sourceOrYonedaTop_data lit hgen hRDT
     hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
-    (fun w U => (D w U).toSourceOrYonedaTopData hOuter)
+    (fun w t => (D w t).toSourceOrYonedaTopData hOuter)
     hcoarse hFS hOuter
 
 end Non2UnipotentPrefixFiniteMenu

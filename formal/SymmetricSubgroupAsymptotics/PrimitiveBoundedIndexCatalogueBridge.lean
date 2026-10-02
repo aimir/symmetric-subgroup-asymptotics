@@ -39,8 +39,8 @@ namespace Non2UnipotentPrefixFiniteMenu
 /-- Final local exhaustion where every small almost-simple remainder is
 identified with a row of the checked primitive catalogue receipt. -/
 structure PreE7PrimitiveCatalogueExhaustionData where
-  small : ∀ w (U : PreE7NonPairActionClass w), w < 5 →
-    PreE7RankTailSourceOrYonedaTopData w U
+  small : ∀ U : PreE7NonPairActionClass 4,
+    PreE7RankTailSourceOrYonedaTopData 4 U
   primitive : ∀ w (U : PreE7NonPairActionClass w), 5 ≤ w →
     MulAction.IsPreprimitive (preE7NonPairAction w U) (Fin w) →
     PrimitiveSemisimpleCatalogueCertificateData

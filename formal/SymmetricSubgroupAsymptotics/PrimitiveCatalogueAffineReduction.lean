@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.PrimitiveBoundedIndexCatalogueBridge
+import SymmetricSubgroupAsymptotics.Non2PreE7SmallWidthMenu
 
 /-!
 # Separating primitive catalogue matching from the affine remainder
@@ -85,8 +86,6 @@ for a concrete, already integrated owner/Yoneda source only after Lean has a
 proof that no semisimple outer-log profile exists on the literal primitive
 action or block component. -/
 structure PreE7AffineRemainderExhaustionData where
-  small : ∀ w (U : PreE7NonPairActionClass w), w < 5 →
-    PreE7RankTailSourceOrYonedaTopData w U
   primitive : ∀ w (U : PreE7NonPairActionClass w), 5 ≤ w →
     MulAction.IsPreprimitive (preE7NonPairAction w U) (Fin w) →
     (¬ Nonempty (PrimitiveSemisimpleOuterLogProfile
@@ -108,7 +107,7 @@ noncomputable def PreE7PrimitiveCatalogueExhaustionData.ofMatchAndAffine
     (M : PreE7PrimitiveCatalogueMatchData)
     (A : PreE7AffineRemainderExhaustionData) :
     PreE7PrimitiveCatalogueExhaustionData where
-  small := A.small
+  small := preE7WidthFourSourceOrYonedaTop
   primitive := by
     intro w U hw hp
     by_cases hprofile : Nonempty (PrimitiveSemisimpleOuterLogProfile

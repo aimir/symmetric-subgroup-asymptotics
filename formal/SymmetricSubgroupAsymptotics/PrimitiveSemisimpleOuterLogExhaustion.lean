@@ -68,8 +68,8 @@ namespace Non2UnipotentPrefixFiniteMenu
 All uniform primitive numerics and the actual imprimitive block choice are
 discharged by the conversion below. -/
 structure PreE7PrimitiveOuterLogExhaustionData where
-  small : ∀ w (U : PreE7NonPairActionClass w), w < 5 →
-    PreE7RankTailSourceOrYonedaTopData w U
+  small : ∀ U : PreE7NonPairActionClass 4,
+    PreE7RankTailSourceOrYonedaTopData 4 U
   primitive : ∀ w (U : PreE7NonPairActionClass w), 5 ≤ w →
     MulAction.IsPreprimitive (preE7NonPairAction w U) (Fin w) →
     PrimitiveSemisimpleOuterLogCertificateData

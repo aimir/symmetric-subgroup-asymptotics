@@ -42,7 +42,7 @@ theorem preE7NumericalRankTail_terminal_implies_sns2_terminal
       preE7NoPairNoC3CertifiedFirstOwnerPredicate
         preE7NoPairNoC3EarlierNumericalSns2FamilyAction w
         (Fin.last preE7NoPairNoC3EarlierOwnerCount, U) b H := by
-  rintro ⟨⟨howner, hnoC3⟩, _hselected⟩
+  rintro ⟨⟨howner, hnoC3⟩, hselected⟩
   rcases howner with ⟨hordinary, hfirst⟩
   let K : Subgroup (Equiv.Perm (Fin (w + b))) :=
     relabelSubgroup finSumFinEquiv
@@ -69,9 +69,10 @@ theorem preE7NumericalRankTail_terminal_implies_sns2_terminal
       (preE7NoPairNoC3EarlierFamilyPredicate
         preE7NoPairNoC3EarlierNumericalSns2FamilyAction) K).mpr
       hunownedSns2
-  refine ⟨⟨⟨hordinary, ?_⟩, hnoC3⟩,
-    preE7NoPairNoC3SelectedActionEligible_last _ U⟩
-  simpa only [K] using hfirstSns2
+  refine ⟨⟨⟨hordinary, ?_⟩, hnoC3⟩, ?_⟩
+  · simpa only [K] using hfirstSns2
+  · exact (preE7NoPairNoC3SelectedActionEligible_last _ U).2
+      ((preE7NoPairNoC3SelectedActionEligible_last _ U).1 hselected)
 
 /-- An actual enlarged-catalogue owner of one retained action. -/
 abbrev PreE7NumericalRankTailActionOwner
@@ -137,11 +138,20 @@ noncomputable def PreE7NumericalRankTailResidualChoice.emptyOfActionOwner
   cutoff := preE7EmptyCellCutoff w
   alpha := preE7EmptyCellAlpha w
   theta := 0
+  X := 0
   alpha_eq := by simp [preE7EmptyCellAlpha]
   D_nonneg := fun _ => le_rfl
   parameters := preE7EmptyCell_entryParameters
     (preE7NonPairAction_width_three_le U)
   main_total_bound := fun _ => by positivity
+  exceptional := fun _ =>
+    { threshold := 0
+      rate := 1
+      constant := 1
+      rate_pos := by norm_num
+      constant_pos := by norm_num
+      bound := by simp }
+  exceptional_support := Or.inl rfl
   local_bound := by
     intro b
     letI : IsEmpty {H : Subgroup
@@ -190,11 +200,20 @@ noncomputable def
       cutoff := D.cutoff
       alpha := D.alpha
       theta := D.theta
+      X := 0
       alpha_eq := D.alpha_eq
       D_nonneg := fun b =>
         fusionAxisEnvelopeTotal_nonneg _ _ (D.coefficient_nonneg b)
       parameters := D.parameters
       main_total_bound := D.coefficient_total_bound
+      exceptional := fun _ =>
+        { threshold := 0
+          rate := 1
+          constant := 1
+          rate_pos := by norm_num
+          constant_pos := by norm_num
+          bound := by simp }
+      exceptional_support := Or.inl rfl
       local_bound := by
         intro b
         let P := preE7NoPairNoC3CertifiedFirstOwnerPredicate
@@ -243,11 +262,10 @@ noncomputable def PreE7NumericalRankTailOwnerOrJointTopData.residualChoice
   | .inr cells => .ofNumericalResidualJointTopCells cells
 
 noncomputable def preE7NumericalRankTail_ownerOrJointTopResidualChoices
-    (D : ∀ w (U : PreE7NonPairActionClass w),
-      PreE7NumericalRankTailOwnerOrJointTopData w U) :
-    ∀ w (U : PreE7NonPairActionClass w),
-      PreE7NumericalRankTailResidualChoice w U :=
-  fun w U => (D w U).residualChoice
+    (D : ∀ w (t : PreE7NumericalTerminalIndex w),
+      PreE7NumericalRankTailOwnerOrJointTopData w t.action) :
+    PreE7NumericalRankTailResidualData :=
+  fun w t => (D w t).residualChoice
 
 noncomputable def
     PreE7NumericalRankTailOwnerOrYonedaTopData.toOwnerOrJointTopData
@@ -270,8 +288,8 @@ theorem T1_of_preE7_numericalRankTail_ownerOrJointTop_data
     (h18 : DegreeEighteenTernaryHeadBound)
     (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
-    (D : ∀ w (U : PreE7NonPairActionClass w),
-      PreE7NumericalRankTailOwnerOrJointTopData w U)
+    (D : ∀ w (t : PreE7NumericalTerminalIndex w),
+      PreE7NumericalRankTailOwnerOrJointTopData w t.action)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput)
     (hOuter : SemisimpleOuterFactorPermutationBound) : T1 :=
@@ -291,14 +309,14 @@ theorem T1_of_preE7_numericalRankTail_ownerOrYonedaTop_data
     (h18 : DegreeEighteenTernaryHeadBound)
     (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
-    (D : ∀ w (U : PreE7NonPairActionClass w),
-      PreE7NumericalRankTailOwnerOrYonedaTopData w U)
+    (D : ∀ w (t : PreE7NumericalTerminalIndex w),
+      PreE7NumericalRankTailOwnerOrYonedaTopData w t.action)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput)
     (hOuter : SemisimpleOuterFactorPermutationBound) : T1 :=
   T1_of_preE7_numericalRankTail_ownerOrJointTop_data lit
     hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
-    (fun w U => (D w U).toOwnerOrJointTopData)
+    (fun w t => (D w t).toOwnerOrJointTopData)
     hcoarse hFS hOuter
 
 end Non2UnipotentPrefixFiniteMenu

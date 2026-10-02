@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveCatalogueAffineReduction
 import SymmetricSubgroupAsymptotics.SemisimpleOuterFactorPublished
 import SymmetricSubgroupAsymptotics.PrimitiveTernaryChiefWeightPublished
 import SymmetricSubgroupAsymptotics.MarkedC4RDTAssembly
+import SymmetricSubgroupAsymptotics.Non2PreE7SmallWidthMenu
 
 /-!
 # Literal primitive classification and affine-consumer assembly
@@ -63,8 +64,6 @@ structure PreE7PrimitiveCatalogueClassificationInput where
 classification.  Each output is one of the concrete source/Yoneda objects
 already integrated into the numerical recurrence. -/
 structure PreE7PrimitiveAffineConsumerData where
-  small : ∀ w (U : PreE7NonPairActionClass w), w < 5 →
-    PreE7RankTailSourceOrYonedaTopData w U
   primitive : ∀ w (U : PreE7NonPairActionClass w), 5 ≤ w →
     MulAction.IsPreprimitive (preE7NonPairAction w U) (Fin w) →
     PrimitiveAffineProfile (preE7NonPairAction w U) (Fin w) →
@@ -82,7 +81,7 @@ noncomputable def preE7PrimitiveCatalogueExhaustionData
     (classification : PreE7PrimitiveCatalogueClassificationInput)
     (affine : PreE7PrimitiveAffineConsumerData) :
     PreE7PrimitiveCatalogueExhaustionData where
-  small := affine.small
+  small := preE7WidthFourSourceOrYonedaTop
   primitive := by
     intro w U hw hp
     exact match classification.primitive w U hw hp with

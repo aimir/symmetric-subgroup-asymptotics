@@ -28,8 +28,8 @@ The source alternative always belongs to the original action.  In the
 imprimitive branch only the compression certificate is local to the selected
 minimal block component. -/
 structure PreE7PrimitiveComponentExhaustionData where
-  small : ∀ w (U : PreE7NonPairActionClass w), w < 5 →
-    PreE7RankTailSourceOrYonedaTopData w U
+  small : ∀ U : PreE7NonPairActionClass 4,
+    PreE7RankTailSourceOrYonedaTopData 4 U
   primitive : ∀ w (U : PreE7NonPairActionClass w), 5 ≤ w →
     MulAction.IsPreprimitive (preE7NonPairAction w U) (Fin w) →
     PreE7PrimitiveCompressionCertificateData w U ⊕
@@ -50,28 +50,32 @@ minimal block of the original action and retains that block in the resulting
 certificate. -/
 noncomputable def classify
     (D : PreE7PrimitiveComponentExhaustionData)
-    (w : ℕ) (U : PreE7NonPairActionClass w) :
-    PreE7PrimitiveCompressionOrSourceOrYonedaTopData w U := by
+    (w : ℕ) (t : PreE7NumericalTerminalIndex w) :
+    PreE7PrimitiveCompressionOrSourceOrYonedaTopData w t.action := by
   by_cases hw : 5 ≤ w
   · by_cases hp : MulAction.IsPreprimitive
-        (preE7NonPairAction w U) (Fin w)
-    · exact match D.primitive w U hw hp with
+        (preE7NonPairAction w t.action) (Fin w)
+    · exact match D.primitive w t.action hw hp with
       | .inl compression => .primitive compression
       | .inr source => .source source
     · letI : Nontrivial (Fin w) :=
         Fin.nontrivial_iff_two_le.mpr (by omega)
       let basePoint : Fin w := ⟨0, by omega⟩
       let block : OriginalMinimalBlock
-          (A := preE7NonPairAction w U) basePoint :=
+          (A := preE7NonPairAction w t.action) basePoint :=
         Classical.choice (originalMinimalBlock_nonempty basePoint hp)
-      exact match D.imprimitive w U hw basePoint block with
+      exact match D.imprimitive w t.action hw basePoint block with
       | .inl compression => .imprimitive
           { width_lower := hw
             basePoint := basePoint
             block := block
             certificate := compression }
       | .inr source => .source source
-  · exact .source (D.small w U (by omega))
+  · have hwidth : w = 4 := by
+      have := t.width_four
+      omega
+    subst w
+    exact .source (D.small t.action)
 
 /-- T1 after the general primitive/imprimitive split and actual minimal-block
 choice have been discharged.  What remains in `D` is precisely the local

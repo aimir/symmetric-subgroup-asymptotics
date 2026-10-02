@@ -30,6 +30,7 @@ structure PreE7NumericalRankTailResidualChoice
   cutoff : ℝ
   alpha : ℝ
   theta : ℝ
+  X : ℕ → ℝ
   alpha_eq : alpha = eta + cutoff
   D_nonneg : ∀ b, 0 ≤ D b
   parameters : PreE7CharacterEntryParameters preE7CharacterRho w v eta
@@ -37,6 +38,9 @@ structure PreE7NumericalRankTailResidualChoice
   main_total_bound : ∀ b,
     D b ≤ (2 : ℝ) ^
       (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
+  exceptional : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)) →
+    ExponentialScalarBound X
+  exceptional_support : X = 0 ∨ w ≤ 12288
   local_bound : ∀ b,
     (Nat.card (FusionOrbitFamily (preE7NonPairAction w U)
       (FusionAcceptedOrbitPredicate (preE7NonPairAction w U)
@@ -52,19 +56,24 @@ structure PreE7NumericalRankTailResidualChoice
         fusionWidthColdKernel b w (D b)
           (Nat.card (Subgroup.normalizer
             (preE7NonPairAction w U : Set (Equiv.Perm (Fin w)))) : ℝ)
-          alpha * ordinarySubgroupRatio b
+          alpha * ordinarySubgroupRatio b + X b
+
+/-- Terminal numerical data only for the width-at-least-four actions that
+remain after the complete degree-three packet has been removed. -/
+abbrev PreE7NumericalRankTailResidualData :=
+  ∀ w (t : PreE7NumericalTerminalIndex w),
+    PreE7NumericalRankTailResidualChoice w t.action
 
 variable
   (lit : PreE7CharacterLiterature)
-  (Residual : ∀ w (U : PreE7NonPairActionClass w),
-    PreE7NumericalRankTailResidualChoice w U)
+  (Residual : PreE7NumericalRankTailResidualData)
 
 def preE7NumericalRankTailD (w : ℕ)
     (j : PreE7NumericalRankTailIndex w) (b : ℕ) : ℝ :=
   match j with
   | .ordinary a => (preE7NumericalOwnedPackage a).package.certificate.D b
   | .b6 _ | .y1 _ | .sns2 _ => 0
-  | .terminal U => (Residual w U).D b
+  | .terminal t => (Residual w t).D b
 
 def preE7NumericalRankTailT (w : ℕ)
     (j : PreE7NumericalRankTailIndex w) (b : ℕ) : ℝ :=
@@ -82,7 +91,7 @@ def preE7NumericalRankTailX (w : ℕ)
   | .b6 a => preE7B6MenuExceptional lit (preE7B6OwnedMenuIndex a) b
   | .y1 a => preE7Y1MenuExceptional lit (preE7Y1OwnedMenuIndex a) b
   | .sns2 a => preE7Sns2MenuExceptional (preE7Sns2OwnedMenuIndex a) b
-  | .terminal _ => 0
+  | .terminal t => (Residual w t).X b
 
 def preE7NumericalRankTailA (w : ℕ)
     (j : PreE7NumericalRankTailIndex w) : ℝ :=
@@ -93,31 +102,31 @@ def preE7NumericalRankTailV (w : ℕ) :
     PreE7NumericalRankTailIndex w → ℕ
   | .ordinary a => (preE7NumericalOwnedPackage a).package.certificate.v
   | .b6 _ | .y1 _ | .sns2 _ => preE7EmptyCellDegree w
-  | .terminal U => (Residual w U).v
+  | .terminal t => (Residual w t).v
 
 def preE7NumericalRankTailEta (w : ℕ) :
     PreE7NumericalRankTailIndex w → ℝ
   | .ordinary a => (preE7NumericalOwnedPackage a).package.certificate.eta
   | .b6 _ | .y1 _ | .sns2 _ => 0
-  | .terminal U => (Residual w U).eta
+  | .terminal t => (Residual w t).eta
 
 def preE7NumericalRankTailDelta (w : ℕ) :
     PreE7NumericalRankTailIndex w → ℝ
   | .ordinary a => (preE7NumericalOwnedPackage a).package.certificate.delta
   | .b6 _ | .y1 _ | .sns2 _ => preE7EmptyCellDelta w
-  | .terminal U => (Residual w U).delta
+  | .terminal t => (Residual w t).delta
 
 def preE7NumericalRankTailCutoff (w : ℕ) :
     PreE7NumericalRankTailIndex w → ℝ
   | .ordinary a => (preE7NumericalOwnedPackage a).package.certificate.cutoff
   | .b6 _ | .y1 _ | .sns2 _ => preE7EmptyCellCutoff w
-  | .terminal U => (Residual w U).cutoff
+  | .terminal t => (Residual w t).cutoff
 
 def preE7NumericalRankTailAlpha (w : ℕ) :
     PreE7NumericalRankTailIndex w → ℝ
   | .ordinary a => (preE7NumericalOwnedPackage a).package.certificate.alpha
   | .b6 _ | .y1 _ | .sns2 _ => preE7EmptyCellAlpha w
-  | .terminal U => (Residual w U).alpha
+  | .terminal t => (Residual w t).alpha
 
 def preE7NumericalRankTailTheta (w : ℕ) :
     PreE7NumericalRankTailIndex w → ℝ
@@ -134,7 +143,7 @@ theorem preE7NumericalRankTailD_nonneg :
   | ordinary a =>
       exact (preE7NumericalOwnedPackage a).package.certificate.D_nonneg b
   | b6 | y1 | sns2 => exact le_rfl
-  | terminal U => exact (Residual w U).D_nonneg b
+  | terminal t => exact (Residual w t).D_nonneg b
 
 theorem preE7NumericalRankTailT_nonneg :
     ∀ w j b, 0 ≤ preE7NumericalRankTailT lit w j b := by
@@ -159,7 +168,7 @@ theorem preE7NumericalRankTail_local_bound :
     GrowingQuotientAdditiveExceptionalLocalPhysicalBound 3
       preE7NumericalRankTailAction preE7NumericalRankTailPredicate
       (preE7NumericalRankTailD Residual)
-      (preE7NumericalRankTailT lit) (preE7NumericalRankTailX lit)
+      (preE7NumericalRankTailT lit) (preE7NumericalRankTailX lit Residual)
       preE7NumericalRankTailA (preE7NumericalRankTailV Residual)
       (preE7NumericalRankTailEta Residual)
       (preE7NumericalRankTailDelta Residual)
@@ -245,8 +254,8 @@ theorem preE7NumericalRankTail_local_bound :
         preE7Sns2MenuCoefficient, preE7Sns2MenuSlope,
         preE7Sns2MenuExceptional, growingQuotientHotKernel,
         fusionWidthColdKernel] using h
-  | terminal U =>
-      have h := (Residual j.1.1 U).local_bound (n - j.1.1)
+  | terminal t =>
+      have h := (Residual j.1.1 t).local_bound (n - j.1.1)
       simpa [Nat.sub_add_cancel hwn, preE7NumericalRankTailAction,
         preE7NumericalRankTailActionClass, preE7NumericalRankTailD,
         preE7NumericalRankTailT, preE7NumericalRankTailX,

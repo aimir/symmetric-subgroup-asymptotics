@@ -73,11 +73,14 @@ abbrev PreE7RankTailSourceOrJointTopData
     PreE7NumericalResidualJointTopCellSourceData w U
 
 /-- Construction-facing version with explicit selected Yoneda-top
-families. -/
+families.  The final summand is reserved for correlated physical rows whose
+valid estimate is already source-summed and therefore cannot be represented
+by a pointwise Yoneda envelope. -/
 abbrev PreE7RankTailSourceOrYonedaTopData
     (w : ℕ) (U : PreE7NonPairActionClass w) :=
   PreE7RankTailOwnerSourceData w U ⊕
-    PreE7NumericalResidualYonedaTopFamilySourceData w U
+    (PreE7NumericalResidualYonedaTopFamilySourceData w U ⊕
+      PreE7NumericalRankTailResidualChoice w U)
 
 noncomputable def PreE7RankTailSourceOrJointTopData.toOwnerOrJointTopData
     (lit : PreE7CharacterLiterature)
@@ -90,13 +93,19 @@ noncomputable def PreE7RankTailSourceOrJointTopData.toOwnerOrJointTopData
   | .inl source => .inl (source.toActionOwner lit hgen hRDT)
   | .inr cells => .inr cells
 
-noncomputable def PreE7RankTailSourceOrYonedaTopData.toSourceOrJointTopData
+noncomputable def PreE7RankTailSourceOrYonedaTopData.toResidualChoice
+    (lit : PreE7CharacterLiterature)
+    (hgen : PermutationSubgroupGeneratorBound)
+    (hRDT : MarkedC4.RDTMarkedC4ReductionInput)
     {w : ℕ} {U : PreE7NonPairActionClass w}
     (D : PreE7RankTailSourceOrYonedaTopData w U) :
-    PreE7RankTailSourceOrJointTopData w U :=
+    PreE7NumericalRankTailResidualChoice w U :=
   match D with
-  | .inl source => .inl source
-  | .inr cells => .inr cells.toJointTopCellSourceData
+  | .inl source =>
+      .emptyOfActionOwner U (source.toActionOwner lit hgen hRDT)
+  | .inr (.inl cells) =>
+      .ofNumericalResidualJointTopCells cells.toJointTopCellSourceData
+  | .inr (.inr residual) => residual
 
 /-- T1 from the concrete source-or-joint-top theorem. -/
 theorem T1_of_preE7_rankTail_sourceOrJointTop_data
@@ -111,14 +120,14 @@ theorem T1_of_preE7_rankTail_sourceOrJointTop_data
     (h18 : DegreeEighteenTernaryHeadBound)
     (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
-    (D : ∀ w (U : PreE7NonPairActionClass w),
-      PreE7RankTailSourceOrJointTopData w U)
+    (D : ∀ w (t : PreE7NumericalTerminalIndex w),
+      PreE7RankTailSourceOrJointTopData w t.action)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput)
     (hOuter : SemisimpleOuterFactorPermutationBound) : T1 :=
   T1_of_preE7_numericalRankTail_ownerOrJointTop_data lit
     hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
-    (fun w U => (D w U).toOwnerOrJointTopData lit hgen hRDT)
+    (fun w t => (D w t).toOwnerOrJointTopData lit hgen hRDT)
     hcoarse hFS hOuter
 
 /-- T1 from the equivalent explicit Yoneda-top-family construction. -/
@@ -134,14 +143,14 @@ theorem T1_of_preE7_rankTail_sourceOrYonedaTop_data
     (h18 : DegreeEighteenTernaryHeadBound)
     (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
-    (D : ∀ w (U : PreE7NonPairActionClass w),
-      PreE7RankTailSourceOrYonedaTopData w U)
+    (D : ∀ w (t : PreE7NumericalTerminalIndex w),
+      PreE7RankTailSourceOrYonedaTopData w t.action)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput)
     (hOuter : SemisimpleOuterFactorPermutationBound) : T1 :=
-  T1_of_preE7_rankTail_sourceOrJointTop_data lit hgen hRDT
+  T1_of_preE7_numericalRankTail_residual lit
+    (fun w t => (D w t).toResidualChoice lit hgen hRDT)
     hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
-    (fun w U => (D w U).toSourceOrJointTopData)
     hcoarse hFS hOuter
 
 end Non2UnipotentPrefixFiniteMenu

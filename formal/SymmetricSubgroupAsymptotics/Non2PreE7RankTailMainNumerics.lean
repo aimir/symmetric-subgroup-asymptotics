@@ -17,19 +17,19 @@ noncomputable def preE7NumericalRankTailIndexEquiv (w : ℕ) :
       PreE7NumericalOwnedIndex w ⊕
         (PreE7B6OwnedIndex w ⊕
           (PreE7Y1OwnedIndex w ⊕
-            (PreE7Sns2OwnedIndex w ⊕ PreE7NonPairActionClass w))) where
+            (PreE7Sns2OwnedIndex w ⊕ PreE7NumericalTerminalIndex w))) where
   toFun
     | .ordinary a => .inl a
     | .b6 a => .inr (.inl a)
     | .y1 a => .inr (.inr (.inl a))
     | .sns2 a => .inr (.inr (.inr (.inl a)))
-    | .terminal U => .inr (.inr (.inr (.inr U)))
+    | .terminal t => .inr (.inr (.inr (.inr t)))
   invFun
     | .inl a => .ordinary a
     | .inr (.inl a) => .b6 a
     | .inr (.inr (.inl a)) => .y1 a
     | .inr (.inr (.inr (.inl a))) => .sns2 a
-    | .inr (.inr (.inr (.inr U))) => .terminal U
+    | .inr (.inr (.inr (.inr t))) => .terminal t
   left_inv := by intro x; cases x <;> rfl
   right_inv := by
     intro x
@@ -91,12 +91,20 @@ private theorem preE7NumericalRankTailIndex_subquadratic
     ownerActionIndex_card_le w
       (fun k U => preE7NoPairNoC3EarlierOwnerEquiv k = .sns2 ∧
         Nonempty (PreE7Sns2SourceData w U))
+  have hterminal : Nat.card (PreE7NumericalTerminalIndex w) ≤
+      Nat.card (PreE7NonPairActionClass w) :=
+    Nat.card_le_card_of_injective
+      (fun t : PreE7NumericalTerminalIndex w => t.action) (by
+        intro a b h
+        cases a
+        cases b
+        simp_all only [PreE7NumericalTerminalIndex.mk.injEq])
   have heq : Nat.card (PreE7NumericalRankTailIndex w) =
       Nat.card (PreE7NumericalOwnedIndex w) +
         (Nat.card (PreE7B6OwnedIndex w) +
           (Nat.card (PreE7Y1OwnedIndex w) +
             (Nat.card (PreE7Sns2OwnedIndex w) +
-              Nat.card (PreE7NonPairActionClass w)))) := by
+              Nat.card (PreE7NumericalTerminalIndex w)))) := by
     rw [Nat.card_congr (preE7NumericalRankTailIndexEquiv w)]
     simp only [Nat.card_sum]
   have hcard : Nat.card (PreE7NumericalRankTailIndex w) ≤
@@ -107,7 +115,8 @@ private theorem preE7NumericalRankTailIndex_subquadratic
     calc
       _ ≤ M + (M + (M + (M + Nat.card (PreE7NonPairActionClass w)))) :=
         Nat.add_le_add hnum (Nat.add_le_add hb6
-          (Nat.add_le_add hy1 (Nat.add_le_add hsns2 le_rfl)))
+          (Nat.add_le_add hy1 (Nat.add_le_add hsns2
+            hterminal)))
       _ = rankTailTagCount * Nat.card (PreE7NonPairActionClass w) := by
         dsimp only [M, rankTailTagCount]
         ring
@@ -129,8 +138,7 @@ private theorem preE7NumericalRankTailIndex_subquadratic
         (2 : ℝ) ^ (epsilon * (w : ℝ) ^ 2) := by ring
 
 variable
-  (Residual : ∀ w (U : PreE7NonPairActionClass w),
-    PreE7NumericalRankTailResidualChoice w U)
+  (Residual : PreE7NumericalRankTailResidualData)
 
 private theorem preE7NumericalRankTailMain_envelope :
     LinearLogSquaredMenuNumeratorBound 3
@@ -152,8 +160,8 @@ private theorem preE7NumericalRankTailMain_envelope :
       simp only [preE7NumericalRankTailD]
       exact mul_nonneg preE7NumericalOwnedPolynomialConstant_pos.le
         (Real.rpow_nonneg (by norm_num) _)
-  | terminal U =>
-      have hold := (Residual w U).main_total_bound (n - w)
+  | terminal t =>
+      have hold := (Residual w t).main_total_bound (n - w)
       have hlog : 0 ≤ Real.log ((n : ℝ) + 2) ^ 2 := sq_nonneg _
       have hw0 : (0 : ℝ) ≤ w := by positivity
       have hpow : (2 : ℝ) ^
@@ -202,7 +210,7 @@ private def preE7NumericalRankTailParameterTheta (w : ℕ) :
     PreE7NumericalRankTailIndex w → ℝ
   | .ordinary a => (preE7NumericalOwnedPackage a).package.certificate.theta
   | .b6 _ | .y1 _ | .sns2 _ => 0
-  | .terminal U => (Residual w U).theta
+  | .terminal t => (Residual w t).theta
 
 private theorem preE7NumericalRankTail_entryParameters :
     ∀ w j, PreE7CharacterEntryParameters preE7CharacterRho w
@@ -218,7 +226,7 @@ private theorem preE7NumericalRankTail_entryParameters :
   | b6 a | y1 a | sns2 a =>
       exact preE7EmptyCell_entryParameters
         (preE7NonPairAction_width_three_le a.2.1)
-  | terminal U => exact (Residual w U).parameters
+  | terminal t => exact (Residual w t).parameters
 
 theorem preE7NumericalRankTail_parameterBound :
     GrowingQuotientParameterBound preE7CharacterRho

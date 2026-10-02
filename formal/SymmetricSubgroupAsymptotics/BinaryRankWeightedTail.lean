@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryTargetOrderMoments
+import SymmetricSubgroupAsymptotics.BinaryRankHotDefinition
 
 /-!
 # Tilted tails of the binary character rank
@@ -22,10 +23,6 @@ noncomputable section
 open scoped BigOperators Classical
 
 namespace SymmetricSubgroupAsymptotics
-
-/-- The hot set of the binary rank at threshold `a`: `d₂(J) > a b`. -/
-def BinaryRankHot (a : ℝ) {b : ℕ} (J : Subgroup (Equiv.Perm (Fin b))) : Prop :=
-  a * b < binaryCharacterRank J
 
 /-- The complete weighted rank sum, in real form. -/
 theorem binaryRankWeightedFullSum_le (b q : ℕ) :
