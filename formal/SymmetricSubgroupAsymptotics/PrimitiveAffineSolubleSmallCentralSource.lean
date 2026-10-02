@@ -29,12 +29,12 @@ namespace Non2UnipotentPrefixFiniteMenu
 small soluble primitive-linear group.  The degree-nine model is now proved
 from the literal affine representation and is no longer an input. -/
 structure PublishedSolublePrimitiveAffineSmallCentralInput where
-  degreeTwentyFiveModel : ∀ (U : PreE7NonPairActionClass 25)
+  degreeTwentyFiveProjectiveDatum : ∀ (U : PreE7NonPairActionClass 25)
     (P : PrimitiveAffineProfile (preE7NonPairAction 25 U) (Fin 25))
     (_hprimitive : MulAction.IsPreprimitive
       (preE7NonPairAction 25 U) (Fin 25))
     (x : Fin 25), IsSolvable (P.complement x) →
-      DegreeTwentyFiveCentralFourModel (P.complement x)
+      CentralFourQuotientDatum (P.complement x)
 
 private theorem automorphism_card_le_two_pow_sq
     {G : Type*} [Group G] [Finite G] (m : ℕ)
@@ -463,7 +463,8 @@ noncomputable def primitiveAffineSolubleSmallCentral_rankTailOwnerSourceData
     letI : IsSolvable (P.complement x) := hsolvable
     let D : SolubleDerivedLength (P.complement x) :=
       Classical.choice (SolubleDerivedLength.nonempty _ inferInstance)
-    let M := published.degreeTwentyFiveModel U P hprimitive x hsolvable
+    let M := DegreeTwentyFiveCentralFourModel.ofTopDatum
+      (published.degreeTwentyFiveProjectiveDatum U P hprimitive x hsolvable)
     exact PrimitiveAffineDegreeTwentyFiveCentralSource.toRankTailOwnerSource
       U P hprimitive x D M.source_card_le_96 M hgen hKP
 

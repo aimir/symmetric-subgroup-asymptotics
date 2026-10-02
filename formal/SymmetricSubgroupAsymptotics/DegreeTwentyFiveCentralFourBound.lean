@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7SaprimExceptionalOdd
 import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveTemplate
 import SymmetricSubgroupAsymptotics.FiniteGroupPaddedGenerators
+import SymmetricSubgroupAsymptotics.PrimitiveAffineProjectiveCentralQuotients
 
 /-!
 # Central cyclic lifts in degree twenty-five
@@ -20,6 +21,41 @@ open scoped BigOperators Classical
 namespace SymmetricSubgroupAsymptotics
 
 private abbrev C4 := Multiplicative (ZMod 4)
+private abbrev C2 := Multiplicative (ZMod 2)
+
+private def binaryIntoFour : C2 →* C4 where
+  toFun x := Multiplicative.ofAdd (2 * (x.toAdd.val : ZMod 4))
+  map_one' := by decide
+  map_mul' := by decide +kernel
+
+private theorem binaryIntoFour_injective :
+    Function.Injective binaryIntoFour := by decide +kernel
+
+/-- A finite cyclic group whose order divides four embeds in `C₄`.
+This is the exact closure property needed after a central scalar kernel is
+passed to a normal quotient. -/
+noncomputable def cyclicFourEmbeddingOfCardDvdFour
+    (K : Type*) [Group K] [Finite K]
+    (hcyclic : IsCyclic K) (hcard : Nat.card K ∣ 4) :
+    {chi : K →* C4 // Function.Injective chi} :=
+  Classical.choice (show Nonempty {chi : K →* C4 // Function.Injective chi} from by
+    letI : IsCyclic K := hcyclic
+    have hpos : 0 < Nat.card K := Nat.card_pos
+    have hle : Nat.card K ≤ 4 := Nat.le_of_dvd (by norm_num) hcard
+    have hne3 : Nat.card K ≠ 3 := by
+      intro h3
+      rw [h3] at hcard
+      norm_num at hcard
+    have hcases : Nat.card K = 1 ∨ Nat.card K = 2 ∨ Nat.card K = 4 := by
+      omega
+    rcases hcases with h1 | h2 | h4
+    · letI : Subsingleton K := (Nat.card_eq_one_iff_unique.mp h1).1
+      exact ⟨⟨1, fun _ _ _ => Subsingleton.elim _ _⟩⟩
+    · let e : K ≃* C2 := mulEquivOfCyclicCardEq (by simp [h2])
+      exact ⟨⟨binaryIntoFour.comp e.toMonoidHom,
+        binaryIntoFour_injective.comp e.injective⟩⟩
+    · let e : K ≃* C4 := mulEquivOfCyclicCardEq (by simp [h4])
+      exact ⟨⟨e.toMonoidHom, e.injective⟩⟩)
 
 /-- Structural information on one literal quotient.  These fields are the
 finite-group content of the scalar/projective reduction; there is no counting
@@ -78,6 +114,51 @@ theorem kernel_hom_card_le_cyclicFour {J : Type*} [Group J] [Finite J] :
     (fun f : J →* D.projection.ker => D.kernelCharacter.comp f)
     (fun f g h => MonoidHom.ext fun x => D.kernelCharacter_injective
       (DFunLike.congr_fun h x))
+
+include D in
+/-- The central scalar/projective datum descends to every normal quotient.
+The induced scalar kernel is a quotient of the original cyclic subgroup of
+`C₄`, hence is cyclic of order dividing four and embeds back into `C₄`. -/
+noncomputable def quotientDatum
+    (M : {M : Subgroup X // M.Normal}) :
+    CentralFourQuotientDatum (X ⧸ M.1) := by
+  let pi := D.projection
+  let hpi := D.projection_surjective
+  let qpi := ProjectiveCentralQuotient.map pi hpi M
+  let kmap := ProjectiveCentralQuotient.kernelMap pi hpi M
+  let rangeEquiv : pi.ker ≃* D.kernelCharacter.range :=
+    MulEquiv.ofBijective D.kernelCharacter.rangeRestrict
+      ⟨fun a b h => D.kernelCharacter_injective (congrArg Subtype.val h),
+        D.kernelCharacter.rangeRestrict_surjective⟩
+  have hkernelCyclic : IsCyclic pi.ker :=
+    (MulEquiv.isCyclic rangeEquiv).mpr inferInstance
+  letI : IsCyclic pi.ker := hkernelCyclic
+  have hinducedCyclic : IsCyclic qpi.ker :=
+    isCyclic_of_surjective kmap
+      (ProjectiveCentralQuotient.kernelMap_surjective pi hpi M)
+  have horiginalDvd : Nat.card pi.ker ∣ 4 := by
+    rw [Nat.card_congr rangeEquiv.toEquiv]
+    simpa [C4] using D.kernelCharacter.range.card_subgroup_dvd_card
+  have hinducedDvd : Nat.card qpi.ker ∣ 4 :=
+    (Subgroup.card_dvd_of_surjective kmap
+      (ProjectiveCentralQuotient.kernelMap_surjective pi hpi M)).trans
+        horiginalDvd
+  let chi := cyclicFourEmbeddingOfCardDvdFour qpi.ker
+    hinducedCyclic hinducedDvd
+  exact
+    { P := D.P ⧸ (ProjectiveCentralQuotient.normalImage pi hpi M).1
+      projection := qpi
+      projection_surjective :=
+        ProjectiveCentralQuotient.map_surjective pi hpi M
+      central_kernel :=
+        ProjectiveCentralQuotient.central_kernel pi hpi M D.central_kernel
+      kernelCharacter := chi.1
+      kernelCharacter_injective := chi.2
+      projective_order_le := by
+        exact (Nat.card_le_card_of_surjective
+          (QuotientGroup.mk'
+            (ProjectiveCentralQuotient.normalImage pi hpi M).1)
+          (QuotientGroup.mk'_surjective _)).trans D.projective_order_le }
 
 private theorem three_rpow_eq_two {b : ℕ} :
     (3 : ℝ) ^ ((b : ℝ) / 3) =
@@ -144,6 +225,13 @@ namespace DegreeTwentyFiveCentralFourModel
 
 variable {R : Type*} [Group R] [Finite R]
   (D : DegreeTwentyFiveCentralFourModel R)
+
+/-- A single top-level scalar/projective datum supplies the former
+all-normal-quotients model.  No separate quotient-by-quotient catalogue is
+needed. -/
+noncomputable def ofTopDatum (D : CentralFourQuotientDatum R) :
+    DegreeTwentyFiveCentralFourModel R where
+  quotient M := CentralFourQuotientDatum.quotientDatum D M
 
 def coefficient (_D : DegreeTwentyFiveCentralFourModel R) : ℝ :=
   24 * Nat.card {M : Subgroup R // M.Normal}
