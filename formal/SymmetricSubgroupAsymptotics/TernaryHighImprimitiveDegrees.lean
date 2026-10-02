@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.C1ImprimitiveNumerics
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlock
 import SymmetricSubgroupAsymptotics.PermutationChiefWeight
+import SymmetricSubgroupAsymptotics.PrimitiveTernaryThreeTenthsWeight
 import SymmetricSubgroupAsymptotics.TransitiveTernaryStability
 
 /-!
@@ -23,15 +24,6 @@ noncomputable section
 open scoped Classical
 
 namespace SymmetricSubgroupAsymptotics
-
-/-- Strict primitive composition-weight density in the form needed at a
-binary top.  A weak inequality suffices for the high-action exclusion. -/
-def PrimitiveTernaryThreeTenthsWeightBound : Prop :=
-  ∀ (G X : Type) [Group G] [Finite G] [Finite X] [MulAction G X]
-    [FaithfulSMul G X] [MulAction.IsPreprimitive G X] [Nontrivial X],
-    4 ≤ Nat.card X → Nat.card X ≠ 9 →
-      ∀ c : ActualChiefSeries G,
-        10 * actualChiefSeriesTernaryWeight c ≤ 3 * Nat.card X
 
 /-- Above the relative `3/20` line, an imprimitive faithful transitive
 action has one of the five degrees delegated to the bounded certificates

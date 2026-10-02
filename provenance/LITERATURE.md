@@ -416,6 +416,20 @@ order valuations of the first nine rows and uses symbolic chief series for
 already stronger three-tenths weight bound plus this published classification
 slice, rather than retained as an independent research assumption.
 
+The bounded three-tenths theorem itself is now formalized by
+`PrimitiveTernaryThreeTenthsPublished`. Five generated Lean receipts cover
+all 336 PrimGrp rows in degrees 2--44. Of these, 256 rows satisfy the stronger
+kernel-checked order-valuation test directly. The remaining 80 catalogue rows
+are the natural alternating and symmetric rows in degrees 5--44; symbolic
+chains `1 < A_n` and `1 < A_n < S_n` prove zero ternary weight for every
+chosen chief series. In the actual theorem range the order-valuation failures
+are exactly the 72 natural rows outside the excluded degree nine. Thus the
+committed GAP composition chains remain an independent replay check, but are
+not a premise of the Lean proof. The only bounded external input is the
+published primitive-catalogue correspondence, exposing the exact group order
+or the natural `A_n`/`S_n` identification of the matched row; all ternary
+inequalities are proved in Lean.
+
 `PublishedPrimitiveSocleDichotomyInput` records the standard O'Nan--Scott
 affine/nonaffine alternative at exactly the two primitive-action scopes used
 by the proof (the original action and an actual minimal-block component).

@@ -259,11 +259,23 @@ outside degrees $3,4,18$. Hence no primitive normal-subgroup census is
 used. Classification completeness and the actual socle correspondence
 use \cite{RoneyDougal2005Primitive,PrimGrp344}.
 
-The composition-factor statement still uses all primitive composition
-series through degree 44: 336 actions, with exactly the exceptions stated
-above. The weaker $r/3$ assertion follows immediately, including those
-exceptions. The finite computation counts order-three composition factors,
-rather than the ternary valuation of group order.
+For the bounded composition-weight statement, a stronger reduction avoids
+replaying the full composition series.  Among all 336 primitive actions
+through degree 44, the order bound
+\[
+ a_3(R)\leq v_3(|R|)\leq 3r/10
+\]
+settles every nonnatural row in the required range.  The failures of the
+second inequality are exactly the natural $A_r$ and $S_r$ rows (two per
+relevant degree from $6$ onward).  Their symbolic composition chains
+$1<A_r$ and $1<A_r<S_r$ show that every chosen chief series has ternary
+weight zero.  The formal receipt is split into five disjoint degree chunks;
+the kernel checks all 336 exact group orders, their $3$-adic valuations,
+the applicable integer inequalities, the locator uniqueness within each
+chunk, and the total row count.  Classification completeness and the row
+correspondence again use \cite{RoneyDougal2005Primitive,PrimGrp344}.
+The weaker $r/3$ assertion follows immediately, including the excluded
+degree-nine cases handled separately below.
 
 Here is the common ternary head bound used in the block argument.
 Write $s_3=3^t$. Restrict to a Sylow $3$-subgroup and decompose the
