@@ -45,18 +45,19 @@ namespace Non2UnipotentPrefixFiniteMenu
 
 variable {w : ℕ}
 
-/-- In an even-degree retained non-2 affine action, every point stabilizer is
-nontrivial. -/
-theorem complement_nontrivial_of_even_nonTwo
+/-- In a retained affine action at profile prime two, the point stabilizer is
+nontrivial.  A trivial complement would make the whole ambient group a
+two-group, contrary to the retained non-two condition. -/
+theorem complement_nontrivial_of_binaryProfile
     {U : PreE7NonPairActionClass w}
     (P : PrimitiveAffineProfile (preE7NonPairAction w U) (Fin w))
-    (x : Fin w) (hweven : Even w) : Nontrivial (P.complement x) := by
-  let hp2 := P.prime_eq_two_of_even_degree x hweven
+    (x : Fin w) (hp2 : P.p = 2) : Nontrivial (P.complement x) := by
   letI : Fact (Nat.Prime 2) := ⟨by norm_num⟩
   have hVp : IsPGroup 2 P.V := by simpa [hp2] using P.V_pgroup
   obtain ⟨d, hd⟩ := IsPGroup.exists_card_eq hVp
   by_contra hnt
-  have hsub : Subsingleton (P.complement x) := not_nontrivial_iff_subsingleton.mp hnt
+  have hsub : Subsingleton (P.complement x) :=
+    not_nontrivial_iff_subsingleton.mp hnt
   letI : Subsingleton (P.complement x) := hsub
   have hcomp : Nat.card (P.complement x) = 1 :=
     Nat.card_eq_one_iff_unique.mpr ⟨inferInstance, inferInstance⟩
@@ -67,6 +68,15 @@ theorem complement_nontrivial_of_even_nonTwo
           Nat.card P.V * Nat.card (P.complement x) := hfactor.symm
       _ = 2 ^ d := by rw [hd, hcomp, mul_one]
   exact U.1.1.representative_not_isPGroup (IsPGroup.of_card hcard)
+
+/-- In an even-degree retained non-2 affine action, every point stabilizer is
+nontrivial. -/
+theorem complement_nontrivial_of_even_nonTwo
+    {U : PreE7NonPairActionClass w}
+    (P : PrimitiveAffineProfile (preE7NonPairAction w U) (Fin w))
+    (x : Fin w) (hweven : Even w) : Nontrivial (P.complement x) := by
+  exact complement_nontrivial_of_binaryProfile P x
+    (P.prime_eq_two_of_even_degree x hweven)
 
 /-- Every even-degree, sub-`1024`, soluble primitive affine profile supplies
 the concrete SAPRIM source.  All side conditions are derived from the literal
