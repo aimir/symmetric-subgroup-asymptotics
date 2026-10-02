@@ -11,8 +11,8 @@ not consequences of a cyclic complement or a plain complement-order bound.
   of `R` with that of the faithful six-point comparator `P × C₂`.
 * At degree twenty-five, every literal complement quotient is a central
   cyclic extension of a soluble projective group of order at most 24.  The
-  audited central-`C₄` theorem bounds the complete quotient weight at slope
-  `log₂(48)/2`.
+  central lift and the published abelianization bound give slope
+  `log₂(24)/2 + log₂(3)/3`.
 
 The two named input structures below are precisely those published finite
 group statements.  This file proves everything after them: the affine bottom
@@ -50,6 +50,12 @@ structure PreE7DegreeNineCentralProductComparator
     completeQuotientWeight (R := R) J ≤
       coefficient * completeQuotientWeight (R := Q) J
 
+/-- The retained degree-twenty-five exponent: ordinary generator counting
+on a projective target of order at most `24`, together with the published
+Kovács--Praeger abelianization bound on the central cyclic lift. -/
+def degreeTwentyFiveCentralSlope : ℝ :=
+  Real.logb 2 24 / 2 + Real.logb 2 3 / 3
+
 /-- The complete degree-twenty-five central-`C₄` quotient theorem.  Its
 coefficient pays all literal normal strata of the fixed complement. -/
 structure PreE7DegreeTwentyFiveCentralFourBound
@@ -58,7 +64,7 @@ structure PreE7DegreeTwentyFiveCentralFourBound
   coefficient_nonneg : 0 ≤ coefficient
   complete_bound : ∀ {b : ℕ} (J : Subgroup (Equiv.Perm (Fin b))),
     completeQuotientWeight (R := R) J ≤
-      coefficient * (2 : ℝ) ^ ((Real.logb 2 48 / 2) * b)
+      coefficient * (2 : ℝ) ^ (degreeTwentyFiveCentralSlope * b)
 
 /-! ## Shared literal affine quotient transport -/
 
@@ -248,19 +254,25 @@ namespace PreE7SaprimDegreeTwentyFiveSource
 variable {w : ℕ} {i : PreE7NonPairActionClass w}
   (S : PreE7SaprimDegreeTwentyFiveSource w i)
 
-private theorem three_logFortyEight_lt_seventeen :
-    3 * Real.logb 2 48 < 17 := by
-  have hp : ((48 : ℝ) ^ 3) < (2 : ℝ) ^ (17 : ℕ) := by norm_num
-  have hl := Real.logb_lt_logb (by norm_num : (1 : ℝ) < 2)
-    (pow_pos (by norm_num) 3) hp
-  simp only [Real.logb_pow, Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2),
-    mul_one] at hl
-  exact_mod_cast hl
+private theorem degreeTwentyFiveCentralSlope_lt_seventeen_sixths :
+    degreeTwentyFiveCentralSlope < 17 / 6 := by
+  have hp24 : (24 : ℝ) ^ 5 < (2 : ℝ) ^ (23 : ℕ) := by norm_num
+  have h24 := Real.logb_lt_logb (by norm_num : (1 : ℝ) < 2)
+    (pow_pos (by norm_num) 5) hp24
+  simp only [Real.logb_pow,
+    Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2), mul_one] at h24
+  have hp3 : (3 : ℝ) ^ 5 < (2 : ℝ) ^ (8 : ℕ) := by norm_num
+  have h3 := Real.logb_lt_logb (by norm_num : (1 : ℝ) < 2)
+    (pow_pos (by norm_num) 5) hp3
+  simp only [Real.logb_pow,
+    Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2), mul_one] at h3
+  norm_num [degreeTwentyFiveCentralSlope] at h24 h3 ⊢
+  linarith
 
 include S in
 private theorem tail_window :
-    Real.logb 2 48 / 2 ≤ preE7CharacterWindow w := by
-  have hlog := three_logFortyEight_lt_seventeen
+    degreeTwentyFiveCentralSlope ≤ preE7CharacterWindow w := by
+  have hlog := degreeTwentyFiveCentralSlope_lt_seventeen_sixths
   rw [S.width_eq]
   unfold preE7CharacterWindow preE7CharacterRho halfDegree
   norm_num at hlog ⊢
@@ -270,7 +282,7 @@ private theorem affine_epi_le {b : ℕ}
     (J : Subgroup (Equiv.Perm (Fin b))) :
     (Nat.card (GroupEpimorphism J (AffineModel.Aff S.R)) : ℝ) ≤
       (Nat.card (AffineModel.Aff S.R ≃* AffineModel.Aff S.R) : ℝ) *
-        (2 : ℝ) ^ ((Real.logb 2 48 / 2) * b) := by
+        (2 : ℝ) ^ (degreeTwentyFiveCentralSlope * b) := by
   letI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
   have h :=
     (AffineModel.target S.irreducible S.length (by norm_num : 0 < 2)).epi_card_le_prime
@@ -281,14 +293,18 @@ private theorem affine_epi_le {b : ℕ}
   calc
     Real.logb 2 5 / 5 ≤ Real.logb 2 3 / 3 :=
       primeLogSlope_le_three (by norm_num)
-    _ ≤ Real.logb 2 48 / 2 := logThreeThird_le_logHalf (by norm_num)
+    _ ≤ degreeTwentyFiveCentralSlope := by
+      unfold degreeTwentyFiveCentralSlope
+      have hlog : 0 ≤ Real.logb 2 24 :=
+        Real.logb_nonneg (by norm_num) (by norm_num)
+      linarith
 
 /-- Every axis is a pure tail.  The bottom uses the sharp affine-head bound;
 all nonbottom axes are first transported to a literal quotient of `R` and
 then absorbed by the complete central-`C₄` theorem. -/
 def axis (N : NormalAxis i) :
     PreE7SmallAxisCertificate (preE7NonPairAction w i) N PUnit
-      (Real.logb 2 48 / 2) := by
+      degreeTwentyFiveCentralSlope := by
   by_cases hN : N.1 = ⊥
   · refine .tail (Nat.card (AffineModel.Aff S.R ≃* AffineModel.Aff S.R))
       (Nat.cast_nonneg _) ?_
@@ -337,7 +353,7 @@ def toData : PreE7SmallAdditiveData w i where
   degree := 0
   action := 1
   action_injective := fun _ _ _ => Subsingleton.elim _ _
-  tailSlope := Real.logb 2 48 / 2
+  tailSlope := degreeTwentyFiveCentralSlope
   comparator_window := trivialSmallComparatorWindow (by rw [S.width_eq]; norm_num)
   tail_window := S.tail_window
   axis := S.axis
