@@ -325,10 +325,14 @@ not covered by the cyclic, binary, medium-dimension or general order rows. -/
 structure PublishedSolublePrimitiveAffineExceptionalOrderInput where
   degreeTwentySeven : ∀ (U : PreE7NonPairActionClass 27)
     (P : PrimitiveAffineProfile (preE7NonPairAction 27 U) (Fin 27))
+    (_hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction 27 U) (Fin 27))
     (x : Fin 27), IsSolvable (P.complement x) →
       Nat.card (P.complement x) ≤ 78
   degreeEightyOne : ∀ (U : PreE7NonPairActionClass 81)
     (P : PrimitiveAffineProfile (preE7NonPairAction 81 U) (Fin 81))
+    (_hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction 81 U) (Fin 81))
     (x : Fin 81), IsSolvable (P.complement x) →
       Nat.card (P.complement x) ≤ 81 ^ 3
 
@@ -394,7 +398,8 @@ private noncomputable def source27
       Classical.choice (SolubleDerivedLength.nonempty _ inferInstance)
     apply PrimitiveAffineSolubleOddOrderSource.toRankTailOwnerSource
       P (by norm_num) (by norm_num) hprimitive x D hgen
-      (q := 78) (by norm_num) (published.degreeTwentySeven U P x hsolvable)
+      (q := 78) (by norm_num)
+        (published.degreeTwentySeven U P hprimitive x hsolvable)
     · norm_num [Nat.log]
     · exact window27
   · have hsub : Subsingleton (P.complement x) :=
@@ -470,7 +475,8 @@ private noncomputable def source81
       Classical.choice (SolubleDerivedLength.nonempty _ inferInstance)
     apply PrimitiveAffineSolubleOddOrderSource.toRankTailOwnerSource
       P (by norm_num) (by norm_num) hprimitive x D hgen
-      (q := 81 ^ 3) (by norm_num) (published.degreeEightyOne U P x hsolvable)
+      (q := 81 ^ 3) (by norm_num)
+        (published.degreeEightyOne U P hprimitive x hsolvable)
     · norm_num [Nat.log]
     · exact window81
   · have hsub : Subsingleton (P.complement x) :=

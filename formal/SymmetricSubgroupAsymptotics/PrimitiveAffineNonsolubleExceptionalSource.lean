@@ -26,18 +26,26 @@ the owner construction. -/
 structure PublishedNonsolublePrimitiveAffineSmallCompositionInput where
   degreeEight : ∀ (U : PreE7NonPairActionClass 8)
     (P : PrimitiveAffineProfile (preE7NonPairAction 8 U) (Fin 8))
+    (_hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction 8 U) (Fin 8))
     (x : Fin 8) (T : FixedTargetCompositionTrace (P.complement x)),
     ¬ IsSolvable (P.complement x) → T.envelope.abelianLength = 0
   degreeSixteen : ∀ (U : PreE7NonPairActionClass 16)
     (P : PrimitiveAffineProfile (preE7NonPairAction 16 U) (Fin 16))
+    (_hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction 16 U) (Fin 16))
     (x : Fin 16) (T : FixedTargetCompositionTrace (P.complement x)),
     ¬ IsSolvable (P.complement x) → T.envelope.abelianLength ≤ 2
   degreeTwentyFive : ∀ (U : PreE7NonPairActionClass 25)
     (P : PrimitiveAffineProfile (preE7NonPairAction 25 U) (Fin 25))
+    (_hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction 25 U) (Fin 25))
     (x : Fin 25) (T : FixedTargetCompositionTrace (P.complement x)),
     ¬ IsSolvable (P.complement x) → T.envelope.abelianLength ≤ 3
   degreeTwentySeven : ∀ (U : PreE7NonPairActionClass 27)
     (P : PrimitiveAffineProfile (preE7NonPairAction 27 U) (Fin 27))
+    (_hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction 27 U) (Fin 27))
     (x : Fin 27) (T : FixedTargetCompositionTrace (P.complement x)),
     ¬ IsSolvable (P.complement x) → T.envelope.abelianLength ≤ 1
 
@@ -47,6 +55,8 @@ private theorem margin8
     (published : PublishedNonsolublePrimitiveAffineSmallCompositionInput)
     (U : PreE7NonPairActionClass 8)
     (P : PrimitiveAffineProfile (preE7NonPairAction 8 U) (Fin 8))
+    (hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction 8 U) (Fin 8))
     (x : Fin 8) (T : FixedTargetCompositionTrace (P.complement x))
     (hnonsolvable : ¬ IsSolvable (P.complement x)) :
     preE7CharacterRho * 8 ≤ ((evenWidth 8 : ℝ) - 2) / 8 -
@@ -54,13 +64,15 @@ private theorem margin8
         P.bottomHalfSlope) := by
   apply P.nonsolubleEnvelope_exponent_margin_of_abelianLength
     (w := 8) (A := 0) T
-  · rw [published.degreeEight U P x T hnonsolvable]
+  · rw [published.degreeEight U P hprimitive x T hnonsolvable]
   · norm_num [preE7CharacterRho, evenWidth, halfDegree]
 
 private theorem margin16
     (published : PublishedNonsolublePrimitiveAffineSmallCompositionInput)
     (U : PreE7NonPairActionClass 16)
     (P : PrimitiveAffineProfile (preE7NonPairAction 16 U) (Fin 16))
+    (hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction 16 U) (Fin 16))
     (x : Fin 16) (T : FixedTargetCompositionTrace (P.complement x))
     (hnonsolvable : ¬ IsSolvable (P.complement x)) :
     preE7CharacterRho * 16 ≤ ((evenWidth 16 : ℝ) - 2) / 8 -
@@ -68,13 +80,15 @@ private theorem margin16
         P.bottomHalfSlope) := by
   apply P.nonsolubleEnvelope_exponent_margin_of_abelianLength
     (w := 16) (A := 2) T
-    (published.degreeSixteen U P x T hnonsolvable)
+    (published.degreeSixteen U P hprimitive x T hnonsolvable)
   norm_num [preE7CharacterRho, evenWidth, halfDegree]
 
 private theorem margin25
     (published : PublishedNonsolublePrimitiveAffineSmallCompositionInput)
     (U : PreE7NonPairActionClass 25)
     (P : PrimitiveAffineProfile (preE7NonPairAction 25 U) (Fin 25))
+    (hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction 25 U) (Fin 25))
     (x : Fin 25) (T : FixedTargetCompositionTrace (P.complement x))
     (hnonsolvable : ¬ IsSolvable (P.complement x)) :
     preE7CharacterRho * 25 ≤ ((evenWidth 25 : ℝ) - 2) / 8 -
@@ -82,13 +96,15 @@ private theorem margin25
         P.bottomHalfSlope) := by
   apply P.nonsolubleEnvelope_exponent_margin_of_abelianLength
     (w := 25) (A := 3) T
-    (published.degreeTwentyFive U P x T hnonsolvable)
+    (published.degreeTwentyFive U P hprimitive x T hnonsolvable)
   norm_num [preE7CharacterRho, evenWidth, halfDegree]
 
 private theorem margin27
     (published : PublishedNonsolublePrimitiveAffineSmallCompositionInput)
     (U : PreE7NonPairActionClass 27)
     (P : PrimitiveAffineProfile (preE7NonPairAction 27 U) (Fin 27))
+    (hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction 27 U) (Fin 27))
     (x : Fin 27) (T : FixedTargetCompositionTrace (P.complement x))
     (hnonsolvable : ¬ IsSolvable (P.complement x)) :
     preE7CharacterRho * 27 ≤ ((evenWidth 27 : ℝ) - 2) / 8 -
@@ -96,7 +112,7 @@ private theorem margin27
         P.bottomHalfSlope) := by
   apply P.nonsolubleEnvelope_exponent_margin_of_abelianLength
     (w := 27) (A := 1) T
-    (published.degreeTwentySeven U P x T hnonsolvable)
+    (published.degreeTwentySeven U P hprimitive x T hnonsolvable)
   norm_num [preE7CharacterRho, evenWidth, halfDegree]
 
 private noncomputable def source8
@@ -113,7 +129,7 @@ private noncomputable def source8
   let T := FixedTargetCompositionTrace.canonical (P.complement x)
   exact PrimitiveAffineNonsolubleSource.rankTailOwnerSourceDataOfMargin
     (by norm_num) (by norm_num) hprimitive P x C T hnonsolvable
-    (margin8 published U P x T hnonsolvable)
+    (margin8 published U P hprimitive x T hnonsolvable)
 
 private noncomputable def source16
     (published : PublishedNonsolublePrimitiveAffineSmallCompositionInput)
@@ -129,7 +145,7 @@ private noncomputable def source16
   let T := FixedTargetCompositionTrace.canonical (P.complement x)
   exact PrimitiveAffineNonsolubleSource.rankTailOwnerSourceDataOfMargin
     (by norm_num) (by norm_num) hprimitive P x C T hnonsolvable
-    (margin16 published U P x T hnonsolvable)
+    (margin16 published U P hprimitive x T hnonsolvable)
 
 private noncomputable def source25
     (published : PublishedNonsolublePrimitiveAffineSmallCompositionInput)
@@ -145,7 +161,7 @@ private noncomputable def source25
   let T := FixedTargetCompositionTrace.canonical (P.complement x)
   exact PrimitiveAffineNonsolubleSource.rankTailOwnerSourceDataOfMargin
     (by norm_num) (by norm_num) hprimitive P x C T hnonsolvable
-    (margin25 published U P x T hnonsolvable)
+    (margin25 published U P hprimitive x T hnonsolvable)
 
 private noncomputable def source27
     (published : PublishedNonsolublePrimitiveAffineSmallCompositionInput)
@@ -161,7 +177,7 @@ private noncomputable def source27
   let T := FixedTargetCompositionTrace.canonical (P.complement x)
   exact PrimitiveAffineNonsolubleSource.rankTailOwnerSourceDataOfMargin
     (by norm_num) (by norm_num) hprimitive P x C T hnonsolvable
-    (margin27 published U P x T hnonsolvable)
+    (margin27 published U P hprimitive x T hnonsolvable)
 
 /-- Every exceptional nonsoluble primitive affine profile supplies a
 concrete NSAPRIM owner.  Only published stabilizer composition factors enter

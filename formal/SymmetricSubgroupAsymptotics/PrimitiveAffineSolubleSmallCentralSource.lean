@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.DegreeNineCentralProductComparator
 import SymmetricSubgroupAsymptotics.DegreeTwentyFiveCentralFourBound
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeNineCentralProductModel
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeNineSolvable
 import SymmetricSubgroupAsymptotics.PrimitiveAffineProfileParity
 import SymmetricSubgroupAsymptotics.PrimitiveAffineNormalAxisReduction
@@ -24,15 +25,14 @@ open scoped BigOperators Classical
 namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
 
-/-- Published finite structural information for the two exceptional small
-soluble primitive-linear groups.  These fields contain no epimorphism or
-asymptotic bound. -/
+/-- Published finite structural information for the remaining exceptional
+small soluble primitive-linear group.  The degree-nine model is now proved
+from the literal affine representation and is no longer an input. -/
 structure PublishedSolublePrimitiveAffineSmallCentralInput where
-  degreeNineModel : ∀ (U : PreE7NonPairActionClass 9)
-    (P : PrimitiveAffineProfile (preE7NonPairAction 9 U) (Fin 9))
-    (x : Fin 9), DegreeNineCentralProductModel (P.complement x)
   degreeTwentyFiveModel : ∀ (U : PreE7NonPairActionClass 25)
     (P : PrimitiveAffineProfile (preE7NonPairAction 25 U) (Fin 25))
+    (_hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction 25 U) (Fin 25))
     (x : Fin 25), IsSolvable (P.complement x) →
       DegreeTwentyFiveCentralFourModel (P.complement x)
 
@@ -453,7 +453,7 @@ noncomputable def primitiveAffineSolubleSmallCentral_rankTailOwnerSourceData
       Classical.choice (SolubleDerivedLength.nonempty _ inferInstance)
     exact PrimitiveAffineDegreeNineCentralSource.toRankTailOwnerSource
       U P hprimitive x D (P.complement_card_le_48_degreeNine hprimitive x)
-      (published.degreeNineModel U P x)
+      (P.degreeNineCentralProductModel hprimitive x)
   · have h25 : w = 25 := hdegree.resolve_left h9
     subst w
     let x : Fin 25 := ⟨0, by norm_num⟩
@@ -463,7 +463,7 @@ noncomputable def primitiveAffineSolubleSmallCentral_rankTailOwnerSourceData
     letI : IsSolvable (P.complement x) := hsolvable
     let D : SolubleDerivedLength (P.complement x) :=
       Classical.choice (SolubleDerivedLength.nonempty _ inferInstance)
-    let M := published.degreeTwentyFiveModel U P x hsolvable
+    let M := published.degreeTwentyFiveModel U P hprimitive x hsolvable
     exact PrimitiveAffineDegreeTwentyFiveCentralSource.toRankTailOwnerSource
       U P hprimitive x D M.source_card_le_96 M hgen hKP
 
