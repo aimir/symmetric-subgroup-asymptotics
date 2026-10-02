@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.Non2PreE7Sns2NumericalRows
+import SymmetricSubgroupAsymptotics.Non2PreE7NumericalOwnedPolynomialEnvelope
 
 /-!
 # Main-row numerics for the disjoint numerical/SNS2 catalogue
@@ -77,20 +77,52 @@ variable
 private theorem preE7NumericalSns2Main_envelope :
     LinearLogSquaredMenuNumeratorBound 3
       (preE7NumericalSns2D Residual) := by
-  refine ⟨1, 0, 16, by norm_num, by norm_num, by norm_num, ?_⟩
+  refine ⟨preE7NumericalOwnedPolynomialConstant, 0,
+    16 + preE7NumericalOwnedPolynomialDegree,
+    preE7NumericalOwnedPolynomialConstant_pos.le,
+    by norm_num, by positivity, ?_⟩
   intro n w hw j
   have hwb : w + (n - w) + 2 = n + 2 := by
     have := (Finset.mem_Ico.mp hw).2
     omega
   rcases j with a | a
-  · simpa only [preE7NumericalSns2D, zero_mul, zero_add, one_mul, hwb,
+  · simpa only [preE7NumericalSns2D, zero_mul, zero_add, hwb,
       Nat.cast_add, Nat.cast_ofNat] using
-      (preE7NumericalOwnedPackage a).main_total_bound (n - w)
+      preE7NumericalOwned_main_le n w hw a
   · rcases a with a | U
-    · positivity
-    · simpa only [preE7NumericalSns2D, zero_mul, zero_add, one_mul, hwb,
-        Nat.cast_add, Nat.cast_ofNat] using
-        (Residual w U).main_total_bound (n - w)
+    · simp only [preE7NumericalSns2D]
+      exact mul_nonneg preE7NumericalOwnedPolynomialConstant_pos.le
+        (Real.rpow_nonneg (by norm_num) _)
+    · have hold := (Residual w U).main_total_bound (n - w)
+      have hlog : 0 ≤ Real.log ((n : ℝ) + 2) ^ 2 := sq_nonneg _
+      have hw0 : (0 : ℝ) ≤ w := by positivity
+      have hpow : (2 : ℝ) ^
+            (16 * (w : ℝ) * Real.log ((w + (n - w) + 2 : ℕ) : ℝ) ^ 2) ≤
+          (2 : ℝ) ^
+            ((16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) * w *
+              Real.log ((n : ℝ) + 2) ^ 2) := by
+        rw [hwb]
+        apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+        have hp0 : (0 : ℝ) ≤ preE7NumericalOwnedPolynomialDegree := by
+          positivity
+        norm_num
+        nlinarith [mul_nonneg hp0 (mul_nonneg hw0 hlog)]
+      have hscale : (2 : ℝ) ^
+            ((16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) * w *
+              Real.log ((n : ℝ) + 2) ^ 2) ≤
+          preE7NumericalOwnedPolynomialConstant * (2 : ℝ) ^
+            ((16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) * w *
+              Real.log ((n : ℝ) + 2) ^ 2) := by
+        nth_rewrite 1 [← one_mul ((2 : ℝ) ^
+          ((16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) * w *
+            Real.log ((n : ℝ) + 2) ^ 2))]
+        exact mul_le_mul_of_nonneg_right
+          (show (1 : ℝ) ≤ preE7NumericalOwnedPolynomialConstant by
+            unfold preE7NumericalOwnedPolynomialConstant
+            exact le_max_left _ _)
+          (Real.rpow_nonneg (by norm_num) _)
+      simpa only [preE7NumericalSns2D, zero_mul, zero_add] using
+        hold.trans (hpow.trans hscale)
 
 /-- The disjoint catalogue's complete main row has subquadratic normalized
 mass.  SNS2 contributes zero to this row. -/

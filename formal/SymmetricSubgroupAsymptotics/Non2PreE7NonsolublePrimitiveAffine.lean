@@ -35,11 +35,9 @@ structure PreE7NsaprimActionCertificate
   complete_fibre : ∀ b (J : Subgroup (Equiv.Perm (Fin b))),
     completeQuotientWeight (R := preE7NonPairAction w i) J ≤
       coefficient b * (2 : ℝ) ^ (eta * b)
-  coefficient_total_bound : ∀ b,
+  coefficient_total_polynomial : ∃ K : ℝ, ∃ p : ℕ, 0 ≤ K ∧ ∀ b,
     fusionAxisEnvelopeTotal (preE7NonPairAction w i)
-        (fun _ => coefficient b) ≤
-      (2 : ℝ) ^
-        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
+        (fun _ => coefficient b) ≤ K * (1 + (b : ℝ)) ^ p
   exponent_margin : preE7CharacterRho * w ≤
     ((evenWidth w : ℝ) - 2) / 8 - eta
 
@@ -47,6 +45,23 @@ namespace PreE7NsaprimActionCertificate
 
 variable {w : ℕ} {i : PreE7NonPairActionClass w}
   (C : PreE7NsaprimActionCertificate w i)
+
+noncomputable def polynomialConstant : ℝ :=
+  Classical.choose C.coefficient_total_polynomial
+
+noncomputable def polynomialDegree : ℕ :=
+  Classical.choose (Classical.choose_spec C.coefficient_total_polynomial)
+
+theorem polynomialConstant_nonneg : 0 ≤ C.polynomialConstant :=
+  (Classical.choose_spec
+    (Classical.choose_spec C.coefficient_total_polynomial)).1
+
+theorem coefficient_total_le_polynomial (b : ℕ) :
+    fusionAxisEnvelopeTotal (preE7NonPairAction w i)
+        (fun _ => C.coefficient b) ≤
+      C.polynomialConstant * (1 + (b : ℝ)) ^ C.polynomialDegree :=
+  (Classical.choose_spec
+    (Classical.choose_spec C.coefficient_total_polynomial)).2 b
 
 def degree (_C : PreE7NsaprimActionCertificate w i) : ℕ :=
   paddedComparatorDegree preE7CharacterRho 2 w
