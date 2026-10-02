@@ -32,8 +32,8 @@ theorem bottomHalfSlope_nonneg : 0 ≤ P.bottomHalfSlope := by
     (Real.logb_nonneg (by norm_num) (by exact_mod_cast P.p_prime.one_le))
     (by positivity)
 
-/-- Rewrite the strict affine bottom factor in base two. -/
 omit [Finite L] [Finite Ω] [Nontrivial Ω] [FaithfulSMul L Ω] in
+/-- Rewrite the strict affine bottom factor in base two. -/
 theorem bottomHalf_rpow_eq_two_rpow
     (b : ℕ) :
     (P.p : ℝ) ^ (((1 : ℝ) / 2) * ((b : ℝ) / P.p)) =
