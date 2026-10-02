@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineSolubleSource
 import SymmetricSubgroupAsymptotics.Non2PreE7SaprimOddLargeAffine
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDimensionOrderTailSource
+import SymmetricSubgroupAsymptotics.PrimitiveAffineMediumOddSource
 
 /-!
 # Exact-order tails for soluble odd primitive-affine profiles
@@ -17,6 +18,37 @@ noncomputable section
 open scoped BigOperators Classical
 
 namespace SymmetricSubgroupAsymptotics
+
+namespace PrimitiveAffineProfile
+
+variable {L : Type} [Group L] [MulAction L (Fin 49)] [Finite L]
+  [FaithfulSMul L (Fin 49)]
+
+/-- In degree `49 = 7²`, faithfulness on the translation module already
+gives the order ceiling used by the soluble odd-affine source.  No subgroup
+classification of `GL₂(7)` is needed. -/
+theorem complement_card_le_2401_degreeFortyNine
+    (P : PrimitiveAffineProfile L (Fin 49))
+    (hprimitive : MulAction.IsPreprimitive L (Fin 49)) (x : Fin 49) :
+    Nat.card (P.complement x) ≤ 49 ^ 2 := by
+  let C := P.elementaryChart hprimitive
+  letI : Fact P.p.Prime := C.primeFact
+  letI : AddCommGroup C.V := C.addCommGroup
+  letI : Module (ZMod P.p) C.V := C.module
+  letI : FiniteDimensional (ZMod P.p) C.V := C.finiteDimensional
+  letI : Nontrivial C.V := C.nontrivial
+  letI : Finite C.V := Finite.of_injective
+    (fun v : C.V => C.equiv.symm (Multiplicative.ofAdd v))
+    C.equiv.symm.injective
+  have hd : C.d = 2 := C.dimension_eq_of_degree_eq_prime_pow P x
+    (by norm_num : Nat.Prime 7) (by norm_num) (by norm_num)
+  have hfin : Module.finrank (ZMod P.p) C.V = 2 := by
+    simpa [PrimitiveAffineProfile.ElementaryChart.d] using hd
+  have h := P.complement_card_le_degree_pow_finrank C.equiv x
+  simpa [hfin] using h
+
+end PrimitiveAffineProfile
+
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineSolubleOddOrderSource
 
@@ -295,10 +327,6 @@ structure PublishedSolublePrimitiveAffineExceptionalOrderInput where
     (P : PrimitiveAffineProfile (preE7NonPairAction 27 U) (Fin 27))
     (x : Fin 27), IsSolvable (P.complement x) →
       Nat.card (P.complement x) ≤ 78
-  degreeFortyNine : ∀ (U : PreE7NonPairActionClass 49)
-    (P : PrimitiveAffineProfile (preE7NonPairAction 49 U) (Fin 49))
-    (x : Fin 49), IsSolvable (P.complement x) →
-      Nat.card (P.complement x) ≤ 49 ^ 2
   degreeEightyOne : ∀ (U : PreE7NonPairActionClass 81)
     (P : PrimitiveAffineProfile (preE7NonPairAction 81 U) (Fin 81))
     (x : Fin 81), IsSolvable (P.complement x) →
@@ -388,7 +416,6 @@ private noncomputable def source27
       P C hprimitive x hgen
 
 private noncomputable def source49
-    (published : PublishedSolublePrimitiveAffineExceptionalOrderInput)
     (hgen : PermutationSubgroupGeneratorBound)
     (U : PreE7NonPairActionClass 49)
     (hprimitive : MulAction.IsPreprimitive
@@ -404,7 +431,8 @@ private noncomputable def source49
       Classical.choice (SolubleDerivedLength.nonempty _ inferInstance)
     apply PrimitiveAffineSolubleOddOrderSource.toRankTailOwnerSource
       P (by norm_num) (by norm_num) hprimitive x D hgen
-      (q := 49 ^ 2) (by norm_num) (published.degreeFortyNine U P x hsolvable)
+      (q := 49 ^ 2) (by norm_num)
+        (P.complement_card_le_2401_degreeFortyNine hprimitive x)
     · norm_num [Nat.log]
     · exact window49
   · have hsub : Subsingleton (P.complement x) :=
@@ -482,7 +510,7 @@ noncomputable def rankTailOwnerSourceData
     exact source27 published hgen U hprimitive P hsolvable
   by_cases h49 : w = 49
   · subst w
-    exact source49 published hgen U hprimitive P hsolvable
+    exact source49 hgen U hprimitive P hsolvable
   · have h81 : w = 81 := by
       rcases hdegree with h | h | h
       · exact False.elim (h27 h)
