@@ -31,10 +31,6 @@ structure PublishedSolublePrimitiveAffineSmallCentralInput where
   degreeNineModel : ∀ (U : PreE7NonPairActionClass 9)
     (P : PrimitiveAffineProfile (preE7NonPairAction 9 U) (Fin 9))
     (x : Fin 9), DegreeNineCentralProductModel (P.complement x)
-  degreeTwentyFiveOrder : ∀ (U : PreE7NonPairActionClass 25)
-    (P : PrimitiveAffineProfile (preE7NonPairAction 25 U) (Fin 25))
-    (x : Fin 25), IsSolvable (P.complement x) →
-      Nat.card (P.complement x) ≤ 96
   degreeTwentyFiveModel : ∀ (U : PreE7NonPairActionClass 25)
     (P : PrimitiveAffineProfile (preE7NonPairAction 25 U) (Fin 25))
     (x : Fin 25), IsSolvable (P.complement x) →
@@ -467,10 +463,9 @@ noncomputable def primitiveAffineSolubleSmallCentral_rankTailOwnerSourceData
     letI : IsSolvable (P.complement x) := hsolvable
     let D : SolubleDerivedLength (P.complement x) :=
       Classical.choice (SolubleDerivedLength.nonempty _ inferInstance)
+    let M := published.degreeTwentyFiveModel U P x hsolvable
     exact PrimitiveAffineDegreeTwentyFiveCentralSource.toRankTailOwnerSource
-      U P hprimitive x D
-        (published.degreeTwentyFiveOrder U P x hsolvable)
-        (published.degreeTwentyFiveModel U P x hsolvable) hgen hKP
+      U P hprimitive x D M.source_card_le_96 M hgen hKP
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

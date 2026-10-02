@@ -44,6 +44,29 @@ namespace CentralFourQuotientDatum
 variable {X : Type*} [Group X] [Finite X]
   (D : CentralFourQuotientDatum X)
 
+include D in
+/-- The scalar/projective datum already bounds the order of its source.
+The kernel embeds in `C₄`, while surjectivity identifies the index of the
+kernel with the order of the projective image. -/
+theorem source_card_le_96 : Nat.card X ≤ 96 := by
+  have hker : Nat.card D.projection.ker ≤ 4 := by
+    calc
+      Nat.card D.projection.ker ≤ Nat.card C4 :=
+        Nat.card_le_card_of_injective D.kernelCharacter
+          D.kernelCharacter_injective
+      _ = 4 := by simp [C4]
+  have hrange : Nat.card D.projection.range = Nat.card D.P := by
+    rw [MonoidHom.range_eq_top.mpr D.projection_surjective]
+    simp
+  calc
+    Nat.card X = Nat.card D.projection.ker * D.projection.ker.index :=
+      D.projection.ker.card_mul_index.symm
+    _ = Nat.card D.projection.ker * Nat.card D.projection.range := by
+      rw [Subgroup.index_ker]
+    _ = Nat.card D.projection.ker * Nat.card D.P := by rw [hrange]
+    _ ≤ 4 * 24 := Nat.mul_le_mul hker D.projective_order_le
+    _ = 96 := by norm_num
+
 theorem kernel_hom_card_le_cyclicFour {J : Type*} [Group J] [Finite J] :
     Nat.card (J →* D.projection.ker) ≤ Nat.card (J →* C4) := by
   letI : Finite (J →* D.projection.ker) :=
@@ -124,6 +147,16 @@ variable {R : Type*} [Group R] [Finite R]
 
 def coefficient (_D : DegreeTwentyFiveCentralFourModel R) : ℝ :=
   24 * Nat.card {M : Subgroup R // M.Normal}
+
+include D in
+/-- The bottom quotient of the all-quotients model is the original group,
+so the scalar/projective model itself implies the order ceiling used by the
+numerical source. -/
+theorem source_card_le_96 : Nat.card R ≤ 96 := by
+  let M : {M : Subgroup R // M.Normal} := ⟨⊥, inferInstance⟩
+  have hquot := (D.quotient M).source_card_le_96
+  rw [Nat.card_congr QuotientGroup.quotientBot.toEquiv] at hquot
+  exact hquot
 
 theorem coefficient_nonneg : 0 ≤ D.coefficient := by
   unfold coefficient
