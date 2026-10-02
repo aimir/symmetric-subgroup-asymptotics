@@ -109,19 +109,22 @@ private theorem coefficient_total_polynomial
         (P.complementRepresentation hprimitive C x)) + 1)
     ((1 + (b : ℝ)) ^ T.envelope.polynomialDegree)
 
-/-- Every nonsoluble primitive affine profile in the bounded large range
-supplies the complete NSAPRIM action certificate. -/
-noncomputable def actionCertificate
-    (hcomp : PrimitiveCompositionLengthInput)
-    (hw : 128 ≤ w) (hw1024 : w ≤ 1024)
+/-- The complete NSAPRIM action certificate once the literal traced exponent
+has been placed inside the physical window. -/
+noncomputable def actionCertificateOfMargin
+    (hw : 5 ≤ w) (hw1024 : w ≤ 1024)
     (hprimitive : MulAction.IsPreprimitive
       (preE7NonPairAction w U) (Fin w))
     (P : PrimitiveAffineProfile (preE7NonPairAction w U) (Fin w))
     (x : Fin w) (C : P.ElementaryChart hprimitive)
     (T : FixedTargetCompositionTrace (P.complement x))
-    (hnonsolvable : ¬ IsSolvable (P.complement x)) :
+    (hnonsolvable : ¬ IsSolvable (P.complement x))
+    (hmargin : preE7CharacterRho * w ≤
+      ((evenWidth w : ℝ) - 2) / 8 -
+        (fixedTargetCompositionGamma * T.envelope.abelianLength +
+          P.bottomHalfSlope)) :
     PreE7NsaprimActionCertificate w U where
-  width_lower := by omega
+  width_lower := hw
   width_upper := hw1024
   primitive := hprimitive
   coefficient := coefficient P hprimitive x C T
@@ -142,9 +145,24 @@ noncomputable def actionCertificate
         hprimitive x C T hnonsolvable b J
   coefficient_total_polynomial :=
     coefficient_total_polynomial P hprimitive x C T
-  exponent_margin :=
-    P.nonsolubleEnvelope_exponent_margin_large hcomp hw
-      (preE7NonPairAction w U) hprimitive x C T hnonsolvable
+  exponent_margin := hmargin
+
+/-- Every nonsoluble primitive affine profile in the bounded large range
+supplies the complete NSAPRIM action certificate. -/
+noncomputable def actionCertificate
+    (hcomp : PrimitiveCompositionLengthInput)
+    (hw : 128 ≤ w) (hw1024 : w ≤ 1024)
+    (hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction w U) (Fin w))
+    (P : PrimitiveAffineProfile (preE7NonPairAction w U) (Fin w))
+    (x : Fin w) (C : P.ElementaryChart hprimitive)
+    (T : FixedTargetCompositionTrace (P.complement x))
+    (hnonsolvable : ¬ IsSolvable (P.complement x)) :
+    PreE7NsaprimActionCertificate w U :=
+  actionCertificateOfMargin (by omega) hw1024 hprimitive P x C T
+    hnonsolvable
+    (P.nonsolubleEnvelope_exponent_margin_large hcomp hw
+      (preE7NonPairAction w U) hprimitive x C T hnonsolvable)
 
 /-- The same certificate in the concrete source form used by the T1
 rank-tail catalogue. -/
@@ -161,6 +179,26 @@ noncomputable def rankTailOwnerSourceData
   .ordinary .nsaprim (.semisimple
     ⟨by decide, by decide⟩
     ⟨actionCertificate hcomp hw hw1024 hprimitive P x C T hnonsolvable⟩)
+
+/-- The source-facing constructor with a separately proved numerical
+margin, used at the finitely many smaller nonsoluble affine degrees. -/
+noncomputable def rankTailOwnerSourceDataOfMargin
+    (hw : 5 ≤ w) (hw1024 : w ≤ 1024)
+    (hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction w U) (Fin w))
+    (P : PrimitiveAffineProfile (preE7NonPairAction w U) (Fin w))
+    (x : Fin w) (C : P.ElementaryChart hprimitive)
+    (T : FixedTargetCompositionTrace (P.complement x))
+    (hnonsolvable : ¬ IsSolvable (P.complement x))
+    (hmargin : preE7CharacterRho * w ≤
+      ((evenWidth w : ℝ) - 2) / 8 -
+        (fixedTargetCompositionGamma * T.envelope.abelianLength +
+          P.bottomHalfSlope)) :
+    PreE7RankTailOwnerSourceData w U :=
+  .ordinary .nsaprim (.semisimple
+    ⟨by decide, by decide⟩
+    ⟨actionCertificateOfMargin hw hw1024 hprimitive P x C T
+      hnonsolvable hmargin⟩)
 
 /-- Canonical charts and chief traces remove all auxiliary choices from the
 catalogue-facing constructor. -/
