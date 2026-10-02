@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineSolubleSource
+import Mathlib.GroupTheory.Sylow
 
 /-!
 # Prime-power degree and nontrivial complements in affine profiles
@@ -44,6 +45,58 @@ end PrimitiveAffineProfile
 namespace Non2UnipotentPrefixFiniteMenu
 
 variable {w : ℕ}
+
+/-- A primitive affine action of composite degree cannot have a trivial
+point stabilizer.  More precisely, any proper prime divisor of the degree
+produces, by Cauchy's theorem, a subgroup strictly between the trivial
+stabilizer and the whole group, contradicting maximality of a point
+stabilizer in a primitive action. -/
+theorem complement_nontrivial_of_proper_prime_divisor
+    {U : PreE7NonPairActionClass w}
+    (P : PrimitiveAffineProfile (preE7NonPairAction w U) (Fin w))
+    (hprimitive : MulAction.IsPreprimitive
+      (preE7NonPairAction w U) (Fin w))
+    (x : Fin w) {q : ℕ} (hq : q.Prime) (hqdiv : q ∣ w) (hqlt : q < w) :
+    Nontrivial (P.complement x) := by
+  by_contra hnt
+  have hsub : Subsingleton (P.complement x) :=
+    not_nontrivial_iff_subsingleton.mp hnt
+  letI : Subsingleton (P.complement x) := hsub
+  have hcomp : Nat.card (P.complement x) = 1 :=
+    Nat.card_eq_one_iff_unique.mpr ⟨inferInstance, inferInstance⟩
+  have hV : Nat.card P.V = w := by simpa using P.card_eq x
+  have hL : Nat.card (preE7NonPairAction w U) = w := by
+    calc
+      Nat.card (preE7NonPairAction w U) =
+          Nat.card P.V * Nat.card (P.complement x) :=
+        (P.isComplement'_complement x).card_mul.symm
+      _ = w := by rw [hV, hcomp, mul_one]
+  letI : Fact q.Prime := ⟨hq⟩
+  obtain ⟨K, hKcard⟩ :=
+    Sylow.exists_subgroup_card_pow_prime (G := preE7NonPairAction w U)
+      q (n := 1) (by rw [pow_one, hL]; exact hqdiv)
+  have hKcard' : Nat.card K = q := by simpa using hKcard
+  have hKne : K ≠ ⊥ := by
+    intro hbot
+    rw [hbot, Subgroup.card_bot] at hKcard'
+    exact hq.one_lt.ne' hKcard'.symm
+  have hstabilizer : P.complement x = ⊥ := by
+    rw [eq_bot_iff]
+    intro g hg
+    exact congrArg Subtype.val
+      (Subsingleton.elim (⟨g, hg⟩ : P.complement x) 1)
+  have hw2 : 2 ≤ w := hq.two_le.trans (Nat.le_of_lt hqlt)
+  letI : Nontrivial (Fin w) := Fin.nontrivial_iff_two_le.mpr hw2
+  have hcoat : IsCoatom (P.complement x) :=
+    (MulAction.isCoatom_stabilizer_iff_preprimitive
+      (G := preE7NonPairAction w U) x).mpr hprimitive
+  rw [hstabilizer] at hcoat
+  have hKtop : K = ⊤ :=
+    (hcoat.ne_iff_eq_top bot_le).mp hKne
+  have hcardTop : Nat.card K = w := by
+    rw [hKtop, Subgroup.card_top, hL]
+  have : q = w := hKcard'.symm.trans hcardTop
+  exact (Nat.ne_of_lt hqlt) this
 
 /-- In a retained affine action at profile prime two, the point stabilizer is
 nontrivial.  A trivial complement would make the whole ambient group a

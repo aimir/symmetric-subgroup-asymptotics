@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7SaprimExceptionalOdd
 import SymmetricSubgroupAsymptotics.Non2PreE7SmallAdditiveTemplate
+import SymmetricSubgroupAsymptotics.FiniteGroupPaddedGenerators
 
 /-!
 # Central cyclic lifts in degree twenty-five
@@ -127,6 +128,24 @@ def coefficient (_D : DegreeTwentyFiveCentralFourModel R) : ℝ :=
 theorem coefficient_nonneg : 0 ≤ D.coefficient := by
   unfold coefficient
   positivity
+
+/-- The coefficient is bounded solely from the published order ceiling on
+the linear complement.  As in degree nine, the finite subgroup catalogue
+supplies structural scalar/projective data; this numerical consequence is
+proved here. -/
+theorem coefficient_le (hR : Nat.card R ≤ 96) : D.coefficient ≤ 2 ^ 54 := by
+  have hR128 : Nat.card R ≤ 2 ^ 7 := hR.trans (by norm_num)
+  have hnormal :
+      Nat.card {M : Subgroup R // M.Normal} ≤ 2 ^ 49 := by
+    simpa using normalSubgroup_card_le_two_pow_sq 7 hR128
+  have hnat :
+      24 * Nat.card {M : Subgroup R // M.Normal} ≤ 2 ^ 54 := by
+    calc
+      24 * Nat.card {M : Subgroup R // M.Normal} ≤ 24 * 2 ^ 49 :=
+        Nat.mul_le_mul_left 24 hnormal
+      _ ≤ 2 ^ 54 := by norm_num
+  unfold coefficient
+  exact_mod_cast hnat
 
 /-- Summing the proved per-quotient row gives the complete central-`C₄`
 bound, with no normal stratum discarded. -/

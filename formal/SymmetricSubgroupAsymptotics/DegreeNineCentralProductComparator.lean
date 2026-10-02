@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7SaprimExceptionalOdd
+import SymmetricSubgroupAsymptotics.FiniteGroupPaddedGenerators
 
 /-!
 # The degree-nine central-product comparison
@@ -116,6 +117,9 @@ structure CentralBinaryQuotientDatum
   [finiteA : Finite A]
   projection : X →* A
   projection_surjective : Function.Surjective projection
+  /-- The projective image is a subgroup of the degree-four symmetric
+  group in the published `GL₂(3)` subgroup table. -/
+  projective_order_le : Nat.card A ≤ 24
   central_kernel : ∀ z ∈ projection.ker, ∀ x : X, z * x = x * z
   kernelCharacter : projection.ker →* C2
   kernelCharacter_injective : Function.Injective kernelCharacter
@@ -217,6 +221,44 @@ factoring projective binary character. -/
 def coefficient : ℕ :=
   ∑ M : {M : Subgroup R // M.Normal},
     max 1 (Nat.card ((D.quotient M).A →* C2))
+
+/-- The finite coefficient of the complete central-product comparison is
+bounded using only the order of the fixed complement.  This turns the
+remaining degree-nine input into pure finite structural data: no counting
+estimate is imported from the subgroup catalogue. -/
+theorem coefficient_le (hR : Nat.card R ≤ 48) : D.coefficient ≤ 2 ^ 72 := by
+  have hnormal :
+      Nat.card {M : Subgroup R // M.Normal} ≤ 2 ^ 48 := by
+    have hR64 : Nat.card R ≤ 2 ^ 6 := hR.trans (by norm_num)
+    exact (normalSubgroup_card_le_two_pow_sq 6 hR64).trans
+      (Nat.pow_le_pow_right (by norm_num) (by norm_num))
+  have hterm : ∀ M : {M : Subgroup R // M.Normal},
+      max 1 (Nat.card ((D.quotient M).A →* C2)) ≤ 2 ^ 24 := by
+    intro M
+    have hhom : Nat.card ((D.quotient M).A →* C2) ≤
+        Nat.card ((D.quotient M).A → C2) :=
+      Nat.card_le_card_of_injective
+        (fun f : (D.quotient M).A →* C2 => (f : (D.quotient M).A → C2))
+        DFunLike.coe_injective
+    have hfun : Nat.card ((D.quotient M).A → C2) =
+        2 ^ Nat.card (D.quotient M).A := by
+      rw [Nat.card_fun]
+      norm_num [C2]
+    have hpow : 2 ^ Nat.card (D.quotient M).A ≤ 2 ^ 24 :=
+      Nat.pow_le_pow_right (by norm_num) (D.quotient M).projective_order_le
+    exact max_le (by norm_num) (hhom.trans (hfun.le.trans hpow))
+  unfold coefficient
+  calc
+    (∑ M : {M : Subgroup R // M.Normal},
+        max 1 (Nat.card ((D.quotient M).A →* C2))) ≤
+        ∑ _M : {M : Subgroup R // M.Normal}, 2 ^ 24 := by
+      apply Finset.sum_le_sum
+      intro M _
+      exact hterm M
+    _ = Nat.card {M : Subgroup R // M.Normal} * 2 ^ 24 := by
+      simp [Finset.sum_const]
+    _ ≤ 2 ^ 48 * 2 ^ 24 := Nat.mul_le_mul_right _ hnormal
+    _ = 2 ^ 72 := by norm_num [pow_add]
 
 theorem completeQuotientCount_le {b : ℕ}
     (J : Subgroup (Equiv.Perm (Fin b))) :
