@@ -143,22 +143,17 @@ and using $d(J)\leq b/2+1$ gives
 $Z_J(R)\leq D_R2^{(\log48)b/2}$.
 Its exponent is strictly below $h(25)/8=3$.
 
-At degree twenty-seven every soluble irreducible
-$R\leq\GL_3(3)$ has order at most seventy-eight.
-To see this, its Fitting subgroup is a nontrivial nilpotent
-$3'$-group. A nonhomogeneous restriction of the natural module
-has three one-dimensional homogeneous components, giving a
-monomial group of order at most forty-eight. In the homogeneous
-case the constituent has dimension three: a one-dimensional
-constituent would make the Fitting subgroup scalar and central,
-contradicting its self-centralizing property and irreducibility.
-Over the algebraic closure, a nilpotent $3'$-group has no
-absolutely irreducible character of degree three, since its
-irreducible degrees are products of powers of its Sylow primes.
-Thus the faithful constituent splits into three Galois-conjugate
-linear characters. The Fitting subgroup is abelian and its field
-algebra is $\F_{27}$. Its normalizer lies in
-$\Gamma L_1(27)$, of order seventy-eight.
+At degree twenty-seven the complete irreducible-subgroup
+classification of Roney--Dougal and Unger
+\cite{RoneyDougalUnger2003Affine}, in the pinned PrimGrp ordering
+\cite{PrimGrp344}, has nine soluble affine rows.  Their point-stabilizer
+orders are
+\[
+  12,13,24,24,24,26,39,48,78.
+\]
+Thus every soluble irreducible $R\leq\GL_3(3)$ has order at most
+seventy-eight.  This is a direct catalogue consequence; no additional
+Clifford-theoretic assertion is used.
 Hence $Z_J(R)\leq D_R2^{(\log78)b/2}$, with
 $(\log78)/2<26/8$.
 
@@ -294,7 +289,9 @@ degree&primitive indices&abelian factors of $R$&bound on $\kappa(R)$\\
 27&10,11&at most one $C_2$&$1/2$\\\bottomrule
 \end{tabular}
 \end{center}
-The classification and representative conventions are those of
+The affine classification is that of
+\cite{RoneyDougalUnger2003Affine}; the representative conventions and
+cross-catalogue indexing are those of
 \cite{PrimGrp344,RoneyDougal2005Primitive}. The displayed
 composition series supply respectively exponent bounds
 $1/4,41/32,49/64$, all with physical gap greater than $1/4$.

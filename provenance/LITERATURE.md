@@ -381,6 +381,31 @@ gives the classification provenance, including Sims and C. M. Roney-Dougal,
 The paper's publisher abstract and institutional record state its range as
 degrees below 2500; the 2011 extension is a separate publication.
 
+For the affine rows below degree 1000, the direct source is C. M.
+Roney-Dougal and W. R. Unger, *The affine primitive permutation groups of
+degree less than 1000*, J. Symbolic Comput. 35 (2003), 421--439,
+[DOI](https://doi.org/10.1016/S0747-7171(03)00031-2),
+[institutional record](https://research-portal.st-andrews.ac.uk/en/publications/the-affine-primitive-permutation-groups-of-degree-less-than-1000/).
+The present proof uses the following literal PrimGrp 3.4.4 affine slices:
+
+- degree 8, rows 1--3, with complement orders `7,21,168`; the sole
+  nonsoluble complement is `GL(3,2)`, hence has no abelian composition
+  factor;
+- degree 16, rows 1--20, with nonsoluble rows 11--20; their complement
+  descriptions in `gps1.g.gz` give at most two abelian composition factors;
+- degree 25, affine rows 1--22; the soluble rows use the scalar kernel in
+  `GL(2,5)` and the soluble projective subgroup of `PGL(2,5) = S5`, while
+  the three nonsoluble rows have at most three abelian composition factors;
+- degree 27, affine rows 1--11.  The soluble complement orders in rows 1--9
+  are exactly `12,13,24,24,24,26,39,48,78`; rows 10 and 11 have complements
+  `SL(3,3)` and `GL(3,3)` and therefore zero and one abelian composition
+  factors, respectively.
+
+These are finite consequences of the cited published classification and
+pinned software representatives.  Lean separately checks every numerical
+maximum and transports the statements only after receiving the primitive
+action hypothesis.
+
 The degree-nine slice has eleven rows, of orders
 `36, 72, 72, 72, 144, 216, 432, 504, 1512, 181440, 362880`; the last two are
 the natural `A9` and `S9` actions.  The formal interface
