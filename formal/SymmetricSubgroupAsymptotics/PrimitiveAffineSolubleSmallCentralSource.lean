@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.DegreeNineCentralProductComparator
 import SymmetricSubgroupAsymptotics.DegreeTwentyFiveCentralFourBound
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeNineSolvable
 import SymmetricSubgroupAsymptotics.PrimitiveAffineProfileParity
 import SymmetricSubgroupAsymptotics.PrimitiveAffineNormalAxisReduction
 import SymmetricSubgroupAsymptotics.Non2PreE7SmallModelNumerics
@@ -27,9 +28,6 @@ namespace Non2UnipotentPrefixFiniteMenu
 soluble primitive-linear groups.  These fields contain no epimorphism or
 asymptotic bound. -/
 structure PublishedSolublePrimitiveAffineSmallCentralInput where
-  degreeNineOrder : ∀ (U : PreE7NonPairActionClass 9)
-    (P : PrimitiveAffineProfile (preE7NonPairAction 9 U) (Fin 9))
-    (x : Fin 9), Nat.card (P.complement x) ≤ 48
   degreeNineModel : ∀ (U : PreE7NonPairActionClass 9)
     (P : PrimitiveAffineProfile (preE7NonPairAction 9 U) (Fin 9))
     (x : Fin 9), DegreeNineCentralProductModel (P.complement x)
@@ -458,8 +456,8 @@ noncomputable def primitiveAffineSolubleSmallCentral_rankTailOwnerSourceData
     let D : SolubleDerivedLength (P.complement x) :=
       Classical.choice (SolubleDerivedLength.nonempty _ inferInstance)
     exact PrimitiveAffineDegreeNineCentralSource.toRankTailOwnerSource
-      U P hprimitive x D (published.degreeNineOrder U P x)
-        (published.degreeNineModel U P x)
+      U P hprimitive x D (P.complement_card_le_48_degreeNine hprimitive x)
+      (published.degreeNineModel U P x)
   · have h25 : w = 25 := hdegree.resolve_left h9
     subst w
     let x : Fin 25 := ⟨0, by norm_num⟩

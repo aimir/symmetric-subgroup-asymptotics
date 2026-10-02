@@ -75,6 +75,55 @@ theorem complement_isSolvable_degreeNine
       simpa [phi] using hab)
   exact congrArg Units.val hab'
 
+/-- The same faithful linear representation gives the sharp order ceiling
+`|H| ≤ |GL₂(3)| = 48` for the literal degree-nine point stabilizer. -/
+theorem complement_card_le_48_degreeNine
+    (P : PrimitiveAffineProfile L (Fin 9))
+    (hprimitive : MulAction.IsPreprimitive L (Fin 9)) (x : Fin 9) :
+    Nat.card (P.complement x) ≤ 48 := by
+  let C := P.elementaryChart hprimitive
+  letI : Fact P.p.Prime := C.primeFact
+  letI : AddCommGroup C.V := C.addCommGroup
+  letI : Module (ZMod P.p) C.V := C.module
+  letI : FiniteDimensional (ZMod P.p) C.V := C.finiteDimensional
+  letI : Nontrivial C.V := C.nontrivial
+  letI : Finite C.V := Finite.of_injective
+    (fun v : C.V => C.equiv.symm (Multiplicative.ofAdd v))
+    C.equiv.symm.injective
+  have hd : C.d = 2 := C.dimension_eq_of_degree_eq_prime_pow P x
+    (by norm_num : Nat.Prime 3) (by norm_num) (by norm_num)
+  have hp : P.p = 3 := by
+    have hdegree : 9 = P.p ^ C.d := by
+      simpa [PrimitiveAffineProfile.ElementaryChart.d] using
+        P.degree_eq_prime_pow_finrank C.equiv x
+    rw [hd] at hdegree
+    nlinarith [P.p_prime.two_le]
+  have hfin : Module.finrank (ZMod P.p) C.V = 2 := by
+    simpa [PrimitiveAffineProfile.ElementaryChart.d] using hd
+  let basis : Module.Basis (Fin 2) (ZMod P.p) C.V :=
+    Module.finBasisOfFinrankEq (ZMod P.p) C.V hfin
+  let rho := (P.complementRepresentation hprimitive C x).ρ
+  let phi : P.complement x →*
+      Matrix.GeneralLinearGroup (Fin 2) (ZMod P.p) :=
+    (Matrix.GeneralLinearGroup.toLin' basis).symm.toMonoidHom.comp
+      (Representation.asGroupHom rho)
+  have hphi : Function.Injective phi := by
+    intro a b hab
+    apply P.complementRepresentation_injective hprimitive C x
+    have hab' : Representation.asGroupHom rho a =
+        Representation.asGroupHom rho b := by
+      exact (Matrix.GeneralLinearGroup.toLin' basis).symm.injective (by
+        simpa [phi] using hab)
+    exact congrArg Units.val hab'
+  have hcard : Nat.card
+      (Matrix.GeneralLinearGroup (Fin 2) (ZMod P.p)) = 48 := by
+    rw [Matrix.card_GL_field]
+    rw [ZMod.card]
+    rw [hp]
+    norm_num
+  rw [← hcard]
+  exact Nat.card_le_card_of_injective phi hphi
+
 end PrimitiveAffineProfile
 end SymmetricSubgroupAsymptotics
 
