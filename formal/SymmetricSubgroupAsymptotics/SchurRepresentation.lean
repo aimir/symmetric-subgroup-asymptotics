@@ -24,6 +24,22 @@ variable {k D B V A : Type u} [Field k] [Group D] [Group B]
 def representationSchurCapacity (σ : Representation k B A) : ℝ :=
   schurCapacity k k[B] σ.asModule
 
+/-- The intrinsic Schur capacity of a representation is never larger than
+the dimension of its underlying target space. -/
+theorem representationSchurCapacity_le_dimension [FiniteDimensional k A]
+    (σ : Representation k B A) :
+    representationSchurCapacity σ ≤ Module.finrank k A := by
+  unfold representationSchurCapacity
+  letI : Module k[B] σ.asModule :=
+    Representation.instModuleMonoidAlgebraAsModule σ
+  letI : IsScalarTower k k[B] σ.asModule :=
+    inferInstanceAs (IsScalarTower k k[B] (Representation.asModule σ))
+  calc
+    schurCapacity k k[B] σ.asModule ≤
+        Module.finrank k σ.asModule := schurCapacity_le_dimension
+    _ = Module.finrank k A := by
+      exact_mod_cast σ.asModuleEquiv.finrank_eq
+
 /-- The finite-length estimate for the actual intertwining-map space. -/
 theorem intertwiningMap_finrank_le_schur [FiniteDimensional k V] [FiniteDimensional k A]
     (ρ : Representation k B V) (σ : Representation k B A) :
