@@ -435,12 +435,16 @@ affine/nonaffine alternative at exactly the two primitive-action scopes used
 by the proof (the original action and an actual minimal-block component).
 `PublishedBoundedPrimitiveCatalogueCorrespondence` records only the
 permutation-isomorphism locator in the degree-5--29 Roney-Dougal/PrimGrp
-slice and the induced equality of the natural socle-quotient order.  Lean
-proves that a profile needing this lookup has degree below 30 and separately
-kernel-checks `2 * outerOrder <= degree` on all 116 retained rows.  Hence
+slice together with the exact order of the literal action and its actual
+socle.  The four generated receipts store those two orders, their exact
+factorization, and `2 * outerOrder <= degree` on all 116 retained rows.  Lean
+proves that a profile needing this lookup has degree below 30 and derives the
+socle-quotient order from Lagrange's theorem; that equality is no longer part
+of the published catalogue premise.  Hence
 `preE7PrimitiveCatalogueClassificationInput_of_published` derives the former
 monolithic `PreE7PrimitiveCatalogueClassificationInput`; no project-owned
-counting assertion is included in the published classification premise.
+numerical or counting assertion is included in the published classification
+premise.
 
 ### Software representatives and classification scope
 
