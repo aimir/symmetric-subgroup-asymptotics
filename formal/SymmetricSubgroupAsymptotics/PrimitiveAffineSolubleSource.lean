@@ -235,7 +235,7 @@ private theorem common_tail_window (hw6 : 6 ≤ w) :
     Real.logb 2 3 / 3 ≤ preE7CharacterWindow w :=
   logThreeThird_le_window hw6
 
-private theorem prime_slope_le_common
+theorem primitiveAffine_primeSlope_le_common
     (P : PrimitiveAffineProfile (preE7NonPairAction w U) (Fin w)) :
     Real.logb 2 P.p / P.p ≤ Real.logb 2 3 / 3 := by
   by_cases hp2 : P.p = 2
@@ -261,7 +261,7 @@ private theorem bottom_epi_le
   have h := (P.derivedCyclicTarget hprimitive x D).epi_card_le_prime J
   refine h.trans (mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _))
   apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-  exact mul_le_mul_of_nonneg_right (prime_slope_le_common P)
+  exact mul_le_mul_of_nonneg_right (primitiveAffine_primeSlope_le_common P)
     (Nat.cast_nonneg b)
 
 /-- The one-projection model for a nontrivial soluble primitive affine
