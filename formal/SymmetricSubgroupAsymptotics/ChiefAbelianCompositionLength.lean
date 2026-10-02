@@ -170,6 +170,34 @@ def actualChiefSeriesAbelianLength (s : ActualChiefSeries R) : ℕ :=
   ∑ i : Fin s.length, chiefAbelianLength
     (normalChainQuotient (s.subgroup i.castSucc) (s.subgroup i.succ))
 
+/-- One unit for a genuinely nonabelian chief interval.  A nonabelian
+minimal normal subgroup may contain several simple factors; one unit is all
+that is needed for the strict nonsoluble saving. -/
+def chiefNonabelianIndicator (Q : Type) [Group Q] : ℕ := by
+  classical
+  exact if IsMulCommutative Q then 0 else 1
+
+theorem chiefNonabelianIndicator_congr
+    {G Q : Type} [Group G] [Group Q] (e : G ≃* Q) :
+    chiefNonabelianIndicator G = chiefNonabelianIndicator Q := by
+  have hc : IsMulCommutative G ↔ IsMulCommutative Q := by
+    constructor
+    · intro h
+      letI := h
+      exact ⟨⟨fun x y => e.symm.injective (by rw [map_mul, map_mul, mul_comm])⟩⟩
+    · intro h
+      letI := h
+      exact ⟨⟨fun x y => e.injective (by rw [map_mul, map_mul, mul_comm])⟩⟩
+  classical
+  by_cases h : IsMulCommutative G
+  · simp [chiefNonabelianIndicator, h, hc.mp h]
+  · have hq : ¬ IsMulCommutative Q := fun hq => h (hc.mpr hq)
+    simp [chiefNonabelianIndicator, h, hq]
+
+def actualChiefSeriesNonabelianCount (s : ActualChiefSeries R) : ℕ :=
+  ∑ i : Fin s.length, chiefNonabelianIndicator
+    (normalChainQuotient (s.subgroup i.castSucc) (s.subgroup i.succ))
+
 theorem actualChiefAbelianLength_le_compositionLength
     (s : ActualChiefSeries R) (t : SubnormalCompositionSeries R)
     (j : Fin (s.length + 1) ↪ Fin (t.chain.length + 1))
@@ -225,6 +253,78 @@ theorem actualChiefAbelianLength_le_some_compositionLength
       actualChiefSeriesAbelianLength s ≤ t.chain.length := by
   obtain ⟨t, j, he, h0, hl⟩ := actualChiefSeries_composition_refinement s
   exact ⟨t, actualChiefAbelianLength_le_compositionLength s t j he h0 hl⟩
+
+/-- Abelian elementary edges together with one retained edge for every
+nonabelian chief interval fit inside an actual composition refinement. -/
+theorem actualChiefTotalCharge_le_compositionLength
+    (s : ActualChiefSeries R) (t : SubnormalCompositionSeries R)
+    (j : Fin (s.length + 1) ↪ Fin (t.chain.length + 1))
+    (he : ∀ i, (t.chain (j i)).val = s.subgroup i)
+    (h0 : j 0 = 0)
+    (hl : j (Fin.last s.length) = Fin.last t.chain.length) :
+    actualChiefSeriesAbelianLength s +
+        actualChiefSeriesNonabelianCount s ≤ t.chain.length := by
+  classical
+  have hj : StrictMono j := by
+    intro a b hab
+    apply (compositionSeries_strictMono t).lt_iff_lt.mp
+    rw [he, he]
+    exact actualChiefSeries_strictMono s hab
+  let z (i : Fin (s.length + 1)) : ℕ := (j i).val
+  have hi (i : Fin s.length) :
+      chiefAbelianLength
+          (normalChainQuotient (s.subgroup i.castSucc) (s.subgroup i.succ)) +
+        chiefNonabelianIndicator
+          (normalChainQuotient (s.subgroup i.castSucc) (s.subgroup i.succ)) ≤
+        z i.succ - z i.castSucc := by
+    by_cases hab : IsMulCommutative
+        (normalChainQuotient (s.subgroup i.castSucc) (s.subgroup i.succ))
+    · letI := hab
+      rw [chiefAbelianLength, if_pos hab, chiefNonabelianIndicator, if_pos hab,
+        add_zero]
+      exact compositionSeries_abelian_interval_cardFactors t
+        (j i.castSucc) (j i.succ)
+        (hj.monotone (Fin.castSucc_le_succ i)) _ _ (he _) (he _)
+    · rw [chiefAbelianLength_nonabelian _ hab, chiefNonabelianIndicator,
+        if_neg hab, zero_add]
+      have hlt : z i.castSucc < z i.succ :=
+        hj (show i.castSucc < i.succ from Fin.castSucc_lt_succ)
+      omega
+  have hz (i : Fin s.length) :
+      (z i.succ - z i.castSucc) + z i.castSucc = z i.succ :=
+    Nat.sub_add_cancel (hj.monotone (Fin.castSucc_le_succ i))
+  have hsum :
+      (∑ i : Fin s.length, (z i.succ - z i.castSucc)) +
+          (∑ i : Fin s.length, z i.castSucc) =
+        ∑ i : Fin s.length, z i.succ := by
+    rw [← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl (fun i _ => hz i)
+  have htel : z 0 + (∑ i : Fin s.length, z i.succ) =
+      (∑ i : Fin s.length, z i.castSucc) + z (Fin.last s.length) :=
+    (Fin.sum_univ_succ z).symm.trans (Fin.sum_univ_castSucc z)
+  have hz0 : z 0 = 0 := congrArg Fin.val h0
+  have hzl : z (Fin.last s.length) = t.chain.length := congrArg Fin.val hl
+  have hgap : (∑ i : Fin s.length, (z i.succ - z i.castSucc)) =
+      t.chain.length := by omega
+  rw [actualChiefSeriesAbelianLength, actualChiefSeriesNonabelianCount,
+    ← Finset.sum_add_distrib]
+  calc
+    (∑ i : Fin s.length,
+        (chiefAbelianLength
+            (normalChainQuotient (s.subgroup i.castSucc) (s.subgroup i.succ)) +
+          chiefNonabelianIndicator
+            (normalChainQuotient (s.subgroup i.castSucc) (s.subgroup i.succ)))) ≤
+        ∑ i : Fin s.length, (z i.succ - z i.castSucc) :=
+      Finset.sum_le_sum (fun i _ => hi i)
+    _ = t.chain.length := hgap
+
+theorem actualChiefTotalCharge_le_some_compositionLength
+    (s : ActualChiefSeries R) :
+    ∃ t : SubnormalCompositionSeries R,
+      actualChiefSeriesAbelianLength s +
+        actualChiefSeriesNonabelianCount s ≤ t.chain.length := by
+  obtain ⟨t, j, he, h0, hl⟩ := actualChiefSeries_composition_refinement s
+  exact ⟨t, actualChiefTotalCharge_le_compositionLength s t j he h0 hl⟩
 
 end SymmetricSubgroupAsymptotics
 

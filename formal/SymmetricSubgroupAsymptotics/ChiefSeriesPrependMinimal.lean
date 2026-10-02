@@ -155,6 +155,51 @@ theorem prependMinimalNormalChiefSeries_abelianLength
       (QuotientGroup.mk'_surjective E)
       (s.subgroup i.castSucc) (s.subgroup i.succ) (s.step i).le)
 
+/-- Exact nonabelian-interval recursion for the prepended series. -/
+theorem prependMinimalNormalChiefSeries_nonabelianCount
+    [Finite G]
+    (hE : E ≠ ⊥)
+    (hmin : ∀ K : Subgroup G, K.Normal → K ≤ E → K = ⊥ ∨ K = E)
+    (s : ActualChiefSeries (G ⧸ E)) :
+    actualChiefSeriesNonabelianCount
+        (prependMinimalNormalChiefSeries E hE hmin s) =
+      chiefNonabelianIndicator E + actualChiefSeriesNonabelianCount s := by
+  let q := QuotientGroup.mk' E
+  let T := prependMinimalNormalChiefSeries E hE hmin s
+  let F : Fin (s.length + 1) → ℕ := fun i =>
+    chiefNonabelianIndicator
+      (normalChainQuotient (T.subgroup i.castSucc) (T.subgroup i.succ))
+  unfold actualChiefSeriesNonabelianCount
+  change (∑ i, F i) = chiefNonabelianIndicator E +
+    ∑ i : Fin s.length, chiefNonabelianIndicator
+      (normalChainQuotient (s.subgroup i.castSucc) (s.subgroup i.succ))
+  rw [Fin.sum_univ_succ]
+  have hfirst : F 0 = chiefNonabelianIndicator E := by
+    dsimp [F, T]
+    have hsub : (s.subgroup 0).comap (QuotientGroup.mk' E) = E := by
+      rw [s.head, MonoidHom.comap_bot, QuotientGroup.ker_mk']
+    exact chiefNonabelianIndicator_congr
+      ((normalChainQuotientBotEquiv
+        ((s.subgroup 0).comap (QuotientGroup.mk' E))).trans
+          (MulEquiv.subgroupCongr hsub))
+  rw [hfirst]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro i _
+  change F i.succ = chiefNonabelianIndicator
+    (normalChainQuotient (s.subgroup i.castSucc) (s.subgroup i.succ))
+  dsimp [F, T]
+  change chiefNonabelianIndicator
+      (normalChainQuotient
+        ((s.subgroup i.castSucc).comap q)
+        ((s.subgroup i.succ).comap q)) =
+    chiefNonabelianIndicator
+      (normalChainQuotient (s.subgroup i.castSucc) (s.subgroup i.succ))
+  exact chiefNonabelianIndicator_congr
+    (normalChainQuotientComapSurjectiveEquiv q
+      (QuotientGroup.mk'_surjective E)
+      (s.subgroup i.castSucc) (s.subgroup i.succ) (s.step i).le)
+
 end SymmetricSubgroupAsymptotics
 
 end
