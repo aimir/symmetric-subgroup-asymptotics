@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineFiniteDegreeSplit
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeNineSolvable
 import SymmetricSubgroupAsymptotics.PrimitiveAffineLargeSoConsumer
 import SymmetricSubgroupAsymptotics.PrimitiveAffineOrderTailSource
 import SymmetricSubgroupAsymptotics.PrimitiveAffinePrimeDegreeSource
@@ -16,10 +17,11 @@ import SymmetricSubgroupAsymptotics.Non2PreE7F20MarkedC4Source
 
 This file threads the profile-native affine source theorems through the
 prime-power degree split.  The external boundary consists only of published
-finite structural facts: the degree-five affine group classification,
-solvability in degree nine, and the already isolated composition/order data
-for the exceptional small linear groups.  No epimorphism, moment, menu-mass,
-or asymptotic estimate is assumed here.
+finite structural facts: the degree-five affine group classification and the
+already isolated composition/order data for the exceptional small linear
+groups.  Solvability in degree nine is proved from the literal faithful
+`GL₂(3)` representation.  No epimorphism, moment, menu-mass, or asymptotic
+estimate is assumed here.
 -/
 
 set_option autoImplicit false
@@ -45,9 +47,6 @@ structure PublishedPrimitiveAffineFiniteInput where
     (_hprimitive : MulAction.IsPreprimitive
       (preE7NonPairAction 5 U) (Fin 5)),
       PreE7SaprimDegreeFiveSource 5 U ⊕ PLift (PreE7F20Source 5 U)
-  degreeNineSolvable : ∀ (U : PreE7NonPairActionClass 9)
-    (P : PrimitiveAffineProfile (preE7NonPairAction 9 U) (Fin 9))
-    (x : Fin 9), IsSolvable (P.complement x)
 
 namespace PublishedPrimitiveAffineFiniteInput
 
@@ -134,7 +133,8 @@ noncomputable def primitiveOwner
   · subst w
     exact primitiveAffineSolubleSmallCentral_rankTailOwnerSourceData
       published.solubleCentral hgen hKP
-      U hprimitive P (Or.inl rfl) (published.degreeNineSolvable U P ⟨0, by norm_num⟩)
+      U hprimitive P (Or.inl rfl)
+      (P.complement_isSolvable_degreeNine hprimitive ⟨0, by norm_num⟩)
   by_cases h25 : w = 25
   · subst w
     by_cases hsolvable : IsSolvable (P.complement ⟨0, by norm_num⟩)
