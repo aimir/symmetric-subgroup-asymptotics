@@ -339,6 +339,29 @@ complete primitive catalogue. The exporter rejects nonprime composition
 edges; recognition of all actions, nonabelian simple factors, primitive
 normal-rank bounds and global coverage remain separate obligations.
 
+## Bounded primitive three-tenths receipt
+
+The final bounded three-tenths proof uses a smaller certificate than the
+literal composition-chain pilots. It checks the exact group order and its
+3-adic valuation for every primitive row through degree 44. The five chunks
+are intentionally kept below 80 rows:
+
+```sh
+python3 -B computations/python/export_lean_primitive_composition_bound.py --chunk 0
+python3 -B computations/python/export_lean_primitive_composition_bound.py --chunk 1
+python3 -B computations/python/export_lean_primitive_composition_bound.py --chunk 2
+python3 -B computations/python/export_lean_primitive_composition_bound.py --chunk 3
+python3 -B computations/python/export_lean_primitive_composition_bound.py --chunk 4
+```
+
+Check the corresponding `PrimitiveCompositionBoundedRows*` modules serially
+with `scripts/check_lean.py`, then check
+`PrimitiveCompositionBoundedReceipt.lean`. The exporter requires exactly 336
+distinct sorted PrimGrp locators. Every nonnatural row in the theorem's range
+must pass `10 v_3(|G|) <= 3 degree`. Exact alternating and symmetric orders
+are routed to the symbolic natural-group proof instead. Published catalogue
+correspondence remains separate from this arithmetic receipt.
+
 ## Bounded primitive index receipt
 
 The bounded almost-simple compression endpoint needs only the numerical
