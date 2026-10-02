@@ -92,7 +92,7 @@ private theorem bottom_epi_le (S : PreE7SaprimOddLargeAffineSource w i) {b : ℕ
 /-- Generator counting for a target whose order is at most the literal
 ceiling `q`.  The additive `+2` in the source generator bound becomes one
 coefficient `q`; the remaining slope is exactly `log₂(q)/2`. -/
-private theorem epi_le_orderCeiling
+theorem epi_le_orderCeiling
     (hgen : PermutationSubgroupGeneratorBound)
     {b q : ℕ} (J : Subgroup (Equiv.Perm (Fin b)))
     {Q : Type*} [Group Q] [Finite Q] (hq : 1 ≤ q) (hQ : Nat.card Q ≤ q) :
