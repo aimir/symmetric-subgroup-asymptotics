@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineNormalAxisReduction
 import SymmetricSubgroupAsymptotics.FusionEpimorphismLifts
 import SymmetricSubgroupAsymptotics.BinaryPairRepresentation
 import SymmetricSubgroupAsymptotics.PermutationPrimeGroupRank
+import Mathlib.RingTheory.LittleWedderburn
 
 /-!
 # The original bottom fibre of a primitive affine group
@@ -73,6 +74,204 @@ theorem fusionEpimorphism_survival_card_le_schur_of_permutation_source
     _ ≤ (b : ℝ) / p := Nat.cast_div_le
 
 universe u
+
+/-! ## Faithful noncommutative simple modules have strict Schur capacity -/
+
+/-- The original action commutes with every endomorphism of its full
+monoid-algebra module, so it is linear over the Schur endomorphism ring. -/
+def representationActionEndLinearMap
+    {k B A : Type u} [Field k] [Group B]
+    [AddCommGroup A] [Module k A]
+    (sigma : Representation k B A) (g : B) :
+    Module.End (Module.End k[B] sigma.asModule) sigma.asModule where
+  toFun x := MonoidAlgebra.single g (1 : k) • x
+  map_add' x y := smul_add _ _ _
+  map_smul' f x :=
+    (f.map_smul (MonoidAlgebra.single g (1 : k)) x).symm
+
+/-- The full representation, with scalars enlarged to its Schur
+endomorphism ring. -/
+def representationActionEndRepresentation
+    {k B A : Type u} [Field k] [Group B]
+    [AddCommGroup A] [Module k A]
+    (sigma : Representation k B A) :
+    Representation (Module.End k[B] sigma.asModule) B sigma.asModule where
+  toFun g := representationActionEndLinearMap sigma g
+  map_one' := by
+    ext x
+    apply sigma.asModuleEquiv.injective
+    simp [representationActionEndLinearMap, Representation.single_smul,
+      Representation.asModuleEquiv]
+    rfl
+  map_mul' g h := by
+    ext x
+    apply sigma.asModuleEquiv.injective
+    simp [representationActionEndLinearMap, Representation.single_smul,
+      Representation.asModuleEquiv]
+    rfl
+
+/-- Enlarging the scalars to the Schur ring does not alter the kernel of the
+literal group action. -/
+theorem representationActionEndRepresentation_ker
+    {k B A : Type u} [Field k] [Group B]
+    [AddCommGroup A] [Module k A]
+    (sigma : Representation k B A) :
+    (representationActionEndRepresentation sigma).ker = sigma.ker := by
+  ext g
+  constructor
+  · intro hg
+    apply MonoidHom.mem_ker.mpr
+    apply DFunLike.ext _ _
+    intro x
+    have hx := LinearMap.congr_fun (MonoidHom.mem_ker.mp hg) x
+    simpa [representationActionEndRepresentation,
+      representationActionEndLinearMap] using hx
+  · intro hg
+    apply MonoidHom.mem_ker.mpr
+    apply LinearMap.ext
+    intro x
+    have hx : sigma g x = x := by
+      have hmap : sigma g = 1 := MonoidHom.mem_ker.mp hg
+      exact DFunLike.congr_fun hmap x
+    simpa [representationActionEndRepresentation,
+      representationActionEndLinearMap] using hx
+
+/-- A faithful irreducible representation of a noncommutative finite group
+has Schur rank at least two.  Rank one would identify its endomorphism ring
+with the ground finite division ring; Little Wedderburn then makes the unit
+group commutative, contradicting faithful noncommutativity. -/
+theorem two_le_schurRank_of_irreducible_faithful_noncommutative
+    {k B A : Type u} [Field k] [Finite k] [Group B]
+    [AddCommGroup A] [Module k A] [FiniteDimensional k A]
+    (sigma : Representation k B A)
+    (hirr : Representation.IsIrreducible sigma)
+    (hfaithful : Function.Injective sigma)
+    (hnoncomm : ¬ IsMulCommutative B) :
+    2 ≤ Module.finrank (Module.End k[B] sigma.asModule) sigma.asModule := by
+  classical
+  letI : Representation.IsIrreducible sigma := hirr
+  letI : Module k[B] sigma.asModule :=
+    Representation.instModuleMonoidAlgebraAsModule sigma
+  letI : IsScalarTower k k[B] sigma.asModule :=
+    inferInstanceAs (IsScalarTower k k[B] (Representation.asModule sigma))
+  letI : IsSimpleModule k[B] sigma.asModule :=
+    (Representation.irreducible_iff_isSimpleModule_asModule sigma).mp hirr
+  letI : Nontrivial sigma.asModule :=
+    IsSimpleModule.nontrivial k[B] sigma.asModule
+  let E := Module.End k[B] sigma.asModule
+  let d := Module.finrank E sigma.asModule
+  have htower : Module.finrank k sigma.asModule =
+      Module.finrank k E * d := by
+    simpa [E, d] using
+      (schur_simple_finrank_tower
+        (k := k) (R := k[B]) (X := sigma.asModule))
+  have hApos : 0 < Module.finrank k sigma.asModule := Module.finrank_pos
+  have hprod : 0 < Module.finrank k E * d := by
+    simpa [htower] using hApos
+  have hEpos : 0 < Module.finrank k E :=
+    pos_of_mul_pos_left hprod (Nat.zero_le d)
+  have hdpos : 0 < d := pos_of_mul_pos_right hprod (Nat.zero_le _)
+  letI : FiniteDimensional k E :=
+    FiniteDimensional.of_finrank_pos hEpos
+  letI : Finite E := Module.finite_of_finite k
+  letI : Field E := littleWedderburn E
+  letI : FiniteDimensional E sigma.asModule :=
+    FiniteDimensional.of_finrank_pos hdpos
+  by_contra htwo
+  have hdlt : d < 2 := by
+    apply Nat.lt_of_not_ge
+    simpa [d] using htwo
+  have hd1 : d = 1 := by omega
+  have hEndFinrank : Module.finrank E (Module.End E sigma.asModule) = 1 := by
+    rw [Module.finrank_linearMap, show Module.finrank E sigma.asModule = 1 by
+      simpa [d] using hd1]
+  let eEnd : E ≃+* Module.End E sigma.asModule :=
+    RingEquiv.ofBijective (algebraMap E (Module.End E sigma.asModule))
+      (Module.Free.bijective_algebraMap_of_finrank_eq_one
+        (R := E) (S := Module.End E sigma.asModule) hEndFinrank)
+  let rhoE := MonoidHom.toHomUnits
+    (representationActionEndRepresentation sigma)
+  have hker : rhoE.ker = ⊥ := by
+    rw [MonoidHom.ker_toHomUnits,
+      representationActionEndRepresentation_ker]
+    exact (MonoidHom.ker_eq_bot_iff sigma).mpr hfaithful
+  have hrho : Function.Injective rhoE :=
+    (MonoidHom.ker_eq_bot_iff rhoE).mp hker
+  apply hnoncomm
+  refine ⟨⟨fun g h => hrho ?_⟩⟩
+  apply Units.ext
+  change (representationActionEndRepresentation sigma (g * h) :
+      Module.End E sigma.asModule) =
+    representationActionEndRepresentation sigma (h * g)
+  rw [map_mul, map_mul]
+  obtain ⟨x, hx⟩ := eEnd.surjective
+    (representationActionEndRepresentation sigma g)
+  obtain ⟨y, hy⟩ := eEnd.surjective
+    (representationActionEndRepresentation sigma h)
+  rw [← hx, ← hy, ← map_mul, mul_comm, map_mul]
+
+/-- Irreducibility leaves only the whole module as a simple Schur row.  If
+the representation is faithful and its group is noncommutative, the strict
+rank-two conclusion gives Schur capacity at most one half. -/
+theorem representationSchurCapacity_le_half_of_irreducible_faithful_noncommutative
+    {k B A : Type u} [Field k] [Finite k] [Group B]
+    [AddCommGroup A] [Module k A] [FiniteDimensional k A]
+    (sigma : Representation k B A)
+    (hirr : Representation.IsIrreducible sigma)
+    (hfaithful : Function.Injective sigma)
+    (hnoncomm : ¬ IsMulCommutative B) :
+    representationSchurCapacity sigma ≤ (1 : ℝ) / 2 := by
+  classical
+  letI : Representation.IsIrreducible sigma := hirr
+  unfold representationSchurCapacity schurCapacity
+  apply csSup_le (Set.insert_nonempty _ _)
+  rintro y (rfl | ⟨S, hS, rfl⟩)
+  · norm_num
+  · letI : Module k[B] sigma.asModule :=
+      Representation.instModuleMonoidAlgebraAsModule sigma
+    letI : IsScalarTower k k[B] sigma.asModule :=
+      inferInstanceAs (IsScalarTower k k[B] (Representation.asModule sigma))
+    letI : IsSimpleModule k[B] sigma.asModule :=
+      (Representation.irreducible_iff_isSimpleModule_asModule sigma).mp hirr
+    letI : Nontrivial sigma.asModule :=
+      IsSimpleModule.nontrivial k[B] sigma.asModule
+    letI : IsSimpleModule k[B] S := hS
+    haveI : Nontrivial S := IsSimpleModule.nontrivial k[B] S
+    have hSne : S ≠ ⊥ := Submodule.nontrivial_iff_ne_bot.mp inferInstance
+    have hStop : S = ⊤ := (eq_bot_or_eq_top S).resolve_left hSne
+    subst S
+    let e : (⊤ : Submodule k[B] sigma.asModule) ≃ₗ[k[B]] sigma.asModule :=
+      Submodule.topEquiv
+    letI : FiniteDimensional k (⊤ : Submodule k[B] sigma.asModule) :=
+      FiniteDimensional.of_injective
+        ((⊤ : Submodule k[B] sigma.asModule).subtype.restrictScalars k)
+        (⊤ : Submodule k[B] sigma.asModule).subtype_injective
+    have hHom : Module.finrank k
+        ((⊤ : Submodule k[B] sigma.asModule) →ₗ[k[B]] sigma.asModule) =
+        Module.finrank k (Module.End k[B] sigma.asModule) :=
+      (schurHomCongrSource (k := k) (A := sigma.asModule) e).finrank_eq
+    have hTop : Module.finrank k (⊤ : Submodule k[B] sigma.asModule) =
+        Module.finrank k sigma.asModule :=
+      (e.restrictScalars k).finrank_eq
+    have htower := schur_simple_finrank_tower
+      (k := k) (R := k[B]) (X := sigma.asModule)
+    have hd2 := two_le_schurRank_of_irreducible_faithful_noncommutative
+      sigma hirr hfaithful hnoncomm
+    rw [hHom, hTop, htower]
+    let f := Module.finrank k (Module.End k[B] sigma.asModule)
+    let d := Module.finrank (Module.End k[B] sigma.asModule) sigma.asModule
+    have hprodNat : 0 < f * d := by
+      rw [← htower]
+      exact Module.finrank_pos
+    have hdenpos : (0 : ℝ) < f * d := by exact_mod_cast hprodNat
+    rw [Nat.cast_mul]
+    apply (div_le_iff₀ (by simpa [f, d] using hdenpos)).mpr
+    have hfd' : (f : ℝ) * 2 ≤ f * d := by
+      exact_mod_cast (show f * 2 ≤ f * d by
+        exact Nat.mul_le_mul_left f (by simpa [d] using hd2))
+    have hfd : (2 : ℝ) * f ≤ f * d := by nlinarith
+    simpa [f, d] using (show (f : ℝ) ≤ (1 / 2 : ℝ) * (f * d) by
+      nlinarith)
 
 /-- A finite-dimensional simple target has Schur capacity at most one.
 The possible division endomorphism ring causes no loss: the tower law says
@@ -383,6 +582,25 @@ theorem complementRepresentation_irreducible
         (P.mem_subrepresentationTranslationSubgroup hprimitive C x W v).mp hv
       simpa [v] using hvW
 
+/-- The exact complement representation retains the faithful conjugation
+action of the literal point stabilizer. -/
+theorem complementRepresentation_injective
+    (hprimitive : MulAction.IsPreprimitive L Ω)
+    (C : P.ElementaryChart hprimitive) (x : Ω) :
+    letI : Fact P.p.Prime := C.primeFact
+    Function.Injective (P.complementRepresentation hprimitive C x).ρ := by
+  letI : Fact P.p.Prime := C.primeFact
+  rw [injective_iff_map_eq_one]
+  intro h hh
+  apply P.complementAction_injective x
+  apply MulEquiv.ext
+  intro v
+  apply C.equiv.injective
+  apply Multiplicative.toAdd.injective
+  have hz := DFunLike.congr_fun hh (C.equiv v).toAdd
+  rw [P.complementRepresentation_apply] at hz
+  simpa using hz
+
 /-- The primitive translation module has intrinsic Schur capacity at most
 one. -/
 theorem complementRepresentation_schurCapacity_le_one
@@ -394,6 +612,29 @@ theorem complementRepresentation_schurCapacity_le_one
   letI : Fact P.p.Prime := C.primeFact
   exact representationSchurCapacity_le_one_of_irreducible _
     (P.complementRepresentation_irreducible hprimitive C x)
+
+/-- Nonsolubility in particular rules out commutativity. -/
+theorem noncommutative_of_not_isSolvable
+    {G : Type u} [Group G] (h : ¬ IsSolvable G) :
+    ¬ IsMulCommutative G := by
+  intro hcomm
+  apply h
+  exact isSolvable_of_comm (fun a b => hcomm.is_comm.comm a b)
+
+/-- A noncommutative affine complement has the strict Schur-capacity bound
+needed by the nonsoluble primitive-affine family. -/
+theorem complementRepresentation_schurCapacity_le_half
+    (hprimitive : MulAction.IsPreprimitive L Ω)
+    (C : P.ElementaryChart hprimitive) (x : Ω)
+    (hnoncomm : ¬ IsMulCommutative (P.complement x)) :
+    letI : Fact P.p.Prime := C.primeFact
+    representationSchurCapacity
+      (P.complementRepresentation hprimitive C x).ρ ≤ (1 : ℝ) / 2 := by
+  letI : Fact P.p.Prime := C.primeFact
+  exact
+    representationSchurCapacity_le_half_of_irreducible_faithful_noncommutative
+      _ (P.complementRepresentation_irreducible hprimitive C x)
+      (P.complementRepresentation_injective hprimitive C x) hnoncomm
 
 /-- Closed count for the bottom affine quotient.  The source-rank theorem,
 the exact original kernel chart, primitive irreducibility, and the Schur
@@ -427,6 +668,40 @@ theorem bottom_epimorphism_card_le_schur_one
   · exact_mod_cast (Fact.out : P.p.Prime).one_lt.le
   · have hb : 0 ≤ (b : ℝ) / P.p := by positivity
     have hc := P.complementRepresentation_schurCapacity_le_one hprimitive C x
+    simpa [M] using mul_le_mul_of_nonneg_right hc hb
+
+/-- Strict bottom-fibre count for a noncommutative affine complement.  This
+is the original-source form used in the nonsoluble affine envelope. -/
+theorem bottom_epimorphism_card_le_schur_half
+    (hprimitive : MulAction.IsPreprimitive L Ω)
+    (C : P.ElementaryChart hprimitive) (x : Ω)
+    (hnoncomm : ¬ IsMulCommutative (P.complement x))
+    {b : ℕ} (J : Subgroup (Equiv.Perm (Fin b))) :
+    (Nat.card (GroupEpimorphism J L) : ℝ) ≤
+      Nat.card (GroupEpimorphism J (P.complement x)) *
+        (Nat.card C.V *
+          Nat.card (groupCohomology.H1
+            (P.complementRepresentation hprimitive C x)) *
+          (P.p : ℝ) ^ (((1 : ℝ) / 2) * ((b : ℝ) / P.p))) := by
+  letI : Fact P.p.Prime := C.primeFact
+  letI : Finite C.V := Finite.of_injective
+    (fun v : C.V => C.equiv.symm (Multiplicative.ofAdd v))
+    C.equiv.symm.injective
+  let M := P.complementRepresentation hprimitive C x
+  have h := fusionEpimorphism_survival_card_le_schur_of_permutation_source
+    P.p J (P.complementProjection x) (P.complementProjection_surjective x)
+      M (P.bottomModuleChart hprimitive C x) (fun _ => True)
+  have hcard : Nat.card {f : GroupEpimorphism J L // True} =
+      Nat.card (GroupEpimorphism J L) := by simp
+  rw [hcard] at h
+  apply h.trans
+  apply mul_le_mul_of_nonneg_left _ (by positivity)
+  apply mul_le_mul_of_nonneg_left _ (by positivity)
+  apply Real.rpow_le_rpow_of_exponent_le
+  · exact_mod_cast (Fact.out : P.p.Prime).one_lt.le
+  · have hb : 0 ≤ (b : ℝ) / P.p := by positivity
+    have hc := P.complementRepresentation_schurCapacity_le_half
+      hprimitive C x hnoncomm
     simpa [M] using mul_le_mul_of_nonneg_right hc hb
 
 end PrimitiveAffineProfile
