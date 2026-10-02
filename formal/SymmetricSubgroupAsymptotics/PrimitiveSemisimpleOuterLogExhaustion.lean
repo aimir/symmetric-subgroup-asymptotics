@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7PrimitiveBlockExhaustion
-import SymmetricSubgroupAsymptotics.PrimitiveOuterOrderNumerics
+import SymmetricSubgroupAsymptotics.PrimitiveOuterLogProfileConversion
 
 /-!
 # Exhausting a primitive semisimple outer-log profile
@@ -17,6 +17,22 @@ noncomputable section
 open scoped Classical
 
 namespace SymmetricSubgroupAsymptotics
+
+namespace PrimitiveSemisimpleOuterLogProfile
+
+variable {L : Type} [Group L] {r : ℕ}
+  (C : PrimitiveSemisimpleOuterLogProfile L r)
+
+noncomputable def multipleCertificate (ha : 2 ≤ C.factorCount) :
+    PrimitiveSemisimpleCompressionCertificate L r :=
+  .multiple C.toCompressionProfile ha
+
+noncomputable def largeSimpleCertificate
+    (ha : C.factorCount = 1) (hell : 30 ≤ C.leastIndex) :
+    PrimitiveSemisimpleCompressionCertificate L r :=
+  .largeSimple C.toCompressionProfile ha hell
+
+end PrimitiveSemisimpleOuterLogProfile
 
 /-- A natural primitive-socle profile together with the bounded certificate
 only in the remaining one-factor, least-index-below-thirty case. -/
@@ -107,9 +123,9 @@ theorem T1_of_preE7_primitiveOuterLogExhaustion
     (D : PreE7PrimitiveOuterLogExhaustionData)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 :=
-  D.toPrimitiveComponentExhaustion.T1_of_preE7_primitiveComponentExhaustion
+  PreE7PrimitiveComponentExhaustionData.T1_of_preE7_primitiveComponentExhaustion
     lit hgen hRDT hTracey hExceptional hChief hWeight hPrimitive h18 hKP hLMM
-    hOuter hcoarse hFS
+    hOuter D.toPrimitiveComponentExhaustion hcoarse hFS
 
 end PreE7PrimitiveOuterLogExhaustionData
 

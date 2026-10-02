@@ -364,20 +364,29 @@ correspondence remains separate from this arithmetic receipt.
 
 ## Bounded primitive index receipt
 
-The bounded almost-simple compression endpoint needs only the numerical
-inequality `2 |G:S| <= degree(G)`. Regenerate its complete 116-row receipt
-from the committed primitive/rank stream with:
+The bounded almost-simple compression endpoint uses the exact action and
+socle orders, their factorization `|G| = |G:S| |S|`, and the numerical
+inequality `2 |G:S| <= degree(G)`.  The 116-row receipt is split into four
+degree chunks so no single kernel reduction expands the whole table.
+Regenerate, or verify, the chunks from the committed primitive/rank stream
+with:
 
 ```sh
-python3 -B computations/python/export_lean_primitive_bounded_index.py --check
-python3 -B scripts/check_lean.py SymmetricSubgroupAsymptotics/PrimitiveBoundedIndexReceipt.lean --log-dir ../lean-check-logs
+python3 -B computations/python/export_lean_primitive_bounded_index.py --chunk 0 --check
+python3 -B computations/python/export_lean_primitive_bounded_index.py --chunk 1 --check
+python3 -B computations/python/export_lean_primitive_bounded_index.py --chunk 2 --check
+python3 -B computations/python/export_lean_primitive_bounded_index.py --chunk 3 --check
+python3 scripts/check_lean.py --log-dir ../lean-check-logs SymmetricSubgroupAsymptotics/PrimitiveBoundedIndexReceipt.lean
 ```
 
 The exporter selects the simple nonabelian socle rows in primitive degrees
 5 through 29, rejects duplicate catalogue locators or a failed inequality,
-and records the compressed dataset hash. Lean checks every individual
-integer inequality. The receipt does not assert primitive-catalogue
-completeness or identify an arbitrary literal action with a locator.
+and records the compressed dataset hash. Lean checks every order
+factorization and integer inequality. The receipt does not assert
+primitive-catalogue completeness. That published correspondence is isolated
+in `PublishedBoundedPrimitiveCatalogueClassification`; once it supplies a
+locator and the literal action/socle orders, Lean derives the quotient order
+by Lagrange's theorem.
 
 ## Original degree-eight normal-state certificates
 

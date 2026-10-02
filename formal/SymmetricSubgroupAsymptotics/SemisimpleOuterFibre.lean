@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.EpimorphismKernelLabels
 import SymmetricSubgroupAsymptotics.CompleteQuotientMoment
+import SymmetricSubgroupAsymptotics.SemisimpleNormalChart
 import Mathlib.GroupTheory.Subgroup.Simple
 
 /-!
@@ -24,10 +25,6 @@ noncomputable section
 open scoped BigOperators Classical
 
 namespace SymmetricSubgroupAsymptotics
-
-/-- A group whose center is trivial. -/
-def IsCenterless (G : Type*) [Group G] : Prop :=
-  ∀ x : G, (∀ y : G, x * y = y * x) → x = 1
 
 /-! ## Normal subgroups of a product of centerless simple groups -/
 
@@ -409,21 +406,6 @@ theorem quotientOuter_image {U : Type*} [Group U] (E : Subgroup U) [E.Normal]
     (hq : q ∈ quotientImage E N) : quotientOuter E N q = 1 := by
   obtain ⟨x, hx, rfl⟩ := hq
   exact (QuotientGroup.eq_one_iff x).mpr ((le_sup_right : E ≤ N.1 ⊔ E) hx)
-
-/-- A normal subgroup presented as a finite direct product of centerless
-simple groups. -/
-structure SemisimpleNormalChart {U : Type*} [Group U] (E : Subgroup U) where
-  ι : Type
-  [fintype : Fintype ι]
-  factor : ι → Type
-  [group : ∀ i, Group (factor i)]
-  [finite : ∀ i, Finite (factor i)]
-  simple : ∀ i, IsSimpleGroup (factor i)
-  centerless : ∀ i, IsCenterless (factor i)
-  equiv : E ≃* ((i : ι) → factor i)
-
-attribute [instance] SemisimpleNormalChart.fintype SemisimpleNormalChart.group
-  SemisimpleNormalChart.finite
 
 namespace SemisimpleNormalChart
 

@@ -1,5 +1,5 @@
-import SymmetricSubgroupAsymptotics.PrimitiveSemisimpleCompressionProfile
 import Mathlib.Analysis.SpecialFunctions.Log.Base
+import Mathlib.Tactic
 
 /-!
 # Exact numerics for the primitive outer-order bound
@@ -148,71 +148,6 @@ theorem primitive_outerOrder_large_simple_bound
       nlinarith
     have hqNat : 2 * q < 6 * (k + 1) := by exact_mod_cast hqReal
     exact (Nat.le_of_lt hqNat).trans ((six_succ_le_two_pow k hk).trans hlo)
-
-/-- The primitive-socle data in its natural literature form.  In contrast to
-`PrimitiveSemisimpleCompressionProfile`, this structure retains the single
-published outer-order estimate instead of asking callers to pre-prove its two
-numerical consequences. -/
-structure PrimitiveSemisimpleOuterLogProfile
-    (L : Type) [Group L] (r : ℕ) where
-  E : Subgroup L
-  [E_normal : E.Normal]
-  chart : SemisimpleNormalChart E
-  factorCount : ℕ
-  factorCount_pos : 0 < factorCount
-  leastIndex : ℕ
-  leastIndex_five_le : 5 ≤ leastIndex
-  outerOrder : ℕ
-  outerOrder_pos : 0 < outerOrder
-  quotientAction :
-    (L ⧸ E) →* Equiv.Perm (Fin (factorCount * outerOrder))
-  quotientAction_injective : Function.Injective quotientAction
-  primitive_index_lower : leastIndex ^ factorCount ≤ r
-  outerOrder_log_bound :
-    (outerOrder : ℝ) ≤ 3 * Real.logb 2 leastIndex
-
-attribute [instance] PrimitiveSemisimpleOuterLogProfile.E_normal
-
-namespace PrimitiveSemisimpleOuterLogProfile
-
-variable {L : Type} [Group L] {r : ℕ}
-  (C : PrimitiveSemisimpleOuterLogProfile L r)
-
-/-- Replace the single logarithmic literature input by the two exact natural
-inequalities consumed by the primitive compression API. -/
-noncomputable def toCompressionProfile :
-    PrimitiveSemisimpleCompressionProfile L r where
-  E := C.E
-  E_normal := C.E_normal
-  chart := C.chart
-  factorCount := C.factorCount
-  factorCount_pos := C.factorCount_pos
-  leastIndex := C.leastIndex
-  leastIndex_two_le := (by norm_num : 2 ≤ 5).trans C.leastIndex_five_le
-  outerOrder := C.outerOrder
-  outerOrder_pos := C.outerOrder_pos
-  quotientAction := C.quotientAction
-  quotientAction_injective := C.quotientAction_injective
-  primitive_index_lower := C.primitive_index_lower
-  multiple_factor_base := primitive_outerOrder_square_bound
-    C.leastIndex C.outerOrder C.leastIndex_five_le C.outerOrder_log_bound
-  large_simple_base := fun hell => primitive_outerOrder_large_simple_bound
-    C.leastIndex C.outerOrder hell C.outerOrder_log_bound
-
-/-- The multi-factor certificate generated directly from the natural
-outer-order profile. -/
-noncomputable def multipleCertificate (ha : 2 ≤ C.factorCount) :
-    PrimitiveSemisimpleCompressionCertificate L r :=
-  .multiple C.toCompressionProfile ha
-
-/-- The large almost-simple certificate generated directly from the natural
-outer-order profile. -/
-noncomputable def largeSimpleCertificate
-    (ha : C.factorCount = 1) (hell : 30 ≤ C.leastIndex) :
-    PrimitiveSemisimpleCompressionCertificate L r :=
-  .largeSimple C.toCompressionProfile ha hell
-
-end PrimitiveSemisimpleOuterLogProfile
 
 end SymmetricSubgroupAsymptotics
 
