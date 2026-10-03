@@ -79,34 +79,32 @@ structure PreE7Margin
   coefficient_bound : ∀ b,
     E.coefficient b ≤
       (2 : ℝ) ^
-        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
+        (PrimitiveAffineImprimitiveBlockTransfer.affineComponentWidthCost w +
+          8 * (w : ℝ) * Real.logb 2 (b + 1))
 
 namespace PreE7Margin
 
 variable (E : RelativeCompleteSourceEnvelope (preE7NonPairAction w U))
   (M : PreE7Margin E)
 
-/-- The standard padding theorem derives the complete numerical record;
-the construction does not receive those parameters as an assumption. -/
-noncomputable def numerics :
-    RelativeCompleteSourcePreE7Numerics (preE7Pad E) where
-  delta := paddedComparatorDelta preE7CharacterRho E.eta E.v w
-  cutoff :=
-    (paddedComparatorDegree preE7CharacterRho E.v w : ℝ) / 8 +
-      paddedComparatorDelta preE7CharacterRho E.eta E.v w / 2
-  alpha := E.eta +
-    ((paddedComparatorDegree preE7CharacterRho E.v w : ℝ) / 8 +
-      paddedComparatorDelta preE7CharacterRho E.eta E.v w / 2)
-  theta := 0
-  alpha_eq := rfl
-  parameters := by
-    simpa only [preE7Pad, pad] using
-      (preE7Padded_entryParameters
-        (w := w) (v0 := E.v) (eta := E.eta)
-        M.eta_nonneg M.seedDegree_two_le M.margin)
-  coefficient_bound := by
-    intro b
-    simpa only [preE7Pad, pad] using M.coefficient_bound b
+include M
+
+/-- The standard padding theorem derives every moment parameter; the
+construction does not receive those parameters as source data. -/
+theorem parameters :
+    PreE7CharacterEntryParameters preE7CharacterRho w
+      (preE7Pad E).v (preE7Pad E).eta
+      (paddedComparatorDelta preE7CharacterRho E.eta E.v w)
+      ((paddedComparatorDegree preE7CharacterRho E.v w : ℝ) / 8 +
+        paddedComparatorDelta preE7CharacterRho E.eta E.v w / 2)
+      (E.eta +
+        ((paddedComparatorDegree preE7CharacterRho E.v w : ℝ) / 8 +
+          paddedComparatorDelta preE7CharacterRho E.eta E.v w / 2))
+      0 := by
+  simpa only [preE7Pad, pad] using
+    (preE7Padded_entryParameters
+      (w := w) (v0 := E.v) (eta := E.eta)
+      M.eta_nonneg M.seedDegree_two_le M.margin)
 
 end PreE7Margin
 
@@ -181,8 +179,50 @@ noncomputable def toRankTailSourceOrYonedaTopOfMargin
     (family : PreE7NoPairNoC3EarlierOwnerFamily)
     (E : RelativeCompleteSourceEnvelope (preE7NonPairAction w U))
     (M : PreE7Margin E) :
-    PreE7RankTailSourceOrYonedaTopData w U :=
-  toRankTailSourceOrYonedaTop family (preE7Pad E) (M.numerics E)
+    PreE7RankTailSourceOrYonedaTopData w U := by
+  let E' := preE7Pad E
+  let delta := paddedComparatorDelta preE7CharacterRho E.eta E.v w
+  let cutoff := (paddedComparatorDegree preE7CharacterRho E.v w : ℝ) / 8 +
+    delta / 2
+  let alpha := E.eta + cutoff
+  let C : PreE7CompleteSourceComparatorCertificate family w U :=
+    { R := E'.R
+      groupR := E'.groupR
+      finiteR := E'.finiteR
+      v := E'.v
+      action := E'.action
+      action_injective := E'.action_injective
+      D := E'.coefficient
+      T := fun _ ↦ 0
+      eta := E'.eta
+      delta := delta
+      cutoff := cutoff
+      alpha := alpha
+      theta := 0
+      alpha_eq := rfl
+      D_nonneg := E'.coefficient_nonneg
+      T_nonneg := fun _ ↦ le_rfl
+      broad_source_envelope := by
+        intro b J
+        calc
+          fusionCompleteSourceSum (preE7NonPairAction w U)
+              (preE7NoPairNoC3BroadActionPredicate w U b) J ≤
+              completeQuotientWeight (R := preE7NonPairAction w U) J :=
+            broad_source_le_completeQuotientWeight E' b J
+          _ ≤ E'.coefficient b * (2 : ℝ) ^ (E'.eta * b) *
+              completeQuotientWeight (R := E'.R) J := E'.bound b J
+          _ = (E'.coefficient b * (2 : ℝ) ^ (E'.eta * b)) *
+                completeQuotientWeight (R := E'.R) J +
+              0 * (2 : ℝ) ^ ((0 : ℝ) * b) := by simp }
+  let package : PreE7EarlierNumericalPackage family w U :=
+    .ofAffinePackage C.localPackage (by
+      simpa only [E', delta, cutoff, alpha] using M.parameters E) (by
+      intro b
+      simpa only [E', preE7Pad, pad] using M.coefficient_bound b) (by
+      intro b
+      change (0 : ℝ) ≤ _
+      positivity)
+  exact .inl (.ordinary family (.package package))
 
 end RelativeCompleteSourceEnvelope
 end Non2UnipotentPrefixFiniteMenu

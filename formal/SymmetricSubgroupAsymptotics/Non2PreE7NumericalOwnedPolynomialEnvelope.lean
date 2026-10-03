@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7Sns2NumericalRows
+import SymmetricSubgroupAsymptotics.PrimitiveAffineImprimitiveMenuGrowth
 
 /-!
 # Polynomial rows in the bounded numerical owner menu
@@ -135,96 +136,187 @@ theorem preE7NumericalOwnedPolynomialConstant_pos :
   unfold preE7NumericalOwnedPolynomialConstant
   exact lt_of_lt_of_le (by norm_num) (le_max_left _ _)
 
-/-- Every ordinary numerical row, including the polynomial bounded-width
-rows, satisfies one common log-squared envelope. -/
-theorem preE7NumericalOwned_main_le
-    (n w : ℕ) (hw : w ∈ Finset.Ico 3 (n + 1))
-    (a : PreE7NumericalOwnedIndex w) :
-    (preE7NumericalOwnedPackage a).package.certificate.D (n - w) ≤
-      preE7NumericalOwnedPolynomialConstant *
-        (2 : ℝ) ^
-          ((16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) * w *
-            Real.log ((n : ℝ) + 2) ^ 2) := by
-  rcases (preE7NumericalOwnedPackage a).main_total_growth with hmain | hpoly
-  · have hwb : w + (n - w) + 2 = n + 2 := by
-      have := (Finset.mem_Ico.mp hw).2
-      omega
-    have hold := hmain (n - w)
-    have hlog : 0 ≤ Real.log ((n : ℝ) + 2) ^ 2 := sq_nonneg _
-    have hw0 : (0 : ℝ) ≤ w := by positivity
+/-- Convert the affine source logarithm to the menu's natural-log-square
+coordinate. -/
+private theorem affineSourceLog_le_widthLogSquared
+    (n w : ℕ) (hw : w ∈ Finset.Ico 3 (n + 1)) :
+    8 * (w : ℝ) * Real.logb 2 ((n - w + 1 : ℕ) : ℝ) ≤
+      (8 / Real.log 2 ^ 2) * w * Real.log ((n : ℝ) + 2) ^ 2 := by
+  have hww := Finset.mem_Ico.mp hw
+  have harg : (n - w + 1 : ℕ) ≤ n + 2 := by omega
+  have hargpos : (0 : ℝ) < ((n - w + 1 : ℕ) : ℝ) := by positivity
+  have hn2pos : (0 : ℝ) < n + 2 := by positivity
+  have hargR : (((n - w + 1 : ℕ) : ℝ)) ≤ (((n + 2 : ℕ) : ℝ)) := by
+    exact_mod_cast harg
+  have hmono0 := Real.logb_le_logb_of_le (by norm_num : (1 : ℝ) < 2)
+    hargpos hargR
+  have hmono : Real.logb 2 (((n - w + 1 : ℕ) : ℝ)) ≤
+      Real.logb 2 ((n : ℝ) + 2) := by
+    simpa only [Nat.cast_add, Nat.cast_ofNat] using hmono0
+  have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hloglower : Real.log 2 ≤ Real.log ((n : ℝ) + 2) := by
+    exact Real.log_le_log (by norm_num) (by exact_mod_cast
+      (show 2 ≤ n + 2 by omega))
+  have hlog0 : 0 ≤ Real.log ((n : ℝ) + 2) :=
+    hlog2pos.le.trans hloglower
+  have hquot : Real.logb 2 ((n : ℝ) + 2) ≤
+      Real.log ((n : ℝ) + 2) ^ 2 / Real.log 2 ^ 2 := by
+    rw [Real.logb]
+    apply (div_le_div_iff₀ hlog2pos (sq_pos_of_pos hlog2pos)).2
+    nlinarith [mul_le_mul_of_nonneg_right hloglower hlog0]
+  have hw0 : (0 : ℝ) ≤ w := by positivity
+  calc
+    _ ≤ 8 * (w : ℝ) * Real.logb 2 ((n : ℝ) + 2) := by gcongr
+    _ ≤ 8 * (w : ℝ) *
+        (Real.log ((n : ℝ) + 2) ^ 2 / Real.log 2 ^ 2) := by gcongr
+    _ = _ := by ring
+
+/-- Every ordinary numerical row, including bounded polynomials and the
+actual imprimitive-affine rows, satisfies the combined subquadratic-width
+and linear/log-squared envelope. -/
+theorem preE7NumericalOwned_main_envelope :
+    SubquadraticLinearLogSquaredMenuNumeratorBound 3
+      (fun w (a : PreE7NumericalOwnedIndex w) b =>
+        (preE7NumericalOwnedPackage a).package.certificate.D b) := by
+  intro ε hε
+  obtain ⟨Kaff, hKaff1, hAff⟩ :=
+    PrimitiveAffineImprimitiveBlockTransfer.affineComponentWidthCost_rpow_envelope hε
+  let K := max preE7NumericalOwnedPolynomialConstant Kaff
+  let C : ℝ := 16 + preE7NumericalOwnedPolynomialDegree +
+    8 / Real.log 2 ^ 2
+  have hK0 : 0 ≤ K := by
+    exact (le_max_left _ _).trans' preE7NumericalOwnedPolynomialConstant_pos.le
+  have hC0 : 0 ≤ C := by dsimp [C]; positivity
+  refine ⟨K, 0, C, hK0, by norm_num, hC0, ?_⟩
+  intro n w hw a
+  have hwb : w + (n - w) + 2 = n + 2 := by
+    have := (Finset.mem_Ico.mp hw).2
+    omega
+  have hww := Finset.mem_Ico.mp hw
+  have hw0 : (0 : ℝ) ≤ w := by positivity
+  have hw1 : 1 ≤ w := by omega
+  have hlog0 : 0 ≤ Real.log ((n : ℝ) + 2) ^ 2 := sq_nonneg _
+  rcases (preE7NumericalOwnedPackage a).main_total_growth with hmain | hrest
+  · have hold := hmain (n - w)
+    have hconst : 1 ≤ K :=
+      (show 1 ≤ preE7NumericalOwnedPolynomialConstant by
+        unfold preE7NumericalOwnedPolynomialConstant
+        exact le_max_left _ _).trans (le_max_left _ _)
     calc
       _ ≤ (2 : ℝ) ^
           (16 * (w : ℝ) *
             Real.log ((w + (n - w) + 2 : ℕ) : ℝ) ^ 2) := hold
-      _ ≤ preE7NumericalOwnedPolynomialConstant *
-          (2 : ℝ) ^
-            ((16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) * w *
-              Real.log ((n : ℝ) + 2) ^ 2) := by
+      _ ≤ K * (2 : ℝ) ^
+          (ε * (w : ℝ) ^ 2 + 0 * w +
+            C * w * Real.log ((n : ℝ) + 2) ^ 2) := by
         rw [hwb]
+        have hexp : 16 * (w : ℝ) * Real.log ((n : ℝ) + 2) ^ 2 ≤
+            ε * (w : ℝ) ^ 2 + 0 * w +
+              C * w * Real.log ((n : ℝ) + 2) ^ 2 := by
+          dsimp [C]
+          have hp0 : (0 : ℝ) ≤ preE7NumericalOwnedPolynomialDegree := by positivity
+          have ha0 : 0 ≤ 8 / Real.log 2 ^ 2 := by positivity
+          nlinarith [mul_nonneg (add_nonneg hp0 ha0) (mul_nonneg hw0 hlog0),
+            mul_nonneg hε.le (sq_nonneg (w : ℝ))]
         have hpow : (2 : ℝ) ^
-              (16 * (w : ℝ) * Real.log ((n + 2 : ℕ) : ℝ) ^ 2) ≤
+              (16 * (w : ℝ) * Real.log ((n : ℝ) + 2) ^ 2) ≤
             (2 : ℝ) ^
-              ((16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) * w *
-                Real.log ((n : ℝ) + 2) ^ 2) := by
-          apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-          have hp0 : (0 : ℝ) ≤ preE7NumericalOwnedPolynomialDegree := by
-            positivity
-          norm_num
-          nlinarith [mul_nonneg hp0 (mul_nonneg hw0 hlog)]
-        exact hpow.trans (by
+              (ε * (w : ℝ) ^ 2 + 0 * w +
+                C * w * Real.log ((n : ℝ) + 2) ^ 2) :=
+          Real.rpow_le_rpow_of_exponent_le (by norm_num) hexp
+        simpa only [Nat.cast_add, Nat.cast_ofNat] using hpow.trans (by
           nth_rewrite 1 [← one_mul ((2 : ℝ) ^ _)]
-          exact mul_le_mul_of_nonneg_right
-            (show (1 : ℝ) ≤ preE7NumericalOwnedPolynomialConstant by
-              unfold preE7NumericalOwnedPolynomialConstant
-              exact le_max_left _ _)
-            (by positivity))
-  · rcases hpoly with ⟨hw1024, K, p, hK, hrow⟩
-    let fw : Fin 1025 := ⟨w, by omega⟩
-    let z : PreE7BoundedNumericalOwnedIndex := ⟨fw, a⟩
-    have hzpoly : HasPolynomialRow z := by
-      exact ⟨K, p, hK, hrow⟩
-    have hconst : boundedPolynomialConstant z ≤
-        preE7NumericalOwnedPolynomialConstant := by
-      exact boundedPolynomialConstant_le_upper z |>.trans (le_max_right _ _)
-    have hdegree : boundedPolynomialDegree z ≤
-        preE7NumericalOwnedPolynomialDegree := by
-      exact boundedPolynomialDegree_le_upper z
-    have hrowz := boundedPolynomialRow z hzpoly (n - w)
-    have hbase : (1 : ℝ) ≤ 1 + (n - w : ℕ) := by
-      exact le_add_of_nonneg_right (Nat.cast_nonneg _)
-    have hpow : (1 + ((n - w : ℕ) : ℝ)) ^ boundedPolynomialDegree z ≤
-        (1 + ((n - w : ℕ) : ℝ)) ^ preE7NumericalOwnedPolynomialDegree :=
-      pow_le_pow_right₀ hbase hdegree
-    have hshift := shiftedNatPow_le_widthLogSquared
-      preE7NumericalOwnedPolynomialDegree n w hw
-    calc
-      _ ≤ boundedPolynomialConstant z *
-          (1 + ((n - w : ℕ) : ℝ)) ^ boundedPolynomialDegree z := by
-        simpa [z] using hrowz
-      _ ≤ preE7NumericalOwnedPolynomialConstant *
-          (1 + ((n - w : ℕ) : ℝ)) ^ boundedPolynomialDegree z :=
-        mul_le_mul_of_nonneg_right hconst (by positivity)
-      _ ≤ preE7NumericalOwnedPolynomialConstant *
+          exact mul_le_mul_of_nonneg_right hconst (by positivity))
+  · rcases hrest with hpoly | haffine
+    · rcases hpoly with ⟨hw1024, K0, p, hK0', hrow⟩
+      let fw : Fin 1025 := ⟨w, by omega⟩
+      let z : PreE7BoundedNumericalOwnedIndex := ⟨fw, a⟩
+      have hzpoly : HasPolynomialRow z := ⟨K0, p, hK0', hrow⟩
+      have hconst : boundedPolynomialConstant z ≤ K :=
+        (boundedPolynomialConstant_le_upper z).trans
+          ((le_max_right 1 boundedPolynomialConstantUpper).trans
+            (le_max_left _ Kaff))
+      have hdegree : boundedPolynomialDegree z ≤
+          preE7NumericalOwnedPolynomialDegree :=
+        boundedPolynomialDegree_le_upper z
+      have hrowz := boundedPolynomialRow z hzpoly (n - w)
+      have hbase : (1 : ℝ) ≤ 1 + (n - w : ℕ) :=
+        le_add_of_nonneg_right (Nat.cast_nonneg _)
+      have hpow : (1 + ((n - w : ℕ) : ℝ)) ^ boundedPolynomialDegree z ≤
           (1 + ((n - w : ℕ) : ℝ)) ^ preE7NumericalOwnedPolynomialDegree :=
-        mul_le_mul_of_nonneg_left hpow
-          preE7NumericalOwnedPolynomialConstant_pos.le
-      _ ≤ preE7NumericalOwnedPolynomialConstant *
-          (2 : ℝ) ^
+        pow_le_pow_right₀ hbase hdegree
+      have hshift := shiftedNatPow_le_widthLogSquared
+        preE7NumericalOwnedPolynomialDegree n w hw
+      have hexp : (preE7NumericalOwnedPolynomialDegree : ℝ) * w *
+            Real.log ((n : ℝ) + 2) ^ 2 ≤
+          ε * (w : ℝ) ^ 2 + 0 * w +
+            C * w * Real.log ((n : ℝ) + 2) ^ 2 := by
+        dsimp [C]
+        have h16 : (0 : ℝ) ≤ 16 := by norm_num
+        have ha0 : 0 ≤ 8 / Real.log 2 ^ 2 := by positivity
+        nlinarith [mul_nonneg (add_nonneg h16 ha0) (mul_nonneg hw0 hlog0),
+          mul_nonneg hε.le (sq_nonneg (w : ℝ))]
+      calc
+        _ ≤ boundedPolynomialConstant z *
+            (1 + ((n - w : ℕ) : ℝ)) ^ boundedPolynomialDegree z := by
+          simpa [z] using hrowz
+        _ ≤ K * (1 + ((n - w : ℕ) : ℝ)) ^ boundedPolynomialDegree z :=
+          mul_le_mul_of_nonneg_right hconst (by positivity)
+        _ ≤ K * (1 + ((n - w : ℕ) : ℝ)) ^
+            preE7NumericalOwnedPolynomialDegree :=
+          mul_le_mul_of_nonneg_left hpow hK0
+        _ ≤ K * (2 : ℝ) ^
             ((preE7NumericalOwnedPolynomialDegree : ℝ) * w *
               Real.log ((n : ℝ) + 2) ^ 2) :=
-        mul_le_mul_of_nonneg_left hshift
-          preE7NumericalOwnedPolynomialConstant_pos.le
-      _ ≤ preE7NumericalOwnedPolynomialConstant *
-          (2 : ℝ) ^
-            ((16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) * w *
-              Real.log ((n : ℝ) + 2) ^ 2) := by
-        apply mul_le_mul_of_nonneg_left _
-          preE7NumericalOwnedPolynomialConstant_pos.le
-        apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-        have hlog : 0 ≤ Real.log ((n : ℝ) + 2) ^ 2 := sq_nonneg _
-        have hw0 : (0 : ℝ) ≤ w := by positivity
-        nlinarith [mul_nonneg (show (0 : ℝ) ≤ 16 by norm_num)
-          (mul_nonneg hw0 hlog)]
+          mul_le_mul_of_nonneg_left hshift hK0
+        _ ≤ K * (2 : ℝ) ^
+            (ε * (w : ℝ) ^ 2 + 0 * w +
+              C * w * Real.log ((n : ℝ) + 2) ^ 2) :=
+          mul_le_mul_of_nonneg_left
+            (Real.rpow_le_rpow_of_exponent_le (by norm_num) hexp) hK0
+    · have hold := haffine (n - w)
+      have hcost := hAff w hw1
+      have hsource := affineSourceLog_le_widthLogSquared n w hw
+      have hKaff : Kaff ≤ K := le_max_right _ _
+      have hCsrc : (8 / Real.log 2 ^ 2) * w *
+            Real.log ((n : ℝ) + 2) ^ 2 ≤
+          C * w * Real.log ((n : ℝ) + 2) ^ 2 := by
+        dsimp [C]
+        have hnon : 0 ≤ (16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) := by
+          positivity
+        nlinarith [mul_nonneg hnon (mul_nonneg hw0 hlog0)]
+      calc
+        _ ≤ (2 : ℝ) ^
+            (PrimitiveAffineImprimitiveBlockTransfer.affineComponentWidthCost w +
+              8 * (w : ℝ) * Real.logb 2 ((n - w + 1 : ℕ) : ℝ)) := by
+          simpa only [Nat.cast_add, Nat.cast_one] using hold
+        _ = (2 : ℝ) ^
+            PrimitiveAffineImprimitiveBlockTransfer.affineComponentWidthCost w *
+            (2 : ℝ) ^ (8 * (w : ℝ) * Real.logb 2 ((n - w + 1 : ℕ) : ℝ)) := by
+          rw [Real.rpow_add (by norm_num : (0 : ℝ) < 2)]
+        _ ≤ (Kaff * (2 : ℝ) ^ (ε * (w : ℝ) ^ 2)) *
+            (2 : ℝ) ^ ((8 / Real.log 2 ^ 2) * w *
+              Real.log ((n : ℝ) + 2) ^ 2) :=
+          mul_le_mul hcost
+            (Real.rpow_le_rpow_of_exponent_le (by norm_num) hsource)
+            (by positivity) (by positivity)
+        _ ≤ (K * (2 : ℝ) ^ (ε * (w : ℝ) ^ 2)) *
+            (2 : ℝ) ^ (C * w * Real.log ((n : ℝ) + 2) ^ 2) :=
+          mul_le_mul
+            (mul_le_mul_of_nonneg_right hKaff (by positivity))
+            (Real.rpow_le_rpow_of_exponent_le (by norm_num) hCsrc)
+            (by positivity) (by positivity)
+        _ = K * (2 : ℝ) ^
+            (ε * (w : ℝ) ^ 2 + 0 * w +
+              C * w * Real.log ((n : ℝ) + 2) ^ 2) := by
+          calc
+            _ = K * ((2 : ℝ) ^ (ε * (w : ℝ) ^ 2) *
+                (2 : ℝ) ^ (C * w * Real.log ((n : ℝ) + 2) ^ 2)) := by ring
+            _ = K * (2 : ℝ) ^
+                (ε * (w : ℝ) ^ 2 +
+                  C * w * Real.log ((n : ℝ) + 2) ^ 2) := by
+              rw [Real.rpow_add (by norm_num : (0 : ℝ) < 2)]
+            _ = _ := by congr 2 <;> ring
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

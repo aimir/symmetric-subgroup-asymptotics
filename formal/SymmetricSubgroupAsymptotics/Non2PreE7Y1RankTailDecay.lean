@@ -654,11 +654,11 @@ noncomputable def PreE7NaturalA4Source.numericalPackage
       (by norm_num) (by norm_num)
       (by norm_num [preE7CharacterRho, evenWidth, halfDegree])
       (by norm_num [preE7CharacterWindow, preE7CharacterRho, halfDegree]))
-  · exact Or.inr ⟨by norm_num, C.normalCount, 0, C.normalCount_nonneg, by
+  · exact Or.inr (Or.inl ⟨by norm_num, C.normalCount, 0, C.normalCount_nonneg, by
       intro b
       simpa [PreE7EarlierLocalPackage.ofNaturalA4,
         PreE7EarlierLocalCertificate.ofNaturalA4] using
-        (le_refl C.normalCount)⟩
+        (le_refl C.normalCount)⟩)
   · intro b
     have haxes := normalAxis_card_le_two_pow_card (preE7NonPairAction 4 i)
     have hcard : Nat.card (preE7NonPairAction 4 i) = 12 := by

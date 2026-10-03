@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.PrimitiveAffineImprimitiveCoefficient
+import SymmetricSubgroupAsymptotics.AffineComponentWidthCost
 import SymmetricSubgroupAsymptotics.GrowingMenuMassSubquadraticLogSquared
 
 /-!
@@ -183,6 +183,52 @@ theorem eventually_affineComponentWidthCost_le
     nlinarith [mul_le_mul_of_nonneg_left haux hX0]
   dsimp [affineComponentWidthCost, X, L, q]
   nlinarith
+
+/-- Exponentiated uniform form, including the finite initial width segment.
+The multiplicative constant depends only on the requested quadratic reserve. -/
+theorem affineComponentWidthCost_rpow_envelope
+    {ε : ℝ} (hε : 0 < ε) :
+    ∃ K : ℝ, 1 ≤ K ∧ ∀ w : ℕ, 1 ≤ w →
+      (2 : ℝ) ^ affineComponentWidthCost w ≤
+        K * (2 : ℝ) ^ (ε * (w : ℝ) ^ 2) := by
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp
+    (eventually_affineComponentWidthCost_le hε)
+  let K : ℝ := 1 + ∑ j ∈ Finset.range N,
+    (2 : ℝ) ^ affineComponentWidthCost j
+  have hK1 : 1 ≤ K := by
+    dsimp [K]
+    exact le_add_of_nonneg_right
+      (Finset.sum_nonneg fun _ _ => Real.rpow_nonneg (by norm_num) _)
+  refine ⟨K, hK1, ?_⟩
+  intro w hw
+  by_cases hlarge : N ≤ w
+  · have hcost := hN w hlarge
+    have hpow : (2 : ℝ) ^ affineComponentWidthCost w ≤
+        (2 : ℝ) ^ (ε * (w : ℝ) ^ 2) :=
+      Real.rpow_le_rpow_of_exponent_le (by norm_num) hcost
+    calc
+      (2 : ℝ) ^ affineComponentWidthCost w ≤
+          (2 : ℝ) ^ (ε * (w : ℝ) ^ 2) := hpow
+      _ ≤ K * (2 : ℝ) ^ (ε * (w : ℝ) ^ 2) := by
+        nth_rewrite 1 [← one_mul ((2 : ℝ) ^ _)]
+        exact mul_le_mul_of_nonneg_right hK1 (by positivity)
+  · have hwmem : w ∈ Finset.range N := Finset.mem_range.mpr (by omega)
+    have hterm : (2 : ℝ) ^ affineComponentWidthCost w ≤ K := by
+      calc
+        _ ≤ ∑ j ∈ Finset.range N,
+            (2 : ℝ) ^ affineComponentWidthCost j :=
+          Finset.single_le_sum (fun _ _ => Real.rpow_nonneg (by norm_num) _) hwmem
+        _ ≤ K := by dsimp [K]; linarith
+    have hexp0 : 0 ≤ ε * (w : ℝ) ^ 2 := mul_nonneg hε.le (sq_nonneg _)
+    have hpow1 : 1 ≤ (2 : ℝ) ^ (ε * (w : ℝ) ^ 2) := by
+      simpa only [Real.one_rpow] using
+        (Real.rpow_le_rpow (by norm_num : (0 : ℝ) ≤ 1)
+          (by norm_num : (1 : ℝ) ≤ 2) hexp0)
+    calc
+      _ ≤ K := hterm
+      _ = K * 1 := by ring
+      _ ≤ K * (2 : ℝ) ^ (ε * (w : ℝ) ^ 2) :=
+        mul_le_mul_of_nonneg_left hpow1 (by linarith)
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu

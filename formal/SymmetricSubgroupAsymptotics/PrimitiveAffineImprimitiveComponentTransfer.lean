@@ -94,10 +94,9 @@ def initialState
 
 /-- The group-native source carried by an affine primitive component.  Its
 capacity field is evaluated on all quotient states of the same real block
-system.  The remaining two fields are precisely the mathematical estimates
-on that constructed envelope: the affine capacity margin and its finite
-coefficient bound.  The growing-transfer parameters are derived later and
-are not included as assumptions. -/
+system.  Its only project estimate is the affine capacity margin.  The
+finite coefficient bound is a theorem of the actual chief tower and is
+derived in `PrimitiveAffineImprimitiveCoefficient`; it is not source data. -/
 structure ComponentSource
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
     (hTraceyLog : TraceyAffineInducedModuleInput)
@@ -114,16 +113,6 @@ structure ComponentSource
     let tower := trace.tower
     preE7CharacterRho * w ≤
       ((evenWidth w : ℝ) - tower.envelope.v) / 8 - tower.envelope.eta
-  coefficient_bound :
-    let capacity := ActualWreathAffineCapacity.elementaryCapacityInput
-      (Q := block.Top) (I := block.Points) hTraceyHalf hTraceyLog (by
-        simpa only [Fintype.card_eq_nat_card] using block.degrees_ge_two.2)
-    let trace := ActualWreathCompressionTrace.canonicalOfCapacity
-      capacity (initialState hTraceyPerm block)
-    let tower := trace.tower
-    ∀ b, tower.envelope.coefficient b ≤
-      (2 : ℝ) ^
-        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
 
 namespace ComponentSource
 
@@ -184,51 +173,7 @@ theorem envelope_eta_le_primitiveCompositionBound
   simpa only [Fintype.card_eq_nat_card] using
     htower.trans (mul_le_mul_of_nonneg_left ht hfactor)
 
-variable (S : ComponentSource hTraceyHalf hTraceyLog hTraceyPerm block P)
-
-/-- The two component estimates, together with the structural facts proved
-by the actual tower, give the exact numerical margin record expected by the
-pre-E7 transfer. -/
-noncomputable def preE7Margin :
-    RelativeCompleteSourceEnvelope.PreE7Margin
-      (envelope hTraceyHalf hTraceyLog hTraceyPerm block) where
-  eta_nonneg := by
-    simpa only [envelope, tower] using
-      ActualWreathCompressionTower.envelope_eta_nonneg
-        (tower hTraceyHalf hTraceyLog hTraceyPerm block)
-  seedDegree_two_le := by
-    rw [envelope, ActualWreathCompressionTower.envelope_v]
-    simpa using block.degrees_ge_two.2
-  margin := by
-    simpa only [envelope, tower, trace, capacity] using S.margin
-  coefficient_bound := by
-    intro b
-    simpa only [envelope, tower, trace, capacity] using S.coefficient_bound b
-
-/-- **Imprimitive affine-component transfer.**  The component-native source
-is transported through the actual block system to one accepted source for
-the original ambient action.  The complete normal-axis sum, original action
-weight, extension/transgression fibres and the later continuation all remain
-inside the complete-source certificate. -/
-noncomputable def toAmbientSource :
-    PreE7RankTailSourceOrYonedaTopData w U :=
-  RelativeCompleteSourceEnvelope.toRankTailSourceOrYonedaTopOfMargin
-    .acert (envelope hTraceyHalf hTraceyLog hTraceyPerm block)
-      (preE7Margin hTraceyHalf hTraceyLog hTraceyPerm block P S)
-
 end ComponentSource
-
-/-- Function spelling used by the primitive-catalogue consumer assembly. -/
-noncomputable def imprimitiveAffineComponentTransfer
-    (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
-    (hTraceyLog : TraceyAffineInducedModuleInput)
-    (hTraceyPerm : TraceyPermutationGeneratorInput)
-    (block : OriginalMinimalBlock
-      (A := preE7NonPairAction w U) basePoint)
-    (P : PrimitiveAffineProfile block.Component block.Fibre)
-    (S : ComponentSource hTraceyHalf hTraceyLog hTraceyPerm block P) :
-    PreE7RankTailSourceOrYonedaTopData w U :=
-  ComponentSource.toAmbientSource hTraceyHalf hTraceyLog hTraceyPerm block P S
 
 /-- Correct construction target for every imprimitive affine component.
 The generic capacity alternative alone is false in the small exceptional

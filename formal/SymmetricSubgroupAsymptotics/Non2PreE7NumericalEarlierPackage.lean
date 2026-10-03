@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7ExceptionalCatalogue
 import SymmetricSubgroupAsymptotics.Non2PreE7CharacterCertificateTemplate
+import SymmetricSubgroupAsymptotics.AffineComponentWidthCost
 
 /-!
 # Numerically complete earlier-owner packages
@@ -30,8 +31,12 @@ structure PreE7EarlierNumericalPackage
     (∀ b, package.certificate.D b ≤
       (2 : ℝ) ^
         (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)) ∨
-    (w ≤ 1024 ∧ ∃ K : ℝ, ∃ p : ℕ, 0 ≤ K ∧ ∀ b,
-      package.certificate.D b ≤ K * (1 + (b : ℝ)) ^ p)
+    ((w ≤ 1024 ∧ ∃ K : ℝ, ∃ p : ℕ, 0 ≤ K ∧ ∀ b,
+      package.certificate.D b ≤ K * (1 + (b : ℝ)) ^ p) ∨
+    (∀ b, package.certificate.D b ≤
+      (2 : ℝ) ^
+        (PrimitiveAffineImprimitiveBlockTransfer.affineComponentWidthCost w +
+          8 * (w : ℝ) * Real.logb 2 (b + 1))))
   tail_total_bound : ∀ b,
     package.certificate.T b ≤
       (2 : ℝ) ^
@@ -90,7 +95,32 @@ noncomputable def PreE7EarlierNumericalPackage.ofPolynomialComparator
     PreE7EarlierNumericalPackage family w i where
   package := .ofComparator C
   parameters := parameters
-  main_total_growth := .inr ⟨width_upper, main_total_polynomial⟩
+  main_total_growth := .inr (.inl ⟨width_upper, main_total_polynomial⟩)
+  tail_total_bound := tail_total_bound
+
+/-- Package a complete-source certificate whose finite coefficient has the
+standard imprimitive-affine width cost.  The global menu theorem, rather
+than a false per-action logarithmic normalization, absorbs that cost. -/
+noncomputable def PreE7EarlierNumericalPackage.ofAffinePackage
+    {family : PreE7NoPairNoC3EarlierOwnerFamily}
+    {w : ℕ} {i : PreE7NonPairActionClass w}
+    (package : PreE7EarlierLocalPackage family w i)
+    (parameters : PreE7CharacterEntryParameters preE7CharacterRho w
+      package.certificate.v package.certificate.eta
+      package.certificate.delta package.certificate.cutoff
+      package.certificate.alpha package.certificate.theta)
+    (main_total_affine : ∀ b, package.certificate.D b ≤
+      (2 : ℝ) ^
+        (PrimitiveAffineImprimitiveBlockTransfer.affineComponentWidthCost w +
+          8 * (w : ℝ) * Real.logb 2 (b + 1)))
+    (tail_total_bound : ∀ b,
+      package.certificate.T b ≤
+        (2 : ℝ) ^
+          (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)) :
+    PreE7EarlierNumericalPackage family w i where
+  package := package
+  parameters := parameters
+  main_total_growth := .inr (.inr main_total_affine)
   tail_total_bound := tail_total_bound
 
 end Non2UnipotentPrefixFiniteMenu

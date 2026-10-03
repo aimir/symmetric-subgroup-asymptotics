@@ -141,62 +141,78 @@ variable
   (Residual : PreE7NumericalRankTailResidualData)
 
 private theorem preE7NumericalRankTailMain_envelope :
-    LinearLogSquaredMenuNumeratorBound 3
+    SubquadraticLinearLogSquaredMenuNumeratorBound 3
       (preE7NumericalRankTailD Residual) := by
-  refine ⟨preE7NumericalOwnedPolynomialConstant, 0,
-    16 + preE7NumericalOwnedPolynomialDegree,
-    preE7NumericalOwnedPolynomialConstant_pos.le,
-    by norm_num, by positivity, ?_⟩
+  intro ε hε
+  obtain ⟨K, L, C, hK, hL, hC, hentry⟩ :=
+    preE7NumericalOwned_main_envelope ε hε
+  let K' := max K 1
+  let C' := max C 16
+  have hK' : 0 ≤ K' := hK.trans (le_max_left _ _)
+  have hKle : K ≤ K' := le_max_left _ _
+  have hKone : 1 ≤ K' := le_max_right _ _
+  have hC' : 0 ≤ C' := hC.trans (le_max_left _ _)
+  have hCle : C ≤ C' := le_max_left _ _
+  have h16le : (16 : ℝ) ≤ C' := le_max_right _ _
+  refine ⟨K', L, C', hK', hL, hC', ?_⟩
   intro n w hw j
   have hwb : w + (n - w) + 2 = n + 2 := by
     have := (Finset.mem_Ico.mp hw).2
     omega
+  have hw0 : (0 : ℝ) ≤ w := by positivity
+  have hlog0 : 0 ≤ Real.log ((n : ℝ) + 2) ^ 2 := sq_nonneg _
+  have hexpMono :
+      ε * (w : ℝ) ^ 2 + L * w + C * w * Real.log ((n : ℝ) + 2) ^ 2 ≤
+        ε * (w : ℝ) ^ 2 + L * w + C' * w * Real.log ((n : ℝ) + 2) ^ 2 := by
+    nlinarith [mul_le_mul_of_nonneg_right hCle (mul_nonneg hw0 hlog0)]
   cases j with
   | ordinary a =>
-      simpa only [preE7NumericalRankTailD, zero_mul, zero_add,
-        hwb, Nat.cast_add, Nat.cast_ofNat] using
-        preE7NumericalOwned_main_le n w hw a
+      have hold := hentry n w hw a
+      calc
+        _ ≤ K * (2 : ℝ) ^
+            (ε * (w : ℝ) ^ 2 + L * w +
+              C * w * Real.log ((n : ℝ) + 2) ^ 2) := hold
+        _ ≤ K' * (2 : ℝ) ^
+            (ε * (w : ℝ) ^ 2 + L * w +
+              C' * w * Real.log ((n : ℝ) + 2) ^ 2) := by
+          calc
+            _ ≤ K' * (2 : ℝ) ^
+                (ε * (w : ℝ) ^ 2 + L * w +
+                  C * w * Real.log ((n : ℝ) + 2) ^ 2) :=
+              mul_le_mul_of_nonneg_right hKle (by positivity)
+            _ ≤ _ := mul_le_mul_of_nonneg_left
+              (Real.rpow_le_rpow_of_exponent_le (by norm_num) hexpMono) hK'
   | b6 | y1 | sns2 =>
       simp only [preE7NumericalRankTailD]
-      exact mul_nonneg preE7NumericalOwnedPolynomialConstant_pos.le
+      exact mul_nonneg hK'
         (Real.rpow_nonneg (by norm_num) _)
   | terminal t =>
       have hold := (Residual w t).main_total_bound (n - w)
-      have hlog : 0 ≤ Real.log ((n : ℝ) + 2) ^ 2 := sq_nonneg _
-      have hw0 : (0 : ℝ) ≤ w := by positivity
+      have hold' : (Residual w t).D (n - w) ≤ (2 : ℝ) ^
+          (16 * (w : ℝ) * Real.log ((n : ℝ) + 2) ^ 2) := by
+        simpa only [hwb, Nat.cast_add, Nat.cast_ofNat] using hold
+      have hexp : 16 * (w : ℝ) * Real.log ((n : ℝ) + 2) ^ 2 ≤
+          ε * (w : ℝ) ^ 2 + L * w +
+            C' * w * Real.log ((n : ℝ) + 2) ^ 2 := by
+        nlinarith [mul_nonneg hε.le (sq_nonneg (w : ℝ)),
+          mul_nonneg hL hw0,
+          mul_le_mul_of_nonneg_right h16le (mul_nonneg hw0 hlog0)]
       have hpow : (2 : ℝ) ^
-            (16 * (w : ℝ) * Real.log ((w + (n - w) + 2 : ℕ) : ℝ) ^ 2) ≤
+            (16 * (w : ℝ) * Real.log ((n : ℝ) + 2) ^ 2) ≤
           (2 : ℝ) ^
-            ((16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) * w *
-              Real.log ((n : ℝ) + 2) ^ 2) := by
-        rw [hwb]
-        apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-        have hp0 : (0 : ℝ) ≤ preE7NumericalOwnedPolynomialDegree := by
-          positivity
-        norm_num
-        nlinarith [mul_nonneg hp0 (mul_nonneg hw0 hlog)]
-      have hscale : (2 : ℝ) ^
-            ((16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) * w *
-              Real.log ((n : ℝ) + 2) ^ 2) ≤
-          preE7NumericalOwnedPolynomialConstant * (2 : ℝ) ^
-            ((16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) * w *
-              Real.log ((n : ℝ) + 2) ^ 2) := by
-        nth_rewrite 1 [← one_mul ((2 : ℝ) ^
-          ((16 + (preE7NumericalOwnedPolynomialDegree : ℝ)) * w *
-            Real.log ((n : ℝ) + 2) ^ 2))]
-        exact mul_le_mul_of_nonneg_right
-          (show (1 : ℝ) ≤ preE7NumericalOwnedPolynomialConstant by
-            unfold preE7NumericalOwnedPolynomialConstant
-            exact le_max_left _ _)
-          (Real.rpow_nonneg (by norm_num) _)
-      simpa only [preE7NumericalRankTailD, zero_mul, zero_add] using
-        hold.trans (hpow.trans hscale)
+            (ε * (w : ℝ) ^ 2 + L * w +
+              C' * w * Real.log ((n : ℝ) + 2) ^ 2) :=
+        Real.rpow_le_rpow_of_exponent_le (by norm_num) hexp
+      simpa only [preE7NumericalRankTailD] using
+        hold'.trans (hpow.trans (by
+          nth_rewrite 1 [← one_mul ((2 : ℝ) ^ _)]
+          exact mul_le_mul_of_nonneg_right hKone (by positivity)))
 
 theorem preE7NumericalRankTail_mainMenu
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput) :
     GrowingMenuMassBound 3 (preE7NumericalRankTailD Residual)
       preE7NumericalRankTailA :=
-  growingMenuMassBound_of_linearLogSquared (by omega) _ _
+  growingMenuMassBound_of_subquadraticLinearLogSquared (by omega) _ _
     (preE7NumericalRankTailD_nonneg Residual)
     (fun w j => by
       change (1 : ℝ) ≤ Nat.card (Subgroup.normalizer

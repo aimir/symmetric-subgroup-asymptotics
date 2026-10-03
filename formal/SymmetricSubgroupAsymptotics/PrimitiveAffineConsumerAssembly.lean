@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffinePublishedSmallStructuralInput
-import SymmetricSubgroupAsymptotics.PrimitiveAffineImprimitiveComponentTransfer
+import SymmetricSubgroupAsymptotics.PrimitiveAffineImprimitiveCoefficient
 import SymmetricSubgroupAsymptotics.PrimitiveCatalogueClassificationAssembly
 
 /-!
@@ -38,6 +38,7 @@ noncomputable def preE7PrimitiveAffineConsumerData
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
     (hTraceyLog : TraceyAffineInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
+    (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (components : PreE7PrimitiveAffineImprimitiveComponentSourceData
       hTraceyHalf hTraceyLog hTraceyPerm) :
     PreE7PrimitiveAffineConsumerData where
@@ -50,7 +51,7 @@ noncomputable def preE7PrimitiveAffineConsumerData
     intro w U hw basePoint block P
     exact match components.source w U hw basePoint block P with
       | .inl source => imprimitiveAffineComponentTransfer
-          hTraceyHalf hTraceyLog hTraceyPerm block P source
+          hTraceyHalf hTraceyLog hTraceyPerm hSimpleGen block P source
       | .inr ambient => ambient
 
 end Non2UnipotentPrefixFiniteMenu

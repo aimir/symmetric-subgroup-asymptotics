@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineImprimitiveComponentTransfer
 import SymmetricSubgroupAsymptotics.ActualWreathSemisimpleCoefficient
+import SymmetricSubgroupAsymptotics.AffineComponentWidthCost
 
 /-!
 # Uniform coefficient of an actual imprimitive affine component
@@ -56,15 +57,6 @@ theorem traceyPermutationGeneratorCeiling_cast_le
   have hnonneg : 0 ≤ (w : ℝ) / Real.sqrt (Real.logb 2 w) := by
     positivity
   exact (Nat.ceil_lt_add_one hnonneg).le
-
-/-- Width-only subquadratic cost which dominates every actual choice of
-local affine degree and block count. -/
-noncomputable def affineComponentWidthCost (w : ℕ) : ℝ :=
-  let X : ℝ := w
-  let L : ℝ := (Nat.log 2 w + 1 : ℕ) ^ 2
-  100 * X * Real.sqrt X * L ^ 2 +
-    100 * X ^ 2 / Real.sqrt (Real.logb 2 X / 2) +
-    100 * X * L
 
 /-- Explicit coefficient exponent for a primitive affine component of local
 degree `r`, transported through `s` actual blocks inside ambient degree `w`.
@@ -460,7 +452,71 @@ theorem tower_coefficient_le_explicit
   dsimp [affineComponentCoefficientExponent, m]
   nlinarith
 
+variable (S : ComponentSource hTraceyHalf hTraceyLog hTraceyPerm block P)
+
+/-- The finite coefficient is a theorem of the literal affine tower.  Its
+width-only part is the standard subquadratic cost used by the global menu. -/
+theorem coefficient_bound
+    (hgen : FiniteSimpleTwoGeneratorBound) (b : ℕ) :
+    (envelope hTraceyHalf hTraceyLog hTraceyPerm block).coefficient b ≤
+      (2 : ℝ) ^
+        (affineComponentWidthCost w +
+          8 * (w : ℝ) * Real.logb 2 (b + 1)) := by
+  letI : Nontrivial block.Fibre :=
+    Finite.one_lt_card_iff_nontrivial.mp block.degrees_ge_two.1
+  have hraw := tower_coefficient_le_explicit
+    hTraceyHalf hTraceyLog hTraceyPerm block P hgen b
+  have hexp := affineComponentCoefficientExponent_le_widthCost
+    (Nat.card block.Fibre) (Nat.card block.Points) w b
+    block.degrees_ge_two.1 block.degrees_ge_two.2 (width_eq block)
+  exact hraw.trans
+    (Real.rpow_le_rpow_of_exponent_le (by norm_num) hexp)
+
+/-- The source margin plus the coefficient theorem give the exact
+construction-facing record required by the affine-aware catalogue bridge. -/
+noncomputable def preE7Margin
+    (hgen : FiniteSimpleTwoGeneratorBound) :
+    RelativeCompleteSourceEnvelope.PreE7Margin
+      (envelope hTraceyHalf hTraceyLog hTraceyPerm block) where
+  eta_nonneg := by
+    simpa only [envelope, tower] using
+      ActualWreathCompressionTower.envelope_eta_nonneg
+        (tower hTraceyHalf hTraceyLog hTraceyPerm block)
+  seedDegree_two_le := by
+    rw [envelope, ActualWreathCompressionTower.envelope_v]
+    simpa using block.degrees_ge_two.2
+  margin := by
+    simpa only [envelope, tower, trace, capacity] using S.margin
+  coefficient_bound := coefficient_bound
+    hTraceyHalf hTraceyLog hTraceyPerm block P hgen
+
+/-- **Imprimitive affine-component transfer.**  The component-native margin
+is transported through the actual block system; the complete coefficient
+and its subquadratic menu growth are proved rather than assumed. -/
+noncomputable def toAmbientSource
+    (hgen : FiniteSimpleTwoGeneratorBound) :
+    PreE7RankTailSourceOrYonedaTopData w U :=
+  RelativeCompleteSourceEnvelope.toRankTailSourceOrYonedaTopOfMargin
+    .acert (envelope hTraceyHalf hTraceyLog hTraceyPerm block)
+      (preE7Margin hTraceyHalf hTraceyLog hTraceyPerm block P S hgen)
+
 end ComponentSource
+
+/-- Function spelling used by the primitive-catalogue consumer assembly. -/
+noncomputable def imprimitiveAffineComponentTransfer
+    {w : ℕ} {U : PreE7NonPairActionClass w} {basePoint : Fin w}
+    (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
+    (hTraceyLog : TraceyAffineInducedModuleInput)
+    (hTraceyPerm : TraceyPermutationGeneratorInput)
+    (hgen : FiniteSimpleTwoGeneratorBound)
+    (block : OriginalMinimalBlock
+      (A := preE7NonPairAction w U) basePoint)
+    (P : PrimitiveAffineProfile block.Component block.Fibre)
+    (S : ComponentSource hTraceyHalf hTraceyLog hTraceyPerm block P) :
+    PreE7RankTailSourceOrYonedaTopData w U :=
+  ComponentSource.toAmbientSource
+    hTraceyHalf hTraceyLog hTraceyPerm block P S hgen
+
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
