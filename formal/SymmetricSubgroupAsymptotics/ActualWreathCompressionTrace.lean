@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.ActualWreathCompressionTowerExistence
+import SymmetricSubgroupAsymptotics.ActualWreathCompressionLogBudget
 import SymmetricSubgroupAsymptotics.ChiefSeriesPrependMinimal
 import SymmetricSubgroupAsymptotics.FixedTargetCompositionEnvelope
 
@@ -252,6 +253,67 @@ theorem envelope_eta_le_abelianLength :
       simpa only [envelope, abelianLength,
         RelativeCompleteSourceEnvelope.semisimpleStep] using
         envelope_eta_le_abelianLength next
+
+/-- Exact prime-weighted version of the half-capacity estimate.  An
+elementary factor of order `p^a` contributes at most
+`(s/4) * a * log₂ p`, since `p ≥ 2`.  Summing retains the actual elementary
+logarithmic order budget instead of replacing every prime by the worst
+prime slope. -/
+theorem envelope_eta_le_elementaryLogBudget_quarter :
+    {S : ActualWreathCompressionState Q I} →
+      (T : ActualWreathCompressionTower S) →
+        T.envelope.eta ≤
+          ((Fintype.card I : ℝ) / 4) * T.elementaryLogBudget
+  | _, .terminal _ _ => by
+      simp [envelope, elementaryLogBudget,
+        RelativeCompleteSourceEnvelope.identity]
+  | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+        coefficient_le next => by
+      letI : Group D' := groupD'
+      letI : Finite D' := finiteD'
+      have hp2 : (2 : ℝ) ≤ C.p := by exact_mod_cast C.p_prime.two_le
+      have hlog0 : 0 ≤ Real.logb 2 C.p :=
+        Real.logb_nonneg (by norm_num) (by linarith)
+      have hinv : (1 : ℝ) / C.p ≤ 1 / 2 := by
+        exact one_div_le_one_div_of_le (by norm_num) hp2
+      have hslope : Real.logb 2 C.p / C.p ≤ Real.logb 2 C.p / 2 := by
+        rw [div_eq_mul_inv, div_eq_mul_inv]
+        exact mul_le_mul_of_nonneg_left (by simpa [one_div] using hinv) hlog0
+      have hfirst : Real.logb 2 C.p / C.p * H.capacity ≤
+          ((Fintype.card I : ℝ) / 4) *
+            ((Module.finrank (ZMod C.p) C.V : ℝ) * Real.logb 2 C.p) := by
+        calc
+          Real.logb 2 C.p / C.p * H.capacity ≤
+              (Real.logb 2 C.p / 2) * H.capacity :=
+            mul_le_mul_of_nonneg_right hslope H.capacity_nonneg
+          _ ≤ (Real.logb 2 C.p / 2) *
+              ((Module.finrank (ZMod C.p) C.V : ℝ) * Fintype.card I / 2) :=
+            mul_le_mul_of_nonneg_left capacity_le_half (by positivity)
+          _ = ((Fintype.card I : ℝ) / 4) *
+              ((Module.finrank (ZMod C.p) C.V : ℝ) * Real.logb 2 C.p) := by
+            ring
+      have hnext := envelope_eta_le_elementaryLogBudget_quarter next
+      calc
+        (ActualWreathCompressionTower.elementary _ _ phi hphi C H
+            capacity_le_half capacity_le_log coefficient_le next).envelope.eta =
+            Real.logb 2 C.p / C.p * H.capacity + next.envelope.eta := rfl
+        _ ≤ ((Fintype.card I : ℝ) / 4) *
+              ((Module.finrank (ZMod C.p) C.V : ℝ) * Real.logb 2 C.p) +
+            ((Fintype.card I : ℝ) / 4) * next.elementaryLogBudget :=
+          add_le_add hfirst hnext
+        _ = ((Fintype.card I : ℝ) / 4) *
+            (ActualWreathCompressionTower.elementary _ _ phi hphi C H
+              capacity_le_half capacity_le_log coefficient_le next).elementaryLogBudget := by
+          simp only [elementaryLogBudget]
+          ring
+  | _, @ActualWreathCompressionTower.semisimple _ _ _ _ _ _ _ _ D'
+      groupD' finiteD' phi hphi C next => by
+      letI : Group D' := groupD'
+      letI : Finite D' := finiteD'
+      simpa only [envelope, elementaryLogBudget,
+        RelativeCompleteSourceEnvelope.semisimpleStep] using
+        envelope_eta_le_elementaryLogBudget_quarter next
 
 end ActualWreathCompressionTower
 
