@@ -77,6 +77,71 @@ theorem degreeTwentySeven_card_le
   exact SmallAffineCatalogueRow.degreeTwentySeven_order_le_of_solubleFlag
     r (by simpa only [Nat.card_fin] using hrDegree) hrSoluble
 
+/-- Locate a soluble literal point stabilizer in the published small-affine
+table, retaining both its exact order and the soluble row flag. -/
+theorem locate_soluble
+    {G Ω : Type} [Group G] [Finite G] [Fintype Ω]
+    [MulAction G Ω] [FaithfulSMul G Ω]
+    (L : PublishedSmallAffineCatalogueLocator)
+    (C : SmallAffineCatalogueReceipt L)
+    (hprimitive : MulAction.IsPreprimitive G Ω)
+    (P : PrimitiveAffineProfile G Ω)
+    (x : Ω)
+    (hdegree : Nat.card Ω = 8 ∨ Nat.card Ω = 16 ∨ Nat.card Ω = 27)
+    (hsolvable : IsSolvable (P.complement x)) :
+    ∃ r : SmallAffineCatalogueRow,
+      r.degree = Nat.card Ω ∧ r.nonsoluble = false ∧
+      Nat.card (P.complement x) = r.complementOrder := by
+  obtain ⟨r, hrDegree, ⟨e⟩⟩ := L.locate hprimitive P x hdegree
+  have hrepSolvable : IsSolvable (L.representative r).Carrier :=
+    isSolvable_target_of_mulEquiv e hsolvable
+  exact ⟨r, hrDegree, representative_is_soluble_row L C r hrepSolvable,
+    (Nat.card_congr e.toEquiv).trans (C r).card_eq⟩
+
+/-- A soluble point stabilizer in a literal primitive affine action of
+degree eight has order dividing `21`. -/
+theorem degreeEight_soluble_card_dvd_twentyOne
+    {G Ω : Type} [Group G] [Finite G] [Fintype Ω]
+    [MulAction G Ω] [FaithfulSMul G Ω]
+    (L : PublishedSmallAffineCatalogueLocator)
+    (C : SmallAffineCatalogueReceipt L)
+    (hprimitive : MulAction.IsPreprimitive G Ω)
+    (P : PrimitiveAffineProfile G Ω)
+    (x : Ω) (hdegree : Nat.card Ω = 8)
+    (hsolvable : IsSolvable (P.complement x)) :
+    Nat.card (P.complement x) ∣ 21 := by
+  obtain ⟨r, hrDegree, ⟨e⟩⟩ := L.locate hprimitive P x
+    (Or.inl hdegree)
+  have hrepSolvable : IsSolvable (L.representative r).Carrier :=
+    isSolvable_target_of_mulEquiv e hsolvable
+  have hrSoluble : r.nonsoluble = false :=
+    representative_is_soluble_row L C r hrepSolvable
+  rw [Nat.card_congr e.toEquiv, (C r).card_eq]
+  exact SmallAffineCatalogueRow.degreeEight_order_dvd_twentyOne_of_solubleFlag
+    r (hrDegree.trans hdegree) hrSoluble
+
+/-- A soluble point stabilizer in a literal primitive affine action of
+degree sixteen has order dividing `360`. -/
+theorem degreeSixteen_soluble_card_dvd_threeSixty
+    {G Ω : Type} [Group G] [Finite G] [Fintype Ω]
+    [MulAction G Ω] [FaithfulSMul G Ω]
+    (L : PublishedSmallAffineCatalogueLocator)
+    (C : SmallAffineCatalogueReceipt L)
+    (hprimitive : MulAction.IsPreprimitive G Ω)
+    (P : PrimitiveAffineProfile G Ω)
+    (x : Ω) (hdegree : Nat.card Ω = 16)
+    (hsolvable : IsSolvable (P.complement x)) :
+    Nat.card (P.complement x) ∣ 360 := by
+  obtain ⟨r, hrDegree, ⟨e⟩⟩ := L.locate hprimitive P x
+    (Or.inr (Or.inl hdegree))
+  have hrepSolvable : IsSolvable (L.representative r).Carrier :=
+    isSolvable_target_of_mulEquiv e hsolvable
+  have hrSoluble : r.nonsoluble = false :=
+    representative_is_soluble_row L C r hrepSolvable
+  rw [Nat.card_congr e.toEquiv, (C r).card_eq]
+  exact SmallAffineCatalogueRow.degreeSixteen_order_dvd_threeSixty_of_solubleFlag
+    r (hrDegree.trans hdegree) hrSoluble
+
 /-- Catalogue transport for an arbitrary literal primitive affine action.
 This is the form used by an imprimitive ambient action on one of its actual
 minimal blocks. -/

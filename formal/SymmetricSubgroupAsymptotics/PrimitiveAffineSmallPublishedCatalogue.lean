@@ -123,6 +123,26 @@ theorem degreeTwentySeven_order_le_of_solubleFlag
   rcases r with ⟨i⟩ | ⟨i⟩ | ⟨i⟩ <;>
     fin_cases i <;> simp_all [degree, complementOrder, nonsoluble]
 
+/-- Every soluble degree-eight complement in the published catalogue has
+order dividing `21`.  Keeping divisibility, rather than only the upper
+bound, lets the imprimitive consumer retain the exact prime coordinates. -/
+theorem degreeEight_order_dvd_twentyOne_of_solubleFlag
+    (r : SmallAffineCatalogueRow) (hd : r.degree = 8)
+    (hs : r.nonsoluble = false) :
+    r.complementOrder ∣ 21 := by
+  rcases r with ⟨i⟩ | ⟨i⟩ | ⟨i⟩ <;>
+    fin_cases i <;> simp_all [degree, complementOrder, nonsoluble]
+
+/-- Every soluble degree-sixteen complement in the published catalogue has
+order dividing `360`.  The ten soluble orders are
+`5,10,15,18,20,30,36,36,60,72`; their least common multiple is `360`. -/
+theorem degreeSixteen_order_dvd_threeSixty_of_solubleFlag
+    (r : SmallAffineCatalogueRow) (hd : r.degree = 16)
+    (hs : r.nonsoluble = false) :
+    r.complementOrder ∣ 360 := by
+  rcases r with ⟨i⟩ | ⟨i⟩ | ⟨i⟩ <;>
+    fin_cases i <;> simp_all [degree, complementOrder, nonsoluble]
+
 theorem degreeEight_cap_le
     (r : SmallAffineCatalogueRow) (hd : r.degree = 8)
     (hn : r.nonsoluble = true) :

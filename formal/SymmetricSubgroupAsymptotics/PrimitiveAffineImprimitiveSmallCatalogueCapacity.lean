@@ -110,6 +110,68 @@ private theorem degreeSixteen_translationDimension
     P.p_prime Nat.prime_two C.d_pos (by norm_num)
       (hdegree.symm.trans (by norm_num))).2
 
+/-- The exact literal component order on a soluble small-affine row. -/
+theorem locate_soluble_component_order
+    (D : PublishedPrimitiveAffineSmallCatalogueData)
+    (block : OriginalMinimalBlock
+      (A := preE7NonPairAction w U) basePoint)
+    (P : PrimitiveAffineProfile block.Component block.Fibre)
+    (hdegree : Nat.card block.Fibre = 8 ∨
+      Nat.card block.Fibre = 16 ∨ Nat.card block.Fibre = 27)
+    (hsolvable : IsSolvable (P.complement (origin block))) :
+    ∃ r : SmallAffineCatalogueRow,
+      r.degree = Nat.card block.Fibre ∧ r.nonsoluble = false ∧
+      Nat.card block.Component =
+        Nat.card block.Fibre * r.complementOrder := by
+  obtain ⟨r, hr, hs, hcard⟩ :=
+    PrimitiveAffineSmallCatalogueBridge.locate_soluble
+      D.locator D.representativeFacts block.component_preprimitive P
+        (origin block) hdegree hsolvable
+  refine ⟨r, hr, hs, ?_⟩
+  have hfactor := (P.isComplement'_complement (origin block)).card_mul
+  have hV : Nat.card P.V = Nat.card block.Fibre := P.card_eq (origin block)
+  rw [← hfactor, hV, hcard]
+
+/-- On a soluble degree-eight row the exact published point-stabilizer
+orders divide `21`, hence the whole affine component has order dividing
+`8 * 21 = 168`. -/
+theorem component_card_dvd_168_of_degreeEight_soluble
+    (D : PublishedPrimitiveAffineSmallCatalogueData)
+    (block : OriginalMinimalBlock
+      (A := preE7NonPairAction w U) basePoint)
+    (P : PrimitiveAffineProfile block.Component block.Fibre)
+    (hr : Nat.card block.Fibre = 8)
+    (hsolvable : IsSolvable (P.complement (origin block))) :
+    Nat.card block.Component ∣ 168 := by
+  have hcomp :=
+    PrimitiveAffineSmallCatalogueBridge.degreeEight_soluble_card_dvd_twentyOne
+      D.locator D.representativeFacts block.component_preprimitive P
+        (origin block) hr hsolvable
+  have hfactor := (P.isComplement'_complement (origin block)).card_mul
+  have hV : Nat.card P.V = Nat.card block.Fibre := P.card_eq (origin block)
+  rw [hfactor.symm, hV, hr]
+  simpa using Nat.mul_dvd_mul_left 8 hcomp
+
+/-- On a soluble degree-sixteen row the exact published point-stabilizer
+orders divide `360`, hence the whole affine component has order dividing
+`16 * 360 = 5760`. -/
+theorem component_card_dvd_5760_of_degreeSixteen_soluble
+    (D : PublishedPrimitiveAffineSmallCatalogueData)
+    (block : OriginalMinimalBlock
+      (A := preE7NonPairAction w U) basePoint)
+    (P : PrimitiveAffineProfile block.Component block.Fibre)
+    (hr : Nat.card block.Fibre = 16)
+    (hsolvable : IsSolvable (P.complement (origin block))) :
+    Nat.card block.Component ∣ 5760 := by
+  have hcomp :=
+    PrimitiveAffineSmallCatalogueBridge.degreeSixteen_soluble_card_dvd_threeSixty
+      D.locator D.representativeFacts block.component_preprimitive P
+        (origin block) hr hsolvable
+  have hfactor := (P.isComplement'_complement (origin block)).card_mul
+  have hV : Nat.card P.V = Nat.card block.Fibre := P.card_eq (origin block)
+  rw [hfactor.symm, hV, hr]
+  simpa using Nat.mul_dvd_mul_left 16 hcomp
+
 namespace ComponentSource
 
 variable

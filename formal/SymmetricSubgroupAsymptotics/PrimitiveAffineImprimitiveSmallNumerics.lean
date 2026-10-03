@@ -102,6 +102,38 @@ theorem refinedWeightedFactorBudget_thirteenFortyFour (rate : ℕ → ℝ) :
   unfold fixedTargetCompositionGamma
   norm_num [Real.logb_self_eq_one]
 
+/-- Exact factor budget for the soluble degree-eight affine envelope
+`8 * 21 = 168`. -/
+theorem refinedWeightedFactorBudget_oneSixtyEight (rate : ℕ → ℝ) :
+    refinedWeightedFactorBudget rate 168 =
+      (3 / 2 : ℝ) * rate 2 +
+        fixedTargetCompositionGamma * rate 3 +
+        (Real.logb 2 7 / 7) * rate 7 := by
+  rw [show 168 = (2 ^ 3 * 3 ^ 1) * 7 ^ 1 by norm_num,
+    refinedWeightedFactorBudget_mul rate (by norm_num) (by norm_num),
+    refinedWeightedFactorBudget_mul rate (by norm_num) (by norm_num),
+    refinedWeightedFactorBudget_prime_pow rate Nat.prime_two,
+    refinedWeightedFactorBudget_prime_pow rate (by norm_num : Nat.Prime 3),
+    refinedWeightedFactorBudget_prime_pow rate (by norm_num : Nat.Prime 7)]
+  unfold fixedTargetCompositionGamma
+  norm_num [Real.logb_self_eq_one]
+
+/-- Exact factor budget for the common soluble degree-sixteen affine
+envelope `16 * 360 = 5760`. -/
+theorem refinedWeightedFactorBudget_fiveSevenSixty (rate : ℕ → ℝ) :
+    refinedWeightedFactorBudget rate 5760 =
+      (7 / 2 : ℝ) * rate 2 +
+        2 * fixedTargetCompositionGamma * rate 3 +
+        (Real.logb 2 5 / 5) * rate 5 := by
+  rw [show 5760 = (2 ^ 7 * 3 ^ 2) * 5 ^ 1 by norm_num,
+    refinedWeightedFactorBudget_mul rate (by norm_num) (by norm_num),
+    refinedWeightedFactorBudget_mul rate (by norm_num) (by norm_num),
+    refinedWeightedFactorBudget_prime_pow rate Nat.prime_two,
+    refinedWeightedFactorBudget_prime_pow rate (by norm_num : Nat.Prime 3),
+    refinedWeightedFactorBudget_prime_pow rate (by norm_num : Nat.Prime 5)]
+  unfold fixedTargetCompositionGamma
+  norm_num [Real.logb_self_eq_one]
+
 theorem refinedWeightedFactorBudget_threeTwentyTwoFiveSixty
     (rate : ℕ → ℝ) :
     refinedWeightedFactorBudget rate 322560 =
