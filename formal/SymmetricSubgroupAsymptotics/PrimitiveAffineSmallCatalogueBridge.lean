@@ -67,32 +67,34 @@ theorem degreeTwentySeven_card_le
     (P : PrimitiveAffineProfile (preE7NonPairAction 27 U) (Fin 27))
     (x : Fin 27) (hsolvable : IsSolvable (P.complement x)) :
     Nat.card (P.complement x) ≤ 78 := by
-  obtain ⟨r, hrDegree, ⟨e⟩⟩ := L.locate U hprimitive P x
-    (Or.inr (Or.inr rfl))
+  obtain ⟨r, hrDegree, ⟨e⟩⟩ := L.locate hprimitive P x
+    (Or.inr (Or.inr (by norm_num)))
   have hrepSolvable : IsSolvable (L.representative r).Carrier :=
     isSolvable_target_of_mulEquiv e hsolvable
   have hrSoluble : r.nonsoluble = false :=
     representative_is_soluble_row L C r hrepSolvable
   rw [Nat.card_congr e.toEquiv, (C r).card_eq]
   exact SmallAffineCatalogueRow.degreeTwentySeven_order_le_of_solubleFlag
-    r hrDegree hrSoluble
+    r (by simpa only [Nat.card_fin] using hrDegree) hrSoluble
 
-private theorem trace_abelianLength_le_rowCap
-    {w : ℕ}
+/-- Catalogue transport for an arbitrary literal primitive affine action.
+This is the form used by an imprimitive ambient action on one of its actual
+minimal blocks. -/
+theorem chief_abelianLength_le_rowCap
+    {G Ω : Type} [Group G] [Finite G] [Fintype Ω]
+    [MulAction G Ω] [FaithfulSMul G Ω]
     (L : PublishedSmallAffineCatalogueLocator)
     (C : SmallAffineCatalogueReceipt L)
-    (U : PreE7NonPairActionClass w)
-    (hprimitive : MulAction.IsPreprimitive
-      (preE7NonPairAction w U) (Fin w))
-    (P : PrimitiveAffineProfile (preE7NonPairAction w U) (Fin w))
-    (x : Fin w) (T : FixedTargetCompositionTrace (P.complement x))
+    (hprimitive : MulAction.IsPreprimitive G Ω)
+    (P : PrimitiveAffineProfile G Ω)
+    (x : Ω) (s : ActualChiefSeries (P.complement x))
     (hnonsolvable : ¬ IsSolvable (P.complement x))
-    (hdegree : w = 8 ∨ w = 16 ∨ w = 27) :
+    (hdegree : Nat.card Ω = 8 ∨ Nat.card Ω = 16 ∨ Nat.card Ω = 27) :
     ∃ r : SmallAffineCatalogueRow,
-      r.degree = w ∧
+      r.degree = Nat.card Ω ∧
       r.nonsoluble = true ∧
-      T.envelope.abelianLength ≤ r.nonsolubleAbelianCap := by
-  obtain ⟨r, hrDegree, ⟨e⟩⟩ := L.locate U hprimitive P x hdegree
+      actualChiefSeriesAbelianLength s ≤ r.nonsolubleAbelianCap := by
+  obtain ⟨r, hrDegree, ⟨e⟩⟩ := L.locate hprimitive P x hdegree
   have hrepNonsolvable : ¬ IsSolvable (L.representative r).Carrier :=
     not_isSolvable_target_of_mulEquiv e hnonsolvable
   have hrNonsoluble : r.nonsoluble = true :=
@@ -100,15 +102,33 @@ private theorem trace_abelianLength_le_rowCap
   refine ⟨r, hrDegree, hrNonsoluble, ?_⟩
   let K := (C r).nonsolubleCore hrNonsoluble
   letI : K.core.Normal := K.normal
-  rw [T.abelianLength_eq]
   have hseries := actualChiefSeriesAbelianLength_le_quotient_cardFactors
-    (actualChiefSeriesComap e.symm T.chief) K.core K.ne_bot
+    (actualChiefSeriesComap e.symm s) K.core K.ne_bot
       K.noncommutative K.le_every_nontrivial_normal
-  rw [actualChiefSeriesComap_abelianLength e.symm T.chief,
+  rw [actualChiefSeriesComap_abelianLength e.symm s,
     K.quotient_card_eq] at hseries
   exact hseries.trans
     (SmallAffineCatalogueRow.nonsolubleCoreQuotient_cardFactors_le
       r hrNonsoluble)
+
+/-- Fixed-target-envelope wrapper around the literal-chief-series result. -/
+theorem trace_abelianLength_le_rowCap
+    {G Ω : Type} [Group G] [Finite G] [Fintype Ω]
+    [MulAction G Ω] [FaithfulSMul G Ω]
+    (L : PublishedSmallAffineCatalogueLocator)
+    (C : SmallAffineCatalogueReceipt L)
+    (hprimitive : MulAction.IsPreprimitive G Ω)
+    (P : PrimitiveAffineProfile G Ω)
+    (x : Ω) (T : FixedTargetCompositionTrace (P.complement x))
+    (hnonsolvable : ¬ IsSolvable (P.complement x))
+    (hdegree : Nat.card Ω = 8 ∨ Nat.card Ω = 16 ∨ Nat.card Ω = 27) :
+    ∃ r : SmallAffineCatalogueRow,
+      r.degree = Nat.card Ω ∧
+      r.nonsoluble = true ∧
+      T.envelope.abelianLength ≤ r.nonsolubleAbelianCap := by
+  obtain ⟨r, hr, hn, hle⟩ := chief_abelianLength_le_rowCap
+    L C hprimitive P x T.chief hnonsolvable hdegree
+  exact ⟨r, hr, hn, T.abelianLength_eq.trans_le hle⟩
 
 /-- A nonsoluble primitive affine complement of degree `8` has no abelian
 composition factor. -/
@@ -123,10 +143,11 @@ theorem degreeEight_abelianLength_eq_zero
     (hnonsolvable : ¬ IsSolvable (P.complement x)) :
     T.envelope.abelianLength = 0 := by
   obtain ⟨r, hrDegree, hrNonsoluble, hcap⟩ :=
-    trace_abelianLength_le_rowCap L C U hprimitive P x T hnonsolvable
-      (Or.inl rfl)
+    trace_abelianLength_le_rowCap L C hprimitive P x T hnonsolvable
+      (Or.inl (by norm_num))
   have hzero : r.nonsolubleAbelianCap ≤ 0 :=
-    SmallAffineCatalogueRow.degreeEight_cap_le r hrDegree hrNonsoluble
+    SmallAffineCatalogueRow.degreeEight_cap_le r
+      (by simpa only [Nat.card_fin] using hrDegree) hrNonsoluble
   omega
 
 /-- A nonsoluble primitive affine complement of degree `16` has at most two
@@ -142,10 +163,11 @@ theorem degreeSixteen_abelianLength_le_two
     (hnonsolvable : ¬ IsSolvable (P.complement x)) :
     T.envelope.abelianLength ≤ 2 := by
   obtain ⟨r, hrDegree, hrNonsoluble, hcap⟩ :=
-    trace_abelianLength_le_rowCap L C U hprimitive P x T hnonsolvable
-      (Or.inr (Or.inl rfl))
+    trace_abelianLength_le_rowCap L C hprimitive P x T hnonsolvable
+      (Or.inr (Or.inl (by norm_num)))
   exact hcap.trans
-    (SmallAffineCatalogueRow.degreeSixteen_cap_le r hrDegree hrNonsoluble)
+    (SmallAffineCatalogueRow.degreeSixteen_cap_le r
+      (by simpa only [Nat.card_fin] using hrDegree) hrNonsoluble)
 
 /-- A nonsoluble primitive affine complement of degree `27` has at most one
 abelian composition factor. -/
@@ -160,10 +182,11 @@ theorem degreeTwentySeven_abelianLength_le_one
     (hnonsolvable : ¬ IsSolvable (P.complement x)) :
     T.envelope.abelianLength ≤ 1 := by
   obtain ⟨r, hrDegree, hrNonsoluble, hcap⟩ :=
-    trace_abelianLength_le_rowCap L C U hprimitive P x T hnonsolvable
-      (Or.inr (Or.inr rfl))
+    trace_abelianLength_le_rowCap L C hprimitive P x T hnonsolvable
+      (Or.inr (Or.inr (by norm_num)))
   exact hcap.trans
-    (SmallAffineCatalogueRow.degreeTwentySeven_cap_le r hrDegree hrNonsoluble)
+    (SmallAffineCatalogueRow.degreeTwentySeven_cap_le r
+      (by simpa only [Nat.card_fin] using hrDegree) hrNonsoluble)
 
 end PrimitiveAffineSmallCatalogueBridge
 

@@ -93,6 +93,121 @@ def initialState
       fullComponent := ActualBlockWreathEmbedding.fullComponent
         block.map block.map_equivariant block.base }
 
+/-- The common elementary-capacity input on the selected real block
+system. -/
+noncomputable def affineCapacityInput
+    (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
+    (hTraceyLog : TraceyAffineInducedModuleInput)
+    (hTraceyRefined : TraceyRefinedInducedModuleInput)
+    (block : OriginalMinimalBlock
+      (A := preE7NonPairAction w U) basePoint) :
+    ActualWreathElementaryCapacityInput
+      (Q := block.Top) (I := block.Points) :=
+  ActualWreathAffineCapacity.elementaryCapacityInput
+    hTraceyHalf hTraceyLog hTraceyRefined (by
+      simpa only [Fintype.card_eq_nat_card] using block.degrees_ge_two.2)
+
+/-- The traced residual tower after removing the regular affine
+translations.  Its local group is literally `Component / V`. -/
+noncomputable def affineQuotientTrace
+    (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
+    (hTraceyLog : TraceyAffineInducedModuleInput)
+    (hTraceyRefined : TraceyRefinedInducedModuleInput)
+    (hTraceyPerm : TraceyPermutationGeneratorInput)
+    (block : OriginalMinimalBlock
+      (A := preE7NonPairAction w U) basePoint)
+    [Nontrivial block.Fibre]
+    (P : PrimitiveAffineProfile block.Component block.Fibre) :
+    ActualWreathCompressionTrace
+      ((initialState hTraceyPerm block).quotient
+        (block.Component ⧸ P.V) (QuotientGroup.mk' P.V)
+          (QuotientGroup.mk'_surjective P.V)) :=
+  ActualWreathCompressionTrace.canonicalOfCapacity
+    (affineCapacityInput hTraceyHalf hTraceyLog hTraceyRefined block)
+    ((initialState hTraceyPerm block).quotient
+      (block.Component ⧸ P.V) (QuotientGroup.mk' P.V)
+        (QuotientGroup.mk'_surjective P.V))
+
+/-- The affine-native traced tower.  Primitivity makes the regular
+translation subgroup a minimal normal subgroup, so we may and do take it as
+the first literal chief edge.  The remainder is the ordinary canonical
+tower on the quotient, which is the point stabilizer up to the standard
+affine quotient equivalence. -/
+noncomputable def affineTrace
+    (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
+    (hTraceyLog : TraceyAffineInducedModuleInput)
+    (hTraceyRefined : TraceyRefinedInducedModuleInput)
+    (hTraceyPerm : TraceyPermutationGeneratorInput)
+    (block : OriginalMinimalBlock
+      (A := preE7NonPairAction w U) basePoint)
+    (P : PrimitiveAffineProfile block.Component block.Fibre) :
+    ActualWreathCompressionTrace (initialState hTraceyPerm block) := by
+  letI : Nontrivial block.Fibre :=
+    Finite.one_lt_card_iff_nontrivial.mp block.degrees_ge_two.1
+  let S := initialState hTraceyPerm block
+  let capacity := affineCapacityInput hTraceyHalf hTraceyLog hTraceyRefined block
+  let C₀ := P.elementaryChart block.component_preprimitive
+  let D' := block.Component ⧸ P.V
+  let phi : block.Component →* D' := QuotientGroup.mk' P.V
+  have hphi : Function.Surjective phi := QuotientGroup.mk'_surjective P.V
+  have hker : phi.ker = P.V := QuotientGroup.ker_mk' P.V
+  let C : ElementaryMinimalNormalChart phi.ker :=
+    { p := P.p
+      p_prime := P.p_prime
+      primeFact := C₀.primeFact
+      V := C₀.V
+      addCommGroup := C₀.addCommGroup
+      module := C₀.module
+      finiteDimensional := C₀.finiteDimensional
+      equiv := (MulEquiv.subgroupCongr hker).trans C₀.equiv }
+  let H := Classical.choose (capacity S D' phi hphi C)
+  have hH := Classical.choose_spec (capacity S D' phi hphi C)
+  have hhalf := hH.1
+  have hlog := hH.2.1
+  have hrefined := hH.2.2.1
+  have hintegral := hH.2.2.2.1
+  have hcoeff := hH.2.2.2.2
+  let next := affineQuotientTrace hTraceyHalf hTraceyLog hTraceyRefined
+    hTraceyPerm block P
+  have hVne : P.V ≠ ⊥ := by
+    haveI : Nontrivial C₀.V := C₀.nontrivial
+    exact P.V.nontrivial_iff_ne_bot.mp C₀.equiv.symm.injective.nontrivial
+  let c := prependMinimalNormalChiefSeries P.V hVne
+    (fun K hK hKV => P.minimal block.component_preprimitive K hK hKV)
+    next.chief
+  have hc := prependMinimalNormalChiefSeries_abelianLength P.V hVne
+    (fun K hK hKV => P.minimal block.component_preprimitive K hK hKV)
+    next.chief
+  refine
+    { tower := .elementary S D' phi hphi C H hhalf hlog hrefined hcoeff
+        next.tower
+      integralCapacities := ⟨hintegral, next.integralCapacities⟩
+      chief := c
+      abelianLength_eq := ?_ }
+  change Module.finrank (ZMod C.p) C.V + next.tower.abelianLength =
+    actualChiefSeriesAbelianLength c
+  rw [hc, next.abelianLength_eq]
+  congr 1
+  letI : Fact P.p.Prime := C₀.primeFact
+  exact (chiefAbelianLength_elementary C₀.equiv).symm
+
+/-- The affine-native trace exposes the translation dimension followed by
+the literal quotient trace. -/
+theorem affineTrace_abelianLength_eq
+    (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
+    (hTraceyLog : TraceyAffineInducedModuleInput)
+    (hTraceyRefined : TraceyRefinedInducedModuleInput)
+    (hTraceyPerm : TraceyPermutationGeneratorInput)
+    (block : OriginalMinimalBlock
+      (A := preE7NonPairAction w U) basePoint)
+    [Nontrivial block.Fibre]
+    (P : PrimitiveAffineProfile block.Component block.Fibre) :
+    (affineTrace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P).tower.abelianLength =
+      (P.elementaryChart block.component_preprimitive).d +
+        (affineQuotientTrace hTraceyHalf hTraceyLog hTraceyRefined
+          hTraceyPerm block P).tower.abelianLength := by
+  rfl
+
 /-- The group-native source carried by an affine primitive component.  Its
 capacity field is evaluated on all quotient states of the same real block
 system.  Its only project estimate is the affine capacity margin.  The
@@ -107,12 +222,8 @@ structure ComponentSource
       (A := preE7NonPairAction w U) basePoint)
     (_P : PrimitiveAffineProfile block.Component block.Fibre) : Type 1 where
   margin :
-    let capacity := ActualWreathAffineCapacity.elementaryCapacityInput
-      (Q := block.Top) (I := block.Points) hTraceyHalf hTraceyLog
-        hTraceyRefined (by
-        simpa only [Fintype.card_eq_nat_card] using block.degrees_ge_two.2)
-    let trace := ActualWreathCompressionTrace.canonicalOfCapacity
-      capacity (initialState hTraceyPerm block)
+    let trace := affineTrace hTraceyHalf hTraceyLog hTraceyRefined
+      hTraceyPerm block _P
     let tower := trace.tower
     preE7CharacterRho * w ≤
       ((evenWidth w : ℝ) - tower.envelope.v) / 8 - tower.envelope.eta
@@ -132,39 +243,38 @@ variable
 states of the selected block system. -/
 noncomputable def capacity : ActualWreathElementaryCapacityInput
     (Q := block.Top) (I := block.Points) :=
-  ActualWreathAffineCapacity.elementaryCapacityInput
-    hTraceyHalf hTraceyLog hTraceyRefined (by
-      simpa only [Fintype.card_eq_nat_card] using block.degrees_ge_two.2)
+  affineCapacityInput hTraceyHalf hTraceyLog hTraceyRefined block
 
-/-- The literal local-chief trace selected by the component source. -/
+/-- The literal local-chief trace selected by the component source.  Its
+first edge is the regular affine translation subgroup.  This is the natural
+chief edge forced by primitivity and keeps the published small-complement
+catalogue available on the remaining quotient. -/
 noncomputable def trace :
   ActualWreathCompressionTrace (initialState hTraceyPerm block) :=
-  ActualWreathCompressionTrace.canonicalOfCapacity
-    (capacity hTraceyHalf hTraceyLog hTraceyRefined block)
-    (initialState hTraceyPerm block)
+  affineTrace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
 
 /-- The compression tower underlying the traced local chief series. -/
 noncomputable def tower :
   ActualWreathCompressionTower (initialState hTraceyPerm block) :=
-  (trace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).tower
+  (trace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P).tower
 
 /-- Complete quotient-weight transfer from the original ambient group to
 the faithful action of the actual top on the original blocks. -/
 noncomputable def envelope :
     RelativeCompleteSourceEnvelope (preE7NonPairAction w U) :=
-  (tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).envelope
+  (tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P).envelope
 
 /-- The actual affine exponent is bounded by the published primitive
 composition-length expression.  The composition series is transported from
 the literal block fibre to `Fin r`; no project-owned density premise is used. -/
 theorem envelope_eta_le_primitiveCompositionBound
     (hcomp : PrimitiveCompositionLengthInput) :
-    (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).eta ≤
+    (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P).eta ≤
       fixedTargetCompositionGamma *
         ((Nat.card block.Points : ℝ) / 2) *
           ((8 / 3 : ℝ) * Real.logb 2 (Nat.card block.Fibre) - 4 / 3) := by
   obtain ⟨t, htower⟩ :=
-    (trace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).envelope_eta_le_some_compositionLength
+    (trace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P).envelope_eta_le_some_compositionLength
   have ht := PrimitiveCompositionLengthInput.bound_of_equiv hcomp
     (Nat.card block.Fibre) block.degrees_ge_two.1
     (Finite.equivFin block.Fibre) block.Component

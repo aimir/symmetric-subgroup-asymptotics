@@ -106,7 +106,7 @@ noncomputable def of_twoTraceyPrimary
         (ActualWreathCompressionTower.traceyPrimaryRate_nonneg
           (Nat.card block.Points) q₂ e₂ p))
       n hn hcomponent
-  · let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block
+  · let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
     apply ActualWreathCompressionTower.capacityRateBound_min _ _ T
     · simpa only [Fintype.card_eq_nat_card] using
         (ActualWreathCompressionTower.capacityRateBound_traceyPrimary

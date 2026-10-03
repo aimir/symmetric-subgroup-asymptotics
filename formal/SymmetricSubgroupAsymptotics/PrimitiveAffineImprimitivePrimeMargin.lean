@@ -94,11 +94,11 @@ theorem trace_abelianLength_le_prime_mul_pred
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hr : (Nat.card block.Fibre).Prime) :
     let T := ComponentSource.trace hTraceyHalf hTraceyLog hTraceyRefined
-      hTraceyPerm block
+      hTraceyPerm block P
     T.tower.abelianLength ≤ ArithmeticFunction.cardFactors
       (Nat.card block.Fibre * (Nat.card block.Fibre - 1)) := by
   let T := ComponentSource.trace hTraceyHalf hTraceyLog hTraceyRefined
-    hTraceyPerm block
+    hTraceyPerm block P
   have hchief : actualChiefSeriesAbelianLength T.chief ≤
       ArithmeticFunction.cardFactors (Nat.card block.Component) :=
     actualChiefSeriesAbelianLength_le_cardFactors T.chief
@@ -318,7 +318,7 @@ noncomputable def of_primeElevenToTwentyThree
       Finite.one_lt_card_iff_nontrivial.mp block.degrees_ge_two.1
     let r := Nat.card block.Fibre
     let s := Nat.card block.Points
-    let T := trace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block
+    let T := trace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
     have hrCases : r = 11 ∨ r = 13 ∨ r = 17 ∨ r = 19 ∨ r = 23 := by
       change 11 ≤ r at hr11
       change r < 25 at hr25
@@ -360,7 +360,7 @@ noncomputable def of_primeSeven
     letI : Nontrivial block.Fibre :=
       Finite.one_lt_card_iff_nontrivial.mp block.degrees_ge_two.1
     let s := Nat.card block.Points
-    let T := trace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block
+    let T := trace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
     have hrPrime : (Nat.card block.Fibre).Prime := by
       rw [hr]
       norm_num

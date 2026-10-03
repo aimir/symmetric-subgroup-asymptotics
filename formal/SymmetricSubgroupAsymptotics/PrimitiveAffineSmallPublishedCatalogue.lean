@@ -190,14 +190,14 @@ of those representatives are not fields of this structure. -/
 structure PublishedSmallAffineCatalogueLocator where
   representative :
     SmallAffineCatalogueRow → SmallAffineCatalogueRepresentative
-  locate : ∀ {w : ℕ} (U : PreE7NonPairActionClass w)
-    (_hprimitive : MulAction.IsPreprimitive
-      (preE7NonPairAction w U) (Fin w))
-    (P : PrimitiveAffineProfile (preE7NonPairAction w U) (Fin w))
-    (x : Fin w),
-    (w = 8 ∨ w = 16 ∨ w = 27) →
+  locate : ∀ {G Ω : Type} [Group G] [Finite G] [Fintype Ω]
+    [MulAction G Ω] [FaithfulSMul G Ω],
+    (_hprimitive : MulAction.IsPreprimitive G Ω) →
+    (P : PrimitiveAffineProfile G Ω) →
+    (x : Ω) →
+    (Nat.card Ω = 8 ∨ Nat.card Ω = 16 ∨ Nat.card Ω = 27) →
       ∃ r : SmallAffineCatalogueRow,
-        r.degree = w ∧
+        r.degree = Nat.card Ω ∧
           Nonempty
             (P.complement x ≃*
               (representative r).Carrier)

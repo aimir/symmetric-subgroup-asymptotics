@@ -38,14 +38,14 @@ noncomputable def of_refinedFactorBudget
     (n : ℕ) (hn : n ≠ 0)
     (hdiv : Nat.card block.Component ∣ n)
     (hcapacity :
-      let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block
+      let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
       T.CapacityRateBound rate)
     (hmargin : preE7CharacterRho * w ≤
       ((evenWidth w : ℝ) - Nat.card block.Points) / 8 -
         refinedWeightedFactorBudget rate n) :
     ComponentSource hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P where
   margin := by
-    let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block
+    let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
     have heta0 : T.envelope.eta ≤
         refinedWeightedFactorBudget rate (Nat.card block.Component) :=
       T.envelope_eta_le_refinedFactorBudget_card rate hrate hcapacity
@@ -79,7 +79,7 @@ noncomputable def of_traceyPrimary
         (Nat.card block.Points) q e)
       (ActualWreathCompressionTower.traceyPrimaryRate_nonneg
         (Nat.card block.Points) q e) n hn hdiv
-  · let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block
+  · let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
     simpa only [Fintype.card_eq_nat_card] using
       (ActualWreathCompressionTower.capacityRateBound_traceyPrimary
         q e hq he (by simpa only [Fintype.card_eq_nat_card] using hqdiv)
@@ -102,7 +102,7 @@ noncomputable def of_traceyPrimePower
       (ActualWreathCompressionTower.traceyPrimePowerRate q e)
       (ActualWreathCompressionTower.traceyPrimePowerRate_nonneg q e)
       n hn hdiv
-  · let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block
+  · let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
     simpa only [Fintype.card_eq_nat_card] using
       (ActualWreathCompressionTower.capacityRateBound_traceyPrimePower
         q e hq he (by simpa only [Fintype.card_eq_nat_card] using hs) T)
