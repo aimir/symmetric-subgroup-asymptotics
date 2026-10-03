@@ -16,7 +16,6 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
-namespace ComponentSource
 
 variable {w : ℕ} {U : PreE7NonPairActionClass w}
   {basePoint : Fin w}
@@ -27,6 +26,35 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (block : OriginalMinimalBlock
     (A := preE7NonPairAction w U) basePoint)
   (P : PrimitiveAffineProfile block.Component block.Fibre)
+
+/-- A degree-three primitive affine component is either the regular
+translation group or the full natural symmetric group.  This order-level
+form is sufficient for the capacity split: the regular translations force a
+factor three, while the faithful affine action bounds the component order by
+six. -/
+theorem component_card_dvd_three_or_eq_six
+    (hr : Nat.card block.Fibre = 3) :
+    Nat.card block.Component ∣ 3 ∨ Nat.card block.Component = 6 := by
+  letI : Nontrivial block.Fibre :=
+    Finite.one_lt_card_iff_nontrivial.mp block.degrees_ge_two.1
+  let x : block.Fibre := ⟨basePoint, block.map_base⟩
+  have h6 := component_card_dvd_6 block P hr
+  have hfactor := (P.isComplement'_complement x).card_mul
+  have hV : Nat.card P.V = 3 := (P.card_eq x).trans hr
+  have h3 : 3 ∣ Nat.card block.Component := by
+    rw [← hfactor, hV]
+    exact dvd_mul_right 3 _
+  have hlo : 3 ≤ Nat.card block.Component :=
+    Nat.le_of_dvd (Nat.card_pos (α := block.Component)) h3
+  have hhi : Nat.card block.Component ≤ 6 :=
+    Nat.le_of_dvd (by norm_num) h6
+  interval_cases hcard : Nat.card block.Component
+  · exact Or.inl (by norm_num [hcard])
+  · norm_num [hcard] at h6
+  · norm_num [hcard] at h6
+  · exact Or.inr hcard
+
+namespace ComponentSource
 
 private theorem gamma_nonneg : 0 ≤ fixedTargetCompositionGamma := by
   exact div_nonneg (Real.logb_nonneg (by norm_num) (by norm_num)) (by norm_num)
