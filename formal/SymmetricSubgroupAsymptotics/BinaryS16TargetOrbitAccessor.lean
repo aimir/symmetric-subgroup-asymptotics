@@ -52,9 +52,9 @@ theorem targetSubgroup_full (H : Actual C) :
   have hchart : (wordPointChart C H).trans e =
       BinaryS16FusionNaturalPointChart.pointChart
         (subgroup C H) (residualSector C H) := by
-    unfold wordPointChart e
-    rw [Equiv.trans_assoc,finCast_symm_trans_cast (parameter_eq C H)]
-    exact Equiv.trans_refl _
+    dsimp [e]
+    unfold wordPointChart
+    rw [Equiv.trans_assoc, Equiv.symm_trans_self, Equiv.trans_refl]
   rw [hchart] at hfull
   exact hfull
 

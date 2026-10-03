@@ -550,9 +550,9 @@ noncomputable def numericalPackage (hM4 : GlobalMarkedC4MomentBound) :
     have hw := S.width_eq
     subst hw
     exact preE7F20_entryParameters
-  main_total_bound := fun b => by
+  main_total_growth := .inl (fun b => by
     change (0 : ℝ) ≤ _
-    positivity
+    positivity)
   tail_total_bound := fun b => by
     change preE7F20ColdConstant ≤ _
     have hw := S.width_eq
