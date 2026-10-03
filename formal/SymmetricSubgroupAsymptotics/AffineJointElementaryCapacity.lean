@@ -86,7 +86,12 @@ private theorem axisCoefficient_le
     _ ≤ (Nat.card A : ℝ) ^ (D.g + 1) := by
       exact pow_le_pow_left₀ (by positivity) (by exact_mod_cast hS) _
 
-private theorem fixedTop_card_le
+/-- The number of literal axes above one retained top is bounded by the
+same invariant-intersection and normal-graph code used in the joint
+capacity coefficient.  This spelling is exported so refinements of the
+per-axis fibre can reuse the exact top count without redoing the graph
+argument. -/
+theorem fixedTop_card_le
     (top : {top : Subgroup B // top.Normal}) :
     Nat.card {N : {N : Subgroup G // N.Normal} //
       elementaryLayerTopAxis pi hpi N = top} ≤

@@ -156,6 +156,62 @@ theorem invariantQuotient_schurCapacity_le_refined :
 
 end NormalSection
 
+/-- The lift coefficient after the invariant cut is no larger than the
+standard generator-power fibre used by the ordinary affine joint capacity.
+This is the quantitative reason the prime-marked refinement has no extra
+menu-mass cost. -/
+private theorem primeCutCoefficient_le_generatorPower
+    (i₀ : I) (D : RefinedCapacityData S phi C i₀)
+    (N : {N : Subgroup S.A // N.Normal}) :
+    elementaryLayerPrimeCutCoefficient C.p
+        (pi S phi) (E S phi C).quotientRepresentation
+        (E S phi C).originalKernelChart N ≤
+      (Nat.card (E S phi C).quotientRepresentation : ℝ) ^
+        (S.generatorCount + 1) := by
+  let M := (originalChart S phi C).sectionRepresentation
+    (pi S phi) (E S phi C).quotientRepresentation N.1
+  let cut : {W : Submodule (ZMod C.p) M // W ≤ M.ρ.invariants} :=
+    ⟨M.ρ.invariants, le_rfl⟩
+  let W := OriginalCentralCutExtension.quotientModule M cut
+  letI : N.1.Normal := N.2
+  let normalSpace := (originalChart S phi C).normalSpace
+    (pi S phi) (E S phi C).quotientRepresentation N.1
+  letI : Finite C.V := Module.finite_of_finite (ZMod C.p)
+  letI : Finite (E S phi C).V := Finite.of_injective
+    (PermutationalWreathProduct.Compression.ElementarySubmodule
+      (p := C.p) S.rho phi C.equiv.symm).subtype
+    (PermutationalWreathProduct.Compression.ElementarySubmodule
+      (p := C.p) S.rho phi C.equiv.symm).subtype_injective
+  letI : Finite (E S phi C).quotientRepresentation :=
+    inferInstanceAs (Finite (E S phi C).V)
+  letI : Finite M := Finite.of_surjective
+    normalSpace.mkQ normalSpace.mkQ_surjective
+  letI : Finite W := Finite.of_surjective cut.1.mkQ cut.1.mkQ_surjective
+  obtain ⟨generators, hgenerators⟩ :=
+    (jointCapacityInputRefined S phi C i₀ D).sectionGenerators N
+  have hH1 : Nat.card (groupCohomology.H1 W) ≤
+      Nat.card W ^ S.generatorCount :=
+    firstCohomology_card_le_generator_power W S.generatorCount
+      generators hgenerators
+  have hWM : Nat.card W ≤ Nat.card M :=
+    Nat.card_le_card_of_surjective cut.1.mkQ cut.1.mkQ_surjective
+  have hMA : Nat.card M ≤
+      Nat.card (E S phi C).quotientRepresentation :=
+    Nat.card_le_card_of_surjective normalSpace.mkQ normalSpace.mkQ_surjective
+  unfold elementaryLayerPrimeCutCoefficient
+    OriginalPrimeCentralCutFusion.liftConstant
+  calc
+    (Nat.card W * Nat.card (groupCohomology.H1 W) : ℝ) ≤
+        (Nat.card W : ℝ) * (Nat.card W : ℝ) ^ S.generatorCount := by
+      gcongr
+      exact_mod_cast hH1
+    _ = (Nat.card W : ℝ) ^ (S.generatorCount + 1) := by
+      rw [pow_succ']
+    _ ≤ (Nat.card (E S phi C).quotientRepresentation : ℝ) ^
+        (S.generatorCount + 1) := by
+      apply pow_le_pow_left₀ (by positivity)
+      exact_mod_cast hWM.trans hMA
+
 /-- Actual refined affine capacity after the full invariant prime cut.  Both
 the fixed columns and the quotient Schur exponent use the same retained
 tuple `D.H`. -/
@@ -173,23 +229,20 @@ noncomputable def primeCutJointCapacityRefined
       (p := C.p) S.rho phi C.equiv.symm).subtype_injective
   letI : Finite (E S phi C).quotientRepresentation :=
     inferInstanceAs (Finite (E S phi C).V)
+  let input := jointCapacityInputRefined S phi C i₀ D
+  let ordinary := input.toJointCapacity
+    (hpi := QuotientGroup.mk'_surjective (K S phi))
+  let B : ℝ :=
+    (Nat.card (E S phi C).quotientRepresentation : ℝ) ^
+      (S.generatorCount + 1)
   refine
     { fixedCapacity := D.H
       quotientCapacity := D.H
       quotientCapacity_nonneg := by positivity
       fixed_le := ?_
       quotient_capacity_le := ?_
-      coefficient := ∑ N : {N : Subgroup S.A // N.Normal},
-        elementaryLayerPrimeCutCoefficient C.p
-          (pi S phi) (E S phi C).quotientRepresentation
-          (E S phi C).originalKernelChart N
-      coefficient_nonneg := Finset.sum_nonneg (fun N _ ↦
-        OriginalPrimeCentralCutFusion.liftConstant_nonneg C.p
-          ((originalChart S phi C).sectionRepresentation
-            (pi S phi) (E S phi C).quotientRepresentation N.1)
-          (elementaryLayerInvariantCut C.p
-            (pi S phi) (E S phi C).quotientRepresentation
-            (E S phi C).originalKernelChart N))
+      coefficient := ordinary.coefficient
+      coefficient_nonneg := ordinary.coefficient_nonneg
       fixed_top_fibre := ?_ }
   · intro N
     letI : N.1.Normal := N.2
@@ -199,26 +252,33 @@ noncomputable def primeCutJointCapacityRefined
     exact_mod_cast invariantQuotient_schurCapacity_le_refined
       S phi C N.1 i₀ D
   · intro top
-    let P : {N : Subgroup S.A // N.Normal} → Prop := fun N ↦
-      elementaryLayerTopAxis (pi S phi)
-        (QuotientGroup.mk'_surjective (K S phi)) N = top
-    let c : {N : Subgroup S.A // N.Normal} → ℝ := fun N ↦
-      elementaryLayerPrimeCutCoefficient C.p
-        (pi S phi) (E S phi C).quotientRepresentation
-        (E S phi C).originalKernelChart N
-    have hsplit := Fintype.sum_subtype_add_sum_subtype P c
-    have hrest : 0 ≤ ∑ N : {N : {N : Subgroup S.A // N.Normal} // ¬ P N},
-        c N.1 := Finset.sum_nonneg (fun N _ ↦
-          OriginalPrimeCentralCutFusion.liftConstant_nonneg C.p
-            ((originalChart S phi C).sectionRepresentation
-              (pi S phi) (E S phi C).quotientRepresentation N.1.1)
-            (elementaryLayerInvariantCut C.p
-              (pi S phi) (E S phi C).quotientRepresentation
-              (E S phi C).originalKernelChart N.1))
-    have hle : (∑ N : {N : {N : Subgroup S.A // N.Normal} // P N}, c N.1) ≤
-        ∑ N : {N : Subgroup S.A // N.Normal}, c N :=
-      (le_add_of_nonneg_right hrest).trans hsplit.le
-    simpa only [P, c] using hle
+    calc
+      (∑ N : {N : {N : Subgroup S.A // N.Normal} //
+          elementaryLayerTopAxis (pi S phi)
+            (QuotientGroup.mk'_surjective (K S phi)) N = top},
+          elementaryLayerPrimeCutCoefficient C.p
+            (pi S phi) (E S phi C).quotientRepresentation
+            (E S phi C).originalKernelChart N.1) ≤
+        ∑ _N : {N : {N : Subgroup S.A // N.Normal} //
+          elementaryLayerTopAxis (pi S phi)
+            (QuotientGroup.mk'_surjective (K S phi)) N = top}, B := by
+          apply Finset.sum_le_sum
+          intro N _
+          exact primeCutCoefficient_le_generatorPower S phi C i₀ D N.1
+      _ = (Nat.card {N : {N : Subgroup S.A // N.Normal} //
+          elementaryLayerTopAxis (pi S phi)
+            (QuotientGroup.mk'_surjective (K S phi)) N = top} : ℝ) * B := by
+          simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul,
+            Fintype.card_eq_nat_card]
+      _ ≤ ((Nat.card (E S phi C).quotientRepresentation : ℝ) ^ input.H *
+            (C.p : ℝ) ^ (input.H * (input.v / C.p))) * B := by
+          apply mul_le_mul_of_nonneg_right _ (by positivity)
+          exact_mod_cast AffineJointElementaryCapacityInput.fixedTop_card_le
+            C.p (pi S phi) (QuotientGroup.mk'_surjective (K S phi))
+              (E S phi C).quotientRepresentation
+              (E S phi C).originalKernelChart input top
+      _ = ordinary.coefficient := by
+          rfl
 
 end ActualWreathAffineCapacity
 end SymmetricSubgroupAsymptotics
