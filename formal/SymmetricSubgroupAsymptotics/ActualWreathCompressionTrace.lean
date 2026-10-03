@@ -322,6 +322,7 @@ series whose abelian edges are exactly the elementary steps of the tower. -/
 structure ActualWreathCompressionTrace
     (S : ActualWreathCompressionState Q I) where
   tower : ActualWreathCompressionTower S
+  integralCapacities : tower.IntegralCapacities
   chief : ActualChiefSeries S.D
   abelianLength_eq : tower.abelianLength =
     actualChiefSeriesAbelianLength chief
@@ -395,6 +396,7 @@ theorem nonempty_of_capacity
       · letI : Subsingleton S₀.D := hsub
         refine ⟨{
           tower := .terminal S₀ hsub
+          integralCapacities := trivial
           chief := subsingletonChiefSeries S₀.D
           abelianLength_eq := ?_ }⟩
         simp [ActualWreathCompressionTower.abelianLength,
@@ -431,10 +433,11 @@ theorem nonempty_of_capacity
         by_cases hcomm : IsMulCommutative phi.ker
         · obtain ⟨C⟩ := elementaryMinimalNormalChart_nonempty
             phi.ker hker_ne hcomm hker_min
-          obtain ⟨HC, hhalf, hlog, hrefined, hcoeff⟩ :=
+          obtain ⟨HC, hhalf, hlog, hrefined, hintegral, hcoeff⟩ :=
             H S₀ D' phi hphi C
           refine ⟨{
             tower := .elementary S₀ D' phi hphi C HC hhalf hlog hrefined hcoeff next.tower
+            integralCapacities := ⟨hintegral, next.integralCapacities⟩
             chief := c
             abelianLength_eq := ?_ }⟩
           change Module.finrank (ZMod C.p) C.V + next.tower.abelianLength =
@@ -450,6 +453,7 @@ theorem nonempty_of_capacity
             phi.ker hker_min hcomm
           refine ⟨{
             tower := .semisimple S₀ D' phi hphi C next.tower
+            integralCapacities := next.integralCapacities
             chief := c
             abelianLength_eq := ?_ }⟩
           change next.tower.abelianLength =

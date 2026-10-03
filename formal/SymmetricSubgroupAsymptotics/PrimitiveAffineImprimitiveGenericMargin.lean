@@ -248,6 +248,22 @@ theorem margin_of_localDegree_twentyFive_to_fortyFour
       _ ≤ fixedTargetCompositionGamma * ((s : ℝ) / 2) * 14 :=
         mul_le_mul_of_nonneg_left (by exact_mod_cast hlenNat) hfactor
 
+/-- Every literal primitive-affine component of degree at least twenty-five
+supplies the construction-facing source.  The split at degree forty-five is
+only the point where the published logarithmic tail replaces the finite
+integer composition-length rounding; it does not create two owners. -/
+noncomputable def of_localDegree_ge_twentyFive
+    (hcomp : PrimitiveCompositionLengthInput)
+    (hr : 25 ≤ Nat.card block.Fibre) :
+    ComponentSource hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P where
+  margin := by
+    by_cases h45 : 45 ≤ Nat.card block.Fibre
+    · exact margin_of_localDegree_ge_fortyFive
+        hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P hcomp h45
+    · exact margin_of_localDegree_twentyFive_to_fortyFour
+        hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P hcomp hr
+          (by omega)
+
 end ComponentSource
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu

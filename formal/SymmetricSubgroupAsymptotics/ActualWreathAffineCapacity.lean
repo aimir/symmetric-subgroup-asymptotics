@@ -824,12 +824,13 @@ noncomputable def elementaryCapacityInput
   let i₀ : I := Classical.choice inferInstance
   let D := refinedCapacityData S phi C hTraceyRefined hI i₀
   refine ⟨(jointCapacityInputRefined S phi C i₀ D).toJointCapacity
-    (hpi := QuotientGroup.mk'_surjective (K S phi)), ?_, ?_, ?_, ?_⟩
+    (hpi := QuotientGroup.mk'_surjective (K S phi)), ?_, ?_, ?_, ?_, ?_⟩
   · simpa only [AffineJointElementaryCapacityInput.toJointCapacity,
       jointCapacityInputRefined] using D.bounds.half
   · simpa only [AffineJointElementaryCapacityInput.toJointCapacity,
       jointCapacityInputRefined] using D.bounds.logarithmic
   · exact D.bounds
+  · exact ⟨D.H, rfl⟩
   · exact jointCapacityRefined_coefficient_le S phi C i₀ D
 
 end ActualWreathAffineCapacity

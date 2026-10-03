@@ -203,6 +203,25 @@ inductive ActualWreathCompressionTower :
 
 namespace ActualWreathCompressionTower
 
+/-- Every elementary exponent in a traced tower comes from an actual natural
+tuple length.  The joint-capacity envelope stores that exponent in `ℝ`, so
+this predicate retains the integrality which would otherwise be erased. -/
+def IntegralCapacities :
+    {S : ActualWreathCompressionState Q I} →
+      ActualWreathCompressionTower S → Prop
+  | _, .terminal _ _ => True
+  | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+        capacity_refined coefficient_le next => by
+      letI : Group D' := groupD'
+      letI : Finite D' := finiteD'
+      exact (∃ h : ℕ, H.capacity = h) ∧ IntegralCapacities next
+  | _, @ActualWreathCompressionTower.semisimple _ _ _ _ _ _ _ _ D'
+      groupD' finiteD' phi hphi C next => by
+      letI : Group D' := groupD'
+      letI : Finite D' := finiteD'
+      exact IntegralCapacities next
+
 /-- Interpret the actual local tower as a complete-source transfer to the
 faithful action on the original block set. -/
 noncomputable def envelope :
