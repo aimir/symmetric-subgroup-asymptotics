@@ -258,6 +258,37 @@ theorem kernelSemisimpleChartOfFullComponent_factor_card
   refine ⟨O.origin j, ?_⟩
   exact O.factor_card_eq j
 
+/-- The actual semisimple kernel chart contains at most one retained factor
+for each block/local-factor coordinate. -/
+theorem kernelSemisimpleChartOfFullComponent_factorIndex_card_le
+    [Fintype I]
+    (rho : A →* PermutationalWreathProduct D Q I)
+    (phi : D →* D') (hrho : Function.Injective rho)
+    (hfull : FullComponent rho) (C : SemisimpleNormalChart phi.ker) :
+    Nat.card (kernelSemisimpleChartOfFullComponent
+        rho phi hrho hfull C).ι ≤ Nat.card (I × C.ι) := by
+  let O := kernelSemisimpleChartOriginsOfFullComponent rho phi hrho hfull C
+  exact O.factorIndex_card_le (fun p : I × C.ι ↦ C.factor p.2)
+
+/-- Every nonnegative order-dependent cost on the actual kernel factors is
+paid by the blockwise copies of the literal local factors.  Injectivity of
+the retained origin map prevents a diagonal factor from being charged more
+than once. -/
+theorem kernelSemisimpleChartOfFullComponent_sum_factorCard_le
+    [Fintype I]
+    (rho : A →* PermutationalWreathProduct D Q I)
+    (phi : D →* D') (hrho : Function.Injective rho)
+    (hfull : FullComponent rho) (C : SemisimpleNormalChart phi.ker)
+    (f : ℕ → ℝ) (hf : ∀ n, 0 ≤ f n) :
+    (∑ j : (kernelSemisimpleChartOfFullComponent
+        rho phi hrho hfull C).ι,
+      f (Nat.card ((kernelSemisimpleChartOfFullComponent
+        rho phi hrho hfull C).factor j))) ≤
+      ∑ p : I × C.ι, f (Nat.card (C.factor p.2)) := by
+  let O := kernelSemisimpleChartOriginsOfFullComponent rho phi hrho hfull C
+  exact O.sum_factorCard_le_origin
+    (fun p : I × C.ι ↦ C.factor p.2) f hf
+
 end Compression
 end PermutationalWreathProduct
 end SymmetricSubgroupAsymptotics

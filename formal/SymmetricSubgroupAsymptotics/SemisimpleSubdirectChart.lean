@@ -65,6 +65,43 @@ structure SemisimpleGroupChartOrigins
   factor_card_eq : ∀ j,
     Nat.card (toSemisimpleGroupChart.factor j) = Nat.card (S (origin j))
 
+namespace SemisimpleGroupChartOrigins
+
+variable {G I : Type} [Group G]
+  (S : I → Type) [∀ i, Group (S i)] [∀ i, Finite (S i)]
+  (C : SemisimpleGroupChartOrigins G I S)
+
+/-- A provenance-retaining Scott chart has no more displayed factors than
+the original coordinate family.  Diagonal identifications discard
+coordinates rather than duplicating them. -/
+theorem factorIndex_card_le [Finite I] :
+    Nat.card C.toSemisimpleGroupChart.ι ≤ Nat.card I :=
+  Nat.card_le_card_of_injective C.origin C.origin_injective
+
+/-- Any nonnegative cost depending only on factor order can be charged to
+distinct original coordinates.  This is the quantitative form used for the
+semisimple coefficient in the affine wreath tower. -/
+theorem sum_factorCard_le_origin [Fintype I]
+    (f : ℕ → ℝ) (hf : ∀ n, 0 ≤ f n) :
+    (∑ j : C.toSemisimpleGroupChart.ι,
+        f (Nat.card (C.toSemisimpleGroupChart.factor j))) ≤
+      ∑ i : I, f (Nat.card (S i)) := by
+  calc
+    (∑ j : C.toSemisimpleGroupChart.ι,
+        f (Nat.card (C.toSemisimpleGroupChart.factor j))) =
+        ∑ j : C.toSemisimpleGroupChart.ι,
+          f (Nat.card (S (C.origin j))) := by
+      apply Finset.sum_congr rfl
+      intro j _
+      rw [C.factor_card_eq j]
+    _ = ∑ i ∈ Finset.univ.image C.origin, f (Nat.card (S i)) := by
+      rw [Finset.sum_image C.origin_injective.injOn]
+    _ ≤ ∑ i : I, f (Nat.card (S i)) :=
+      Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
+        (fun i _ _ ↦ hf (Nat.card (S i)))
+
+end SemisimpleGroupChartOrigins
+
 /-- Scott's subdirect-product theorem in chart form.  The maps are the
 literal coordinate maps; surjectivity and joint injectivity are the only
 structural hypotheses. -/
