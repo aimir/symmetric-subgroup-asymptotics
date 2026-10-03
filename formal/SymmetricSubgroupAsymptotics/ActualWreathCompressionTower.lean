@@ -1,4 +1,7 @@
 import SymmetricSubgroupAsymptotics.RelativeCompleteSourceEnvelope
+import SymmetricSubgroupAsymptotics.PermutationalWreathElementaryCompression
+import SymmetricSubgroupAsymptotics.PrimeSectionalCharacterRank
+import SymmetricSubgroupAsymptotics.TraceyAffineInducedModuleInput
 
 /-!
 # Iterated compression of an actual wreath embedding
@@ -37,6 +40,18 @@ structure ActualWreathCompressionState
   [finiteD : Finite D]
   rho : A →* PermutationalWreathProduct D Q I
   rho_injective : Function.Injective rho
+  /-- The faithful permutation degree of the original ambient source.  It is
+  retained unchanged through quotient states. -/
+  sourceDegree : ℕ
+  /-- One padded generating tuple inherited from the original ambient
+  permutation group. -/
+  generatorCount : ℕ
+  generators : Fin generatorCount → A
+  generators_full : Subgroup.closure (Set.range generators) = ⊤
+  /-- Every prime-character section of the current quotient is still bounded
+  by the original faithful permutation degree. -/
+  sectionalRank : ∀ (p : ℕ) [Fact p.Prime],
+    PrimeSectionalRankBound p A (sourceDegree / p)
   /-- The displayed top is the literal image of the original action on the
   block set.  This is stronger than faithfulness of the abstract `Q`-action
   and is what makes a block stabilizer have index exactly `|I|`. -/
@@ -91,6 +106,22 @@ def quotient
   rho_injective :=
     PermutationalWreathProduct.Compression.quotientEmbedding_injective
       S.rho phi
+  sourceDegree := S.sourceDegree
+  generatorCount := S.generatorCount
+  generators := fun i ↦ QuotientGroup.mk'
+    (PermutationalWreathProduct.Compression.kernel S.rho phi) (S.generators i)
+  generators_full := quotient_generators_full
+    (PermutationalWreathProduct.Compression.kernel S.rho phi)
+    S.generators S.generators_full
+  sectionalRank := by
+    intro p hp K
+    let q : S.A →* S.A ⧸
+        PermutationalWreathProduct.Compression.kernel S.rho phi :=
+      QuotientGroup.mk' _
+    exact PrimeSectionalRankBound.quotient_rank_le p (S.sectionalRank p)
+      (K.comap q) (q.subgroupComap K)
+      (q.subgroupComap_surjective_of_surjective K
+        (QuotientGroup.mk'_surjective _))
   top_surjective := by
     intro q
     obtain ⟨a, ha⟩ := S.top_surjective q
@@ -139,13 +170,26 @@ inductive ActualWreathCompressionTower :
       (D' : Type) [groupD' : Group D'] [finiteD' : Finite D']
       (phi : S.D →* D') (hphi : Function.Surjective phi)
       (C : ElementaryMinimalNormalChart phi.ker)
-      (H : ElementaryLayerSectionCapacityBound C.p
+      (H : ElementaryLayerJointCapacityBound C.p
         (QuotientGroup.mk'
+          (PermutationalWreathProduct.Compression.kernel S.rho phi))
+        (QuotientGroup.mk'_surjective
           (PermutationalWreathProduct.Compression.kernel S.rho phi))
         (PermutationalWreathProduct.Compression.kernelElementaryChart
           (p := C.p) S.rho phi C.equiv.symm S.rho_injective).quotientRepresentation
         (PermutationalWreathProduct.Compression.kernelElementaryChart
           (p := C.p) S.rho phi C.equiv.symm S.rho_injective).originalKernelChart)
+      (capacity_le_half : H.capacity ≤
+        Module.finrank (ZMod C.p) C.V * Fintype.card I / 2)
+      (capacity_le_log : H.capacity ≤
+        traceyInducedGeneratorCeiling
+          (Module.finrank (ZMod C.p) C.V) (Fintype.card I))
+      (coefficient_le : H.coefficient ≤
+        (C.p : ℝ) ^ traceyAffineCoefficientExponent
+          (Module.finrank (ZMod C.p) C.V) (Fintype.card I)
+          (traceyInducedGeneratorCeiling
+            (Module.finrank (ZMod C.p) C.V) (Fintype.card I))
+          S.generatorCount S.sourceDegree C.p)
       (next : ActualWreathCompressionTower (S.quotient D' phi hphi)) :
       ActualWreathCompressionTower S
   | semisimple (S : ActualWreathCompressionState Q I)
@@ -167,7 +211,8 @@ noncomputable def envelope :
       .identity S.A (Fintype.card I) S.terminalAction
         (S.terminalAction_injective hD)
   | S, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H next => by
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+        coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
       let K := PermutationalWreathProduct.Compression.kernel S.rho phi
@@ -204,7 +249,8 @@ theorem envelope_v :
   | _, .terminal _ _ => by
       simp [envelope, RelativeCompleteSourceEnvelope.identity]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H next => by
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+        coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
       simpa only [envelope, RelativeCompleteSourceEnvelope.elementaryStep]
@@ -225,7 +271,8 @@ theorem envelope_eta_nonneg :
   | _, .terminal _ _ => by
       simp [envelope, RelativeCompleteSourceEnvelope.identity]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H next => by
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+        coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
       have hp : (1 : ℝ) ≤ C.p := by

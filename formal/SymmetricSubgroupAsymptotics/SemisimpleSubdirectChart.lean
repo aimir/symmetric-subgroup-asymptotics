@@ -52,17 +52,30 @@ def toNormalChart {U : Type*} [Group U] (E : Subgroup U)
 
 end SemisimpleGroupChart
 
+/-- A semisimple chart together with the original simple coordinate from
+which every retained diagonal representative was selected.  Scott's
+induction never creates a new simple isomorphism type; this record keeps
+that fact available to later quantitative arguments. -/
+structure SemisimpleGroupChartOrigins
+    (G : Type*) [Group G] (I : Type) (S : I → Type)
+    [∀ i, Group (S i)] [∀ i, Finite (S i)]
+    extends SemisimpleGroupChart G where
+  origin : toSemisimpleGroupChart.ι → I
+  origin_injective : Function.Injective origin
+  factor_card_eq : ∀ j,
+    Nat.card (toSemisimpleGroupChart.factor j) = Nat.card (S (origin j))
+
 /-- Scott's subdirect-product theorem in chart form.  The maps are the
 literal coordinate maps; surjectivity and joint injectivity are the only
 structural hypotheses. -/
-theorem semisimpleGroupChart_of_subdirect_fin :
+theorem semisimpleGroupChartOrigins_of_subdirect_fin :
     ∀ (n : ℕ) (S : Fin n → Type)
       [∀ i, Group (S i)] [∀ i, Finite (S i)]
       [∀ i, IsSimpleGroup (S i)] (hcenterless : ∀ i, IsCenterless (S i))
       (G : Type) [Group G] (f : ∀ i, G →* S i),
       (∀ i, Function.Surjective (f i)) →
       Function.Injective (fun x i ↦ f i x) →
-      Nonempty (SemisimpleGroupChart G) := by
+      Nonempty (SemisimpleGroupChartOrigins G (Fin n) S) := by
   intro n
   induction n with
   | zero =>
@@ -72,11 +85,15 @@ theorem semisimpleGroupChart_of_subdirect_fin :
         intro y
         exact ⟨1, Subsingleton.elim _ _⟩⟩
       exact ⟨{
-        ι := Fin 0
-        factor := S
-        simple := fun i ↦ Fin.elim0 i
-        centerless := hcenterless
-        equiv := MulEquiv.ofBijective F hF }⟩
+        toSemisimpleGroupChart := {
+          ι := Fin 0
+          factor := S
+          simple := fun i ↦ Fin.elim0 i
+          centerless := hcenterless
+          equiv := MulEquiv.ofBijective F hF }
+        origin := fun i ↦ Fin.elim0 i
+        origin_injective := fun i ↦ Fin.elim0 i
+        factor_card_eq := fun i ↦ Fin.elim0 i }⟩
   | succ n ih =>
       intro S _ _ _ hcenterless G _ f hs hi
       let d : G →* ((i : Fin n) → S i.succ) :=
@@ -119,11 +136,18 @@ theorem semisimpleGroupChart_of_subdirect_fin :
           ⟨(MonoidHom.ker_eq_bot_iff p).mp hker, d.rangeRestrict_surjective⟩
         let eGA : G ≃* A := MulEquiv.ofBijective p hp
         exact ⟨{
-          ι := C.ι
-          factor := C.factor
-          simple := C.simple
-          centerless := C.centerless
-          equiv := eGA.trans C.equiv }⟩
+          toSemisimpleGroupChart := {
+            ι := C.ι
+            factor := C.factor
+            simple := C.simple
+            centerless := C.centerless
+            equiv := eGA.trans C.equiv }
+          origin := fun j ↦ (C.origin j).succ
+          origin_injective := by
+            intro i j hij
+            apply C.origin_injective
+            exact Fin.ext (by simpa using congrArg Fin.val hij)
+          factor_card_eq := fun j ↦ C.factor_card_eq j }⟩
       · let pg : G →* A × S 0 := p.prod g
         have hpg_inj : Function.Injective pg := by
           intro x y hxy
@@ -185,17 +209,57 @@ theorem semisimpleGroupChart_of_subdirect_fin :
                 exact congrFun (C.equiv.map_mul x.1 y.1) i }
         let e : G ≃* ((j : Option C.ι) → T j) := ePair.trans eProd
         exact ⟨{
-          ι := Option C.ι
-          factor := T
-          simple := fun j ↦ by
+          toSemisimpleGroupChart := {
+            ι := Option C.ι
+            factor := T
+            simple := fun j ↦ by
+              cases j with
+              | none => exact inferInstanceAs (IsSimpleGroup (S 0))
+              | some i => exact C.simple i
+            centerless := fun j ↦ by
+              cases j with
+              | none => exact hcenterless 0
+              | some i => exact C.centerless i
+            equiv := e }
+          origin := fun j ↦ match j with
+            | none => 0
+            | some i => (C.origin i).succ
+          origin_injective := by
+            intro i j hij
+            cases i with
+            | none =>
+                cases j with
+                | none => rfl
+                | some j =>
+                    have hval := congrArg Fin.val hij
+                    simp at hval
+            | some i =>
+                cases j with
+                | none =>
+                    have hval := congrArg Fin.val hij
+                    simp at hval
+                | some j =>
+                    simp only [Option.some.injEq]
+                    apply C.origin_injective
+                    exact Fin.ext (by simpa using congrArg Fin.val hij)
+          factor_card_eq := fun j ↦ by
             cases j with
-            | none => exact inferInstanceAs (IsSimpleGroup (S 0))
-            | some i => exact C.simple i
-          centerless := fun j ↦ by
-            cases j with
-            | none => exact hcenterless 0
-            | some i => exact C.centerless i
-          equiv := e }⟩
+            | none => rfl
+            | some i => exact C.factor_card_eq i }⟩
+
+/-- Scott's chart with the origin data forgotten. -/
+theorem semisimpleGroupChart_of_subdirect_fin :
+    ∀ (n : ℕ) (S : Fin n → Type)
+      [∀ i, Group (S i)] [∀ i, Finite (S i)]
+      [∀ i, IsSimpleGroup (S i)] (hcenterless : ∀ i, IsCenterless (S i))
+      (G : Type) [Group G] (f : ∀ i, G →* S i),
+      (∀ i, Function.Surjective (f i)) →
+      Function.Injective (fun x i ↦ f i x) →
+      Nonempty (SemisimpleGroupChart G) := by
+  intro n S _ _ _ hcenterless G _ f hs hi
+  obtain ⟨C⟩ := semisimpleGroupChartOrigins_of_subdirect_fin n S
+    hcenterless G f hs hi
+  exact ⟨C.toSemisimpleGroupChart⟩
 
 /-- Arbitrary finite coordinate sets, retaining the literal coordinate
 maps. -/
@@ -217,6 +281,32 @@ theorem semisimpleGroupChart_of_subdirect
       obtain ⟨j, rfl⟩ := e.symm.surjective i
       exact congrFun hxy j)
 
+/-- Arbitrary finite coordinate sets, retaining the origin of every chosen
+simple diagonal representative. -/
+theorem semisimpleGroupChartOrigins_of_subdirect
+    {I : Type} [Fintype I] (S : I → Type)
+    [∀ i, Group (S i)] [∀ i, Finite (S i)]
+    [∀ i, IsSimpleGroup (S i)] (hcenterless : ∀ i, IsCenterless (S i))
+    (G : Type) [Group G] (f : ∀ i, G →* S i)
+    (hs : ∀ i, Function.Surjective (f i))
+    (hi : Function.Injective (fun x i ↦ f i x)) :
+    Nonempty (SemisimpleGroupChartOrigins G I S) := by
+  let e := Fintype.equivFin I
+  obtain ⟨C⟩ := semisimpleGroupChartOrigins_of_subdirect_fin
+    (Fintype.card I) (fun j ↦ S (e.symm j))
+    (fun j ↦ hcenterless (e.symm j)) G
+    (fun j ↦ f (e.symm j)) (fun j ↦ hs (e.symm j)) (by
+      intro x y hxy
+      apply hi
+      funext i
+      obtain ⟨j, rfl⟩ := e.symm.surjective i
+      exact congrFun hxy j)
+  exact ⟨{
+    toSemisimpleGroupChart := C.toSemisimpleGroupChart
+    origin := fun j ↦ e.symm (C.origin j)
+    origin_injective := e.symm.injective.comp C.origin_injective
+    factor_card_eq := C.factor_card_eq }⟩
+
 namespace SemisimpleNormalChart
 
 variable {R : Type} [Group R] {L : Subgroup R}
@@ -230,12 +320,13 @@ def coordinate {G I : Type} [Group G] (C : SemisimpleNormalChart L)
 /-- If every simple-coordinate image is normal, its image is either zero or
 the complete simple factor.  Removing the zero coordinates and applying the
 subdirect theorem gives a literal semisimple chart. -/
-def chartOfNormalCoordinateMaps
+def chartOfNormalCoordinateMapsOrigins
     {G I : Type} [Group G] [Fintype I]
     (C : SemisimpleNormalChart L) (f : I → G →* L)
     (hn : ∀ i j, (C.coordinate f i j).range.Normal)
     (hi : Function.Injective (fun x i ↦ f i x)) :
-    SemisimpleGroupChart G := by
+    SemisimpleGroupChartOrigins G (I × C.ι)
+      (fun p ↦ C.factor p.2) := by
   classical
   let Full := {p : I × C.ι // Function.Surjective (C.coordinate f p.1 p.2)}
   let S : Full → Type := fun p ↦ C.factor p.1.2
@@ -264,9 +355,23 @@ def chartOfNormalCoordinateMaps
         exact ⟨y, rfl⟩
       exact hx.trans hy.symm
     · exact congrFun hxy ⟨(i, j), hfull⟩
-  exact (semisimpleGroupChart_of_subdirect S
+  let O := Classical.choice (semisimpleGroupChartOrigins_of_subdirect S
     (fun p ↦ C.centerless p.1.2) G coord (fun p ↦ p.2)
-    hcoord_injective).some
+    hcoord_injective)
+  exact {
+    toSemisimpleGroupChart := O.toSemisimpleGroupChart
+    origin := fun j ↦ (O.origin j).1
+    origin_injective := Subtype.val_injective.comp O.origin_injective
+    factor_card_eq := O.factor_card_eq }
+
+/-- The counting-facing chart, with its quantitative origin data forgotten. -/
+def chartOfNormalCoordinateMaps
+    {G I : Type} [Group G] [Fintype I]
+    (C : SemisimpleNormalChart L) (f : I → G →* L)
+    (hn : ∀ i j, (C.coordinate f i j).range.Normal)
+    (hi : Function.Injective (fun x i ↦ f i x)) :
+    SemisimpleGroupChart G :=
+  (C.chartOfNormalCoordinateMapsOrigins f hn hi).toSemisimpleGroupChart
 
 end SemisimpleNormalChart
 

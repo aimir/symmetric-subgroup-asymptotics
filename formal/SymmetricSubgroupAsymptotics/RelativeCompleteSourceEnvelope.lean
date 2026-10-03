@@ -1,4 +1,5 @@
-import SymmetricSubgroupAsymptotics.PermutationalWreathElementaryCompression
+import SymmetricSubgroupAsymptotics.JointElementaryLayerEnvelope
+import SymmetricSubgroupAsymptotics.MinimalNormalCompositionCharts
 import SymmetricSubgroupAsymptotics.SemisimpleOuterFibre
 
 /-!
@@ -77,8 +78,9 @@ noncomputable def elementaryStep
     (E : Subgroup G) [E.Normal]
     (C : ElementaryMinimalNormalChart E)
     [Finite C.quotientRepresentation]
-    (H : ElementaryLayerSectionCapacityBound C.p
-      (QuotientGroup.mk' E) C.quotientRepresentation C.originalKernelChart)
+    (H : ElementaryLayerJointCapacityBound C.p
+      (QuotientGroup.mk' E) (QuotientGroup.mk'_surjective E)
+        C.quotientRepresentation C.originalKernelChart)
     (Q : RelativeCompleteSourceEnvelope (G ⧸ E)) :
     RelativeCompleteSourceEnvelope G where
   R := Q.R
@@ -88,17 +90,14 @@ noncomputable def elementaryStep
   action := Q.action
   action_injective := Q.action_injective
   coefficient := fun b ↦
-    elementaryLayerEnvelopeConstant C.p (QuotientGroup.mk' E)
-      C.quotientRepresentation C.originalKernelChart * Q.coefficient b
+    H.coefficient * Q.coefficient b
   eta := Real.logb 2 C.p / C.p * H.capacity + Q.eta
   coefficient_nonneg := fun b ↦ mul_nonneg
-    (elementaryLayerEnvelopeConstant_nonneg C.p (QuotientGroup.mk' E)
-      C.quotientRepresentation C.originalKernelChart)
+    H.coefficient_nonneg
     (Q.coefficient_nonneg b)
   bound := by
     intro b J
-    let L := elementaryLayerEnvelopeConstant C.p (QuotientGroup.mk' E)
-      C.quotientRepresentation C.originalKernelChart
+    let L := H.coefficient
     have hlayer := H.completeQuotientWeight_le C.p
       (QuotientGroup.mk' E) (QuotientGroup.mk'_surjective E)
       C.quotientRepresentation C.originalKernelChart J
@@ -121,9 +120,7 @@ noncomputable def elementaryStep
             completeQuotientWeight (R := Q.R) J) :=
         mul_le_mul_of_nonneg_left hq
           (mul_nonneg
-            (elementaryLayerEnvelopeConstant_nonneg C.p
-              (QuotientGroup.mk' E) C.quotientRepresentation
-              C.originalKernelChart)
+            H.coefficient_nonneg
             (Real.rpow_nonneg (by positivity) _))
       _ = (L * Q.coefficient b) *
           (2 : ℝ) ^

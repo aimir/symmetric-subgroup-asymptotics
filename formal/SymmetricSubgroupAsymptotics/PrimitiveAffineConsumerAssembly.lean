@@ -35,7 +35,11 @@ noncomputable def preE7PrimitiveAffineConsumerData
     (hcomp : PrimitiveCompositionLengthInput)
     (hgen : PermutationSubgroupGeneratorBound)
     (hKP : KovacsPraegerAbelianizationBound)
-    (components : PreE7PrimitiveAffineImprimitiveComponentSourceData) :
+    (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
+    (hTraceyLog : TraceyAffineInducedModuleInput)
+    (hTraceyPerm : TraceyPermutationGeneratorInput)
+    (components : PreE7PrimitiveAffineImprimitiveComponentSourceData
+      hTraceyHalf hTraceyLog hTraceyPerm) :
     PreE7PrimitiveAffineConsumerData where
   primitive := by
     intro w U hw hprimitive P
@@ -45,7 +49,8 @@ noncomputable def preE7PrimitiveAffineConsumerData
   imprimitive := by
     intro w U hw basePoint block P
     exact match components.source w U hw basePoint block P with
-      | .inl source => imprimitiveAffineComponentTransfer block P source
+      | .inl source => imprimitiveAffineComponentTransfer
+          hTraceyHalf hTraceyLog hTraceyPerm block P source
       | .inr ambient => ambient
 
 end Non2UnipotentPrefixFiniteMenu

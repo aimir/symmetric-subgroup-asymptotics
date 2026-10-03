@@ -35,13 +35,24 @@ def ActualWreathElementaryCapacityInput : Prop :=
     (D' : Type) [Group D'] [Finite D']
     (phi : S.D →* D') (_hphi : Function.Surjective phi)
     (C : ElementaryMinimalNormalChart phi.ker),
-    Nonempty (ElementaryLayerSectionCapacityBound C.p
+    ∃ H : ElementaryLayerJointCapacityBound C.p
       (QuotientGroup.mk'
+        (PermutationalWreathProduct.Compression.kernel S.rho phi))
+      (QuotientGroup.mk'_surjective
         (PermutationalWreathProduct.Compression.kernel S.rho phi))
       (PermutationalWreathProduct.Compression.kernelElementaryChart
         (p := C.p) S.rho phi C.equiv.symm S.rho_injective).quotientRepresentation
       (PermutationalWreathProduct.Compression.kernelElementaryChart
-        (p := C.p) S.rho phi C.equiv.symm S.rho_injective).originalKernelChart)
+        (p := C.p) S.rho phi C.equiv.symm S.rho_injective).originalKernelChart,
+      H.capacity ≤ Module.finrank (ZMod C.p) C.V * Fintype.card I / 2 ∧
+      H.capacity ≤ traceyInducedGeneratorCeiling
+        (Module.finrank (ZMod C.p) C.V) (Fintype.card I) ∧
+      H.coefficient ≤
+        (C.p : ℝ) ^ traceyAffineCoefficientExponent
+          (Module.finrank (ZMod C.p) C.V) (Fintype.card I)
+          (traceyInducedGeneratorCeiling
+            (Module.finrank (ZMod C.p) C.V) (Fintype.card I))
+          S.generatorCount S.sourceDegree C.p
 
 namespace ActualWreathCompressionTower
 
@@ -130,8 +141,8 @@ theorem nonempty_of_capacity
         by_cases hcomm : IsMulCommutative phi.ker
         · obtain ⟨C⟩ := elementaryMinimalNormalChart_nonempty
             phi.ker hker_ne hcomm hker_min
-          obtain ⟨HC⟩ := H S₀ D' phi hphi C
-          exact ⟨.elementary S₀ D' phi hphi C HC next⟩
+          obtain ⟨HC, hhalf, hlog, hcoeff⟩ := H S₀ D' phi hphi C
+          exact ⟨.elementary S₀ D' phi hphi C HC hhalf hlog hcoeff next⟩
         · let C := semisimpleNormalChart_of_nonabelian_minimal
             phi.ker hker_min hcomm
           exact ⟨.semisimple S₀ D' phi hphi C next⟩

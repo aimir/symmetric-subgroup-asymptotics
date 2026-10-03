@@ -137,11 +137,11 @@ package and can enter the existing disjoint catalogue unchanged. -/
 noncomputable def PreE7CompleteSourceNumericalData.toPackage
     {family : PreE7NoPairNoC3EarlierOwnerFamily}
     {w : ℕ} {i : PreE7NonPairActionClass w}
-    (D : PreE7CompleteSourceNumericalData family w i) :
+  (D : PreE7CompleteSourceNumericalData family w i) :
     PreE7EarlierNumericalPackage family w i where
   package := D.certificate.localPackage
   parameters := D.parameters
-  main_total_bound := D.main_total_bound
+  main_total_growth := .inl D.main_total_bound
   tail_total_bound := D.tail_total_bound
 
 /-! ## Semisimple outer-fibre constructor -/

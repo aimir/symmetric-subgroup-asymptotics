@@ -169,9 +169,22 @@ theorem kernelCoordinate_range_normal
     ((mem_mapBase_ker_iff phi (rho e.1)).mp e.2).1
   rw [conj_left_of_fixed (rho a) (rho e.1) i ha he, hac]
 
-/-- Exact-component normality plus the local semisimple chart gives the
-literal chart on the actual intersection.  Proper diagonal block kernels
-and omitted local factors are retained. -/
+/-- Exact-component normality plus the local semisimple chart gives a chart
+on the actual intersection which still records the block/local coordinate
+from which every diagonal representative was selected. -/
+def kernelSemisimpleChartOrigins
+    [Fintype I]
+    (rho : A →* PermutationalWreathProduct D Q I)
+    (phi : D →* D') (hrho : Function.Injective rho)
+    (C : SemisimpleNormalChart phi.ker)
+    (hn : ∀ (i : I) (j : C.ι),
+      (C.coordinate (kernelCoordinate rho phi) i j).range.Normal) :
+    SemisimpleGroupChartOrigins (kernel rho phi) (I × C.ι)
+      (fun p ↦ C.factor p.2) :=
+  C.chartOfNormalCoordinateMapsOrigins (kernelCoordinate rho phi) hn
+    (kernelCoordinate_joint_injective rho phi hrho)
+
+/-- Counting-facing chart with the retained origin map forgotten. -/
 def kernelSemisimpleChart
     [Fintype I]
     (rho : A →* PermutationalWreathProduct D Q I)
@@ -180,8 +193,7 @@ def kernelSemisimpleChart
     (hn : ∀ (i : I) (j : C.ι),
       (C.coordinate (kernelCoordinate rho phi) i j).range.Normal) :
     SemisimpleNormalChart (kernel rho phi) :=
-  (C.chartOfNormalCoordinateMaps (kernelCoordinate rho phi) hn
-    (kernelCoordinate_joint_injective rho phi hrho)).toNormalChart _
+  (kernelSemisimpleChartOrigins rho phi hrho C hn).toSemisimpleGroupChart.toNormalChart _
 
 /-- Exact-component fullness makes every retained simple-coordinate range
 normal, so the chart is automatic. -/
@@ -207,6 +219,44 @@ def kernelSemisimpleChartOfFullComponent
     (kernelCoordinate_range_normal rho phi hfull i) q hq
   simpa [SemisimpleNormalChart.coordinate, q, MonoidHom.range_comp,
     Subgroup.map_map] using hn
+
+/-- The provenance-retaining spelling of the full-component chart. -/
+def kernelSemisimpleChartOriginsOfFullComponent
+    [Fintype I]
+    (rho : A →* PermutationalWreathProduct D Q I)
+    (phi : D →* D') (hrho : Function.Injective rho)
+    (hfull : FullComponent rho) (C : SemisimpleNormalChart phi.ker) :
+    SemisimpleGroupChartOrigins (kernel rho phi) (I × C.ι)
+      (fun p ↦ C.factor p.2) := by
+  apply kernelSemisimpleChartOrigins rho phi hrho C
+  intro i j
+  let q : phi.ker →* C.factor j :=
+    (Pi.evalMonoidHom C.factor j).comp C.equiv.toMonoidHom
+  have hq : Function.Surjective q := by
+    intro y
+    let z : (k : C.ι) → C.factor k := Function.update 1 j y
+    obtain ⟨x, hx⟩ := C.equiv.surjective z
+    refine ⟨x, ?_⟩
+    change C.equiv x j = y
+    rw [hx]
+    simp [z]
+  have hn := Subgroup.Normal.map
+    (kernelCoordinate_range_normal rho phi hfull i) q hq
+  simpa [SemisimpleNormalChart.coordinate, q, MonoidHom.range_comp,
+    Subgroup.map_map] using hn
+
+theorem kernelSemisimpleChartOfFullComponent_factor_card
+    [Fintype I]
+    (rho : A →* PermutationalWreathProduct D Q I)
+    (phi : D →* D') (hrho : Function.Injective rho)
+    (hfull : FullComponent rho) (C : SemisimpleNormalChart phi.ker)
+    (j : (kernelSemisimpleChartOfFullComponent rho phi hrho hfull C).ι) :
+    ∃ p : I × C.ι,
+      Nat.card ((kernelSemisimpleChartOfFullComponent
+        rho phi hrho hfull C).factor j) = Nat.card (C.factor p.2) := by
+  let O := kernelSemisimpleChartOriginsOfFullComponent rho phi hrho hfull C
+  refine ⟨O.origin j, ?_⟩
+  exact O.factor_card_eq j
 
 end Compression
 end PermutationalWreathProduct
