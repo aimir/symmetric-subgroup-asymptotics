@@ -55,6 +55,12 @@ variable {U : PreE7NonPairActionClass 6}
 
 /-- The nontrivial abelian complement has derived length one. -/
 def length : AffineModel.DerivedLength S.R := by
+  letI : Nontrivial DegreeSixThreeSquaredC4.C4 :=
+    ⟨⟨Multiplicative.ofAdd (0 : ZMod 4),
+      Multiplicative.ofAdd (1 : ZMod 4), by
+      intro h
+      have := congrArg Multiplicative.toAdd h
+      exact (by decide : (0 : ZMod 4) ≠ 1) this⟩⟩
   letI : Nontrivial S.R := S.topEquiv.toEquiv.nontrivial
   refine
     { t := 0
@@ -62,10 +68,10 @@ def length : AffineModel.DerivedLength S.R := by
       prev_ne := ?_ }
   · rw [Nat.zero_add, derivedSeries_one]
     apply (commutator_eq_bot_iff S.R).mpr
-    constructor
+    apply isMulCommutative_iff.mpr
     intro x y
     apply S.topEquiv.injective
-    exact mul_comm _ _
+    simpa using mul_comm (S.topEquiv x) (S.topEquiv y)
   · rw [derivedSeries_zero]
     exact top_ne_bot
 
