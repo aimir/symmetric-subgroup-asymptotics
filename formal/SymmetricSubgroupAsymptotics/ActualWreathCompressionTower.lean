@@ -37,6 +37,12 @@ structure ActualWreathCompressionState
   [finiteD : Finite D]
   rho : A →* PermutationalWreathProduct D Q I
   rho_injective : Function.Injective rho
+  /-- The displayed top is the literal image of the original action on the
+  block set.  This is stronger than faithfulness of the abstract `Q`-action
+  and is what makes a block stabilizer have index exactly `|I|`. -/
+  top_surjective : Function.Surjective
+    (PermutationalWreathProduct.rightHom.comp rho)
+  top_pretransitive : MulAction.IsPretransitive Q I
   fullComponent :
     PermutationalWreathProduct.Compression.FullComponent rho
 
@@ -50,6 +56,24 @@ namespace ActualWreathCompressionState
 
 variable {Q I : Type} [Group Q] [Fintype I] [Nonempty I]
   [MulAction Q I] [FaithfulSMul Q I]
+
+/-- The literal preimage of a point stabilizer in the displayed top. -/
+def topPointStabilizer (S : ActualWreathCompressionState Q I) (i : I) :
+    Subgroup S.A :=
+  (MulAction.stabilizer Q i).comap
+    (PermutationalWreathProduct.rightHom.comp S.rho)
+
+/-- The block stabilizer in every quotient state has the actual number of
+blocks as its index.  This was not derivable from `fullComponent` alone; it
+uses the retained surjectivity and transitivity of the literal top. -/
+theorem topPointStabilizer_index
+    (S : ActualWreathCompressionState Q I) (i : I) :
+    (S.topPointStabilizer i).index = Fintype.card I := by
+  rw [topPointStabilizer,
+    Subgroup.index_comap_of_surjective _ S.top_surjective]
+  letI : MulAction.IsPretransitive Q I := S.top_pretransitive
+  simpa only [Fintype.card_eq_nat_card] using
+    MulAction.index_stabilizer_of_transitive Q i
 
 /-- The next literal state after a surjective local compression. -/
 def quotient
@@ -67,6 +91,14 @@ def quotient
   rho_injective :=
     PermutationalWreathProduct.Compression.quotientEmbedding_injective
       S.rho phi
+  top_surjective := by
+    intro q
+    obtain ⟨a, ha⟩ := S.top_surjective q
+    refine ⟨QuotientGroup.mk' (PermutationalWreathProduct.Compression.kernel
+      S.rho phi) a, ?_⟩
+    change (S.rho a).right = q
+    exact ha
+  top_pretransitive := S.top_pretransitive
   fullComponent :=
     PermutationalWreathProduct.Compression.quotientEmbedding_fullComponent
       S.rho phi hphi S.fullComponent

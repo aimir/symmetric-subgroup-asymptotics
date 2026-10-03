@@ -51,6 +51,13 @@ def initialState
       finiteD := inferInstance
       rho := ambientEmbedding block
       rho_injective := ambientEmbedding_injective block
+      top_surjective := by
+        intro q
+        obtain ⟨a, ha⟩ := q.2
+        refine ⟨a, Subtype.ext ?_⟩
+        simpa only [ambientEmbedding, ActualBlockWreathEmbedding.embedding]
+          using ha
+      top_pretransitive := block.top_pretransitive
       fullComponent := ActualBlockWreathEmbedding.fullComponent
         block.map block.map_equivariant block.base }
 
@@ -135,6 +142,18 @@ noncomputable def imprimitiveAffineComponentTransfer
     (S : ComponentSource block P) :
     PreE7RankTailSourceOrYonedaTopData w U :=
   S.toAmbientSource block P
+
+/-- Correct construction target for every imprimitive affine component.
+The generic capacity alternative alone is false in the small exceptional
+block cells, so the target also permits an already integrated ambient owner.
+No literature interface is allowed to return this project-owned sum. -/
+structure PreE7PrimitiveAffineImprimitiveComponentSourceData : Type 1 where
+  source : ∀ w (U : PreE7NonPairActionClass w), 5 ≤ w →
+    (basePoint : Fin w) →
+    (block : OriginalMinimalBlock
+      (A := preE7NonPairAction w U) basePoint) →
+    (P : PrimitiveAffineProfile block.Component block.Fibre) →
+    ComponentSource block P ⊕ PreE7RankTailSourceOrYonedaTopData w U
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
