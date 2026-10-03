@@ -260,7 +260,7 @@ noncomputable def semisimpleCoefficientLogCost :
       ActualWreathCompressionTower S → ℝ
   | _, .terminal _ _ => 0
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -280,7 +280,7 @@ noncomputable def semisimpleLinearCoefficientLogCost :
       ActualWreathCompressionTower S → ℝ
   | _, .terminal _ _ => 0
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -335,7 +335,7 @@ theorem semisimpleCoefficientLogCost_le :
   | _, .terminal _ _ => by
       simp [semisimpleCoefficientLogCost, semisimpleLogBudget]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -364,7 +364,7 @@ theorem semisimpleLinearCoefficientLogCost_eq :
   | _, .terminal _ _ => by
       simp [semisimpleLinearCoefficientLogCost, semisimpleLogBudget]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -399,7 +399,7 @@ theorem coefficientConstant_le_two_rpow_cost
       simp [coefficientConstant, elementaryCoefficientLogCost,
         semisimpleCoefficientLogCost]
   | S, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -471,7 +471,7 @@ theorem coefficientConstant_le_two_rpow_linearCost
       simp [coefficientConstant, elementaryCoefficientLogCost,
         semisimpleLinearCoefficientLogCost]
   | S, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -534,7 +534,7 @@ theorem coefficientPolynomialDegree_le_semisimpleLogBudget :
   | _, .terminal _ _ => by
       simp [coefficientPolynomialDegree, semisimpleLogBudget]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'

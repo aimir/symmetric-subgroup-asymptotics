@@ -4,6 +4,7 @@ import SymmetricSubgroupAsymptotics.ActualWreathCompressionTrace
 import SymmetricSubgroupAsymptotics.PrimitiveCompositionLengthTransport
 import SymmetricSubgroupAsymptotics.RelativeCompleteSourcePreE7Bridge
 import SymmetricSubgroupAsymptotics.TraceyAffineInducedModuleInput
+import SymmetricSubgroupAsymptotics.TraceyRefinedAffineInput
 import SymmetricSubgroupAsymptotics.PermutationPrimeGroupRank
 
 /-!
@@ -100,13 +101,15 @@ derived in `PrimitiveAffineImprimitiveCoefficient`; it is not source data. -/
 structure ComponentSource
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
     (hTraceyLog : TraceyAffineInducedModuleInput)
+    (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (block : OriginalMinimalBlock
       (A := preE7NonPairAction w U) basePoint)
     (_P : PrimitiveAffineProfile block.Component block.Fibre) : Type 1 where
   margin :
     let capacity := ActualWreathAffineCapacity.elementaryCapacityInput
-      (Q := block.Top) (I := block.Points) hTraceyHalf hTraceyLog (by
+      (Q := block.Top) (I := block.Points) hTraceyHalf hTraceyLog
+        hTraceyRefined (by
         simpa only [Fintype.card_eq_nat_card] using block.degrees_ge_two.2)
     let trace := ActualWreathCompressionTrace.canonicalOfCapacity
       capacity (initialState hTraceyPerm block)
@@ -119,6 +122,7 @@ namespace ComponentSource
 variable
   (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
   (hTraceyLog : TraceyAffineInducedModuleInput)
+  (hTraceyRefined : TraceyRefinedInducedModuleInput)
   (hTraceyPerm : TraceyPermutationGeneratorInput)
   (block : OriginalMinimalBlock
     (A := preE7NonPairAction w U) basePoint)
@@ -128,38 +132,39 @@ variable
 states of the selected block system. -/
 noncomputable def capacity : ActualWreathElementaryCapacityInput
     (Q := block.Top) (I := block.Points) :=
-  ActualWreathAffineCapacity.elementaryCapacityInput hTraceyHalf hTraceyLog (by
-    simpa only [Fintype.card_eq_nat_card] using block.degrees_ge_two.2)
+  ActualWreathAffineCapacity.elementaryCapacityInput
+    hTraceyHalf hTraceyLog hTraceyRefined (by
+      simpa only [Fintype.card_eq_nat_card] using block.degrees_ge_two.2)
 
 /-- The literal local-chief trace selected by the component source. -/
 noncomputable def trace :
   ActualWreathCompressionTrace (initialState hTraceyPerm block) :=
   ActualWreathCompressionTrace.canonicalOfCapacity
-    (capacity hTraceyHalf hTraceyLog block)
+    (capacity hTraceyHalf hTraceyLog hTraceyRefined block)
     (initialState hTraceyPerm block)
 
 /-- The compression tower underlying the traced local chief series. -/
 noncomputable def tower :
   ActualWreathCompressionTower (initialState hTraceyPerm block) :=
-  (trace hTraceyHalf hTraceyLog hTraceyPerm block).tower
+  (trace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).tower
 
 /-- Complete quotient-weight transfer from the original ambient group to
 the faithful action of the actual top on the original blocks. -/
 noncomputable def envelope :
     RelativeCompleteSourceEnvelope (preE7NonPairAction w U) :=
-  (tower hTraceyHalf hTraceyLog hTraceyPerm block).envelope
+  (tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).envelope
 
 /-- The actual affine exponent is bounded by the published primitive
 composition-length expression.  The composition series is transported from
 the literal block fibre to `Fin r`; no project-owned density premise is used. -/
 theorem envelope_eta_le_primitiveCompositionBound
     (hcomp : PrimitiveCompositionLengthInput) :
-    (envelope hTraceyHalf hTraceyLog hTraceyPerm block).eta ≤
+    (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).eta ≤
       fixedTargetCompositionGamma *
         ((Nat.card block.Points : ℝ) / 2) *
           ((8 / 3 : ℝ) * Real.logb 2 (Nat.card block.Fibre) - 4 / 3) := by
   obtain ⟨t, htower⟩ :=
-    (trace hTraceyHalf hTraceyLog hTraceyPerm block).envelope_eta_le_some_compositionLength
+    (trace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).envelope_eta_le_some_compositionLength
   have ht := PrimitiveCompositionLengthInput.bound_of_equiv hcomp
     (Nat.card block.Fibre) block.degrees_ge_two.1
     (Finite.equivFin block.Fibre) block.Component
@@ -182,13 +187,14 @@ No literature interface is allowed to return this project-owned sum. -/
 structure PreE7PrimitiveAffineImprimitiveComponentSourceData
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
     (hTraceyLog : TraceyAffineInducedModuleInput)
+    (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput) : Type 1 where
   source : ∀ w (U : PreE7NonPairActionClass w), 5 ≤ w →
     (basePoint : Fin w) →
     (block : OriginalMinimalBlock
       (A := preE7NonPairAction w U) basePoint) →
     (P : PrimitiveAffineProfile block.Component block.Fibre) →
-    ComponentSource hTraceyHalf hTraceyLog hTraceyPerm block P ⊕
+    ComponentSource hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P ⊕
       PreE7RankTailSourceOrYonedaTopData w U
 
 end PrimitiveAffineImprimitiveBlockTransfer

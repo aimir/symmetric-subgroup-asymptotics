@@ -25,7 +25,7 @@ noncomputable def elementaryLogBudget :
       ActualWreathCompressionTower S → ℝ
   | _, .terminal _ _ => 0
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -43,7 +43,7 @@ noncomputable def semisimpleLogBudget :
       ActualWreathCompressionTower S → ℝ
   | _, .terminal _ _ => 0
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -82,7 +82,7 @@ private theorem logb_localFactorOrderProduct :
       simp [localFactorOrderProduct, elementaryLogBudget,
         semisimpleLogBudget]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -135,7 +135,7 @@ theorem elementaryLogBudget_nonneg :
       (T : ActualWreathCompressionTower S) → 0 ≤ T.elementaryLogBudget
   | _, .terminal _ _ => by simp [elementaryLogBudget]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -154,7 +154,7 @@ theorem semisimpleLogBudget_nonneg :
       (T : ActualWreathCompressionTower S) → 0 ≤ T.semisimpleLogBudget
   | _, .terminal _ _ => by simp [semisimpleLogBudget]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'

@@ -340,6 +340,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   {basePoint : Fin w}
   (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
   (hTraceyLog : TraceyAffineInducedModuleInput)
+  (hTraceyRefined : TraceyRefinedInducedModuleInput)
   (hTraceyPerm : TraceyPermutationGeneratorInput)
   (block : OriginalMinimalBlock
     (A := preE7NonPairAction w U) basePoint)
@@ -382,12 +383,12 @@ theorem component_logb_card_le_logSquare :
 /-- Both retained tower budgets are bounded by the same literal local-order
 budget. -/
 theorem tower_logBudgets_le_logSquare :
-    let T := tower hTraceyHalf hTraceyLog hTraceyPerm block
+    let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block
     T.elementaryLogBudget ≤
         ((Nat.log 2 (Nat.card block.Fibre) + 1 : ℕ) : ℝ) ^ 2 ∧
       T.semisimpleLogBudget ≤
         ((Nat.log 2 (Nat.card block.Fibre) + 1 : ℕ) : ℝ) ^ 2 := by
-  let T := tower hTraceyHalf hTraceyLog hTraceyPerm block
+  let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block
   have hsum := T.elementaryLogBudget_add_semisimpleLogBudget_eq_card
   change T.elementaryLogBudget + T.semisimpleLogBudget =
     Real.logb 2 (Nat.card block.Component) at hsum
@@ -401,14 +402,14 @@ component exponent.  This is the construction-level estimate later summed
 over the growing owner menu. -/
 theorem tower_coefficient_le_explicit
     (hgen : FiniteSimpleTwoGeneratorBound) (b : ℕ) :
-    let T := tower hTraceyHalf hTraceyLog hTraceyPerm block
+    let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block
     T.envelope.coefficient b ≤
       (2 : ℝ) ^ affineComponentCoefficientExponent
         (Nat.card block.Fibre) (Nat.card block.Points) w b := by
-  let T := tower hTraceyHalf hTraceyLog hTraceyPerm block
+  let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block
   let m : ℝ := (Nat.log 2 (Nat.card block.Fibre) + 1 : ℕ) ^ 2
   obtain ⟨he, hs⟩ := tower_logBudgets_le_logSquare
-    hTraceyHalf hTraceyLog hTraceyPerm block P
+    hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
   have he0 := T.elementaryLogBudget_nonneg
   have hs0 := T.semisimpleLogBudget_nonneg
   have hm0 : 0 ≤ m := by positivity
@@ -452,20 +453,20 @@ theorem tower_coefficient_le_explicit
   dsimp [affineComponentCoefficientExponent, m]
   nlinarith
 
-variable (S : ComponentSource hTraceyHalf hTraceyLog hTraceyPerm block P)
+variable (S : ComponentSource hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P)
 
 /-- The finite coefficient is a theorem of the literal affine tower.  Its
 width-only part is the standard subquadratic cost used by the global menu. -/
 theorem coefficient_bound
     (hgen : FiniteSimpleTwoGeneratorBound) (b : ℕ) :
-    (envelope hTraceyHalf hTraceyLog hTraceyPerm block).coefficient b ≤
+    (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).coefficient b ≤
       (2 : ℝ) ^
         (affineComponentWidthCost w +
           8 * (w : ℝ) * Real.logb 2 (b + 1)) := by
   letI : Nontrivial block.Fibre :=
     Finite.one_lt_card_iff_nontrivial.mp block.degrees_ge_two.1
   have hraw := tower_coefficient_le_explicit
-    hTraceyHalf hTraceyLog hTraceyPerm block P hgen b
+    hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P hgen b
   have hexp := affineComponentCoefficientExponent_le_widthCost
     (Nat.card block.Fibre) (Nat.card block.Points) w b
     block.degrees_ge_two.1 block.degrees_ge_two.2 (width_eq block)
@@ -477,18 +478,18 @@ construction-facing record required by the affine-aware catalogue bridge. -/
 noncomputable def preE7Margin
     (hgen : FiniteSimpleTwoGeneratorBound) :
     RelativeCompleteSourceEnvelope.PreE7Margin
-      (envelope hTraceyHalf hTraceyLog hTraceyPerm block) where
+      (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block) where
   eta_nonneg := by
     simpa only [envelope, tower] using
       ActualWreathCompressionTower.envelope_eta_nonneg
-        (tower hTraceyHalf hTraceyLog hTraceyPerm block)
+        (tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block)
   seedDegree_two_le := by
     rw [envelope, ActualWreathCompressionTower.envelope_v]
     simpa using block.degrees_ge_two.2
   margin := by
     simpa only [envelope, tower, trace, capacity] using S.margin
   coefficient_bound := coefficient_bound
-    hTraceyHalf hTraceyLog hTraceyPerm block P hgen
+    hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P hgen
 
 /-- **Imprimitive affine-component transfer.**  The component-native margin
 is transported through the actual block system; the complete coefficient
@@ -497,8 +498,8 @@ noncomputable def toAmbientSource
     (hgen : FiniteSimpleTwoGeneratorBound) :
     PreE7RankTailSourceOrYonedaTopData w U :=
   RelativeCompleteSourceEnvelope.toRankTailSourceOrYonedaTopOfMargin
-    .acert (envelope hTraceyHalf hTraceyLog hTraceyPerm block)
-      (preE7Margin hTraceyHalf hTraceyLog hTraceyPerm block P S hgen)
+    .acert (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block)
+      (preE7Margin hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P S hgen)
 
 end ComponentSource
 
@@ -507,15 +508,16 @@ noncomputable def imprimitiveAffineComponentTransfer
     {w : ℕ} {U : PreE7NonPairActionClass w} {basePoint : Fin w}
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
     (hTraceyLog : TraceyAffineInducedModuleInput)
+    (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hgen : FiniteSimpleTwoGeneratorBound)
     (block : OriginalMinimalBlock
       (A := preE7NonPairAction w U) basePoint)
     (P : PrimitiveAffineProfile block.Component block.Fibre)
-    (S : ComponentSource hTraceyHalf hTraceyLog hTraceyPerm block P) :
+    (S : ComponentSource hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P) :
     PreE7RankTailSourceOrYonedaTopData w U :=
   ComponentSource.toAmbientSource
-    hTraceyHalf hTraceyLog hTraceyPerm block P S hgen
+    hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P S hgen
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu

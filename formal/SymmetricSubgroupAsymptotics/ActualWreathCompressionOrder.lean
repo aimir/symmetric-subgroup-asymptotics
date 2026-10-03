@@ -27,7 +27,7 @@ def localFactorOrderProduct :
       ActualWreathCompressionTower S → ℕ
   | _, .terminal _ _ => 1
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -59,7 +59,7 @@ theorem localFactorOrderProduct_eq_card :
       simp only [localFactorOrderProduct]
       exact (Nat.card_eq_one_iff_unique.mpr ⟨inferInstance, inferInstance⟩).symm
   | S, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'

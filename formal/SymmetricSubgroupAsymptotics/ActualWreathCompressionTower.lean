@@ -1,7 +1,7 @@
 import SymmetricSubgroupAsymptotics.RelativeCompleteSourceEnvelope
 import SymmetricSubgroupAsymptotics.PermutationalWreathElementaryCompression
 import SymmetricSubgroupAsymptotics.PrimeSectionalCharacterRank
-import SymmetricSubgroupAsymptotics.TraceyAffineInducedModuleInput
+import SymmetricSubgroupAsymptotics.TraceyRefinedAffineInput
 
 /-!
 # Iterated compression of an actual wreath embedding
@@ -184,6 +184,8 @@ inductive ActualWreathCompressionTower :
       (capacity_le_log : H.capacity ≤
         traceyInducedGeneratorCeiling
           (Module.finrank (ZMod C.p) C.V) (Fintype.card I))
+      (capacity_refined : TraceyRefinedInducedCapacityBounds C.p
+        (Module.finrank (ZMod C.p) C.V) (Fintype.card I) H.capacity)
       (coefficient_le : H.coefficient ≤
         (C.p : ℝ) ^ traceyAffineCoefficientExponent
           (Module.finrank (ZMod C.p) C.V) (Fintype.card I)
@@ -212,7 +214,7 @@ noncomputable def envelope :
         (S.terminalAction_injective hD)
   | S, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
       groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
-        coefficient_le next => by
+        capacity_refined coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
       let K := PermutationalWreathProduct.Compression.kernel S.rho phi
@@ -249,7 +251,7 @@ theorem envelope_v :
   | _, .terminal _ _ => by
       simp [envelope, RelativeCompleteSourceEnvelope.identity]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -271,7 +273,7 @@ theorem envelope_eta_nonneg :
   | _, .terminal _ _ => by
       simp [envelope, RelativeCompleteSourceEnvelope.identity]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'

@@ -308,6 +308,84 @@ theorem subrepresentationComp_injective
   exact congrArg
     (fun X : Subrepresentation (rho.comp gamma) ↦ X.toSubmodule) h
 
+/-- One common refined tuple length for the induced representation and its
+dual.  The two applications of Tracey's theorem are padded to their maximum;
+every retained numerical ceiling survives that maximum. -/
+structure RefinedCapacityData (i : I) where
+  H : ℕ
+  bounds : TraceyRefinedInducedCapacityBounds C.p
+    (Module.finrank (ZMod C.p) C.V) (Fintype.card I) H
+  primal : UniformSubrepresentationGeneratorBound
+    (inducedRepresentation S phi C i) H
+  dual : UniformSubrepresentationGeneratorBound
+    (inducedRepresentation S phi C i).dual H
+
+/-- Construct the common primal/dual refined capacity at one literal block. -/
+noncomputable def refinedCapacityData
+    (hTracey : TraceyRefinedInducedModuleInput)
+    (hI : 2 ≤ Fintype.card I) (i : I) :
+    RefinedCapacityData S phi C i := by
+  have hindex : 2 ≤ (S.topPointStabilizer i).index := by
+    rw [S.topPointStabilizer_index i]
+    exact hI
+  let hp := hTracey C.p S.A (S.topPointStabilizer i) hindex C.V
+    (localRepresentation S phi C i)
+  let hd := hTracey.dual S.A (S.topPointStabilizer i) hindex C.V
+    (localRepresentation S phi C i)
+  have hH' : TraceyRefinedInducedCapacityBounds C.p
+      (Module.finrank (ZMod C.p) C.V) (Fintype.card I)
+        ((Classical.choose hp : ℕ) : ℝ) := by
+    simpa only [S.topPointStabilizer_index] using
+      (Classical.choose_spec hp).1
+  have hK' : TraceyRefinedInducedCapacityBounds C.p
+      (Module.finrank (ZMod C.p) C.V) (Fintype.card I)
+        ((Classical.choose hd : ℕ) : ℝ) := by
+    simpa only [S.topPointStabilizer_index] using
+      (Classical.choose_spec hd).1
+  have hprimal : UniformSubrepresentationGeneratorBound
+      (inducedRepresentation S phi C i) (Classical.choose hp) :=
+    (Classical.choose_spec hp).2
+  have hdual : UniformSubrepresentationGeneratorBound
+      (inducedRepresentation S phi C i).dual (Classical.choose hd) :=
+    (Classical.choose_spec hd).2
+  refine
+    { H := max (Classical.choose hp) (Classical.choose hd)
+      bounds := by
+        simpa only [Nat.cast_max] using hH'.max hK'
+      primal := uniformSubrepresentationGeneratorBound_mono _ hprimal
+        (le_max_left (Classical.choose hp) (Classical.choose hd))
+      dual := uniformSubrepresentationGeneratorBound_mono _ hdual
+        (le_max_right (Classical.choose hp) (Classical.choose hd)) }
+
+/-- Refined induced generators bound the invariant intersections in the
+literal correlated elementary kernel. -/
+theorem invariant_count_le_refined
+    (i₀ : I) (D : RefinedCapacityData S phi C i₀) :
+    Nat.card (Subrepresentation (E S phi C).quotientRepresentation.ρ) ≤
+      Nat.card (E S phi C).V ^ D.H := by
+  letI : Finite C.V := Module.finite_of_finite (ZMod C.p)
+  letI : Finite (E S phi C).V := Finite.of_injective
+    (PermutationalWreathProduct.Compression.ElementarySubmodule
+      (p := C.p) S.rho phi C.equiv.symm).subtype
+    (PermutationalWreathProduct.Compression.ElementarySubmodule
+      (p := C.p) S.rho phi C.equiv.symm).subtype_injective
+  have hambient : UniformSubrepresentationGeneratorBound
+      (ambientRepresentation S phi C) D.H := by
+    exact D.primal.of_injective (inducedIntertwiner S phi C i₀)
+      (inducedIntertwiner_injective S phi C i₀)
+  calc
+    Nat.card (Subrepresentation (E S phi C).quotientRepresentation.ρ) ≤
+        Nat.card (Subrepresentation (ambientRepresentation S phi C)) :=
+      Nat.card_le_card_of_injective
+        (subrepresentationComp
+          (QuotientGroup.mk' (K S phi))
+          (E S phi C).quotientRepresentation.ρ)
+        (subrepresentationComp_injective
+          (QuotientGroup.mk' (K S phi))
+          (E S phi C).quotientRepresentation.ρ)
+    _ ≤ Nat.card (E S phi C).V ^ D.H :=
+      hambient.card_subrepresentation_le
+
 /-- Tracey's induced-module theorem bounds the invariant intersections in
 the literal correlated elementary kernel. -/
 theorem invariant_count_le
@@ -513,6 +591,46 @@ theorem sharpSectionCapacity_le
   rw [← heq]
   exact hinflated
 
+/-- The dual half of the common refined datum controls every literal normal
+section of the correlated elementary kernel. -/
+theorem sharpSectionCapacity_le_refined
+    (i₀ : I) (D : RefinedCapacityData S phi C i₀) :
+    representationSchurCapacity
+      ((originalChart S phi C).sectionRepresentation
+        (pi S phi) (E S phi C).quotientRepresentation N).ρ ≤ D.H := by
+  letI : FiniteDimensional (ZMod C.p)
+      (PermutationalWreathProduct.Compression.ElementarySubmodule (p := C.p)
+        S.rho phi C.equiv.symm) := inferInstance
+  letI : FiniteDimensional (ZMod (E S phi C).p) (E S phi C).V :=
+    (E S phi C).finiteDimensional
+  letI : FiniteDimensional (ZMod (E S phi C).p)
+      ((originalChart S phi C).sectionRepresentation
+        (pi S phi) (E S phi C).quotientRepresentation N) := by
+    change FiniteDimensional (ZMod (E S phi C).p)
+      ((E S phi C).V ⧸
+        (originalChart S phi C).normalSpace
+          (pi S phi) (E S phi C).quotientRepresentation N)
+    infer_instance
+  have hgen : RepresentationGeneratedBy
+      (inflatedSectionRepresentation S phi C N).dual D.H :=
+    representationDual_generated_of_subquotient
+      D.dual
+      (inducedIntertwiner S phi C i₀)
+      (inducedIntertwiner_injective S phi C i₀)
+      (sectionQuotientIntertwiner S phi C N)
+      (sectionQuotientIntertwiner_surjective S phi C N)
+  have hinflated : representationSchurCapacity
+      (inflatedSectionRepresentation S phi C N) ≤ D.H :=
+    representationSchurCapacity_le_of_dual_generated
+      (inflatedSectionRepresentation S phi C N) D.H hgen
+  have heq := representationSchurCapacity_comp
+    (QuotientGroup.mk' ((pi S phi).ker ⊔ N))
+    (QuotientGroup.mk'_surjective ((pi S phi).ker ⊔ N))
+    ((originalChart S phi C).sectionRepresentation
+      (pi S phi) (E S phi C).quotientRepresentation N).ρ
+  rw [← heq]
+  exact hinflated
+
 end NormalSection
 
 /-- The literal correlated elementary kernel is a submodule of the full
@@ -609,6 +727,29 @@ noncomputable def jointCapacityInput
     exact sharpSectionCapacity_le S phi C N.1 hTraceyHalf hTraceyLog hI i₀
   sectionalRank := S.sectionalRank C.p
 
+/-- Joint elementary incidence using the common refined primal/dual tuple
+length. -/
+noncomputable def jointCapacityInputRefined
+    (i₀ : I) (D : RefinedCapacityData S phi C i₀) :
+    AffineJointElementaryCapacityInput C.p
+      (pi S phi) (E S phi C).quotientRepresentation
+      (E S phi C).originalKernelChart where
+  H := D.H
+  g := S.generatorCount
+  v := S.sourceDegree
+  invariantCount := invariant_count_le_refined S phi C i₀ D
+  sectionGenerators := by
+    intro N
+    refine ⟨fun j => QuotientGroup.mk' ((pi S phi).ker ⊔ N.1)
+      (S.generators j), ?_⟩
+    exact quotient_generators_full ((pi S phi).ker ⊔ N.1)
+      S.generators S.generators_full
+  sharpSectionCapacity := by
+    intro N
+    letI : N.1.Normal := N.2
+    exact sharpSectionCapacity_le_refined S phi C N.1 i₀ D
+  sectionalRank := S.sectionalRank C.p
+
 /-- The concrete joint capacity carries a uniform prime-power coefficient
 bound with Tracey's logarithmic induced-module ceiling. -/
 theorem jointCapacity_coefficient_le
@@ -636,12 +777,39 @@ theorem jointCapacity_coefficient_le
   · exact elementaryModule_card_le S phi C
   · exact min_le_right _ _
 
+/-- The refined joint capacity keeps the same logarithmic coefficient
+ceiling, because the common refined tuple length is still below Tracey's
+uniform logarithmic ceiling. -/
+theorem jointCapacityRefined_coefficient_le
+    [Finite (E S phi C).quotientRepresentation]
+    (i₀ : I) (D : RefinedCapacityData S phi C i₀) :
+    ((jointCapacityInputRefined S phi C i₀ D).toJointCapacity
+      (hpi := QuotientGroup.mk'_surjective (K S phi))).coefficient ≤
+      (C.p : ℝ) ^ traceyAffineCoefficientExponent
+        (Module.finrank (ZMod C.p) C.V) (Fintype.card I)
+        (traceyInducedGeneratorCeiling
+          (Module.finrank (ZMod C.p) C.V) (Fintype.card I))
+        S.generatorCount S.sourceDegree C.p := by
+  letI : Finite C.V := Module.finite_of_finite (ZMod C.p)
+  letI : Finite (E S phi C).V := Finite.of_injective
+    (PermutationalWreathProduct.Compression.ElementarySubmodule
+      (p := C.p) S.rho phi C.equiv.symm).subtype
+    (PermutationalWreathProduct.Compression.ElementarySubmodule
+      (p := C.p) S.rho phi C.equiv.symm).subtype_injective
+  dsimp only [AffineJointElementaryCapacityInput.toJointCapacity,
+    AffineJointElementaryCapacityInput.coefficient, jointCapacityInputRefined]
+  apply affineCoefficient_le_primePower
+  · exact C.p_prime.one_le
+  · exact elementaryModule_card_le S phi C
+  · exact_mod_cast D.bounds.logarithmic
+
 /-- Tracey's published induced-module theorem supplies the elementary
 capacity input at every quotient state of every actual block system with at
 least two blocks.  This is the closed construction consumed by the tower. -/
 noncomputable def elementaryCapacityInput
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
     (hTraceyLog : TraceyAffineInducedModuleInput)
+    (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hI : 2 ≤ Fintype.card I) :
     ActualWreathElementaryCapacityInput (Q := Q) (I := I) := by
   intro S D' _ _ phi hphi C
@@ -654,32 +822,15 @@ noncomputable def elementaryCapacityInput
   letI : Finite (E S phi C).quotientRepresentation :=
     inferInstanceAs (Finite (E S phi C).V)
   let i₀ : I := Classical.choice inferInstance
-  refine ⟨(jointCapacityInput S phi C hTraceyHalf hTraceyLog hI i₀).toJointCapacity
-    (hpi := QuotientGroup.mk'_surjective (K S phi)), ?_, ?_, ?_⟩
-  · dsimp only [AffineJointElementaryCapacityInput.toJointCapacity,
-      jointCapacityInput]
-    calc
-      ((inducedCapacityCeiling
-          (Module.finrank (ZMod C.p) C.V) (Fintype.card I) : ℕ) : ℝ) ≤
-          ((Module.finrank (ZMod C.p) C.V * Fintype.card I / 2 : ℕ) : ℝ) := by
-        exact_mod_cast min_le_left
-          (Module.finrank (ZMod C.p) C.V * Fintype.card I / 2)
-          (traceyInducedGeneratorCeiling
-            (Module.finrank (ZMod C.p) C.V) (Fintype.card I))
-      _ ≤ ((Module.finrank (ZMod C.p) C.V * Fintype.card I : ℕ) : ℝ) / 2 := by
-        simpa only [Nat.cast_mul, Nat.cast_ofNat] using
-          (Nat.cast_div_le
-            (m := Module.finrank (ZMod C.p) C.V * Fintype.card I)
-            (n := 2) (α := ℝ))
-      _ = (Module.finrank (ZMod C.p) C.V : ℝ) * Fintype.card I / 2 := by
-        rw [Nat.cast_mul]
-  · dsimp only [AffineJointElementaryCapacityInput.toJointCapacity,
-      jointCapacityInput]
-    exact_mod_cast min_le_right
-      (Module.finrank (ZMod C.p) C.V * Fintype.card I / 2)
-      (traceyInducedGeneratorCeiling
-        (Module.finrank (ZMod C.p) C.V) (Fintype.card I))
-  · exact jointCapacity_coefficient_le S phi C hTraceyHalf hTraceyLog hI i₀
+  let D := refinedCapacityData S phi C hTraceyRefined hI i₀
+  refine ⟨(jointCapacityInputRefined S phi C i₀ D).toJointCapacity
+    (hpi := QuotientGroup.mk'_surjective (K S phi)), ?_, ?_, ?_, ?_⟩
+  · simpa only [AffineJointElementaryCapacityInput.toJointCapacity,
+      jointCapacityInputRefined] using D.bounds.half
+  · simpa only [AffineJointElementaryCapacityInput.toJointCapacity,
+      jointCapacityInputRefined] using D.bounds.logarithmic
+  · exact D.bounds
+  · exact jointCapacityRefined_coefficient_le S phi C i₀ D
 
 end ActualWreathAffineCapacity
 end SymmetricSubgroupAsymptotics

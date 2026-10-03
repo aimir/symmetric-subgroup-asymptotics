@@ -35,7 +35,7 @@ noncomputable def coefficientConstant :
       ActualWreathCompressionTower S → ℝ
   | _, .terminal _ _ => 1
   | S, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -62,7 +62,7 @@ def coefficientPolynomialDegree :
       ActualWreathCompressionTower S → ℕ
   | _, .terminal _ _ => 0
   | S, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -81,7 +81,7 @@ theorem coefficientConstant_nonneg :
       (T : ActualWreathCompressionTower S) → 0 ≤ T.coefficientConstant
   | _, .terminal _ _ => by simp [coefficientConstant]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -112,7 +112,7 @@ theorem envelope_coefficient_le :
       simp [envelope, coefficientConstant, coefficientPolynomialDegree,
         RelativeCompleteSourceEnvelope.identity]
   | S, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next, b => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -121,7 +121,7 @@ theorem envelope_coefficient_le :
         next.envelope.coefficient_nonneg b
       calc
         (ActualWreathCompressionTower.elementary _ _ phi hphi C H
-            capacity_le_half capacity_le_log coefficient_le next).envelope.coefficient b =
+            capacity_le_half capacity_le_log capacity_refined coefficient_le next).envelope.coefficient b =
             H.coefficient * next.envelope.coefficient b := rfl
         _ ≤ ((C.p : ℝ) ^ traceyAffineCoefficientExponent
               (Module.finrank (ZMod C.p) C.V) (Fintype.card I)
@@ -139,10 +139,10 @@ theorem envelope_coefficient_le :
                 (1 + (b : ℝ)) ^ next.coefficientPolynomialDegree) :=
           mul_le_mul_of_nonneg_left hnext (by positivity)
         _ = (ActualWreathCompressionTower.elementary _ _ phi hphi C H
-              capacity_le_half capacity_le_log coefficient_le next).coefficientConstant *
+              capacity_le_half capacity_le_log capacity_refined coefficient_le next).coefficientConstant *
               (1 + (b : ℝ)) ^
                 (ActualWreathCompressionTower.elementary _ _ phi hphi C H
-                  capacity_le_half capacity_le_log coefficient_le next).coefficientPolynomialDegree := by
+                  capacity_le_half capacity_le_log capacity_refined coefficient_le next).coefficientPolynomialDegree := by
           simp only [coefficientConstant, coefficientPolynomialDegree]
           ring
   | S, @ActualWreathCompressionTower.semisimple _ _ _ _ _ _ _ _ D'
@@ -192,7 +192,7 @@ def abelianLength :
       ActualWreathCompressionTower S → ℕ
   | _, .terminal _ _ => 0
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -214,7 +214,7 @@ theorem envelope_eta_le_abelianLength :
   | _, .terminal _ _ => by
       simp [envelope, abelianLength, RelativeCompleteSourceEnvelope.identity]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -235,7 +235,7 @@ theorem envelope_eta_le_abelianLength :
       have hnext := envelope_eta_le_abelianLength next
       calc
         (ActualWreathCompressionTower.elementary _ _ phi hphi C H
-            capacity_le_half capacity_le_log coefficient_le next).envelope.eta =
+            capacity_le_half capacity_le_log capacity_refined coefficient_le next).envelope.eta =
             Real.logb 2 C.p / C.p * H.capacity + next.envelope.eta := rfl
         _ ≤ fixedTargetCompositionGamma *
               ((Module.finrank (ZMod C.p) C.V : ℝ) * Fintype.card I / 2) +
@@ -243,7 +243,7 @@ theorem envelope_eta_le_abelianLength :
               next.abelianLength := add_le_add hfirst hnext
         _ = fixedTargetCompositionGamma * ((Fintype.card I : ℝ) / 2) *
               (ActualWreathCompressionTower.elementary _ _ phi hphi C H
-                capacity_le_half capacity_le_log coefficient_le next).abelianLength := by
+                capacity_le_half capacity_le_log capacity_refined coefficient_le next).abelianLength := by
             simp only [abelianLength, Nat.cast_add]
             ring
   | _, @ActualWreathCompressionTower.semisimple _ _ _ _ _ _ _ _ D'
@@ -268,7 +268,7 @@ theorem envelope_eta_le_elementaryLogBudget_quarter :
       simp [envelope, elementaryLogBudget,
         RelativeCompleteSourceEnvelope.identity]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -296,7 +296,7 @@ theorem envelope_eta_le_elementaryLogBudget_quarter :
       have hnext := envelope_eta_le_elementaryLogBudget_quarter next
       calc
         (ActualWreathCompressionTower.elementary _ _ phi hphi C H
-            capacity_le_half capacity_le_log coefficient_le next).envelope.eta =
+            capacity_le_half capacity_le_log capacity_refined coefficient_le next).envelope.eta =
             Real.logb 2 C.p / C.p * H.capacity + next.envelope.eta := rfl
         _ ≤ ((Fintype.card I : ℝ) / 4) *
               ((Module.finrank (ZMod C.p) C.V : ℝ) * Real.logb 2 C.p) +
@@ -304,7 +304,7 @@ theorem envelope_eta_le_elementaryLogBudget_quarter :
           add_le_add hfirst hnext
         _ = ((Fintype.card I : ℝ) / 4) *
             (ActualWreathCompressionTower.elementary _ _ phi hphi C H
-              capacity_le_half capacity_le_log coefficient_le next).elementaryLogBudget := by
+              capacity_le_half capacity_le_log capacity_refined coefficient_le next).elementaryLogBudget := by
           simp only [elementaryLogBudget]
           ring
   | _, @ActualWreathCompressionTower.semisimple _ _ _ _ _ _ _ _ D'
@@ -431,9 +431,10 @@ theorem nonempty_of_capacity
         by_cases hcomm : IsMulCommutative phi.ker
         · obtain ⟨C⟩ := elementaryMinimalNormalChart_nonempty
             phi.ker hker_ne hcomm hker_min
-          obtain ⟨HC, hhalf, hlog, hcoeff⟩ := H S₀ D' phi hphi C
+          obtain ⟨HC, hhalf, hlog, hrefined, hcoeff⟩ :=
+            H S₀ D' phi hphi C
           refine ⟨{
-            tower := .elementary S₀ D' phi hphi C HC hhalf hlog hcoeff next.tower
+            tower := .elementary S₀ D' phi hphi C HC hhalf hlog hrefined hcoeff next.tower
             chief := c
             abelianLength_eq := ?_ }⟩
           change Module.finrank (ZMod C.p) C.V + next.tower.abelianLength =

@@ -131,6 +131,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   {basePoint : Fin w}
   (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
   (hTraceyLog : TraceyAffineInducedModuleInput)
+  (hTraceyRefined : TraceyRefinedInducedModuleInput)
   (hTraceyPerm : TraceyPermutationGeneratorInput)
   (block : OriginalMinimalBlock
     (A := preE7NonPairAction w U) basePoint)
@@ -145,22 +146,22 @@ theorem margin_of_localDegree_ge_fortyFive
     (hr : 45 ≤ Nat.card block.Fibre) :
     preE7CharacterRho * w ≤
       ((evenWidth w : ℝ) -
-          (envelope hTraceyHalf hTraceyLog hTraceyPerm block).v) / 8 -
-        (envelope hTraceyHalf hTraceyLog hTraceyPerm block).eta := by
+          (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).v) / 8 -
+        (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).eta := by
   letI : Nontrivial block.Fibre :=
     Finite.one_lt_card_iff_nontrivial.mp block.degrees_ge_two.1
-  have hv : (envelope hTraceyHalf hTraceyLog hTraceyPerm block).v =
+  have hv : (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).v =
       Nat.card block.Points := by
     simpa only [envelope, Fintype.card_eq_nat_card] using
       ActualWreathCompressionTower.envelope_v
-        (tower hTraceyHalf hTraceyLog hTraceyPerm block)
+        (tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block)
   rw [hv]
   apply primitiveAffine_genericMargin_of_degree_ge_fortyFive
     (Nat.card block.Fibre) (Nat.card block.Points) w hr
     block.degrees_ge_two.2 (width_eq block)
   simpa only [Fintype.card_eq_nat_card] using
     envelope_eta_le_primitiveCompositionBound
-      hTraceyHalf hTraceyLog hTraceyPerm block hcomp
+      hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block hcomp
 
 /-- The bounded logarithmic range `25 ≤ r < 45` is already uniform: the
 published composition-length theorem forces length at most eleven below
@@ -172,19 +173,19 @@ theorem margin_of_localDegree_twentyFive_to_fortyFour
     (hr45 : Nat.card block.Fibre < 45) :
     preE7CharacterRho * w ≤
       ((evenWidth w : ℝ) -
-          (envelope hTraceyHalf hTraceyLog hTraceyPerm block).v) / 8 -
-        (envelope hTraceyHalf hTraceyLog hTraceyPerm block).eta := by
+          (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).v) / 8 -
+        (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).eta := by
   letI : Nontrivial block.Fibre :=
     Finite.one_lt_card_iff_nontrivial.mp block.degrees_ge_two.1
   let r := Nat.card block.Fibre
   let s := Nat.card block.Points
-  have hv : (envelope hTraceyHalf hTraceyLog hTraceyPerm block).v = s := by
+  have hv : (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).v = s := by
     simpa only [envelope, s, Fintype.card_eq_nat_card] using
       ActualWreathCompressionTower.envelope_v
-        (tower hTraceyHalf hTraceyLog hTraceyPerm block)
+        (tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block)
   rw [hv]
   obtain ⟨t, htower⟩ :=
-    (trace hTraceyHalf hTraceyLog hTraceyPerm block).envelope_eta_le_some_compositionLength
+    (trace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).envelope_eta_le_some_compositionLength
   have ht := PrimitiveCompositionLengthInput.bound_of_equiv hcomp
     r block.degrees_ge_two.1 (Finite.equivFin block.Fibre)
     block.Component block.component_preprimitive t
@@ -215,7 +216,7 @@ theorem margin_of_localDegree_twentyFive_to_fortyFour
       omega
     apply primitiveAffine_margin_of_length_le_eleven r s w hr25 hs hw
     calc
-      (envelope hTraceyHalf hTraceyLog hTraceyPerm block).eta ≤
+      (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).eta ≤
           fixedTargetCompositionGamma * ((s : ℝ) / 2) * t.chain.length := by
         simpa only [Fintype.card_eq_nat_card, s] using htower
       _ ≤ fixedTargetCompositionGamma * ((s : ℝ) / 2) * 11 :=
@@ -241,7 +242,7 @@ theorem margin_of_localDegree_twentyFive_to_fortyFour
       omega
     apply primitiveAffine_margin_of_length_le_fourteen r s w hr32' hs hw
     calc
-      (envelope hTraceyHalf hTraceyLog hTraceyPerm block).eta ≤
+      (envelope hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block).eta ≤
           fixedTargetCompositionGamma * ((s : ℝ) / 2) * t.chain.length := by
         simpa only [Fintype.card_eq_nat_card, s] using htower
       _ ≤ fixedTargetCompositionGamma * ((s : ℝ) / 2) * 14 :=

@@ -134,7 +134,7 @@ noncomputable def elementaryCoefficientLogCost :
       ActualWreathCompressionTower S → ℝ
   | _, .terminal _ _ => 0
   | S, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -156,7 +156,7 @@ noncomputable def elementaryLogSquareBudget :
       ActualWreathCompressionTower S → ℝ
   | _, .terminal _ _ => 0
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -175,7 +175,7 @@ theorem elementaryLogSquareBudget_le_sq :
   | _, .terminal _ _ => by
       simp [elementaryLogSquareBudget, elementaryLogBudget]
   | _, @ActualWreathCompressionTower.elementary _ _ _ _ _ _ _ _ D'
-      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log
+      groupD' finiteD' phi hphi C H capacity_le_half capacity_le_log capacity_refined
         coefficient_le next => by
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
@@ -210,7 +210,7 @@ theorem elementaryCoefficientLogCost_le
   induction T with
   | terminal S hD =>
       simp [elementaryCoefficientLogCost, elementaryLogBudget]
-  | @elementary S D' groupD' finiteD' phi hphi C H hhalf hlog hcoeff next ih =>
+  | @elementary S D' groupD' finiteD' phi hphi C H hhalf hlog hrefined hcoeff next ih =>
       letI : Group D' := groupD'
       letI : Finite D' := finiteD'
       have hone := traceyAffineCoefficientExponent_log_le

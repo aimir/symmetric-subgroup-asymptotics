@@ -47,6 +47,8 @@ def ActualWreathElementaryCapacityInput : Prop :=
       H.capacity ≤ Module.finrank (ZMod C.p) C.V * Fintype.card I / 2 ∧
       H.capacity ≤ traceyInducedGeneratorCeiling
         (Module.finrank (ZMod C.p) C.V) (Fintype.card I) ∧
+      TraceyRefinedInducedCapacityBounds C.p
+        (Module.finrank (ZMod C.p) C.V) (Fintype.card I) H.capacity ∧
       H.coefficient ≤
         (C.p : ℝ) ^ traceyAffineCoefficientExponent
           (Module.finrank (ZMod C.p) C.V) (Fintype.card I)
@@ -141,8 +143,9 @@ theorem nonempty_of_capacity
         by_cases hcomm : IsMulCommutative phi.ker
         · obtain ⟨C⟩ := elementaryMinimalNormalChart_nonempty
             phi.ker hker_ne hcomm hker_min
-          obtain ⟨HC, hhalf, hlog, hcoeff⟩ := H S₀ D' phi hphi C
-          exact ⟨.elementary S₀ D' phi hphi C HC hhalf hlog hcoeff next⟩
+          obtain ⟨HC, hhalf, hlog, hrefined, hcoeff⟩ :=
+            H S₀ D' phi hphi C
+          exact ⟨.elementary S₀ D' phi hphi C HC hhalf hlog hrefined hcoeff next⟩
         · let C := semisimpleNormalChart_of_nonabelian_minimal
             phi.ker hker_min hcomm
           exact ⟨.semisimple S₀ D' phi hphi C next⟩
