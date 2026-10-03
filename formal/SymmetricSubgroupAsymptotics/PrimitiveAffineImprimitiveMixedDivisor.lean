@@ -83,28 +83,28 @@ private abbrev blocks := Nat.card block.Points
 noncomputable def of_twoTraceyPrimary
     (q₁ e₁ q₂ e₂ n : ℕ)
     (hq₁ : q₁.Prime) (he₁ : 1 ≤ e₁)
-    (hdiv₁ : q₁ ^ e₁ ∣ blocks block)
-    (hmax₁ : ¬ q₁ ^ (e₁ + 1) ∣ blocks block)
+    (hdiv₁ : q₁ ^ e₁ ∣ Nat.card block.Points)
+    (hmax₁ : ¬ q₁ ^ (e₁ + 1) ∣ Nat.card block.Points)
     (hq₂ : q₂.Prime) (he₂ : 1 ≤ e₂)
-    (hdiv₂ : q₂ ^ e₂ ∣ blocks block)
-    (hmax₂ : ¬ q₂ ^ (e₂ + 1) ∣ blocks block)
+    (hdiv₂ : q₂ ^ e₂ ∣ Nat.card block.Points)
+    (hmax₂ : ¬ q₂ ^ (e₂ + 1) ∣ Nat.card block.Points)
     (hn : n ≠ 0) (hcomponent : Nat.card block.Component ∣ n)
     (hmargin : preE7CharacterRho * w ≤
-      ((evenWidth w : ℝ) - blocks block) / 8 -
+      ((evenWidth w : ℝ) - Nat.card block.Points) / 8 -
         refinedWeightedFactorBudget
           (fun p => min
             (ActualWreathCompressionTower.traceyPrimaryRate
-              (blocks block) q₁ e₁ p)
+              (Nat.card block.Points) q₁ e₁ p)
             (ActualWreathCompressionTower.traceyPrimaryRate
-              (blocks block) q₂ e₂ p)) n) :
+              (Nat.card block.Points) q₂ e₂ p)) n) :
     ComponentSource hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P := by
   apply of_refinedFactorBudget hTraceyHalf hTraceyLog hTraceyRefined
     hTraceyPerm block P _
       (fun p => le_min
         (ActualWreathCompressionTower.traceyPrimaryRate_nonneg
-          (blocks block) q₁ e₁ p)
+          (Nat.card block.Points) q₁ e₁ p)
         (ActualWreathCompressionTower.traceyPrimaryRate_nonneg
-          (blocks block) q₂ e₂ p))
+          (Nat.card block.Points) q₂ e₂ p))
       n hn hcomponent
   · let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block
     apply ActualWreathCompressionTower.capacityRateBound_min _ _ T
