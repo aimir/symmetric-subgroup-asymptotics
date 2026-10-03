@@ -52,6 +52,26 @@ theorem oddIndexWitness_of_three_by_two_high
   apply block.degreeSix_ternaryBlock_owner N hFibre hPoints
   simpa using hHigh
 
+/-- In the complementary branch, every literal normal ternary head is
+zero.  This is stronger than merely being outside the strict high range:
+at ambient degree six even a one-dimensional ternary head satisfies the
+strict `3w < 20 d₃` inequality. -/
+theorem all_normal_head_zero_of_no_three_by_two_high
+    (hFibre : Nat.card block.Fibre = 3)
+    (hPoints : Nat.card block.Points = 2)
+    (hNoHigh : ∀ (N : Subgroup (preE7NonPairAction w U)) [N.Normal],
+      ¬ 3 * w <
+        20 * Module.finrank (ZMod 3) (primeRelativeCharacters 3 N)) :
+    ∀ (N : Subgroup (preE7NonPairAction w U)) [N.Normal],
+      Module.finrank (ZMod 3) (primeRelativeCharacters 3 N) = 0 := by
+  have hw : w = 6 := width_eq_six_of_three_by_two block hFibre hPoints
+  intro N hN
+  by_contra hne
+  have hpos : 0 <
+      Module.finrank (ZMod 3) (primeRelativeCharacters 3 N) :=
+    Nat.pos_of_ne_zero hne
+  exact hNoHigh N (by omega)
+
 /-- The high half of the degree-six exceptional affine cell is a completed
 ambient source. -/
 noncomputable def degreeSixSource_of_three_by_two_high
