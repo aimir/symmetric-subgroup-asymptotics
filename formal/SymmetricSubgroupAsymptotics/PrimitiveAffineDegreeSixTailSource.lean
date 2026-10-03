@@ -53,6 +53,32 @@ theorem degreeSix_subgroup_and_quotient_order_le
   exact (Nat.card_le_card_of_surjective (QuotientGroup.mk' N)
     (QuotientGroup.mk'_surjective N)).trans hU
 
+/-- The degree-six cold quotient bound only needs the literal odd-index-two
+owner witness.  In particular, exceptional affine block cells may construct
+this witness directly; they do not have to manufacture a high-ternary pair
+first. -/
+theorem degreeSix_oddIndex_uniformQuotientBound
+    (hKP : KovacsPraegerAbelianizationBound)
+    (U : Subgroup (Equiv.Perm (Fin 6)))
+    [MulAction.IsPretransitive U (Fin 6)]
+    (W : C1OddIndexTwoOwnerWitness U)
+    (N : Subgroup U) [N.Normal]
+    (b : ℕ) (J : Subgroup (Equiv.Perm (Fin b))) :
+    (Nat.card (GroupEpimorphism J (U ⧸ N)) : ℝ) ≤
+      (2 : ℝ) ^ (102 : ℕ) * (2 : ℝ) ^ ((8 / 15 : ℝ) * b) := by
+  have hUorder := (degreeSix_subgroup_and_quotient_order_le U N).1
+  have hQorder := (degreeSix_subgroup_and_quotient_order_le U N).2
+  have hAutU : Nat.card (U ≃* U) ≤ 2 ^ 100 := by
+    simpa using mulEquiv_card_le_two_pow_sq_of_order 10 hUorder
+  have hAutQ : Nat.card ((U ⧸ N) ≃* (U ⧸ N)) ≤ 2 ^ 100 := by
+    simpa using mulEquiv_card_le_two_pow_sq_of_order 10 hQorder
+  have hbound := W.quotientEpimorphism_bound hKP (by simp) N b J
+  apply hbound.trans
+  apply mul_le_mul_of_nonneg_right _ (by positivity)
+  have hsum : Nat.card (U ≃* U) + Nat.card ((U ⧸ N) ≃* (U ⧸ N)) + 1 ≤
+      2 ^ 102 := by omega
+  exact_mod_cast hsum
+
 /-- Explicit finite constant for every quotient in the aligned degree-six
 dichotomy.  The generous power of two is chosen so its complete normal menu
 fits the standard width-six coefficient budget without case arithmetic. -/
@@ -200,6 +226,51 @@ noncomputable def source : PreE7RankTailSourceOrYonedaTopData 6 U :=
   (data hPrimitive hKP U hU).toRankTailSourceOrYonedaTop
 
 end PrimitiveAffineDegreeSixTailSource
+
+namespace PrimitiveAffineDegreeSixOddIndexTailSource
+
+variable (hKP : KovacsPraegerAbelianizationBound)
+  (U : PreE7NonPairActionClass 6)
+  (W : C1OddIndexTwoOwnerWitness (preE7NonPairAction 6 U))
+
+include hKP W in
+/-- Complete quotient-tail data obtained directly from the intrinsic
+odd-index-two witness on the ambient six-point action. -/
+noncomputable def data :
+    PreE7UniformQuotientTailSourceData .acert 6 U where
+  width_lower := by norm_num
+  theta := 8 / 15
+  theta_window := PrimitiveAffineDegreeSixTailSource.theta_window
+  coefficient := fun _ => (2 : ℝ) ^ (102 : ℕ)
+  coefficient_nonneg := fun _ => by positivity
+  quotient_bound := by
+    intro N b J
+    letI : MulAction.IsPretransitive
+        (preE7NonPairAction 6 U) (Fin 6) :=
+      Non2TransitiveActionClass.representative_pretransitive U.1.1
+    exact degreeSix_oddIndex_uniformQuotientBound hKP
+      (preE7NonPairAction 6 U) W N.1 b J
+  coefficient_total_bound := by
+    intro b
+    calc
+      fusionAxisEnvelopeTotal (preE7NonPairAction 6 U)
+          (fun _ => (2 : ℝ) ^ (102 : ℕ)) ≤
+          (2 : ℝ) ^ (202 : ℕ) :=
+        PrimitiveAffineDegreeSixTailSource.coefficient_total_le U
+      _ = Real.rpow (2 : ℝ) (202 : ℝ) := by simp
+      _ ≤ Real.rpow (2 : ℝ) (36 * (6 : ℝ)) := by
+        apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+        norm_num
+      _ ≤ _ := two_rpow_thirtySix_width_le_menuMass
+        (w := 6) (by norm_num) b
+
+include hKP W in
+/-- Final source for a literal degree-six odd-index-two owner, with no
+high-ternary premise. -/
+noncomputable def source : PreE7RankTailSourceOrYonedaTopData 6 U :=
+  (data hKP U W).toRankTailSourceOrYonedaTop
+
+end PrimitiveAffineDegreeSixOddIndexTailSource
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
 
