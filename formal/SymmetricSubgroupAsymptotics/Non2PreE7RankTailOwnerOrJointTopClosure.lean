@@ -143,7 +143,7 @@ noncomputable def PreE7NumericalRankTailResidualChoice.emptyOfActionOwner
   D_nonneg := fun _ => le_rfl
   parameters := preE7EmptyCell_entryParameters
     (preE7NonPairAction_width_three_le U)
-  main_total_bound := fun _ => by positivity
+  main_total_growth := .inl (fun _ => by positivity)
   exceptional := fun _ =>
     { threshold := 0
       rate := 1
@@ -205,7 +205,7 @@ noncomputable def
       D_nonneg := fun b =>
         fusionAxisEnvelopeTotal_nonneg _ _ (D.coefficient_nonneg b)
       parameters := D.parameters
-      main_total_bound := D.coefficient_total_bound
+      main_total_growth := .inl D.coefficient_total_bound
       exceptional := fun _ =>
         { threshold := 0
           rate := 1

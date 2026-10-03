@@ -146,14 +146,20 @@ private theorem preE7NumericalRankTailMain_envelope :
   intro ε hε
   obtain ⟨K, L, C, hK, hL, hC, hentry⟩ :=
     preE7NumericalOwned_main_envelope ε hε
-  let K' := max K 1
-  let C' := max C 16
-  have hK' : 0 ≤ K' := hK.trans (le_max_left _ _)
-  have hKle : K ≤ K' := le_max_left _ _
+  obtain ⟨Kaff, hKaff1, hAff⟩ :=
+    PrimitiveAffineImprimitiveBlockTransfer.affineComponentWidthCost_rpow_envelope hε
+  let K' := max (max K Kaff) 1
+  let C' := max C (max 16 (8 / Real.log 2 ^ 2))
+  have hK' : 0 ≤ K' := hK.trans ((le_max_left K Kaff).trans (le_max_left _ _))
+  have hKle : K ≤ K' := (le_max_left K Kaff).trans (le_max_left _ _)
+  have hKaffle : Kaff ≤ K' := (le_max_right K Kaff).trans (le_max_left _ _)
   have hKone : 1 ≤ K' := le_max_right _ _
   have hC' : 0 ≤ C' := hC.trans (le_max_left _ _)
   have hCle : C ≤ C' := le_max_left _ _
-  have h16le : (16 : ℝ) ≤ C' := le_max_right _ _
+  have h16le : (16 : ℝ) ≤ C' :=
+    (le_max_left 16 (8 / Real.log 2 ^ 2)).trans (le_max_right _ _)
+  have h8logle : 8 / Real.log 2 ^ 2 ≤ C' :=
+    (le_max_right 16 (8 / Real.log 2 ^ 2)).trans (le_max_right _ _)
   refine ⟨K', L, C', hK', hL, hC', ?_⟩
   intro n w hw j
   have hwb : w + (n - w) + 2 = n + 2 := by
@@ -187,26 +193,73 @@ private theorem preE7NumericalRankTailMain_envelope :
       exact mul_nonneg hK'
         (Real.rpow_nonneg (by norm_num) _)
   | terminal t =>
-      have hold := (Residual w t).main_total_bound (n - w)
-      have hold' : (Residual w t).D (n - w) ≤ (2 : ℝ) ^
-          (16 * (w : ℝ) * Real.log ((n : ℝ) + 2) ^ 2) := by
-        simpa only [hwb, Nat.cast_add, Nat.cast_ofNat] using hold
-      have hexp : 16 * (w : ℝ) * Real.log ((n : ℝ) + 2) ^ 2 ≤
-          ε * (w : ℝ) ^ 2 + L * w +
+      rcases (Residual w t).main_total_growth with hmain | haffine
+      · have hold := hmain (n - w)
+        have hold' : (Residual w t).D (n - w) ≤ (2 : ℝ) ^
+            (16 * (w : ℝ) * Real.log ((n : ℝ) + 2) ^ 2) := by
+          simpa only [hwb, Nat.cast_add, Nat.cast_ofNat] using hold
+        have hexp : 16 * (w : ℝ) * Real.log ((n : ℝ) + 2) ^ 2 ≤
+            ε * (w : ℝ) ^ 2 + L * w +
+              C' * w * Real.log ((n : ℝ) + 2) ^ 2 := by
+          nlinarith [mul_nonneg hε.le (sq_nonneg (w : ℝ)),
+            mul_nonneg hL hw0,
+            mul_le_mul_of_nonneg_right h16le (mul_nonneg hw0 hlog0)]
+        have hpow : (2 : ℝ) ^
+              (16 * (w : ℝ) * Real.log ((n : ℝ) + 2) ^ 2) ≤
+            (2 : ℝ) ^
+              (ε * (w : ℝ) ^ 2 + L * w +
+                C' * w * Real.log ((n : ℝ) + 2) ^ 2) :=
+          Real.rpow_le_rpow_of_exponent_le (by norm_num) hexp
+        simpa only [preE7NumericalRankTailD] using
+          hold'.trans (hpow.trans (by
+            nth_rewrite 1 [← one_mul ((2 : ℝ) ^ _)]
+            exact mul_le_mul_of_nonneg_right hKone (by positivity)))
+      · have hold := haffine (n - w)
+        have hw1 : 1 ≤ w := by
+          have := (Finset.mem_Ico.mp hw).1
+          omega
+        have hcost := hAff w hw1
+        have hsource := affineSourceLog_le_widthLogSquared n w hw
+        have hCsrc : (8 / Real.log 2 ^ 2) * w *
+              Real.log ((n : ℝ) + 2) ^ 2 ≤
             C' * w * Real.log ((n : ℝ) + 2) ^ 2 := by
-        nlinarith [mul_nonneg hε.le (sq_nonneg (w : ℝ)),
-          mul_nonneg hL hw0,
-          mul_le_mul_of_nonneg_right h16le (mul_nonneg hw0 hlog0)]
-      have hpow : (2 : ℝ) ^
-            (16 * (w : ℝ) * Real.log ((n : ℝ) + 2) ^ 2) ≤
-          (2 : ℝ) ^
-            (ε * (w : ℝ) ^ 2 + L * w +
-              C' * w * Real.log ((n : ℝ) + 2) ^ 2) :=
-        Real.rpow_le_rpow_of_exponent_le (by norm_num) hexp
-      simpa only [preE7NumericalRankTailD] using
-        hold'.trans (hpow.trans (by
-          nth_rewrite 1 [← one_mul ((2 : ℝ) ^ _)]
-          exact mul_le_mul_of_nonneg_right hKone (by positivity)))
+          nlinarith [mul_le_mul_of_nonneg_right h8logle
+            (mul_nonneg hw0 hlog0)]
+        have htarget : 0 ≤ K' := hK'
+        have hLw : 0 ≤ L * (w : ℝ) := mul_nonneg hL hw0
+        calc
+          _ ≤ (2 : ℝ) ^
+              (PrimitiveAffineImprimitiveBlockTransfer.affineComponentWidthCost w +
+                8 * (w : ℝ) * Real.logb 2 ((n - w + 1 : ℕ) : ℝ)) := by
+            simpa only [preE7NumericalRankTailD, Nat.cast_add, Nat.cast_one] using hold
+          _ = (2 : ℝ) ^
+              PrimitiveAffineImprimitiveBlockTransfer.affineComponentWidthCost w *
+              (2 : ℝ) ^ (8 * (w : ℝ) *
+                Real.logb 2 ((n - w + 1 : ℕ) : ℝ)) := by
+            rw [Real.rpow_add (by norm_num : (0 : ℝ) < 2)]
+          _ ≤ (Kaff * (2 : ℝ) ^ (ε * (w : ℝ) ^ 2)) *
+              (2 : ℝ) ^ ((8 / Real.log 2 ^ 2) * w *
+                Real.log ((n : ℝ) + 2) ^ 2) :=
+            mul_le_mul hcost
+              (Real.rpow_le_rpow_of_exponent_le (by norm_num) hsource)
+              (by positivity) (by positivity)
+          _ ≤ (K' * (2 : ℝ) ^ (ε * (w : ℝ) ^ 2)) *
+              (2 : ℝ) ^ (C' * w * Real.log ((n : ℝ) + 2) ^ 2) :=
+            mul_le_mul
+              (mul_le_mul_of_nonneg_right hKaffle (by positivity))
+              (Real.rpow_le_rpow_of_exponent_le (by norm_num) hCsrc)
+              (by positivity) (by positivity)
+          _ = K' * (2 : ℝ) ^
+              (ε * (w : ℝ) ^ 2 +
+                C' * w * Real.log ((n : ℝ) + 2) ^ 2) := by
+            rw [Real.rpow_add (by norm_num : (0 : ℝ) < 2)]
+            ring
+          _ ≤ K' * (2 : ℝ) ^
+              (ε * (w : ℝ) ^ 2 + L * w +
+                C' * w * Real.log ((n : ℝ) + 2) ^ 2) := by
+            apply mul_le_mul_of_nonneg_left _ htarget
+            apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+            nlinarith
 
 theorem preE7NumericalRankTail_mainMenu
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput) :

@@ -35,9 +35,12 @@ structure PreE7NumericalRankTailResidualChoice
   D_nonneg : ∀ b, 0 ≤ D b
   parameters : PreE7CharacterEntryParameters preE7CharacterRho w v eta
     delta cutoff alpha theta
-  main_total_bound : ∀ b,
-    D b ≤ (2 : ℝ) ^
-      (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
+  main_total_growth :
+    (∀ b, D b ≤ (2 : ℝ) ^
+      (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)) ∨
+    (∀ b, D b ≤ (2 : ℝ) ^
+      (PrimitiveAffineImprimitiveBlockTransfer.affineComponentWidthCost w +
+        8 * (w : ℝ) * Real.logb 2 (b + 1)))
   exceptional : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)) →
     ExponentialScalarBound X
   exceptional_support : X = 0 ∨ w ≤ 12288

@@ -136,9 +136,10 @@ theorem preE7NumericalOwnedPolynomialConstant_pos :
   unfold preE7NumericalOwnedPolynomialConstant
   exact lt_of_lt_of_le (by norm_num) (le_max_left _ _)
 
-/-- Convert the affine source logarithm to the menu's natural-log-square
-coordinate. -/
-private theorem affineSourceLog_le_widthLogSquared
+/-- The affine source logarithm fits the common linear/log-squared menu
+envelope.  Exported for residual rows carrying the same affine coefficient
+shape. -/
+theorem affineSourceLog_le_widthLogSquared
     (n w : ℕ) (hw : w ∈ Finset.Ico 3 (n + 1)) :
     8 * (w : ℝ) * Real.logb 2 ((n - w + 1 : ℕ) : ℝ) ≤
       (8 / Real.log 2 ^ 2) * w * Real.log ((n : ℝ) + 2) ^ 2 := by
