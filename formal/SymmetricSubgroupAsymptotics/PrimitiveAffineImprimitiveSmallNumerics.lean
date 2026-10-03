@@ -118,6 +118,23 @@ theorem refinedWeightedFactorBudget_oneSixtyEight (rate : ℕ → ℝ) :
   unfold fixedTargetCompositionGamma
   norm_num [Real.logb_self_eq_one]
 
+/-- Integral counterpart of the degree-eight soluble envelope. -/
+theorem integralRefinedWeightedFactorBudget_oneSixtyEight (rate : ℕ → ℝ) :
+    integralRefinedWeightedFactorBudget rate 168 =
+      (1 / 2 : ℝ) * (Nat.floor (3 * rate 2) : ℝ) +
+        fixedTargetCompositionGamma * (Nat.floor (rate 3) : ℝ) +
+        (Real.logb 2 7 / 7) * (Nat.floor (rate 7) : ℝ) := by
+  rw [show 168 = (2 ^ 3 * 3 ^ 1) * 7 ^ 1 by norm_num,
+    integralRefinedWeightedFactorBudget_mul_of_coprime rate (by decide),
+    integralRefinedWeightedFactorBudget_mul_of_coprime rate (by decide),
+    integralRefinedWeightedFactorBudget_prime_pow rate Nat.prime_two,
+    integralRefinedWeightedFactorBudget_prime_pow rate
+      (by norm_num : Nat.Prime 3),
+    integralRefinedWeightedFactorBudget_prime_pow rate
+      (by norm_num : Nat.Prime 7)]
+  unfold fixedTargetCompositionGamma
+  norm_num [Real.logb_self_eq_one]
+
 /-- Exact factor budget for the common soluble degree-sixteen affine
 envelope `16 * 360 = 5760`. -/
 theorem refinedWeightedFactorBudget_fiveSevenSixty (rate : ℕ → ℝ) :

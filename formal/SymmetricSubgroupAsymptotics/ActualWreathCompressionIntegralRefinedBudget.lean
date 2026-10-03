@@ -28,6 +28,26 @@ noncomputable def integralRefinedWeightedFactorBudget
   n.factorization.sum fun p a =>
     (Real.logb 2 p / p) * (Nat.floor ((a : ℝ) * rate p) : ℝ)
 
+theorem integralRefinedWeightedFactorBudget_prime_pow
+    (rate : ℕ → ℝ) {p a : ℕ} (hp : p.Prime) :
+    integralRefinedWeightedFactorBudget rate (p ^ a) =
+      (Real.logb 2 p / p) *
+        (Nat.floor ((a : ℝ) * rate p) : ℝ) := by
+  unfold integralRefinedWeightedFactorBudget
+  rw [hp.factorization_pow]
+  simp
+
+/-- For coprime factors no characteristic occurs on both sides, so retaining
+the integral floor still gives an exact additive factor budget. -/
+theorem integralRefinedWeightedFactorBudget_mul_of_coprime
+    (rate : ℕ → ℝ) {m n : ℕ} (hcoprime : m.Coprime n) :
+    integralRefinedWeightedFactorBudget rate (m * n) =
+      integralRefinedWeightedFactorBudget rate m +
+        integralRefinedWeightedFactorBudget rate n := by
+  unfold integralRefinedWeightedFactorBudget
+  rw [Nat.factorization_mul_of_coprime hcoprime,
+    Finsupp.sum_add_index_of_disjoint hcoprime.disjoint_primeFactors]
+
 private theorem floor_add_le_floor_add
     {x y : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) :
     Nat.floor x + Nat.floor y ≤ Nat.floor (x + y) := by
