@@ -74,6 +74,56 @@ theorem primitiveAffine_genericMargin_of_degree_ge_fortyFive
   rw [hwR]
   nlinarith
 
+/-- An integer composition length at most eleven already gives the required
+pre-E7 margin from local degree twenty-five.  This is the finite-range
+counterpart of the logarithmic tail theorem and keeps the parity loss in
+`evenWidth` explicit. -/
+theorem primitiveAffine_margin_of_length_le_eleven
+    (r s w : ℕ) (hr : 25 ≤ r) (hs : 2 ≤ s) (hw : w = r * s)
+    (eta : ℝ)
+    (heta : eta ≤ fixedTargetCompositionGamma * ((s : ℝ) / 2) * 11) :
+    preE7CharacterRho * w ≤ ((evenWidth w : ℝ) - s) / 8 - eta := by
+  have hgamma := fixedTargetCompositionGamma_lt_seventeen_thirtyTwo
+  have heta' : eta < (187 : ℝ) / 64 * s := by
+    calc
+      eta ≤ fixedTargetCompositionGamma * ((s : ℝ) / 2) * 11 := heta
+      _ < ((17 : ℝ) / 32) * ((s : ℝ) / 2) * 11 := by
+        have hsPos : 0 < (s : ℝ) := by positivity
+        nlinarith
+      _ = (187 : ℝ) / 64 * s := by ring
+  have heven : (w : ℝ) ≤ evenWidth w + 1 := by
+    exact_mod_cast width_le_evenWidth_add_one w
+  have hrR : (25 : ℝ) ≤ r := by exact_mod_cast hr
+  have hsR : (2 : ℝ) ≤ s := by exact_mod_cast hs
+  have hwR : (w : ℝ) = r * s := by exact_mod_cast hw
+  unfold preE7CharacterRho
+  rw [hwR]
+  nlinarith
+
+/-- An integer composition length at most fourteen gives the required
+pre-E7 margin from local degree thirty-two. -/
+theorem primitiveAffine_margin_of_length_le_fourteen
+    (r s w : ℕ) (hr : 32 ≤ r) (hs : 2 ≤ s) (hw : w = r * s)
+    (eta : ℝ)
+    (heta : eta ≤ fixedTargetCompositionGamma * ((s : ℝ) / 2) * 14) :
+    preE7CharacterRho * w ≤ ((evenWidth w : ℝ) - s) / 8 - eta := by
+  have hgamma := fixedTargetCompositionGamma_lt_seventeen_thirtyTwo
+  have heta' : eta < (119 : ℝ) / 32 * s := by
+    calc
+      eta ≤ fixedTargetCompositionGamma * ((s : ℝ) / 2) * 14 := heta
+      _ < ((17 : ℝ) / 32) * ((s : ℝ) / 2) * 14 := by
+        have hsPos : 0 < (s : ℝ) := by positivity
+        nlinarith
+      _ = (119 : ℝ) / 32 * s := by ring
+  have heven : (w : ℝ) ≤ evenWidth w + 1 := by
+    exact_mod_cast width_le_evenWidth_add_one w
+  have hrR : (32 : ℝ) ≤ r := by exact_mod_cast hr
+  have hsR : (2 : ℝ) ≤ s := by exact_mod_cast hs
+  have hwR : (w : ℝ) = r * s := by exact_mod_cast hw
+  unfold preE7CharacterRho
+  rw [hwR]
+  nlinarith
+
 namespace PrimitiveAffineImprimitiveBlockTransfer
 namespace ComponentSource
 
@@ -111,6 +161,91 @@ theorem margin_of_localDegree_ge_fortyFive
   simpa only [Fintype.card_eq_nat_card] using
     envelope_eta_le_primitiveCompositionBound
       hTraceyHalf hTraceyLog hTraceyPerm block hcomp
+
+/-- The bounded logarithmic range `25 ≤ r < 45` is already uniform: the
+published composition-length theorem forces length at most eleven below
+degree 32 and at most fourteen below degree 45.  Consequently no finite
+primitive-action catalogue is needed in this range. -/
+theorem margin_of_localDegree_twentyFive_to_fortyFour
+    (hcomp : PrimitiveCompositionLengthInput)
+    (hr25 : 25 ≤ Nat.card block.Fibre)
+    (hr45 : Nat.card block.Fibre < 45) :
+    preE7CharacterRho * w ≤
+      ((evenWidth w : ℝ) -
+          (envelope hTraceyHalf hTraceyLog hTraceyPerm block).v) / 8 -
+        (envelope hTraceyHalf hTraceyLog hTraceyPerm block).eta := by
+  letI : Nontrivial block.Fibre :=
+    Finite.one_lt_card_iff_nontrivial.mp block.degrees_ge_two.1
+  let r := Nat.card block.Fibre
+  let s := Nat.card block.Points
+  have hv : (envelope hTraceyHalf hTraceyLog hTraceyPerm block).v = s := by
+    simpa only [envelope, s, Fintype.card_eq_nat_card] using
+      ActualWreathCompressionTower.envelope_v
+        (tower hTraceyHalf hTraceyLog hTraceyPerm block)
+  rw [hv]
+  obtain ⟨t, htower⟩ :=
+    (trace hTraceyHalf hTraceyLog hTraceyPerm block).envelope_eta_le_some_compositionLength
+  have ht := PrimitiveCompositionLengthInput.bound_of_equiv hcomp
+    r block.degrees_ge_two.1 (Finite.equivFin block.Fibre)
+    block.Component block.component_preprimitive t
+  have hfactor : 0 ≤ fixedTargetCompositionGamma * ((s : ℝ) / 2) := by
+    apply mul_nonneg
+    · exact div_nonneg (Real.logb_nonneg (by norm_num) (by norm_num))
+        (by norm_num)
+    · positivity
+  have hs : 2 ≤ s := block.degrees_ge_two.2
+  have hw : w = r * s := width_eq block
+  by_cases hr32 : r < 32
+  · have hrpos : (0 : ℝ) < r := by
+      exact_mod_cast (show 0 < r by omega)
+    have hr32R : (r : ℝ) < 32 := by exact_mod_cast hr32
+    have hlog : Real.logb 2 r < 5 := by
+      have h := Real.logb_lt_logb (by norm_num : (1 : ℝ) < 2) hrpos hr32R
+      have h32 : Real.logb 2 (32 : ℝ) = 5 := by
+        rw [show (32 : ℝ) = 2 ^ (5 : ℕ) by norm_num, Real.logb_pow,
+          Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2)]
+        norm_num
+      simpa [h32] using h
+    have hlenR : (t.chain.length : ℝ) < 12 := by
+      calc
+        (t.chain.length : ℝ) ≤ (8 / 3 : ℝ) * Real.logb 2 r - 4 / 3 := ht
+        _ < 12 := by nlinarith
+    have hlenNat : t.chain.length ≤ 11 := by
+      have : t.chain.length < 12 := by exact_mod_cast hlenR
+      omega
+    apply primitiveAffine_margin_of_length_le_eleven r s w hr25 hs hw
+    calc
+      (envelope hTraceyHalf hTraceyLog hTraceyPerm block).eta ≤
+          fixedTargetCompositionGamma * ((s : ℝ) / 2) * t.chain.length := by
+        simpa only [Fintype.card_eq_nat_card, s] using htower
+      _ ≤ fixedTargetCompositionGamma * ((s : ℝ) / 2) * 11 :=
+        mul_le_mul_of_nonneg_left (by exact_mod_cast hlenNat) hfactor
+  · have hr32' : 32 ≤ r := by omega
+    have hrpos : (0 : ℝ) < r := by
+      exact_mod_cast (show 0 < r by omega)
+    have hr64R : (r : ℝ) < 64 := by
+      exact_mod_cast (show r < 64 by omega)
+    have hlog : Real.logb 2 r < 6 := by
+      have h := Real.logb_lt_logb (by norm_num : (1 : ℝ) < 2) hrpos hr64R
+      have h64 : Real.logb 2 (64 : ℝ) = 6 := by
+        rw [show (64 : ℝ) = 2 ^ (6 : ℕ) by norm_num, Real.logb_pow,
+          Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2)]
+        norm_num
+      simpa [h64] using h
+    have hlenR : (t.chain.length : ℝ) < 15 := by
+      calc
+        (t.chain.length : ℝ) ≤ (8 / 3 : ℝ) * Real.logb 2 r - 4 / 3 := ht
+        _ < 15 := by nlinarith
+    have hlenNat : t.chain.length ≤ 14 := by
+      have : t.chain.length < 15 := by exact_mod_cast hlenR
+      omega
+    apply primitiveAffine_margin_of_length_le_fourteen r s w hr32' hs hw
+    calc
+      (envelope hTraceyHalf hTraceyLog hTraceyPerm block).eta ≤
+          fixedTargetCompositionGamma * ((s : ℝ) / 2) * t.chain.length := by
+        simpa only [Fintype.card_eq_nat_card, s] using htower
+      _ ≤ fixedTargetCompositionGamma * ((s : ℝ) / 2) * 14 :=
+        mul_le_mul_of_nonneg_left (by exact_mod_cast hlenNat) hfactor
 
 end ComponentSource
 end PrimitiveAffineImprimitiveBlockTransfer
