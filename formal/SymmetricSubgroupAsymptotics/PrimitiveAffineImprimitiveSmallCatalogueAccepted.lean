@@ -78,6 +78,35 @@ private theorem refinedBudget_eight_twelve :
       gcongr
     _ ≤ (3 / 4 : ℝ) * 12 := by norm_num
 
+private theorem refinedBudget_eight_binary
+    (s e : ℕ) (he : 3 ≤ e) :
+    refinedWeightedFactorBudget
+        (ActualWreathCompressionTower.traceyPrimaryRate s 2 e) 168 ≤
+      (5 / 6 : ℝ) * s := by
+  rw [refinedWeightedFactorBudget_oneSixtyEight]
+  have h2 := traceyPrimaryRate_two_matching_of_three_le s e he
+  have hpow : 8 ≤ 2 ^ e := Nat.pow_le_pow_right (by norm_num : 0 < 2) he
+  have h3 := traceyPrimaryRate_nonmatching_le s 2 e 3 8
+    (by norm_num) hpow (by norm_num)
+  have h7 := traceyPrimaryRate_nonmatching_le s 2 e 7 8
+    (by norm_num) hpow (by norm_num)
+  have h3' : ActualWreathCompressionTower.traceyPrimaryRate s 2 e 3 ≤
+      (s : ℝ) / 8 := by simpa using h3
+  have h7' : ActualWreathCompressionTower.traceyPrimaryRate s 2 e 7 ≤
+      (s : ℝ) / 8 := by simpa using h7
+  have hgamma := fixedTargetCompositionGamma_lt_seventeen_thirtyTwo.le
+  have hseven := logb_two_seven_div_seven_lt_three_sevenths.le
+  have hr3 := ActualWreathCompressionTower.traceyPrimaryRate_nonneg s 2 e 3
+  have hr7 := ActualWreathCompressionTower.traceyPrimaryRate_nonneg s 2 e 7
+  calc
+    _ ≤ (3 / 2 : ℝ) * ((s : ℝ) * (17 / 36)) +
+        (17 / 32 : ℝ) * ((s : ℝ) / 8) +
+        (3 / 7 : ℝ) * ((s : ℝ) / 8) := by gcongr
+    _ ≤ (5 / 6 : ℝ) * s := by
+      have hs : (0 : ℝ) ≤ s := by positivity
+      norm_num
+      linarith
+
 private def rateSixteenSix (p : ℕ) : ℝ :=
   min (ActualWreathCompressionTower.traceyPrimaryRate 6 2 1 p)
     (ActualWreathCompressionTower.traceyPrimaryRate 6 3 1 p)
@@ -257,6 +286,35 @@ private theorem refinedBudget_sixteen_fortyEight :
       (ActualWreathCompressionTower.traceyPrimaryRate_nonneg 48 3 1 5)
   · norm_num
 
+private theorem refinedBudget_sixteen_binary
+    (s e : ℕ) (he : 5 ≤ e) :
+    refinedWeightedFactorBudget
+        (ActualWreathCompressionTower.traceyPrimaryRate s 2 e) 5760 ≤
+      (11 / 8 : ℝ) * s := by
+  rw [refinedWeightedFactorBudget_fiveSevenSixty]
+  have h2 := traceyPrimaryRate_two_matching_of_five_le s e he
+  have hpow : 32 ≤ 2 ^ e := Nat.pow_le_pow_right (by norm_num : 0 < 2) he
+  have h3 := traceyPrimaryRate_nonmatching_le s 2 e 3 32
+    (by norm_num) hpow (by norm_num)
+  have h5 := traceyPrimaryRate_nonmatching_le s 2 e 5 32
+    (by norm_num) hpow (by norm_num)
+  have h3' : ActualWreathCompressionTower.traceyPrimaryRate s 2 e 3 ≤
+      (s : ℝ) / 32 := by simpa using h3
+  have h5' : ActualWreathCompressionTower.traceyPrimaryRate s 2 e 5 ≤
+      (s : ℝ) / 32 := by simpa using h5
+  have hgamma := fixedTargetCompositionGamma_lt_seventeen_thirtyTwo.le
+  have hfive := logb_two_five_div_five_lt_seven_fifteenths.le
+  have hr3 := ActualWreathCompressionTower.traceyPrimaryRate_nonneg s 2 e 3
+  have hr5 := ActualWreathCompressionTower.traceyPrimaryRate_nonneg s 2 e 5
+  calc
+    _ ≤ (7 / 2 : ℝ) * ((s : ℝ) * (3 / 8)) +
+        2 * (17 / 32 : ℝ) * ((s : ℝ) / 32) +
+        (7 / 15 : ℝ) * ((s : ℝ) / 32) := by gcongr
+    _ ≤ (11 / 8 : ℝ) * s := by
+      have hs : (0 : ℝ) ≤ s := by positivity
+      norm_num
+      linarith
+
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
 namespace ComponentSource
@@ -327,6 +385,35 @@ noncomputable def of_degreeEight_twelveBlocks
     · unfold preE7CharacterRho
       norm_num
     · simpa only [blocks, hs, rateEightTwelve] using refinedBudget_eight_twelve
+  · exact of_degreeEight_nonsoluble hTraceyHalf hTraceyLog hTraceyRefined
+      hTraceyPerm block P D hr hsolvable
+
+/-- Every degree-eight cell with binary block valuation at least three is
+accepted by the literal soluble divisor or by the uniform nonsoluble row. -/
+noncomputable def of_degreeEight_primeTwo
+    (D : PublishedPrimitiveAffineSmallCatalogueData)
+    (hr : Nat.card block.Fibre = 8)
+    (e : ℕ) (he : 3 ≤ e)
+    (hdiv : 2 ^ e ∣ blocks block)
+    (hmax : ¬ 2 ^ (e + 1) ∣ blocks block) :
+    ComponentSource hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P := by
+  by_cases hsolvable : IsSolvable (P.complement (origin block))
+  · letI : Nontrivial block.Fibre :=
+      Finite.one_lt_card_iff_nontrivial.mp block.degrees_ge_two.1
+    apply of_traceyPrimary hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
+      block P 2 e 168 (by norm_num) (by omega) hdiv hmax (by norm_num)
+      (component_card_dvd_168_of_degreeEight_soluble D block P hr hsolvable)
+    apply smallAffine_even_budget_margin 8 (blocks block) w
+      (by simpa only [hr] using width_eq block)
+      (by
+        have hw := width_eq block
+        rw [hr] at hw
+        rw [hw]
+        exact ⟨4 * blocks block, by ring⟩)
+      (5 / 6) _
+    · unfold preE7CharacterRho
+      norm_num
+    · exact refinedBudget_eight_binary (blocks block) e he
   · exact of_degreeEight_nonsoluble hTraceyHalf hTraceyLog hTraceyRefined
       hTraceyPerm block P D hr hsolvable
 
@@ -458,6 +545,35 @@ noncomputable def of_degreeSixteen_fortyEightBlocks
     block P D hr 4 48 (by norm_num) hs (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) rateSixteenFortyEight rfl
         refinedBudget_sixteen_fortyEight
+
+/-- Every degree-sixteen cell with binary block valuation at least five is
+accepted by the literal soluble divisor or by the uniform nonsoluble row. -/
+noncomputable def of_degreeSixteen_primeTwo
+    (D : PublishedPrimitiveAffineSmallCatalogueData)
+    (hr : Nat.card block.Fibre = 16)
+    (e : ℕ) (he : 5 ≤ e)
+    (hdiv : 2 ^ e ∣ blocks block)
+    (hmax : ¬ 2 ^ (e + 1) ∣ blocks block) :
+    ComponentSource hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P := by
+  by_cases hsolvable : IsSolvable (P.complement (origin block))
+  · letI : Nontrivial block.Fibre :=
+      Finite.one_lt_card_iff_nontrivial.mp block.degrees_ge_two.1
+    apply of_traceyPrimary hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
+      block P 2 e 5760 (by norm_num) (by omega) hdiv hmax (by norm_num)
+      (component_card_dvd_5760_of_degreeSixteen_soluble D block P hr hsolvable)
+    apply smallAffine_even_budget_margin 16 (blocks block) w
+      (by simpa only [hr] using width_eq block)
+      (by
+        have hw := width_eq block
+        rw [hr] at hw
+        rw [hw]
+        exact ⟨8 * blocks block, by ring⟩)
+      (11 / 8) _
+    · unfold preE7CharacterRho
+      norm_num
+    · exact refinedBudget_sixteen_binary (blocks block) e he
+  · exact of_degreeSixteen_nonsoluble hTraceyHalf hTraceyLog hTraceyRefined
+      hTraceyPerm block P D hr hsolvable
 
 end ComponentSource
 end PrimitiveAffineImprimitiveBlockTransfer

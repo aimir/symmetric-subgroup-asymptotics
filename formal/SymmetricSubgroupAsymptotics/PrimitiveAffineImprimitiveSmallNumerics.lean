@@ -299,6 +299,27 @@ theorem traceyPrimaryRate_two_matching_of_four_le
   apply traceyPrimaryRate_matching_le
   convert sqrt_two_over_three_e_le_five_twelfths e he using 1 <;> norm_num
 
+private theorem sqrt_two_over_three_e_le_seventeen_thirtySixths
+    (e : ℕ) (he : 3 ≤ e) :
+    Real.sqrt (2 / (3 * (e : ℝ))) ≤ (17 : ℝ) / 36 := by
+  apply Real.sqrt_le_iff.mpr
+  constructor
+  · norm_num
+  · have hden : (9 : ℝ) ≤ 3 * e := by
+      exact_mod_cast (Nat.mul_le_mul_left 3 he)
+    have hfrac : (2 : ℝ) / (3 * e) ≤ 2 / 9 :=
+      div_le_div_of_nonneg_left (by norm_num) (by norm_num) hden
+    norm_num at hfrac ⊢
+    nlinarith
+
+theorem traceyPrimaryRate_two_matching_of_three_le
+    (s e : ℕ) (he : 3 ≤ e) :
+    ActualWreathCompressionTower.traceyPrimaryRate s 2 e 2 ≤
+      (s : ℝ) * (17 / 36 : ℝ) := by
+  apply traceyPrimaryRate_matching_le
+  convert sqrt_two_over_three_e_le_seventeen_thirtySixths e he using 1 <;>
+    norm_num
+
 theorem refinedWeightedFactorBudget_twenty_le_of_rate_le
     (rate : ℕ → ℝ) (x : ℝ)
     (h2 : rate 2 ≤ x) (h5 : rate 5 ≤ x)
