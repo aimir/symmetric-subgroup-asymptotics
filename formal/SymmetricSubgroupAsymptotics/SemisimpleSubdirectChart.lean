@@ -62,6 +62,12 @@ structure SemisimpleGroupChartOrigins
     extends SemisimpleGroupChart G where
   origin : toSemisimpleGroupChart.ι → I
   origin_injective : Function.Injective origin
+  /-- Scott's induction selects an existing simple coordinate; it does not
+  merely select a factor of the same order.  Retaining the equivalence is
+  needed when a later bound depends on the automorphism group of the
+  factor. -/
+  factor_equiv : ∀ j,
+    toSemisimpleGroupChart.factor j ≃* S (origin j)
   factor_card_eq : ∀ j,
     Nat.card (toSemisimpleGroupChart.factor j) = Nat.card (S (origin j))
 
@@ -130,6 +136,7 @@ theorem semisimpleGroupChartOrigins_of_subdirect_fin :
           equiv := MulEquiv.ofBijective F hF }
         origin := fun i ↦ Fin.elim0 i
         origin_injective := fun i ↦ Fin.elim0 i
+        factor_equiv := fun i ↦ Fin.elim0 i
         factor_card_eq := fun i ↦ Fin.elim0 i }⟩
   | succ n ih =>
       intro S _ _ _ hcenterless G _ f hs hi
@@ -184,6 +191,7 @@ theorem semisimpleGroupChartOrigins_of_subdirect_fin :
             intro i j hij
             apply C.origin_injective
             exact Fin.ext (by simpa using congrArg Fin.val hij)
+          factor_equiv := fun j ↦ C.factor_equiv j
           factor_card_eq := fun j ↦ C.factor_card_eq j }⟩
       · let pg : G →* A × S 0 := p.prod g
         have hpg_inj : Function.Injective pg := by
@@ -279,6 +287,10 @@ theorem semisimpleGroupChartOrigins_of_subdirect_fin :
                     simp only [Option.some.injEq]
                     apply C.origin_injective
                     exact Fin.ext (by simpa using congrArg Fin.val hij)
+          factor_equiv := fun j ↦ by
+            cases j with
+            | none => exact MulEquiv.refl (S 0)
+            | some i => exact C.factor_equiv i
           factor_card_eq := fun j ↦ by
             cases j with
             | none => rfl
@@ -342,6 +354,7 @@ theorem semisimpleGroupChartOrigins_of_subdirect
     toSemisimpleGroupChart := C.toSemisimpleGroupChart
     origin := fun j ↦ e.symm (C.origin j)
     origin_injective := e.symm.injective.comp C.origin_injective
+    factor_equiv := C.factor_equiv
     factor_card_eq := C.factor_card_eq }⟩
 
 namespace SemisimpleNormalChart
@@ -399,6 +412,7 @@ def chartOfNormalCoordinateMapsOrigins
     toSemisimpleGroupChart := O.toSemisimpleGroupChart
     origin := fun j ↦ (O.origin j).1
     origin_injective := Subtype.val_injective.comp O.origin_injective
+    factor_equiv := O.factor_equiv
     factor_card_eq := O.factor_card_eq }
 
 /-- The counting-facing chart, with its quantitative origin data forgotten. -/
