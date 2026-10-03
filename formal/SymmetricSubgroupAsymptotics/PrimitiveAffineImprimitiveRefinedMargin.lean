@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.ActualWreathCompressionRefinedBudget
+import SymmetricSubgroupAsymptotics.ActualWreathCompressionIntegralRefinedBudget
 import SymmetricSubgroupAsymptotics.PrimitiveAffineImprimitiveSmallOrder
 
 /-!
@@ -59,6 +60,83 @@ noncomputable def of_refinedFactorBudget
       ((evenWidth w : ℝ) - T.envelope.v) / 8 - T.envelope.eta
     rw [hv]
     linarith
+
+/-- Integral version of `of_refinedFactorBudget`.  The actual trace records
+natural capacities, so equal-characteristic chief factors are combined before
+the floor is taken.  This is the sharp construction needed by the finite
+small-affine catalogue. -/
+noncomputable def of_integralRefinedFactorBudget
+    (rate : ℕ → ℝ) (hrate : ∀ p, 0 ≤ rate p)
+    (n : ℕ) (hn : n ≠ 0)
+    (hdiv : Nat.card block.Component ∣ n)
+    (hcapacity :
+      let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
+      T.CapacityRateBound rate)
+    (hmargin : preE7CharacterRho * w ≤
+      ((evenWidth w : ℝ) - Nat.card block.Points) / 8 -
+        integralRefinedWeightedFactorBudget rate n) :
+    ComponentSource hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P where
+  margin := by
+    let tr := trace hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
+    let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
+    have hintegral : T.IntegralCapacities := by
+      simpa only [T, tower, tr, trace] using tr.integralCapacities
+    have heta : T.envelope.eta ≤ integralRefinedWeightedFactorBudget rate n :=
+      T.envelope_eta_le_integralRefinedFactorBudget_of_dvd hintegral rate hrate
+        hcapacity n hn hdiv
+    have hv : T.envelope.v = Nat.card block.Points := by
+      simpa only [T, tower, Fintype.card_eq_nat_card] using
+        ActualWreathCompressionTower.envelope_v T
+    change preE7CharacterRho * w ≤
+      ((evenWidth w : ℝ) - T.envelope.v) / 8 - T.envelope.eta
+    rw [hv]
+    linarith
+
+/-- Integral construction using Tracey's sharp primary rate. -/
+noncomputable def of_integralTraceyPrimary
+    (q e n : ℕ) (hq : q.Prime) (he : 1 ≤ e)
+    (hqdiv : q ^ e ∣ Nat.card block.Points)
+    (hqmax : ¬ q ^ (e + 1) ∣ Nat.card block.Points)
+    (hn : n ≠ 0) (hdiv : Nat.card block.Component ∣ n)
+    (hmargin : preE7CharacterRho * w ≤
+      ((evenWidth w : ℝ) - Nat.card block.Points) / 8 -
+        integralRefinedWeightedFactorBudget
+          (ActualWreathCompressionTower.traceyPrimaryRate
+            (Nat.card block.Points) q e) n) :
+    ComponentSource hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P := by
+  apply of_integralRefinedFactorBudget hTraceyHalf hTraceyLog hTraceyRefined
+    hTraceyPerm block P
+      (ActualWreathCompressionTower.traceyPrimaryRate
+        (Nat.card block.Points) q e)
+      (ActualWreathCompressionTower.traceyPrimaryRate_nonneg
+        (Nat.card block.Points) q e) n hn hdiv
+  · let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
+    simpa only [Fintype.card_eq_nat_card] using
+      (ActualWreathCompressionTower.capacityRateBound_traceyPrimary
+        q e hq he (by simpa only [Fintype.card_eq_nat_card] using hqdiv)
+          (by simpa only [Fintype.card_eq_nat_card] using hqmax) T)
+  · exact hmargin
+
+/-- Integral construction at an exact prime-power block count. -/
+noncomputable def of_integralTraceyPrimePower
+    (q e n : ℕ) (hq : q.Prime) (he : 1 ≤ e)
+    (hs : Nat.card block.Points = q ^ e)
+    (hn : n ≠ 0) (hdiv : Nat.card block.Component ∣ n)
+    (hmargin : preE7CharacterRho * w ≤
+      ((evenWidth w : ℝ) - Nat.card block.Points) / 8 -
+        integralRefinedWeightedFactorBudget
+          (ActualWreathCompressionTower.traceyPrimePowerRate q e) n) :
+    ComponentSource hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P := by
+  apply of_integralRefinedFactorBudget hTraceyHalf hTraceyLog hTraceyRefined
+    hTraceyPerm block P
+      (ActualWreathCompressionTower.traceyPrimePowerRate q e)
+      (ActualWreathCompressionTower.traceyPrimePowerRate_nonneg q e)
+      n hn hdiv
+  · let T := tower hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm block P
+    simpa only [Fintype.card_eq_nat_card] using
+      (ActualWreathCompressionTower.capacityRateBound_traceyPrimePower
+        q e hq he (by simpa only [Fintype.card_eq_nat_card] using hs) T)
+  · exact hmargin
 
 /-- Select Tracey's sharp primary bound at an exact prime-power divisor of
 the block count and the prime-to bound in every other characteristic. -/
