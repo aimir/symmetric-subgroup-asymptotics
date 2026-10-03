@@ -136,6 +136,120 @@ theorem traceyPrimaryRate_le_div_eleven
   exact div_le_div_of_nonneg_left (by positivity) (by norm_num)
     (by exact_mod_cast hqpow)
 
+theorem traceyPrimaryRate_nonmatching_le
+    (s q e p m : ℕ) (hpq : p ≠ q) (hm : m ≤ q ^ e) (hmpos : 0 < m) :
+    ActualWreathCompressionTower.traceyPrimaryRate s q e p ≤
+      (s : ℝ) / m := by
+  rw [ActualWreathCompressionTower.traceyPrimaryRate, if_neg hpq]
+  exact div_le_div_of_nonneg_left (by positivity) (by exact_mod_cast hmpos)
+    (by exact_mod_cast hm)
+
+theorem traceyPrimaryRate_matching_le
+    (s q e : ℕ) (c : ℝ)
+    (hroot : Real.sqrt (2 / (3 * ((q : ℝ) - 1) * e)) ≤ c) :
+    ActualWreathCompressionTower.traceyPrimaryRate s q e q ≤ (s : ℝ) * c := by
+  rw [ActualWreathCompressionTower.traceyPrimaryRate, if_pos rfl]
+  exact mul_le_mul_of_nonneg_left hroot (by positivity)
+
+private theorem sqrt_two_over_twelve_e_le_five_twelfths
+    (e : ℕ) (he : 1 ≤ e) :
+    Real.sqrt (2 / (12 * (e : ℝ))) ≤ (5 : ℝ) / 12 := by
+  apply Real.sqrt_le_iff.mpr
+  constructor
+  · norm_num
+  · have hden : (12 : ℝ) ≤ 12 * e := by exact_mod_cast (Nat.mul_le_mul_left 12 he)
+    have hfrac : (2 : ℝ) / (12 * e) ≤ 2 / 12 :=
+      div_le_div_of_nonneg_left (by norm_num) (by norm_num) hden
+    norm_num at hfrac ⊢
+    nlinarith
+
+private theorem sqrt_two_over_six_e_le_five_twelfths
+    (e : ℕ) (he : 2 ≤ e) :
+    Real.sqrt (2 / (6 * (e : ℝ))) ≤ (5 : ℝ) / 12 := by
+  apply Real.sqrt_le_iff.mpr
+  constructor
+  · norm_num
+  · have hden : (12 : ℝ) ≤ 6 * e := by
+      have := Nat.mul_le_mul_left 6 he
+      norm_num at this ⊢
+      exact_mod_cast this
+    have hfrac : (2 : ℝ) / (6 * e) ≤ 2 / 12 :=
+      div_le_div_of_nonneg_left (by norm_num) (by norm_num) hden
+    norm_num at hfrac ⊢
+    nlinarith
+
+private theorem sqrt_two_over_eighteen_e_le_one_third
+    (e : ℕ) (he : 1 ≤ e) :
+    Real.sqrt (2 / (18 * (e : ℝ))) ≤ (1 : ℝ) / 3 := by
+  apply Real.sqrt_le_iff.mpr
+  constructor
+  · norm_num
+  · have hden : (18 : ℝ) ≤ 18 * e := by exact_mod_cast (Nat.mul_le_mul_left 18 he)
+    have hfrac : (2 : ℝ) / (18 * e) ≤ 2 / 18 :=
+      div_le_div_of_nonneg_left (by norm_num) (by norm_num) hden
+    norm_num at hfrac ⊢
+    exact hfrac
+
+private theorem sqrt_two_over_three_e_le_three_eighths
+    (e : ℕ) (he : 5 ≤ e) :
+    Real.sqrt (2 / (3 * (e : ℝ))) ≤ (3 : ℝ) / 8 := by
+  apply Real.sqrt_le_iff.mpr
+  constructor
+  · norm_num
+  · have hden : (15 : ℝ) ≤ 3 * e := by exact_mod_cast (Nat.mul_le_mul_left 3 he)
+    have hfrac : (2 : ℝ) / (3 * e) ≤ 2 / 15 :=
+      div_le_div_of_nonneg_left (by norm_num) (by norm_num) hden
+    norm_num at hfrac ⊢
+    nlinarith
+
+private theorem sqrt_two_over_three_e_le_five_twelfths
+    (e : ℕ) (he : 4 ≤ e) :
+    Real.sqrt (2 / (3 * (e : ℝ))) ≤ (5 : ℝ) / 12 := by
+  apply Real.sqrt_le_iff.mpr
+  constructor
+  · norm_num
+  · have hden : (12 : ℝ) ≤ 3 * e := by exact_mod_cast (Nat.mul_le_mul_left 3 he)
+    have hfrac : (2 : ℝ) / (3 * e) ≤ 2 / 12 :=
+      div_le_div_of_nonneg_left (by norm_num) (by norm_num) hden
+    norm_num at hfrac ⊢
+    nlinarith
+
+theorem traceyPrimaryRate_five_matching
+    (s e : ℕ) (he : 1 ≤ e) :
+    ActualWreathCompressionTower.traceyPrimaryRate s 5 e 5 ≤
+      (s : ℝ) * (5 / 12 : ℝ) := by
+  apply traceyPrimaryRate_matching_le
+  convert sqrt_two_over_twelve_e_le_five_twelfths e he using 1 <;> norm_num
+
+theorem traceyPrimaryRate_three_matching_of_two_le
+    (s e : ℕ) (he : 2 ≤ e) :
+    ActualWreathCompressionTower.traceyPrimaryRate s 3 e 3 ≤
+      (s : ℝ) * (5 / 12 : ℝ) := by
+  apply traceyPrimaryRate_matching_le
+  convert sqrt_two_over_six_e_le_five_twelfths e he using 1 <;> norm_num
+
+theorem traceyPrimaryRate_seven_matching
+    (s e : ℕ) (he : 1 ≤ e) :
+    ActualWreathCompressionTower.traceyPrimaryRate s 7 e 7 ≤
+      (s : ℝ) / 3 := by
+  convert traceyPrimaryRate_matching_le s 7 e (1 / 3 : ℝ)
+      (by convert sqrt_two_over_eighteen_e_le_one_third e he using 1 <;> norm_num)
+    using 1 <;> ring
+
+theorem traceyPrimaryRate_two_matching_of_five_le
+    (s e : ℕ) (he : 5 ≤ e) :
+    ActualWreathCompressionTower.traceyPrimaryRate s 2 e 2 ≤
+      (s : ℝ) * (3 / 8 : ℝ) := by
+  apply traceyPrimaryRate_matching_le
+  convert sqrt_two_over_three_e_le_three_eighths e he using 1 <;> norm_num
+
+theorem traceyPrimaryRate_two_matching_of_four_le
+    (s e : ℕ) (he : 4 ≤ e) :
+    ActualWreathCompressionTower.traceyPrimaryRate s 2 e 2 ≤
+      (s : ℝ) * (5 / 12 : ℝ) := by
+  apply traceyPrimaryRate_matching_le
+  convert sqrt_two_over_three_e_le_five_twelfths e he using 1 <;> norm_num
+
 theorem refinedWeightedFactorBudget_twenty_le_of_rate_le
     (rate : ℕ → ℝ) (x : ℝ)
     (h2 : rate 2 ≤ x) (h5 : rate 5 ≤ x)
