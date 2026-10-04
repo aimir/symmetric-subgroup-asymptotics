@@ -157,6 +157,96 @@ private theorem normalGen_finset_sup_minimal_le_card
       MarkedC4.normalGen_le hTsub hclosure
     _ ≤ B.card := Finset.card_image_le
 
+/-- The part of the ambient socle carried by a fixed subgroup.  The factors
+in this definition are minimal normal subgroups of the ambient group, not
+minimal normal subgroups of `K` considered as an abstract group.  This
+distinction is essential for affine translation sections: an elementary
+abelian section has many intrinsic order-`p` minimal subgroups, while its
+ambient irreducible factors can all have order at least `p^d`. -/
+def finiteGroupSoclePart
+    (G : Type) [Group G] [Finite G] (K : Subgroup G) : Subgroup G :=
+  (Finset.univ.filter fun N : Subgroup G =>
+    IsMinimalNormalSubgroup N ∧ N ≤ K).sup id
+
+instance finiteGroupSoclePart_normal
+    (G : Type) [Group G] [Finite G] (K : Subgroup G) :
+    (finiteGroupSoclePart G K).Normal := by
+  apply finset_sup_normal
+  intro N hN
+  exact (Finset.mem_filter.mp hN).2.1.1
+
+/-- Every ambient minimal factor selected by `finiteGroupSoclePart` lies in
+the prescribed carrier. -/
+theorem finiteGroupSoclePart_le
+    (G : Type) [Group G] [Finite G] (K : Subgroup G) :
+    finiteGroupSoclePart G K ≤ K := by
+  apply Finset.sup_le
+  intro N hN
+  exact (Finset.mem_filter.mp hN).2.2
+
+/-- The selected part lies in the full ambient socle. -/
+theorem finiteGroupSoclePart_le_socle
+    (G : Type) [Group G] [Finite G] (K : Subgroup G) :
+    finiteGroupSoclePart G K ≤ finiteGroupSocle G := by
+  apply Finset.sup_le
+  intro N hN x hx
+  exact Subgroup.subset_normalClosure
+    ⟨N, (Finset.mem_filter.mp hN).2.1, hx⟩
+
+/-- Ambient-factor version of the finite cardinal argument.  If every
+minimal normal factor of `G` lying in `K` has order at least `m`, and `K`
+has order at most `m^t`, then the sum of precisely those ambient factors
+needs at most `t` normal generators in `G`.
+
+No assertion is made about the intrinsic minimal normal subgroups of `K`. -/
+theorem normalGen_finiteGroupSoclePart_le_of_card
+    (G : Type) [Group G] [Finite G]
+    (K : Subgroup G) (m t : ℕ) (hm : 2 ≤ m)
+    (hmin : ∀ N : Subgroup G, IsMinimalNormalSubgroup N → N ≤ K →
+      m ≤ Nat.card N)
+    (hK : Nat.card K ≤ m ^ t) :
+    MarkedC4.normalGen (finiteGroupSoclePart G K) ≤ t := by
+  let A : Finset (Subgroup G) := Finset.univ.filter fun N : Subgroup G =>
+    IsMinimalNormalSubgroup N ∧ N ≤ K
+  have hA : ∀ N ∈ A, IsMinimalNormalSubgroup N := by
+    intro N hN
+    exact (Finset.mem_filter.mp hN).2.1
+  obtain ⟨B, hBA, hBsup, hpow⟩ :=
+    exists_independent_minimal_subfamily A hA m
+      (fun N hN => hmin N (hA N hN)
+        (Finset.mem_filter.mp hN).2.2)
+  have hB : ∀ N ∈ B, IsMinimalNormalSubgroup N := fun N hN =>
+    hA N (hBA hN)
+  have hB_le_K : B.sup (fun N : Subgroup G => N) ≤ K := by
+    apply Finset.sup_le
+    intro N hN
+    exact (Finset.mem_filter.mp (hBA hN)).2.2
+  have hpow' : m ^ B.card ≤ m ^ t := by
+    calc
+      m ^ B.card ≤ Nat.card ↥(B.sup (fun N : Subgroup G => N)) := hpow
+      _ ≤ Nat.card K := Subgroup.card_le_of_le hB_le_K
+      _ ≤ m ^ t := hK
+  have hcardBt : B.card ≤ t :=
+    (Nat.pow_le_pow_iff_right (by omega : 1 < m)).mp hpow'
+  change MarkedC4.normalGen (A.sup id) ≤ t
+  have hsup_id : A.sup id = B.sup id := by
+    simpa only using hBsup.symm
+  rw [hsup_id]
+  exact (normalGen_finset_sup_minimal_le_card B hB).trans hcardBt
+
+/-- Exact padded-tuple form of the ambient-factor cardinal theorem. -/
+theorem exists_normal_generating_tuple_finiteGroupSoclePart_of_card
+    (G : Type) [Group G] [Finite G]
+    (K : Subgroup G) (m t : ℕ) (hm : 2 ≤ m)
+    (hmin : ∀ N : Subgroup G, IsMinimalNormalSubgroup N → N ≤ K →
+      m ≤ Nat.card N)
+    (hK : Nat.card K ≤ m ^ t) :
+    ∃ x : Fin t → G,
+      Subgroup.normalClosure (Set.range x) = finiteGroupSoclePart G K :=
+  exists_normal_generating_tuple_of_normalGen_le
+    (finiteGroupSoclePart G K)
+    (normalGen_finiteGroupSoclePart_le_of_card G K m t hm hmin hK)
+
 /-- If every minimal normal subgroup has order at least `m` and the whole
 socle has order at most `m^t`, then `t` elements normally generate it. -/
 theorem normalGen_finiteGroupSocle_le_of_card
