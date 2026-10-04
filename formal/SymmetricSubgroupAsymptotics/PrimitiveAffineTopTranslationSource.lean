@@ -28,6 +28,25 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
 
 variable [Nontrivial block.Fibre]
 
+/-- If the affine component has no more elements than its regular
+translation subgroup, its displayed complement image is trivial. -/
+theorem localQuotient_eq_one_of_component_card_eq_translation
+    (hcard : Nat.card block.Component = Nat.card P.V) :
+    ∀ q : LocalQuotient block P, q = 1 := by
+  have hfactor := (P.isComplement'_complement (origin block)).card_mul
+  have hVpos : 0 < Nat.card P.V := Nat.card_pos
+  have hcomplement : Nat.card (P.complement (origin block)) = 1 := by
+    rw [hcard] at hfactor
+    apply Nat.eq_of_mul_eq_mul_left hVpos
+    simpa using hfactor
+  letI : Subsingleton (P.complement (origin block)) :=
+    (Nat.card_eq_one_iff_unique.mp hcomplement).1
+  intro q
+  obtain ⟨h, hh⟩ := q.2
+  apply Subtype.ext
+  rw [← hh, Subsingleton.elim h 1, map_one]
+  rfl
+
 /-- Membership in the actual translation intersection forces trivial motion
 on the literal set of blocks. -/
 theorem E_le_topMap_ker : E block P ≤ block.topMap.ker := by
