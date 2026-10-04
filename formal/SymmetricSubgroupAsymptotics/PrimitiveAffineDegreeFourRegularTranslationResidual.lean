@@ -66,7 +66,7 @@ theorem complement_nontrivial_of_proper_prime_card_divisor
     Finite.one_lt_card_iff_nontrivial.mp (by omega)
   letI : MulAction.IsPreprimitive L Omega := hprimitive
   have hcoat : IsCoatom (P.complement x) :=
-    MulAction.IsPreprimitive.isCoatom_stabilizer_of_isPreprimitive x
+    MulAction.IsPreprimitive.isCoatom_stabilizer_of_isPreprimitive L x
   rw [hstabilizer] at hcoat
   have hKtop : K = ⊤ :=
     (hcoat.ne_iff_eq_top bot_le).mp hKne
@@ -85,6 +85,8 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (block : OriginalMinimalBlock
     (A := preE7NonPairAction w U) basePoint)
   (P : PrimitiveAffineProfile block.Component block.Fibre)
+
+include P
 
 /-- A primitive affine component of degree four cannot consist only of its
 regular translation subgroup. -/

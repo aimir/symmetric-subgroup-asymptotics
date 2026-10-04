@@ -50,10 +50,11 @@ noncomputable def degreeEightOrSixteenNonsolubleSource
     PreE7RankTailSourceOrYonedaTopData w U := by
   let S : ComponentSource hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
       block P := by
-    rcases hdegree with h8 | h16
+    by_cases h8 : Nat.card block.Fibre = 8
     · exact ComponentSource.of_degreeEight_nonsoluble hTraceyHalf
         hTraceyLog hTraceyRefined hTraceyPerm block P D h8 hnonsolvable
-    · exact ComponentSource.of_degreeSixteen_nonsoluble hTraceyHalf
+    · have h16 : Nat.card block.Fibre = 16 := hdegree.resolve_left h8
+      exact ComponentSource.of_degreeSixteen_nonsoluble hTraceyHalf
         hTraceyLog hTraceyRefined hTraceyPerm block P D h16 hnonsolvable
   exact imprimitiveAffineComponentTransfer hTraceyHalf hTraceyLog
     hTraceyRefined hTraceyPerm hgen block P S

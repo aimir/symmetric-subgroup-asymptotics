@@ -152,9 +152,16 @@ noncomputable def degreeFourRegularTranslationSource_of_capacity
   have heta : Real.logb 2 (elementaryChart block P).p /
       (elementaryChart block P).p * H.capacity ≤
         (blocks block : ℝ) / 3 := by
-    rw [hchartp, Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2)]
-    norm_num
-    linarith
+    have hlog : Real.logb 2 ((2 : ℕ) : ℝ) = 1 :=
+      Real.logb_self_eq_one (by norm_num)
+    calc
+      Real.logb 2 (elementaryChart block P).p /
+          (elementaryChart block P).p * H.capacity = H.capacity / 2 := by
+        rw [hchartp, hlog]
+        ring
+      _ ≤ ((2 : ℝ) * blocks block / 3) / 2 :=
+        div_le_div_of_nonneg_right hcap (by norm_num)
+      _ = (blocks block : ℝ) / 3 := by ring
   have hm : preE7CharacterRho * w ≤
       ((evenWidth w : ℝ) - Nat.card block.Points) / 8 -
         Real.logb 2 (elementaryChart block P).p /
@@ -177,7 +184,8 @@ noncomputable def degreeFourRegularTranslationSource_of_capacity
       _ ≤ ((evenWidth w : ℝ) - Nat.card block.Points) / 8 -
           Real.logb 2 (elementaryChart block P).p /
             (elementaryChart block P).p * H.capacity := by
-        rw [heven, hw]
+        have hevenR : (evenWidth w : ℝ) = (w : ℝ) := by exact_mod_cast heven
+        rw [hevenR, hwR]
         simp only [blocks]
         push_cast
         linarith
@@ -220,7 +228,9 @@ noncomputable def degreeFourRegularTranslationSource_of_oddPrime
   apply degreeFourRegularTranslationSource_of_capacity block P
     hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm hr hcomponent
   intro H href
-  have hq3 : 3 ≤ q := by omega
+  have hq3 : 3 ≤ q := by
+    have := hq.two_le
+    omega
   have h := href.primeTo q 1 hq hq2 (by norm_num) (by simpa using hdiv)
   calc
     H ≤ (2 : ℝ) * blocks block / q := by simpa using h
@@ -279,41 +289,63 @@ noncomputable def degreeFourRegularTranslationExceptionalExhaustion
       (blocks block)) :
     PreE7RankTailSourceOrYonedaTopData w U ⊕
       PLift (IsDegreeFourRegularTranslationResidualBlockCount (blocks block)) := by
-  rcases hs with hpair | h5 | h10 | h15 | h20 | h30 | h60
-  · rcases hpair with hbinary | hthree
-    · obtain ⟨a, ha1, ha8, ha⟩ := hbinary
-      by_cases ha5 : 5 ≤ a
-      · exact .inl (degreeFourRegularTranslationSource_of_binaryPower block P
-          hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm hr hcomponent
-          a ha5 ha)
-      · have ha4 : a ≤ 4 := by omega
-        exact .inr ⟨by
-          interval_cases a <;>
-            simp_all [IsDegreeFourRegularTranslationResidualBlockCount]⟩
-    · obtain ⟨a, ha10, ha⟩ := hthree
-      exact .inl (degreeFourRegularTranslationSource_of_oddPrime block P
+  by_cases hbinary : ∃ a : ℕ, 1 ≤ a ∧ a ≤ 8 ∧ blocks block = 2 ^ a
+  · let a := Classical.choose hbinary
+    have ha := Classical.choose_spec hbinary
+    change 1 ≤ a ∧ a ≤ 8 ∧ blocks block = 2 ^ a at ha
+    by_cases ha5 : 5 ≤ a
+    · exact .inl (degreeFourRegularTranslationSource_of_binaryPower block P
         hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm hr hcomponent
-        3 (by norm_num) (by norm_num) (by
-          rw [ha]
-          exact dvd_mul_right 3 (2 ^ a)))
+        a ha5 ha.2.2)
+    · have ha4 : a ≤ 4 := by omega
+      have hsres : IsDegreeFourRegularTranslationResidualBlockCount
+          (blocks block) := by
+        rw [ha.2.2]
+        have ha1 : 1 ≤ a := ha.1
+        interval_cases a <;>
+          norm_num [IsDegreeFourRegularTranslationResidualBlockCount]
+      exact .inr ⟨hsres⟩
+  by_cases hthree : ∃ a : ℕ, a ≤ 10 ∧ blocks block = 3 * 2 ^ a
+  · let a := Classical.choose hthree
+    have ha := Classical.choose_spec hthree
+    exact .inl (degreeFourRegularTranslationSource_of_oddPrime block P
+      hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm hr hcomponent
+      3 (by norm_num) (by norm_num) (by
+        rw [ha.2]
+        exact dvd_mul_right 3 (2 ^ a)))
+  by_cases h5 : blocks block = 5
   · exact .inl (degreeFourRegularTranslationSource_of_oddPrime block P
       hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm hr hcomponent
       5 (by norm_num) (by norm_num) (by rw [h5]))
+  by_cases h10 : blocks block = 10
   · exact .inl (degreeFourRegularTranslationSource_of_oddPrime block P
       hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm hr hcomponent
       5 (by norm_num) (by norm_num) (by rw [h10]; norm_num))
+  by_cases h15 : blocks block = 15
   · exact .inl (degreeFourRegularTranslationSource_of_oddPrime block P
       hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm hr hcomponent
       3 (by norm_num) (by norm_num) (by rw [h15]; norm_num))
+  by_cases h20 : blocks block = 20
   · exact .inl (degreeFourRegularTranslationSource_of_oddPrime block P
       hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm hr hcomponent
       5 (by norm_num) (by norm_num) (by rw [h20]; norm_num))
+  by_cases h30 : blocks block = 30
   · exact .inl (degreeFourRegularTranslationSource_of_oddPrime block P
       hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm hr hcomponent
       3 (by norm_num) (by norm_num) (by rw [h30]; norm_num))
+  by_cases h60 : blocks block = 60
   · exact .inl (degreeFourRegularTranslationSource_of_oddPrime block P
       hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm hr hcomponent
       3 (by norm_num) (by norm_num) (by rw [h60]; norm_num))
+  · exfalso
+    rcases hs with hpair | h5' | h10' | h15' | h20' | h30' | h60'
+    · exact hpair.elim hbinary hthree
+    · exact h5 h5'
+    · exact h10 h10'
+    · exact h15 h15'
+    · exact h20 h20'
+    · exact h30 h30'
+    · exact h60 h60'
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
