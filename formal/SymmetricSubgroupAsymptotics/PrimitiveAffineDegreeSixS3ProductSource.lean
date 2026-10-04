@@ -38,6 +38,9 @@ literal factor by an abstract cyclic group. -/
 def derivedBase : Subgroup G :=
   ((oddMarkerSign.prodMap oddMarkerSign) : G →* C2 × C2).ker
 
+instance derivedBase_normal : derivedBase.Normal :=
+  MonoidHom.normal_ker _
+
 /-- Forget the second alternating coordinate. -/
 def leftProjection : G →* R :=
   (MonoidHom.id S3).prodMap oddMarkerSign
