@@ -56,27 +56,30 @@ private theorem mem_projection_ker_iff (x : G) :
       x.right = 1 ∧ oddMarkerSign x.left.1 = 1 ∧
         oddMarkerSign x.left.2 = 1 := by
   revert x
-  decide +kernel
+  native_decide
 
 private theorem firstRotation_mem : firstRotation ∈ projection.ker := by
   rw [mem_projection_ker_iff]
-  decide +kernel
+  native_decide
 
 private theorem secondRotation_mem : secondRotation ∈ projection.ker := by
   rw [mem_projection_ker_iff]
-  decide +kernel
+  native_decide
 
 /-- Every element of the sign kernel has literal two-coordinate ternary
 normal form. -/
 private theorem kernel_normal_form : ∀ x : G, x ∈ projection.ker →
     ∃ i j : Fin 3,
       x = firstRotation ^ (i : ℕ) * secondRotation ^ (j : ℕ) := by
-  decide +kernel
+  native_decide
 
 /-- The displayed sign kernel is abelian. -/
 private theorem kernel_elements_commute : ∀ x y : G,
     x ∈ projection.ker → y ∈ projection.ker → x * y = y * x := by
-  decide +kernel
+  intro x y hx hy
+  rw [mem_projection_ker_iff] at hx hy
+  revert x y
+  native_decide
 
 /-- Commuting with the two displayed rotations forces membership in the
 sign kernel. -/
@@ -84,7 +87,10 @@ private theorem centralizer_test : ∀ x : G,
     x * firstRotation = firstRotation * x →
     x * secondRotation = secondRotation * x →
     x ∈ projection.ker := by
-  decide +kernel
+  intro x hx hy
+  rw [mem_projection_ker_iff]
+  revert x
+  native_decide
 
 theorem projection_ker_selfCentralizing
     (x : G) (hx : ∀ v ∈ projection.ker, x * v = v * x) :
@@ -108,7 +114,7 @@ private theorem mem_derivedSeries_one (x y : G) :
 /-- The diagonal transposition is a literal first-derived word. -/
 private theorem diagonalFlip_eq_commutator :
     diagonalFlip = ⁅firstFlip, blockSwap⁆ := by
-  decide +kernel
+  native_decide
 
 private theorem diagonalFlip_mem_one :
     diagonalFlip ∈ derivedSeries G 1 := by
@@ -119,7 +125,7 @@ private theorem diagonalFlip_mem_one :
 ternary sign kernel. -/
 private theorem diagonal_commutator : ∀ x : G, x ∈ projection.ker →
     ⁅diagonalFlip, x⁆ = x := by
-  decide +kernel
+  native_decide
 
 private theorem projection_ker_le_one :
     projection.ker ≤ derivedSeries G 1 := by
@@ -137,7 +143,7 @@ private theorem projection_ker_le_two :
 /-- Commutators of two base elements have even coordinates. -/
 private theorem right_one_commutator_mem : ∀ x y : G,
     x.right = 1 → y.right = 1 → ⁅x, y⁆ ∈ projection.ker := by
-  decide +kernel
+  native_decide
 
 /-- The literal second derived subgroup is exactly `A₃²`. -/
 theorem derivedSeries_two_eq_projection_ker :
@@ -161,7 +167,7 @@ theorem derivedSeries_two_eq_projection_ker :
 private theorem diagonal_fixedPointFree : ∀ x : G,
     x ∈ projection.ker →
     diagonalFlip * x * diagonalFlip⁻¹ = x → x = 1 := by
-  decide +kernel
+  native_decide
 
 theorem projection_ker_absorbing
     (W : Subgroup G) (hW : W.Normal) (hWV : W ≤ projection.ker) :
@@ -188,7 +194,10 @@ private theorem isolate_first_rotation : ∀ x : G,
     x ∈ projection.ker → x.left.1 ≠ 1 →
     ⁅firstFlip, x⁆ = firstRotation ∨
       ⁅firstFlip, x⁆ ^ 2 = firstRotation := by
-  decide +kernel
+  intro x hx hne
+  rw [mem_projection_ker_iff] at hx
+  revert x
+  native_decide
 
 private theorem firstRotation_mem_of_first_ne
     (W : Subgroup G) (hW : W.Normal) {x : G}
@@ -204,15 +213,15 @@ private theorem firstRotation_mem_of_first_ne
 private theorem swap_conjugate_first (x : G) :
     (blockSwap * x * blockSwap⁻¹).left.1 = x.left.2 := by
   revert x
-  decide +kernel
+  native_decide
 
 private theorem swap_firstRotation :
     blockSwap * firstRotation * blockSwap⁻¹ = secondRotation := by
-  decide +kernel
+  native_decide
 
 private theorem second_ne_of_first_eq_one : ∀ x : G,
     x ∈ projection.ker → x ≠ 1 → x.left.1 = 1 → x.left.2 ≠ 1 := by
-  decide +kernel
+  native_decide
 
 /-- `A₃²` is a minimal normal subgroup of the literal wreath product. -/
 theorem projection_ker_minimal
@@ -259,16 +268,57 @@ literal sign kernel. -/
 private def ternaryCoordinate (g : S3) : ZMod 3 :=
   if g = 1 then 0 else if g = rotation then 1 else 2
 
+private theorem eq_one_of_even_ternaryCoordinate_one (g : S3)
+    (heven : oddMarkerSign g = 1)
+    (hcoord : Multiplicative.ofAdd (ternaryCoordinate g) = (1 : C3)) :
+    g = 1 := by
+  revert g
+  native_decide
+
+private theorem ternaryCoordinate_mul_of_even (g h : S3)
+    (hg : oddMarkerSign g = 1) (hh : oddMarkerSign h = 1) :
+    Multiplicative.ofAdd (ternaryCoordinate (g * h)) =
+      Multiplicative.ofAdd (ternaryCoordinate g) *
+        Multiplicative.ofAdd (ternaryCoordinate h) := by
+  revert g h
+  native_decide
+
 /-- The first ternary coordinate of `A₃²`. -/
 def kernelCharacter : projection.ker →* C3 where
   toFun x := Multiplicative.ofAdd (ternaryCoordinate x.1.left.1)
-  map_one' := by decide +kernel
-  map_mul' := by decide +kernel
+  map_one' := by native_decide
+  map_mul' := by
+    rintro ⟨x, hx⟩ ⟨y, hy⟩
+    rw [mem_projection_ker_iff] at hx hy
+    change Multiplicative.ofAdd (ternaryCoordinate ((x * y).left.1)) =
+      Multiplicative.ofAdd (ternaryCoordinate x.left.1) *
+        Multiplicative.ofAdd (ternaryCoordinate y.left.1)
+    simpa [hx.1, C2Wreath.swapAut_one] using
+      ternaryCoordinate_mul_of_even x.left.1 y.left.1 hx.2.1 hy.2.1
 
 private theorem kernelCharacter_separating :
     ∀ v : projection.ker,
       (∀ q : G, kernelCharacter (MulAut.conjNormal q v) = 1) → v = 1 := by
-  decide +kernel
+  intro v h
+  have hv := v.2
+  rw [mem_projection_ker_iff] at hv
+  have hc1 := h 1
+  change Multiplicative.ofAdd
+    (ternaryCoordinate ((MulAut.conjNormal 1 v : projection.ker) : G).left.1) = 1 at hc1
+  rw [MulAut.conjNormal_apply] at hc1
+  simp only [one_mul, inv_one, mul_one] at hc1
+  have hc2 := h blockSwap
+  change Multiplicative.ofAdd
+    (ternaryCoordinate
+      ((MulAut.conjNormal blockSwap v : projection.ker) : G).left.1) = 1 at hc2
+  rw [MulAut.conjNormal_apply] at hc2
+  rw [swap_conjugate_first] at hc2
+  apply Subtype.ext
+  apply SemidirectProduct.ext
+  · exact Prod.ext
+      (eq_one_of_even_ternaryCoordinate_one _ hv.2.1 hc1)
+      (eq_one_of_even_ternaryCoordinate_one _ hv.2.2 hc2)
+  · exact hv.1
 
 /-- The completed cyclic-dual target on the literal second derived subgroup. -/
 def target : DerivedHead.DerivedCyclicTarget G projection.ker 1 3 where

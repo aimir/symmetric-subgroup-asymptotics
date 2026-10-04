@@ -24,11 +24,31 @@ namespace DegreeSixS3Wreath
 private abbrev S3 := Equiv.Perm (Fin 3)
 private abbrev C2 := Multiplicative (ZMod 2)
 
+/-- A computational enumeration of a two-block wreath product.  Defining
+this from the literal constructor, rather than transporting the product
+enumeration through `SemidirectProduct.equivProd`, keeps the finite kernel
+checks below free of non-reducing equality transports. -/
+@[reducible] private def wreathFintype (A : Type*) [Group A] [Fintype A] :
+    Fintype (C2Wreath.W A) where
+  elems := (Finset.univ : Finset ((A × A) × C2)).map
+    { toFun := fun p => ⟨p.1, p.2⟩
+      inj' := by
+        intro p q h
+        exact Prod.ext (congrArg SemidirectProduct.left h)
+          (congrArg SemidirectProduct.right h) }
+  complete x := by
+    apply Finset.mem_map.mpr
+    exact ⟨(x.left, x.right), Finset.mem_univ _, rfl⟩
+
 /-- The exact full two-block wreath target. -/
 abbrev G := C2Wreath.W S3
 
+instance : Fintype G := wreathFintype S3
+
 /-- Its sign quotient, the dihedral group of order eight. -/
 abbrev D8 := C2Wreath.W C2
+
+instance : Fintype D8 := wreathFintype C2
 
 def signBase : S3 × S3 →* C2 × C2 :=
   oddMarkerSign.prodMap oddMarkerSign
@@ -39,7 +59,7 @@ private theorem signBase_swap_compatible (g : C2) :
   apply MonoidHom.ext
   intro x
   rcases C2Wreath.cases g with rfl | rfl
-  · simp [signBase, C2Wreath.swapAut_one]
+  · simp [signBase]
   · simp [signBase, C2Wreath.swapAut_gen]
 
 /-- Coordinatewise sign and the unchanged block swap. -/
