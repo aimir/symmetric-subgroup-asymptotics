@@ -70,6 +70,19 @@ def character : derivedBase →* C3 :=
   (kernelCoordinate.comp firstKernel) *
     (kernelCoordinate.comp secondKernel)
 
+private theorem oddKernel_commute (x y : oddMarkerSign.ker) :
+    x * y = y * x := by
+  decide +kernel +revert
+
+private theorem pairedKernelCoordinate_separating
+    (x y : oddMarkerSign.ker)
+    (h : ∀ q r : S3,
+      kernelCoordinate (MulAut.conjNormal q x) *
+        kernelCoordinate (MulAut.conjNormal r y) = 1) :
+    x = 1 ∧ y = 1 := by
+  revert x y
+  decide +kernel
+
 private theorem prod_commutator (a b c d : S3) :
     ⁅(a, b), (c, d)⁆ = (⁅a, c⁆, ⁅b, d⁆) := by
   rfl
@@ -83,9 +96,9 @@ private theorem kernel_commutator_witness (a : S3)
   revert a
   decide +kernel
 
-/-- Against an arbitrary nonidentity permutation, commutators and their
-inverses cover the alternating kernel. -/
 set_option maxRecDepth 8192 in
+/-- Against an arbitrary nonidentity permutation, commutators and their
+ inverses cover the alternating kernel. -/
 private theorem nontrivial_commutator_witness (a : S3) (ha : a ≠ 1)
     (k : S3) (hk : k ∈ oddMarkerSign.ker) :
     ∃ s : S3, ⁅s, a⁆ = k ∨ ⁅s, a⁆⁻¹ = k := by
@@ -110,18 +123,41 @@ theorem derivedSeries_one_eq : derivedSeries G 1 = derivedBase := by
     obtain ⟨s, hs⟩ := kernel_commutator_witness x.1 hx1
     obtain ⟨t, ht⟩ := kernel_commutator_witness x.2 hx2
     have hmem : ⁅(s, t), (transposition, transposition)⁆ ∈ derivedSeries G 1 :=
-      mem_derivedSeries_one _ _
+      (by
+        rw [derivedSeries_one]
+        exact Subgroup.commutator_mem_commutator
+          (Subgroup.mem_top _) (Subgroup.mem_top _))
     simpa only [prod_commutator, hs, ht, Prod.eta] using hmem
 
 set_option maxRecDepth 8192 in
 private theorem derivedBase_selfCentralizing :
     ∀ q : G, (∀ v ∈ derivedBase, q * v = v * q) → q ∈ derivedBase := by
+  intro q hq
+  simp only [derivedBase, MonoidHom.mem_ker] at hq ⊢
+  revert q
   decide +kernel +revert
 
 set_option maxRecDepth 8192 in
 private theorem derivedBase_commutative :
     ∀ v ∈ derivedBase, ∀ w ∈ derivedBase, v * w = w * v := by
-  decide +kernel +revert
+  intro v hv w hw
+  have hv1 : v.1 ∈ oddMarkerSign.ker := by
+    rw [MonoidHom.mem_ker]
+    exact congrArg Prod.fst (MonoidHom.mem_ker.mp hv)
+  have hv2 : v.2 ∈ oddMarkerSign.ker := by
+    rw [MonoidHom.mem_ker]
+    exact congrArg Prod.snd (MonoidHom.mem_ker.mp hv)
+  have hw1 : w.1 ∈ oddMarkerSign.ker := by
+    rw [MonoidHom.mem_ker]
+    exact congrArg Prod.fst (MonoidHom.mem_ker.mp hw)
+  have hw2 : w.2 ∈ oddMarkerSign.ker := by
+    rw [MonoidHom.mem_ker]
+    exact congrArg Prod.snd (MonoidHom.mem_ker.mp hw)
+  apply Prod.ext
+  · exact congrArg Subtype.val
+      (oddKernel_commute ⟨v.1, hv1⟩ ⟨w.1, hw1⟩)
+  · exact congrArg Subtype.val
+      (oddKernel_commute ⟨v.2, hv2⟩ ⟨w.2, hw2⟩)
 
 private def diagonalTransposition : G := (transposition, transposition)
 
@@ -129,6 +165,9 @@ set_option maxRecDepth 8192 in
 private theorem diagonalTransposition_fixedPointFree :
     ∀ v ∈ derivedBase,
       diagonalTransposition * v * diagonalTransposition⁻¹ = v → v = 1 := by
+  intro v hv hfixed
+  simp only [derivedBase, MonoidHom.mem_ker] at hv
+  revert v
   decide +kernel +revert
 
 private theorem derivedBase_absorbing (W : Subgroup G) (hW : W.Normal)
@@ -148,7 +187,20 @@ set_option maxRecDepth 8192 in
 private theorem character_separating :
     ∀ v : derivedBase,
       (∀ q : G, character (MulAut.conjNormal q v) = 1) → v = 1 := by
-  decide +kernel +revert
+  intro v h
+  let x : oddMarkerSign.ker := firstKernel v
+  let y : oddMarkerSign.ker := secondKernel v
+  have hxy : ∀ q r : S3,
+      kernelCoordinate (MulAut.conjNormal q x) *
+        kernelCoordinate (MulAut.conjNormal r y) = 1 := by
+    intro q r
+    simpa [character, x, y, firstKernel, secondKernel,
+      MulAut.conjNormal_apply] using h (q, r)
+  obtain ⟨hx, hy⟩ := pairedKernelCoordinate_separating x y hxy
+  apply Subtype.ext
+  apply Prod.ext
+  · exact congrArg Subtype.val hx
+  · exact congrArg Subtype.val hy
 
 /-- The concrete ternary cyclic-dual target on `A₃ × A₃`. -/
 def target : DerivedHead.DerivedCyclicTarget G derivedBase 0 3 where
@@ -168,14 +220,14 @@ private theorem mem_leftProjection_ker (x : G) :
       x.1 = 1 ∧ x.2 ∈ oddMarkerSign.ker := by
   change (x.1, oddMarkerSign x.2) = (1, 1) ↔
     x.1 = 1 ∧ oddMarkerSign x.2 = 1
-  exact Prod.mk.injEq
+  simp only [Prod.mk.injEq]
 
 private theorem mem_rightProjection_ker (x : G) :
     x ∈ rightProjection.ker ↔
       x.2 = 1 ∧ x.1 ∈ oddMarkerSign.ker := by
   change (x.2, oddMarkerSign x.1) = (1, 1) ↔
     x.2 = 1 ∧ oddMarkerSign x.1 = 1
-  exact Prod.mk.injEq
+  simp only [Prod.mk.injEq]
 
 private theorem leftProjection_ker_le_of_second_ne_one
     (N : Subgroup G) (hN : N.Normal) (a b : S3)
@@ -184,6 +236,7 @@ private theorem leftProjection_ker_le_of_second_ne_one
   rintro ⟨u, v⟩ huv
   rw [mem_leftProjection_ker] at huv
   rcases huv with ⟨hu, hv⟩
+  change u = 1 at hu
   subst u
   obtain ⟨s, hs | hs⟩ := nontrivial_commutator_witness b hb v hv
   · have hc : (1, ⁅s, b⁆) ∈ N := by
@@ -202,6 +255,7 @@ private theorem rightProjection_ker_le_of_first_ne_one
   rintro ⟨u, v⟩ huv
   rw [mem_rightProjection_ker] at huv
   rcases huv with ⟨hv, hu⟩
+  change v = 1 at hv
   subst v
   obtain ⟨s, hs | hs⟩ := nontrivial_commutator_witness a ha u hu
   · have hc : (⁅s, a⁆, 1) ∈ N := by
