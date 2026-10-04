@@ -29,6 +29,12 @@ open scoped BigOperators Classical
 
 namespace SymmetricSubgroupAsymptotics
 
+-- Keep both sides of the correlated normal-axis sums on the canonical
+-- subtype enumeration.  The project-wide optimized normal-axis `Fintype`
+-- enumerates the same finite type, but using it on only one unfolded side
+-- obscures the definitional equality needed below.
+attribute [-instance] originalNormalFintype
+
 private abbrev NormalAxis (G : Type*) [Group G] :=
   {N : Subgroup G // N.Normal}
 
@@ -63,7 +69,7 @@ private theorem normalAxisAboveMap_injective {G : Type*} [Group G]
     congrArg (fun M : NormalAxis (G ⧸ E) => M.1) h
   have hcomap := congrArg (Subgroup.comap (QuotientGroup.mk' E)) hmap
   rw [QuotientGroup.comap_map_mk', QuotientGroup.comap_map_mk',
-    sup_eq_left.mpr N.2, sup_eq_left.mpr N'.2] at hcomap
+    sup_eq_right.mpr N.2, sup_eq_right.mpr N'.2] at hcomap
   exact hcomap
 
 /-- The whole literal interval above `E` is one complete quotient weight of
@@ -83,9 +89,11 @@ theorem normalAxisAbove_epimorphism_sum_le_completeQuotientWeight
   have htransport : ∀ N : NormalAxisAbove E,
       (Nat.card (GroupEpimorphism J (G ⧸ N.1.1)) : ℝ) = g (κ N) := by
     intro N
-    exact_mod_cast
-      fusionGroupEpimorphism_card_congr (MulEquiv.refl J)
-        (QuotientGroup.quotientQuotientEquivQuotient E N.1.1 N.2).symm
+    change (Nat.card (GroupEpimorphism J (G ⧸ N.1.1)) : ℝ) =
+      (Nat.card (GroupEpimorphism J
+        ((G ⧸ E) ⧸ N.1.1.map (QuotientGroup.mk' E))) : ℝ)
+    exact_mod_cast fusionGroupEpimorphism_card_congr (MulEquiv.refl J)
+      (QuotientGroup.quotientQuotientEquivQuotient E N.1.1 N.2).symm
   calc
     (∑ N : NormalAxisAbove E,
         (Nat.card (GroupEpimorphism J (G ⧸ N.1.1)) : ℝ)) =
@@ -97,8 +105,9 @@ theorem normalAxisAbove_epimorphism_sum_le_completeQuotientWeight
       Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
         (fun M _ _ => Nat.cast_nonneg _)
     _ = completeQuotientWeight (R := G ⧸ E) J := by
-      simp only [g, completeQuotientWeight, completeQuotientCount,
-        Nat.cast_sum]
+      dsimp [g]
+      unfold completeQuotientWeight completeQuotientCount
+      rw [Nat.cast_sum]
 
 /-- Structural input for the correlated interval theorem.  The quotient
 `U / E` has a faithful comparator action.  Every literal normal axis below
@@ -188,7 +197,7 @@ theorem below_source_envelope (lit : PreE7CharacterLiterature) {b : ℕ}
             (2 : ℝ) ^ (D.theta * b) :=
       Finset.sum_le_sum (fun N _ => haxis N)
     _ = D.tailConstant * (2 : ℝ) ^ (D.theta * b) := by
-      rw [Finset.sum_mul]
+      rw [← Finset.sum_mul]
       rfl
 
 /-- The correlated complete-source interval theorem.  The retained quotient
@@ -204,7 +213,17 @@ theorem completeSource_envelope (lit : PreE7CharacterLiterature) {b : ℕ}
     fusionSurvivingEpiCount U P N J
   have hsplit := Fintype.sum_subtype_add_sum_subtype Q f
   calc
-    fusionCompleteSourceSum U P J = ∑ N : NormalAxis U, f N := rfl
+    fusionCompleteSourceSum U P J = ∑ N : NormalAxis U, f N := by
+      dsimp [f]
+      unfold fusionCompleteSourceSum
+      change
+        Finset.sum (@Finset.univ (NormalAxis U)
+            (Subtype.fintype Subgroup.Normal))
+            (fun N => fusionSurvivingEpiCount U P N J) =
+        Finset.sum (@Finset.univ (NormalAxis U)
+            (Subtype.fintype Subgroup.Normal))
+            (fun N => fusionSurvivingEpiCount U P N J)
+      rfl
     _ = (∑ N : {N : NormalAxis U // Q N}, f N.1) +
         ∑ N : {N : NormalAxis U // ¬ Q N}, f N.1 := hsplit.symm
     _ ≤ completeQuotientWeight (R := U ⧸ D.E) J +
@@ -235,7 +254,8 @@ variable {w : ℕ} {i : PreE7NonPairActionClass w}
   {D : CompleteCharacterIntervalData (preE7NonPairAction w i)}
   (N : PreE7CompleteCharacterIntervalNumerics D)
 
-def sourceDegree : ℕ := max 2 D.quotientDegree
+def sourceDegree (_N : PreE7CompleteCharacterIntervalNumerics D) : ℕ :=
+  max 2 D.quotientDegree
 
 def degree : ℕ :=
   paddedComparatorDegree preE7CharacterRho N.sourceDegree w
