@@ -132,6 +132,7 @@ noncomputable def PreE7NumericalRankTailResidualChoice.emptyOfActionOwner
     (owner : PreE7NumericalRankTailActionOwner w U) :
     PreE7NumericalRankTailResidualChoice w U where
   D := fun _ => 0
+  T := fun _ => 0
   v := preE7EmptyCellDegree w
   eta := 0
   delta := preE7EmptyCellDelta w
@@ -141,6 +142,8 @@ noncomputable def PreE7NumericalRankTailResidualChoice.emptyOfActionOwner
   X := 0
   alpha_eq := by simp [preE7EmptyCellAlpha]
   D_nonneg := fun _ => le_rfl
+  T_nonneg := fun _ => le_rfl
+  T_le_D := fun _ => le_rfl
   parameters := preE7EmptyCell_entryParameters
     (preE7NonPairAction_width_three_le U)
   main_total_growth := .inl (fun _ => by positivity)
@@ -194,6 +197,7 @@ noncomputable def
     fusionAxisEnvelopeTotal (preE7NonPairAction w U) (D.C b)
   exact
     { D := Dmain
+      T := fun _ => 0
       v := D.v
       eta := D.eta
       delta := D.delta
@@ -203,6 +207,9 @@ noncomputable def
       X := 0
       alpha_eq := D.alpha_eq
       D_nonneg := fun b =>
+        fusionAxisEnvelopeTotal_nonneg _ _ (D.coefficient_nonneg b)
+      T_nonneg := fun _ => le_rfl
+      T_le_D := fun b =>
         fusionAxisEnvelopeTotal_nonneg _ _ (D.coefficient_nonneg b)
       parameters := D.parameters
       main_total_growth := .inl D.coefficient_total_bound
