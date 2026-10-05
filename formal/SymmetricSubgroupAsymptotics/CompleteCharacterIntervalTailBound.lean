@@ -53,10 +53,10 @@ private theorem normalAxis_card_le_generator_power (t : ℕ)
       Nat.card_le_card_of_surjective _ hsurj
     _ = Nat.card U ^ t := by rw [Nat.card_fun, Nat.card_fin]
 
-/-- The published permutation-subgroup generator bound gives an `w`-tuple
-normal generator bound for every literal normal axis of a degree-`w`
-permutation group. -/
-private theorem normalAxis_card_le_two_pow_mul_width
+/-- A degree-`w` permutation action with order at most `2^m` has at most
+`2^(m*w)` literal normal axes.  This public form is also used for finite
+source certificates whose constants are sums over the same normal menu. -/
+theorem normalAxis_card_le_two_pow_mul_width
     (hgen : PermutationSubgroupGeneratorBound) (m : ℕ)
     (horder : Nat.card U ≤ 2 ^ m) (hw : 2 ≤ w) :
     Nat.card {N : Subgroup U // N.Normal} ≤ 2 ^ (m * w) := by
@@ -73,9 +73,9 @@ private theorem normalAxis_card_le_two_pow_mul_width
     _ ≤ (2 ^ m) ^ w := Nat.pow_le_pow_left horder w
     _ = 2 ^ (m * w) := by rw [pow_mul]
 
-/-- Every quotient automorphism is determined by the images of the
-published rounded generating tuple of the ambient permutation group. -/
-private theorem quotient_mulEquiv_card_le_two_pow_generator
+/-- Every literal quotient automorphism group is bounded by the images of
+the published generating tuple of the ambient permutation group. -/
+theorem quotient_mulEquiv_card_le_two_pow_generator
     (hgen : PermutationSubgroupGeneratorBound) (m : ℕ)
     (horder : Nat.card U ≤ 2 ^ m) (N : Subgroup U) [N.Normal] :
     Nat.card ((U ⧸ N) ≃* (U ⧸ N)) ≤
