@@ -223,6 +223,48 @@ theorem tailConstant_le_two_pow_of_order_and_generators
     _ = ((2 ^ (m * w + m * ((w + 2) / 2)) : ℕ) : ℝ) := by
       norm_num [pow_add]
 
+/-- Exact-menu installation form.  It is enough to check the coefficient
+exponent against the menu at `b = 0`; monotonicity of the logarithm then
+gives every complement degree.  This avoids replacing the actual menu by
+the coarse `64*w` lower envelope in the largest finite affine cells. -/
+theorem tailConstant_le_menuMass_of_order_and_generators_exact
+    (D : CompleteCharacterIntervalData U)
+    (hgen : PermutationSubgroupGeneratorBound) (m : ℕ)
+    (horder : Nat.card U ≤ 2 ^ m) (hw : 2 ≤ w)
+    (hexp : ((m * w + m * ((w + 2) / 2) : ℕ) : ℝ) ≤
+      16 * (w : ℝ) * Real.log ((w + 2 : ℕ) : ℝ) ^ 2)
+    (b : ℕ) :
+    D.tailConstant ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2) := by
+  have harg : ((w + 2 : ℕ) : ℝ) ≤ ((w + b + 2 : ℕ) : ℝ) := by
+    exact_mod_cast (show w + 2 ≤ w + b + 2 by omega)
+  have hpos : (0 : ℝ) < ((w + 2 : ℕ) : ℝ) := by positivity
+  have hlog : Real.log ((w + 2 : ℕ) : ℝ) ≤
+      Real.log ((w + b + 2 : ℕ) : ℝ) :=
+    Real.log_le_log hpos harg
+  have hlog0 : 0 ≤ Real.log ((w + 2 : ℕ) : ℝ) := by
+    apply Real.log_nonneg
+    exact_mod_cast (show 1 ≤ w + 2 by omega)
+  have hlogSq : Real.log ((w + 2 : ℕ) : ℝ) ^ 2 ≤
+      Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2 := by
+    nlinarith [sq_nonneg (Real.log ((w + b + 2 : ℕ) : ℝ) -
+      Real.log ((w + 2 : ℕ) : ℝ))]
+  have hw0 : (0 : ℝ) ≤ w := by positivity
+  calc
+    D.tailConstant ≤
+        ((2 ^ (m * w + m * ((w + 2) / 2)) : ℕ) : ℝ) :=
+      D.tailConstant_le_two_pow_of_order_and_generators hgen m horder hw
+    _ = (2 : ℝ) ^ ((m * w + m * ((w + 2) / 2) : ℕ) : ℝ) := by
+      rw [Real.rpow_natCast]
+      norm_num
+    _ ≤ (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + 2 : ℕ) : ℝ) ^ 2) := by
+      exact Real.rpow_le_rpow_of_exponent_le (by norm_num) hexp
+    _ ≤ _ := by
+      apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+      exact mul_le_mul_of_nonneg_left hlogSq (by positivity)
+
 /-- Numerical installation form of the refined generator estimate. -/
 theorem tailConstant_le_menuMass_of_order_and_generators
     (D : CompleteCharacterIntervalData U)
