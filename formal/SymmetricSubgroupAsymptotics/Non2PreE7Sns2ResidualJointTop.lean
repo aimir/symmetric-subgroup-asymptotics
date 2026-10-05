@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7Sns2NumericalClosure
-import SymmetricSubgroupAsymptotics.T1NumericalJointTopClosure
+import SymmetricSubgroupAsymptotics.Non2PreE7NumericalResidualJointTopData
 
 /-!
 # Restrict numerical joint-top terminal cells after adding SNS2
