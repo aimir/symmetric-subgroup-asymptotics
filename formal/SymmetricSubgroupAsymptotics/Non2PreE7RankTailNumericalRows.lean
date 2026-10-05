@@ -24,6 +24,7 @@ noncomputable def preE7Y1OwnedMenuIndex {w : ℕ}
 structure PreE7NumericalRankTailResidualChoice
     (w : ℕ) (U : PreE7NonPairActionClass w) where
   D : ℕ → ℝ
+  T : ℕ → ℝ
   v : ℕ
   eta : ℝ
   delta : ℝ
@@ -33,6 +34,8 @@ structure PreE7NumericalRankTailResidualChoice
   X : ℕ → ℝ
   alpha_eq : alpha = eta + cutoff
   D_nonneg : ∀ b, 0 ≤ D b
+  T_nonneg : ∀ b, 0 ≤ T b
+  T_le_D : ∀ b, T b ≤ D b
   parameters : PreE7CharacterEntryParameters preE7CharacterRho w v eta
     delta cutoff alpha theta
   main_total_growth :
@@ -59,7 +62,11 @@ structure PreE7NumericalRankTailResidualChoice
         fusionWidthColdKernel b w (D b)
           (Nat.card (Subgroup.normalizer
             (preE7NonPairAction w U : Set (Equiv.Perm (Fin w)))) : ℝ)
-          alpha * ordinarySubgroupRatio b + X b
+          alpha * ordinarySubgroupRatio b +
+        fusionWidthColdKernel b w (T b)
+          (Nat.card (Subgroup.normalizer
+            (preE7NonPairAction w U : Set (Equiv.Perm (Fin w)))) : ℝ)
+          theta * ordinarySubgroupRatio b + X b
 
 /-- Terminal numerical data only for the width-at-least-four actions that
 remain after the complete degree-three packet has been removed. -/
@@ -78,14 +85,15 @@ def preE7NumericalRankTailD (w : ℕ)
   | .b6 _ | .y1 _ | .sns2 _ => 0
   | .terminal t => (Residual w t).D b
 
-def preE7NumericalRankTailT (w : ℕ)
+def preE7NumericalRankTailT
+    (Residual : PreE7NumericalRankTailResidualData) (w : ℕ)
     (j : PreE7NumericalRankTailIndex w) (b : ℕ) : ℝ :=
   match j with
   | .ordinary a => (preE7NumericalOwnedPackage a).package.certificate.T b
   | .b6 a => preE7B6MenuCoefficient lit (preE7B6OwnedMenuIndex a) b
   | .y1 a => preE7Y1MenuCoefficient lit (preE7Y1OwnedMenuIndex a) b
   | .sns2 a => preE7Sns2MenuCoefficient (preE7Sns2OwnedMenuIndex a) b
-  | .terminal _ => 0
+  | .terminal t => (Residual w t).T b
 
 def preE7NumericalRankTailX (w : ℕ)
     (j : PreE7NumericalRankTailIndex w) (b : ℕ) : ℝ :=
@@ -131,13 +139,14 @@ def preE7NumericalRankTailAlpha (w : ℕ) :
   | .b6 _ | .y1 _ | .sns2 _ => preE7EmptyCellAlpha w
   | .terminal t => (Residual w t).alpha
 
-def preE7NumericalRankTailTheta (w : ℕ) :
+def preE7NumericalRankTailTheta
+    (Residual : PreE7NumericalRankTailResidualData) (w : ℕ) :
     PreE7NumericalRankTailIndex w → ℝ
   | .ordinary a => (preE7NumericalOwnedPackage a).package.certificate.theta
   | .b6 _ => 4 / 3
   | .y1 _ => 153 / 200
   | .sns2 a => preE7Sns2MenuSlope (preE7Sns2OwnedMenuIndex a)
-  | .terminal _ => 0
+  | .terminal t => (Residual w t).theta
 
 theorem preE7NumericalRankTailD_nonneg :
     ∀ w j b, 0 ≤ preE7NumericalRankTailD Residual w j b := by
@@ -149,7 +158,7 @@ theorem preE7NumericalRankTailD_nonneg :
   | terminal t => exact (Residual w t).D_nonneg b
 
 theorem preE7NumericalRankTailT_nonneg :
-    ∀ w j b, 0 ≤ preE7NumericalRankTailT lit w j b := by
+    ∀ w j b, 0 ≤ preE7NumericalRankTailT lit Residual w j b := by
   intro w j b
   cases j with
   | ordinary a =>
@@ -157,7 +166,7 @@ theorem preE7NumericalRankTailT_nonneg :
   | b6 a => exact preE7B6MenuCoefficient_nonneg lit _ _
   | y1 a => exact preE7Y1MenuCoefficient_nonneg lit _ _
   | sns2 a => exact preE7Sns2MenuCoefficient_nonneg _ _
-  | terminal => exact le_rfl
+  | terminal t => exact (Residual w t).T_nonneg b
 
 theorem preE7NumericalRankTailA_pos (w : ℕ)
     (j : PreE7NumericalRankTailIndex w) :
@@ -171,13 +180,13 @@ theorem preE7NumericalRankTail_local_bound :
     GrowingQuotientAdditiveExceptionalLocalPhysicalBound 3
       preE7NumericalRankTailAction preE7NumericalRankTailPredicate
       (preE7NumericalRankTailD Residual)
-      (preE7NumericalRankTailT lit) (preE7NumericalRankTailX lit Residual)
+      (preE7NumericalRankTailT lit Residual) (preE7NumericalRankTailX lit Residual)
       preE7NumericalRankTailA (preE7NumericalRankTailV Residual)
       (preE7NumericalRankTailEta Residual)
       (preE7NumericalRankTailDelta Residual)
       (preE7NumericalRankTailCutoff Residual)
       (preE7NumericalRankTailAlpha Residual)
-      preE7NumericalRankTailTheta := by
+      (preE7NumericalRankTailTheta Residual) := by
   intro n j
   have hwn : j.1.1 ≤ n := growingQuotientPhysicalWidth_le j
   rw [GrowingQuotientCanonicalFamily, fusionWidthCanonicalFamily_card]
