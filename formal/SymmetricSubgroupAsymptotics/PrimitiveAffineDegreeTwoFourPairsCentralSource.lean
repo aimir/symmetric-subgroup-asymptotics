@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoCentralProductTransport
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoCentralProductWidthEightNumerics
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairQuotientPackage
 
 /-!
 # The two central-product rows in the four-pair slice
@@ -51,6 +52,18 @@ noncomputable def quotientSummedEnvelope
     (M : PublishedFourPairCentralModel U) :
     PreE7DegreeTwoPairQuotientSummedEnvelope (preE7NonPairAction 8 U) :=
   M.literalData.quotientSummedEnvelope
+
+/-- The same raw row with the faithful five-point action of its retained
+quotient comparator. -/
+noncomputable def quotientSummedPackage
+    {U : PreE7NonPairActionClass 8}
+    (M : PublishedFourPairCentralModel U) :
+    PreE7DegreeTwoPairQuotientSummedPackage
+      (preE7NonPairAction 8 U) where
+  envelope := M.quotientSummedEnvelope
+  v := 5
+  action := M.literalData.action
+  action_injective := M.literalData.action_injective
 
 /-- Final width-eight source used by the affine residual dispatcher. -/
 noncomputable def source
