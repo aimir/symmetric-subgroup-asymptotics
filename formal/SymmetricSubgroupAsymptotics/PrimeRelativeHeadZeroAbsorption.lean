@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.PrimeRelativeRadicalPresentation
+import SymmetricSubgroupAsymptotics.PrimeRelativeHeadChain
 
 /-!
 # Zero relative head absorbs an elementary normal section
@@ -55,6 +56,18 @@ theorem mixedCommutator_eq_of_exponent_prime_relativeHead_zero
   · exact Subgroup.commutator_le_left N ⊤
   · exact le_mixedCommutator_of_exponent_prime_relativeHead_zero p N
       hexponent hzero
+
+/-- Vanishing of a complete relative head descends to every literal normal
+section.  The exact chain formula is used here, so no assertion that every
+invariant character extends is introduced. -/
+theorem normalChainQuotient_relativeHead_zero_of_source_zero
+    (B C : Subgroup G) [B.Normal] [C.Normal] (hBC : B ≤ C)
+    (hzero : Module.finrank (ZMod p) (primeRelativeCharacters p C) = 0) :
+    Module.finrank (ZMod p)
+      (primeRelativeCharacters p (normalChainQuotient B C)) = 0 := by
+  have hchain := primeRelativeHead_chain_eq B C p hBC
+  rw [hzero] at hchain
+  omega
 
 end SymmetricSubgroupAsymptotics
 
