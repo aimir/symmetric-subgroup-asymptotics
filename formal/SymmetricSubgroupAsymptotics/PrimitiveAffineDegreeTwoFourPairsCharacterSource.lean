@@ -57,9 +57,12 @@ noncomputable def quotientSummedPackage
       (preE7NonPairAction 8 U) :=
   let D := M.completeInterval hZmud
   { envelope := D.quotientSummedEnvelope lit
-    v := D.quotientDegree
-    action := D.quotientAction
-    action_injective := D.quotientAction_injective }
+    v := max 2 D.quotientDegree
+    action := (characterComparatorPadHom (le_max_right 2 D.quotientDegree)).comp
+      D.quotientAction
+    action_injective :=
+      (characterComparatorPadHom_injective
+        (le_max_right 2 D.quotientDegree)).comp D.quotientAction_injective }
 
 private theorem logb_two_five_lt_seven_thirds :
     Real.logb 2 5 < (7 : ℝ) / 3 := by
