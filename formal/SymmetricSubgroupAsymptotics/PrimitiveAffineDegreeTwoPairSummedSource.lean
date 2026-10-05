@@ -162,11 +162,82 @@ structure NumericalMargin : Type where
   exceptional : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)) →
     ExponentialScalarBound S.exceptionalScalar
 
+/-- Numerical data retaining the source-independent cold term as the
+additive continuation row.  The extra domination `T ≤ D` lets the global
+terminal menu reuse the already proved main menu-mass bound without changing
+the mathematical slopes of either term. -/
+structure AdditiveNumericalMargin : Type where
+  D : ℕ → ℝ
+  T : ℕ → ℝ
+  eta : ℝ
+  theta : ℝ
+  delta : ℝ
+  cutoff : ℝ
+  alpha : ℝ
+  alpha_eq : alpha = eta + cutoff
+  D_nonneg : ∀ b, 0 ≤ D b
+  T_nonneg : ∀ b, 0 ≤ T b
+  T_le_D : ∀ b, T b ≤ D b
+  width_upper : w ≤ 12288
+  parameters : PreE7CharacterEntryParameters preE7CharacterRho w S.v eta
+    delta cutoff alpha theta
+  total_growth : ∀ b,
+    D b ≤ (2 : ℝ) ^
+      (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
+  summed : ∀ (b : ℕ)
+      (P : Subgroup (preE7NonPairAction w U × Equiv.Perm (Fin b)) → Prop),
+    (∑ J : Subgroup (Equiv.Perm (Fin b)),
+        fusionCompleteSourceSum (preE7NonPairAction w U) P J) ≤
+      ((∑ J : Subgroup (Equiv.Perm (Fin b)),
+          ((D b * (2 : ℝ) ^ (eta * b)) *
+              completeQuotientWeight (R := S.R) J +
+            T b * (2 : ℝ) ^ (theta * b))) + S.exceptionalRaw b)
+  exceptional : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)) →
+    ExponentialScalarBound S.exceptionalScalar
+
+/-- Install an additive raw source without merging its two slopes. -/
+noncomputable def toResidualChoiceAdditive
+    (M : S.AdditiveNumericalMargin) :
+    PreE7NumericalRankTailResidualChoice w U where
+  D := M.D
+  T := M.T
+  v := S.v
+  eta := M.eta
+  delta := M.delta
+  cutoff := M.cutoff
+  alpha := M.alpha
+  theta := M.theta
+  X := S.exceptionalScalar
+  alpha_eq := M.alpha_eq
+  D_nonneg := M.D_nonneg
+  T_nonneg := M.T_nonneg
+  T_le_D := M.T_le_D
+  parameters := M.parameters
+  main_total_growth := .inl M.total_growth
+  exceptional := M.exceptional
+  exceptional_support := Or.inr M.width_upper
+  local_bound := by
+    intro b
+    let P := preE7NoPairNoC3CertifiedFirstOwnerPredicate
+      preE7NoPairNoC3EarlierNumericalRankTailFamilyAction w
+      (Fin.last preE7NoPairNoC3EarlierOwnerCount, U) b
+    have h :=
+      fusionPhysical_growingQuotient_additiveTail_summedExceptional_kernel_bound
+        (preE7NonPairAction w U) P
+        (preE7NoPairNoC3CertifiedFirstOwnerPredicate_natural _ w
+          (Fin.last preE7NoPairNoC3EarlierOwnerCount, U) b)
+        S.action S.action_injective (M.D b) (M.T b) M.eta M.theta
+        M.delta M.cutoff (S.exceptionalRaw b) (M.D_nonneg b)
+        (M.summed b P)
+    simpa [P, M.alpha_eq, exceptionalScalar,
+      ordinarySubgroupRatio] using h
+
 /-- Install the raw summed source as a concrete pre-`E7` residual row. -/
 noncomputable def toResidualChoice
     (M : S.NumericalMargin) :
     PreE7NumericalRankTailResidualChoice w U where
   D := M.D
+  T := fun _ => 0
   v := S.v
   eta := M.combinedEta
   delta := M.delta
@@ -176,6 +247,8 @@ noncomputable def toResidualChoice
   X := S.exceptionalScalar
   alpha_eq := M.alpha_eq
   D_nonneg := M.D_nonneg
+  T_nonneg := fun _ => le_rfl
+  T_le_D := fun b => M.D_nonneg b
   parameters := M.parameters
   main_total_growth := .inl M.total_growth
   exceptional := M.exceptional
