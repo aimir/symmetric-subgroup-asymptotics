@@ -161,10 +161,10 @@ noncomputable def quotientSummedPackage
   | repeatedNaturalA4 S =>
       exact
         { envelope := S.quotientSummedEnvelope lit
-          v := 0
-          action := (1 : PUnit →* Equiv.Perm (Fin 0))
+          v := 2
+          action := (1 : PUnit →* Equiv.Perm (Fin 2))
           action_injective := by
-            change Function.Injective (1 : PUnit →* Equiv.Perm (Fin 0))
+            change Function.Injective (1 : PUnit →* Equiv.Perm (Fin 2))
             intro x y _
             exact Subsingleton.elim x y }
 
