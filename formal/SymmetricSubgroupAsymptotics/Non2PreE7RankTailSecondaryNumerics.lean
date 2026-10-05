@@ -94,15 +94,57 @@ noncomputable def preE7RankTailSecondaryIndexEquiv (w : ℕ) :
           ((preE7Y1OwnedMenuEquiv w).symm a))) = Sum.inr (Sum.inr a)
         rw [Equiv.apply_symm_apply]
 
+@[simp] private theorem preE7RankTailSecondaryIndexEquiv_ordinary
+    (w : ℕ) (a : PreE7NumericalOwnedIndex w) :
+    preE7RankTailSecondaryIndexEquiv w (.ordinary a) = .inl (.inl a) := rfl
+
+@[simp] private theorem preE7RankTailSecondaryIndexEquiv_b6
+    (w : ℕ) (a : PreE7B6OwnedIndex w) :
+    preE7RankTailSecondaryIndexEquiv w (.b6 a) =
+      .inr (.inl (preE7B6OwnedMenuIndex a)) := rfl
+
+@[simp] private theorem preE7RankTailSecondaryIndexEquiv_y1
+    (w : ℕ) (a : PreE7Y1OwnedIndex w) :
+    preE7RankTailSecondaryIndexEquiv w (.y1 a) =
+      .inr (.inr (preE7Y1OwnedMenuIndex a)) := rfl
+
+@[simp] private theorem preE7RankTailSecondaryIndexEquiv_sns2
+    (w : ℕ) (a : PreE7Sns2OwnedIndex w) :
+    preE7RankTailSecondaryIndexEquiv w (.sns2 a) =
+      .inl (.inr (.inl a)) := rfl
+
+@[simp] private theorem preE7RankTailSecondaryIndexEquiv_terminal
+    (w : ℕ) (t : PreE7NumericalTerminalIndex w) :
+    preE7RankTailSecondaryIndexEquiv w (.terminal t) =
+      .inl (.inr (.inr t)) := rfl
+
+@[simp] private theorem preE7NumericalRankTailA_terminal
+    (w : ℕ) (t : PreE7NumericalTerminalIndex w) :
+    preE7NumericalRankTailA w (.terminal t) =
+      Nat.card (Subgroup.normalizer
+        (preE7NonPairAction w t.action : Set (Equiv.Perm (Fin w)))) := rfl
+
 variable (lit : PreE7CharacterLiterature)
   (Residual : PreE7NumericalRankTailResidualData)
+
+/-- The new additive tail carried only by terminal residual rows. -/
+private def rankTailTerminalT (w : ℕ) :
+    PreE7NumericalRankTailIndex w → ℕ → ℝ
+  | .terminal t => (Residual w t).T
+  | _ => 0
+
+/-- Its slope; nonterminal entries are zero rows. -/
+private def rankTailTerminalTheta (w : ℕ) :
+    PreE7NumericalRankTailIndex w → ℝ
+  | .terminal t => (Residual w t).theta
+  | _ => 0
 
 private def rankTailTargetT (w : ℕ) :
     (PreE7RankTailSecondaryBaseIndex w ⊕
       (PreE7B6MenuIndex w ⊕ PreE7Y1MenuIndex w)) → ℕ → ℝ
   | .inl (.inl a) => preE7NumericalSns2T w (.inl a)
   | .inl (.inr (.inl a)) => preE7NumericalSns2T w (.inr (.inl a))
-  | .inl (.inr (.inr _)) => 0
+  | .inl (.inr (.inr t)) => (Residual w t).T
   | .inr (.inl a) => preE7B6MenuCoefficient lit a
   | .inr (.inr a) => preE7Y1MenuCoefficient lit a
 
@@ -131,14 +173,47 @@ private def rankTailTargetTheta (w : ℕ) :
       (PreE7B6MenuIndex w ⊕ PreE7Y1MenuIndex w)) → ℝ
   | .inl (.inl a) => preE7NumericalSns2Theta w (.inl a)
   | .inl (.inr (.inl a)) => preE7NumericalSns2Theta w (.inr (.inl a))
-  | .inl (.inr (.inr _)) => 0
+  | .inl (.inr (.inr t)) => (Residual w t).theta
   | .inr (.inl _) => 4 / 3
   | .inr (.inr _) => 153 / 200
 
+/-- Expand the terminal-only row before it is combined with the other four
+menus.  Keeping this as an explicit finite-sum identity avoids asking the
+ring normalizer to recognize the terminal summand through the custom
+five-constructor index. -/
+private theorem rankTailTerminal_coldWidthSum_expand (b w : ℕ) :
+    growingQuotientColdWidthSum b w (rankTailTerminalT Residual w)
+        (preE7NumericalRankTailA w)
+        (rankTailTerminalTheta Residual w) =
+      ∑ t : PreE7NumericalTerminalIndex w,
+        fusionWidthColdKernel b w ((Residual w t).T b)
+          (Nat.card (Subgroup.normalizer
+            (preE7NonPairAction w t.action : Set (Equiv.Perm (Fin w)))))
+          (Residual w t).theta := by
+  unfold growingQuotientColdWidthSum
+  let e := preE7RankTailSecondaryIndexEquiv w
+  calc
+    _ = ∑ z : PreE7RankTailSecondaryBaseIndex w ⊕
+          (PreE7B6MenuIndex w ⊕ PreE7Y1MenuIndex w),
+        match z with
+        | .inl (.inr (.inr t)) =>
+            fusionWidthColdKernel b w ((Residual w t).T b)
+              (Nat.card (Subgroup.normalizer
+                (preE7NonPairAction w t.action : Set (Equiv.Perm (Fin w)))))
+              (Residual w t).theta
+        | _ => 0 := by
+          exact Fintype.sum_equiv e _ _ (fun i => by
+            cases i <;>
+              simp [e, rankTailTerminalT, rankTailTerminalTheta,
+                fusionWidthColdKernel])
+    _ = _ := by
+      simp only [Fintype.sum_sum_type, Finset.sum_const_zero, zero_add,
+        add_zero]
+
 private theorem preE7RankTail_coldWidthSum_split (b w : ℕ) :
     growingQuotientColdWidthSum b w
-        (preE7NumericalRankTailT lit w) (preE7NumericalRankTailA w)
-        (preE7NumericalRankTailTheta w) =
+        (preE7NumericalRankTailT lit Residual w) (preE7NumericalRankTailA w)
+        (preE7NumericalRankTailTheta Residual w) =
       growingQuotientColdWidthSum b w (preE7NumericalSns2T w)
           (preE7NumericalSns2A w) (preE7NumericalSns2Theta w) +
         growingQuotientColdWidthSum b w
@@ -146,16 +221,20 @@ private theorem preE7RankTail_coldWidthSum_split (b w : ℕ) :
           (fun i => preE7B6MenuNormalizer i) (fun _ => 4 / 3) +
         growingQuotientColdWidthSum b w
           (fun i : PreE7Y1MenuIndex w => preE7Y1MenuCoefficient lit i)
-          (fun i => preE7Y1MenuNormalizer i) (fun _ => 153 / 200) := by
+          (fun i => preE7Y1MenuNormalizer i) (fun _ => 153 / 200) +
+        growingQuotientColdWidthSum b w (rankTailTerminalT Residual w)
+          (preE7NumericalRankTailA w)
+          (rankTailTerminalTheta Residual w) := by
+  rw [rankTailTerminal_coldWidthSum_expand Residual b w]
   unfold growingQuotientColdWidthSum
   let e := preE7RankTailSecondaryIndexEquiv w
   calc
     (∑ i : PreE7NumericalRankTailIndex w,
-        fusionWidthColdKernel b w (preE7NumericalRankTailT lit w i b)
+        fusionWidthColdKernel b w (preE7NumericalRankTailT lit Residual w i b)
           (preE7NumericalRankTailA w i)
-          (preE7NumericalRankTailTheta w i)) =
-      ∑ z, fusionWidthColdKernel b w (rankTailTargetT lit w z b)
-        (rankTailTargetA w z) (rankTailTargetTheta w z) := by
+          (preE7NumericalRankTailTheta Residual w i)) =
+      ∑ z, fusionWidthColdKernel b w (rankTailTargetT lit Residual w z b)
+        (rankTailTargetA w z) (rankTailTargetTheta Residual w z) := by
           exact Fintype.sum_equiv e _ _ (fun i => by
             cases i <;> rfl)
     _ = _ := by
@@ -163,7 +242,7 @@ private theorem preE7RankTail_coldWidthSum_split (b w : ℕ) :
       simp only [rankTailTargetT, rankTailTargetA, rankTailTargetTheta,
         preE7NumericalSns2T, preE7NumericalSns2Theta,
         fusionWidthColdKernel, zero_div, mul_zero, zero_mul,
-        Pi.zero_apply, Finset.sum_const_zero, mul_comm]
+        Finset.sum_const_zero, mul_comm]
       ring
 
 private theorem preE7RankTail_exceptionalWidthSum_split (b w : ℕ) :
@@ -185,8 +264,8 @@ private theorem preE7RankTail_exceptionalWidthSum_split (b w : ℕ) :
       ring
 
 private theorem preE7RankTail_coldRow_split (n b : ℕ) :
-    growingQuotientColdRow 3 (preE7NumericalRankTailT lit)
-        preE7NumericalRankTailA preE7NumericalRankTailTheta n b =
+    growingQuotientColdRow 3 (preE7NumericalRankTailT lit Residual)
+        preE7NumericalRankTailA (preE7NumericalRankTailTheta Residual) n b =
       growingQuotientColdRow 3 preE7NumericalSns2T
           preE7NumericalSns2A preE7NumericalSns2Theta n b +
         growingQuotientColdRow 3
@@ -196,7 +275,9 @@ private theorem preE7RankTail_coldRow_split (n b : ℕ) :
         growingQuotientColdRow 3
           (fun w i => preE7Y1MenuCoefficient lit (w := w) i)
           (fun w i => preE7Y1MenuNormalizer (w := w) i)
-          (fun _ _ => 153 / 200) n b := by
+          (fun _ _ => 153 / 200) n b +
+        growingQuotientColdRow 3 (rankTailTerminalT Residual)
+          preE7NumericalRankTailA (rankTailTerminalTheta Residual) n b := by
   unfold growingQuotientColdRow
   calc
     _ = ∑ w ∈ Finset.Ico 3 (n + 1),
@@ -208,15 +289,19 @@ private theorem preE7RankTail_coldRow_split (n b : ℕ) :
               (fun i => preE7B6MenuNormalizer i) (fun _ => 4 / 3) +
             growingQuotientColdWidthSum b w
               (fun i : PreE7Y1MenuIndex w => preE7Y1MenuCoefficient lit i)
-              (fun i => preE7Y1MenuNormalizer i) (fun _ => 153 / 200)
+              (fun i => preE7Y1MenuNormalizer i) (fun _ => 153 / 200) +
+            growingQuotientColdWidthSum b w (rankTailTerminalT Residual w)
+              (preE7NumericalRankTailA w)
+              (rankTailTerminalTheta Residual w)
          else 0) := by
       apply Finset.sum_congr rfl
       intro w _
       split_ifs
-      · exact preE7RankTail_coldWidthSum_split lit b w
+      · exact preE7RankTail_coldWidthSum_split lit Residual b w
       · rfl
     _ = _ := by
-      rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+      rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib,
+        ← Finset.sum_add_distrib]
       apply Finset.sum_congr rfl
       intro w _
       split_ifs <;> ring
@@ -248,9 +333,9 @@ private theorem preE7RankTail_exceptionalTotal_split (n : ℕ) :
     _ = _ := by simp only [Finset.sum_add_distrib]
 
 private theorem preE7RankTail_secondary_split (n : ℕ) :
-    growingQuotientSecondaryError 3 (preE7NumericalRankTailT lit)
+    growingQuotientSecondaryError 3 (preE7NumericalRankTailT lit Residual)
         (preE7NumericalRankTailX lit Residual) preE7NumericalRankTailA
-        preE7NumericalRankTailTheta n =
+        (preE7NumericalRankTailTheta Residual) n =
       growingQuotientSecondaryError 3 preE7NumericalSns2T
           preE7NumericalSns2X preE7NumericalSns2A
           preE7NumericalSns2Theta n +
@@ -264,14 +349,18 @@ private theorem preE7RankTail_secondary_split (n : ℕ) :
           (fun w i => preE7Y1MenuExceptional lit (w := w) i)
           (fun w i => preE7Y1MenuNormalizer (w := w) i)
           (fun _ _ => 153 / 200) n +
+        (∑ b ∈ Finset.range n,
+          growingQuotientColdRow 3 (rankTailTerminalT Residual)
+            preE7NumericalRankTailA (rankTailTerminalTheta Residual) n b *
+              ordinarySubgroupRatio b) +
         growingQuotientExceptionalTotal 3
           (fun w t => (Residual w t).X) n := by
   unfold growingQuotientSecondaryError
   rw [preE7RankTail_exceptionalTotal_split lit Residual]
   have hcold :
       (∑ b ∈ Finset.range n,
-          growingQuotientColdRow 3 (preE7NumericalRankTailT lit)
-              preE7NumericalRankTailA preE7NumericalRankTailTheta n b *
+          growingQuotientColdRow 3 (preE7NumericalRankTailT lit Residual)
+              preE7NumericalRankTailA (preE7NumericalRankTailTheta Residual) n b *
             ordinarySubgroupRatio b) =
         (∑ b ∈ Finset.range n,
           (growingQuotientColdRow 3 preE7NumericalSns2T
@@ -283,16 +372,77 @@ private theorem preE7RankTail_secondary_split (n : ℕ) :
             growingQuotientColdRow 3
               (fun w i => preE7Y1MenuCoefficient lit (w := w) i)
               (fun w i => preE7Y1MenuNormalizer (w := w) i)
-              (fun _ _ => 153 / 200) n b) * ordinarySubgroupRatio b) := by
+              (fun _ _ => 153 / 200) n b +
+            growingQuotientColdRow 3 (rankTailTerminalT Residual)
+              preE7NumericalRankTailA (rankTailTerminalTheta Residual) n b) *
+                ordinarySubgroupRatio b) := by
     apply Finset.sum_congr rfl
     intro b _
-    rw [preE7RankTail_coldRow_split]
+    rw [preE7RankTail_coldRow_split lit Residual n b]
   rw [hcold]
   simp only [add_mul, Finset.sum_add_distrib]
   ring
 
-/-- The complete ordinary/B6/Y1/SNS2 secondary contribution is
-exponentially contractive. -/
+/-- The terminal-only additive coefficient is pointwise dominated by the
+main coefficient whose menu mass is already controlled. -/
+private theorem rankTailTerminalT_le_D :
+    ∀ w (j : PreE7NumericalRankTailIndex w) b,
+      rankTailTerminalT Residual w j b ≤
+        preE7NumericalRankTailD Residual w j b := by
+  intro w j b
+  cases j with
+  | ordinary a =>
+      exact (preE7NumericalOwnedPackage a).package.certificate.D_nonneg b
+  | b6 | y1 | sns2 => exact le_rfl
+  | terminal t => exact (Residual w t).T_le_D b
+
+private theorem rankTailTerminalT_nonneg :
+    ∀ w (j : PreE7NumericalRankTailIndex w) b,
+      0 ≤ rankTailTerminalT Residual w j b := by
+  intro w j b
+  cases j with
+  | terminal t => exact (Residual w t).T_nonneg b
+  | ordinary | b6 | y1 | sns2 => exact le_rfl
+
+/-- A pointwise smaller coefficient inherits a growing menu-mass bound. -/
+private theorem growingMenuMassBound_mono
+    {ι : ℕ → Type*} [∀ w, Fintype (ι w)]
+    {w0 : ℕ} {D T : ∀ w, ι w → ℕ → ℝ} {A : ∀ w, ι w → ℝ}
+    (hT : ∀ w i b, T w i b ≤ D w i b)
+    (hA : ∀ w i, 0 < A w i)
+    (hD : GrowingMenuMassBound w0 D A) :
+    GrowingMenuMassBound w0 T A := by
+  intro gamma hgamma
+  filter_upwards [hD gamma hgamma] with n hn
+  intro w hw
+  exact (Finset.sum_le_sum (fun i _ =>
+    div_le_div_of_nonneg_right (hT w i (n - w)) (hA w i).le)).trans
+      (hn w hw)
+
+private theorem rankTailTerminal_menu
+    (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput) :
+    GrowingMenuMassBound 3 (rankTailTerminalT Residual)
+      preE7NumericalRankTailA :=
+  growingMenuMassBound_mono (rankTailTerminalT_le_D Residual)
+    preE7NumericalRankTailA_pos
+    (preE7NumericalRankTail_mainMenu Residual hLMM)
+
+private theorem rankTailTerminal_gap :
+    ∀ w (j : PreE7NumericalRankTailIndex w),
+      rankTailTerminalTheta Residual w j ≤
+        (halfDegree w : ℝ) / 4 - preE7CharacterRho * w / 4 := by
+  intro w j
+  have hzero := (preE7EmptyCell_entryParameters
+    (preE7NonPairAction_width_three_le
+      (preE7NumericalRankTailActionClass j))).tail_gap
+  cases j with
+  | terminal t => exact (Residual w t).parameters.tail_gap
+  | ordinary | b6 | y1 | sns2 =>
+      simpa only [rankTailTerminalTheta] using hzero
+
+/-- The complete ordinary/B6/Y1/SNS2 secondary contribution, together with
+the additive tail of every terminal residual row, is exponentially
+contractive. -/
 noncomputable def preE7NumericalRankTail_secondary
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
     (hcoarse : FusionCoarseEstimate (fun n => (subgroupCount n : ℝ)))
@@ -300,11 +450,24 @@ noncomputable def preE7NumericalRankTail_secondary
     (hOuter : SemisimpleOuterFactorPermutationBound) :
     OrdinaryFrontierClosure.ExponentialForwardEstimate
       (growingQuotientSecondaryError 3
-        (preE7NumericalRankTailT lit) (preE7NumericalRankTailX lit Residual)
-        preE7NumericalRankTailA preE7NumericalRankTailTheta) := by
+        (preE7NumericalRankTailT lit Residual) (preE7NumericalRankTailX lit Residual)
+        preE7NumericalRankTailA (preE7NumericalRankTailTheta Residual)) := by
   let Ebase := preE7NumericalSns2_secondary hLMM hcoarse hFS hOuter
   let Eb6 := preE7B6Secondary_exponentialForwardEstimate lit hcoarse
   let Ey1 := preE7Y1Secondary_exponentialForwardEstimate lit hcoarse
+  let terminalColdError : ℕ → ℝ := fun n =>
+    ∑ b ∈ Finset.range n,
+      growingQuotientColdRow 3 (rankTailTerminalT Residual)
+        preE7NumericalRankTailA (rankTailTerminalTheta Residual) n b *
+          ordinarySubgroupRatio b
+  let EterminalCold := growingColdOnly_exponentialForwardEstimate
+    terminalColdError 3 (rankTailTerminalT Residual)
+      preE7NumericalRankTailA (rankTailTerminalTheta Residual)
+      (by norm_num [preE7CharacterRho])
+      (by norm_num [preE7CharacterRho]) (by omega)
+      (rankTailTerminalT_nonneg Residual) preE7NumericalRankTailA_pos
+      (rankTailTerminal_gap Residual) (rankTailTerminal_menu Residual hLMM)
+      (Filter.Eventually.of_forall (fun _ => le_rfl))
   let Eterminal :=
     (exponentialScalarBound_growingQuotientExceptionalTotal 3 12288
       (fun w t => (Residual w t).X)
@@ -315,10 +478,14 @@ noncomputable def preE7NumericalRankTail_secondary
         · omega)).toForwardEstimate
   let E := OrdinaryFrontierClosure.ExponentialForwardEstimate.add
     (OrdinaryFrontierClosure.ExponentialForwardEstimate.add
-      (OrdinaryFrontierClosure.ExponentialForwardEstimate.add Ebase Eb6) Ey1)
+      (OrdinaryFrontierClosure.ExponentialForwardEstimate.add
+        (OrdinaryFrontierClosure.ExponentialForwardEstimate.add Ebase Eb6) Ey1)
+        EterminalCold)
     Eterminal
   exact OrdinaryFrontierClosure.ExponentialForwardEstimate.of_le E 0
-    (fun n _ => le_of_eq (preE7RankTail_secondary_split lit Residual n))
+    (fun n _ => by
+      simpa only [terminalColdError] using
+        le_of_eq (preE7RankTail_secondary_split lit Residual n))
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
