@@ -300,7 +300,7 @@ simple types.  This statement contains no finite classification premise. -/
 def DegreeFourZeroCoreFixedFrameNoncentralSocleBridge (slots : ℕ) : Prop :=
   Nat.card block.Fibre = 4 →
     degreeFourTernaryCore block P = ⊥ →
-    ∀ C : DegreeFourZeroCoreFiniteFrameBounds block P slots,
+    ∀ _C : DegreeFourZeroCoreFiniteFrameBounds block P slots,
     (Nat.card block.Points = 8 ∨ Nat.card block.Points = 16) →
     ∀ N : DegreeFourZeroCoreFiniteFrameNormalAxis
         (preE7NonPairAction w U),
@@ -392,11 +392,11 @@ noncomputable def degreeFourZeroCoreEightBlockSource_of_verifiedFrames
       degreeFour_quotientDegree_eq_three_mul block
         verified.localDegree_eq_four
     have hlhs : preE7CharacterRho * (w : ℝ) =
-        preE7CharacterRho * (32 : ℝ) := by rw [hw]
+        preE7CharacterRho * (32 : ℝ) := by norm_num [hw]
     have heven : evenWidth w = evenWidth 32 := congrArg evenWidth hw
     rw [hlhs, heven, hq, hs]
-    simpa only [Nat.cast_ofNat] using
-      degreeFour_comparator_margin_of_width 8 (by norm_num)
+    convert degreeFour_comparator_margin_of_width 8 (by norm_num) using 1 <;>
+      norm_num
   · change (5 : ℝ) * (Real.logb 2 5 / 3) ≤ preE7CharacterWindow w
     rw [hw]
     exact degreeFourZeroCore_fiveSlot_window
@@ -430,11 +430,11 @@ noncomputable def degreeFourZeroCoreSixteenBlockSource_of_verifiedFrames
       degreeFour_quotientDegree_eq_three_mul block
         verified.localDegree_eq_four
     have hlhs : preE7CharacterRho * (w : ℝ) =
-        preE7CharacterRho * (64 : ℝ) := by rw [hw]
+        preE7CharacterRho * (64 : ℝ) := by norm_num [hw]
     have heven : evenWidth w = evenWidth 64 := congrArg evenWidth hw
     rw [hlhs, heven, hq, hs]
-    simpa only [Nat.cast_ofNat] using
-      degreeFour_comparator_margin_of_width 16 (by norm_num)
+    convert degreeFour_comparator_margin_of_width 16 (by norm_num) using 1 <;>
+      norm_num
   · change (10 : ℝ) * (Real.logb 2 5 / 3) ≤ preE7CharacterWindow w
     rw [hw]
     exact degreeFourZeroCore_tenSlot_window
