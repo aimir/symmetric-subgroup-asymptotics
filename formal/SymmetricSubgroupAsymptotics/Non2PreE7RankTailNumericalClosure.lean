@@ -25,25 +25,25 @@ theorem preE7NumericalRankTail_physicalBound :
     GrowingQuotientAdditiveExceptionalPhysicalBound
       preE7NoPairNoC3LargeResidualRatio 3
       (preE7NumericalRankTailD Residual)
-      (preE7NumericalRankTailT lit) (preE7NumericalRankTailX lit Residual)
+      (preE7NumericalRankTailT lit Residual) (preE7NumericalRankTailX lit Residual)
       preE7NumericalRankTailA (preE7NumericalRankTailV Residual)
       (preE7NumericalRankTailEta Residual)
       (preE7NumericalRankTailDelta Residual)
       (preE7NumericalRankTailCutoff Residual)
       (preE7NumericalRankTailAlpha Residual)
-      preE7NumericalRankTailTheta :=
+      (preE7NumericalRankTailTheta Residual) :=
   growingQuotientAdditiveExceptionalPhysicalBound_of_local
     preE7NoPairNoC3LargeResidualRatio 3 (by omega)
     PreE7NoPairNoC3LargeResidualSubgroupSet
     preE7NumericalRankTailAction preE7NumericalRankTailPredicate
     (preE7NumericalRankTailD Residual)
-    (preE7NumericalRankTailT lit) (preE7NumericalRankTailX lit Residual)
+    (preE7NumericalRankTailT lit Residual) (preE7NumericalRankTailX lit Residual)
     preE7NumericalRankTailA (preE7NumericalRankTailV Residual)
     (preE7NumericalRankTailEta Residual)
     (preE7NumericalRankTailDelta Residual)
     (preE7NumericalRankTailCutoff Residual)
     (preE7NumericalRankTailAlpha Residual)
-    preE7NumericalRankTailTheta
+    (preE7NumericalRankTailTheta Residual)
     (Filter.Eventually.of_forall (fun n => by
       rfl))
     preE7NumericalRankTail_physical_cover
@@ -61,13 +61,13 @@ noncomputable def preE7NumericalRankTail_exponentialForwardEstimate
   growingQuotientAdditiveExceptional_exponentialForwardEstimate_of_secondary
     preE7NoPairNoC3LargeResidualRatio 3
     (preE7NumericalRankTailD Residual)
-    (preE7NumericalRankTailT lit) (preE7NumericalRankTailX lit Residual)
+    (preE7NumericalRankTailT lit Residual) (preE7NumericalRankTailX lit Residual)
     preE7NumericalRankTailA (preE7NumericalRankTailV Residual)
     (preE7NumericalRankTailEta Residual)
     (preE7NumericalRankTailDelta Residual)
     (preE7NumericalRankTailCutoff Residual)
     (preE7NumericalRankTailAlpha Residual)
-    preE7NumericalRankTailTheta
+    (preE7NumericalRankTailTheta Residual)
     (by norm_num [preE7CharacterRho])
     (by norm_num [preE7CharacterRho]) (by omega)
     (preE7NumericalRankTailD_nonneg Residual)
