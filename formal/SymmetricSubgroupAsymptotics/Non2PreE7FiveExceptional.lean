@@ -235,8 +235,8 @@ noncomputable def numericalPackage :
   parameters := by
     simpa only [localPackage, localCertificate] using
       (S.width_eq.symm ▸ kind.entryParameters)
-  main_total_bound := S.main_menu
-  tail_total_bound := S.tail_menu
+  main_total_growth := .inl S.main_menu
+  tail_total_growth := .inl S.tail_menu
 
 include S
 

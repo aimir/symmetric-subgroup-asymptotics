@@ -643,7 +643,7 @@ noncomputable def PreE7NaturalA4Source.numericalPackage
     { package := .ofNaturalA4 C
       parameters := ?_
       main_total_growth := ?_
-      tail_total_bound := ?_ }
+      tail_total_growth := .inl ?_ }
   · change PreE7CharacterEntryParameters preE7CharacterRho 4
       (paddedComparatorDegree preE7CharacterRho 3 4) 0
       preE7NaturalA4Delta preE7NaturalA4Cutoff preE7NaturalA4Cutoff

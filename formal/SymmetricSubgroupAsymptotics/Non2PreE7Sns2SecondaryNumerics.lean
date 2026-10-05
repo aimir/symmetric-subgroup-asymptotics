@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.Non2PreE7Sns2MainNumerics
+import SymmetricSubgroupAsymptotics.Non2PreE7NumericalOwnedTailPolynomialEnvelope
 
 /-!
 # Global secondary numerics for the disjoint numerical/SNS2 catalogue
@@ -180,15 +181,10 @@ private theorem preE7NumericalOwnedIndex_subquadratic
         (2 : ℝ) ^ (epsilon * (w : ℝ) ^ 2) := by ring
 
 private theorem preE7NumericalOwnedTail_envelope :
-    LinearLogSquaredMenuNumeratorBound 3 preE7NumericalOwnedT := by
-  refine ⟨1, 0, 16, by norm_num, by norm_num, by norm_num, ?_⟩
-  intro n w hw j
-  have hwb : w + (n - w) + 2 = n + 2 := by
-    have := (Finset.mem_Ico.mp hw).2
-    omega
-  simpa only [preE7NumericalOwnedT, zero_mul, zero_add, one_mul, hwb,
-      Nat.cast_add, Nat.cast_ofNat] using
-    (preE7NumericalOwnedPackage j).tail_total_bound (n - w)
+    SubquadraticLinearLogSquaredMenuNumeratorBound 3
+      preE7NumericalOwnedT := by
+  simpa only [preE7NumericalOwnedT] using
+    Non2UnipotentPrefixFiniteMenu.preE7NumericalOwned_tail_envelope
 
 private theorem preE7NumericalOwned_tailGap :
     ∀ w j, preE7NumericalOwnedTheta w j ≤
@@ -199,7 +195,7 @@ private theorem preE7NumericalOwned_tailGap :
 private theorem preE7NumericalOwned_tailMenu
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput) :
     GrowingMenuMassBound 3 preE7NumericalOwnedT preE7NumericalOwnedA :=
-  growingMenuMassBound_of_linearLogSquared (by omega) _ _
+  growingMenuMassBound_of_subquadraticLinearLogSquared (by omega) _ _
     preE7NumericalOwnedT_nonneg
     (fun w j => by
       have h := preE7NumericalOwnedA_pos w j

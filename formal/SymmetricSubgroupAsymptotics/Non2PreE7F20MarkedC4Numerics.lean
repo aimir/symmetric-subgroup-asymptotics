@@ -553,7 +553,7 @@ noncomputable def numericalPackage (hM4 : GlobalMarkedC4MomentBound) :
   main_total_growth := .inl (fun b => by
     change (0 : ℝ) ≤ _
     positivity)
-  tail_total_bound := fun b => by
+  tail_total_growth := .inl (fun b => by
     change preE7F20ColdConstant ≤ _
     have hw := S.width_eq
     subst hw
@@ -563,7 +563,7 @@ noncomputable def numericalPackage (hM4 : GlobalMarkedC4MomentBound) :
           have : (Nat.card (F20.G ≃* F20.G) : ℝ) ≤ 160000 := by exact_mod_cast haut
           linarith
       _ ≤ (2 : ℝ) ^ (16 * ((5 : ℕ) : ℝ)) := by norm_num
-      _ ≤ _ := two_rpow_sixteen_width_le_menuMass (by norm_num) b
+      _ ≤ _ := two_rpow_sixteen_width_le_menuMass (by norm_num) b)
 
 /-- The numerically certified family predicate of the `.f20` owner. -/
 theorem numericalFamilyAction (hM4 : GlobalMarkedC4MomentBound) :

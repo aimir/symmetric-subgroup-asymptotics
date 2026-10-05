@@ -37,10 +37,12 @@ structure PreE7EarlierNumericalPackage
       (2 : ℝ) ^
         (PrimitiveAffineImprimitiveBlockTransfer.affineComponentWidthCost w +
           8 * (w : ℝ) * Real.logb 2 (b + 1))))
-  tail_total_bound : ∀ b,
-    package.certificate.T b ≤
+  tail_total_growth :
+    (∀ b, package.certificate.T b ≤
       (2 : ℝ) ^
-        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)) ∨
+    (w ≤ 12288 ∧ ∃ K : ℝ, ∃ p : ℕ, 0 ≤ K ∧ ∀ b,
+      package.certificate.T b ≤ K * (1 + (b : ℝ)) ^ p)
 
 /-- The numerically certified family predicate used by the final catalogue.
 It is still an existential predicate on the literal original action; the
@@ -71,7 +73,7 @@ noncomputable def PreE7EarlierNumericalPackage.ofComparator
   package := .ofComparator C
   parameters := parameters
   main_total_growth := .inl main_total_bound
-  tail_total_bound := tail_total_bound
+  tail_total_growth := .inl tail_total_bound
 
 /-- Polynomial main rows are permitted only on the fixed bounded-width
 part of the menu.  Their finitely many constants are absorbed by the global
@@ -96,7 +98,7 @@ noncomputable def PreE7EarlierNumericalPackage.ofPolynomialComparator
   package := .ofComparator C
   parameters := parameters
   main_total_growth := .inr (.inl ⟨width_upper, main_total_polynomial⟩)
-  tail_total_bound := tail_total_bound
+  tail_total_growth := .inl tail_total_bound
 
 /-- Package a complete-source certificate whose finite coefficient has the
 standard imprimitive-affine width cost.  The global menu theorem, rather
@@ -121,7 +123,38 @@ noncomputable def PreE7EarlierNumericalPackage.ofAffinePackage
   package := package
   parameters := parameters
   main_total_growth := .inr (.inr main_total_affine)
-  tail_total_bound := tail_total_bound
+  tail_total_growth := .inl tail_total_bound
+
+/-- Package a comparator whose tail coefficient is polynomial on the fixed
+bounded-width band.  This is the form needed by finite imprimitive affine
+catalogue rows: the global finite-index maximum absorbs the literal
+constant, without imposing a false pointwise normalization. -/
+noncomputable def PreE7EarlierNumericalPackage.ofBoundedTailComparator
+    {family : PreE7NoPairNoC3EarlierOwnerFamily}
+    {w : ℕ} {i : PreE7NonPairActionClass w}
+    (C : PreE7EarlierActionComparatorCertificate family w i)
+    (parameters : PreE7CharacterEntryParameters preE7CharacterRho w
+      C.v C.eta C.delta C.cutoff C.alpha C.theta)
+    (main_total_growth :
+      (∀ b, fusionAxisEnvelopeTotal (preE7NonPairAction w i) (C.C b) ≤
+        (2 : ℝ) ^
+          (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)) ∨
+      ((w ≤ 1024 ∧ ∃ K : ℝ, ∃ p : ℕ, 0 ≤ K ∧ ∀ b,
+        fusionAxisEnvelopeTotal (preE7NonPairAction w i) (C.C b) ≤
+          K * (1 + (b : ℝ)) ^ p) ∨
+      (∀ b, fusionAxisEnvelopeTotal (preE7NonPairAction w i) (C.C b) ≤
+        (2 : ℝ) ^
+          (PrimitiveAffineImprimitiveBlockTransfer.affineComponentWidthCost w +
+            8 * (w : ℝ) * Real.logb 2 (b + 1)))))
+    (width_upper : w ≤ 12288)
+    (tail_total_polynomial : ∃ K : ℝ, ∃ p : ℕ, 0 ≤ K ∧ ∀ b,
+      fusionAxisEnvelopeTotal (preE7NonPairAction w i)
+          (C.tailCoefficient b) ≤ K * (1 + (b : ℝ)) ^ p) :
+    PreE7EarlierNumericalPackage family w i where
+  package := .ofComparator C
+  parameters := parameters
+  main_total_growth := main_total_growth
+  tail_total_growth := .inr ⟨width_upper, tail_total_polynomial⟩
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
