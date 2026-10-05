@@ -145,6 +145,7 @@ noncomputable def toResidualChoiceOfMargin
       delta / 2
   refine
     { D := E'.coefficient
+      T := fun _ => 0
       v := jointDegree p E'
       eta := E'.eta
       delta := delta
@@ -154,6 +155,8 @@ noncomputable def toResidualChoiceOfMargin
       X := 0
       alpha_eq := rfl
       D_nonneg := E'.coefficient_nonneg
+      T_nonneg := fun _ => le_rfl
+      T_le_D := fun b => E'.coefficient_nonneg b
       parameters := ?_
       main_total_growth := .inr ?_
       exceptional := fun _ ↦
@@ -178,8 +181,7 @@ noncomputable def toResidualChoiceOfMargin
         (Fin.last preE7NoPairNoC3EarlierOwnerCount, U) b)
       (terminal_source_le_completeQuotientWeight p E' b)
       delta cutoff
-    simpa only [P, E', delta, cutoff, jointDegree, Pi.zero_apply,
-      add_zero] using h
+    simpa [P, E', delta, cutoff, jointDegree, fusionWidthColdKernel] using h
 
 end PrimeMarkedRelativeCompleteSourceEnvelope
 end Non2UnipotentPrefixFiniteMenu
