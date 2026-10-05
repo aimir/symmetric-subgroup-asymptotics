@@ -53,15 +53,27 @@ theorem degreeFourTracey_esol_sum_le_half
     _ ≤ ∑ o, Nat.card o.orbit :=
       Finset.sum_le_sum (fun o _ ↦ hpoint o)
     _ ≤ Nat.card block.Points := by
-      have hsum :
-          (∑ o : OrbitSizeIncidence.Selected
-            (G := degreeFourTraceySubgroup block P hTraceyPerm hs)
-            (X := block.Points) (fun _ ↦ True),
-              Nat.card o.val.orbit) ≤ Nat.card block.Points :=
-        OrbitSizeIncidence.sum_orbit_card_le
-        (G := degreeFourTraceySubgroup block P hTraceyPerm hs)
-        (X := block.Points) (fun _ ↦ True)
-      simpa [OrbitSizeIncidence.Selected] using hsum
+      let point :
+          (Σ o : MulAction.orbitRel.Quotient
+            (degreeFourTraceySubgroup block P hTraceyPerm hs)
+            block.Points, o.orbit) → block.Points := fun z ↦ z.2.val
+      have hpointInjective : Function.Injective point := by
+        rintro ⟨o, x⟩ ⟨p, y⟩ h
+        have hxy : (x : block.Points) = (y : block.Points) := h
+        have hq := congrArg
+          (Quotient.mk (MulAction.orbitRel
+            (degreeFourTraceySubgroup block P hTraceyPerm hs)
+            block.Points)) hxy
+        have hop : o = p :=
+          (MulAction.orbitRel.Quotient.mem_orbit.mp x.property).symm.trans
+            (hq.trans
+              (MulAction.orbitRel.Quotient.mem_orbit.mp y.property))
+        subst p
+        have hxy' : x = y := Subtype.ext hxy
+        subst y
+        rfl
+      have hcard := Nat.card_le_card_of_injective point hpointInjective
+      simpa only [Nat.card_sigma] using hcard
 
 /-- Rewrite the published binary Tracey theorem only while the prime is an
 explicit binder.  This avoids transporting the actual chart representation
@@ -105,7 +117,6 @@ private theorem primeTraceySolubleOrbitInduced_uniform_half
   rw [hcoefficient] at hgen
   exact representationGeneratedBy_mono M.toRepresentation hehalf hgen
 
-set_option maxHeartbeats 800000 in
 /-- Tracey's exact soluble-orbit formula gives the sharp uniform generator
 bound for the actual induced binary-plane representation. -/
 theorem degreeFourTranslationInduced_uniform_half
@@ -123,6 +134,11 @@ theorem degreeFourTranslationInduced_uniform_half
       (Nat.card block.Points / 2) := by
   let S := initialState hTraceyPerm block
   let C := localTranslationChart block P
+  change UniformSubrepresentationGeneratorBound
+    (Representation.ind (S.topPointStabilizer i).subtype
+      (ActualWreathAffineCapacity.localRepresentation
+        S (localMap block P) C i))
+    (Nat.card block.Points / 2)
   let N := degreeFourTraceySubgroup block P hTraceyPerm hs
   letI : IsSolvable N :=
     degreeFourTraceySubgroup_isSolvable block P hTraceyPerm hr hs
@@ -151,6 +167,11 @@ theorem degreeFourTranslationInduced_uniform_half
         S (localMap block P) C i) N P₂ = 1 :=
     degreeFourTraceyLocalDualOrbitCount_eq_one
       block P hTraceyPerm hr hs hD P₂ hP₂ hHall i
+  change UniformSubrepresentationGeneratorBound
+    (Representation.ind (S.topPointStabilizer i).subtype
+      (ActualWreathAffineCapacity.localRepresentation
+        S (localMap block P) C i))
+    (Nat.card block.Points / 2)
   exact primeTraceySolubleOrbitInduced_uniform_half
     hTracey hp i
     (ActualWreathAffineCapacity.localRepresentation
