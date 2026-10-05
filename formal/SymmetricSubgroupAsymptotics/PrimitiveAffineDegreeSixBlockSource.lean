@@ -72,6 +72,27 @@ theorem all_normal_head_zero_of_no_three_by_two_high
     Nat.pos_of_ne_zero hne
   exact hNoHigh N (by omega)
 
+/-- Trivial literal fibre signs already give the intrinsic odd-index-two
+owner.  This is the structural branch hidden inside the earlier high-head
+argument, but it does not require a high normal axis. -/
+theorem oddIndexWitness_of_three_by_two_trivialSigns
+    (hFibre : Nat.card block.Fibre = 3)
+    (hPoints : Nat.card block.Points = 2)
+    (hSigns : DegreeThreeBlockInversionHead.coordinateSigns
+      block.map block.map_equivariant = 1) :
+    Nonempty (C1OddIndexTwoOwnerWitness (preE7NonPairAction w U)) := by
+  letI : Fintype block.Points := Fintype.ofFinite _
+  let e := block.ternaryFibreCharts hFibre
+  refine ⟨{
+      ternary := block.topMap.ker
+      normal := inferInstance
+      ternaryPGroup :=
+        DegreeThreeBlockInversionHead.kernel_isPGroup_of_coordinateSigns_eq_one
+          (hb := block.map_equivariant) block.map e hSigns
+      index_two := ?_ }⟩
+  rw [Subgroup.index_ker]
+  exact block.twoBlock_top_card hPoints
+
 /-- The high half of the degree-six exceptional affine cell is a completed
 ambient source. -/
 noncomputable def degreeSixSource_of_three_by_two_high
@@ -86,6 +107,22 @@ noncomputable def degreeSixSource_of_three_by_two_high
   subst w
   let W := Classical.choice
     (oddIndexWitness_of_three_by_two_high block hFibre hPoints N hHigh)
+  exact PrimitiveAffineDegreeSixOddIndexTailSource.source hKP U W
+
+/-- The trivial-sign half of the degree-six block cell is already a complete
+source, independently of every relative-head inequality. -/
+noncomputable def degreeSixSource_of_three_by_two_trivialSigns
+    (hKP : KovacsPraegerAbelianizationBound)
+    (hFibre : Nat.card block.Fibre = 3)
+    (hPoints : Nat.card block.Points = 2)
+    (hSigns : DegreeThreeBlockInversionHead.coordinateSigns
+      block.map block.map_equivariant = 1) :
+    PreE7RankTailSourceOrYonedaTopData w U := by
+  have hw : w = 6 := width_eq_six_of_three_by_two block hFibre hPoints
+  subst w
+  let W := Classical.choice
+    (oddIndexWitness_of_three_by_two_trivialSigns
+      block hFibre hPoints hSigns)
   exact PrimitiveAffineDegreeSixOddIndexTailSource.source hKP U W
 
 end PrimitiveAffineImprimitiveBlockTransfer
