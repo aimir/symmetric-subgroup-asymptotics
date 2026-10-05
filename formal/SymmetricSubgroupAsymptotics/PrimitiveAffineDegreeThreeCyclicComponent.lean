@@ -27,6 +27,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
     (A := preE7NonPairAction w U) basePoint)
   (P : PrimitiveAffineProfile block.Component block.Fibre)
 
+include P in
 /-- A degree-three primitive affine component is either the regular
 translation group or the full natural symmetric group.  This order-level
 form is sufficient for the capacity split: the regular translations force a
@@ -52,7 +53,7 @@ theorem component_card_dvd_three_or_eq_six
   · exact Or.inl (by norm_num [hcard])
   · norm_num [hcard] at h6
   · norm_num [hcard] at h6
-  · exact Or.inr hcard
+  · exact Or.inr rfl
 
 namespace ComponentSource
 
