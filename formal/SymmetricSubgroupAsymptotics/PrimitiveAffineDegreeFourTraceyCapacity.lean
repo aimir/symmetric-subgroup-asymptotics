@@ -75,6 +75,41 @@ theorem degreeFourTracey_esol_sum_le_half
       have hcard := Nat.card_le_card_of_injective point hpointInjective
       simpa only [Nat.card_sigma] using hcard
 
+/-- Prime-indexed form of Tracey's binary soluble-orbit statement.  The
+index is useful when a concrete elementary chart retains its prime as a
+dependent field even after that prime has been proved equal to two. -/
+def PrimeTraceySolubleOrbitInducedModuleInput
+    (p : ℕ) [Fact p.Prime] : Prop :=
+  ∀ (G I : Type) [Group G] [Finite G] [Finite I]
+    [MulAction G I] [MulAction.IsPretransitive G I]
+    (i : I)
+    (V : Type) [AddCommGroup V] [Module (ZMod p) V]
+      [FiniteDimensional (ZMod p) V]
+    (rho : Representation (ZMod p) (MulAction.stabilizer G i) V)
+    (N : Subgroup G) [IsSolvable N]
+    (P : Subgroup N), IsTwoComplement P →
+    ∀ M : Subrepresentation
+      (Representation.ind (MulAction.stabilizer G i).subtype rho),
+      ∃ e : MulAction.orbitRel.Quotient N I → ℕ,
+        (∀ o : MulAction.orbitRel.Quotient N I,
+          TraceyBinarySolubleFormulaBounds (Nat.card o.orbit) (e o)) ∧
+        RepresentationGeneratedBy M.toRepresentation
+          (min (Module.finrank (ZMod p) V)
+              (primeTraceyLocalDualOrbitCount i rho N P) *
+            ∑ o : MulAction.orbitRel.Quotient N I, e o)
+
+/-- The prime-indexed statement is exactly the published binary statement
+when the retained chart prime is two. -/
+theorem primeTraceySolubleOrbitInducedModuleInput_of_eq_two
+    {p : ℕ} [Fact p.Prime]
+    (hTracey : TraceySolubleOrbitInducedModuleInput)
+    (hp : p = 2) :
+    PrimeTraceySolubleOrbitInducedModuleInput p := by
+  subst p
+  simpa only [PrimeTraceySolubleOrbitInducedModuleInput,
+    TraceySolubleOrbitInducedModuleInput,
+    primeTraceyLocalDualOrbitCount, traceyLocalDualOrbitCount] using hTracey
+
 /-- Rewrite the published binary Tracey theorem only while the prime is an
 explicit binder.  This avoids transporting the actual chart representation
 and its dependent scalar-field instances in the degree-four theorem. -/
