@@ -78,7 +78,7 @@ theorem degreeFourTracey_esol_sum_le_half
 /-- Rewrite the published binary Tracey theorem only while the prime is an
 explicit binder.  This avoids transporting the actual chart representation
 and its dependent scalar-field instances in the degree-four theorem. -/
-private theorem primeTraceySolubleOrbitInduced_uniform_half
+theorem primeTraceySolubleOrbitInduced_uniform_half
     {p : ℕ} [Fact p.Prime]
     (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hp : p = 2)
@@ -117,91 +117,6 @@ private theorem primeTraceySolubleOrbitInduced_uniform_half
   rw [hcoefficient] at hgen
   exact representationGeneratedBy_mono M.toRepresentation hehalf hgen
 
-/-- Tracey's exact soluble-orbit formula gives the sharp uniform generator
-bound for the actual induced binary-plane representation. -/
-theorem degreeFourTranslationInduced_uniform_half
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
-    (hTraceyPerm : TraceyPermutationGeneratorInput)
-    (hr : Nat.card block.Fibre = 4)
-    (hs : 2 ≤ Nat.card block.Points)
-    (hD : degreeFourTernaryCore block P ≠ ⊥)
-    (i : block.Points) :
-    let S := initialState hTraceyPerm block
-    let C := localTranslationChart block P
-    UniformSubrepresentationGeneratorBound
-      (ActualWreathAffineCapacity.inducedRepresentation
-        S (localMap block P) C i)
-      (Nat.card block.Points / 2) := by
-  let S := initialState hTraceyPerm block
-  let C := localTranslationChart block P
-  change UniformSubrepresentationGeneratorBound
-    (Representation.ind (S.topPointStabilizer i).subtype
-      (ActualWreathAffineCapacity.localRepresentation
-        S (localMap block P) C i))
-    (Nat.card block.Points / 2)
-  let N := degreeFourTraceySubgroup block P hTraceyPerm hs
-  letI : IsSolvable N :=
-    degreeFourTraceySubgroup_isSolvable block P hTraceyPerm hr hs
-  obtain ⟨P₂, hP₂, hHall⟩ :=
-    exists_degreeFourTraceyTwoComplement block P hTraceyPerm hr hs
-  have hp : C.p = 2 := by
-    simpa only [C, localTranslationChart] using
-      degreeFour_profilePrime_eq_two block P hr
-  have hdim : Module.finrank (ZMod C.p) C.V = 2 := by
-    let C0 := chart block P
-    letI : Finite C0.V := Finite.of_injective
-      (fun v : C0.V ↦ C0.equiv.symm (Multiplicative.ofAdd v))
-      C0.equiv.symm.injective
-    have hdegree : 4 = P.p ^ C0.d := by
-      rw [← hr]
-      simpa [PrimitiveAffineProfile.ElementaryChart.d] using
-        P.degree_eq_prime_pow_finrank C0.equiv (origin block)
-    have hd0 : C0.d = 2 :=
-      (prime_pow_positive_injective (d := C0.d) (e := 2)
-        P.p_prime Nat.prime_two C0.d_pos (by norm_num)
-        (hdegree.symm.trans (by norm_num))).2
-    simpa only [C, C0, localTranslationChart,
-      PrimitiveAffineProfile.ElementaryChart.d] using hd0
-  have hchi : primeTraceyLocalDualOrbitCount i
-      (ActualWreathAffineCapacity.localRepresentation
-        S (localMap block P) C i) N P₂ = 1 :=
-    degreeFourTraceyLocalDualOrbitCount_eq_one
-      block P hTraceyPerm hr hs hD P₂ hP₂ hHall i
-  change UniformSubrepresentationGeneratorBound
-    (Representation.ind (S.topPointStabilizer i).subtype
-      (ActualWreathAffineCapacity.localRepresentation
-        S (localMap block P) C i))
-    (Nat.card block.Points / 2)
-  exact primeTraceySolubleOrbitInduced_uniform_half
-    hTracey hp i
-    (ActualWreathAffineCapacity.localRepresentation
-      S (localMap block P) C i) N P₂ hP₂ hchi hdim
-    (degreeFourTracey_esol_sum_le_half block P hTraceyPerm hs)
-
-/-- Transport through the actual injective orbit-evaluation intertwiner
-places the same half-block bound on the correlated ambient translation
-module. -/
-theorem degreeFourTranslationAmbient_uniform_half
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
-    (hTraceyPerm : TraceyPermutationGeneratorInput)
-    (hr : Nat.card block.Fibre = 4)
-    (hs : 2 ≤ Nat.card block.Points)
-    (hD : degreeFourTernaryCore block P ≠ ⊥)
-    (i : block.Points) :
-    UniformSubrepresentationGeneratorBound
-      (ActualWreathAffineCapacity.ambientRepresentation
-        (initialState hTraceyPerm block) (localMap block P)
-        (localTranslationChart block P))
-      (Nat.card block.Points / 2) := by
-  let S := initialState hTraceyPerm block
-  let C := localTranslationChart block P
-  have hinduced := degreeFourTranslationInduced_uniform_half
-    block P hTracey hTraceyPerm hr hs hD i
-  exact hinduced.of_injective
-    (ActualWreathAffineCapacity.inducedIntertwiner S
-      (localMap block P) C i)
-    (ActualWreathAffineCapacity.inducedIntertwiner_injective S
-      (localMap block P) C i)
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
