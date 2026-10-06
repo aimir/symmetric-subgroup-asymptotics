@@ -26,16 +26,22 @@ variable {G B A V : Type} [Group G] [Group B]
   [AddCommGroup A] [Module (ZMod 2) A]
   [AddCommGroup V] [Module (ZMod 2) V]
 
-/-- Uniform binary head bound on every subrepresentation of one literal
+/-- Uniform head bound on every subrepresentation of one literal
 representation.  Naming this predicate keeps the Schur section theorem's
 dependent kernel signature small enough to elaborate predictably. -/
-def BinaryUniformSubrepresentationHeadBound
+def UniformSubrepresentationHeadBound
+    {k G W : Type} [Field k] [Group G] [AddCommGroup W] [Module k W]
+    (rho : Representation k G W) (cap : ℕ) : Prop :=
+  ∀ T : Subrepresentation rho,
+    Module.finrank k
+      (T.toRepresentation.IntertwiningMap
+        (Representation.trivial k G k)) ≤ cap
+
+/-- Compatibility name for the original binary specialization. -/
+abbrev BinaryUniformSubrepresentationHeadBound
     {G W : Type} [Group G] [AddCommGroup W] [Module (ZMod 2) W]
     (rho : Representation (ZMod 2) G W) (cap : ℕ) : Prop :=
-  ∀ T : Subrepresentation rho,
-    Module.finrank (ZMod 2)
-      (T.toRepresentation.IntertwiningMap
-        (Representation.trivial (ZMod 2) G (ZMod 2))) ≤ cap
+  UniformSubrepresentationHeadBound rho cap
 
 /-- A uniform head bound after restriction to the selected row kernel
 bounds the entire selected isotypic component of an actual quotient
