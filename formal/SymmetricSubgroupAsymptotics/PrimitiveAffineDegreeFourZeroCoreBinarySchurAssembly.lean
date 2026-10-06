@@ -27,6 +27,7 @@ namespace SymmetricSubgroupAsymptotics
 variable {k B A : Type} [Field k] [Finite k] [Group B]
   [AddCommGroup A] [Module k A]
 
+omit [Finite k] in
 /-- Over any literal two-element field, every one-dimensional
 representation is fixed.  Keeping the field type unchanged avoids a
 dependent rewrite of the surrounding elementary chart. -/
