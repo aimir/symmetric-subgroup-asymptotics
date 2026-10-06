@@ -62,7 +62,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-local instance : Fact P.p.Prime :=
+local instance literalBindingPrimeFact : Fact P.p.Prime :=
   (chart block P).primeFact
 
 /-- The local affine complement has order three or six and is a quotient of

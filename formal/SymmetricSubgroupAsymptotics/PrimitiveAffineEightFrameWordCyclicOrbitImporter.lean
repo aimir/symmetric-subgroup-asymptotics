@@ -57,7 +57,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-local instance : Fact P.p.Prime :=
+local instance wordCyclicOrbitImporterPrimeFact : Fact P.p.Prime :=
   (chart block P).primeFact
 
 namespace DegreeFourZeroCoreFiniteFrameBounds

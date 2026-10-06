@@ -27,7 +27,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-local instance : Fact P.p.Prime :=
+local instance sparseMatchedCataloguePrimeFact : Fact P.p.Prime :=
   (chart block P).primeFact
 
 /-- One fully checked sparse eight-block row.  The group and module model
