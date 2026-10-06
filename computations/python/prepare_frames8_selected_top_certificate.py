@@ -138,7 +138,8 @@ def paired_hom_enumeration(generators, images, width: int,
     }
 
 
-def validate_induced_binding(binding: dict, top, budget: Budget) -> dict:
+def validate_induced_binding(binding: dict, top, expected_local_order: int,
+                             budget: Budget) -> dict:
     """Reconstruct the literal local quotient and the 32-point induction.
 
     This is the Python-side independent audit of the GAP ``BuildFrame``
@@ -160,8 +161,9 @@ def validate_induced_binding(binding: dict, top, budget: Budget) -> dict:
     require(set(hom["rows"]) == stabilizer_set,
             "stored local generators do not generate the point stabilizer")
     image_set = set(hom["images"])
-    require(len(image_set) == 3,
-            "stored local map is not onto the cyclic group of order three")
+    require(expected_local_order in (3, 6) and
+            len(image_set) == expected_local_order,
+            "stored local map has the wrong order-three/order-six image")
 
     kernel_generators = permutation_rows(
         binding["kernel_generators"], 8, budget)
@@ -216,7 +218,7 @@ def validate_induced_binding(binding: dict, top, budget: Budget) -> dict:
             generator_words.append(hom["words"][twist_index])
             generator_images.append(list(x + 1 for x in local_image))
             for k in range(4):
-                # The local C3 permutation fixes the fourth affine point.
+                # The local C3 or S3 permutation fixes the fourth affine point.
                 local_target = local_image[k] if k < 3 else 3
                 expected[4 * i + k] = 4 * j + local_target
         expected_row = tuple(expected)
@@ -578,6 +580,8 @@ def prepare(binding: dict, module: dict, budget: Budget) -> dict:
             "binding/module top order mismatch")
     require(binding.get("kernel_order") == module.get("stabilizer_kernel_order"),
             "binding/module kernel order mismatch")
+    require(module.get("local_quotient_order") in (3, 6),
+            "unexpected local quotient order")
 
     generators = permutation_rows(binding["top_generators"], 8, budget)
     top = generator_enumeration(
@@ -674,7 +678,8 @@ def prepare(binding: dict, module: dict, budget: Budget) -> dict:
             module["top_relative_binary_rank"] <= 2,
             "top relative binary-rank maximum mismatch")
 
-    induced_binding = validate_induced_binding(binding, top, budget)
+    induced_binding = validate_induced_binding(
+        binding, top, module["local_quotient_order"], budget)
     validate_binary_basis(binding, module, budget)
     validate_module_provenance(module, budget)
     return {

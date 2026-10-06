@@ -7,9 +7,11 @@ degree-eight top, and independently recomputes its conjugacy classes and
 normal subgroups.  It has no bulk mode.  The downstream preparer rechecks
 the resulting group, local quotient, Schreier action, and binary basis.
 
-This recovery path is useful on machines where GAP is unavailable.  It is
-deliberately restricted to rows whose top is computationally verified to
-be simple: then the complete normal-subgroup list is exactly ``1,T``.
+This recovery path is useful on machines where GAP is unavailable.  For one
+selected top it constructs the complete normal-subgroup lattice as the join
+closure of the element normal closures.  The downstream preparer and Lean
+certificate independently recheck completeness by adjoining every element
+to every listed normal subgroup.
 """
 
 from __future__ import annotations
@@ -27,6 +29,7 @@ SOURCE = ROOT / "computations/frames/bindings8.g"
 SOURCE_SHA256 = "d5a3ef513faa40a10f666478628f5f23f0a156db58e75d8a7be4068c3c2fa3fa"
 SOURCE_LIMIT = 64 * 1024
 OUTPUT_LIMIT = 4 * 1024 * 1024
+MAX_NORMALS = 256
 TOKEN = re.compile(r":=|;;|[A-Za-z][A-Za-z0-9_]*|[0-9]+|[\[\]\(\),;]")
 
 
@@ -216,6 +219,55 @@ def normal_closure(x, group):
     return generated_subgroup(conjugates, len(x), len(group) + 1)
 
 
+def small_generating_set(subgroup, width: int, ceiling: int):
+    """Choose a deterministic irredundant generating list."""
+    one = tuple(range(width))
+    generated = {one}
+    generators = []
+    for x in sorted(subgroup):
+        if x not in generated:
+            generators.append(x)
+            generated = generated_subgroup(generators, width, ceiling)
+    require(generated == set(subgroup), "normal generator compression failed")
+    return generators
+
+
+def normal_subgroups(group, width: int):
+    """Enumerate the normal lattice as joins of element normal closures."""
+    one = tuple(range(width))
+    closure_sets = sorted(
+        {frozenset(normal_closure(x, group)) for x in group},
+        key=lambda rows: (len(rows), sorted(rows)))
+    closure_generators = [
+        small_generating_set(rows, width, len(group) + 1)
+        for rows in closure_sets]
+    states: dict[frozenset[tuple[int, ...]], list[tuple[int, ...]]] = {
+        frozenset({one}): []
+    }
+    queue = [frozenset({one})]
+    while queue:
+        state = queue.pop(0)
+        state_generators = states[state]
+        for extra in closure_generators:
+            joined = frozenset(generated_subgroup(
+                state_generators + extra, width, len(group) + 1))
+            if joined not in states:
+                require(len(states) < MAX_NORMALS,
+                        "selected normal-lattice ceiling reached")
+                generators = small_generating_set(
+                    joined, width, len(group) + 1)
+                states[joined] = generators
+                queue.append(joined)
+    result = sorted(states.items(), key=lambda item: (len(item[0]), sorted(item[0])))
+    require(result[-1][0] == frozenset(group),
+            "normal lattice does not contain the whole group")
+    for subgroup, _ in result:
+        require(all(conjugate(x, g) in subgroup
+                    for x in subgroup for g in group),
+                "enumerated subgroup is not normal")
+    return result
+
+
 def rows(values: object, width: int) -> list[list[int]]:
     require(isinstance(values, list) and
             all(isinstance(x, GapPerm) for x in values),
@@ -250,14 +302,9 @@ def selected_binding(row_index: int) -> dict[str, object]:
     top_generators = [permutation(x, 8) for x in top_source]
     group = enumerate_group(top_generators)
 
-    # The recovery exporter is intentionally limited to simple selected tops.
-    one = tuple(range(8))
-    for x in group:
-        if x != one:
-            require(len(normal_closure(x, group)) == len(group),
-                    "selected top is not computationally simple")
-    normal_generators = [[], top_generators]
-    normal_orders = [1, len(group)]
+    normals = normal_subgroups(group, 8)
+    normal_generators = [generators for _, generators in normals]
+    normal_orders = [len(subgroup) for subgroup, _ in normals]
     classes = conjugacy_classes(group)
 
     kernel_generators = [permutation(x, 8) for x in kernel.generators]
