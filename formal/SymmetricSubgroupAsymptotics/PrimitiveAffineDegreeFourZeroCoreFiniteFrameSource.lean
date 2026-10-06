@@ -395,7 +395,7 @@ noncomputable def degreeFourZeroCoreEightBlockSource_of_verifiedFrames
         preE7CharacterRho * (32 : ℝ) := by norm_num [hw]
     have heven : evenWidth w = evenWidth 32 := congrArg evenWidth hw
     rw [hlhs, heven, hq, hs]
-    convert degreeFour_comparator_margin_of_width 8 (by norm_num) using 1 <;>
+    convert degreeFour_comparator_margin_of_width 8 (by norm_num) using 1;
       norm_num
   · change (5 : ℝ) * (Real.logb 2 5 / 3) ≤ preE7CharacterWindow w
     rw [hw]
@@ -433,7 +433,7 @@ noncomputable def degreeFourZeroCoreSixteenBlockSource_of_verifiedFrames
         preE7CharacterRho * (64 : ℝ) := by norm_num [hw]
     have heven : evenWidth w = evenWidth 64 := congrArg evenWidth hw
     rw [hlhs, heven, hq, hs]
-    convert degreeFour_comparator_margin_of_width 16 (by norm_num) using 1 <;>
+    convert degreeFour_comparator_margin_of_width 16 (by norm_num) using 1;
       norm_num
   · change (10 : ℝ) * (Real.logb 2 5 / 3) ≤ preE7CharacterWindow w
     rw [hw]
