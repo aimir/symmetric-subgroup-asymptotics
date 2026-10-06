@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameSelectedRowAssembly
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameInducedTopNaturality
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameInducedCoordinates
+import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameLocalRepresentation
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow28LiteralLocalRow
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow28TopRegistry
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow28ModuleRegistry
@@ -79,17 +80,6 @@ noncomputable def pointedLocalMatch
       change Nat.card PrimitiveAffineEightFrameRow28InducedBinding.CyclicThree = 3
       rw [Nat.card_eq_fintype_card]
       decide)
-
-/-- Restrict a representation equivalence along a group homomorphism. -/
-noncomputable def representationEquivComp
-    {k G K V W : Type} [Semiring k] [Group G] [Group K]
-    [AddCommMonoid V] [Module k V]
-    [AddCommMonoid W] [Module k W]
-    {rho : Representation k G V} {sigma : Representation k G W}
-    (e : Representation.Equiv rho sigma) (f : K →* G) :
-    Representation.Equiv (rho.comp f) (sigma.comp f) :=
-  Representation.Equiv.mk e.toLinearEquiv
-    (fun x ↦ e.isIntertwining' (f x))
 
 /-- Transport one stored source-stabilizer element back to the actual
 induced stabilizer. -/
@@ -479,25 +469,6 @@ noncomputable def modelModuleRegistryAt
   subst p
   exact PrimitiveAffineEightFrameRow28ModuleRegistry.registry
 
-/-- Characteristic-transported form of uniqueness of the faithful binary
-plane. -/
-noncomputable def binaryPlaneRepresentationEquiv_of_card_three_at
-    {p : ℕ} [Fact p.Prime]
-    {G V : Type} [Group G] [Finite G]
-    [AddCommGroup V] [Module (ZMod p) V]
-    [FiniteDimensional (ZMod p) V]
-    (hp : p = 2)
-    (rho : Representation (ZMod p) G V)
-    (sigma : Representation (ZMod p) G (LocalPlaneAt p))
-    (hG : Nat.card G = 3)
-    (hV : Module.finrank (ZMod p) V = 2)
-    (hrho : Function.Injective rho)
-    (hsigma : Function.Injective sigma) :
-    rho.Equiv sigma := by
-  subst p
-  exact binaryPlaneRepresentationEquiv_of_card_three rho sigma hG hV
-    (by simp [LocalPlaneAt]) hrho hsigma
-
 /-- The checked order-168 row, now bound to the actual eight-block affine
 frame.  All row data below are executable certificates; the only abstract
 step is uniqueness of the faithful binary plane for a group of order
@@ -522,24 +493,8 @@ noncomputable def selectedRow
   let sigma := (localRepresentationAt hp).comp
     (actualLocalMap block P pointEquiv conjugator hconjugated hr hD)
   let localEquiv : rho.Equiv sigma := by
-    let quotientEquiv :
-        (binaryAffineLocalLinearRepresentation block P).ρ.Equiv
-          ((localRepresentationAt hp).comp L.targetEquiv.toMonoidHom) :=
-      binaryPlaneRepresentationEquiv_of_card_three_at hp
-        (binaryAffineLocalLinearRepresentation block P).ρ
-        ((localRepresentationAt hp).comp L.targetEquiv.toMonoidHom)
-        (by
-          rw [Nat.card_congr L.targetEquiv.toEquiv]
-          change Nat.card CyclicThree = 3
-          rw [Nat.card_eq_fintype_card]
-          decide)
-        (by
-          change (chart block P).d = 2
-          exact (degreeFour_translationDimension block P hr).2)
-        (binaryAffineLocalLinearRepresentation_injective block P)
-        ((localRepresentationAt_injective hp).comp L.targetEquiv.injective)
-    exact representationEquivComp quotientEquiv
-      (binaryAffineStabilizerComponent block P point)
+    exact pointedInducedLocalEquiv block P L
+      (localRepresentationAt hp) (localRepresentationAt_injective hp)
   let basis := Pi.basisFun (ZMod P.p) (Fin 2)
   let coordinateMap := EightFrameInducedCoordinates.coordinatesOfLocalEquiv
     H rho sigma localEquiv

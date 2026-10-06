@@ -124,6 +124,7 @@ noncomputable def selectActual
     ModelLocalGroup := (C.row r).ModelLocalGroup
     literalLocalMap := (C.row r).literalLocalMap
     literalLocalMap_surjective := (C.row r).literalLocalMap_surjective
+    local_card := (C.row r).local_card
     targetEquiv := e
     compatible := he }⟩
 

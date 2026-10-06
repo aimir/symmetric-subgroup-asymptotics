@@ -230,6 +230,8 @@ structure DegreeFourZeroCoreEightPointedLocalMatch
     MulAction.stabilizer topMatch.literalAction literalPoint →*
       ModelLocalGroup
   literalLocalMap_surjective : Function.Surjective literalLocalMap
+  local_card : Nat.card ModelLocalGroup = 3 ∨
+    Nat.card ModelLocalGroup = 6
   targetEquiv : LocalQuotient block P ≃* ModelLocalGroup
   compatible :
     targetEquiv.toMonoidHom.comp
