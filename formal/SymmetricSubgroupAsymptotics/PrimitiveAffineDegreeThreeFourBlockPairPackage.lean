@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeThreeSignedQuotientPair
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeThreeSignedQuotientNonbinary
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeThreeSignedQuotientKernel
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoFourPairsGrowthPackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoFourPairsGrowthNumerics
 
 /-!
 # The literal four-pair package of a degree-three affine component
@@ -53,6 +54,29 @@ noncomputable def degreeThreeFourBlockNonbinaryGrowthPackage
   let G := degreeTwoFourPairLiteralGrowthPackage hZmud lit published
     C.action hnonbinary C.pretransitive C.frame
   exact C.pullbackGrowthPackage block P G
+
+/-- The uniform numerical facts survive both literal transports to the
+actual signed quotient. -/
+noncomputable def degreeThreeFourBlockNonbinaryGrowthNumerics
+    (hgen : PermutationSubgroupGeneratorBound)
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
+    (published : PublishedDegreeTwoFourPairClassification)
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hnonbinary : ¬ IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action) :
+    FourPairGrowthNumerics
+      (degreeThreeFourBlockNonbinaryGrowthPackage block P hZmud lit published
+        hr hs hcomponent hnonbinary).package := by
+  let C := degreeThreeFourBlockPairChart block P hr hs hcomponent
+  let G := degreeTwoFourPairLiteralGrowthPackage hZmud lit published
+    C.action hnonbinary C.pretransitive C.frame
+  refine FourPairGrowthNumerics.comapEquiv C.sourceEquiv G.package ?_
+  simpa only [G, degreeTwoFourPairLiteralGrowthPackage_package] using
+    (degreeTwoFourPairLiteralGrowthNumerics hgen hZmud lit published
+      C.action hnonbinary C.pretransitive C.frame)
 
 /-- In the complementary binary branch, the frame supplied to the binary
 normal-axis theorem has the actual nonzero signed block kernel. -/

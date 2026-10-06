@@ -150,6 +150,25 @@ noncomputable def quotientGrowthPackage
   | .central M => M.quotientGrowthPackage
   | .character M => M.quotientGrowthPackage hZmud lit
 
+/-- Forgetting the exceptional-growth proof recovers the original summed
+package row exactly.  This projection lemma keeps later affine transports
+from having to unfold the row-specific reserve proof. -/
+@[simp] theorem quotientGrowthPackage_package
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
+    {U : PreE7NonPairActionClass 8}
+    (M : PublishedDegreeTwoFourPairRow U) :
+    (M.quotientGrowthPackage hZmud lit).package =
+      M.quotientSummedPackage hZmud lit := by
+  cases M with
+  | easy M =>
+      cases M with
+      | linear S => cases S <;> rfl
+      | abstractSymmetricFour e => rfl
+      | repeatedNaturalA4 S => rfl
+  | central M => rfl
+  | character M => rfl
+
 end PublishedDegreeTwoFourPairRow
 
 /-- Growth package on the selected four-pair catalogue representative. -/
@@ -161,6 +180,19 @@ noncomputable def degreeTwoFourPairRepresentativeGrowthPackage
     PreE7DegreeTwoPairQuotientGrowthPackage (preE7PairAction 4 p) := by
   simpa only [preE7FourPairNonPairAction_literal] using
     (Classical.choice (published p)).quotientGrowthPackage hZmud lit
+
+/-- The representative growth wrapper projects to the representative
+summed package used by the independent numerical theorem. -/
+@[simp] theorem degreeTwoFourPairRepresentativeGrowthPackage_package
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
+    (published : PublishedDegreeTwoFourPairClassification)
+    (p : PreE7PairActionClass 4) :
+    (degreeTwoFourPairRepresentativeGrowthPackage hZmud lit published p).package =
+      degreeTwoFourPairRepresentativePackage hZmud lit published p := by
+  simp only [degreeTwoFourPairRepresentativeGrowthPackage,
+    degreeTwoFourPairRepresentativePackage,
+    PublishedDegreeTwoFourPairRow.quotientGrowthPackage_package]
 
 /-- Literal block-native four-pair package, including its pre-pointing
 quadratic exceptional reserve. -/
@@ -176,6 +208,25 @@ noncomputable def degreeTwoFourPairLiteralGrowthPackage
   let C := fourPairRepresentativeChart A hA htrans F
   exact (degreeTwoFourPairRepresentativeGrowthPackage hZmud lit published
     C.representative).comapEquiv C.sourceEquiv
+
+/-- Pullback to the literal action preserves the same underlying summed
+package. -/
+@[simp] theorem degreeTwoFourPairLiteralGrowthPackage_package
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
+    (published : PublishedDegreeTwoFourPairClassification)
+    (A : Subgroup (Equiv.Perm (Fin 8)))
+    (hA : ¬ IsPGroup 2 A)
+    (htrans : MulAction.IsPretransitive A (Fin 8))
+    (F : BinaryPairFrame A (Fin 4)) :
+    (degreeTwoFourPairLiteralGrowthPackage hZmud lit published
+      A hA htrans F).package =
+      degreeTwoFourPairLiteralPackage hZmud lit published
+        A hA htrans F := by
+  simp only [degreeTwoFourPairLiteralGrowthPackage,
+    degreeTwoFourPairLiteralPackage,
+    PreE7DegreeTwoPairQuotientGrowthPackage.comapEquiv,
+    degreeTwoFourPairRepresentativeGrowthPackage_package]
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
