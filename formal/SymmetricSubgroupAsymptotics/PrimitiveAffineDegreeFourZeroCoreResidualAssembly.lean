@@ -59,7 +59,7 @@ abbrev DegreeFourZeroCoreEightBridgeInput :=
       (A := preE7NonPairAction w U) basePoint)
     (P : PrimitiveAffineProfile block.Component block.Fibre)
     [Nontrivial block.Fibre],
-    DegreeFourZeroCoreFixedFrameNoncentralSocleBridge block P 5
+    DegreeFourZeroCoreFixedFrameNoncentralSocleBridge block P 8 5
 
 /-- The common ten-slot noncentral-socle bridge at sixteen blocks. -/
 abbrev DegreeFourZeroCoreSixteenBridgeInput :=
@@ -68,7 +68,7 @@ abbrev DegreeFourZeroCoreSixteenBridgeInput :=
       (A := preE7NonPairAction w U) basePoint)
     (P : PrimitiveAffineProfile block.Component block.Fibre)
     [Nontrivial block.Fibre],
-    DegreeFourZeroCoreFixedFrameNoncentralSocleBridge block P 10
+    DegreeFourZeroCoreFixedFrameNoncentralSocleBridge block P 16 10
 
 /-- Assemble the zero-core callback required by the complete degree-four
 dispatcher.  Large and odd-divisor block counts are consumed first by the
