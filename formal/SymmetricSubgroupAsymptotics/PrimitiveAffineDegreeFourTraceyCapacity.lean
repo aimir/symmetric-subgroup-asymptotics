@@ -110,6 +110,41 @@ theorem primeTraceySolubleOrbitInducedModuleInput_of_eq_two
     TraceySolubleOrbitInducedModuleInput,
     primeTraceyLocalDualOrbitCount, traceyLocalDualOrbitCount] using hTracey
 
+/-- The prime-indexed published input, a one-orbit local dual, and the
+literal orbit sum give the uniform half-degree induced bound. -/
+theorem PrimeTraceySolubleOrbitInducedModuleInput.uniform_half
+    {p : ℕ} [Fact p.Prime]
+    (hTracey : PrimeTraceySolubleOrbitInducedModuleInput p)
+    {G I V : Type} [Group G] [Finite G] [Finite I]
+    [MulAction G I] [MulAction.IsPretransitive G I]
+    (i : I)
+    [AddCommGroup V] [Module (ZMod p) V]
+    [FiniteDimensional (ZMod p) V]
+    (rho : Representation (ZMod p) (MulAction.stabilizer G i) V)
+    (N : Subgroup G) [IsSolvable N]
+    (P₂ : Subgroup N) (hP₂ : IsTwoComplement P₂)
+    (hchi : primeTraceyLocalDualOrbitCount i rho N P₂ = 1)
+    (hdim : Module.finrank (ZMod p) V = 2)
+    (orbitSum_le_half :
+      ∀ e : MulAction.orbitRel.Quotient N I → ℕ,
+        (∀ o, TraceyBinarySolubleFormulaBounds
+          (Nat.card o.orbit) (e o)) →
+        (∑ o, e o) ≤ Nat.card I / 2) :
+    UniformSubrepresentationGeneratorBound
+      (Representation.ind (MulAction.stabilizer G i).subtype rho)
+      (Nat.card I / 2) := by
+  intro M
+  obtain ⟨e, he, hgen⟩ := hTracey G I i V rho N P₂ hP₂ M
+  have hehalf : (∑ o, e o) ≤ Nat.card I / 2 := orbitSum_le_half e he
+  have hcoefficient :
+      min (Module.finrank (ZMod p) V)
+          (primeTraceyLocalDualOrbitCount i rho N P₂) *
+          ∑ o, e o = ∑ o, e o := by
+    rw [hchi, hdim]
+    norm_num
+  rw [hcoefficient] at hgen
+  exact representationGeneratedBy_mono M.toRepresentation hehalf hgen
+
 /-- Rewrite the published binary Tracey theorem only while the prime is an
 explicit binder.  This avoids transporting the actual chart representation
 and its dependent scalar-field instances in the degree-four theorem. -/
