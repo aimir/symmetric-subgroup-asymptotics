@@ -1,5 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeFourFiveCharacterIntervalSource
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeFourZeroCoreSource
+import SymmetricSubgroupAsymptotics.PrimitiveAffineFixedFrameRelativeHead
+import SymmetricSubgroupAsymptotics.PrimeCentralSocleTypeSharing
 import SymmetricSubgroupAsymptotics.BinaryInvariantRegistry
 import SymmetricSubgroupAsymptotics.BinaryKernelNormalRegistry
 import SymmetricSubgroupAsymptotics.PrimeRelativeCharacters
@@ -58,6 +60,20 @@ namespace PrimitiveAffineImprimitiveBlockTransfer
 /-- The unchanged normal-axis type used by the finite-frame checker. -/
 abbrev DegreeFourZeroCoreFiniteFrameNormalAxis (G : Type) [Group G] :=
   {N : Subgroup G // N.Normal}
+
+/-- Changing the displayed prime does not change the relative-character
+dimension when the two primes are equal.  Keeping both prime parameters
+independent until this lemma is applied avoids dependent elimination through
+the `Fact p.Prime` instances carried by `ZMod p` and
+`primeRelativeCharacters p K`. -/
+private theorem primeRelativeCharacters_finrank_eq_of_prime_eq
+    {p q : ℕ} [Fact p.Prime] [Fact q.Prime]
+    {G : Type} [Group G] [Finite G]
+    (h : p = q) (K : Subgroup G) [K.Normal] :
+    Module.finrank (ZMod p) (primeRelativeCharacters p K) =
+      Module.finrank (ZMod q) (primeRelativeCharacters q K) := by
+  subst q
+  rfl
 
 variable {w : ℕ} {U : PreE7NonPairActionClass w}
   {basePoint : Fin w}
@@ -264,6 +280,45 @@ structure DegreeFourZeroCoreFiniteFrameBounds (slots : ℕ) : Type 1 where
 
 namespace DegreeFourZeroCoreFiniteFrameBounds
 
+/-- The two literal finite-frame entries already prove the manuscript's
+fixed-frame inequality on every original normal subgroup.  This is the
+precise part of the final bridge which is purely extension-theoretic; the
+subsequent noncentral-socle theorem upgrades this relative binary bound to
+the whole-socle tuple. -/
+theorem relativeBinaryHead_le_slots {slots : ℕ}
+    (hr : Nat.card block.Fibre = 4)
+    (C : DegreeFourZeroCoreFiniteFrameBounds block P slots)
+    (K : DegreeFourZeroCoreFiniteFrameNormalAxis
+      (preE7NonPairAction w U)) :
+    Module.finrank (ZMod 2) (primeRelativeCharacters 2 K.1) ≤ slots := by
+  let B : Subrepresentation
+      (elementaryChart block P).quotientRepresentation.ρ :=
+    (elementaryChart block P).originalKernelChart.normalSubrepresentation
+      (QuotientGroup.mk' (E block P))
+      (QuotientGroup.mk'_surjective (E block P))
+      (elementaryChart block P).quotientRepresentation K.1
+  have hp : (elementaryChart block P).p = 2 := by
+    change P.p = 2
+    exact (degreeFour_translationDimension block P hr).1
+  have hmodule : Module.finrank (ZMod (elementaryChart block P).p)
+      B.toRepresentation.Coinvariants ≤ C.moduleSlots :=
+    C.translationModuleHead B
+  have htop : Module.finrank (ZMod (elementaryChart block P).p)
+      (primeRelativeCharacters (elementaryChart block P).p
+        (normalChainQuotient (E block P) K.1)) ≤ C.topSlots := by
+    rw [primeRelativeCharacters_finrank_eq_of_prime_eq hp]
+    exact C.topRelativeBinaryRank
+      ⟨normalChainQuotient (E block P) K.1, inferInstance⟩
+  have h := elementaryExtension_relativeHead_le
+    (E block P) (elementaryChart block P) K.1
+    C.moduleSlots C.topSlots hmodule htop
+  have hsum : C.moduleSlots + C.topSlots ≤ slots := by
+    have hslots := C.slot_sum_le
+    omega
+  have h' := h.trans hsum
+  rw [← primeRelativeCharacters_finrank_eq_of_prime_eq hp]
+  exact h'
+
 /-- Direct registry importer when the checked module is already the actual
 correlated translation representation.  The eight-block full-frame
 importer has one additional, routine step: restrict its complete ambient
@@ -306,6 +361,79 @@ def DegreeFourZeroCoreFixedFrameNoncentralSocleBridge (slots : ℕ) : Prop :=
         (preE7NonPairAction w U),
       ¬ E block P ≤ N.1 →
         SocleNormalGeneratorBound (preE7NonPairAction w U ⧸ N.1) slots
+
+/-- The genuinely degree-four part of the bridge, separated from the now
+proved fixed-frame extension inequality.  It says that at the two literal
+frame sizes a uniform binary relative-head bound controls the whole socle:
+the trivial binary type is the supplied head, while the nontrivial binary,
+odd-primary, and nonabelian types are bounded by their literal action on the
+translation frame and top. -/
+def DegreeFourZeroCoreNoncentralSocleUpgrade (slots : ℕ) : Prop :=
+  Nat.card block.Fibre = 4 →
+    degreeFourTernaryCore block P = ⊥ →
+    (Nat.card block.Points = 8 ∨ Nat.card block.Points = 16) →
+    (∀ K : DegreeFourZeroCoreFiniteFrameNormalAxis
+        (preE7NonPairAction w U),
+      Module.finrank (ZMod 2) (primeRelativeCharacters 2 K.1) ≤ slots) →
+    ∀ N : DegreeFourZeroCoreFiniteFrameNormalAxis
+        (preE7NonPairAction w U),
+      ¬ E block P ≤ N.1 →
+        SocleNormalGeneratorBound (preE7NonPairAction w U ⧸ N.1) slots
+
+/-- The two genuinely noncentral rows left after the fixed-frame relative
+head has been converted into central binary socle generators.  The first
+field is the noncentral binary-primary family; the second simultaneously
+covers all odd-primary and nonabelian minimal-normal types.  Distinct types
+share positions by `PrimeCentralSocleTypeSharing`, so these are max-bounds,
+not additive budgets. -/
+structure DegreeFourZeroCoreNoncentralSocleBounds (slots : ℕ) : Prop where
+  noncentralBinary :
+    ∀ N : DegreeFourZeroCoreFiniteFrameNormalAxis
+        (preE7NonPairAction w U),
+      ¬ E block P ≤ N.1 →
+      MarkedC4.normalGen
+        (noncentralPrimeSoclePart 2
+          (preE7NonPairAction w U ⧸ N.1)) ≤ slots
+  nonbinary :
+    ∀ N : DegreeFourZeroCoreFiniteFrameNormalAxis
+        (preE7NonPairAction w U),
+      ¬ E block P ≤ N.1 →
+      MarkedC4.normalGen
+        (minimalNormalSoclePart
+          (preE7NonPairAction w U ⧸ N.1)
+          (fun M ↦ ¬ IsPGroup 2 M)) ≤ slots
+
+/-- The fixed-frame inequality now discharges the central binary type on
+every quotient.  Consequently the whole noncentral-socle upgrade follows
+from exactly the two type rows in
+`DegreeFourZeroCoreNoncentralSocleBounds`. -/
+theorem degreeFourZeroCoreNoncentralSocleUpgrade_of_bounds
+    {slots : ℕ}
+    (bounds : DegreeFourZeroCoreNoncentralSocleBounds block P slots) :
+    DegreeFourZeroCoreNoncentralSocleUpgrade block P slots := by
+  intro _hr _hD _hs hhead N hretained
+  apply (socleNormalGeneratorBound_iff_normalGen_le
+    (preE7NonPairAction w U ⧸ N.1) slots).2
+  refine (normalGen_finiteGroupSocle_le_max_centralPrime_noncentralPrime_nonPrime
+    2 (G := preE7NonPairAction w U ⧸ N.1)).trans ?_
+  apply max_le
+  · apply max_le
+    · exact centralPrimeSoclePart_normalGen_le_of_allRelativeHeads
+        2 slots hhead N
+    · exact bounds.noncentralBinary N hretained
+  · exact bounds.nonbinary N hretained
+
+/-- Once the noncentral-socle upgrade is available, the checked top and
+module rows supply its only numerical premise by
+`relativeBinaryHead_le_slots`. -/
+theorem degreeFourZeroCoreFixedFrameNoncentralSocleBridge_of_upgrade
+    {slots : ℕ}
+    (upgrade : DegreeFourZeroCoreNoncentralSocleUpgrade block P slots) :
+    DegreeFourZeroCoreFixedFrameNoncentralSocleBridge block P slots := by
+  intro hr hD C hs N hretained
+  exact upgrade hr hD hs
+    (DegreeFourZeroCoreFiniteFrameBounds.relativeBinaryHead_le_slots
+      block P hr C) N hretained
 
 namespace DegreeFourZeroCoreFiniteFrameBounds
 
