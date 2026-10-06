@@ -126,6 +126,30 @@ theorem sectionSubrepresentation_head_le_of_embedding
     _ = _ := hPR
     _ ≤ _ := hbeta fP.range
 
+/-- A representation embedding transports a uniform head bound on all
+subrepresentations back to the embedded representation.  This is the
+one-map specialization of the preceding section theorem. -/
+theorem uniformSubrepresentationHeadBound_of_injective
+    (alpha : Representation k G U)
+    (beta : Representation k G V)
+    [FiniteDimensional k U] [FiniteDimensional k V]
+    (f : alpha.IntertwiningMap beta) (hf : Function.Injective f)
+    (cap : ℕ)
+    (hbeta : ∀ R : Subrepresentation beta,
+      Module.finrank k
+        (R.toRepresentation.IntertwiningMap
+          (Representation.trivial k G k)) ≤ cap) :
+    ∀ T : Subrepresentation alpha,
+      Module.finrank k
+        (T.toRepresentation.IntertwiningMap
+          (Representation.trivial k G k)) ≤ cap := by
+  let q : alpha.IntertwiningMap alpha := {
+    toLinearMap := LinearMap.id
+    isIntertwining' := by intro g; rfl }
+  have hq : Function.Surjective q := fun x ↦ ⟨x, rfl⟩
+  exact sectionSubrepresentation_head_le_of_embedding
+    alpha beta alpha f hf q hq cap hbeta
+
 end SymmetricSubgroupAsymptotics
 
 end
