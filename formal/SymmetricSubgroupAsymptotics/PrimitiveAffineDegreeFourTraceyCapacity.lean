@@ -117,6 +117,39 @@ theorem primeTraceySolubleOrbitInduced_uniform_half
   rw [hcoefficient] at hgen
   exact representationGeneratedBy_mono M.toRepresentation hehalf hgen
 
+/-- Apply the prime-explicit Tracey bound to one concrete subrepresentation
+after an injective intertwining transport.  Keeping the transport generic
+prevents a consumer from repeatedly elaborating a dependent affine state. -/
+theorem primeTraceySolubleOrbitInduced_concrete_generated
+    {p : ℕ} [Fact p.Prime]
+    (hTracey : TraceySolubleOrbitInducedModuleInput)
+    (hp : p = 2)
+    {G I V W : Type} [Group G] [Finite G] [Finite I]
+    [MulAction G I] [MulAction.IsPretransitive G I]
+    (i : I)
+    [AddCommGroup V] [Module (ZMod p) V]
+    [FiniteDimensional (ZMod p) V]
+    (rho : Representation (ZMod p) (MulAction.stabilizer G i) V)
+    (N : Subgroup G) [IsSolvable N]
+    (P₂ : Subgroup N) (hP₂ : IsTwoComplement P₂)
+    (hchi : primeTraceyLocalDualOrbitCount i rho N P₂ = 1)
+    (hdim : Module.finrank (ZMod p) V = 2)
+    (orbitSum_le_half :
+      ∀ e : MulAction.orbitRel.Quotient N I → ℕ,
+        (∀ o, TraceyBinarySolubleFormulaBounds
+          (Nat.card o.orbit) (e o)) →
+        (∑ o, e o) ≤ Nat.card I / 2)
+    [AddCommGroup W] [Module (ZMod p) W]
+    (sigma : Representation (ZMod p) G W)
+    (f : sigma.IntertwiningMap
+      (Representation.ind (MulAction.stabilizer G i).subtype rho))
+    (hf : Function.Injective f)
+    (M : Subrepresentation sigma) :
+    RepresentationGeneratedBy M.toRepresentation (Nat.card I / 2) := by
+  exact (primeTraceySolubleOrbitInduced_uniform_half
+    hTracey hp i rho N P₂ hP₂ hchi hdim orbitSum_le_half).of_injective
+      f hf M
+
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
