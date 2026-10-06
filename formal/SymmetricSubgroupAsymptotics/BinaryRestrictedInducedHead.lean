@@ -185,6 +185,122 @@ theorem inducedTwoSpace_binaryTransitiveRestriction_four_mul_head_le_three_mul_i
     norm_num [Nat.choose] at hhead ⊢
     omega
 
+/-- Prime-generic form of the restricted Mackey-coordinate estimate.  The
+restricting subgroup is still binary, while the coefficient field is kept
+at its native prime index. -/
+theorem induced_binaryGroupRestriction_characterHead_bound
+    {q : ℕ} [Fact q.Prime]
+    {G V : Type} [Group G] [Finite G]
+    [AddCommGroup V] [Module (ZMod q) V]
+    [FiniteDimensional (ZMod q) V]
+    (H P : Subgroup G) (hP : IsPGroup 2 P)
+    (rho : Representation (ZMod q) H V)
+    [Fintype (DoubleCoset.Quotient (H : Set G) (P : Set G))]
+    (M : Subrepresentation
+      ((Representation.ind H.subtype rho).comp P.subtype))
+    (j : DoubleCoset.Quotient (H : Set G) (P : Set G) → ℕ)
+    (hindex : ∀ q₀,
+      (inducedOrbitStabilizer H P q₀.out).index = 2 ^ j q₀) :
+    Module.finrank (ZMod q)
+        (primeActionCharacters q
+          (representationGroupAction M.toRepresentation)) ≤
+      ∑ q₀, Module.finrank (ZMod q) V * (j q₀).choose (j q₀ / 2) := by
+  letI := induced_finiteDimensional H rho
+  apply representationCharacterHead_le_coordinates
+    (fun q₀ ↦ inducedMackeyComponent H P rho q₀)
+    M.toRepresentation
+    (fun q₀ ↦ Representation.ind
+      (inducedOrbitStabilizer H P q₀.out).subtype
+      (inducedOrbitFibre H P rho q₀.out))
+    (fun q₀ ↦ Module.finrank (ZMod q) V *
+      (j q₀).choose (j q₀ / 2))
+    ?_ (inducedMackeyRestrictedSubmoduleCoordinate H P rho M)
+    (inducedMackeyRestrictedSubmoduleCoordinate_injective H P rho M)
+  intro q₀ S
+  exact twoGroup_induced_subrepresentationCharacterHead_le
+    (G₀ := P) hP (inducedOrbitStabilizer H P q₀.out)
+      (inducedOrbitFibre H P rho q₀.out) (j q₀) (hindex q₀) S
+
+/-- On a transitive binary restriction of degree eight or sixteen, every
+subrepresentation of an induced native-prime two-space has character head
+at most three quarters of the original degree. -/
+theorem inducedTwoSpace_binaryTransitiveRestriction_four_mul_characterHead_le_three_mul_index
+    {q : ℕ} [Fact q.Prime]
+    {G V : Type} [Group G] [Finite G]
+    [AddCommGroup V] [Module (ZMod q) V]
+    [FiniteDimensional (ZMod q) V]
+    (H P : Subgroup G) (hP : IsPGroup 2 P)
+    (rho : Representation (ZMod q) H V)
+    (hdim : Module.finrank (ZMod q) V = 2)
+    [MulAction.IsPretransitive P (G ⧸ H)]
+    (hdegree : H.index = 8 ∨ H.index = 16)
+    (M : Subrepresentation
+      ((Representation.ind H.subtype rho).comp P.subtype)) :
+    4 * Module.finrank (ZMod q)
+        (primeActionCharacters q
+          (representationGroupAction M.toRepresentation)) ≤
+      3 * H.index := by
+  let D := DoubleCoset.Quotient (H : Set G) (P : Set G)
+  let O := MulAction.orbitRel.Quotient P (G ⧸ H)
+  letI : Subsingleton O :=
+    (MulAction.pretransitive_iff_subsingleton_quotient P (G ⧸ H)).mp
+      inferInstance
+  letI : Subsingleton D :=
+    (inducedDoubleCosetOrbitEquiv H P).subsingleton
+  letI : Unique D :=
+    { default := DoubleCoset.mk H P 1
+      uniq := fun _ ↦ Subsingleton.elim _ _ }
+  letI : Fintype D := Fintype.ofFinite D
+  rcases hdegree with h8 | h16
+  · let j : D → ℕ := fun _ ↦ 3
+    have hcomponentIndex : ∀ q₀ : D,
+        (inducedOrbitStabilizer H P q₀.out).index = 2 ^ j q₀ := by
+      intro q₀
+      have hsum := inducedMackey_index_sum H P
+      have hq₀ : q₀ = default := Subsingleton.elim _ _
+      subst q₀
+      simpa only [j, Fintype.sum_unique] using hsum.trans h8
+    have hhead := induced_binaryGroupRestriction_characterHead_bound
+      H P hP rho M j hcomponentIndex
+    simp only [j, hdim, Fintype.sum_unique] at hhead
+    norm_num [Nat.choose] at hhead ⊢
+    omega
+  · let j : D → ℕ := fun _ ↦ 4
+    have hcomponentIndex : ∀ q₀ : D,
+        (inducedOrbitStabilizer H P q₀.out).index = 2 ^ j q₀ := by
+      intro q₀
+      have hsum := inducedMackey_index_sum H P
+      have hq₀ : q₀ = default := Subsingleton.elim _ _
+      subst q₀
+      simpa only [j, Fintype.sum_unique] using hsum.trans h16
+    have hhead := induced_binaryGroupRestriction_characterHead_bound
+      H P hP rho M j hcomponentIndex
+    simp only [j, hdim, Fintype.sum_unique] at hhead
+    norm_num [Nat.choose] at hhead ⊢
+    omega
+
+/-- Explicit-instance form of the native-prime transitive binary row. -/
+theorem inducedTwoSpace_binaryTransitiveRestriction_four_mul_characterHead_le_three_mul_index_explicit
+    {q : ℕ} [Fact q.Prime]
+    {G V : Type} [Group G] [Finite G]
+    [AddCommGroup V] [Module (ZMod q) V]
+    [FiniteDimensional (ZMod q) V]
+    (H P : Subgroup G) (hP : IsPGroup 2 P)
+    (rho : Representation (ZMod q) H V)
+    (hdim : Module.finrank (ZMod q) V = 2)
+    (hpre : MulAction.IsPretransitive P (G ⧸ H))
+    (hdegree : H.index = 8 ∨ H.index = 16)
+    (M : Subrepresentation
+      ((Representation.ind H.subtype rho).comp P.subtype)) :
+    4 * Module.finrank (ZMod q)
+        (primeActionCharacters q
+          (representationGroupAction M.toRepresentation)) ≤
+      3 * H.index := by
+  letI : MulAction.IsPretransitive P (G ⧸ H) := hpre
+  exact
+    inducedTwoSpace_binaryTransitiveRestriction_four_mul_characterHead_le_three_mul_index
+      H P hP rho hdim hdegree M
+
 end SymmetricSubgroupAsymptotics
 
 end
