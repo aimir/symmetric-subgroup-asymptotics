@@ -32,28 +32,33 @@ namespace Non2UnipotentPrefixFiniteMenu
 
 /-- The block chart underlying a literal six-pair frame, with the binary
 coordinate written as `Fin 2` as required by the B6 interface. -/
-def BinaryPairFrame.sixPairBlockChart
+def sixPairBlockChart
     {U : Subgroup (Equiv.Perm (Fin 12))}
     (F : BinaryPairFrame U (Fin 6)) : Fin 12 ≃ Fin 6 × Fin 2 :=
   F.frame.symm.trans
     (Equiv.prodCongr (Equiv.refl (Fin 6))
       (ZMod.finEquiv 2).symm.toEquiv)
 
+@[simp] theorem sixPairBlockChart_fst
+    {U : Subgroup (Equiv.Perm (Fin 12))}
+    (F : BinaryPairFrame U (Fin 6)) (x : Fin 12) :
+    (sixPairBlockChart F x).1 = (F.frame.symm x).1 :=
+  rfl
+
 /-- A binary pair frame proves literal preservation of its displayed block
 chart. -/
-theorem BinaryPairFrame.sixPairBlockChart_preserves
+theorem sixPairBlockChart_preserves
     {U : Subgroup (Equiv.Perm (Fin 12))}
     (F : BinaryPairFrame U (Fin 6)) :
     ∀ u ∈ U, ∀ x y : Fin 12,
-      (F.sixPairBlockChart x).1 = (F.sixPairBlockChart y).1 →
-        (F.sixPairBlockChart (u x)).1 =
-          (F.sixPairBlockChart (u y)).1 := by
+      (sixPairBlockChart F x).1 = (sixPairBlockChart F y).1 →
+        (sixPairBlockChart F (u x)).1 =
+          (sixPairBlockChart F (u y)).1 := by
   intro u hu x y hxy
   let g : U := ⟨u, hu⟩
   have hx := F.intertwine g (F.frame.symm x)
   have hy := F.intertwine g (F.frame.symm y)
-  change (F.frame.symm (u x)).1 = (F.frame.symm (u y)).1
-  change (F.frame.symm x).1 = (F.frame.symm y).1 at hxy
+  rw [sixPairBlockChart_fst] at hxy ⊢
   calc
     (F.frame.symm (u x)).1 = F.top g (F.frame.symm x).1 := by
       simpa only [F.frame.apply_symm_apply] using hx
@@ -94,12 +99,28 @@ namespace LinearZmudCharacterPairData
 variable {Q : Type} [Group Q] [Finite Q]
   (D : LinearZmudCharacterPairData Q)
 
+/-- The one-element family supplied by the published Zmud theorem on the
+literal quotient.  Keeping its index visibly `Fin 1` avoids transporting an
+index through the `generalCount` projection of `CharacterSlotTuple`. -/
+noncomputable def generalFamily
+    (hZmud : ZmudFaithfulCharacterTupleInput) :
+    Fin 1 → FiniteIrreducibleRepresentation ℂ (Q ⧸ D.generalKernel) :=
+  Classical.choose
+    (hZmud (Q ⧸ D.generalKernel) 1 D.generalSocleGenerator)
+
+theorem generalFamily_faithful
+    (hZmud : ZmudFaithfulCharacterTupleInput) :
+    ∀ q : Q ⧸ D.generalKernel,
+      (∀ i, (D.generalFamily hZmud i).action q = 1) → q = 1 :=
+  Classical.choose_spec
+    (hZmud (Q ⧸ D.generalKernel) 1 D.generalSocleGenerator)
+
 /-- Inflate the Zmud irreducible representation from the literal quotient;
 surjectivity of the quotient map preserves irreducibility. -/
 noncomputable def inflatedGeneral
     (hZmud : ZmudFaithfulCharacterTupleInput) :
     FiniteIrreducibleRepresentation ℂ Q := by
-  let ρ := (hZmud.generalTuple D.generalSocleGenerator).general 0
+  let ρ := D.generalFamily hZmud (0 : Fin 1)
   exact
     { Space := ρ.Space
       addCommGroup := inferInstance
@@ -122,20 +143,17 @@ noncomputable def tuple (hZmud : ZmudFaithfulCharacterTupleInput) :
   general := fun _ => D.inflatedGeneral hZmud
   faithful := by
     intro q _ hlinear hgeneral
-    let T := hZmud.generalTuple D.generalSocleGenerator
     have hquot : QuotientGroup.mk' D.generalKernel q = 1 := by
-      apply T.faithful
-      · exact fun i => Fin.elim0 i
-      · exact fun i => Fin.elim0 i
-      · intro i
-        have hi : i = 0 := Subsingleton.elim _ _
-        subst i
-        simpa only [inflatedGeneral, T, MonoidHom.comp_apply] using
-          hgeneral 0
+      apply D.generalFamily_faithful hZmud
+      intro i
+      have hi : i = (0 : Fin 1) := Subsingleton.elim _ _
+      subst i
+      simpa only [inflatedGeneral, MonoidHom.comp_apply] using
+        hgeneral (0 : Fin 1)
     have hK : q ∈ D.linear.ker :=
       (MonoidHom.mem_ker).2 (hlinear 0)
     have hL : q ∈ D.generalKernel := by
-      simpa only [QuotientGroup.eq_one_iff] using hquot
+      exact (QuotientGroup.eq_one_iff q).mp hquot
     have hbot : q ∈ D.linear.ker ⊓ D.generalKernel := ⟨hK, hL⟩
     rw [D.kernel_inf] at hbot
     simpa only [Subgroup.mem_bot] using hbot
@@ -250,8 +268,8 @@ theorem slope_le (N : {N : Subgroup U // N.Normal}) :
 certificate. -/
 noncomputable def toB6ActionCertificate (F : BinaryPairFrame U (Fin 6)) :
     PreE7B6ActionCertificate U where
-  blockChart := F.sixPairBlockChart
-  preserves := F.sixPairBlockChart_preserves
+  blockChart := sixPairBlockChart F
+  preserves := sixPairBlockChart_preserves F
   quotient N := .character (D.certificate N) (D.slope_le N)
 
 end PreE7B6CharacterOnlyQuotientData
@@ -291,7 +309,7 @@ structure PrimitiveAffineDegreeTwoSixPairCharacterOnlyFiniteRowData
   correspondence :
     relabelSubgroup pointRelabel literal.G = preE7PairAction 6 p
   axis : ∀ N : {N : Subgroup (preE7PairAction 6 p) // N.Normal},
-    PreE7B6CharacterAxisData ((preE7PairAction 6 p) ⨸ N.1)
+    PreE7B6CharacterAxisData ((preE7PairAction 6 p) ⧸ N.1)
 
 namespace PrimitiveAffineDegreeTwoSixPairCharacterOnlyFiniteRowData
 
