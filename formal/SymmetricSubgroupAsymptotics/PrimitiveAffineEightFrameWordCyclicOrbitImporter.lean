@@ -57,6 +57,9 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
+local instance : Fact P.p.Prime :=
+  (chart block P).primeFact
+
 namespace DegreeFourZeroCoreFiniteFrameBounds
 
 /-- Import a finite row with both sparse top words and deduplicated cyclic
@@ -64,17 +67,20 @@ module joins.  The top is identified exactly, while the literal correlated
 translation module is embedded in the checked full frame. -/
 noncomputable def ofMatchedWordCyclicOrbitRegistries
     {G W I iota kappa : Type} [Group G] [Finite G]
-    [AddCommGroup W] [Module (ZMod (elementaryChart block P).p) W]
+    [AddCommGroup W] [Module (ZMod P.p) W]
     [Finite W]
     [Finite (elementaryChart block P).V]
     {c slots topSlots moduleSlots : ℕ}
     {representative : Fin c → G}
     (cover : FiniteConjugacyCardinalCover representative)
     (ambient : iota → G) (stateGenerators : I → kappa → G)
-    (sigma : Representation (ZMod (elementaryChart block P).p) G W)
+    (sigma : Representation (ZMod P.p) G W)
     (groupEquiv : DegreeFourComplementQuotient block P ≃* G)
     (moduleEmbedding :
-      (elementaryChart block P).quotientRepresentation.ρ.IntertwiningMap
+      (show Representation (ZMod P.p)
+          (DegreeFourComplementQuotient block P)
+          (TranslationSubmodule block P) from
+        (elementaryChart block P).quotientRepresentation.ρ).IntertwiningMap
         (sigma.comp groupEquiv.toMonoidHom))
     (moduleEmbedding_injective : Function.Injective moduleEmbedding)
     (slot_sum_le : topSlots + moduleSlots ≤ slots)
@@ -91,6 +97,8 @@ noncomputable def ofMatchedWordCyclicOrbitRegistries
     exact top.bound_equiv groupEquiv.symm L.1
   translationModuleHead := by
     intro B
+    letI : Finite (TranslationSubmodule block P) :=
+      inferInstanceAs (Finite (elementaryChart block P).V)
     letI : Finite (elementaryChart block P).quotientRepresentation :=
       inferInstanceAs (Finite (elementaryChart block P).V)
     exact module.bound_embedding groupEquiv moduleEmbedding
