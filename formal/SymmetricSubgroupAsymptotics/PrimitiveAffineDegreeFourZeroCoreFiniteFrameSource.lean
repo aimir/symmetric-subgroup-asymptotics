@@ -352,11 +352,12 @@ the whole-socle character interval.  Its fixed-frame half uses the two
 bounds above to control the trivial binary socle type in every quotient of
 the arbitrary original extension.  Its noncentral half supplies the other
 simple types.  This statement contains no finite classification premise. -/
-def DegreeFourZeroCoreFixedFrameNoncentralSocleBridge (slots : ℕ) : Prop :=
+def DegreeFourZeroCoreFixedFrameNoncentralSocleBridge
+    (framePoints slots : ℕ) : Prop :=
   Nat.card block.Fibre = 4 →
     degreeFourTernaryCore block P = ⊥ →
     ∀ _C : DegreeFourZeroCoreFiniteFrameBounds block P slots,
-    (Nat.card block.Points = 8 ∨ Nat.card block.Points = 16) →
+    Nat.card block.Points = framePoints →
     ∀ N : DegreeFourZeroCoreFiniteFrameNormalAxis
         (preE7NonPairAction w U),
       ¬ E block P ≤ N.1 →
@@ -368,10 +369,11 @@ frame sizes a uniform binary relative-head bound controls the whole socle:
 the trivial binary type is the supplied head, while the nontrivial binary,
 odd-primary, and nonabelian types are bounded by their literal action on the
 translation frame and top. -/
-def DegreeFourZeroCoreNoncentralSocleUpgrade (slots : ℕ) : Prop :=
+def DegreeFourZeroCoreNoncentralSocleUpgrade
+    (framePoints slots : ℕ) : Prop :=
   Nat.card block.Fibre = 4 →
     degreeFourTernaryCore block P = ⊥ →
-    (Nat.card block.Points = 8 ∨ Nat.card block.Points = 16) →
+    Nat.card block.Points = framePoints →
     (∀ K : DegreeFourZeroCoreFiniteFrameNormalAxis
         (preE7NonPairAction w U),
       Module.finrank (ZMod 2) (primeRelativeCharacters 2 K.1) ≤ slots) →
@@ -408,9 +410,9 @@ every quotient.  Consequently the whole noncentral-socle upgrade follows
 from exactly the two type rows in
 `DegreeFourZeroCoreNoncentralSocleBounds`. -/
 theorem degreeFourZeroCoreNoncentralSocleUpgrade_of_bounds
-    {slots : ℕ}
+    {framePoints slots : ℕ}
     (bounds : DegreeFourZeroCoreNoncentralSocleBounds block P slots) :
-    DegreeFourZeroCoreNoncentralSocleUpgrade block P slots := by
+    DegreeFourZeroCoreNoncentralSocleUpgrade block P framePoints slots := by
   intro _hr _hD _hs hhead N hretained
   apply (socleNormalGeneratorBound_iff_normalGen_le
     (preE7NonPairAction w U ⧸ N.1) slots).2
@@ -427,9 +429,11 @@ theorem degreeFourZeroCoreNoncentralSocleUpgrade_of_bounds
 module rows supply its only numerical premise by
 `relativeBinaryHead_le_slots`. -/
 theorem degreeFourZeroCoreFixedFrameNoncentralSocleBridge_of_upgrade
-    {slots : ℕ}
-    (upgrade : DegreeFourZeroCoreNoncentralSocleUpgrade block P slots) :
-    DegreeFourZeroCoreFixedFrameNoncentralSocleBridge block P slots := by
+    {framePoints slots : ℕ}
+    (upgrade : DegreeFourZeroCoreNoncentralSocleUpgrade
+      block P framePoints slots) :
+    DegreeFourZeroCoreFixedFrameNoncentralSocleBridge
+      block P framePoints slots := by
   intro hr hD C hs N hretained
   exact upgrade hr hD hs
     (DegreeFourZeroCoreFiniteFrameBounds.relativeBinaryHead_le_slots
@@ -440,19 +444,19 @@ namespace DegreeFourZeroCoreFiniteFrameBounds
 /-- Apply the generic fixed-frame/noncentral-socle theorem to a checked
 literal row.  Faithfulness of the top action follows internally from the
 stored degree and zero-core equations. -/
-noncomputable def toVerification {slots : ℕ}
+noncomputable def toVerification {framePoints slots : ℕ}
     (bridge : DegreeFourZeroCoreFixedFrameNoncentralSocleBridge
-      block P slots)
+      block P framePoints slots)
     (hr : Nat.card block.Fibre = 4)
     (hD : degreeFourTernaryCore block P = ⊥)
-    (hs : Nat.card block.Points = 8 ∨ Nat.card block.Points = 16)
+    (hframe : Nat.card block.Points = framePoints)
     (C : DegreeFourZeroCoreFiniteFrameBounds block P slots) :
     DegreeFourZeroCoreFiniteFrameVerification block P slots where
   localDegree_eq_four := hr
   ternaryCore_eq_bot := hD
   literalTopAction_injective :=
     degreeFourZeroCoreTopAction_injective block P hr hD
-  retainedSocleGenerators := bridge hr hD C hs
+  retainedSocleGenerators := bridge hr hD C hframe
 
 end DegreeFourZeroCoreFiniteFrameBounds
 
@@ -498,14 +502,14 @@ noncomputable def degreeFourZeroCoreEightBlockSource_of_verifiedFrames
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
     (bridge : DegreeFourZeroCoreFixedFrameNoncentralSocleBridge
-      block P 5)
+      block P 8 5)
     (hr : Nat.card block.Fibre = 4)
     (hD : degreeFourTernaryCore block P = ⊥)
     (hs : Nat.card block.Points = 8)
     (certificate : DegreeFourZeroCoreFiniteFrameBounds block P 5) :
     PreE7RankTailSourceOrYonedaTopData w U := by
   let verified := DegreeFourZeroCoreFiniteFrameBounds.toVerification
-    block P bridge hr hD (Or.inl hs) certificate
+    block P bridge hr hD hs certificate
   let D := (degreeFourZeroCoreFiniteFrameInterval block P verified
     ).toCompleteCharacterIntervalData hZmud
   have hw : w = 32 := by
@@ -536,14 +540,14 @@ noncomputable def degreeFourZeroCoreSixteenBlockSource_of_verifiedFrames
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
     (bridge : DegreeFourZeroCoreFixedFrameNoncentralSocleBridge
-      block P 10)
+      block P 16 10)
     (hr : Nat.card block.Fibre = 4)
     (hD : degreeFourTernaryCore block P = ⊥)
     (hs : Nat.card block.Points = 16)
     (certificate : DegreeFourZeroCoreFiniteFrameBounds block P 10) :
     PreE7RankTailSourceOrYonedaTopData w U := by
   let verified := DegreeFourZeroCoreFiniteFrameBounds.toVerification
-    block P bridge hr hD (Or.inr hs) certificate
+    block P bridge hr hD hs certificate
   let D := (degreeFourZeroCoreFiniteFrameInterval block P verified
     ).toCompleteCharacterIntervalData hZmud
   have hw : w = 64 := by
@@ -601,9 +605,9 @@ noncomputable def degreeFourZeroCoreFiniteResidueSource
     (degreeSixteenOwner : ∀ V : PreE7NonPairActionClass 16,
       PreE7RankTailSourceOrYonedaTopData 16 V)
     (bridge8 : DegreeFourZeroCoreFixedFrameNoncentralSocleBridge
-      block P 5)
+      block P 8 5)
     (bridge16 : DegreeFourZeroCoreFixedFrameNoncentralSocleBridge
-      block P 10)
+      block P 16 10)
     (hr : Nat.card block.Fibre = 4)
     (hD : degreeFourTernaryCore block P = ⊥)
     (frames8 : Nat.card block.Points = 8 →
