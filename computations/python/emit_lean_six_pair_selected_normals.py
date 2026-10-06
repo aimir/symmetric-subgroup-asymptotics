@@ -225,6 +225,8 @@ def validate_and_prepare(chunks: list[dict], data: dict) -> dict:
             "normal chunks belong to different actions")
     action = data["actions"][action_number - 1]
     ambient = [permutation(row) for row in action["generators"]]
+    require(1 <= len(ambient) <= 16,
+            "selected ambient generator width outside the narrow ceiling")
     group_rows = enumerate_group(ambient)
     position = {row: i for i, row in enumerate(group_rows)}
     require(all(chunk.get("action_order") == len(group_rows) == action["order"]
@@ -240,17 +242,22 @@ def validate_and_prepare(chunks: list[dict], data: dict) -> dict:
         records.extend(content["rows"])
     records.sort(key=lambda row: row.get("normal_index", 0))
     pinned_normals = action["normals"]
+    require(1 <= len(pinned_normals) <= 64,
+            "selected normal count outside the narrow ceiling")
     require([row.get("normal_index") for row in records] ==
             list(range(1, len(pinned_normals) + 1)),
             "normal chunks are not a complete exact partition")
 
     representatives = [permutation(row) for row in action["class_representatives"]]
+    require(1 <= len(representatives) <= 128,
+            "selected class count outside the narrow ceiling")
     state_generators = []
     for index, (record, pinned) in enumerate(zip(records, pinned_normals)):
         generators = [permutation(row) for row in pinned["generators"]]
         require(all(g in position for g in generators), "normal generator escaped action")
         require(record.get("declared_order") == pinned["order"], "normal order metadata mismatch")
-        require(len(generators) <= 3, "normal generator padding width changed")
+        require(len(generators) <= 16,
+                "normal generator width outside the narrow ceiling")
         state_generators.append(generators)
 
         normality = record.get("normality")
@@ -272,15 +279,18 @@ def validate_and_prepare(chunks: list[dict], data: dict) -> dict:
         require(isinstance(transitions, list) and len(transitions) == len(representatives),
                 "normal transition count mismatch")
         pinned_joins = pinned.get("joins")
-        require(isinstance(pinned_joins, list) and len(pinned_joins) == len(representatives),
-                "pinned normal join row mismatch")
+        full_pinned_join_row = (isinstance(pinned_joins, list) and
+                                len(pinned_joins) == len(representatives))
         for class_index, transition in enumerate(transitions):
             require(transition.get("class_index") == class_index + 1,
                     "transition class index mismatch")
             child_index = transition.get("child_index")
-            require(type(child_index) is int and child_index == pinned_joins[class_index]
-                    and 1 <= child_index <= len(pinned_normals),
+            require(type(child_index) is int and
+                    1 <= child_index <= len(pinned_normals),
                     "transition child index mismatch")
+            if full_pinned_join_row:
+                require(child_index == pinned_joins[class_index],
+                        "full pinned normal join row disagrees with selected transition")
             words = transition.get("words")
             require(isinstance(words, dict), "missing transition words")
             child = [permutation(row) for row in pinned_normals[child_index - 1]["generators"]]
@@ -301,7 +311,8 @@ def validate_and_prepare(chunks: list[dict], data: dict) -> dict:
                         "child join-word equation failed")
 
     one = tuple(range(WIDTH))
-    padded_rows = [generators + [one] * (3 - len(generators))
+    normal_width = max(1, max(len(generators) for generators in state_generators))
+    padded_rows = [generators + [one] * (normal_width - len(generators))
                    for generators in state_generators]
     return {
         "action_number": action_number,
@@ -310,6 +321,8 @@ def validate_and_prepare(chunks: list[dict], data: dict) -> dict:
         "position": position,
         "records": records,
         "pinned_normals": pinned_normals,
+        "ambient_count": len(ambient),
+        "normal_width": normal_width,
         "state_rows": [[position[g] for g in row] for row in padded_rows],
         "representatives": representatives,
     }
@@ -322,8 +335,16 @@ def emit_module(module: str, class_module: str, prepared: dict,
     state_rows = prepared["state_rows"]
     normal_count = len(records)
     class_count = len(prepared["representatives"])
-    require(normal_count == 7 and class_count == 6,
-            "current pilot module is the seven-state, six-class action-1 slice")
+    ambient_count = prepared["ambient_count"]
+    normal_width = prepared["normal_width"]
+    require(1 <= ambient_count <= 16,
+            "selected ambient generator width outside the narrow ceiling")
+    require(1 <= normal_width <= 16,
+            "selected normal generator width outside the narrow ceiling")
+    require(1 <= normal_count <= 64,
+            "selected normal count outside the narrow ceiling")
+    require(1 <= class_count <= 128,
+            "selected class count outside the narrow ceiling")
     prefix = f"SymmetricSubgroupAsymptotics.{class_module}"
     text = f"""import SymmetricSubgroupAsymptotics.{class_module}
 import SymmetricSubgroupAsymptotics.FiniteNormalJoinWordRegistry
@@ -355,11 +376,11 @@ local instance selectedSourceGroup : Group Source := group
     for i, (record, rows) in enumerate(zip(records, state_rows)):
         state_name = f"state{i}Generators"
         state_names.append(state_name)
-        text += f"""private def {state_name} : Fin 3 → Source :=
+        text += f"""private def {state_name} : Fin {normal_width} → Source :=
   {fin_cases_chain([f'(⟨{row}⟩ : Source)' for row in rows])}
 
 """
-    text += f"""def stateGenerators : Fin {normal_count} → Fin 3 → Source :=
+    text += f"""def stateGenerators : Fin {normal_count} → Fin {normal_width} → Source :=
   {fin_cases_chain(state_names)}
 
 """
@@ -368,17 +389,21 @@ local instance selectedSourceGroup : Group Source := group
         normality = record["normality"]
         positive = []
         negative = []
-        for a in range(3):
-            prow = list(normality["positive"][a]) + ([{"tag": "one"}] * (3 - generator_count))
-            nrow = list(normality["negative"][a]) + ([{"tag": "one"}] * (3 - generator_count))
+        for a in range(ambient_count):
+            prow = (list(normality["positive"][a]) +
+                    ([{"tag": "one"}] * (normal_width - generator_count)))
+            nrow = (list(normality["negative"][a]) +
+                    ([{"tag": "one"}] * (normal_width - generator_count)))
             positive.append(fin_cases_chain([lean_gen_word(word) for word in prow]))
             negative.append(fin_cases_chain([lean_gen_word(word) for word in nrow]))
         text += f"""namespace N{i}
 
-private def positiveWords : Fin 3 → Fin 3 → FiniteGeneratorWord (Fin 3) :=
+private def positiveWords : Fin {ambient_count} → Fin {normal_width} →
+    FiniteGeneratorWord (Fin {normal_width}) :=
   {fin_cases_chain(positive)}
 
-private def negativeWords : Fin 3 → Fin 3 → FiniteGeneratorWord (Fin 3) :=
+private def negativeWords : Fin {ambient_count} → Fin {normal_width} →
+    FiniteGeneratorWord (Fin {normal_width}) :=
   {fin_cases_chain(negative)}
 
 def normality : FiniteNormalityWordCertificate ambient (stateGenerators {i}) where
@@ -394,19 +419,21 @@ def normality : FiniteNormalityWordCertificate ambient (stateGenerators {i}) whe
             child_count = len(pinned_normals[child]["generators"])
             words = transition["words"]
             parent_words = (list(words["parent_to_child"]) +
-                            ([{"tag": "one"}] * (3 - generator_count)))
+                            ([{"tag": "one"}] * (normal_width - generator_count)))
             child_words = (list(words["child_to_join"]) +
-                           ([{"tag": "one"}] * (3 - child_count)))
+                           ([{"tag": "one"}] * (normal_width - child_count)))
             transition_names.append(f"T{j}.certificate")
             text += f"""namespace T{j}
 
-private def parentWords : Fin 3 → FiniteGeneratorWord (Fin 3) :=
+private def parentWords : Fin {normal_width} →
+    FiniteGeneratorWord (Fin {normal_width}) :=
   {fin_cases_chain([lean_gen_word(word) for word in parent_words])}
 
-private def childWords : Fin 3 → FiniteNormalJoinWord (Fin 3) Source :=
+private def childWords : Fin {normal_width} →
+    FiniteNormalJoinWord (Fin {normal_width}) Source :=
   {fin_cases_chain([lean_join_word(word) for word in child_words])}
 
-private def representativeWord : FiniteGeneratorWord (Fin 3) :=
+private def representativeWord : FiniteGeneratorWord (Fin {normal_width}) :=
   {lean_gen_word(words['representative_word'])}
 
 def certificate : FiniteNormalJoinTransitionCertificate
@@ -444,7 +471,8 @@ end N{i}
   {fin_cases_chain(child_rows)}
 
 """
-    marker = f"def stateGenerators : Fin {normal_count} → Fin 3 → Source :=\n"
+    marker = (f"def stateGenerators : Fin {normal_count} → "
+              f"Fin {normal_width} → Source :=\n")
     insertion = text.index(marker)
     after_state = text.index("\n\n", insertion) + 2
     text = text[:after_state] + child_definition + text[after_state:]
@@ -478,7 +506,7 @@ noncomputable def normalRegistry : FiniteNormalJoinWordRegistryData
   transition := transition
 
 /-- Every literal normal subgroup of the executable selected row group occurs
-among the seven emitted generated states. -/
+among the emitted generated states. -/
 theorem normal_complete (N : Subgroup Source) [N.Normal] :
     ∃ i, Subgroup.closure (Set.range (stateGenerators i)) = N :=
   normalRegistry.complete N
