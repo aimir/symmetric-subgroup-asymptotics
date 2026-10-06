@@ -226,7 +226,7 @@ private def letters (i : Fin {n}) : Fin {d} :=
 private def nextRow (i : Fin {n}) (j : Fin {d}) : Fin {n} :=
   {next_expr}
 
-private def previousRow (i : Fin {n}) (j : Fin {d}) : Fin {n} :=
+def previousRow (i : Fin {n}) (j : Fin {d}) : Fin {n} :=
   {previous_expr}
 
 private theorem parent_lt_checked : ∀ i : Fin {n},
@@ -253,7 +253,7 @@ def certificate : EncodedCayleyCertificate
 theorem rows_injective : Function.Injective certificate.rows :=
   by native_decide
 
-private theorem previous_checked : ∀ i j,
+theorem previous_checked : ∀ i j,
     certificate.next (previousRow i j) j = i :=
   {finite_checks(n)}
 

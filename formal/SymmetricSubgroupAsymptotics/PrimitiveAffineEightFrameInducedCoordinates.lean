@@ -87,6 +87,23 @@ def coordinatesOfLocalEquiv
     (inducedEquivOfLocalEquiv (k := k) (G := G) (V := V)
       H rho sigma e).toLinearEquiv.toLinearMap
 
+@[simp] theorem coordinatesOfLocalEquiv_label
+    {W : Type} [AddCommGroup W] [Module k W]
+    (H : Subgroup G) [H.FiniteIndex]
+    (rho : Representation k H V) (sigma : Representation k H W)
+    (e : rho.Equiv sigma)
+    (T : Fin N → G) (basis : Module.Basis (Fin d) k W)
+    (v : Representation.IndV H.subtype rho)
+    (a : Fin N) (i : Fin d) :
+    coordinatesOfLocalEquiv H rho sigma e T basis v
+        (CoinducedLeadingCoordinates.label a i) =
+      basis.equivFun
+        (((inducedToCoinducedEquiv H sigma)
+          ((inducedEquivOfLocalEquiv (k := k) (G := G) (V := V)
+            H rho sigma e).toIntertwiningMap v)).1 (T a)) i := by
+  rw [coordinatesOfLocalEquiv, LinearMap.comp_apply, coordinates_label]
+  rfl
+
 /-- Exact coset factorization and the local representation equivalence make
 the transported coordinate map injective. -/
 theorem coordinatesOfLocalEquiv_injective
@@ -101,6 +118,54 @@ theorem coordinatesOfLocalEquiv_injective
   (coordinates_injective H sigma T basis hfactor).comp
     (inducedEquivOfLocalEquiv (k := k) (G := G) (V := V)
       H rho sigma e).injective
+
+/-- The Schreier formula for the transported induced coordinates.  If a
+right-coset representative satisfies `T a * g = h * T b`, then the `a`-row
+after right translation by `g` is the `h`-twist of the old `b`-row.  This
+is the reusable bridge between a finite Schreier certificate and the
+literal induced representation. -/
+theorem coordinatesOfLocalEquiv_action_label
+    {W : Type} [AddCommGroup W] [Module k W]
+    (H : Subgroup G) [H.FiniteIndex]
+    (rho : Representation k H V) (sigma : Representation k H W)
+    (e : rho.Equiv sigma)
+    (T : Fin N → G) (basis : Module.Basis (Fin d) k W)
+    (v : Representation.IndV H.subtype rho)
+    (g : G) (a b : Fin N) (h : H)
+    (hfactor : T a * g = (h : G) * T b)
+    (i : Fin d) :
+    coordinatesOfLocalEquiv H rho sigma e T basis
+        ((Representation.ind H.subtype rho) g v)
+        (CoinducedLeadingCoordinates.label a i) =
+      basis.equivFun
+        (sigma h
+          (((inducedToCoinducedEquiv H sigma)
+            ((inducedEquivOfLocalEquiv (k := k) (G := G) (V := V)
+              H rho sigma e) v)).1 (T b))) i := by
+  let E := inducedEquivOfLocalEquiv (k := k) (G := G) (V := V)
+    H rho sigma e
+  let I := inducedToCoinducedEquiv H sigma
+  have hE :
+      E ((Representation.ind H.subtype rho) g v) =
+        (Representation.ind H.subtype sigma) g (E v) :=
+    Representation.IntertwiningMap.isIntertwining
+      _ _ E.toIntertwiningMap g v
+  have hI :
+      I ((Representation.ind H.subtype sigma) g (E v)) =
+        (Representation.coind H.subtype sigma) g (I (E v)) :=
+    Representation.IntertwiningMap.isIntertwining
+      _ _ I.toIntertwiningMap g (E v)
+  rw [coordinatesOfLocalEquiv, LinearMap.comp_apply,
+    coordinates_label]
+  change basis.equivFun ((I (E
+    ((Representation.ind H.subtype rho) g v))).1 (T a)) i = _
+  rw [hE, hI]
+  change basis.equivFun ((I (E v)).1 (T a * g)) i = _
+  rw [hfactor]
+  change basis.equivFun ((I (E v)).1 ((h : G) * T b)) i =
+    basis.equivFun (sigma h ((I (E v)).1 (T b))) i
+  exact congrArg (fun u : W ↦ basis.equivFun u i)
+    ((I (E v)).2 h (T b))
 
 end EightFrameInducedCoordinates
 end SymmetricSubgroupAsymptotics

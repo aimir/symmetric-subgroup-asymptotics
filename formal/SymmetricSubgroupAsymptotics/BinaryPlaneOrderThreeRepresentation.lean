@@ -28,7 +28,7 @@ noncomputable section
 
 namespace SymmetricSubgroupAsymptotics
 
-abbrev BinaryPlane := Fin 2 → ZMod 2
+abbrev OrderThreeBinaryPlane := Fin 2 → ZMod 2
 
 /-- A group representation, regarded as a homomorphism into the general
 linear group.  The inverse of the unit attached to `g` is the linear action
@@ -67,8 +67,8 @@ def coordinateGeneralLinearRepresentation
     {G V : Type} [Group G]
     [AddCommGroup V] [Module (ZMod 2) V]
     (rho : Representation (ZMod 2) G V)
-    (e : V ≃ₗ[ZMod 2] BinaryPlane) :
-    G →* LinearMap.GeneralLinearGroup (ZMod 2) BinaryPlane :=
+    (e : V ≃ₗ[ZMod 2] OrderThreeBinaryPlane) :
+    G →* LinearMap.GeneralLinearGroup (ZMod 2) OrderThreeBinaryPlane :=
   (LinearMap.GeneralLinearGroup.congrLinearEquiv e).toMonoidHom.comp
     (representationGeneralLinear (k := ZMod 2) (G := G) (V := V) rho)
 
@@ -94,7 +94,7 @@ private theorem binaryMatrix_orderThree_conjugate :
 /-- Transport the six-element matrix computation to the linear-map model
 used by representations. -/
 private theorem binaryPlane_orderThree_conjugate :
-    ∀ A B : LinearMap.GeneralLinearGroup (ZMod 2) BinaryPlane,
+    ∀ A B : LinearMap.GeneralLinearGroup (ZMod 2) OrderThreeBinaryPlane,
       A ^ 3 = 1 → A ≠ 1 → B ^ 3 = 1 → B ≠ 1 →
         ∃ C, C * A = B * C := by
   intro A B hA hAne hB hBne
@@ -133,12 +133,12 @@ noncomputable def binaryPlaneRepresentationEquiv_of_card_three
     (hrho : Function.Injective rho)
     (hsigma : Function.Injective sigma) :
     rho.Equiv sigma := by
-  let eV : V ≃ₗ[ZMod 2] BinaryPlane :=
-    LinearEquiv.ofFinrankEq V BinaryPlane (by
+  let eV : V ≃ₗ[ZMod 2] OrderThreeBinaryPlane :=
+    LinearEquiv.ofFinrankEq V OrderThreeBinaryPlane (by
       rw [hV, Module.finrank_pi]
       simp)
-  let eW : W ≃ₗ[ZMod 2] BinaryPlane :=
-    LinearEquiv.ofFinrankEq W BinaryPlane (by
+  let eW : W ≃ₗ[ZMod 2] OrderThreeBinaryPlane :=
+    LinearEquiv.ofFinrankEq W OrderThreeBinaryPlane (by
       rw [hW, Module.finrank_pi]
       simp)
   let phi := coordinateGeneralLinearRepresentation rho eV
@@ -190,7 +190,7 @@ noncomputable def binaryPlaneRepresentationEquiv_of_card_three
   have ha_intertwines : ∀ v, e (rho a v) = sigma a (e v) := by
     intro v
     have hCv := congrArg
-      (fun u : LinearMap.GeneralLinearGroup (ZMod 2) BinaryPlane ↦
+      (fun u : LinearMap.GeneralLinearGroup (ZMod 2) OrderThreeBinaryPlane ↦
         u.toLinearEquiv (eV v)) hC
     dsimp only [phi, psi, coordinateGeneralLinearRepresentation,
       MonoidHom.comp_apply] at hCv
