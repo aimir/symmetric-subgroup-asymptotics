@@ -84,18 +84,32 @@ def split(input_path: Path, output_dir: Path, module: str, force: bool) -> list[
     body_start = unique_index(text, namespace_marker) + len(namespace_marker)
     top_start = unique_index(text, "\nprivate def topRow0")
     class_start = unique_index(text, "\nprivate def representativeRows")
-    centralizer_starts = [unique_index(text, f"\nnamespace C{i}\n") for i in range(5)]
-    centralizer_ends = [unique_index(text, f"\nend C{i}\n") + len(f"\nend C{i}\n")
-                        for i in range(5)]
+    centralizer_indices = [
+        int(match.group(1))
+        for match in re.finditer(r"(?m)^namespace C([0-9]+)$", text)
+    ]
+    require(centralizer_indices,
+            "selected certificate has no centralizer sections")
+    require(centralizer_indices == list(range(len(centralizer_indices))),
+            "centralizer sections are not a contiguous zero-based range")
+    centralizer_count = len(centralizer_indices)
+    centralizer_starts = [
+        unique_index(text, f"\nnamespace C{i}\n")
+        for i in range(centralizer_count)
+    ]
+    centralizer_ends = [
+        unique_index(text, f"\nend C{i}\n") + len(f"\nend C{i}\n")
+        for i in range(centralizer_count)
+    ]
     assembly_start = unique_index(text, "\nnoncomputable def centralizer : ∀")
     body_end = unique_index(text, f"\nend SymmetricSubgroupAsymptotics.{module}\n")
 
     require(body_start < top_start < class_start < centralizer_starts[0],
             "unexpected selected-certificate section order")
-    for i in range(4):
+    for i in range(centralizer_count - 1):
         require(centralizer_starts[i] < centralizer_ends[i] <= centralizer_starts[i + 1],
                 "overlapping centralizer sections")
-    require(centralizer_starts[4] < centralizer_ends[4] <= assembly_start < body_end,
+    require(centralizer_starts[-1] < centralizer_ends[-1] <= assembly_start < body_end,
             "unexpected selected-certificate assembly order")
 
     base_body = text[body_start:top_start].replace(
@@ -104,7 +118,7 @@ def split(input_path: Path, output_dir: Path, module: str, force: bool) -> list[
     pair_body = text[top_start:class_start]
     class_body = text[class_start:centralizer_starts[0]]
     centralizer_bodies = []
-    for i in range(5):
+    for i in range(centralizer_count):
         piece = text[centralizer_starts[i]:centralizer_ends[i]]
         piece = piece.replace("private def kernelRows (j : Fin 1)",
                               "private def kernelRows (_j : Fin 1)")
@@ -145,7 +159,8 @@ def split(input_path: Path, output_dir: Path, module: str, force: bool) -> list[
              "Mathlib.Tactic.FinCases"], body, action_number)))
     pieces.append((f"{module}.lean", wrapper(
         module, f"{title_prefix}: complete class cover",
-        [f"SymmetricSubgroupAsymptotics.{split_module}Centralizer{i}" for i in range(5)],
+        [f"SymmetricSubgroupAsymptotics.{split_module}Centralizer{i}"
+         for i in range(centralizer_count)],
         assembly_body, action_number)))
 
     outputs = []

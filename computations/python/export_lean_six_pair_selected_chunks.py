@@ -90,6 +90,15 @@ def pair_top(row: tuple[int, ...]) -> tuple[int, ...]:
     return tuple(result)
 
 
+def permutation_sign(row: tuple[int, ...]) -> int:
+    """Return the literal permutation sign as ``1`` or ``-1``."""
+    inversions = sum(
+        row[i] > row[j]
+        for i in range(len(row)) for j in range(i + 1, len(row))
+    )
+    return -1 if inversions % 2 else 1
+
+
 def word_for_row(group, row):
     require(row in group.position, "selected row escaped the literal action")
     return group.word(group.position[row])
@@ -215,7 +224,59 @@ def normal_chunk(action: dict, start: int, stop: int, budget: Budget) -> dict:
                 ambient, generators, WIDTH, budget, max_states=MAX_GROUP_ORDER),
             "transitions": transitions,
         })
-    return {"rows": rows}
+    content = {"rows": rows}
+    if len(normals) == 3 and start == 0 and stop == len(normals):
+        ambient_rows = frozenset(ambient_group.rows)
+        bottom_indices = [
+            i for i, group in enumerate(normal_groups)
+            if len(group.rows) == 1
+        ]
+        top_indices = [
+            i for i, group in enumerate(normal_groups)
+            if frozenset(group.rows) == ambient_rows
+        ]
+        require(len(bottom_indices) == 1,
+                "three-state chain has no unique literal bottom")
+        require(len(top_indices) == 1,
+                "three-state chain has no unique literal top")
+        middle_indices = [
+            i for i in range(len(normals))
+            if i not in (bottom_indices[0], top_indices[0])
+        ]
+        require(len(middle_indices) == 1,
+                "three-state chain has no unique literal middle")
+        middle_index = middle_indices[0]
+        middle_generators = normal_generators[middle_index]
+        nonidentity = [
+            i for i, generator in enumerate(middle_generators)
+            if generator != identity(WIDTH)
+        ]
+        require(nonidentity,
+                "three-state middle has no nonidentity displayed generator")
+        odd_ambient = [
+            i for i, generator in enumerate(ambient)
+            if permutation_sign(pair_top(generator)) == -1
+        ]
+        top_group = normal_groups[top_indices[0]]
+        require(all(generator in top_group.position for generator in ambient),
+                "literal top does not contain every ambient generator")
+        content["three_normal_chain"] = {
+            "bottom_index": bottom_indices[0] + 1,
+            "middle_index": middle_index + 1,
+            "top_index": top_indices[0] + 1,
+            "middle_nonidentity_generator": nonidentity[0] + 1,
+            "middle_pair_top_signs": [
+                permutation_sign(pair_top(generator))
+                for generator in middle_generators
+            ],
+            "odd_ambient_generator":
+                (odd_ambient[0] + 1 if odd_ambient else None),
+            "top_ambient_words": [
+                top_group.word(top_group.position[generator])
+                for generator in ambient
+            ],
+        }
+    return content
 
 
 def write_atomic(path: Path, payload: bytes, force: bool) -> None:
