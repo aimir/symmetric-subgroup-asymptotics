@@ -50,6 +50,22 @@ def disjunction(values: list[int], variable: str) -> str:
             f"{disjunction(values[middle:], variable)})")
 
 
+def boolean_disjunction(values: list[int], variable: str) -> str:
+    """A compiler-executable balanced membership test.
+
+    Large proposition-valued disjunctions inside a `noncomputable section`
+    can cause Lean to select `Classical.propDecidable`; `native_decide` then
+    cannot compile later subgroup checks.  Retaining the same literal list as
+    a Boolean test makes the decision procedure explicit and executable.
+    """
+    require(values, "empty membership list")
+    if len(values) == 1:
+        return f"{variable} == {values[0]}"
+    middle = len(values) // 2
+    return (f"({boolean_disjunction(values[:middle], variable)} || "
+            f"{boolean_disjunction(values[middle:], variable)})")
+
+
 def positive_word(letters: list[int]) -> str:
     word = ".one"
     for letter in letters:
@@ -230,13 +246,17 @@ local instance sourceGroup : Group Source :=
         f"  {normal_module}.sourceGroup\n",
         f"  {normal_module.rsplit('NormalCertificate', 1)[0]}TopCertificate.group\n")
     for i in range(n):
-        member = disjunction(data["normal_elements"][i], "x.index.val")
+        member = boolean_disjunction(
+            data["normal_elements"][i], "x.index.val")
         words = [positive_word(word) for word in data["normal_words"][i]]
         text += f"""private abbrev N{i} : Subgroup Source :=
   Subgroup.closure (Set.range ({normal_module}.stateGenerators {i}))
 
-private def inExplicitN{i} (x : Source) : Prop :=
+private def explicitN{i}MembershipTest (x : Source) : Bool :=
   {member}
+
+private def inExplicitN{i} (x : Source) : Prop :=
+  explicitN{i}MembershipTest x = true
 
 local instance inExplicitN{i}Decidable (x : Source) :
     Decidable (inExplicitN{i} x) := by
