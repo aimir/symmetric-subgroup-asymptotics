@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.FiniteSurjectiveKernelTransport
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameLocalRowCatalogue
+import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
 
 /-!
 # Point-stabilizer order-six local dispatcher
@@ -41,6 +42,54 @@ theorem surjectiveHom_kernel_card_one_of_six_to_six
     Nat.card_congr Subgroup.topEquiv.toEquiv, hH, hL] at hcard
   omega
 
+/-- A normal subgroup of order two is central.  Conjugation must preserve its
+unique nonidentity element. -/
+theorem normal_card_two_le_center
+    {Q : Type*} [Group Q] [Finite Q] (N : Subgroup Q) [N.Normal]
+    (hN : Nat.card N = 2) : N ≤ Subgroup.center Q := by
+  obtain ⟨u, hu, hu_unique⟩ := (Nat.card_eq_two_iff' (1 : N)).mp hN
+  intro x hx
+  rw [Subgroup.mem_center_iff]
+  intro q
+  by_cases hx1 : x = 1
+  · simp [hx1]
+  let xN : N := ⟨x, hx⟩
+  let qxN : N :=
+    ⟨q * x * q⁻¹, Subgroup.Normal.conj_mem (inferInstance : N.Normal) x hx q⟩
+  have hxN_ne : xN ≠ 1 := fun h => hx1 (congrArg Subtype.val h)
+  have hqxN_ne : qxN ≠ 1 := by
+    intro h
+    have hval : q * x * q⁻¹ = 1 := congrArg Subtype.val h
+    apply hx1
+    calc
+      x = q⁻¹ * (q * x * q⁻¹) * q := by group
+      _ = 1 := by rw [hval]; simp
+  have hconj : q * x * q⁻¹ = x :=
+    congrArg Subtype.val ((hu_unique qxN hqxN_ne).trans
+      (hu_unique xN hxN_ne).symm)
+  calc
+    q * x = (q * x * q⁻¹) * q := by group
+    _ = x * q := by rw [hconj]
+
+/-- A noncommutative group of order six has no quotient of order three. -/
+theorem no_order_three_quotient_of_card_six_noncommutative
+    {H : Type*} [Group H] [Finite H]
+    (hH : Nat.card H = 6) (hnoncomm : ¬ IsMulCommutative H)
+    (L : Type*) [Group L] [Finite L]
+    (f : H →* L) (hf : Function.Surjective f)
+    (hL : Nat.card L = 3) : False := by
+  letI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+  letI : IsCyclic L := isCyclic_of_prime_card hL
+  have hkernel : Nat.card f.ker = 2 := by
+    have hcard := f.ker.card_mul_index
+    rw [Subgroup.index_ker, f.range_eq_top_of_surjective hf,
+      Nat.card_congr Subgroup.topEquiv.toEquiv, hH, hL] at hcard
+    omega
+  have hcenter : f.ker ≤ Subgroup.center H :=
+    normal_card_two_le_center f.ker hkernel
+  apply hnoncomm
+  exact ⟨⟨commutative_of_cyclic_center_quotient f hcenter⟩⟩
+
 /-- The unique local-row catalogue for an order-six point stabilizer once an
 order-three quotient has been excluded. -/
 noncomputable def singletonOfOrderSix
@@ -74,6 +123,29 @@ noncomputable def singletonOfOrderSix
       hf R.literalLocalMap_surjective hkernels, ?_⟩
     exact surjectiveTargetEquivOfKernelEq_comp f R.literalLocalMap
       hf R.literalLocalMap_surjective hkernels
+
+/-- An onto noncommutative order-six local row identifies an order-six point
+stabilizer with the unique eligible local quotient. -/
+noncomputable def singletonOfNoncommutativeOrderSix
+    (T : Subgroup (Equiv.Perm (Fin 8)))
+    (R : DegreeEightLiteralLocalRow T)
+    (hsource : Nat.card (MulAction.stabilizer T (0 : Fin 8)) = 6)
+    (htarget : Nat.card R.ModelLocalGroup = 6)
+    (hnoncomm : ¬ IsMulCommutative R.ModelLocalGroup) :
+    DegreeEightLiteralLocalRowCatalogue T := by
+  have hsourceNoncomm :
+      ¬ IsMulCommutative (MulAction.stabilizer T (0 : Fin 8)) := by
+    intro hcomm
+    apply hnoncomm
+    refine { is_comm.comm := fun a b => ?_ }
+    obtain ⟨x, rfl⟩ := R.literalLocalMap_surjective a
+    obtain ⟨y, rfl⟩ := R.literalLocalMap_surjective b
+    rw [← map_mul, ← map_mul, hcomm.is_comm.comm x y]
+  exact singletonOfOrderSix T R hsource
+    (fun L _ _ f hf hL =>
+      no_order_three_quotient_of_card_six_noncommutative
+        hsource hsourceNoncomm L f hf hL)
+    htarget
 
 end DegreeEightLiteralLocalRowCatalogue
 end PrimitiveAffineImprimitiveBlockTransfer
