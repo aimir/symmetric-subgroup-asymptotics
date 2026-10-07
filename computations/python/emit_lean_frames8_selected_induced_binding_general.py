@@ -116,6 +116,24 @@ def emit(module_name: str, representation_module: str, top_module: str,
     n = data["top_order"]
     g = data["generator_count"]
     membership = " || ".join(f"i.val = {x}" for x in data["stabilizer_rows"])
+    if data["local_order"] == 3:
+        local_column_defs = '''private def localForwardColumns (z : LocalTarget) (i : Fin 2) : ℕ :=
+  (z.1 (Fin.castSucc i)).val + 1
+
+private def localInverseColumns (z : LocalTarget) (i : Fin 2) : ℕ :=
+  ((z.1)⁻¹ (Fin.castSucc i)).val + 1'''
+    else:
+        local_column_defs = '''/- The stored affine point labels put zero last.  Relative to the two
+coordinate translations in `binary_basis`, the three nonzero points have
+bitmasks `3, 1, 2`, respectively. -/
+private def localPointMask (q : Fin 3) : ℕ :=
+  (#[3, 1, 2] : Array ℕ)[q.val]!
+
+private def localForwardColumns (z : LocalTarget) (i : Fin 2) : ℕ :=
+  localPointMask (z.1 i.succ)
+
+private def localInverseColumns (z : LocalTarget) (i : Fin 2) : ℕ :=
+  localPointMask ((z.1)⁻¹ i.succ)'''
     return f'''import SymmetricSubgroupAsymptotics.{representation_module}
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameLocalRowCatalogue
 import SymmetricSubgroupAsymptotics.BinaryPlaneOrderThreeRepresentation
@@ -233,11 +251,7 @@ theorem representative_mul_generator (j : Fin {g}) (a : Fin 8) :
       (twist j a : Source) * representative (next j a) := by
   simp [twist]
 
-private def localForwardColumns (z : LocalTarget) (i : Fin 2) : ℕ :=
-  (z.1 (Fin.castSucc i)).val + 1
-
-private def localInverseColumns (z : LocalTarget) (i : Fin 2) : ℕ :=
-  ((z.1)⁻¹ (Fin.castSucc i)).val + 1
+{local_column_defs}
 
 def localForwardMatrix (z : LocalTarget) :
     Matrix (Fin 2) (Fin 2) (ZMod 2) :=

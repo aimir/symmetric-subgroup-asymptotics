@@ -377,7 +377,7 @@ end R{i}
     cases = "\n".join(
         (f"    · change Module.finrank (ZMod 2) "
          f"(primeRelativeCharacters 2 N{i}) ≤ 2\n"
-         f"      rw [R{i}.head_eq]\n      omega") for i in range(n))
+         f"      simp [R{i}.head_eq]") for i in range(n))
     text += f"""/-- Complete normal-axis registry with relative binary head at most two. -/
 noncomputable def registry : FiniteTopRelativeBinaryRankWordRegistry
     (rank := 2) {normal_module}.topConjugacy.toCardinalCover
