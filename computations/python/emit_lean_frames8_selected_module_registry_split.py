@@ -103,7 +103,22 @@ local instance sourceInhabited{tag} : Inhabited Source := ⟨1⟩
 """
 
 
-def split_source(full: str, namespace: str, representation_module: str,
+def executable_header(imports: list[str], namespace: str, description: str) -> str:
+    """Header for a raw finite-data module used by native decision proofs."""
+    return "\n".join(f"import SymmetricSubgroupAsymptotics.{x}" for x in imports) + f"""
+
+/-! {description} -/
+set_option autoImplicit false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 0
+open scoped BigOperators Classical
+
+namespace SymmetricSubgroupAsymptotics.{namespace}
+
+"""
+
+
+def split_source(base, data: dict, full: str, namespace: str, representation_module: str,
                  orbits_module: str, top_module: str,
                  state_count: int, cyclic_count: int, chunk_size: int):
     starts = [full.index(f"namespace D{i}\n") for i in range(state_count)]
@@ -112,24 +127,121 @@ def split_source(full: str, namespace: str, representation_module: str,
     join_assembly_start = full.index("private theorem bottom_eq")
     joins_module = namespace + "Joins"
     join_data_module = namespace + "JoinData"
+    child_table_module = namespace + "ChildTableData"
     chunks = []
     join_chunks = []
     outputs = {}
-    outputs[join_data_module] = full[:join_proof_start] + f"""end SymmetricSubgroupAsymptotics.{namespace}
+    child_table_start = full.index("private def childTable")
+    old_table_start = full.index("private def childOldTable")
+
+    outputs[child_table_module] = executable_header(
+        [representation_module], child_table_module,
+        "Executable selected invariant-state child table.") + \
+        full[child_table_start:old_table_start] + f"""def child
+    (i : Fin {state_count}) (c : Fin {cyclic_count}) : Fin {state_count} :=
+  (childTable[i.val]!)[c.val]!
+
+end SymmetricSubgroupAsymptotics.{child_table_module}
+"""
+    outputs[join_data_module] = local_header(
+        [orbits_module, "PrimitiveAffineEightFrameDisplacementImporter",
+         "BinaryInvariantCyclicOrbitStabilizerRegistry", child_table_module], namespace,
+        representation_module, top_module,
+        "Selected invariant-state executable table accessors.") + f"""def child
+    (i : Fin {state_count}) (c : Fin {cyclic_count}) : Fin {state_count} :=
+  SymmetricSubgroupAsymptotics.{child_table_module}.child i c
+
+end SymmetricSubgroupAsymptotics.{namespace}
 
 end
 """
+    old_rows = [data["old"][i * cyclic_count:(i + 1) * cyclic_count]
+                for i in range(state_count)]
+    word_rows = [data["words"][i * cyclic_count:(i + 1) * cyclic_count]
+                 for i in range(state_count)]
+    word_dictionary: list[list[int]] = []
+    word_index: dict[tuple[int, ...], int] = {}
+    word_index_rows = []
+    for row in word_rows:
+        index_row = []
+        for entry in row:
+            index_entry = []
+            for words in entry:
+                indices = []
+                for word in words:
+                    key = tuple(word)
+                    if key not in word_index:
+                        word_index[key] = len(word_dictionary)
+                        word_dictionary.append(word)
+                    indices.append(word_index[key])
+                index_entry.append(indices)
+            index_row.append(index_entry)
+        word_index_rows.append(index_row)
+    word_dictionary_expr = "#[" + ",".join(
+        base.lean_word(word, orbits_module, data["generator_count"])
+        for word in word_dictionary) + "]"
     for start in range(0, state_count, chunk_size):
         stop = min(state_count, start + chunk_size)
         size = stop - start
         module = namespace + f"Join{start}"
+        old_module = namespace + f"OldTableData{start}"
+        orbit_module = namespace + f"OrbitTableData{start}"
+        old_table = "#[" + ",".join(
+            "#[" + ",".join(base.lean_nat_array(entry) for entry in row) + "]"
+            for row in old_rows[start:stop]) + "]"
+        orbit_table = "#[" + ",".join(
+            "#[" + ",".join(
+                "#[" + ",".join("[" + ",".join(map(str, indices)) + "]"
+                                    for indices in entry) + "]"
+                for entry in row) + "]"
+            for row in word_index_rows[start:stop]) + "]"
+        outputs[old_module] = executable_header(
+            [representation_module], old_module,
+            f"Executable old-coordinate table for states {start}–{stop - 1}.") + f"""private def childOldTable : Array (Array (Array ℕ)) :=
+  {old_table}
+
+def childOldMasks (i : Fin {size}) (c : Fin {cyclic_count}) : Array ℕ :=
+  (childOldTable[i.val]!)[c.val]!
+
+end SymmetricSubgroupAsymptotics.{old_module}
+"""
+        outputs[orbit_module] = executable_header(
+            [orbits_module], orbit_module,
+            f"Executable orbit-word table for states {start}–{stop - 1}.") + f"""abbrev Source := {representation_module}.Source
+local instance sourceGroup : Group Source := {top_module}.group
+local instance sourceInhabited : Inhabited Source := ⟨1⟩
+
+private def wordDictionary : Array Source :=
+  {word_dictionary_expr}
+
+private def childOrbitTable : Array (Array (Array (List ℕ))) :=
+  {orbit_table}
+
+def childOrbitRows (i : Fin {size}) (c : Fin {cyclic_count}) : Array (List Source) :=
+  ((childOrbitTable[i.val]!)[c.val]!).map
+    (fun row ↦ row.map (fun k ↦ wordDictionary[k]!))
+
+end SymmetricSubgroupAsymptotics.{orbit_module}
+"""
         join_chunks.append((module, start, stop))
         outputs[module] = dependent_header(
-            [join_data_module], namespace, top_module, f"Join{start}",
+            [join_data_module, old_module, orbit_module], namespace, top_module, f"Join{start}",
             f"Selected invariant-state cyclic joins {start}–{stop - 1}.") + f"""namespace JoinChunk{start}
 
 def embed (i : Fin {size}) : Fin {state_count} :=
   ⟨{start} + i.val, by omega⟩
+
+private def childOldCoordinates (i : Fin {size})
+    (c : Fin {cyclic_count})
+    (j : Fin ({representation_module}.charts (child (embed i) c)).1) :
+    Fin ({representation_module}.charts (embed i)).1 → ZMod 2 :=
+  binaryVectorOfMask ({representation_module}.charts (embed i)).1
+    ((SymmetricSubgroupAsymptotics.{old_module}.childOldMasks i c)[j.val]!)
+
+private def childOrbitWords (i : Fin {size})
+    (c : Fin {cyclic_count})
+    (j : Fin ({representation_module}.charts (child (embed i) c)).1) : List Source :=
+  (SymmetricSubgroupAsymptotics.{orbit_module}.childOrbitRows i c)[j.val]!
 
 private theorem old_mem_child : ∀ i : Fin {size}, ∀ c j,
     ({representation_module}.charts (embed i)).2.inclusion (Pi.single j 1) ∈
@@ -151,12 +263,14 @@ private theorem child_basis_eq : ∀ i : Fin {size}, ∀ c j,
     ({representation_module}.charts (child (embed i) c)).2.inclusion
         (Pi.single j 1) =
       ({representation_module}.charts (embed i)).2.inclusion
-          (childOldCoordinates (embed i) c j) +
-        ((childOrbitWords (embed i) c j).map (fun g ↦
+          (childOldCoordinates i c j) +
+        ((childOrbitWords i c j).map (fun g ↦
           {representation_module}.representation g
             ({orbits_module}.cyclicRepresentative c))).sum := by
   intro i c
-  fin_cases i <;> fin_cases c <;> native_decide +revert
+  fin_cases i <;> fin_cases c <;>
+    simp only [childOldCoordinates, childOrbitWords] <;>
+    native_decide +revert
 
 theorem child_eq (i : Fin {size}) (c : Fin {cyclic_count}) :
     ({representation_module}.states (child (embed i) c)).toSubmodule =
@@ -173,7 +287,7 @@ theorem child_eq (i : Fin {size}) (c : Fin {cyclic_count}) :
     ({representation_module}.states_space (child (embed i) c))
     ({orbits_module}.cyclicRepresentative c)
     (old_mem_child i c) (cyclic_mem_child i c)
-    (childOldCoordinates (embed i) c) (childOrbitWords (embed i) c)
+    (childOldCoordinates i c) (childOrbitWords i c)
     (child_basis_eq i c)
 
 end JoinChunk{start}
@@ -254,7 +368,7 @@ def main() -> int:
                      args.orbits_module, args.top_module, data,
                      args.input.name)
     outputs, _joins, chunks = split_source(
-        full, args.module, args.representation_module, args.orbits_module,
+        base, data, full, args.module, args.representation_module, args.orbits_module,
         args.top_module,
         data["state_count"], data["cyclic_count"], args.chunk_size)
     for module, payload in outputs.items():
