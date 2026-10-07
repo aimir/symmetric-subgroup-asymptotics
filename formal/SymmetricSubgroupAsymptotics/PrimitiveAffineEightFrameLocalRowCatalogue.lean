@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFramePointedTopMatch
+import SymmetricSubgroupAsymptotics.FaithfulBinaryPlaneOrderSixNoncommutative
 
 /-!
 # Kernel-checked local-row dispatcher for an eight-point top
@@ -83,7 +84,8 @@ structure DegreeEightLiteralLocalRowCatalogue
     ∀ (L : Type) [Group L] [Finite L]
       (f : MulAction.stabilizer T (0 : Fin 8) →* L),
       Function.Surjective f →
-      (Nat.card L = 3 ∨ Nat.card L = 6) →
+      (Nat.card L = 3 ∨
+        (Nat.card L = 6 ∧ ¬ IsMulCommutative L)) →
       ∃ r : Row, ∃ e : L ≃* (row r).ModelLocalGroup,
         e.toMonoidHom.comp f = (row r).literalLocalMap
 
@@ -114,7 +116,20 @@ noncomputable def selectActual
   let hselected := C.complete (LocalQuotient block P) f
     (DegreeFourZeroCoreEightLiteralTopMatch.transportedLocalMap_surjective
       (block := block) (P := P) topMatch hr hD (0 : Fin 8))
-    (degreeFourZeroCoreTopStabilizerLocalTarget_card block P hr)
+    (by
+      rcases degreeFourZeroCoreTopStabilizerLocalTarget_card block P hr with
+        h3 | h6
+      · exact Or.inl h3
+      · refine Or.inr ⟨h6, ?_⟩
+        let C0 := chart block P
+        letI : Fact P.p.Prime := C0.primeFact
+        have hp : P.p = 2 := degreeFour_profilePrime_eq_two block P hr
+        have hV : Module.finrank (ZMod P.p) C0.V = 2 := by
+          change C0.d = 2
+          exact (degreeFour_translationDimension block P hr).2
+        exact not_isMulCommutative_of_faithful_binary_plane_card_six_at
+          hp (binaryAffineLocalLinearRepresentation block P).ρ h6 hV
+          (binaryAffineLocalLinearRepresentation_injective block P))
   let r : C.Row := Classical.choose hselected
   let e : LocalQuotient block P ≃* (C.row r).ModelLocalGroup :=
     Classical.choose (Classical.choose_spec hselected)

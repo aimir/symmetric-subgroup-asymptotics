@@ -298,10 +298,7 @@ private def classCode (x : Source) : Fin {c} := classCodeRows x.index
 def classInvariant : FiniteConjugacyGeneratorInvariant ambient representative where
   Code := Fin {c}
   code := classCode
-  generator_invariant := by
-    intro i x
-    rcases x with ⟨j⟩
-    fin_cases i <;> fin_cases j <;> native_decide
+  generator_invariant := by native_decide +revert
   representative_injective := by decide +kernel
 
 private def centralizerCard (i : Fin {c}) : ℕ :=

@@ -55,7 +55,7 @@ noncomputable def singletonOfOrderThree
   complete := by
     intro L _ _ f hf hcard
     have hL : Nat.card L = 3 := by
-      rcases hcard with h3 | h6
+      rcases hcard with h3 | ⟨h6, _⟩
       · exact h3
       · exfalso
         have hdvd : Nat.card L ∣

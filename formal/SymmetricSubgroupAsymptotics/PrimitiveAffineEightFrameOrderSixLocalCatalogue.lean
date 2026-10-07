@@ -58,7 +58,7 @@ noncomputable def singletonOfOrderSix
   complete := by
     intro L _ _ f hf hcard
     have hL : Nat.card L = 6 := by
-      rcases hcard with h3 | h6
+      rcases hcard with h3 | ⟨h6, _⟩
       · exact False.elim (hnoThree L f hf h3)
       · exact h6
     have hfker : Nat.card f.ker = 1 :=
