@@ -40,15 +40,18 @@ def lookup(values: list[str], variable: str = "i.val", start: int = 0) -> str:
             f"{lookup(values[middle:], variable, start + middle)})")
 
 
-def lean_word(word: list[int], orbits_module: str) -> str:
-    require(all(type(x) is int and 0 <= x < 3 for x in word),
+def lean_word(word: list[int], orbits_module: str,
+              generator_count: int) -> str:
+    require(all(type(x) is int and 0 <= x < generator_count for x in word),
             "invalid generator word")
     return (f"{orbits_module}.sourceWord [" +
             ",".join(map(str, word)) + "]")
 
 
-def lean_word_list(words: list[list[int]], orbits_module: str) -> str:
-    return "[" + ",".join(lean_word(x, orbits_module) for x in words) + "]"
+def lean_word_list(words: list[list[int]], orbits_module: str,
+                   generator_count: int) -> str:
+    return "[" + ",".join(
+        lean_word(x, orbits_module, generator_count) for x in words) + "]"
 
 
 def lean_nat_array(values: list[int]) -> str:
@@ -74,25 +77,29 @@ def read_input(path: Path) -> dict:
     old = module.get("child_old_coordinates")
     words = module.get("child_orbit_words")
     displacement = module.get("displacement_bases")
+    displacement_duals = module.get("displacement_coordinate_masks")
     provenance = module.get("displacement_provenance")
-    require(isinstance(modules, list) and len(modules) == 5 and
-            isinstance(cyclic, list) and len(cyclic) == 5 and
-            isinstance(children, list) and len(children) == 5 and
-            isinstance(old, list) and len(old) == 5 and
-            isinstance(words, list) and len(words) == 5 and
-            isinstance(displacement, list) and len(displacement) == 5 and
-            isinstance(provenance, list) and len(provenance) == 5,
-            "invalid five-state registry")
+    state_count = len(modules) if isinstance(modules, list) else 0
+    cyclic_count = len(cyclic) if isinstance(cyclic, list) else 0
+    require(1 <= state_count <= 256 and 1 <= cyclic_count <= 256 and
+            isinstance(children, list) and len(children) == state_count and
+            isinstance(old, list) and len(old) == state_count and
+            isinstance(words, list) and len(words) == state_count and
+            isinstance(displacement, list) and len(displacement) == state_count and
+            isinstance(displacement_duals, list) and
+              len(displacement_duals) == state_count and
+            isinstance(provenance, list) and len(provenance) == state_count,
+            "invalid selected module registry")
     dimensions = [len(row) for row in modules]
-    require(dimensions == [0, 8, 8, 8, 16],
-            "unexpected selected-row dimensions")
+    require(dimensions[0] == 0 and dimensions[-1] == 16,
+            "selected module registry lacks bottom or whole state")
     flat_children, flat_old, flat_words = [], [], []
-    for i in range(5):
-        require(len(children[i]) == len(old[i]) == len(words[i]) == 5,
+    for i in range(state_count):
+        require(len(children[i]) == len(old[i]) == len(words[i]) == cyclic_count,
                 "invalid child row")
-        for c in range(5):
+        for c in range(cyclic_count):
             child = children[i][c]
-            require(type(child) is int and 0 <= child < 5 and
+            require(type(child) is int and 0 <= child < state_count and
                     len(old[i][c]) == dimensions[child] and
                     len(words[i][c]) == dimensions[child],
                     "invalid child witness width")
@@ -101,18 +108,33 @@ def read_input(path: Path) -> dict:
             flat_children.append(child)
             flat_old.append(old[i][c])
             flat_words.append(words[i][c])
-    require([len(row) for row in displacement] == dimensions,
-            "selected row does not have zero module head")
+    displacement_dimensions = [len(row) for row in displacement]
+    require(all(len(displacement_duals[i]) == displacement_dimensions[i]
+                for i in range(state_count)),
+            "invalid displacement dual-coordinate width")
     for i, rows in enumerate(provenance):
-        require(len(rows) == dimensions[i], "invalid displacement width")
+        require(len(rows) == displacement_dimensions[i],
+                "invalid displacement width")
         for terms in rows:
             require(all(isinstance(pair, list) and len(pair) == 2 and
-                        type(pair[0]) is int and 0 <= pair[0] < 3 and
+                        type(pair[0]) is int and 0 <= pair[0] and
                         type(pair[1]) is int and 0 <= pair[1] < dimensions[i]
                         for pair in terms), "invalid displacement provenance")
+    generators = value.get("generators")
+    generator_count = len(generators) if isinstance(generators, list) else 0
+    require(1 <= generator_count <= 16 and
+            all(pair[0] < generator_count
+                for rows in provenance for terms in rows for pair in terms),
+            "invalid displacement generator index")
     return {
         "source_row": value["source_row"],
+        "state_count": state_count,
+        "cyclic_count": cyclic_count,
+        "generator_count": generator_count,
         "dimensions": dimensions,
+        "displacement": displacement,
+        "displacement_duals": displacement_duals,
+        "displacement_dimensions": displacement_dimensions,
         "children": flat_children,
         "old": flat_old,
         "words": flat_words,
@@ -122,13 +144,46 @@ def read_input(path: Path) -> dict:
 
 def emit(module_name: str, representation_module: str, orbits_module: str,
          top_module: str, data: dict, input_name: str) -> str:
-    child_lookup = lookup([str(x) for x in data["children"]],
-                          "i.val * 5 + c.val")
-    old_lookup = lookup([lean_nat_array(x) for x in data["old"]],
-                        "i.val * 5 + c.val")
-    word_lookup = lookup(
-        ["#[" + ",".join(lean_word_list(ws, orbits_module) for ws in row) + "]"
-         for row in data["words"]], "i.val * 5 + c.val")
+    state_count = data["state_count"]
+    cyclic_count = data["cyclic_count"]
+    generator_count = data["generator_count"]
+    child_rows = [data["children"][i * cyclic_count:(i + 1) * cyclic_count]
+                  for i in range(state_count)]
+    old_rows = [data["old"][i * cyclic_count:(i + 1) * cyclic_count]
+                for i in range(state_count)]
+    word_rows = [data["words"][i * cyclic_count:(i + 1) * cyclic_count]
+                 for i in range(state_count)]
+    word_dictionary: list[list[int]] = []
+    word_index: dict[tuple[int, ...], int] = {}
+    word_index_rows = []
+    for row in word_rows:
+        index_row = []
+        for entry in row:
+            index_entry = []
+            for words in entry:
+                indices = []
+                for word in words:
+                    key = tuple(word)
+                    if key not in word_index:
+                        word_index[key] = len(word_dictionary)
+                        word_dictionary.append(word)
+                    indices.append(word_index[key])
+                index_entry.append(indices)
+            index_row.append(index_entry)
+        word_index_rows.append(index_row)
+    child_table = "#[" + ",".join(lean_nat_array(row) for row in child_rows) + "]"
+    old_table = "#[" + ",".join(
+        "#[" + ",".join(lean_nat_array(entry) for entry in row) + "]"
+        for row in old_rows) + "]"
+    word_table = "#[" + ",".join(
+        "#[" + ",".join(
+            "#[" + ",".join("[" + ",".join(map(str, indices)) + "]"
+                              for indices in entry) + "]"
+            for entry in row) + "]"
+        for row in word_index_rows) + "]"
+    word_dictionary_expr = "#[" + ",".join(
+        lean_word(word, orbits_module, generator_count)
+        for word in word_dictionary) + "]"
     text = f"""import SymmetricSubgroupAsymptotics.{orbits_module}
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameDisplacementImporter
 import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicOrbitStabilizerRegistry
@@ -137,8 +192,8 @@ import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicOrbitStabilizerRegistry
 # Selected eight-frame row {data['source_row']}: module registry
 
 Generated by `emit_lean_frames8_selected_module_registry.py` from
-`{input_name}`.  Lean checks all twenty-five cyclic joins and all literal
-generator-displacement decompositions.
+`{input_name}`.  Lean checks every cyclic join and every literal
+generator-displacement decomposition.
 -/
 
 set_option autoImplicit false
@@ -152,24 +207,43 @@ namespace SymmetricSubgroupAsymptotics.{module_name}
 
 abbrev Source := {representation_module}.Source
 local instance sourceGroup : Group Source := {top_module}.group
+local instance sourceInhabited : Inhabited Source := ⟨1⟩
 abbrev ModelModule := {representation_module}.ModelModule
 
-def child (i c : Fin 5) : Fin 5 :=
-  {child_lookup}
+private def childTable : Array (Array (Fin {state_count})) :=
+  {child_table}
 
-private def childOldMasks (i c : Fin 5) : Array ℕ :=
-  {old_lookup}
+private def childOldTable : Array (Array (Array ℕ)) :=
+  {old_table}
 
-private def childOrbitRows (i c : Fin 5) : Array (List Source) :=
-  {word_lookup}
+private def wordDictionary : Array Source :=
+  {word_dictionary_expr}
 
-private def childOldCoordinates (i c : Fin 5)
+private def childOrbitTable : Array (Array (Array (List ℕ))) :=
+  {word_table}
+
+def child (i : Fin {state_count}) (c : Fin {cyclic_count}) :
+    Fin {state_count} :=
+  (childTable[i.val]!)[c.val]!
+
+private def childOldMasks (i : Fin {state_count}) (c : Fin {cyclic_count}) :
+    Array ℕ :=
+  (childOldTable[i.val]!)[c.val]!
+
+private def childOrbitRows (i : Fin {state_count}) (c : Fin {cyclic_count}) :
+    Array (List Source) :=
+  ((childOrbitTable[i.val]!)[c.val]!).map
+    (fun row ↦ row.map (fun k ↦ wordDictionary[k]!))
+
+def childOldCoordinates (i : Fin {state_count})
+    (c : Fin {cyclic_count})
     (j : Fin ({representation_module}.charts (child i c)).1) :
     Fin ({representation_module}.charts i).1 → ZMod 2 :=
   binaryVectorOfMask ({representation_module}.charts i).1
     ((childOldMasks i c)[j.val]!)
 
-private def childOrbitWords (i c : Fin 5)
+def childOrbitWords (i : Fin {state_count})
+    (c : Fin {cyclic_count})
     (j : Fin ({representation_module}.charts (child i c)).1) : List Source :=
   (childOrbitRows i c)[j.val]!
 
@@ -198,7 +272,7 @@ private theorem child_basis_eq : ∀ i c j,
   intro i c
   fin_cases i <;> fin_cases c <;> native_decide +revert
 
-theorem child_eq (i c : Fin 5) :
+theorem child_eq (i : Fin {state_count}) (c : Fin {cyclic_count}) :
     ({representation_module}.states (child i c)).toSubmodule =
       ({representation_module}.states i).toSubmodule ⊔
         binaryOrbitSpan {representation_module}.representation
@@ -216,10 +290,10 @@ theorem child_eq (i c : Fin 5) :
     (childOldCoordinates i c) (childOrbitWords i c) (child_basis_eq i c)
 
 private theorem bottom_eq :
-    ({representation_module}.states (0 : Fin 5)).toSubmodule = ⊥ := by
+    ({representation_module}.states (0 : Fin {state_count})).toSubmodule = ⊥ := by
   rw [{representation_module}.states_space]
   apply Submodule.finrank_eq_zero.mp
-  exact ({representation_module}.charts (0 : Fin 5)).2.finrank
+  exact ({representation_module}.charts (0 : Fin {state_count})).2.finrank
 
 /-- Complete invariant-submodule registry for the selected module. -/
 noncomputable def axes : BinaryInvariantCyclicOrbitRegistry
@@ -227,19 +301,49 @@ noncomputable def axes : BinaryInvariantCyclicOrbitRegistry
   BinaryInvariantCyclicOrbitRegistry.ofMinimalStabilizerCover
     {orbits_module}.orbitRepresentative {orbits_module}.orbitCover
     {orbits_module}.cyclicRepresentative {orbits_module}.orbitCyclic
-    {orbits_module}.orbit_span_eq (0 : Fin 5) bottom_eq child child_eq
+    {orbits_module}.orbit_span_eq (0 : Fin {state_count}) bottom_eq child child_eq
 
 """
-    for i, (d, rows) in enumerate(zip(data["dimensions"], data["provenance"])):
-        text += f"namespace D{i}\n\n"
-        if d == 0:
+    displacement_entries = []
+    for i, (state_dimension, displacement_dimension, basis, dual, rows) in enumerate(
+            zip(data["dimensions"], data["displacement_dimensions"],
+                data["displacement"], data["displacement_duals"],
+                data["provenance"])):
+        basis_expr = lookup([str(x) for x in basis], "j.val") if basis else "0"
+        dual_expr = lookup([str(x) for x in dual], "j.val") if dual else "0"
+        membership_proof = (
+            "  exact Fin.elim0 j"
+            if displacement_dimension == 0 else
+            "  fin_cases j <;> native_decide")
+        text += f"""namespace D{i}
+
+private def displacementBasis (j : Fin {displacement_dimension}) : ℕ :=
+  {basis_expr}
+
+private def displacementDual (j : Fin {displacement_dimension}) : ℕ :=
+  {dual_expr}
+
+def displacementChart :
+    BinaryCoordinateSpace 16 {displacement_dimension} :=
+  binaryCoordinateSpaceOfMasks 16 {displacement_dimension}
+    displacementBasis displacementDual (by native_decide)
+
+private theorem displacement_le_state :
+    displacementChart.space ≤
+      ({representation_module}.states {i}).toSubmodule := by
+  rw [{representation_module}.states_space]
+  apply displacementChart.le_of_basis_mem
+  intro j
+  apply (({representation_module}.charts {i}).2.mem_iff _).mpr
+{membership_proof}
+
+"""
+        if displacement_dimension == 0:
             text += f"""noncomputable def certificate :
     BinaryCoordinateDisplacementCertificate
       {representation_module}.representation {top_module}.ambient
-      ({representation_module}.states {i})
-      ({representation_module}.charts {i}).2 where
-  space_le_state := by
-    rw [{representation_module}.states_space]
+      ({representation_module}.states {i}) displacementChart where
+  space_le_state := displacement_le_state
   termCount := fun j ↦ Fin.elim0 j
   termGenerator := fun j ↦ Fin.elim0 j
   termVector := fun j ↦ Fin.elim0 j
@@ -248,30 +352,35 @@ noncomputable def axes : BinaryInvariantCyclicOrbitRegistry
 end D{i}
 
 """
-            continue
-        count_expr = lookup([str(len(x)) for x in rows], "j.val")
-        gen_rows = ["#[" + ",".join(str(pair[0]) for pair in terms) + "]"
-                    for terms in rows]
-        basis_rows = ["#[" + ",".join(str(pair[1]) for pair in terms) + "]"
-                      for terms in rows]
-        gen_expr = lookup(gen_rows, "j.val")
-        basis_expr = lookup(basis_rows, "j.val")
-        text += f"""private def termCount (j : Fin {d}) : ℕ :=
+        else:
+            count_expr = lookup([str(len(x)) for x in rows], "j.val")
+            gen_rows = ["#[" + ",".join(str(pair[0]) for pair in terms) + "]"
+                        for terms in rows]
+            state_rows = ["#[" + ",".join(str(pair[1]) for pair in terms) + "]"
+                          for terms in rows]
+            gen_expr = lookup(gen_rows, "j.val")
+            state_expr = lookup(state_rows, "j.val")
+            text += f"""private def termCount (j : Fin {displacement_dimension}) : ℕ :=
   {count_expr}
 
-private def generatorRows (j : Fin {d}) : Array (Fin 3) :=
+private def generatorRows (j : Fin {displacement_dimension}) :
+    Array (Fin {generator_count}) :=
   {gen_expr}
 
-private def stateBasisRows (j : Fin {d}) : Array (Fin {d}) :=
-  {basis_expr}
+private def stateBasisRows (j : Fin {displacement_dimension}) :
+    Array (Fin {state_dimension}) :=
+  {state_expr}
 
-private def termGenerator (j : Fin {d}) (t : Fin (termCount j)) : Fin 3 :=
+private def termGenerator (j : Fin {displacement_dimension})
+    (t : Fin (termCount j)) : Fin {generator_count} :=
   (generatorRows j)[t.val]!
 
-private def termStateBasis (j : Fin {d}) (t : Fin (termCount j)) : Fin {d} :=
+private def termStateBasis (j : Fin {displacement_dimension})
+    (t : Fin (termCount j)) : Fin {state_dimension} :=
   (stateBasisRows j)[t.val]!
 
-private def termVector (j : Fin {d}) (t : Fin (termCount j)) :
+private def termVector (j : Fin {displacement_dimension})
+    (t : Fin (termCount j)) :
     ({representation_module}.states {i}).toSubmodule :=
   ⟨({representation_module}.charts {i}).2.inclusion
       (Pi.single (termStateBasis j t) 1), by
@@ -281,10 +390,8 @@ private def termVector (j : Fin {d}) (t : Fin (termCount j)) :
 noncomputable def certificate :
     BinaryCoordinateDisplacementCertificate
       {representation_module}.representation {top_module}.ambient
-      ({representation_module}.states {i})
-      ({representation_module}.charts {i}).2 where
-  space_le_state := by
-    rw [{representation_module}.states_space]
+      ({representation_module}.states {i}) displacementChart where
+  space_le_state := displacement_le_state
   termCount := termCount
   termGenerator := termGenerator
   termVector := termVector
@@ -295,41 +402,45 @@ noncomputable def certificate :
 end D{i}
 
 """
-    text += f"""noncomputable def displacementCertificate (i : Fin 5) :
+        displacement_entries.append(
+            f"⟨{displacement_dimension}, D{i}.displacementChart⟩")
+    dispatch = "\n".join(
+        f"  · exact D{i}.certificate" for i in range(state_count))
+    text += f"""noncomputable def displacementCharts (i : Fin {state_count}) :
+    Σ d, BinaryCoordinateSpace 16 d :=
+  {lookup(displacement_entries)}
+
+noncomputable def displacementCertificate (i : Fin {state_count}) :
     BinaryCoordinateDisplacementCertificate
       {representation_module}.representation {top_module}.ambient
-      ({representation_module}.states i)
-      ({representation_module}.charts i).2 := by
+      ({representation_module}.states i) (displacementCharts i).2 := by
   rcases i with ⟨i, hi⟩
   interval_cases i
-  · exact D0.certificate
-  · exact D1.certificate
-  · exact D2.certificate
-  · exact D3.certificate
-  · exact D4.certificate
+{dispatch}
 
-/-- The selected row has zero module head; rank two is retained for the
-degree-four consumer's common top/module budget. -/
+/-- Literal displacement spaces have codimension at most two in every
+invariant state, while the cyclic join table is complete. -/
 noncomputable def registry :
     _root_.SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.FiniteFrameModuleCyclicOrbitDisplacementRegistry {representation_module}.representation 2 :=
   _root_.SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.FiniteFrameModuleCyclicOrbitDisplacementRegistry.ofBinaryCoordinateCertificates
         {representation_module}.states axes {top_module}.ambient
-        (fun i ↦ ({representation_module}.charts i).1)
-        (fun i ↦ ({representation_module}.charts i).2)
+        (fun i ↦ (displacementCharts i).1)
+        (fun i ↦ (displacementCharts i).2)
         displacementCertificate (by
           intro i
           rw [{representation_module}.states_space,
             ({representation_module}.charts i).2.finrank]
           change ({representation_module}.charts i).1 ≤
-            ({representation_module}.charts i).1 + 2
-          omega)
+            (displacementCharts i).1 + 2
+          rcases i with ⟨i, hi⟩
+          interval_cases i <;>
+            simp [{representation_module}.charts, displacementCharts])
 
 end SymmetricSubgroupAsymptotics.{module_name}
 
 end
 """
     return text
-
 
 def write_atomic(path: Path, payload: bytes, force: bool) -> None:
     require(force or not path.exists(), "output exists; use --force")

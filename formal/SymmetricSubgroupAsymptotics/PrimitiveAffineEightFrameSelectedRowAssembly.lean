@@ -248,6 +248,123 @@ noncomputable def toBounds [Finite (elementaryChart block P).V]
 
 end DegreeFourZeroCoreEightOrderOneSixtyEightSelectedRow
 
+/-- A selected eight-frame row after the local Schreier calculation has
+already been checked.  This is the order-uniform publication boundary: the
+model top and its point-stabilizer quotient may have any of the finite
+orders in the retained catalogue. -/
+structure DegreeFourZeroCoreEightSelectedRow
+    {ModelGroup : Type} [Group ModelGroup] [Finite ModelGroup]
+    (topMatch : DegreeFourZeroCoreEightLiteralTopMatch
+      block ModelGroup)
+    (hr : Nat.card block.Fibre = 4)
+    (hD : degreeFourTernaryCore block P = ⊥) : Type 1 where
+  ModelModule : Type
+  [modelAddCommGroup : AddCommGroup ModelModule]
+  [modelModule : Module (ZMod P.p) ModelModule]
+  [modelFiniteDimensional : FiniteDimensional
+    (ZMod P.p) ModelModule]
+  [modelFinite : Finite ModelModule]
+  representation : Representation
+    (ZMod P.p) ModelGroup ModelModule
+  inducedEmbedding :
+    (Representation.ind
+      (fullFrameInducedStabilizer block P
+        (DegreeFourZeroCoreEightLiteralTopMatch.pointOver
+          (block := block) topMatch (0 : Fin 8))).subtype
+      (fullFrameInducedLocalRepresentation block P
+        (DegreeFourZeroCoreEightLiteralTopMatch.pointOver
+          (block := block) topMatch (0 : Fin 8)))).IntertwiningMap
+      (representation.comp
+        (DegreeFourZeroCoreEightLiteralTopMatch.groupEquiv
+          (block := block) (P := P) topMatch hr hD).toMonoidHom)
+  inducedEmbedding_injective : Function.Injective inducedEmbedding
+  model_finrank_eq_sixteen :
+    Module.finrank (ZMod P.p) ModelModule = 16
+  classCount : ℕ
+  representative : Fin classCount → ModelGroup
+  conjugacyCover : FiniteConjugacyCardinalCover representative
+  TopIndex : Type
+  [topIndexFinite : Finite TopIndex]
+  AmbientIndex : Type
+  GeneratorIndex : Type
+  ambient : AmbientIndex → ModelGroup
+  stateGenerators : TopIndex → GeneratorIndex → ModelGroup
+  top : FiniteTopRelativeBinaryRankWordRegistry
+    (rank := 2) conjugacyCover ambient stateGenerators
+  moduleRegistry : FiniteFrameModuleCyclicOrbitDisplacementRegistry
+    representation 2
+
+attribute [instance]
+  DegreeFourZeroCoreEightSelectedRow.modelAddCommGroup
+  DegreeFourZeroCoreEightSelectedRow.modelModule
+  DegreeFourZeroCoreEightSelectedRow.modelFiniteDimensional
+  DegreeFourZeroCoreEightSelectedRow.modelFinite
+  DegreeFourZeroCoreEightSelectedRow.topIndexFinite
+
+namespace DegreeFourZeroCoreEightSelectedRow
+
+/-- Package the checked induced embedding as the generic row match. -/
+noncomputable def inducedRowMatch
+    {ModelGroup : Type} [Group ModelGroup] [Finite ModelGroup]
+    {topMatch : DegreeFourZeroCoreEightLiteralTopMatch block ModelGroup}
+    {hr : Nat.card block.Fibre = 4}
+    {hD : degreeFourTernaryCore block P = ⊥}
+    (C : DegreeFourZeroCoreEightSelectedRow block P topMatch hr hD) :
+    DegreeFourZeroCoreEightInducedRowMatch
+      block P ModelGroup C.ModelModule C.representation
+        (DegreeFourZeroCoreEightLiteralTopMatch.groupEquiv
+          (block := block) (P := P) topMatch hr hD) where
+  point := DegreeFourZeroCoreEightLiteralTopMatch.pointOver
+    (block := block) topMatch (0 : Fin 8)
+  inducedEmbedding := C.inducedEmbedding
+  inducedEmbedding_injective := C.inducedEmbedding_injective
+
+/-- Forget the exact coordinate dimension after constructing the literal
+frame equivalence. -/
+noncomputable def toSparseEmbeddedRow
+    {ModelGroup : Type} [Group ModelGroup] [Finite ModelGroup]
+    {topMatch : DegreeFourZeroCoreEightLiteralTopMatch block ModelGroup}
+    {hr : Nat.card block.Fibre = 4}
+    {hD : degreeFourTernaryCore block P = ⊥}
+    (C : DegreeFourZeroCoreEightSelectedRow block P topMatch hr hD) :
+    DegreeFourZeroCoreEightSparseEmbeddedRow block P := by
+  let groupEquiv :=
+    DegreeFourZeroCoreEightLiteralTopMatch.groupEquiv
+      (block := block) (P := P) topMatch hr hD
+  let frameMatch :=
+    DegreeFourZeroCoreEightInducedRowMatch.toLiteralFrameMatch
+      block P C.representation groupEquiv (C.inducedRowMatch block P)
+  exact DegreeFourZeroCoreEightLiteralFrameMatch.toSparseEmbeddedRow
+    block P C.representation groupEquiv frameMatch
+      C.representative C.conjugacyCover C.ambient C.stateGenerators
+      C.top C.moduleRegistry
+
+/-- The checked sixteen-dimensional model is the full degree-four frame. -/
+noncomputable def toSparseMatchedRow
+    {ModelGroup : Type} [Group ModelGroup] [Finite ModelGroup]
+    {topMatch : DegreeFourZeroCoreEightLiteralTopMatch block ModelGroup}
+    {hr : Nat.card block.Fibre = 4}
+    {hD : degreeFourTernaryCore block P = ⊥}
+    (C : DegreeFourZeroCoreEightSelectedRow block P topMatch hr hD)
+    (hs : Nat.card block.Points = 8) :
+    DegreeFourZeroCoreEightSparseMatchedRow block P :=
+  (C.toSparseEmbeddedRow block P).toMatchedOfFinrankEq
+    block P ((degreeFourEightFullFrame_finrank_eq_sixteen block P hr hs).trans
+      C.model_finrank_eq_sixteen.symm)
+
+/-- The order-uniform selected row supplies the five-slot capacity bound. -/
+noncomputable def toBounds [Finite (elementaryChart block P).V]
+    {ModelGroup : Type} [Group ModelGroup] [Finite ModelGroup]
+    {topMatch : DegreeFourZeroCoreEightLiteralTopMatch block ModelGroup}
+    {hr : Nat.card block.Fibre = 4}
+    {hD : degreeFourTernaryCore block P = ⊥}
+    (C : DegreeFourZeroCoreEightSelectedRow block P topMatch hr hD)
+    (hs : Nat.card block.Points = 8) :
+    DegreeFourZeroCoreFiniteFrameBounds block P 5 :=
+  (C.toSparseMatchedRow block P hs).toBounds block P
+
+end DegreeFourZeroCoreEightSelectedRow
+
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

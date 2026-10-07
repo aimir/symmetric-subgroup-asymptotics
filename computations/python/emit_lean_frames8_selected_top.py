@@ -266,6 +266,15 @@ local instance selectedSourceGroup : Group Source := group
 def originalEquiv : Source ≃* Subgroup.closure (Set.range generators) :=
   certificate.rowEquiv rows_injective previousRow previous_checked
 
+/-- The forward map of the finite-row equivalence is the literal decoded
+permutation stored in that row.  Exposing this computational half avoids
+unfolding the noncomputable inverse when downstream certificates check a
+point-stabilizer predicate. -/
+@[simp] theorem originalEquiv_apply (s : Source) :
+    ((originalEquiv s : Subgroup.closure (Set.range generators)) :
+      Equiv.Perm (Fin 8)) = certificate.toCayley.elements s.index :=
+  rfl
+
 def ambient (j : Fin {d}) : Source :=
   ⟨certificate.next certificate.identity j⟩
 
