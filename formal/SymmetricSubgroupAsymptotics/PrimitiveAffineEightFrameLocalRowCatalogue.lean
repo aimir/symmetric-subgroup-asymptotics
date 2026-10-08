@@ -98,6 +98,45 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
+/-- A selected local row with the target identification retained in its
+type.  This is the dependent form needed by a shared-top table: after the
+catalogue chooses a row, the induced-module certificate for precisely that
+row can be used without an external label or a cast between unrelated
+finite target types. -/
+structure ActualMatch
+    {ModelGroup : Type} [Group ModelGroup]
+    (topMatch : DegreeFourZeroCoreEightLiteralTopMatch block ModelGroup)
+    (R : DegreeEightLiteralLocalRow topMatch.literalAction)
+    (hr : Nat.card block.Fibre = 4)
+    (hD : degreeFourTernaryCore block P = ⊥) : Type where
+  targetEquiv : LocalQuotient block P ≃* R.ModelLocalGroup
+  compatible : targetEquiv.toMonoidHom.comp
+      (DegreeFourZeroCoreEightLiteralTopMatch.transportedLocalMap
+        (block := block) (P := P) topMatch hr hD (0 : Fin 8)) =
+    R.literalLocalMap
+
+namespace ActualMatch
+
+/-- Forget only the row index after turning an exact match into the pointed
+local comparison consumed by the induced-frame transport. -/
+noncomputable def toPointedLocalMatch
+    {ModelGroup : Type} [Group ModelGroup]
+    {topMatch : DegreeFourZeroCoreEightLiteralTopMatch block ModelGroup}
+    {R : DegreeEightLiteralLocalRow topMatch.literalAction}
+    {hr : Nat.card block.Fibre = 4}
+    {hD : degreeFourTernaryCore block P = ⊥}
+    (M : ActualMatch block P topMatch R hr hD) :
+    DegreeFourZeroCoreEightPointedLocalMatch
+      block P topMatch hr hD (0 : Fin 8) where
+  ModelLocalGroup := R.ModelLocalGroup
+  literalLocalMap := R.literalLocalMap
+  literalLocalMap_surjective := R.literalLocalMap_surjective
+  local_card := R.local_card
+  targetEquiv := M.targetEquiv
+  compatible := M.compatible
+
+end ActualMatch
+
 /-- Apply a literal top's complete local-row dispatcher to the actual
 zero-core local map.  The chosen actual point is the preimage of row point
 zero, so no pointed-conjugacy hypothesis is required. -/
@@ -142,6 +181,43 @@ noncomputable def selectActual
     local_card := (C.row r).local_card
     targetEquiv := e
     compatible := he }⟩
+
+/-- Apply a literal top's complete dispatcher while retaining the selected
+row in the type of its comparison witness.  This is the canonical selection
+API for grouped finite-frame catalogues. -/
+noncomputable def selectActualExact
+    {ModelGroup : Type} [Group ModelGroup]
+    (topMatch : DegreeFourZeroCoreEightLiteralTopMatch
+      block ModelGroup)
+    (C : DegreeEightLiteralLocalRowCatalogue topMatch.literalAction)
+    (hr : Nat.card block.Fibre = 4)
+    (hD : degreeFourTernaryCore block P = ⊥) :
+    Σ r : C.Row, ActualMatch block P topMatch (C.row r) hr hD := by
+  let f := DegreeFourZeroCoreEightLiteralTopMatch.transportedLocalMap
+    (block := block) (P := P) topMatch hr hD (0 : Fin 8)
+  let hselected := C.complete (LocalQuotient block P) f
+    (DegreeFourZeroCoreEightLiteralTopMatch.transportedLocalMap_surjective
+      (block := block) (P := P) topMatch hr hD (0 : Fin 8))
+    (by
+      rcases degreeFourZeroCoreTopStabilizerLocalTarget_card block P hr with
+        h3 | h6
+      · exact Or.inl h3
+      · refine Or.inr ⟨h6, ?_⟩
+        let C0 := chart block P
+        letI : Fact P.p.Prime := C0.primeFact
+        have hp : P.p = 2 := degreeFour_profilePrime_eq_two block P hr
+        have hV : Module.finrank (ZMod P.p) C0.V = 2 := by
+          change C0.d = 2
+          exact (degreeFour_translationDimension block P hr).2
+        exact not_isMulCommutative_of_faithful_binary_plane_card_six_at
+          hp (binaryAffineLocalLinearRepresentation block P).ρ h6 hV
+          (binaryAffineLocalLinearRepresentation_injective block P))
+  let r : C.Row := Classical.choose hselected
+  let e : LocalQuotient block P ≃* (C.row r).ModelLocalGroup :=
+    Classical.choose (Classical.choose_spec hselected)
+  have he : e.toMonoidHom.comp f = (C.row r).literalLocalMap :=
+    Classical.choose_spec (Classical.choose_spec hselected)
+  exact ⟨r, e, he⟩
 
 end DegreeEightLiteralLocalRowCatalogue
 
