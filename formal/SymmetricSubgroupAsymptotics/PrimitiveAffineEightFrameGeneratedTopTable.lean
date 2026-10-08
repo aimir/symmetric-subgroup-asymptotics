@@ -71,6 +71,52 @@ attribute [instance]
 
 namespace GeneratedTopData
 
+/-- Recover the literal point stabilizer from a subgroup of a finite model.
+Generated top files only have to check the point-fixing predicate on their
+finite Cayley rows; the group equivalence is shared by every local row over
+that top. -/
+def sourceStabilizerEquivLiteralOfFixingPredicate
+    {ModelGroup : Type} [Group ModelGroup]
+    (literalAction : Subgroup (Equiv.Perm (Fin 8)))
+    (actionModelEquiv : literalAction ≃* ModelGroup)
+    (sourceStabilizer : Subgroup ModelGroup)
+    (fixes_zero : ∀ x : ModelGroup,
+      x ∈ sourceStabilizer ↔
+        (((actionModelEquiv.symm x : literalAction) :
+          Equiv.Perm (Fin 8)) (0 : Fin 8) = 0)) :
+    sourceStabilizer ≃*
+      MulAction.stabilizer literalAction (0 : Fin 8) where
+  toFun x := ⟨actionModelEquiv.symm x.1,
+    (fixes_zero x.1).mp x.2⟩
+  invFun x := ⟨actionModelEquiv x.1,
+    (fixes_zero (actionModelEquiv x.1)).mpr (by
+      rw [actionModelEquiv.symm_apply_apply]
+      exact x.2)⟩
+  left_inv x := by
+    apply Subtype.ext
+    exact actionModelEquiv.apply_symm_apply x.1
+  right_inv x := by
+    apply Subtype.ext
+    exact actionModelEquiv.symm_apply_apply x.1
+  map_mul' x y := by
+    apply Subtype.ext
+    exact actionModelEquiv.symm.map_mul x.1 y.1
+
+theorem sourceStabilizerEquivLiteralOfFixingPredicate_model
+    {ModelGroup : Type} [Group ModelGroup]
+    (literalAction : Subgroup (Equiv.Perm (Fin 8)))
+    (actionModelEquiv : literalAction ≃* ModelGroup)
+    (sourceStabilizer : Subgroup ModelGroup)
+    (fixes_zero : ∀ x : ModelGroup,
+      x ∈ sourceStabilizer ↔
+        (((actionModelEquiv.symm x : literalAction) :
+          Equiv.Perm (Fin 8)) (0 : Fin 8) = 0))
+    (h : sourceStabilizer) :
+    actionModelEquiv
+        ((sourceStabilizerEquivLiteralOfFixingPredicate literalAction
+          actionModelEquiv sourceStabilizer fixes_zero h).1) = h.1 :=
+  actionModelEquiv.apply_symm_apply h.1
+
 /-- Bind the stored top to an arbitrary literal zero-core block action. -/
 def literalTopMatch
     {w : ℕ} {U : PreE7NonPairActionClass w} {basePoint : Fin w}
