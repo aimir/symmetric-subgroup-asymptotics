@@ -51,6 +51,46 @@ MAX_RADICAL_WORD_NODES = 2_304
 MAX_RADICAL_WORD_DEPTH = 256
 
 
+class SelectedPhaseBudget:
+    """One bounded budget for each independently checkable finite chunk.
+
+    Normal-join certificates are emitted and checked one normal state at a
+    time.  Charging all states to one operation counter made the selected
+    order-576 and order-1152 tops fail before any individual certificate was
+    large.  This ledger preserves the existing ceiling for every chunk and
+    reports the aggregate producer work separately.
+    """
+
+    def __init__(self, operation_limit: int, seconds_limit: float):
+        self.operation_limit = operation_limit
+        self.seconds_limit = seconds_limit
+        self.current_name = "top"
+        self.current = Budget(operation_limit=operation_limit,
+                              seconds_limit=seconds_limit)
+        self.completed: list[tuple[str, int]] = []
+        self.total_operations = 0
+
+    @property
+    def operations(self) -> int:
+        return self.total_operations + self.current.operations
+
+    def tick(self, amount: int = 1) -> None:
+        self.current.tick(amount)
+
+    def next_phase(self, name: str) -> None:
+        self.total_operations += self.current.operations
+        self.completed.append((self.current_name, self.current.operations))
+        self.current_name = name
+        self.current = Budget(operation_limit=self.operation_limit,
+                              seconds_limit=self.seconds_limit)
+
+    def finish(self) -> None:
+        self.total_operations += self.current.operations
+        self.completed.append((self.current_name, self.current.operations))
+        self.current = Budget(operation_limit=self.operation_limit,
+                              seconds_limit=self.seconds_limit)
+
+
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise Refused(message)
@@ -658,7 +698,9 @@ def prepare(binding: dict, module: dict, budget: Budget) -> dict:
                                  max_states=MAX_TOP_ORDER)
                  for state in states]
     children, transitions = [], []
-    for state in states:
+    for state_index, state in enumerate(states):
+        if isinstance(budget, SelectedPhaseBudget):
+            budget.next_phase(f"normal-state-{state_index}")
         child_row, transition_row = [], []
         for representative in representatives:
             child_group = normal_closure_child(
@@ -672,6 +714,8 @@ def prepare(binding: dict, module: dict, budget: Budget) -> dict:
                 max_states=MAX_TOP_ORDER))
         children.append(child_row)
         transitions.append(transition_row)
+    if isinstance(budget, SelectedPhaseBudget):
+        budget.next_phase("radicals-and-row")
     radical = [radical_search(generators, state, lookup, budget)
                for state in states]
     require(max(row["head_rank"] for row in radical) ==
@@ -736,13 +780,16 @@ def main() -> int:
             "operation limit outside selected ceiling")
     require(1.0 <= args.seconds_limit <= 300.0,
             "time limit outside selected ceiling")
-    budget = Budget(operation_limit=args.operation_limit,
-                    seconds_limit=args.seconds_limit)
+    budget = SelectedPhaseBudget(operation_limit=args.operation_limit,
+                                 seconds_limit=args.seconds_limit)
     result = prepare(read_json(args.binding), read_json(args.module), budget)
+    budget.finish()
+    result["producer_phase_operations"] = budget.completed
     payload = (json.dumps(result, separators=(",", ":")) + "\n").encode()
     write_atomic(args.output, payload, args.force)
     print(f"{args.output}: {len(payload)} bytes; row {result['source_row']}; "
-          f"top order {result['top_order']}; operations {budget.operations}")
+          f"top order {result['top_order']}; operations {budget.operations}; "
+          f"max phase {max(n for _, n in budget.completed)}")
     return 0
 
 
