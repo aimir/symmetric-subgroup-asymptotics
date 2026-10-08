@@ -25,6 +25,13 @@ open PrimitiveAffineEightFrameRow9InducedBinding
 local instance sourceGroup : Group Source :=
   PrimitiveAffineEightFrameRow9TopCertificate.group
 
+local instance sourceStabilizerMembership (x : Source) :
+    Decidable (x ∈ sourceStabilizer) := by
+  change Decidable
+    (PrimitiveAffineEightFrameRow9InducedBinding.inStabilizer x.index)
+  unfold PrimitiveAffineEightFrameRow9InducedBinding.inStabilizer
+  infer_instance
+
 /-- All data shared above row 9's order-192 top. -/
 noncomputable def topData : GeneratedTopData where
   ModelGroup := Source

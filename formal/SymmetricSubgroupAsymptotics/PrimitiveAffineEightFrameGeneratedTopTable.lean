@@ -38,6 +38,8 @@ structure GeneratedTopData : Type 1 where
   literalAction : Subgroup (Equiv.Perm (Fin 8))
   actionModelEquiv : literalAction ≃* ModelGroup
   sourceStabilizer : Subgroup ModelGroup
+  [sourceStabilizerMembership : DecidablePred (fun x ↦ x ∈ sourceStabilizer)]
+  [sourceStabilizerFintype : Fintype sourceStabilizer]
   sourceStabilizerEquivLiteral :
     sourceStabilizer ≃* MulAction.stabilizer literalAction (0 : Fin 8)
   sourceStabilizerEquivLiteral_model : ∀ h : sourceStabilizer,
@@ -67,6 +69,8 @@ structure GeneratedTopData : Type 1 where
 attribute [instance]
   GeneratedTopData.modelGroup
   GeneratedTopData.modelFinite
+  GeneratedTopData.sourceStabilizerMembership
+  GeneratedTopData.sourceStabilizerFintype
   GeneratedTopData.topIndexFinite
 
 namespace GeneratedTopData

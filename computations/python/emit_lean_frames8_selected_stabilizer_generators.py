@@ -157,11 +157,19 @@ namespace SymmetricSubgroupAsymptotics.{module}
 
 open {induced_module}
 
-local instance sourceGroup : Group Source :=
+/-- Concrete executable model used by grouped normal-lattice certificates. -/
+abbrev ModelGroup := Source
+
+@[reducible] def modelGroup : Group ModelGroup :=
   {top_module}.group
 
-local instance sourceStabilizerMembership (x : Source) :
-    Decidable (x ∈ sourceStabilizer) := by
+local instance sourceGroup : Group ModelGroup := modelGroup
+
+/-- Concrete point stabilizer, kept outside the noncomputable grouped record. -/
+abbrev PointStabilizer : Subgroup ModelGroup := sourceStabilizer
+
+instance pointStabilizerMembership (x : ModelGroup) :
+    Decidable (x ∈ PointStabilizer) := by
   change Decidable ({induced_module}.inStabilizer x.index)
   unfold {induced_module}.inStabilizer
   infer_instance

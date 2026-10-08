@@ -154,13 +154,13 @@ def read_and_validate(path: Path) -> dict:
 def element(top_order: int, index: int) -> str:
     require(type(index) is int and 0 <= index < top_order,
             "source element index out of range")
-    return (f"(⟨(⟨{index}⟩ : Top.ModelGroup), by native_decide +revert⟩ : "
-            "Top.sourceStabilizer)")
+    return (f"(⟨(⟨{index}⟩ : ModelGroup), by native_decide +revert⟩ : "
+            "PointStabilizer)")
 
 
 def emit(module: str, table_module: str, top_data: str,
-         stabilizer_module: str, row_data: list[str], data: dict,
-         input_name: str) -> str:
+         stabilizer_module: str, row_data: list[str],
+         row_local_map: list[str], data: dict, input_name: str) -> str:
     n = len(data["classification"])
     c = len(data["class_representative_indices"])
     a = data["ambient_count"]
@@ -204,19 +204,24 @@ namespace {module}
 
 abbrev Top : GeneratedTopData := {top_data}
 
-def ambient : Fin {a} → Top.sourceStabilizer :=
+abbrev ModelGroup := {stabilizer_module}.ModelGroup
+local instance modelGroup : Group ModelGroup := {stabilizer_module}.modelGroup
+abbrev PointStabilizer : Subgroup ModelGroup :=
+  {stabilizer_module}.PointStabilizer
+
+def ambient : Fin {a} → PointStabilizer :=
   {stabilizer_module}.generators
 
 theorem ambient_full : Subgroup.closure (Set.range ambient) = ⊤ :=
   {stabilizer_module}.generators_full
 
-private def representative : Fin {c} → Top.sourceStabilizer :=
+private def representative : Fin {c} → PointStabilizer :=
   {fin_cases_chain(representative_values)}
 
 private def classCodeRows (i : Fin {top_order}) : Fin {c} :=
   {balanced(class_codes, 'i.val')}
 
-private def classCode (x : Top.sourceStabilizer) : Fin {c} :=
+private def classCode (x : PointStabilizer) : Fin {c} :=
   classCodeRows x.1.index
 
 private def classInvariant :
@@ -229,18 +234,18 @@ private def classInvariant :
 private def centralizerCard (i : Fin {c}) : ℕ :=
   {balanced(centralizers, 'i.val')}
 
-private theorem source_card : Nat.card Top.sourceStabilizer =
+private theorem source_card : Nat.card PointStabilizer =
     {stabilizer_order} := by
   rw [Nat.card_eq_fintype_card, Fintype.card_subtype]
   native_decide +revert
 
 private theorem centralizer_card : ∀ i : Fin {c},
     Nat.card (Subgroup.centralizer ({{representative i}} :
-      Set Top.sourceStabilizer)) = centralizerCard i := by
+      Set PointStabilizer)) = centralizerCard i := by
   intro i
-  letI : DecidablePred (fun x : Top.sourceStabilizer =>
+  letI : DecidablePred (fun x : PointStabilizer =>
       x ∈ Subgroup.centralizer
-        ({{representative i}} : Set Top.sourceStabilizer)) :=
+        ({{representative i}} : Set PointStabilizer)) :=
     fun x => decidable_of_iff
       (x * representative i = representative i * x)
       Subgroup.mem_centralizer_singleton_iff.symm
@@ -249,8 +254,8 @@ private theorem centralizer_card : ∀ i : Fin {c},
     native_decide +revert
 
 private theorem class_card_sum :
-    (∑ i : Fin {c}, Nat.card Top.sourceStabilizer / centralizerCard i) =
-      Nat.card Top.sourceStabilizer := by
+    (∑ i : Fin {c}, Nat.card PointStabilizer / centralizerCard i) =
+      Nat.card PointStabilizer := by
   rw [source_card]
   norm_num [centralizerCard, Fin.sum_univ_succ]
 
@@ -265,13 +270,13 @@ noncomputable def conjugacy :
 
     for i, indices in enumerate(data["normal_generators"]):
         text += f"""private def {state_names[i]} : Fin {k} →
-    Top.sourceStabilizer :=
+    PointStabilizer :=
   {fin_cases_chain([element(top_order, x) for x in indices])}
 
 """
 
     text += f"""def stateGenerators : Fin {n} → Fin {k} →
-    Top.sourceStabilizer :=
+    PointStabilizer :=
   {fin_cases_chain(state_names)}
 
 private def child : Fin {n} → Fin {c} → Fin {n} :=
@@ -315,7 +320,7 @@ private def parentWords : Fin {k} → FiniteGeneratorWord (Fin {k}) :=
                     for w in record['parent_to_child']])}
 
 private def childWords : Fin {k} →
-    FiniteNormalJoinWord (Fin {k}) Top.sourceStabilizer :=
+    FiniteNormalJoinWord (Fin {k}) PointStabilizer :=
   {fin_cases_chain([lean_join_word(w)
                     for w in record['child_to_join']])}
 
@@ -384,7 +389,7 @@ noncomputable def registry : FiniteNormalJoinWordRegistryData
         text += f"""private def stateMember{i} (j : Fin {top_order}) : Bool :=
   {balanced(members, 'j.val')}
 
-private def stateWord{i} (x : Top.sourceStabilizer) :
+private def stateWord{i} (x : PointStabilizer) :
     FiniteGeneratorWord (Fin {k}) :=
   {balanced(word_values, 'x.1.index.val')}
 
@@ -393,18 +398,23 @@ private def stateWord{i} (x : Top.sourceStabilizer) :
     text += f"""private def stateMember : Fin {n} → Fin {top_order} → Bool :=
   {fin_cases_chain([f'stateMember{i}' for i in range(n)])}
 
-private def stateWord : ∀ s : Fin {n}, Top.sourceStabilizer →
+private def stateWord : ∀ s : Fin {n}, PointStabilizer →
     FiniteGeneratorWord (Fin {k}) :=
   {fin_cases_chain([f'stateWord{i}' for i in range(n)])}
 
-private def stateSubgroup (s : Fin {n}) : Subgroup Top.sourceStabilizer where
+private def stateSubgroup (s : Fin {n}) : Subgroup PointStabilizer where
   carrier := {{x | stateMember s x.1.index = true}}
   one_mem' := by fin_cases s <;> native_decide +revert
   mul_mem' := by intro x y hx hy; fin_cases s <;> native_decide +revert
   inv_mem' := by intro x hx; fin_cases s <;> native_decide +revert
 
+private instance stateSubgroupMembership (s : Fin {n})
+    (x : PointStabilizer) : Decidable (x ∈ stateSubgroup s) := by
+  change Decidable (stateMember s x.1.index = true)
+  infer_instance
+
 private theorem stateWord_checked : ∀ (s : Fin {n})
-    (x : Top.sourceStabilizer), x ∈ stateSubgroup s →
+    (x : PointStabilizer), x ∈ stateSubgroup s →
       (stateWord s x).eval (stateGenerators s) = x := by
   intro s x hx
   fin_cases s <;> native_decide +revert
@@ -414,6 +424,7 @@ private theorem state_generated (s : Fin {n}) :
   apply le_antisymm
   · apply (Subgroup.closure_le _).mpr
     rintro _ ⟨j, rfl⟩
+    change stateMember s (stateGenerators s j).1.index = true
     fin_cases s <;> fin_cases j <;> native_decide +revert
   · intro x hx
     rw [← stateWord_checked s x hx]
@@ -445,15 +456,15 @@ noncomputable def rowData : Fin {r} → GeneratedRowData Top :=
     for state_index, item in enumerate(data["classification"]):
         if item["tag"] == "row":
             row = item["row"]
-            row_expr = row_data[row]
+            local_map = row_local_map[row]
             proof = f"""(by
       apply Or.inl
       refine ⟨{row}, ?_⟩
       rw [state_generated]
+      change stateSubgroup {state_index} = ({local_map}).ker
       ext x
       change stateMember {state_index} x.1.index = true ↔
-        ({row_expr}).sourceLocalMap x = 1
-      simp only [{row_expr}]
+        ({local_map}) x = 1
       native_decide +revert)"""
         elif item["tag"] == "irrelevant":
             proof = f"""(by
@@ -480,7 +491,7 @@ noncomputable def rowData : Fin {r} → GeneratedRowData Top :=
         intro i j
         rw [state_generated]
         change stateMember {state_index}
-          (⁅ambient i, ambient j⁆ : Top.sourceStabilizer).1.index = true
+          (⁅ambient i, ambient j⁆ : PointStabilizer).1.index = true
         native_decide +revert)"""
         classification_proofs.append(proof)
 
@@ -493,7 +504,7 @@ noncomputable def rowData : Fin {r} → GeneratedRowData Top :=
       ∃ _normal :
         (Subgroup.closure (Set.range (stateGenerators s))).Normal,
         IsMulCommutative
-          (Top.sourceStabilizer ⧸
+          (PointStabilizer ⧸
             Subgroup.closure (Set.range (stateGenerators s)))) :=
   {fin_cases_chain(classification_proofs)}
 
@@ -541,19 +552,23 @@ def main() -> int:
     parser.add_argument("--top-data", required=True)
     parser.add_argument("--stabilizer-module", required=True)
     parser.add_argument("--row-data", required=True, action="append")
+    parser.add_argument("--row-local-map", required=True, action="append")
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     for name in (args.module, args.table_module, args.stabilizer_module):
         require(MODULE_RE.fullmatch(name) is not None,
                 f"invalid Lean module name {name!r}")
-    for name in [args.top_data] + args.row_data:
+    for name in [args.top_data] + args.row_data + args.row_local_map:
         require(NAME_RE.fullmatch(name) is not None,
                 f"invalid Lean declaration name {name!r}")
     data = read_and_validate(args.input)
     require(len(args.row_data) == len(data["source_rows"]),
             "row-data count does not match prepared grouped rows")
+    require(len(args.row_local_map) == len(args.row_data),
+            "row-local-map count does not match row-data count")
     payload = emit(args.module, args.table_module, args.top_data,
-                   args.stabilizer_module, args.row_data, data,
+                   args.stabilizer_module, args.row_data,
+                   args.row_local_map, data,
                    args.input.name).encode()
     write_atomic(args.output, payload, args.force)
     print(f"{args.output}: {len(payload)} bytes; top {data['top_index']}; "

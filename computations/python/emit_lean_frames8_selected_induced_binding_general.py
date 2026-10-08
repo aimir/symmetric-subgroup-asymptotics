@@ -137,6 +137,7 @@ private def localInverseColumns (z : LocalTarget) (i : Fin 2) : ℕ :=
     return f'''import SymmetricSubgroupAsymptotics.{representation_module}
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameLocalRowCatalogue
 import SymmetricSubgroupAsymptotics.BinaryPlaneOrderThreeRepresentation
+import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameGeneratorFormulaBasis
 
 /-!
 # Selected eight-frame row {data['source_row']}: local quotient and Schreier binding
@@ -299,14 +300,26 @@ theorem localRepresentation_injective :
   simpa [localRepresentation, matrixUnitRepresentation,
     Matrix.mulVec, Pi.single_apply] using congrFun h i
 
+private theorem generatorFormula_basis : ∀ (j : Fin {g})
+    (a : Fin 8) (i : Fin 2) (k : Fin 16),
+    {representation_module}.representation ({top_module}.ambient j)
+        (Pi.single k (1 : ZMod 2) : Fin 16 → ZMod 2)
+        (CoinducedLeadingCoordinates.label a i) =
+      localRepresentation (sourceLocalMap (twist j a))
+        (fun q ↦ (Pi.single k (1 : ZMod 2) : Fin 16 → ZMod 2)
+          (CoinducedLeadingCoordinates.label (next j a) q)) i := by
+  native_decide
+
 private theorem generatorFormula : ∀ (j : Fin {g})
-    (v : {representation_module}.ModelModule)
-    (a : Fin 8) (i : Fin 2),
+    (v : {representation_module}.ModelModule) (a : Fin 8) (i : Fin 2),
     {representation_module}.representation ({top_module}.ambient j) v
         (CoinducedLeadingCoordinates.label a i) =
       localRepresentation (sourceLocalMap (twist j a))
         (fun q ↦ v (CoinducedLeadingCoordinates.label (next j a) q)) i := by
-  native_decide
+  exact binaryFrameGeneratorFormula_of_basis
+    {representation_module}.representation localRepresentation
+    {top_module}.ambient (fun j a ↦ sourceLocalMap (twist j a)) next
+    generatorFormula_basis
 
 theorem representation_generator_formula (j : Fin {g})
     (v : {representation_module}.ModelModule)
