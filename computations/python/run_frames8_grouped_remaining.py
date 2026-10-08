@@ -233,9 +233,50 @@ def execute_group(runner: Runner, config: dict, group: dict,
                         "--input", shared / "top-assembled.json",
                         "--module", top_prefix + "StabilizerGenerators",
                         "--induced-module", rep_induced,
+                        "--top-module", top_prefix + "TopCertificate",
                         "--output", module_path(
                             formal, top_prefix + "StabilizerGenerators")],
                        supports_force=False)
+        prepared_rows = [group_dir / f"row{row}" / "prepared.json"
+                         for row in group["rows"]]
+        generated_arguments: list[object] = [
+            sys.executable,
+            script("emit_lean_frames8_grouped_generated_table.py"),
+            "--top-id", group["top_id"], "--output-dir", formal,
+        ]
+        for prepared in prepared_rows:
+            generated_arguments.extend(["--row-input", prepared])
+        runner.command(generated_arguments)
+
+        local_normals = shared / "stabilizer-local-normals.json"
+        normal_arguments: list[object] = [
+            sys.executable,
+            script("prepare_frames8_selected_stabilizer_normal_table.py"),
+            "--output", local_normals, *limits(config),
+        ]
+        for prepared in prepared_rows:
+            normal_arguments.extend(["--input", prepared])
+        runner.command(normal_arguments)
+
+        generated_data = top_prefix + "GeneratedData"
+        local_normal_module = top_prefix + "LocalNormalTable"
+        emit_normal_arguments: list[object] = [
+            sys.executable,
+            script("emit_lean_frames8_grouped_stabilizer_normals.py"),
+            "--input", local_normals,
+            "--output", module_path(formal, local_normal_module),
+            "--module", local_normal_module,
+            "--table-module", generated_data,
+            "--top-data", generated_data + ".topData",
+            "--stabilizer-module", top_prefix + "StabilizerGenerators",
+        ]
+        for row in group["rows"]:
+            emit_normal_arguments.extend([
+                "--row-data", generated_data + f".row{row}Data",
+                "--row-local-map",
+                f"PrimitiveAffineEightFrameRow{row}InducedBinding.sourceLocalMap",
+            ])
+        runner.command(emit_normal_arguments)
 
 
 def main() -> int:

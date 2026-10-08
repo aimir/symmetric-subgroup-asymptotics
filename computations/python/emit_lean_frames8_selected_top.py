@@ -200,6 +200,7 @@ class-size exhaustion are all rechecked by Lean.
 
 set_option autoImplicit false
 set_option maxRecDepth 100000
+set_option maxHeartbeats 800000
 noncomputable section
 open scoped BigOperators Classical
 

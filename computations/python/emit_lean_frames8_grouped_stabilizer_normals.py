@@ -483,9 +483,13 @@ noncomputable def rowData : Fin {r} → GeneratedRowData Top :=
       refine ⟨?_, hnormal, ?_⟩
       · rw [state_generated, stateSubgroup_index]
         norm_num [stateIndex]
-      · letI :
+      · change IsMulCommutative
+          (PointStabilizer ⧸
+            Subgroup.closure (Set.range
+              (stateGenerators ({state_index} : Fin {n}))))
+        letI :
             (Subgroup.closure (Set.range
-              (stateGenerators {state_index}))).Normal := hnormal
+              (stateGenerators ({state_index} : Fin {n})))).Normal := hnormal
         apply Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr
         apply commutator_le_of_generator_commutators _ ambient ambient_full
         intro i j
