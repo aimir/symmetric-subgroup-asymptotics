@@ -1,0 +1,24 @@
+{
+  "schema": "frames8-grouped-remaining-plan-v1",
+  "row_convention": "zero-based",
+  "bindings_sha256": "d5a3ef513faa40a10f666478628f5f23f0a156db58e75d8a7be4068c3c2fa3fa",
+  "frames_sha256": "f57e814e457b4c66b724e33028fea8d46c1a633738cb00a0abcb59cf663dfe78",
+  "groups": [
+    {"key": "top8", "top_id": 8, "top_index": 7, "top_order": 576,
+     "representative_row": 10, "rows": [10, 11, 12, 13]},
+    {"key": "top9", "top_id": 9, "top_index": 8, "top_order": 576,
+     "representative_row": 14, "rows": [14, 15, 16, 17]},
+    {"key": "top10", "top_id": 10, "top_index": 9, "top_order": 1152,
+     "representative_row": 18, "rows": [18, 19]},
+    {"key": "top13", "top_id": 13, "top_index": 12, "top_order": 192,
+     "representative_row": 22, "rows": [22]},
+    {"key": "top15", "top_id": 15, "top_index": 14, "top_order": 192,
+     "representative_row": 24, "rows": [24]},
+    {"key": "top16", "top_id": 16, "top_index": 15, "top_order": 192,
+     "representative_row": 25, "rows": [25]},
+    {"key": "top17", "top_id": 17, "top_index": 16, "top_order": 384,
+     "representative_row": 26, "rows": [26]}
+  ],
+  "limits": {"operation_limit": 40000000, "seconds_limit": 300.0},
+  "lean_chunks": {"orbit_chunk_size": 256, "registry_chunk_size": 8}
+}
