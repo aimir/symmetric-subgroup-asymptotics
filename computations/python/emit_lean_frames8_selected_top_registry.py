@@ -208,7 +208,7 @@ def read_input(path: Path) -> dict:
     }
 
 
-def emit(module_name: str, normal_module: str, data: dict,
+def emit(module_name: str, normal_module: str, top_module: str, data: dict,
          input_name: str) -> str:
     n = data["state_count"]
     g = data["generator_count"]
@@ -236,15 +236,9 @@ namespace SymmetricSubgroupAsymptotics.{module_name}
 
 abbrev Source := {normal_module}.Source
 local instance sourceGroup : Group Source :=
-  {normal_module}.sourceGroup
+  {top_module}.group
 
 """
-    # The generated normal module deliberately keeps its group instance local,
-    # so referring to it by name may fail if Lean privatizes it.  Use the top
-    # module's public group value through the normal module's source alias.
-    text = text.replace(
-        f"  {normal_module}.sourceGroup\n",
-        f"  {normal_module.rsplit('NormalCertificate', 1)[0]}TopCertificate.group\n")
     for i in range(n):
         member = boolean_disjunction(
             data["normal_elements"][i], "x.index.val")
@@ -417,12 +411,19 @@ def main() -> int:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--module", required=True)
     parser.add_argument("--normal-module", required=True)
+    parser.add_argument(
+        "--top-module",
+        help=("module providing the executable top group; defaults to the "
+              "legacy NormalCertificate -> TopCertificate name substitution"))
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
-    for name in (args.module, args.normal_module):
+    top_module = args.top_module or (
+        args.normal_module.rsplit("NormalCertificate", 1)[0] +
+        "TopCertificate")
+    for name in (args.module, args.normal_module, top_module):
         require(MODULE_RE.fullmatch(name) is not None, "invalid Lean module")
     data = read_input(args.input)
-    payload = emit(args.module, args.normal_module, data,
+    payload = emit(args.module, args.normal_module, top_module, data,
                    args.input.name).encode()
     write_atomic(args.output, payload, args.force)
     print(f"{args.output}: {len(payload)} bytes; {data['state_count']} heads")

@@ -128,7 +128,8 @@ def prepare(value: dict) -> dict:
     }
 
 
-def emit(module: str, induced_module: str, data: dict, input_name: str) -> str:
+def emit(module: str, induced_module: str, top_module: str,
+         data: dict, input_name: str) -> str:
     n = len(data["element_indices"])
     g = len(data["generator_indices"])
     indices = balanced([str(x) for x in data["element_indices"]])
@@ -157,7 +158,7 @@ namespace SymmetricSubgroupAsymptotics.{module}
 open {induced_module}
 
 local instance sourceGroup : Group Source :=
-  {induced_module.replace('InducedBinding', 'TopCertificate')}.group
+  {top_module}.group
 
 local instance sourceStabilizerMembership (x : Source) :
     Decidable (x ∈ sourceStabilizer) := by
@@ -210,14 +211,22 @@ def main() -> None:
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--module", required=True)
     parser.add_argument("--induced-module", required=True)
+    parser.add_argument(
+        "--top-module",
+        help=("module providing the executable top group; defaults to the "
+              "legacy InducedBinding -> TopCertificate name substitution"))
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    top_module = args.top_module or args.induced_module.replace(
+        "InducedBinding", "TopCertificate")
     require(MODULE_RE.fullmatch(args.module) is not None,
             "invalid output module name")
     require(MODULE_RE.fullmatch(args.induced_module) is not None,
             "invalid induced module name")
+    require(MODULE_RE.fullmatch(top_module) is not None,
+            "invalid top module name")
     data = prepare(read(args.input))
-    payload = emit(args.module, args.induced_module, data,
+    payload = emit(args.module, args.induced_module, top_module, data,
                    args.input.name).encode()
     require(len(payload) <= OUTPUT_LIMIT, "Lean output ceiling reached")
     args.output.parent.mkdir(parents=True, exist_ok=True)
