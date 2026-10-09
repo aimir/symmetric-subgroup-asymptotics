@@ -293,6 +293,63 @@ theorem degreeThreeFourBlock_translationIntersection_card_of_finrank_four
     _ = 3 ^ 4 := by rw [Nat.card_zmod, hp, hfull]
     _ = 81 := by norm_num
 
+/-- Every four-block ternary translation intersection has order at most
+`3^4`, without assuming that all four coordinates are independent. -/
+theorem degreeThreeFourBlock_translationIntersection_card_le
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4) :
+    Nat.card (E block P) ≤ 81 := by
+  letI : Fact P.p.Prime := (chart block P).primeFact
+  have hp : P.p = 3 := (degreeThree_translation_prime_dim block P hr).1
+  have hlocal : Module.finrank (ZMod P.p) (chart block P).V = 1 := by
+    have hdim := (degreeThree_translation_prime_dim block P hr).2
+    change Module.finrank (ZMod P.p) (chart block P).V = 1 at hdim
+    exact hdim
+  have hfinrank : Module.finrank (ZMod P.p)
+      (TranslationSubmodule block P) ≤ 4 := by
+    calc
+      Module.finrank (ZMod P.p) (TranslationSubmodule block P) ≤
+          Module.finrank (ZMod P.p)
+            (block.Points → (chart block P).V) :=
+        Submodule.finrank_le (TranslationSubmodule block P)
+      _ = Nat.card block.Points *
+          Module.finrank (ZMod P.p) (chart block P).V := by
+        rw [Module.finrank_pi, Fintype.card_eq_nat_card]
+      _ = 4 := by rw [hs, hlocal]; norm_num
+  calc
+    Nat.card (E block P) =
+        Nat.card (Multiplicative (TranslationSubmodule block P)) :=
+      Nat.card_congr (translationMulEquiv block P).toEquiv
+    _ = Nat.card (TranslationSubmodule block P) := rfl
+    _ = Nat.card (ZMod P.p) ^
+        Module.finrank (ZMod P.p) (TranslationSubmodule block P) :=
+      Module.natCard_eq_pow_finrank (K := ZMod P.p)
+        (V := TranslationSubmodule block P)
+    _ = 3 ^ Module.finrank (ZMod P.p)
+        (TranslationSubmodule block P) := by rw [Nat.card_zmod, hp]
+    _ ≤ 3 ^ 4 := Nat.pow_le_pow_right (by norm_num) hfinrank
+    _ = 81 := by norm_num
+
+/-- Uniform order bound for every two-sign four-block group.  This is the
+bound needed for the number of literal normal axes and for the rank-two
+whole-fibre comparison. -/
+theorem degreeThreeFourBlock_twoSign_order_le
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2) :
+    Nat.card (preE7NonPairAction w U) ≤ 2 ^ 12 := by
+  have hE := degreeThreeFourBlock_translationIntersection_card_le
+    block P hr hs
+  have hquot := degreeThreeFourBlockTwoSign_signedQuotient_card_cases
+    block P hr hs hcomponent hbinary htwo
+  have hfactor :=
+    Subgroup.card_eq_card_quotient_mul_card_subgroup (E block P)
+  rcases hquot with hquot | hquot <;> rw [hquot] at hfactor <;> omega
+
 /-- In the full-dimensional two-sign branch the original group has order
 at most `2^12`. -/
 theorem degreeThreeFourBlock_twoSign_fullTranslation_order_le
