@@ -27,6 +27,38 @@ namespace SymmetricSubgroupAsymptotics
 variable {k G V I : Type*} [Field k] [Group G]
   [AddCommGroup V] [Module k V]
 
+namespace RepresentationGeneratedBy
+
+/-- A module-generating tuple may be padded by zero vectors. -/
+theorem mono {rho : Representation k G V} {m n : ℕ}
+    (h : RepresentationGeneratedBy rho m) (hmn : m ≤ n) :
+    RepresentationGeneratedBy rho n := by
+  obtain ⟨v, hv⟩ := h
+  let e : Fin m → Fin n := Fin.castLE hmn
+  have he : Function.Injective e := Fin.castLE_injective hmn
+  let w : Fin n → rho.asModule := Function.extend e v (fun _ ↦ 0)
+  refine ⟨w, ?_⟩
+  apply top_unique
+  rw [← hv]
+  apply Submodule.span_mono
+  rintro x ⟨i, rfl⟩
+  refine ⟨e i, ?_⟩
+  change Function.extend e v (fun _ ↦ 0) (e i) = v i
+  exact he.extend_apply v (fun _ ↦ 0) i
+
+end RepresentationGeneratedBy
+
+namespace UniformSubrepresentationGeneratorBound
+
+/-- A uniform module-generator bound may be increased by padding every
+state's tuple with zero vectors. -/
+theorem mono {rho : Representation k G V} {m n : ℕ}
+    (h : UniformSubrepresentationGeneratorBound rho m) (hmn : m ≤ n) :
+    UniformSubrepresentationGeneratorBound rho n :=
+  fun W ↦ (h W).mono hmn
+
+end UniformSubrepresentationGeneratorBound
+
 /-- A tuple whose ordinary orbit spans join to an invariant state generates
 the corresponding representation over the group algebra. -/
 theorem representationGeneratedBy_of_iSup_binaryOrbitSpan

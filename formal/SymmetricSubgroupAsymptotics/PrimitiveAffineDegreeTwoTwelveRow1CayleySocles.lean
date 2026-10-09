@@ -1,6 +1,8 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCatalogue
 import SymmetricSubgroupAsymptotics.FinitePermutationEncoding
 import SymmetricSubgroupAsymptotics.FiniteNormalRegistryQuotientSocle
+import SymmetricSubgroupAsymptotics.FiniteConjugacyCentralizerCardinalCover
+import SymmetricSubgroupAsymptotics.FiniteConjugacyGeneratorInvariant
 import Mathlib.Order.Fin.Basic
 import Mathlib.Tactic.FinCases
 
@@ -94,6 +96,56 @@ theorem source_card : Nat.card Source = 12 := by
   rw [Nat.card_eq_fintype_card]
   rfl
 
+private def representativeRows (i : Fin 12) : Fin 12 :=
+  (if i.val < 6 then (if i.val < 3 then (if i.val < 1 then 0 else (if i.val < 2 then 1 else 2)) else (if i.val < 4 then 3 else (if i.val < 5 then 4 else 5))) else (if i.val < 9 then (if i.val < 7 then 6 else (if i.val < 8 then 7 else 8)) else (if i.val < 10 then 9 else (if i.val < 11 then 10 else 11))))
+
+def representative (i : Fin 12) : Source :=
+  ⟨representativeRows i⟩
+
+private def classCodeRows (i : Fin 12) : Fin 12 :=
+  (if i.val < 6 then (if i.val < 3 then (if i.val < 1 then 0 else (if i.val < 2 then 1 else 2)) else (if i.val < 4 then 3 else (if i.val < 5 then 4 else 5))) else (if i.val < 9 then (if i.val < 7 then 6 else (if i.val < 8 then 7 else 8)) else (if i.val < 10 then 9 else (if i.val < 11 then 10 else 11))))
+
+private def classCode (x : Source) : Fin 12 :=
+  classCodeRows x.index
+
+def classInvariant :
+    FiniteConjugacyGeneratorInvariant ambient representative where
+  Code := Fin 12
+  code := classCode
+  generator_invariant := by native_decide +revert
+  representative_injective := by decide +kernel
+
+private def centralizerCard (i : Fin 12) : ℕ :=
+  (if i.val < 6 then (if i.val < 3 then (if i.val < 1 then 12 else (if i.val < 2 then 12 else 12)) else (if i.val < 4 then 12 else (if i.val < 5 then 12 else 12))) else (if i.val < 9 then (if i.val < 7 then 12 else (if i.val < 8 then 12 else 12)) else (if i.val < 10 then 12 else (if i.val < 11 then 12 else 12))))
+
+private theorem centralizer_card : ∀ i : Fin 12,
+    Nat.card (Subgroup.centralizer ({representative i} : Set Source)) =
+      centralizerCard i := by
+  intro i
+  letI : DecidablePred (fun x : Source =>
+      x ∈ Subgroup.centralizer ({representative i} : Set Source)) :=
+    fun x => decidable_of_iff
+      (x * representative i = representative i * x)
+      Subgroup.mem_centralizer_singleton_iff.symm
+  fin_cases i <;>
+    rw [Nat.card_eq_fintype_card, Fintype.card_subtype] <;>
+    native_decide
+
+private theorem class_card_sum :
+    (∑ i : Fin 12, Nat.card Source / centralizerCard i) =
+      Nat.card Source := by
+  rw [source_card]
+  norm_num [centralizerCard, Fin.sum_univ_succ]
+
+/-- Complete conjugacy cover derived from checked class invariance and
+literal centralizer orders. -/
+noncomputable def conjugacy :
+    FiniteConjugacyCentralizerCardinalCover representative where
+  separated := classInvariant.separated ambient_full
+  centralizerCard := centralizerCard
+  centralizer_card := centralizer_card
+  class_card_sum := class_card_sum
+
 private def state0Generators (j : Fin 6) : Source :=
   ⟨(if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 3 else 11)) else (if j.val < 4 then 11 else (if j.val < 5 then 11 else 11)))⟩
 
@@ -113,32 +165,2093 @@ private def state5Generators (j : Fin 6) : Source :=
   ⟨(if j.val < 3 then (if j.val < 1 then 11 else (if j.val < 2 then 11 else 11)) else (if j.val < 4 then 11 else (if j.val < 5 then 11 else 11)))⟩
 
 def stateGenerators (i : Fin 6) : Fin 6 → Source :=
-  (Fin.cases state0Generators (Fin.cases state1Generators (Fin.cases state2Generators (Fin.cases state3Generators (Fin.cases state4Generators (Fin.cases state5Generators (fun i => Fin.elim0 i)))))))
+  (Fin.cases (state0Generators) (Fin.cases (state1Generators) (Fin.cases (state2Generators) (Fin.cases (state3Generators) (Fin.cases (state4Generators) (Fin.cases (state5Generators) (fun i => Fin.elim0 i)))))))
 
 private def rowState (i : Fin 6) : Subgroup Source :=
   Subgroup.closure (Set.range (stateGenerators i))
 
-private theorem rowState_normal : ∀ i : Fin 6,
-    (rowState i).Normal := by
-  native_decide
-
 private theorem rowState_injective : Function.Injective rowState := by
   native_decide
 
-private theorem rowState_complete :
-    ∀ N : {N : Subgroup Source // N.Normal},
-      ∃ i : Fin 6, rowState i = N.1 := by
-  native_decide
+def child (i : Fin 6) (q : Fin 12) :
+    Fin 6 :=
+  (Fin.cases ((Fin.cases (0) (Fin.cases (0) (Fin.cases (0) (Fin.cases (0) (Fin.cases (0) (Fin.cases (0) (Fin.cases (0) (Fin.cases (0) (Fin.cases (0) (Fin.cases (0) (Fin.cases (0) (Fin.cases (0) (fun i => Fin.elim0 i)))))))))))))) (Fin.cases ((Fin.cases (0) (Fin.cases (1) (Fin.cases (0) (Fin.cases (1) (Fin.cases (0) (Fin.cases (1) (Fin.cases (0) (Fin.cases (1) (Fin.cases (0) (Fin.cases (1) (Fin.cases (0) (Fin.cases (1) (fun i => Fin.elim0 i)))))))))))))) (Fin.cases ((Fin.cases (0) (Fin.cases (1) (Fin.cases (3) (Fin.cases (1) (Fin.cases (0) (Fin.cases (2) (Fin.cases (0) (Fin.cases (1) (Fin.cases (3) (Fin.cases (1) (Fin.cases (0) (Fin.cases (2) (fun i => Fin.elim0 i)))))))))))))) (Fin.cases ((Fin.cases (0) (Fin.cases (0) (Fin.cases (3) (Fin.cases (0) (Fin.cases (0) (Fin.cases (3) (Fin.cases (0) (Fin.cases (0) (Fin.cases (3) (Fin.cases (0) (Fin.cases (0) (Fin.cases (3) (fun i => Fin.elim0 i)))))))))))))) (Fin.cases ((Fin.cases (0) (Fin.cases (1) (Fin.cases (0) (Fin.cases (4) (Fin.cases (0) (Fin.cases (1) (Fin.cases (0) (Fin.cases (4) (Fin.cases (0) (Fin.cases (1) (Fin.cases (0) (Fin.cases (4) (fun i => Fin.elim0 i)))))))))))))) (Fin.cases ((Fin.cases (0) (Fin.cases (1) (Fin.cases (3) (Fin.cases (4) (Fin.cases (0) (Fin.cases (2) (Fin.cases (0) (Fin.cases (4) (Fin.cases (3) (Fin.cases (1) (Fin.cases (0) (Fin.cases (5) (fun i => Fin.elim0 i)))))))))))))) (fun i => Fin.elim0 i)))))))
 
-noncomputable def rowRegistry : FiniteNormalStateRegistry Source where
-  State := Fin 6
-  state := rowState
-  state_normal := rowState_normal
-  state_injective := rowState_injective
-  complete := by
-    intro N hN
-    letI : N.Normal := hN
-    exact rowState_complete ⟨N, inferInstance⟩
+namespace N0
+
+private def positiveWords : Fin 2 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases ((Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (Fin.cases ((Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (fun i => Fin.elim0 i)))
+
+private def negativeWords : Fin 2 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases ((Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (Fin.cases ((Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (fun i => Fin.elim0 i)))
+
+def normality : FiniteNormalityWordCertificate ambient (stateGenerators 0) where
+  positiveWords := positiveWords
+  positiveEquations := by native_decide
+  negativeWords := negativeWords
+  negativeEquations := by native_decide
+
+namespace T0
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 0) (representative 0)
+    (stateGenerators (child 0 0)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T0
+
+namespace T1
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 0) (representative 1)
+    (stateGenerators (child 0 1)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T1
+
+namespace T2
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 0) (representative 2)
+    (stateGenerators (child 0 2)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T2
+
+namespace T3
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 0) (representative 3)
+    (stateGenerators (child 0 3)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T3
+
+namespace T4
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 0) (representative 4)
+    (stateGenerators (child 0 4)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T4
+
+namespace T5
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 0) (representative 5)
+    (stateGenerators (child 0 5)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T5
+
+namespace T6
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 0) (representative 6)
+    (stateGenerators (child 0 6)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T6
+
+namespace T7
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 0) (representative 7)
+    (stateGenerators (child 0 7)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T7
+
+namespace T8
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 0) (representative 8)
+    (stateGenerators (child 0 8)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T8
+
+namespace T9
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 0) (representative 9)
+    (stateGenerators (child 0 9)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T9
+
+namespace T10
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 0) (representative 10)
+    (stateGenerators (child 0 10)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T10
+
+namespace T11
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.one
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 0) (representative 11)
+    (stateGenerators (child 0 11)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T11
+
+end N0
+
+namespace N1
+
+private def positiveWords : Fin 2 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (fun i => Fin.elim0 i)))))))) (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (fun i => Fin.elim0 i)))))))) (fun i => Fin.elim0 i)))
+
+private def negativeWords : Fin 2 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (fun i => Fin.elim0 i)))))))) (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (fun i => Fin.elim0 i)))))))) (fun i => Fin.elim0 i)))
+
+def normality : FiniteNormalityWordCertificate ambient (stateGenerators 1) where
+  positiveWords := positiveWords
+  positiveEquations := by native_decide
+  negativeWords := negativeWords
+  negativeEquations := by native_decide
+
+namespace T0
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 1) (representative 0)
+    (stateGenerators (child 1 0)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T0
+
+namespace T1
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 2))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 1) (representative 1)
+    (stateGenerators (child 1 1)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T1
+
+namespace T2
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 1) (representative 2)
+    (stateGenerators (child 1 2)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T2
+
+namespace T3
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 2))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 1) (representative 3)
+    (stateGenerators (child 1 3)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T3
+
+namespace T4
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 1) (representative 4)
+    (stateGenerators (child 1 4)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T4
+
+namespace T5
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 2))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 1) (representative 5)
+    (stateGenerators (child 1 5)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T5
+
+namespace T6
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 1) (representative 6)
+    (stateGenerators (child 1 6)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T6
+
+namespace T7
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 2))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 1) (representative 7)
+    (stateGenerators (child 1 7)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T7
+
+namespace T8
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 1) (representative 8)
+    (stateGenerators (child 1 8)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T8
+
+namespace T9
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 2))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 1) (representative 9)
+    (stateGenerators (child 1 9)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T9
+
+namespace T10
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 1) (representative 10)
+    (stateGenerators (child 1 10)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T10
+
+namespace T11
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 2))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.one
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 1) (representative 11)
+    (stateGenerators (child 1 11)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T11
+
+end N1
+
+namespace N2
+
+private def positiveWords : Fin 2 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (fun i => Fin.elim0 i)))
+
+private def negativeWords : Fin 2 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (fun i => Fin.elim0 i)))
+
+def normality : FiniteNormalityWordCertificate ambient (stateGenerators 2) where
+  positiveWords := positiveWords
+  positiveEquations := by native_decide
+  negativeWords := negativeWords
+  negativeEquations := by native_decide
+
+namespace T0
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 2) (representative 0)
+    (stateGenerators (child 2 0)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T0
+
+namespace T1
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 2) (representative 1)
+    (stateGenerators (child 2 1)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T1
+
+namespace T2
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 2) (representative 2)
+    (stateGenerators (child 2 2)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T2
+
+namespace T3
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 2) (representative 3)
+    (stateGenerators (child 2 3)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T3
+
+namespace T4
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 2) (representative 4)
+    (stateGenerators (child 2 4)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T4
+
+namespace T5
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 2) (representative 5)
+    (stateGenerators (child 2 5)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T5
+
+namespace T6
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 2) (representative 6)
+    (stateGenerators (child 2 6)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T6
+
+namespace T7
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 2) (representative 7)
+    (stateGenerators (child 2 7)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T7
+
+namespace T8
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 2) (representative 8)
+    (stateGenerators (child 2 8)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T8
+
+namespace T9
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 2) (representative 9)
+    (stateGenerators (child 2 9)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T9
+
+namespace T10
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 2) (representative 10)
+    (stateGenerators (child 2 10)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T10
+
+namespace T11
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.one
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 2) (representative 11)
+    (stateGenerators (child 2 11)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T11
+
+end N2
+
+namespace N3
+
+private def positiveWords : Fin 2 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (fun i => Fin.elim0 i)))
+
+private def negativeWords : Fin 2 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (fun i => Fin.elim0 i)))
+
+def normality : FiniteNormalityWordCertificate ambient (stateGenerators 3) where
+  positiveWords := positiveWords
+  positiveEquations := by native_decide
+  negativeWords := negativeWords
+  negativeEquations := by native_decide
+
+namespace T0
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 3) (representative 0)
+    (stateGenerators (child 3 0)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T0
+
+namespace T1
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 3) (representative 1)
+    (stateGenerators (child 3 1)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T1
+
+namespace T2
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 3) (representative 2)
+    (stateGenerators (child 3 2)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T2
+
+namespace T3
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 3) (representative 3)
+    (stateGenerators (child 3 3)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T3
+
+namespace T4
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 3) (representative 4)
+    (stateGenerators (child 3 4)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T4
+
+namespace T5
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 3) (representative 5)
+    (stateGenerators (child 3 5)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T5
+
+namespace T6
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 3) (representative 6)
+    (stateGenerators (child 3 6)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T6
+
+namespace T7
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 3) (representative 7)
+    (stateGenerators (child 3 7)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T7
+
+namespace T8
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 3) (representative 8)
+    (stateGenerators (child 3 8)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T8
+
+namespace T9
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 3) (representative 9)
+    (stateGenerators (child 3 9)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T9
+
+namespace T10
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 0)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 3) (representative 10)
+    (stateGenerators (child 3 10)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T10
+
+namespace T11
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.one
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 3) (representative 11)
+    (stateGenerators (child 3 11)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T11
+
+end N3
+
+namespace N4
+
+private def positiveWords : Fin 2 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (fun i => Fin.elim0 i)))
+
+private def negativeWords : Fin 2 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (fun i => Fin.elim0 i)))
+
+def normality : FiniteNormalityWordCertificate ambient (stateGenerators 4) where
+  positiveWords := positiveWords
+  positiveEquations := by native_decide
+  negativeWords := negativeWords
+  negativeEquations := by native_decide
+
+namespace T0
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 4) (representative 0)
+    (stateGenerators (child 4 0)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T0
+
+namespace T1
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 4) (representative 1)
+    (stateGenerators (child 4 1)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T1
+
+namespace T2
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 4) (representative 2)
+    (stateGenerators (child 4 2)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T2
+
+namespace T3
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 4) (representative 3)
+    (stateGenerators (child 4 3)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T3
+
+namespace T4
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 4) (representative 4)
+    (stateGenerators (child 4 4)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T4
+
+namespace T5
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 4) (representative 5)
+    (stateGenerators (child 4 5)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T5
+
+namespace T6
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 4) (representative 6)
+    (stateGenerators (child 4 6)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T6
+
+namespace T7
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 4) (representative 7)
+    (stateGenerators (child 4 7)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T7
+
+namespace T8
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 4) (representative 8)
+    (stateGenerators (child 4 8)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T8
+
+namespace T9
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 4) (representative 9)
+    (stateGenerators (child 4 9)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T9
+
+namespace T10
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 4) (representative 10)
+    (stateGenerators (child 4 10)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T10
+
+namespace T11
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (Fin.cases (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 1))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.one
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 4) (representative 11)
+    (stateGenerators (child 4 11)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T11
+
+end N4
+
+namespace N5
+
+private def positiveWords : Fin 2 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (fun i => Fin.elim0 i)))
+
+private def negativeWords : Fin 2 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (Fin.cases ((Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))) (fun i => Fin.elim0 i)))
+
+def normality : FiniteNormalityWordCertificate ambient (stateGenerators 5) where
+  positiveWords := positiveWords
+  positiveEquations := by native_decide
+  negativeWords := negativeWords
+  negativeEquations := by native_decide
+
+namespace T0
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 5) (representative 0)
+    (stateGenerators (child 5 0)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T0
+
+namespace T1
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 5) (representative 1)
+    (stateGenerators (child 5 1)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T1
+
+namespace T2
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 5) (representative 2)
+    (stateGenerators (child 5 2)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T2
+
+namespace T3
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 5) (representative 3)
+    (stateGenerators (child 5 3)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T3
+
+namespace T4
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 0))) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 5) (representative 4)
+    (stateGenerators (child 5 4)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T4
+
+namespace T5
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 5) (representative 5)
+    (stateGenerators (child 5 5)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T5
+
+namespace T6
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 5) (representative 6)
+    (stateGenerators (child 5 6)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T6
+
+namespace T7
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 5) (representative 7)
+    (stateGenerators (child 5 7)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T7
+
+namespace T8
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 5) (representative 8)
+    (stateGenerators (child 5 8)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T8
+
+namespace T9
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient))) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 5) (representative 9)
+    (stateGenerators (child 5 9)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T9
+
+namespace T10
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate ((FiniteGeneratorWord.one).eval ambient)))) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 1))
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 5) (representative 10)
+    (stateGenerators (child 5 10)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T10
+
+namespace T11
+
+private def parentWords : Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (Fin.cases (FiniteGeneratorWord.one) (fun i => Fin.elim0 i)))))))
+
+private def childWords : Fin 6 →
+    FiniteNormalJoinWord (Fin 6) Source :=
+  (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (Fin.cases (FiniteNormalJoinWord.one) (fun i => Fin.elim0 i)))))))
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin 6) :=
+  FiniteGeneratorWord.one
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators 5) (representative 11)
+    (stateGenerators (child 5 11)) where
+  parentToChild := {
+    words := parentWords
+    equations := by native_decide }
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T11
+
+end N5
+
+def normality : ∀ i : Fin 6,
+    FiniteNormalityWordCertificate ambient (stateGenerators i) :=
+  (Fin.cases (N0.normality) (Fin.cases (N1.normality) (Fin.cases (N2.normality) (Fin.cases (N3.normality) (Fin.cases (N4.normality) (Fin.cases (N5.normality) (fun i => Fin.elim0 i)))))))
+
+def transition : ∀ (i : Fin 6) (q : Fin 12),
+    FiniteNormalJoinTransitionCertificate
+      (stateGenerators i) (representative q)
+      (stateGenerators (child i q)) :=
+  (Fin.cases ((Fin.cases (N0.T0.certificate) (Fin.cases (N0.T1.certificate) (Fin.cases (N0.T2.certificate) (Fin.cases (N0.T3.certificate) (Fin.cases (N0.T4.certificate) (Fin.cases (N0.T5.certificate) (Fin.cases (N0.T6.certificate) (Fin.cases (N0.T7.certificate) (Fin.cases (N0.T8.certificate) (Fin.cases (N0.T9.certificate) (Fin.cases (N0.T10.certificate) (Fin.cases (N0.T11.certificate) (fun i => Fin.elim0 i)))))))))))))) (Fin.cases ((Fin.cases (N1.T0.certificate) (Fin.cases (N1.T1.certificate) (Fin.cases (N1.T2.certificate) (Fin.cases (N1.T3.certificate) (Fin.cases (N1.T4.certificate) (Fin.cases (N1.T5.certificate) (Fin.cases (N1.T6.certificate) (Fin.cases (N1.T7.certificate) (Fin.cases (N1.T8.certificate) (Fin.cases (N1.T9.certificate) (Fin.cases (N1.T10.certificate) (Fin.cases (N1.T11.certificate) (fun i => Fin.elim0 i)))))))))))))) (Fin.cases ((Fin.cases (N2.T0.certificate) (Fin.cases (N2.T1.certificate) (Fin.cases (N2.T2.certificate) (Fin.cases (N2.T3.certificate) (Fin.cases (N2.T4.certificate) (Fin.cases (N2.T5.certificate) (Fin.cases (N2.T6.certificate) (Fin.cases (N2.T7.certificate) (Fin.cases (N2.T8.certificate) (Fin.cases (N2.T9.certificate) (Fin.cases (N2.T10.certificate) (Fin.cases (N2.T11.certificate) (fun i => Fin.elim0 i)))))))))))))) (Fin.cases ((Fin.cases (N3.T0.certificate) (Fin.cases (N3.T1.certificate) (Fin.cases (N3.T2.certificate) (Fin.cases (N3.T3.certificate) (Fin.cases (N3.T4.certificate) (Fin.cases (N3.T5.certificate) (Fin.cases (N3.T6.certificate) (Fin.cases (N3.T7.certificate) (Fin.cases (N3.T8.certificate) (Fin.cases (N3.T9.certificate) (Fin.cases (N3.T10.certificate) (Fin.cases (N3.T11.certificate) (fun i => Fin.elim0 i)))))))))))))) (Fin.cases ((Fin.cases (N4.T0.certificate) (Fin.cases (N4.T1.certificate) (Fin.cases (N4.T2.certificate) (Fin.cases (N4.T3.certificate) (Fin.cases (N4.T4.certificate) (Fin.cases (N4.T5.certificate) (Fin.cases (N4.T6.certificate) (Fin.cases (N4.T7.certificate) (Fin.cases (N4.T8.certificate) (Fin.cases (N4.T9.certificate) (Fin.cases (N4.T10.certificate) (Fin.cases (N4.T11.certificate) (fun i => Fin.elim0 i)))))))))))))) (Fin.cases ((Fin.cases (N5.T0.certificate) (Fin.cases (N5.T1.certificate) (Fin.cases (N5.T2.certificate) (Fin.cases (N5.T3.certificate) (Fin.cases (N5.T4.certificate) (Fin.cases (N5.T5.certificate) (Fin.cases (N5.T6.certificate) (Fin.cases (N5.T7.certificate) (Fin.cases (N5.T8.certificate) (Fin.cases (N5.T9.certificate) (Fin.cases (N5.T10.certificate) (Fin.cases (N5.T11.certificate) (fun i => Fin.elim0 i)))))))))))))) (fun i => Fin.elim0 i)))))))
+
+def normalData : FiniteNormalJoinWordRegistryData
+    conjugacy.toCardinalCover ambient stateGenerators where
+  ambient_full := ambient_full
+  normality := normality
+  bottom := 5
+  bottom_eq := by native_decide
+  child := child
+  transition := transition
+
+noncomputable def rowRegistry : FiniteNormalStateRegistry Source :=
+  FiniteNormalStateRegistry.ofWordRegistry
+    conjugacy.toCardinalCover ambient stateGenerators normalData
+      rowState_injective
 
 noncomputable def topRegistry :
     FiniteNormalStateRegistry Catalogue.Row1Top :=
@@ -181,7 +2294,7 @@ private def state5SocleGenerators : Fin 1 → Source :=
 
 private def rowSocleGenerator (i : Fin 6) :
     Fin 1 → Source :=
-  (Fin.cases state0SocleGenerators (Fin.cases state1SocleGenerators (Fin.cases state2SocleGenerators (Fin.cases state3SocleGenerators (Fin.cases state4SocleGenerators (Fin.cases state5SocleGenerators (fun i => Fin.elim0 i)))))))
+  (Fin.cases (state0SocleGenerators) (Fin.cases (state1SocleGenerators) (Fin.cases (state2SocleGenerators) (Fin.cases (state3SocleGenerators) (Fin.cases (state4SocleGenerators) (Fin.cases (state5SocleGenerators) (fun i => Fin.elim0 i)))))))
 
 private theorem row_carrier_eq_checked : ∀ i : Fin 6,
     rowState (carrierState i) = rowState i ⊔

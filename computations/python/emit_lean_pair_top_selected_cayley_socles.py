@@ -5,12 +5,13 @@ The input is one payload written by ``export_lean_pair_top_selected.py``.
 This selected-row recovery tool reconstructs the literal group, checks every
 stored normal subgroup, computes the relative socle carrier over every
 normal state, and finds a shortest tuple whose normal closure reaches that
-carrier.  The emitted Lean file rechecks the Cayley table, normal lattice,
-and every carrier/generator equality with executable finite proofs.
+carrier.  It also builds a sparse conjugacy cover and compact normality/join
+words.  The emitted Lean file rechecks the Cayley table, proves normal-lattice
+completeness from those words, and checks every carrier/generator equality.
 
-This tool deliberately has no catalogue or directory mode.  Direct normal
-lattice checking is restricted to order at most 1,024; larger rows use the
-sparse conjugacy/join-word importer instead.
+This tool deliberately has no catalogue or directory mode.  Explicit Cayley
+sources are restricted to order at most 1,024; larger rows use the separate
+sparse Schreier source route.
 """
 from __future__ import annotations
 
@@ -25,6 +26,11 @@ import sys
 import tempfile
 
 sys.dont_write_bytecode = True
+from six_pair_selected_words import (
+    Budget,
+    join_transition_words,
+    normality_words,
+)
 
 
 INPUT_LIMIT = 8 * 1024 * 1024
@@ -102,8 +108,39 @@ def finite_checks(n: int) -> str:
 def fin_cases_chain(values: list[str]) -> str:
     result = "(fun i => Fin.elim0 i)"
     for value in reversed(values):
-        result = f"(Fin.cases {value} {result})"
+        result = f"(Fin.cases ({value}) {result})"
     return result
+
+
+def lean_gen_word(word: dict) -> str:
+    tag = word["tag"]
+    if tag == "one":
+        return "FiniteGeneratorWord.one"
+    if tag in ("generator", "parent"):
+        return f"FiniteGeneratorWord.generator {word['index']}"
+    if tag == "inv":
+        return f"FiniteGeneratorWord.inv ({lean_gen_word(word['word'])})"
+    if tag == "mul":
+        return (f"FiniteGeneratorWord.mul ({lean_gen_word(word['left'])}) "
+                f"({lean_gen_word(word['right'])})")
+    raise Refused("unsupported generator word")
+
+
+def lean_join_word(word: dict) -> str:
+    tag = word["tag"]
+    if tag == "one":
+        return "FiniteNormalJoinWord.one"
+    if tag == "parent":
+        return f"FiniteNormalJoinWord.parent {word['index']}"
+    if tag == "conjugate":
+        return ("FiniteNormalJoinWord.conjugate "
+                f"(({lean_gen_word(word['conjugator'])}).eval ambient)")
+    if tag == "inv":
+        return f"FiniteNormalJoinWord.inv ({lean_join_word(word['word'])})"
+    if tag == "mul":
+        return (f"FiniteNormalJoinWord.mul ({lean_join_word(word['left'])}) "
+                f"({lean_join_word(word['right'])})")
+    raise Refused("unsupported normal-join word")
 
 
 def read_selected(path: Path) -> tuple[dict, str]:
@@ -287,6 +324,55 @@ def prepare(value: dict, selected_sha256: str) -> dict:
     require(all(len(row) == generator_width
                 for row in padded_state_generators),
             "normal generator padding failed")
+
+    # Sparse conjugacy cover and normal-join state machine.  The producer
+    # finds words; Lean evaluates each word in the executable Cayley group.
+    remaining = set(table["rows"])
+    representatives = []
+    class_code: dict[tuple[int, ...], int] = {}
+    centralizer_cards = []
+    while remaining:
+        representative = min(remaining, key=packed)
+        conjugacy_class = {conjugate(g, representative)
+                           for g in table["rows"]}
+        require(conjugacy_class <= remaining,
+                "conjugacy classes overlap during partition")
+        class_index = len(representatives)
+        representatives.append(representative)
+        for row in conjugacy_class:
+            class_code[row] = class_index
+        remaining -= conjugacy_class
+        centralizer_cards.append(sum(
+            compose(g, representative) == compose(representative, g)
+            for g in table["rows"]))
+    require(len(class_code) == len(table["rows"]),
+            "conjugacy code is incomplete")
+    require(sum(len(table["rows"]) // card
+                for card in centralizer_cards) == len(table["rows"]),
+            "centralizer class-size sum failed")
+    representative_indices = [table["position"][row]
+                              for row in representatives]
+    class_children = [[children[i][index]
+                       for index in representative_indices]
+                      for i in range(len(state_sets))]
+
+    budget = Budget(operation_limit=40_000_000, seconds_limit=60.0)
+    padded_permutations = [[table["rows"][index] for index in row]
+                           for row in padded_state_generators]
+    normality = [normality_words(
+        generators, row, width, budget, max_states=ORDER_LIMIT)
+        for row in padded_permutations]
+    transitions = []
+    for i, parent in enumerate(padded_permutations):
+        transition_row = []
+        for q, representative in enumerate(representatives):
+            child = class_children[i][q]
+            transition_row.append(join_transition_words(
+                generators, parent, representative,
+                padded_permutations[child], width, budget,
+                max_states=ORDER_LIMIT))
+        transitions.append(transition_row)
+
     return {
         "selected_sha256": selected_sha256,
         "action_id": action["id"],
@@ -299,8 +385,16 @@ def prepare(value: dict, selected_sha256: str) -> dict:
         "generators": generators,
         "table": table,
         "normal_count": len(state_sets),
+        "bottom_state": state_sets.index(
+            frozenset({tuple(range(width))})),
         "normal_generator_width": generator_width,
         "state_generators": padded_state_generators,
+        "representative_indices": representative_indices,
+        "class_code": [class_code[row] for row in table["rows"]],
+        "centralizer_cards": centralizer_cards,
+        "class_children": class_children,
+        "normality": normality,
+        "transitions": transitions,
         "carriers": carriers,
         "socle_generators": paths,
     }
@@ -327,6 +421,7 @@ def emit_module(module: str, catalogue_module: str, catalogue_namespace: str,
     table = prepared["table"]
     normal_count = prepared["normal_count"]
     normal_width = prepared["normal_generator_width"]
+    class_count = len(prepared["representative_indices"])
     kappa = prepared["kappa"]
     next_expr = (f"({lookup([lean_array(row) for row in table['next']])} : "
                  f"Array (Fin {order}))[j.val]!")
@@ -338,6 +433,8 @@ def emit_module(module: str, catalogue_module: str, catalogue_namespace: str,
     text = f"""import SymmetricSubgroupAsymptotics.{catalogue_module}
 import SymmetricSubgroupAsymptotics.FinitePermutationEncoding
 import SymmetricSubgroupAsymptotics.FiniteNormalRegistryQuotientSocle
+import SymmetricSubgroupAsymptotics.FiniteConjugacyCentralizerCardinalCover
+import SymmetricSubgroupAsymptotics.FiniteConjugacyGeneratorInvariant
 import Mathlib.Order.Fin.Basic
 import Mathlib.Tactic.FinCases
 
@@ -432,6 +529,56 @@ theorem source_card : Nat.card Source = {order} := by
   rw [Nat.card_eq_fintype_card]
   rfl
 
+private def representativeRows (i : Fin {class_count}) : Fin {order} :=
+  {lookup(prepared['representative_indices'])}
+
+def representative (i : Fin {class_count}) : Source :=
+  ⟨representativeRows i⟩
+
+private def classCodeRows (i : Fin {order}) : Fin {class_count} :=
+  {lookup(prepared['class_code'])}
+
+private def classCode (x : Source) : Fin {class_count} :=
+  classCodeRows x.index
+
+def classInvariant :
+    FiniteConjugacyGeneratorInvariant ambient representative where
+  Code := Fin {class_count}
+  code := classCode
+  generator_invariant := by native_decide +revert
+  representative_injective := by decide +kernel
+
+private def centralizerCard (i : Fin {class_count}) : ℕ :=
+  {lookup(prepared['centralizer_cards'])}
+
+private theorem centralizer_card : ∀ i : Fin {class_count},
+    Nat.card (Subgroup.centralizer ({{representative i}} : Set Source)) =
+      centralizerCard i := by
+  intro i
+  letI : DecidablePred (fun x : Source =>
+      x ∈ Subgroup.centralizer ({{representative i}} : Set Source)) :=
+    fun x => decidable_of_iff
+      (x * representative i = representative i * x)
+      Subgroup.mem_centralizer_singleton_iff.symm
+  fin_cases i <;>
+    rw [Nat.card_eq_fintype_card, Fintype.card_subtype] <;>
+    native_decide
+
+private theorem class_card_sum :
+    (∑ i : Fin {class_count}, Nat.card Source / centralizerCard i) =
+      Nat.card Source := by
+  rw [source_card]
+  norm_num [centralizerCard, Fin.sum_univ_succ]
+
+/-- Complete conjugacy cover derived from checked class invariance and
+literal centralizer orders. -/
+noncomputable def conjugacy :
+    FiniteConjugacyCentralizerCardinalCover representative where
+  separated := classInvariant.separated ambient_full
+  centralizerCard := centralizerCard
+  centralizer_card := centralizer_card
+  class_card_sum := class_card_sum
+
 """
     for i, rows in enumerate(prepared["state_generators"]):
         text += f"""private def state{i}Generators (j : Fin {normal_width}) : Source :=
@@ -444,27 +591,111 @@ theorem source_card : Nat.card Source = {order} := by
 private def rowState (i : Fin {normal_count}) : Subgroup Source :=
   Subgroup.closure (Set.range (stateGenerators i))
 
-private theorem rowState_normal : ∀ i : Fin {normal_count},
-    (rowState i).Normal := by
-  native_decide
-
 private theorem rowState_injective : Function.Injective rowState := by
   native_decide
 
-private theorem rowState_complete :
-    ∀ N : {{N : Subgroup Source // N.Normal}},
-      ∃ i : Fin {normal_count}, rowState i = N.1 := by
-  native_decide
+def child (i : Fin {normal_count}) (q : Fin {class_count}) :
+    Fin {normal_count} :=
+  {fin_cases_chain([
+      fin_cases_chain([str(x) for x in row])
+      for row in prepared['class_children']])}
 
-noncomputable def rowRegistry : FiniteNormalStateRegistry Source where
-  State := Fin {normal_count}
-  state := rowState
-  state_normal := rowState_normal
-  state_injective := rowState_injective
-  complete := by
-    intro N hN
-    letI : N.Normal := hN
-    exact rowState_complete ⟨N, inferInstance⟩
+"""
+    normality_names = []
+    transition_names = []
+    for i in range(normal_count):
+        normality_names.append(f"N{i}.normality")
+        row_transition_names = []
+        normality = prepared["normality"][i]
+        positive = fin_cases_chain([
+            fin_cases_chain([lean_gen_word(word) for word in row])
+            for row in normality["positive"]])
+        negative = fin_cases_chain([
+            fin_cases_chain([lean_gen_word(word) for word in row])
+            for row in normality["negative"]])
+        text += f"""namespace N{i}
+
+private def positiveWords : Fin {generator_count} → Fin {normal_width} →
+    FiniteGeneratorWord (Fin {normal_width}) :=
+  {positive}
+
+private def negativeWords : Fin {generator_count} → Fin {normal_width} →
+    FiniteGeneratorWord (Fin {normal_width}) :=
+  {negative}
+
+def normality : FiniteNormalityWordCertificate ambient (stateGenerators {i}) where
+  positiveWords := positiveWords
+  positiveEquations := by native_decide
+  negativeWords := negativeWords
+  negativeEquations := by native_decide
+
+"""
+        for q in range(class_count):
+            transition = prepared["transitions"][i][q]
+            parent_words = fin_cases_chain([
+                lean_gen_word(word)
+                for word in transition["parent_to_child"]])
+            child_words = fin_cases_chain([
+                lean_join_word(word)
+                for word in transition["child_to_join"]])
+            representative_word = lean_gen_word(
+                transition["representative_word"])
+            row_transition_names.append(f"N{i}.T{q}.certificate")
+            text += f"""namespace T{q}
+
+private def parentWords : Fin {normal_width} →
+    FiniteGeneratorWord (Fin {normal_width}) :=
+  {parent_words}
+
+private def childWords : Fin {normal_width} →
+    FiniteNormalJoinWord (Fin {normal_width}) Source :=
+  {child_words}
+
+private def representativeWord :
+    FiniteGeneratorWord (Fin {normal_width}) :=
+  {representative_word}
+
+def certificate : FiniteNormalJoinTransitionCertificate
+    (stateGenerators {i}) (representative {q})
+    (stateGenerators (child {i} {q})) where
+  parentToChild := {{
+    words := parentWords
+    equations := by native_decide }}
+  representativeWord := representativeWord
+  representativeEquation := by native_decide
+  childWords := childWords
+  childEquations := by native_decide
+
+end T{q}
+
+"""
+        transition_names.append(fin_cases_chain(row_transition_names))
+        text += f"""end N{i}
+
+"""
+    text += f"""def normality : ∀ i : Fin {normal_count},
+    FiniteNormalityWordCertificate ambient (stateGenerators i) :=
+  {fin_cases_chain(normality_names)}
+
+def transition : ∀ (i : Fin {normal_count}) (q : Fin {class_count}),
+    FiniteNormalJoinTransitionCertificate
+      (stateGenerators i) (representative q)
+      (stateGenerators (child i q)) :=
+  {fin_cases_chain(transition_names)}
+
+def normalData : FiniteNormalJoinWordRegistryData
+    conjugacy.toCardinalCover ambient stateGenerators where
+  ambient_full := ambient_full
+  normality := normality
+  bottom := {prepared['bottom_state']}
+  bottom_eq := by native_decide
+  child := child
+  transition := transition
+
+noncomputable def rowRegistry : FiniteNormalStateRegistry Source :=
+  FiniteNormalStateRegistry.ofWordRegistry
+    conjugacy.toCardinalCover ambient stateGenerators normalData
+      rowState_injective
 
 noncomputable def topRegistry :
     FiniteNormalStateRegistry Catalogue.{top_name} :=
