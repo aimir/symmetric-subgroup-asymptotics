@@ -73,23 +73,21 @@ def degreeThreeFourBlockTwoSignSectionSignedTopHom
       degreeThreeFourBlockTwoSignSectionPairKernelTopHom
         block P hr hs hcomponent N k := rfl
 
-/-- A sign-class exchanger survives outside the image of the literal pair
-kernel in every proper section top. -/
-theorem degreeThreeFourBlockTwoSignSection_exists_top_outside_pairKernel
+/-- The transitive four-coordinate top conjugates some literal pair-kernel
+element nontrivially.  This statement is independent of the later section
+and can therefore be reused after applying any representation which stays
+faithful on the pair kernel. -/
+theorem degreeThreeFourBlockTwoSign_exists_pairKernel_conjugate_ne
     (hr : Nat.card block.Fibre = 3)
     (hs : Nat.card block.Points = 4)
     (hcomponent : Nat.card block.Component = 6)
-    (hbinary : IsPGroup 2
-      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
     (htwo : (degreeThreeFourBlockSignedIsotypeProfile
-      block P hr hs hcomponent).isotypeCount = 2)
-    (N : TwoSignProperAxis (E block P)) :
-    ∃ u : (degreeThreeFourBlockPairChart
-        block P hr hs hcomponent).action,
-      degreeThreeFourBlockTwoSignSectionSignedTopHom
-          block P hr hs hcomponent N u ∉
-        (degreeThreeFourBlockTwoSignSectionPairKernelTopHom
-          block P hr hs hcomponent N).range := by
+      block P hr hs hcomponent).isotypeCount = 2) :
+    ∃ (u : (degreeThreeFourBlockPairChart
+          block P hr hs hcomponent).action)
+      (k : (degreeThreeFourBlockPairChart
+          block P hr hs hcomponent).frame.top.ker),
+      MulAut.conjNormal u k ≠ k := by
   let C := degreeThreeFourBlockPairChart block P hr hs hcomponent
   let F := C.frame
   have htwo' : Nat.card (BinaryPairFrame.FourCoordinateSign F) = 2 := by
@@ -125,6 +123,30 @@ theorem degreeThreeFourBlockTwoSignSection_exists_top_outside_pairKernel
     rw [F.bits_conjNormal, ← htop,
       Equiv.symm_apply_apply, hkbit₀, hkbit₁] at hbits
     exact one_ne_zero hbits
+  exact ⟨u, k₀, hconj⟩
+
+/-- A sign-class exchanger survives outside the image of the literal pair
+kernel in every proper section top. -/
+theorem degreeThreeFourBlockTwoSignSection_exists_top_outside_pairKernel
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P)) :
+    ∃ u : (degreeThreeFourBlockPairChart
+        block P hr hs hcomponent).action,
+      degreeThreeFourBlockTwoSignSectionSignedTopHom
+          block P hr hs hcomponent N u ∉
+        (degreeThreeFourBlockTwoSignSectionPairKernelTopHom
+          block P hr hs hcomponent N).range := by
+  let C := degreeThreeFourBlockPairChart block P hr hs hcomponent
+  let F := C.frame
+  obtain ⟨u, k₀, hconj⟩ :=
+    degreeThreeFourBlockTwoSign_exists_pairKernel_conjugate_ne
+      block P hr hs hcomponent htwo
   refine ⟨u, ?_⟩
   rintro ⟨k, hk⟩
   have hcomm : k * k₀ = k₀ * k := by
