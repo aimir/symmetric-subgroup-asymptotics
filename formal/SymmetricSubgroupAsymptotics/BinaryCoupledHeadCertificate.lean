@@ -274,6 +274,77 @@ structure BinaryInvariantCoupledHeadRegistry
     (state (productState i j)).toSubmodule ≤ (state ell).toSubmodule →
     head i + head j + quotientHead (productState i j) ell ≤ cap
 
+namespace BinaryInvariantCoupledHeadRegistry
+
+variable {rho : Representation (ZMod 2) G (Fin w → ZMod 2)}
+  {generators : J → G} {I : Type*}
+  {state : I → Subrepresentation rho} {cap : ℕ}
+  (C : BinaryInvariantCoupledHeadRegistry rho generators state cap)
+
+/-- A complete coupled registry proves the paper's three-head inequality
+for arbitrary actual invariant submodules, after the semantic objects have
+been located in the finite registry. -/
+theorem finrank_add_finrank_add_quotient_le
+    (complete : ∀ W : Subrepresentation rho, ∃ i, state i = W)
+    (K W L : Subrepresentation rho)
+    (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
+      L.toSubmodule) :
+    Module.finrank (ZMod 2) K.toRepresentation.Coinvariants +
+        Module.finrank (ZMod 2) W.toRepresentation.Coinvariants +
+        Module.finrank (ZMod 2)
+          (L.toSubmodule ⫽
+            binaryCoupledDenominator rho generators L
+              (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule)
+              hproduct) ≤ cap := by
+  obtain ⟨i, rfl⟩ := complete K
+  obtain ⟨j, rfl⟩ := complete W
+  obtain ⟨ell, rfl⟩ := complete L
+  let p := C.productState i j
+  have hP : (state p).toSubmodule ≤ (state ell).toSubmodule := by
+    rw [← C.product_eq i j]
+    exact hproduct
+  have hK := C.head_le i
+  have hW := C.head_le j
+  have hL := C.quotient_le p ell hP
+  have hsum := C.coupled_le i j ell hP
+  rw [show binaryCoordinateProductSpan (state i).toSubmodule
+      (state j).toSubmodule = (state p).toSubmodule from C.product_eq i j]
+  exact (Nat.add_le_add (Nat.add_le_add hK hW) hL).trans hsum
+
+end BinaryInvariantCoupledHeadRegistry
+
+/-- A coupled head table together with semantic completeness of its state
+registry. -/
+structure BinaryInvariantCompleteCoupledHeadRegistry
+    {I : Type*}
+    (state : I → Subrepresentation rho)
+    (cap : ℕ) : Type 1 where
+  coupled : BinaryInvariantCoupledHeadRegistry rho generators state cap
+  complete : ∀ W : Subrepresentation rho, ∃ i, state i = W
+
+namespace BinaryInvariantCompleteCoupledHeadRegistry
+
+variable {rho : Representation (ZMod 2) G (Fin w → ZMod 2)}
+  {generators : J → G} {I : Type*}
+  {state : I → Subrepresentation rho} {cap : ℕ}
+  (C : BinaryInvariantCompleteCoupledHeadRegistry
+    rho generators state cap)
+
+theorem finrank_add_finrank_add_quotient_le
+    (K W L : Subrepresentation rho)
+    (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
+      L.toSubmodule) :
+    Module.finrank (ZMod 2) K.toRepresentation.Coinvariants +
+        Module.finrank (ZMod 2) W.toRepresentation.Coinvariants +
+        Module.finrank (ZMod 2)
+          (L.toSubmodule ⫽
+            binaryCoupledDenominator rho generators L
+              (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule)
+              hproduct) ≤ cap :=
+  C.coupled.finrank_add_finrank_add_quotient_le C.complete K W L hproduct
+
+end BinaryInvariantCompleteCoupledHeadRegistry
+
 end SymmetricSubgroupAsymptotics
 
 end

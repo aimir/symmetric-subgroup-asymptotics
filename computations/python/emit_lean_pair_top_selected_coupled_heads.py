@@ -445,6 +445,14 @@ noncomputable def registry :
     intro i j ell _h
     fin_cases i <;> fin_cases j <;> fin_cases ell <;> native_decide
 
+/-- The finite coupled-head table together with the independently checked
+cyclic-orbit proof that its state list contains every invariant submodule. -/
+noncomputable def completeRegistry :
+    BinaryInvariantCompleteCoupledHeadRegistry
+      representation topAmbient states 4 where
+  coupled := registry
+  complete := {natural_module}.registry.complete
+
 end SymmetricSubgroupAsymptotics.{module_name}
 
 end
