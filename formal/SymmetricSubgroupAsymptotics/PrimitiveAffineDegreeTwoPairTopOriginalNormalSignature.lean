@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairRelativeAnchorLabels
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoRelativeKernelAnchor
 import SymmetricSubgroupAsymptotics.BinaryPairSharedBinding
 
 /-!
@@ -255,6 +255,29 @@ noncomputable def relativeAnchorLiftConclusion
       allowed_capacity := P.allowed_capacity
       profile_mem := P.profile_mem }
 
+/-- Complete the universal pair-relative lift from a fixed prefix, actual
+relative target irreducibles, and one chosen normal constituent per tail
+slot.  The Sylow labels and their kernel theorem are constructed by
+`DegreeTwoPairRelativeKernelAnchor.toQuotientEnvelope`. -/
+noncomputable def relativeKernelLiftConclusion
+    (lit : PreE7CharacterLiterature)
+    (data : ∀ N,
+      DegreeTwoPairRelativeKernelAnchor
+        (preE7PairAction s p ⨸ N.1) (P.profile N)) :
+    DegreeTwoPairTopRelativeLiftConclusion D p := by
+  let lift : DegreeTwoPairRelativeLiftData s p :=
+    DegreeTwoPairRelativeLiftData.ofRelativeKernelAnchors
+      lit P.profile P.capacity data
+  exact
+    { lift := lift
+      topNormalState := R.topNormalState
+      moduleState := R.moduleState
+      profileOfState := P.profileOfState
+      profile_eq := fun _ ↦ rfl
+      allowedProfiles := P.allowedProfiles
+      allowed_capacity := P.allowed_capacity
+      profile_mem := P.profile_mem }
+
 end DegreeTwoPairTopStateProfile
 
 /-- A profile table for a finite top reached through two pair frames.  It is
@@ -308,6 +331,26 @@ noncomputable def relativeAnchorLiftConclusion
       moduleState := R.moduleState
       profileOfState := P.profileOfState
       profile_eq := fun _ => rfl
+      allowedProfiles := P.allowedProfiles
+      allowed_capacity := P.allowed_capacity
+      profile_mem := P.profile_mem }
+
+/-- Tower-row form of `relativeKernelLiftConclusion`. -/
+noncomputable def relativeKernelLiftConclusion
+    (lit : PreE7CharacterLiterature)
+    (data : ∀ N,
+      DegreeTwoPairRelativeKernelAnchor
+        (preE7PairAction s p ⨸ N.1) (P.profile N)) :
+    DegreeTwoPairTopRelativeLiftConclusion D p := by
+  let lift : DegreeTwoPairRelativeLiftData s p :=
+    DegreeTwoPairRelativeLiftData.ofRelativeKernelAnchors
+      lit P.profile P.capacity data
+  exact
+    { lift := lift
+      topNormalState := R.topNormalState
+      moduleState := R.moduleState
+      profileOfState := P.profileOfState
+      profile_eq := fun _ ↦ rfl
       allowedProfiles := P.allowedProfiles
       allowed_capacity := P.allowed_capacity
       profile_mem := P.profile_mem }
