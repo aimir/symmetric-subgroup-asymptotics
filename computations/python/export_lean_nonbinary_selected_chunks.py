@@ -179,6 +179,68 @@ def literal_child(ambient_group, normal_generators,
     return matches[0]
 
 
+def relative_socle_plan(action: dict,
+                        normal_row_sets: list[frozenset[tuple[int, ...]]],
+                        base: int) -> dict:
+    """Find the relative atoms, their join, and a short normal-generator path.
+
+    The path uses conjugacy-class representatives.  Taking a transition from
+    state ``N`` along class ``c`` replaces ``N`` by
+    ``N ⋁ normalClosure(c)``.  Thus a path from the base to the relative
+    socle carrier is exactly a tuple whose normal closure, together with the
+    base, is that carrier.  Lean later rechecks the resulting subgroup
+    equality on the executable row group.
+    """
+    count = len(normal_row_sets)
+    base_rows = normal_row_sets[base]
+    above = [j for j in range(count)
+             if base_rows < normal_row_sets[j]]
+    components = [
+        j for j in above
+        if not any(base_rows < normal_row_sets[k] < normal_row_sets[j]
+                   for k in above)
+    ]
+    carriers = [
+        j for j in range(count)
+        if base_rows <= normal_row_sets[j]
+        and all(normal_row_sets[k] <= normal_row_sets[j]
+                for k in components)
+    ]
+    minimal_carriers = [
+        j for j in carriers
+        if not any(normal_row_sets[k] < normal_row_sets[j]
+                   for k in carriers)
+    ]
+    require(len(minimal_carriers) == 1,
+            "relative socle carrier is not unique")
+    carrier = minimal_carriers[0]
+
+    atoms = action["atoms"]
+    atom_position = {normal_index: i for i, normal_index in enumerate(atoms)}
+    class_atoms = [row["normal_closure"] for row in action["classes"]]
+    joins = [row.get("joins") for row in action["normals"]]
+    require(all(isinstance(row, list) and len(row) == len(atoms)
+                for row in joins), "normal join table is incomplete")
+
+    queue = [base]
+    path: dict[int, list[int]] = {base: []}
+    for state in queue:
+        if state == carrier:
+            break
+        for class_index, closure_state in enumerate(class_atoms):
+            child = joins[state][atom_position[closure_state]] - 1
+            require(0 <= child < count, "normal join target is out of range")
+            if child not in path:
+                path[child] = path[state] + [class_index]
+                queue.append(child)
+    require(carrier in path, "relative socle carrier is unreachable")
+    return {
+        "minimal_state_indices": [j + 1 for j in components],
+        "carrier_state_index": carrier + 1,
+        "generator_class_indices": [j + 1 for j in path[carrier]],
+    }
+
+
 def normal_chunk(action: dict, ambient_group, start: int, stop: int,
                  budget: Budget) -> dict:
     ambient = [permutation(row) for row in action["generators"]]
@@ -203,6 +265,8 @@ def normal_chunk(action: dict, ambient_group, start: int, stop: int,
     normal_row_sets = [frozenset(group.rows) for group in normal_groups]
     require(len(set(normal_row_sets)) == len(normal_row_sets),
             "selected normal-generator states are not distinct")
+    socle_plans = [relative_socle_plan(action, normal_row_sets, i)
+                   for i in range(len(normals))]
 
     rows = []
     for index in range(start, stop):
@@ -232,6 +296,7 @@ def normal_chunk(action: dict, ambient_group, start: int, stop: int,
             "normal_index": index + 1,
             "declared_order": normal["order"],
             "certificate": normal.get("certificate"),
+            "relative_socle": socle_plans[index],
             "normality": normality_words(
                 ambient, generators, WIDTH, budget,
                 max_states=MAX_GROUP_ORDER),
@@ -273,6 +338,8 @@ def generation_manifest(rows: list[dict]) -> dict:
                 f"PrimitiveAffineDegreeTwoNonbinary{module_token}Normals",
             "structural_module":
                 f"PrimitiveAffineDegreeTwoNonbinary{module_token}Structural",
+            "quotient_socle_module":
+                f"PrimitiveAffineDegreeTwoNonbinary{module_token}QuotientSocles",
             "selected_route": ("bounded_faithful_action_words" if bounded
                                else "sparse_schreier_and_centralizer_coordinates"),
         })
@@ -288,10 +355,13 @@ def generation_manifest(rows: list[dict]) -> dict:
         "producer": "export_lean_nonbinary_selected_chunks.py",
         "class_emitter": "emit_lean_nonbinary_selected_class_pilot.py",
         "normal_emitter": "emit_lean_nonbinary_selected_normals.py",
+        "quotient_socle_emitter":
+            "emit_lean_nonbinary_selected_quotient_socles.py",
         "generation_policy": [
             "Generate one explicit action and chunk at a time.",
             "Assemble all class chunks before emitting the class module.",
             "Assemble all normal chunks before emitting the normal module.",
+            "Emit relative-socle tables from those same checked normal chunks.",
             "Transport both modules to the literal subgroup and call FiniteNormalStateRegistry.ofWordRegistry.",
             "Use the sparse Schreier/centralizer route for rows above bounded_action_order.",
         ],

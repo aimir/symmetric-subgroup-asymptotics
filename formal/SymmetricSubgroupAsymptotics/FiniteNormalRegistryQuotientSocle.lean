@@ -11,7 +11,8 @@ above `N`.  This file packages the finite certificate needed by catalogue
 emitters: list those relative atoms, identify their supremum, and give one
 element whose normal closure modulo `N` is that supremum.
 
-The resulting theorem produces `SocleNormalGeneratorBound (G ⨸ N) 1`.
+The resulting theorem produces `SocleNormalGeneratorBound (G ⨸ N) t`
+from a uniformly padded `Fin t` tuple.
 All completeness reasoning is semantic; a generated row proves the finite
 state conditions using its checked complete normal registry.
 -/
@@ -141,7 +142,7 @@ end IsMinimalNormalAbove
 /-- Finite, checkable data identifying and normally generating the full
 socle above one quotient kernel. -/
 structure FiniteRelativeSocleGeneratorData
-    (G : Type) [Group G] (N : Subgroup G) : Type 1 where
+    (G : Type) [Group G] (N : Subgroup G) (t : ℕ) : Type 1 where
   base_normal : N.Normal
   Component : Type
   [component_fintype : Fintype Component]
@@ -151,10 +152,10 @@ structure FiniteRelativeSocleGeneratorData
     IsMinimalNormalAbove N M → ∃ i, component i = M
   carrier : Subgroup G
   [carrier_normal : carrier.Normal]
-  carrier_eq : carrier = ⨆ i, component i
-  generator : G
+  carrier_eq : carrier = N ⊔ ⨆ i, component i
+  generator : Fin t → G
   generated :
-    Subgroup.normalClosure (Set.range (fun _ : Fin 1 ↦ generator)) ⊔ N =
+    Subgroup.normalClosure (Set.range generator) ⊔ N =
       carrier
 
 attribute [instance]
@@ -165,32 +166,32 @@ attribute [instance]
 namespace FiniteRelativeSocleGeneratorData
 
 variable {G : Type} [Group G] [Finite G]
-  {N : Subgroup G}
-  (D : FiniteRelativeSocleGeneratorData G N)
+  {N : Subgroup G} {t : ℕ}
+  (D : FiniteRelativeSocleGeneratorData G N t)
 
 private theorem component_le_carrier (i : D.Component) :
     D.component i ≤ D.carrier := by
   rw [D.carrier_eq]
-  exact le_iSup D.component i
+  exact le_sup_of_le_right (le_iSup D.component i)
 
 /-- Transport a complete relative-socle certificate through a literal group
 equivalence. -/
 noncomputable def mapEquiv {H : Type} [Group H] [Finite H]
     (e : G ≃* H) :
-    FiniteRelativeSocleGeneratorData H (e.mapSubgroup N) := by
+    FiniteRelativeSocleGeneratorData H (e.mapSubgroup N) t := by
   letI : N.Normal := D.base_normal
   letI : (e.mapSubgroup N).Normal :=
     D.base_normal.map e.toMonoidHom e.surjective
   let E : Subgroup G ≃o Subgroup H := e.mapSubgroup
   have himage : e.toMonoidHom ''
-      Set.range (fun _ : Fin 1 ↦ D.generator) =
-      Set.range (fun _ : Fin 1 ↦ e D.generator) := by
+      Set.range D.generator =
+      Set.range (fun i ↦ e (D.generator i)) := by
     ext x
     constructor
     · rintro ⟨_, ⟨i, rfl⟩, rfl⟩
       exact ⟨i, rfl⟩
     · rintro ⟨i, rfl⟩
-      exact ⟨D.generator, ⟨i, rfl⟩, rfl⟩
+      exact ⟨D.generator i, ⟨i, rfl⟩, rfl⟩
   exact
     { Component := D.Component
       component := fun i ↦ E (D.component i)
@@ -211,19 +212,19 @@ noncomputable def mapEquiv {H : Type} [Group H] [Finite H]
       base_normal := D.base_normal.map e.toMonoidHom e.surjective
       carrier_normal := D.carrier_normal.map e.toMonoidHom e.surjective
       carrier_eq := by
-        rw [D.carrier_eq, Subgroup.map_iSup]
-      generator := e D.generator
+        rw [D.carrier_eq, Subgroup.map_sup, Subgroup.map_iSup]
+      generator := fun i ↦ e (D.generator i)
       generated := by
         calc
           Subgroup.normalClosure
-                (Set.range (fun _ : Fin 1 ↦ e D.generator)) ⊔
+                (Set.range (fun i ↦ e (D.generator i))) ⊔
               E N =
               (Subgroup.normalClosure
-                (Set.range (fun _ : Fin 1 ↦ D.generator))).map
+                (Set.range D.generator)).map
                   e.toMonoidHom ⊔ E N := by
             rw [Subgroup.map_normalClosure _ _ e.surjective, himage]
           _ = (Subgroup.normalClosure
-                (Set.range (fun _ : Fin 1 ↦ D.generator)) ⊔ N).map
+                (Set.range D.generator) ⊔ N).map
                   e.toMonoidHom := by rw [Subgroup.map_sup]
           _ = E D.carrier := by rw [D.generated] }
 
@@ -234,13 +235,15 @@ theorem carrier_map_eq_socle :
   letI : N.Normal := D.base_normal
   apply le_antisymm
   · rw [Subgroup.map_le_iff_le_comap, D.carrier_eq]
-    apply iSup_le
-    intro i
-    rw [← Subgroup.map_le_iff_le_comap]
-    intro x hx
-    exact Subgroup.subset_normalClosure
-      ⟨(D.component i).map (QuotientGroup.mk' N),
-        (D.component_minimal i).map_quotient, hx⟩
+    apply sup_le
+    · exact QuotientGroup.le_comap_mk' N (finiteGroupSocle (G ⨸ N))
+    · apply iSup_le
+      intro i
+      rw [← Subgroup.map_le_iff_le_comap]
+      intro x hx
+      exact Subgroup.subset_normalClosure
+        ⟨(D.component i).map (QuotientGroup.mk' N),
+          (D.component_minimal i).map_quotient, hx⟩
   · rw [finiteGroupSocle]
     apply Subgroup.normalClosure_le_normal
     rintro x ⟨L, hL, hx⟩
@@ -258,13 +261,13 @@ theorem carrier_map_eq_socle :
           Subgroup.map_mono (D.component_le_carrier i)
     exact hLe hx
 
-/-- The checked original element gives a one-position normal generator of
-the quotient socle. -/
+/-- The checked original tuple gives a normal generating tuple of the
+quotient socle. -/
 noncomputable def quotientSocleGenerator :
-    SocleNormalGeneratorBound (G ⨸ N) 1 := by
+    SocleNormalGeneratorBound (G ⨸ N) t := by
   letI : N.Normal := D.base_normal
-  let x : Fin 1 → G := fun _ ↦ D.generator
-  let xq : Fin 1 → G ⨸ N := fun i ↦ QuotientGroup.mk' N (x i)
+  let x : Fin t → G := D.generator
+  let xq : Fin t → G ⨸ N := fun i ↦ QuotientGroup.mk' N (x i)
   refine ⟨xq, ?_⟩
   have himage : (QuotientGroup.mk' N) '' Set.range x = Set.range xq := by
     ext q
@@ -345,6 +348,7 @@ relations, so generated literal rows can discharge them by kernel-checked
 decisions. -/
 noncomputable def relativeSocleGeneratorDataOfStates
     (base carrier : R.State)
+    (t : ℕ)
     (Component : Type) [Fintype Component]
     (componentState : Component → R.State)
     (component_minimal : ∀ i,
@@ -352,13 +356,13 @@ noncomputable def relativeSocleGeneratorDataOfStates
     (component_complete : ∀ j,
       R.IsMinimalStateAbove base j →
         ∃ i, componentState i = j)
-    (carrier_eq : R.state carrier =
+    (carrier_eq : R.state carrier = R.state base ⊔
       ⨆ i, R.state (componentState i))
-    (generator : U)
+    (generator : Fin t → U)
     (generated :
-      Subgroup.normalClosure (Set.range (fun _ : Fin 1 ↦ generator)) ⊔
+      Subgroup.normalClosure (Set.range generator) ⊔
         R.state base = R.state carrier) :
-    FiniteRelativeSocleGeneratorData U (R.state base) :=
+    FiniteRelativeSocleGeneratorData U (R.state base) t :=
   { Component := Component
     base_normal := R.state_normal base
     component := fun i ↦ R.state (componentState i)
@@ -379,26 +383,27 @@ noncomputable def relativeSocleGeneratorDataOfStates
     generator := generator
     generated := generated }
 
-/-- One checked relative-socle certificate on every finite state. -/
-structure QuotientSocleGeneratorFamily : Type 1 where
+/-- One uniformly padded checked relative-socle certificate on every finite
+state. -/
+structure QuotientSocleGeneratorFamily (t : ℕ) : Type 1 where
   data : ∀ i : R.State,
-    FiniteRelativeSocleGeneratorData U (R.state i)
+    FiniteRelativeSocleGeneratorData U (R.state i) t
 
 namespace QuotientSocleGeneratorFamily
 
-variable (D : R.QuotientSocleGeneratorFamily)
+variable {t : ℕ} (D : R.QuotientSocleGeneratorFamily t)
 
 /-- Dispatch the finite state certificate to an arbitrary literal normal
-axis and produce its one-position quotient-socle witness. -/
+axis and produce its `t`-position quotient-socle witness. -/
 noncomputable def dispatch
     (N : {N : Subgroup U // N.Normal}) :
-    SocleNormalGeneratorBound (U ⨸ N.1) 1 := by
+    SocleNormalGeneratorBound (U ⨸ N.1) t := by
   let i : R.State := R.normalAxisEquiv.symm N
   have hi : R.normalAxis i = N := R.normalAxisEquiv.apply_symm_apply N
   exact cast
     (congrArg
       (fun M : {M : Subgroup U // M.Normal} ↦
-        SocleNormalGeneratorBound (U ⨸ M.1) 1) hi)
+        SocleNormalGeneratorBound (U ⨸ M.1) t) hi)
     (D.data i).quotientSocleGenerator
 
 end QuotientSocleGeneratorFamily
