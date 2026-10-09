@@ -2,7 +2,7 @@ import SymmetricSubgroupAsymptotics.BinaryPairFrameSignIsotypes
 import SymmetricSubgroupAsymptotics.BinaryPairFrameTernaryUniformCyclic
 
 /-!
-# Cyclic ternary pair modules at the high-sign six/twelve thresholds
+# Cyclic ternary pair modules at the high-sign residual thresholds
 
 At six pair coordinates, two realized binary signs force every sign fibre
 to have size one, two, or three.  At twelve coordinates, three realized
@@ -10,6 +10,9 @@ signs force size one, two, three, or four.  The power-of-two and size-three
 fibre theorems therefore cover every isotype.  The generic Clifford
 assembly then makes every invariant submodule of the full signed ternary
 module, and of its contragredient, cyclic.
+
+At eighteen coordinates, six realized signs again force fibre size at most
+three, so the same argument applies there as well.
 -/
 
 set_option autoImplicit false
@@ -112,6 +115,29 @@ theorem ternarySignedRepresentation_dual_uniform_one_of_twelve_three_signs
   exact signFiber_uniform_one_of_card_one_two_three_four
     F htrans chi hcases'
 
+/-- Six sign classes at eighteen coordinates make the full signed ternary
+contragredient uniformly cyclic. -/
+theorem ternarySignedRepresentation_dual_uniform_one_of_eighteen_six_signs
+    [Finite X] [Finite I] [Nonempty I]
+    (htrans : MulAction.IsPretransitive G X)
+    (heighteen : Nat.card I = 18)
+    (hsix : 6 ≤ Nat.card (CoordinateSign F)) :
+    UniformSubrepresentationGeneratorBound
+      (ternarySignedRepresentation F).dual 1 := by
+  apply ternarySignedRepresentation_dual_uniformSubrepresentationGeneratorBound_one
+    F htrans
+  intro chi
+  let i := coordinateSignRepresentative F chi
+  have hcases := coordinateSign_fibre_card_cases_eighteen
+    F htrans heighteen hsix i
+  have heq : coordinateSign F i = chi :=
+    coordinateSignRepresentative_spec F chi
+  have hcases' : Nat.card {j : I // coordinateSign F j = chi} = 1 ∨
+      Nat.card {j : I // coordinateSign F j = chi} = 2 ∨
+      Nat.card {j : I // coordinateSign F j = chi} = 3 := by
+    simpa only [heq] using hcases
+  exact signFiber_uniform_one_of_card_one_two_three F htrans chi hcases'
+
 /-- Combined high-sign interface used by the degree-three six/twelve
 capacity-one owner. -/
 theorem ternarySignedRepresentation_dual_uniform_one_of_six_or_twelve
@@ -127,6 +153,25 @@ theorem ternarySignedRepresentation_dual_uniform_one_of_six_or_twelve
       F htrans hsix htwo
   · exact ternarySignedRepresentation_dual_uniform_one_of_twelve_three_signs
       F htrans htwelve hthree
+
+/-- Combined high-sign interface for all three post-four residual block
+counts. -/
+theorem ternarySignedRepresentation_dual_uniform_one_of_six_twelve_or_eighteen
+    [Finite X] [Finite I] [Nonempty I]
+    (htrans : MulAction.IsPretransitive G X)
+    (hsize :
+      (Nat.card I = 6 ∧ 2 ≤ Nat.card (CoordinateSign F)) ∨
+      (Nat.card I = 12 ∧ 3 ≤ Nat.card (CoordinateSign F)) ∨
+      (Nat.card I = 18 ∧ 6 ≤ Nat.card (CoordinateSign F))) :
+    UniformSubrepresentationGeneratorBound
+      (ternarySignedRepresentation F).dual 1 := by
+  rcases hsize with ⟨hsix, htwo⟩ | ⟨htwelve, hthree⟩ | ⟨heighteen, hsix⟩
+  · exact ternarySignedRepresentation_dual_uniform_one_of_six_two_signs
+      F htrans hsix htwo
+  · exact ternarySignedRepresentation_dual_uniform_one_of_twelve_three_signs
+      F htrans htwelve hthree
+  · exact ternarySignedRepresentation_dual_uniform_one_of_eighteen_six_signs
+      F htrans heighteen hsix
 
 end BinaryPairFrame
 end SymmetricSubgroupAsymptotics

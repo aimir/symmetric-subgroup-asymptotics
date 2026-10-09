@@ -185,6 +185,25 @@ theorem coordinateSign_fibre_card_cases_twelve
     Nat.card_pos_iff.mpr ⟨⟨⟨i0, rfl⟩⟩, inferInstance⟩
   omega
 
+/-- At eighteen coordinates, at least six sign classes force every
+isotype to have size one, two, or three. -/
+theorem coordinateSign_fibre_card_cases_eighteen
+    [Finite I] [Nonempty I]
+    (F : BinaryPairFrame G I)
+    (htrans : MulAction.IsPretransitive G X)
+    (heighteen : Nat.card I = 18)
+    (hsix : 6 ≤ Nat.card (CoordinateSign F))
+    (i0 : I) :
+    Nat.card {i : I // coordinateSign F i = coordinateSign F i0} = 1 ∨
+      Nat.card {i : I // coordinateSign F i = coordinateSign F i0} = 2 ∨
+      Nat.card {i : I // coordinateSign F i = coordinateSign F i0} = 3 := by
+  have hproduct := coordinateSign_count_mul_fibre_card F htrans i0
+  rw [heighteen] at hproduct
+  have hmpos : 0 < Nat.card {i : I //
+      coordinateSign F i = coordinateSign F i0} :=
+    Nat.card_pos_iff.mpr ⟨⟨⟨i0, rfl⟩⟩, inferInstance⟩
+  omega
+
 end BinaryPairFrame
 end SymmetricSubgroupAsymptotics
 

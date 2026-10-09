@@ -2,7 +2,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeThreeHighSignRepresenta
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeThreePostFourIdentitySource
 
 /-!
-# Six/twelve identity source in the high-sign branch
+# Post-four identity source in the high-sign branch
 
 The cyclic signed-coordinate theorem sharpens the actual joint capacity to
 one while retaining its published fixed-top coefficient.  We use that new
@@ -40,6 +40,9 @@ noncomputable def degreeThreeHighSignJointCapacity
           (degreeThreeSignedQuotientPairFrame block P hr))) ∨
       (Nat.card block.Points = 12 ∧
         3 ≤ Nat.card (BinaryPairFrame.CoordinateSign
+          (degreeThreeSignedQuotientPairFrame block P hr))) ∨
+      (Nat.card block.Points = 18 ∧
+        6 ≤ Nat.card (BinaryPairFrame.CoordinateSign
           (degreeThreeSignedQuotientPairFrame block P hr)))) :
     ElementaryLayerJointCapacityBound
       (elementaryChart block P).p
@@ -72,6 +75,9 @@ noncomputable def degreeThreeHighSignJointCapacity
           (degreeThreeSignedQuotientPairFrame block P hr))) ∨
       (Nat.card block.Points = 12 ∧
         3 ≤ Nat.card (BinaryPairFrame.CoordinateSign
+          (degreeThreeSignedQuotientPairFrame block P hr))) ∨
+      (Nat.card block.Points = 18 ∧
+        6 ≤ Nat.card (BinaryPairFrame.CoordinateSign
           (degreeThreeSignedQuotientPairFrame block P hr)))) :
     (degreeThreeHighSignJointCapacity block P hTraceyHalf hTraceyLog
       hTraceyRefined hTraceyPerm hr hcomponent hsize).capacity = 1 := by
@@ -91,6 +97,9 @@ theorem degreeThreeHighSignJointCapacity_coefficient_eq
           (degreeThreeSignedQuotientPairFrame block P hr))) ∨
       (Nat.card block.Points = 12 ∧
         3 ≤ Nat.card (BinaryPairFrame.CoordinateSign
+          (degreeThreeSignedQuotientPairFrame block P hr))) ∨
+      (Nat.card block.Points = 18 ∧
+        6 ≤ Nat.card (BinaryPairFrame.CoordinateSign
           (degreeThreeSignedQuotientPairFrame block P hr)))) :
     (degreeThreeHighSignJointCapacity block P hTraceyHalf hTraceyLog
       hTraceyRefined hTraceyPerm hr hcomponent hsize).coefficient =
@@ -99,7 +108,7 @@ theorem degreeThreeHighSignJointCapacity_coefficient_eq
   simp only [degreeThreeHighSignJointCapacity,
     ActualWreathAffineCapacity.jointCapacitySharpenToOne_of_ambientDual_uniform_coefficient]
 
-/-- The high-sign six/twelve branch closes on the faithful literal signed
+/-- The high-sign post-four branch closes on the faithful literal signed
 quotient action of degree twice the block count. -/
 noncomputable def degreeThreeSixOrTwelveHighSignIdentitySource
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
@@ -114,6 +123,9 @@ noncomputable def degreeThreeSixOrTwelveHighSignIdentitySource
           (degreeThreeSignedQuotientPairFrame block P hr))) ∨
       (Nat.card block.Points = 12 ∧
         3 ≤ Nat.card (BinaryPairFrame.CoordinateSign
+          (degreeThreeSignedQuotientPairFrame block P hr))) ∨
+      (Nat.card block.Points = 18 ∧
+        6 ≤ Nat.card (BinaryPairFrame.CoordinateSign
           (degreeThreeSignedQuotientPairFrame block P hr)))) :
     PreE7RankTailSourceOrYonedaTopData w U := by
   let H := degreeThreeHighSignJointCapacity block P hTraceyHalf hTraceyLog
@@ -125,12 +137,14 @@ noncomputable def degreeThreeSixOrTwelveHighSignIdentitySource
   have hpd := degreeThree_translation_prime_dim block P hr
   have hp : P.p = 3 := by
     simpa only [localTranslationChart] using hpd.1
-  have hs : Nat.card block.Points = 6 ∨ Nat.card block.Points = 12 := by
-    rcases hsize with ⟨hs, _⟩ | ⟨hs, _⟩
+  have hs : Nat.card block.Points = 6 ∨ Nat.card block.Points = 12 ∨
+      Nat.card block.Points = 18 := by
+    rcases hsize with ⟨hs, _⟩ | ⟨hs, _⟩ | ⟨hs, _⟩
     · exact Or.inl hs
-    · exact Or.inr hs
+    · exact Or.inr (Or.inl hs)
+    · exact Or.inr (Or.inr hs)
   have hs2 : 2 ≤ Nat.card block.Points := by
-    rcases hs with h | h <;> omega
+    rcases hs with h | h | h <;> omega
   have hv2 : 2 ≤ quotientDegree block := by
     rw [degreeThree_quotientDegree_eq_twice_blocks block hr]
     omega
@@ -184,7 +198,7 @@ noncomputable def degreeThreeSixOrTwelveHighSignIdentitySource
       have hraw : preE7CharacterRho * w ≤
           ((evenWidth w : ℝ) - quotientDegree block) / 8 -
             Real.logb 2 3 / 3 * H.capacity := by
-        rcases hs with hs | hs
+        rcases hs with hs | hs | hs
         · have hw18 : w = 18 := by simpa only [hs] using hw
           have hq12 : quotientDegree block = 12 := by simpa only [hs] using hq
           rw [hw18, hq12]
@@ -193,6 +207,11 @@ noncomputable def degreeThreeSixOrTwelveHighSignIdentitySource
         · have hw36 : w = 36 := by simpa only [hs] using hw
           have hq24 : quotientDegree block = 24 := by simpa only [hs] using hq
           rw [hw36, hq24]
+          norm_num [preE7CharacterRho, evenWidth, halfDegree]
+          linarith
+        · have hw54 : w = 54 := by simpa only [hs] using hw
+          have hq36 : quotientDegree block = 36 := by simpa only [hs] using hq
+          rw [hw54, hq36]
           norm_num [preE7CharacterRho, evenWidth, halfDegree]
           linarith
       simpa only [T, translationLayerEnvelopeOver_v,

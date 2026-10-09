@@ -196,6 +196,9 @@ theorem degreeThreeNativeSignedRepresentation_dual_uniform_high_sign
           (degreeThreeSignedQuotientPairFrame block P hr))) ∨
       (Nat.card block.Points = 12 ∧
         3 ≤ Nat.card (BinaryPairFrame.CoordinateSign
+          (degreeThreeSignedQuotientPairFrame block P hr))) ∨
+      (Nat.card block.Points = 18 ∧
+        6 ≤ Nat.card (BinaryPairFrame.CoordinateSign
           (degreeThreeSignedQuotientPairFrame block P hr)))) :
     UniformSubrepresentationGeneratorBound
       (degreeThreeNativeSignedRepresentation block P hr).dual 1 := by
@@ -203,7 +206,7 @@ theorem degreeThreeNativeSignedRepresentation_dual_uniform_high_sign
   have htrans := degreeThreeSignedQuotientRange_pretransitive
     block P hr hcomponent
   have hgeneric :=
-    BinaryPairFrame.ternarySignedRepresentation_dual_uniform_one_of_six_or_twelve
+    BinaryPairFrame.ternarySignedRepresentation_dual_uniform_one_of_six_twelve_or_eighteen
       F htrans hsize
   have hp : P.p = 3 := (degreeThree_translation_prime_dim block P hr).1
   rw [hp]
@@ -222,6 +225,9 @@ theorem degreeThreeTranslationQuotient_dual_uniform_high_sign
           (degreeThreeSignedQuotientPairFrame block P hr))) ∨
       (Nat.card block.Points = 12 ∧
         3 ≤ Nat.card (BinaryPairFrame.CoordinateSign
+          (degreeThreeSignedQuotientPairFrame block P hr))) ∨
+      (Nat.card block.Points = 18 ∧
+        6 ≤ Nat.card (BinaryPairFrame.CoordinateSign
           (degreeThreeSignedQuotientPairFrame block P hr)))) :
     UniformSubrepresentationGeneratorBound
       ((elementaryChart block P).quotientRepresentation.ρ).dual 1 := by
@@ -245,6 +251,9 @@ theorem degreeThreeActualAmbient_dual_uniform_high_sign
           (degreeThreeSignedQuotientPairFrame block P hr))) ∨
       (Nat.card block.Points = 12 ∧
         3 ≤ Nat.card (BinaryPairFrame.CoordinateSign
+          (degreeThreeSignedQuotientPairFrame block P hr))) ∨
+      (Nat.card block.Points = 18 ∧
+        6 ≤ Nat.card (BinaryPairFrame.CoordinateSign
           (degreeThreeSignedQuotientPairFrame block P hr)))) :
     UniformSubrepresentationGeneratorBound
       (ActualWreathAffineCapacity.ambientRepresentation
