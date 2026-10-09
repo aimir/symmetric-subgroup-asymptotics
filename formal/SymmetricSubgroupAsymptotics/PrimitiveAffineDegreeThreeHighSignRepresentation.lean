@@ -207,7 +207,7 @@ theorem degreeThreeNativeSignedRepresentation_dual_uniform_high_sign
       F htrans hsize
   have hp : P.p = 3 := (degreeThree_translation_prime_dim block P hr).1
   rw [hp]
-  simpa only [degreeThreeNativeSignedRepresentation,
+  simpa [degreeThreeNativeSignedRepresentation,
     degreeThreeNativeSignRepresentation, degreeThreeNativeSignScalar,
     degreeThreeScalarFieldEquiv] using hgeneric
 
