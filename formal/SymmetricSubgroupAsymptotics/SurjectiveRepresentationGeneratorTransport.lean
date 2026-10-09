@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.RepresentationDualSubquotientGenerators
 import Mathlib.Algebra.MonoidAlgebra.MapDomain
+import Mathlib.Algebra.Group.Subgroup.Pointwise
 
 /-!
 # Generator bounds under a surjective change of acting group
@@ -16,7 +17,7 @@ three-point signed Sylow image with the standard `C3` permutation module.
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
 noncomputable section
-open scoped Classical MonoidAlgebra
+open scoped Classical MonoidAlgebra Pointwise
 
 namespace SymmetricSubgroupAsymptotics
 
@@ -113,6 +114,36 @@ theorem UniformSubrepresentationGeneratorBound.comp_mulEquiv
     UniformSubrepresentationGeneratorBound
       (sigma.comp e.toMonoidHom) n :=
   hgen.comp_of_surjective sigma e.toMonoidHom e.surjective
+
+/-- Conjugating the subgroup of restriction preserves a uniform generator
+bound.  The linear equivalence is the action of the conjugating element
+itself. -/
+theorem uniformSubrepresentationGeneratorBound_conjugate_restriction
+    (rho : Representation k G V) (K : Subgroup G) (g : G) {n : ℕ}
+    (hgen : UniformSubrepresentationGeneratorBound
+      (rho.comp (g • K : Subgroup G).subtype) n) :
+    UniformSubrepresentationGeneratorBound
+      (rho.comp K.subtype) n := by
+  let e : K ≃* (g • K : Subgroup G) :=
+    equivSMul (MulAut.conj g) K
+  let sigma : Representation k K V :=
+    (rho.comp (g • K : Subgroup G).subtype).comp e.toMonoidHom
+  have hsigma : UniformSubrepresentationGeneratorBound sigma n :=
+    hgen.comp_mulEquiv (rho.comp (g • K : Subgroup G).subtype) e
+  let f : (rho.comp K.subtype).IntertwiningMap sigma :=
+    { toLinearMap := rho g
+      isIntertwining' := by
+        intro h
+        apply LinearMap.ext
+        intro v
+        change rho g (rho h.1 v) =
+          rho ((e h : (g • K : Subgroup G)) : G) (rho g v)
+        rw [← Module.End.mul_apply, ← map_mul,
+          ← Module.End.mul_apply, ← map_mul]
+        change rho (g * h.1) v = rho (g * h.1 * g⁻¹ * g) v
+        simp [mul_assoc] }
+  apply hsigma.of_injective f
+  exact (rho.apply_bijective g).injective
 
 end SymmetricSubgroupAsymptotics
 
