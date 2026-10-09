@@ -1,8 +1,13 @@
 import SymmetricSubgroupAsymptotics.BinaryPairZeroCutExtension
+import SymmetricSubgroupAsymptotics.BinaryPairSectionSchurCapacity
+import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicGeneratorBound
 import SymmetricSubgroupAsymptotics.BinaryTransitiveCentralCriterion
+import SymmetricSubgroupAsymptotics.FiniteSurjectiveKernelTransport
 import SymmetricSubgroupAsymptotics.FiniteNormalRegistryQuotientSocle
 import SymmetricSubgroupAsymptotics.Non2SchurBound
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopBinaryKernelRows
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairSchurLift
+import SymmetricSubgroupAsymptotics.PermutationFunctionSelfDual
 
 /-!
 # Structural binary-kernel anchors for pair-top rows
@@ -155,6 +160,19 @@ theorem quotientMap_ker_eq_zeroCutBase_ker
   simp only [MonoidHom.mem_ker, R.quotientMap_apply,
     BinaryPairFrame.zeroCutBase_apply, QuotientGroup.eq_one_iff]
   exact R.catalogueTop_mem_state_iff N u
+
+/-- The intrinsic acting quotient and the literal catalogue-top quotient
+are canonically equivalent because the two onto maps from the original
+quotient have the same kernel. -/
+noncomputable def zeroCutBaseEquivCatalogueTop
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (preE7PairAction s p ⨸ (R.frame.top.ker ⊔ N.1)) ≃*
+      (D.top ⨸ D.normalRegistry.state (R.topNormalState N)) := by
+  letI : N.1.Normal := N.2
+  exact surjectiveTargetEquivOfKernelEq
+    (R.frame.zeroCutBase N.1) (R.quotientMap N)
+    (R.frame.zeroCutBase_surjective N.1) (R.quotientMap_surjective N)
+    (R.quotientMap_ker_eq_zeroCutBase_ker N).symm
 
 /-- The kernel of the catalogue-top quotient is binary because it is the
 actual zero-cut pair module. -/
@@ -365,6 +383,119 @@ noncomputable def rowData
     (A.anchor hZmud)
 
 end DegreeTwoPairTopStructuralAnchorData
+
+/-! ## Schur-capacity assembly -/
+
+/-- The finite data actually measured by `pair_top_modules.jsonl.gz`.
+The top-normal registry supplies a uniformly padded socle tuple.  The
+module table supplies a uniform generator bound on the dual natural
+permutation module; the subquotient theorem turns it into a Schur-capacity
+bound for every retained pair section.
+
+Unlike `DegreeTwoPairTopStructuralAnchorData`, this structure does not
+bound the dimension of the full binary kernel. -/
+structure DegreeTwoPairTopSchurData {s : ℕ}
+    (D : DegreeTwoPairTopFiniteInterface s)
+    (p : PreE7PairActionClass s)
+    (R : DegreeTwoPairTopRealization D p) : Type 1 where
+  ordinary : ℕ
+  relative : ℕ
+  top : D.normalRegistry.QuotientSocleGeneratorFamily ordinary
+  dualUniform : UniformSubrepresentationGeneratorBound
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin s)).dual
+      relative
+
+namespace DegreeTwoPairTopSchurData
+
+/-- Assemble the Schur row directly from the two checked finite registries:
+quotient-socle generators on the normal axis and cyclic module generators on
+the invariant-state axis. -/
+noncomputable def ofFiniteGenerators {s : ℕ}
+    {D : DegreeTwoPairTopFiniteInterface s}
+    {p : PreE7PairActionClass s}
+    {R : DegreeTwoPairTopRealization D p}
+    (ordinary relative : ℕ)
+    (top : D.normalRegistry.QuotientSocleGeneratorFamily ordinary)
+    (moduleGenerators :
+      BinaryInvariantCyclicGeneratorBound D.moduleRegistry relative) :
+    DegreeTwoPairTopSchurData D p R where
+  ordinary := ordinary
+  relative := relative
+  top := top
+  dualUniform := permutationFunctionRepresentation_dual_uniform
+    moduleGenerators.uniform
+
+variable {s : ℕ} {D : DegreeTwoPairTopFiniteInterface s}
+  {p : PreE7PairActionClass s}
+  {R : DegreeTwoPairTopRealization D p}
+  (A : DegreeTwoPairTopSchurData D p R)
+
+def profile : DegreeTwoPairRelativeProfile :=
+  degreeTwoPairOrdinaryRelativeProfile A.ordinary A.relative
+
+/-- The literal top quotient selected by an original normal has the
+ordinary envelope supplied by its checked finite socle certificate. -/
+noncomputable def literalTopEnvelope
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    DegreeTwoPairRelativeQuotientEnvelope
+      (D.top ⨸ D.normalRegistry.state (R.topNormalState N))
+      (degreeTwoPairGeneralProfile A.ordinary) :=
+  (DegreeTwoPairBinaryKernelAnchor.ofSocleGeneratorBound hZmud
+    (A.top.data (R.topNormalState N)).quotientSocleGenerator).toQuotientEnvelope lit
+
+/-- Complete Schur lift on one literal original-normal axis.  The top
+coefficient is transported across the canonical same-kernel equivalence;
+the extension representation and its chart remain the actual objects from
+the original pair frame. -/
+noncomputable def envelope
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    DegreeTwoPairRelativeQuotientEnvelope
+      (preE7PairAction s p ⨸ N.1) A.profile := by
+  letI : N.1.Normal := N.2
+  let top := (A.literalTopEnvelope hZmud lit N).ofTargetEquiv
+    (R.zeroCutBaseEquivCatalogueTop N)
+  exact degreeTwoPairSchurLiftEnvelope
+    (R.frame.zeroCutBase N.1) (R.frame.zeroCutBase_surjective N.1)
+    (Rep.of (R.frame.sectionRepresentation N.1))
+    (R.frame.sectionModuleChart N.1)
+    A.ordinary A.relative top
+    (R.frame.sectionRepresentation_schurCapacity_le_of_uniformDualEquiv
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin s))
+      R.topEquiv R.module_action_eq A.relative A.dualUniform N.1)
+
+/-- Universal all-original-normal lift data for the row. -/
+noncomputable def liftData
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
+    (capacity : A.profile.slope ≤ preE7CharacterWindow (2 * s)) :
+    DegreeTwoPairRelativeLiftData s p where
+  profile := fun _ ↦ A.profile
+  capacity := fun _ ↦ capacity
+  envelope := A.envelope hZmud lit
+
+/-- Package the Schur row in the catalogue-facing conclusion type. -/
+noncomputable def liftConclusion
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
+    (allowedProfiles : Finset DegreeTwoPairRelativeProfile)
+    (allowed_capacity : ∀ profile ∈ allowedProfiles,
+      profile.slope ≤ preE7CharacterWindow (2 * s))
+    (profile_mem : A.profile ∈ allowedProfiles) :
+    DegreeTwoPairTopRelativeLiftConclusion D p :=
+  { lift := A.liftData hZmud lit (allowed_capacity A.profile profile_mem)
+    topNormalState := R.topNormalState
+    moduleState := R.moduleState
+    profileOfState := fun _ _ ↦ A.profile
+    profile_eq := fun _ ↦ rfl
+    allowedProfiles := allowedProfiles
+    allowed_capacity := allowed_capacity
+    profile_mem := fun _ ↦ profile_mem }
+
+end DegreeTwoPairTopSchurData
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu

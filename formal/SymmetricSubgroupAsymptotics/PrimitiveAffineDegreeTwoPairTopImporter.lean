@@ -63,6 +63,37 @@ namespace DegreeTwoPairTopFiniteInterface
 
 variable {s : ℕ} (D : DegreeTwoPairTopFiniteInterface s)
 
+/-- Assemble an interface from independently checked normal and natural
+permutation-module registries.  This is the target used by the generated
+pair-top rows: their old shared-top certificates supply `normalRegistry`,
+while the selected natural-module emitter supplies the remaining fields. -/
+noncomputable def ofRegistries
+    (top : Subgroup (Equiv.Perm (Fin s)))
+    (normalRegistry : FiniteNormalStateRegistry top)
+    (ModuleState : Type) [Finite ModuleState]
+    (moduleState : ModuleState → Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) top (Fin s)))
+    (moduleState_injective : Function.Injective moduleState)
+    (moduleRegistry : BinaryInvariantCyclicOrbitRegistry
+      (permutationFunctionRepresentation (ZMod 2) top (Fin s)) moduleState)
+    (normalCount moduleStateCount cyclicCount : ℕ)
+    (normalCount_eq : Nat.card normalRegistry.State = normalCount)
+    (moduleStateCount_eq : Nat.card ModuleState = moduleStateCount)
+    (cyclicCount_eq : Nat.card moduleRegistry.Cyclic = cyclicCount) :
+    DegreeTwoPairTopFiniteInterface s where
+  top := top
+  normalRegistry := normalRegistry
+  ModuleState := ModuleState
+  moduleState := moduleState
+  moduleState_injective := moduleState_injective
+  moduleRegistry := moduleRegistry
+  normalCount := normalCount
+  moduleStateCount := moduleStateCount
+  cyclicCount := cyclicCount
+  normalCount_eq := normalCount_eq
+  moduleStateCount_eq := moduleStateCount_eq
+  cyclicCount_eq := cyclicCount_eq
+
 /-- Every literal normal subgroup of the top is one emitted normal state. -/
 theorem normal_complete (N : Subgroup D.top) [N.Normal] :
     ∃ i, D.normalRegistry.state i = N :=
