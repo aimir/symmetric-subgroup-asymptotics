@@ -100,6 +100,23 @@ theorem standardD8LinearMap_injective :
       (Pi.basisFun (ZMod 3) (Fin 2))).symm.injective.comp
     monomialRepresentation_asGroupHom_injective
 
+/-- Reading the standard matrix back as a linear operator recovers the
+displayed monomial representation. -/
+@[simp] theorem standardD8LinearMap_toLin_apply
+    (d : D8) (v : TernaryPlane) :
+    (Matrix.GeneralLinearGroup.toLin'
+      (Pi.basisFun (ZMod 3) (Fin 2))
+        (standardD8LinearMap d)).toLinearEquiv v =
+      monomialRepresentation d v := by
+  change
+    (Matrix.GeneralLinearGroup.toLin'
+      (Pi.basisFun (ZMod 3) (Fin 2))
+        ((Matrix.GeneralLinearGroup.toLin'
+          (Pi.basisFun (ZMod 3) (Fin 2))).symm
+            (Representation.asGroupHom monomialRepresentation d))).toLinearEquiv v = _
+  rw [MulEquiv.apply_symm_apply]
+  rfl
+
 /-- The two base signs included in the standard dihedral top. -/
 def d8BaseBits : V4 →* D8 := SemidirectProduct.inl
 

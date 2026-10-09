@@ -85,6 +85,90 @@ noncomputable def degreeThreeFourBlockTwoSignSectionLinearMap
   let e : ZMod P.p ≃+* ZMod 3 := ZMod.ringEquivCongr hp
   exact (Matrix.GeneralLinearGroup.map e.toRingHom).comp phi0
 
+/-- Additive coordinates on the retained section, using the same chosen
+basis and scalar transport as its matrix realization. -/
+noncomputable def degreeThreeFourBlockTwoSignSectionCoordinateEquiv
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P)) :
+    DegreeThreeFourBlockTwoSignSectionModule block P N ≃+
+      DegreeSixS3Wreath.TernaryPlane := by
+  letI : Fact P.p.Prime := (chart block P).primeFact
+  let V := DegreeThreeFourBlockTwoSignSectionModule block P N
+  have hfin : Module.finrank (ZMod P.p) V = 2 :=
+    degreeThreeFourBlockTwoSignSectionModule_finrank_eq_two
+      block P hr hs hcomponent hbinary htwo N
+  let basis : Module.Basis (Fin 2) (ZMod P.p) V :=
+    Module.finBasisOfFinrankEq (ZMod P.p) V hfin
+  have hp : P.p = 3 := (degreeThree_translation_prime_dim block P hr).1
+  let e : ZMod P.p ≃+* ZMod 3 := ZMod.ringEquivCongr hp
+  exact basis.equivFun.toAddEquiv.trans
+    (AddEquiv.piCongrRight fun _ : Fin 2 => e.toAddEquiv)
+
+/-- The chosen section coordinates turn its literal representation into
+the action of the matrix exported above. -/
+theorem degreeThreeFourBlockTwoSignSectionCoordinateEquiv_action
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P))
+    (x : G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
+      degreeThreeFourBlockTwoSignSectionAxis block P N))
+    (v : DegreeThreeFourBlockTwoSignSectionModule block P N) :
+    degreeThreeFourBlockTwoSignSectionCoordinateEquiv
+        block P hr hs hcomponent hbinary htwo N
+        ((degreeThreeFourBlockTwoSignSectionRepresentation block P N).rho x v) =
+      (Matrix.GeneralLinearGroup.toLin'
+        (Pi.basisFun (ZMod 3) (Fin 2))
+          (degreeThreeFourBlockTwoSignSectionLinearMap
+            block P hr hs hcomponent hbinary htwo N x)).toLinearEquiv
+        (degreeThreeFourBlockTwoSignSectionCoordinateEquiv
+          block P hr hs hcomponent hbinary htwo N v) := by
+  letI : Fact P.p.Prime := (chart block P).primeFact
+  let V := DegreeThreeFourBlockTwoSignSectionModule block P N
+  have hfin : Module.finrank (ZMod P.p) V = 2 :=
+    degreeThreeFourBlockTwoSignSectionModule_finrank_eq_two
+      block P hr hs hcomponent hbinary htwo N
+  let basis : Module.Basis (Fin 2) (ZMod P.p) V :=
+    Module.finBasisOfFinrankEq (ZMod P.p) V hfin
+  let rho := (degreeThreeFourBlockTwoSignSectionRepresentation block P N).rho
+  let phi0 : (G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
+      degreeThreeFourBlockTwoSignSectionAxis block P N)) →*
+      Matrix.GeneralLinearGroup (Fin 2) (ZMod P.p) :=
+    (Matrix.GeneralLinearGroup.toLin' basis).symm.toMonoidHom.comp
+      (Representation.asGroupHom rho)
+  have hp : P.p = 3 := (degreeThree_translation_prime_dim block P hr).1
+  let e : ZMod P.p ≃+* ZMod 3 := ZMod.ringEquivCongr hp
+  have hoperator :
+      Matrix.GeneralLinearGroup.toLin' basis (phi0 x) =
+        Representation.asGroupHom rho x := by
+    dsimp only [phi0, MonoidHom.comp_apply]
+    rw [MulEquiv.apply_symm_apply]
+  have hcoords : basis.equivFun (rho x v) =
+      (phi0 x : Matrix (Fin 2) (Fin 2) (ZMod P.p)) *ᵥ
+        basis.equivFun v := by
+    have happ := congrArg
+      (fun L : LinearMap.GeneralLinearGroup (ZMod P.p) V =>
+        (L : Module.End (ZMod P.p) V) v) hoperator
+    simpa only [Matrix.GeneralLinearGroup.toLin'_apply,
+      Basis.equivFun_apply] using congrArg basis.equivFun happ.symm
+  funext i
+  have hi := congrArg (fun z : Fin 2 → ZMod P.p => e (z i)) hcoords
+  simpa only [degreeThreeFourBlockTwoSignSectionCoordinateEquiv,
+    degreeThreeFourBlockTwoSignSectionLinearMap, basis, rho, phi0, e,
+    AddEquiv.trans_apply, AddEquiv.piCongrRight_apply,
+    Matrix.GeneralLinearGroup.toLin_apply,
+    Matrix.GeneralLinearGroup.map_apply, RingHom.map_mulVec] using hi
+
 /-- Equality in the chosen matrix realization reflects equality of the
 underlying section operators. -/
 theorem degreeThreeFourBlockTwoSignSectionLinearMap_reflects
@@ -599,6 +683,73 @@ theorem degreeThreeFourBlockTwoSignSectionD8Map_matrix
   exact D.matrix_eq
     ((degreeThreeFourBlockTwoSignSectionLinearMap
       block P hr hs hcomponent hbinary htwo N).rangeRestrict x)
+
+/-- Coordinates on the retained section after the change of basis which
+puts its dihedral action into the fixed degree-six monomial form. -/
+noncomputable def degreeThreeFourBlockTwoSignSectionTernaryEquiv
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P)) :
+    DegreeThreeFourBlockTwoSignSectionModule block P N ≃+
+      DegreeSixS3Wreath.TernaryPlane :=
+  (degreeThreeFourBlockTwoSignSectionCoordinateEquiv
+    block P hr hs hcomponent hbinary htwo N).trans
+      (Matrix.GeneralLinearGroup.toLin'
+        (Pi.basisFun (ZMod 3) (Fin 2))
+          (degreeThreeFourBlockTwoSignSectionLinearRangeD8Conjugacy
+            block P hr hs hcomponent hbinary htwo N).conjugator).toLinearEquiv.toAddEquiv
+
+/-- The preceding coordinate equivalence intertwines the actual section
+action with the standard `D8` action on `C₃²`. -/
+theorem degreeThreeFourBlockTwoSignSectionTernaryEquiv_action
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P))
+    (x : G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
+      degreeThreeFourBlockTwoSignSectionAxis block P N))
+    (v : DegreeThreeFourBlockTwoSignSectionModule block P N) :
+    degreeThreeFourBlockTwoSignSectionTernaryEquiv
+        block P hr hs hcomponent hbinary htwo N
+        ((degreeThreeFourBlockTwoSignSectionRepresentation block P N).rho x v) =
+      DegreeSixS3Wreath.monomialRepresentation
+        (degreeThreeFourBlockTwoSignSectionD8Map
+          block P hr hs hcomponent hbinary htwo N x)
+        (degreeThreeFourBlockTwoSignSectionTernaryEquiv
+          block P hr hs hcomponent hbinary htwo N v) := by
+  let c := degreeThreeFourBlockTwoSignSectionCoordinateEquiv
+    block P hr hs hcomponent hbinary htwo N
+  let D := degreeThreeFourBlockTwoSignSectionLinearRangeD8Conjugacy
+    block P hr hs hcomponent hbinary htwo N
+  let b := Pi.basisFun (ZMod 3) (Fin 2)
+  let g := Matrix.GeneralLinearGroup.toLin' b D.conjugator
+  let phi := degreeThreeFourBlockTwoSignSectionLinearMap
+    block P hr hs hcomponent hbinary htwo N
+  let d := degreeThreeFourBlockTwoSignSectionD8Map
+    block P hr hs hcomponent hbinary htwo N
+  have hc := degreeThreeFourBlockTwoSignSectionCoordinateEquiv_action
+    block P hr hs hcomponent hbinary htwo N x v
+  have hm := congrArg
+    (fun A : LinearThree.GL3 =>
+      (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv (g (c v)))
+    (degreeThreeFourBlockTwoSignSectionD8Map_matrix
+      block P hr hs hcomponent hbinary htwo N x)
+  rw [DegreeSixS3Wreath.standardD8LinearMap_toLin_apply] at hm
+  simpa only [degreeThreeFourBlockTwoSignSectionTernaryEquiv,
+    c, D, b, g, phi, d, AddEquiv.trans_apply,
+    map_mul, map_inv,
+    LinearMap.GeneralLinearGroup.toLinearEquiv_mul,
+    LinearMap.GeneralLinearGroup.toLinearEquiv_inv,
+    LinearEquiv.mul_apply, LinearEquiv.symm_apply_apply, hc] using hm.symm
 
 /-- The kernel left above the dihedral matrix image has order at most four. -/
 theorem degreeThreeFourBlockTwoSignSectionLinearMap_kernel_card_le_four

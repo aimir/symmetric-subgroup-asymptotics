@@ -319,6 +319,17 @@ noncomputable def degreeThreeFourBlockTwoSignSectionComplementTopEquiv
         (degreeThreeFourBlockTwoSignSectionBase_surjective block P N),
         Nat.card_congr Subgroup.topEquiv.toEquiv]
 
+@[simp] theorem degreeThreeFourBlockTwoSignSectionComplementTopEquiv_apply
+    (N : TwoSignProperAxis (E block P))
+    (H : Subgroup
+      (G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N))
+    (hH : Subgroup.IsComplement'
+      (degreeThreeFourBlockTwoSignSectionBase block P N).ker H)
+    (h : H) :
+    degreeThreeFourBlockTwoSignSectionComplementTopEquiv
+        block P N H hH h =
+      degreeThreeFourBlockTwoSignSectionBase block P N h := rfl
+
 /-- Internal semidirect-product coordinates on the literal section.  The
 kernel and complement remain the actual subgroups of `U / N`. -/
 noncomputable def degreeThreeFourBlockTwoSignSectionSemidirectEquiv
