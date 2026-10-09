@@ -84,6 +84,94 @@ theorem liftConclusion_profiles_eq (lit : PreE7CharacterLiterature) :
   change A.stateProfile.allowedProfiles = expectedProfiles
   exact A.profiles_eq
 
+/-- Build a count-twelve exceptional anchored row from its literal finite
+state table.  Profile capacity is the uniform theorem above, so the row
+producer supplies only the actual state lookup and anchored quotient
+labels. -/
+noncomputable def twelveExceptionalOfProfileTable
+    {D : DegreeTwoPairTopFiniteInterface 12}
+    {p : PreE7PairActionClass 12}
+    {realization : DegreeTwoPairTopRealization D p}
+    (profileOfState : D.normalRegistry.State → D.ModuleState →
+      DegreeTwoPairRelativeProfile)
+    (profile_mem : ∀ N,
+      profileOfState (realization.topNormalState N)
+        (realization.moduleState N) ∈
+          degreeTwoTwelvePairExceptionalProfiles)
+    (anchorLabels : ∀ N,
+      DegreeTwoPairRelativeAnchorLabels
+        (preE7PairAction 12 p ⨸ N.1)
+        (profileOfState (realization.topNormalState N)
+          (realization.moduleState N))) :
+    DegreeTwoPairTopAnchoredRowData D
+      degreeTwoTwelvePairExceptionalProfiles p realization :=
+  { stateProfile :=
+      { profileOfState := profileOfState
+        allowedProfiles := degreeTwoTwelvePairExceptionalProfiles
+        allowed_capacity :=
+          degreeTwoTwelvePairExceptionalProfiles_capacity
+        profile_mem := profile_mem }
+    profiles_eq := rfl
+    anchorLabels := anchorLabels }
+
+/-- Build one of the 283 generic count-twelve rows from its literal state
+table and the checked finite `(kappa, sectionCap)` pair. -/
+noncomputable def twelveJointOfProfileTable
+    {D : DegreeTwoPairTopFiniteInterface 12}
+    {p : PreE7PairActionClass 12}
+    {realization : DegreeTwoPairTopRealization D p}
+    (kappa sectionCap : ℕ)
+    (hparameters : (kappa, sectionCap) ∈
+      degreeTwoTwelvePairJointParameters)
+    (profileOfState : D.normalRegistry.State → D.ModuleState →
+      DegreeTwoPairRelativeProfile)
+    (profile_mem : ∀ N,
+      profileOfState (realization.topNormalState N)
+        (realization.moduleState N) ∈
+          degreeTwoTwelvePairJointProfiles kappa sectionCap)
+    (anchorLabels : ∀ N,
+      DegreeTwoPairRelativeAnchorLabels
+        (preE7PairAction 12 p ⨸ N.1)
+        (profileOfState (realization.topNormalState N)
+          (realization.moduleState N))) :
+    DegreeTwoPairTopAnchoredRowData D
+      (degreeTwoTwelvePairJointProfiles kappa sectionCap) p realization :=
+  { stateProfile :=
+      { profileOfState := profileOfState
+        allowedProfiles :=
+          degreeTwoTwelvePairJointProfiles kappa sectionCap
+        allowed_capacity :=
+          degreeTwoTwelvePairJointProfiles_capacity kappa sectionCap
+            hparameters
+        profile_mem := profile_mem }
+    profiles_eq := rfl
+    anchorLabels := anchorLabels }
+
+/-- Count-sixteen analogue of `twelveExceptionalOfProfileTable`. -/
+noncomputable def sixteenOfProfileTable
+    {D : DegreeTwoPairTopFiniteInterface 16}
+    {p : PreE7PairActionClass 16}
+    {realization : DegreeTwoPairTopRealization D p}
+    (profileOfState : D.normalRegistry.State → D.ModuleState →
+      DegreeTwoPairRelativeProfile)
+    (profile_mem : ∀ N,
+      profileOfState (realization.topNormalState N)
+        (realization.moduleState N) ∈ degreeTwoSixteenPairProfiles)
+    (anchorLabels : ∀ N,
+      DegreeTwoPairRelativeAnchorLabels
+        (preE7PairAction 16 p ⨸ N.1)
+        (profileOfState (realization.topNormalState N)
+          (realization.moduleState N))) :
+    DegreeTwoPairTopAnchoredRowData D
+      degreeTwoSixteenPairProfiles p realization :=
+  { stateProfile :=
+      { profileOfState := profileOfState
+        allowedProfiles := degreeTwoSixteenPairProfiles
+        allowed_capacity := degreeTwoSixteenPairProfiles_capacity
+        profile_mem := profile_mem }
+    profiles_eq := rfl
+    anchorLabels := anchorLabels }
+
 end DegreeTwoPairTopAnchoredRowData
 
 /-- The two-frame version used by count-sixteen paired-eight rows. -/
@@ -115,6 +203,33 @@ theorem liftConclusion_profiles_eq (lit : PreE7CharacterLiterature) :
     (A.liftConclusion lit).allowedProfiles = expectedProfiles := by
   change A.stateProfile.allowedProfiles = expectedProfiles
   exact A.profiles_eq
+
+/-- Build a paired-eight count-sixteen anchored row directly from its
+two-frame finite state table.  The analytic capacity proof is shared by all
+twenty-four rows. -/
+noncomputable def sixteenOfProfileTable
+    {D : DegreeTwoPairTopFiniteInterface 8}
+    {p : PreE7PairActionClass 16}
+    {realization : DegreeTwoPairTopTowerRealization D p}
+    (profileOfState : D.normalRegistry.State → D.ModuleState →
+      DegreeTwoPairRelativeProfile)
+    (profile_mem : ∀ N,
+      profileOfState (realization.topNormalState N)
+        (realization.moduleState N) ∈ degreeTwoSixteenPairProfiles)
+    (anchorLabels : ∀ N,
+      DegreeTwoPairRelativeAnchorLabels
+        (preE7PairAction 16 p ⨸ N.1)
+        (profileOfState (realization.topNormalState N)
+          (realization.moduleState N))) :
+    DegreeTwoPairTopTowerAnchoredRowData D
+      degreeTwoSixteenPairProfiles p realization :=
+  { stateProfile :=
+      { profileOfState := profileOfState
+        allowedProfiles := degreeTwoSixteenPairProfiles
+        allowed_capacity := degreeTwoSixteenPairProfiles_capacity
+        profile_mem := profile_mem }
+    profiles_eq := rfl
+    anchorLabels := anchorLabels }
 
 end DegreeTwoPairTopTowerAnchoredRowData
 

@@ -55,6 +55,11 @@ def degreeTwoTwelvePairJointProfiles (kappa sectionCap : ℕ) :
     Finset DegreeTwoPairRelativeProfile :=
   {degreeTwoPairRelativeProfile 0 0 kappa sectionCap}
 
+/-- The six `(kappa, sectionCap)` pairs occurring in the 283 generic
+degree-twelve rows. -/
+def degreeTwoTwelvePairJointParameters : Finset (ℕ × ℕ) :=
+  {(1, 1), (1, 2), (1, 3), (2, 1), (2, 2), (3, 1)}
+
 /-- The six exact width-32 profiles retained in the paper. -/
 def degreeTwoSixteenPairProfiles : Finset DegreeTwoPairRelativeProfile :=
   { degreeTwoPairRelativeProfile 0 0 2 4,
@@ -63,6 +68,104 @@ def degreeTwoSixteenPairProfiles : Finset DegreeTwoPairRelativeProfile :=
     degreeTwoPairRelativeProfile 4 0 0 2,
     degreeTwoPairRelativeProfile 0 0 1 0,
     degreeTwoPairRelativeProfile 0 2 0 0 }
+
+/-! ## Exact profile capacities -/
+
+private theorem logb_two_three_div_three_lt_eight_fifteenths :
+    Real.logb 2 3 / 3 < (8 : ℝ) / 15 := by
+  have hp : (3 : ℝ) ^ (5 : ℕ) < (2 : ℝ) ^ (8 : ℕ) := by norm_num
+  have hlog := Real.logb_lt_logb (by norm_num : (1 : ℝ) < 2)
+    (by positivity : (0 : ℝ) < (3 : ℝ) ^ (5 : ℕ)) hp
+  simp only [Real.logb_pow,
+    Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2), mul_one] at hlog
+  nlinarith
+
+private theorem logb_two_five_div_three_lt_seven_ninths :
+    Real.logb 2 5 / 3 < (7 : ℝ) / 9 := by
+  have hp : (5 : ℝ) ^ (3 : ℕ) < (2 : ℝ) ^ (7 : ℕ) := by norm_num
+  have hlog := Real.logb_lt_logb (by norm_num : (1 : ℝ) < 2)
+    (by positivity : (0 : ℝ) < (5 : ℝ) ^ (3 : ℕ)) hp
+  simp only [Real.logb_pow,
+    Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2), mul_one] at hlog
+  nlinarith
+
+private theorem logb_two_thirtyEightTwentyFive_lt_twentyThirtyThirds :
+    Real.logb 2 (38 / 25) < (20 : ℝ) / 33 := by
+  have hp : (38 / 25 : ℝ) ^ (33 : ℕ) < (2 : ℝ) ^ (20 : ℕ) := by
+    norm_num
+  have hlog := Real.logb_lt_logb (by norm_num : (1 : ℝ) < 2)
+    (by positivity : (0 : ℝ) < (38 / 25 : ℝ) ^ (33 : ℕ)) hp
+  simp only [Real.logb_pow,
+    Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2), mul_one] at hlog
+  nlinarith
+
+/-- Every exceptional count-twelve profile fits the exact width-24 Lean
+window.  This includes the binary-core and paired-six menus. -/
+theorem degreeTwoTwelvePairExceptionalProfiles_capacity
+    (profile : DegreeTwoPairRelativeProfile)
+    (hprofile : profile ∈ degreeTwoTwelvePairExceptionalProfiles) :
+    profile.slope ≤ preE7CharacterWindow 24 := by
+  have hthree := logb_two_three_div_three_lt_eight_fifteenths
+  have hfive := logb_two_five_div_three_lt_seven_ninths
+  have hrelative :=
+    logb_two_thirtyEightTwentyFive_lt_twentyThirtyThirds
+  simp only [degreeTwoTwelvePairExceptionalProfiles,
+    Finset.mem_insert, Finset.mem_singleton] at hprofile
+  rcases hprofile with h | h | h | h | h <;> subst profile <;>
+    simp only [DegreeTwoPairRelativeProfile.slope,
+      degreeTwoPairRelativeProfile, Nat.cast_zero, Nat.cast_one,
+      Nat.cast_ofNat, zero_div, zero_mul, zero_add, one_div, one_mul]
+  all_goals
+    norm_num [preE7CharacterWindow, preE7CharacterRho, halfDegree] at ⊢
+    linarith
+
+/-- Every one of the six generic count-twelve parameter pairs gives a
+profile inside the exact width-24 window. -/
+theorem degreeTwoTwelvePairJointProfiles_capacity
+    (kappa sectionCap : ℕ)
+    (hparameters : (kappa, sectionCap) ∈
+      degreeTwoTwelvePairJointParameters)
+    (profile : DegreeTwoPairRelativeProfile)
+    (hprofile : profile ∈
+      degreeTwoTwelvePairJointProfiles kappa sectionCap) :
+    profile.slope ≤ preE7CharacterWindow 24 := by
+  have hfive := logb_two_five_div_three_lt_seven_ninths
+  have hrelative :=
+    logb_two_thirtyEightTwentyFive_lt_twentyThirtyThirds
+  simp only [degreeTwoTwelvePairJointParameters, Finset.mem_insert,
+    Finset.mem_singleton, Prod.mk.injEq] at hparameters
+  simp only [degreeTwoTwelvePairJointProfiles,
+    Finset.mem_singleton] at hprofile
+  subst profile
+  rcases hparameters with h | h | h | h | h | h <;>
+    obtain ⟨rfl, rfl⟩ := h <;>
+    simp only [DegreeTwoPairRelativeProfile.slope,
+      degreeTwoPairRelativeProfile, Nat.cast_zero, Nat.cast_one,
+      Nat.cast_ofNat, zero_div, zero_mul, zero_add, one_div, one_mul]
+  all_goals
+    norm_num [preE7CharacterWindow, preE7CharacterRho, halfDegree] at ⊢
+    linarith
+
+/-- The six count-sixteen profiles all fit the exact width-32 Lean window.
+The tight row is the two-ordinary plus four-relative profile; the rational
+logarithm bounds retain enough room for the global `1/8192` margin. -/
+theorem degreeTwoSixteenPairProfiles_capacity
+    (profile : DegreeTwoPairRelativeProfile)
+    (hprofile : profile ∈ degreeTwoSixteenPairProfiles) :
+    profile.slope ≤ preE7CharacterWindow 32 := by
+  have hthree := logb_two_three_div_three_lt_eight_fifteenths
+  have hfive := logb_two_five_div_three_lt_seven_ninths
+  have hrelative :=
+    logb_two_thirtyEightTwentyFive_lt_twentyThirtyThirds
+  simp only [degreeTwoSixteenPairProfiles,
+    Finset.mem_insert, Finset.mem_singleton] at hprofile
+  rcases hprofile with h | h | h | h | h | h <;> subst profile <;>
+    simp only [DegreeTwoPairRelativeProfile.slope,
+      degreeTwoPairRelativeProfile, Nat.cast_zero, Nat.cast_one,
+      Nat.cast_ofNat, zero_div, zero_mul, zero_add, one_div, one_mul]
+  all_goals
+    norm_num [preE7CharacterWindow, preE7CharacterRho, halfDegree] at ⊢
+    linarith
 
 /-- Uniform padded numerical geometry for every count-twelve lift. -/
 noncomputable def degreeTwoTwelvePairRelativeNumerics
