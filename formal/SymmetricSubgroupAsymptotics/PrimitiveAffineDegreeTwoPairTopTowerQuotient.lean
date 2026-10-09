@@ -1,5 +1,9 @@
 import SymmetricSubgroupAsymptotics.BinaryPairLiteralTopQuotient
+import SymmetricSubgroupAsymptotics.BinaryPairCoupledCommutator
+import SymmetricSubgroupAsymptotics.BinaryPairPermutationGeneratorExtension
 import SymmetricSubgroupAsymptotics.CompositeKernelExact
+import SymmetricSubgroupAsymptotics.NormalKernelCentralOmega
+import SymmetricSubgroupAsymptotics.OriginalKernelNormalSubrepresentation
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopOriginalNormalSignature
 
 /-!
@@ -138,12 +142,320 @@ noncomputable def innerZeroCutKernelEquiv
       (R.secondFrame.literalTopQuotientMap_ker_eq_zeroCutBase_ker
         R.topEquiv (R.outerTopNormal N.1)).symm)
 
+/-- The second zero-cut module with the selected literal top quotient as its
+acting group. -/
+def innerZeroCutModule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Rep (ZMod 2) (D.top ⫽ R.topNormal N.1) := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  exact R.secondFrame.literalZeroCutModule R.topEquiv
+    (R.outerTopNormal N.1)
+
+/-- Module chart for the second layer in the selected literal quotient. -/
+noncomputable def innerZeroCutModuleChart
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    OriginalKernelModuleChart (R.innerQuotientMap N)
+      (R.innerZeroCutModule N) := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  exact R.secondFrame.literalZeroCutModuleChart R.topEquiv
+    (R.outerTopNormal N.1)
+
+/-- The direct second section module, before the harmless quotient by zero. -/
+def innerSectionModule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Rep (ZMod 2) (D.top ⫽ R.topNormal N.1) := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  exact R.secondFrame.literalSectionModule R.topEquiv
+    (R.outerTopNormal N.1)
+
+noncomputable def innerSectionModuleChart
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    OriginalKernelModuleChart (R.innerQuotientMap N)
+      (R.innerSectionModule N) := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  exact R.secondFrame.literalSectionModuleChart R.topEquiv
+    (R.outerTopNormal N.1)
+
 /-- The direct map through both pair quotients before replacing the selected
 normal by its equal finite-registry state. -/
 noncomputable def rawQuotientMap
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     (preE7PairAction s p ⫽ N.1) →* (D.top ⫽ R.topNormal N.1) :=
   (R.innerQuotientMap N).comp (R.outerQuotientMap N)
+
+/-- The direct-kernel central omega lifted to an actual normal subgroup of
+the original quotient. -/
+def rawKernelOmegaLift
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subgroup (preE7PairAction s p ⫽ N.1) :=
+  normalKernelCentralOmega (R.rawQuotientMap N)
+
+instance rawKernelOmegaLift_normal
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaLift N).Normal :=
+  normalKernelCentralOmega_normal (R.rawQuotientMap N)
+
+/-- The lifted ambient subgroup retains exactly the central involution
+module of the direct kernel. -/
+noncomputable def rawKernelOmegaEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    binaryCentralOmega (R.rawQuotientMap N).ker ≃*
+      R.rawKernelOmegaLift N :=
+  binaryCentralOmegaEquivNormalKernel (R.rawQuotientMap N)
+
+/-- Preimage of the lifted omega subgroup in the original action. -/
+def rawKernelOmegaOriginalPreimage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subgroup (preE7PairAction s p) := by
+  letI : N.1.Normal := N.2
+  exact (R.rawKernelOmegaLift N).comap (QuotientGroup.mk' N.1)
+
+instance rawKernelOmegaOriginalPreimage_normal
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaOriginalPreimage N).Normal := by
+  letI : N.1.Normal := N.2
+  exact Subgroup.Normal.comap inferInstance (QuotientGroup.mk' N.1)
+
+/-- The original denominator is contained in the pullback of direct-kernel
+omega.  This is the inclusion needed to turn omega centrality downstairs
+into literal commutator containment upstairs. -/
+theorem originalNormal_le_rawKernelOmegaOriginalPreimage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    N.1 ≤ R.rawKernelOmegaOriginalPreimage N := by
+  intro u hu
+  change QuotientGroup.mk' N.1 u ∈ R.rawKernelOmegaLift N
+  rw [QuotientGroup.eq_one_iff.mpr hu]
+  exact Subgroup.one_mem _
+
+/-- Two elements in the original pullback of direct-kernel omega commute
+modulo the original denominator. -/
+theorem rawKernelOmegaOriginalPreimage_commutator_mem
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (u : preE7PairAction s p)
+    (hu : u ∈ R.rawKernelOmegaOriginalPreimage N)
+    (k : R.frame.top.ker)
+    (hk : (k : preE7PairAction s p) ∈
+      R.rawKernelOmegaOriginalPreimage N) :
+    ((k : preE7PairAction s p)⁻¹ * u * k * u⁻¹) ∈ N.1 := by
+  letI : N.1.Normal := N.2
+  let q := QuotientGroup.mk' N.1
+  have huOmega : q u ∈ R.rawKernelOmegaLift N := hu
+  have hkOmega : q (k : preE7PairAction s p) ∈
+      R.rawKernelOmegaLift N := hk
+  have hcomm : Commute (q u) (q (k : preE7PairAction s p)) :=
+    huOmega.2.1 ⟨q (k : preE7PairAction s p), hkOmega.1⟩
+  apply (QuotientGroup.eq_one_iff _).mp
+  simp only [map_mul, map_inv]
+  calc
+    (q (k : preE7PairAction s p))⁻¹ * q u *
+          q (k : preE7PairAction s p) * (q u)⁻¹ =
+        (q (k : preE7PairAction s p))⁻¹ *
+          q (k : preE7PairAction s p) * q u * (q u)⁻¹ := by
+            rw [hcomm.eq]
+            group
+    _ = 1 := by group
+
+/-- The intersection of lifted omega with the first pair kernel, in the
+literal sixteen-coordinate module. -/
+def outerOmegaAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2)
+        R.frame.top.range (Fin s)) :=
+  R.frame.sharedOriginalAxis
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    (MulEquiv.refl R.frame.top.range) (fun _ _ => rfl)
+    (R.rawKernelOmegaOriginalPreimage N)
+
+/-- Image of the lifted omega subgroup in the intermediate pair top. -/
+def rawKernelOmegaTopImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subgroup (R.frame.top.range ⫽ R.outerTopNormal N.1) :=
+  (R.rawKernelOmegaLift N).map (R.outerQuotientMap N)
+
+instance rawKernelOmegaTopImage_normal
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaTopImage N).Normal :=
+  Subgroup.Normal.map inferInstance _ (R.outerQuotientMap_surjective N)
+
+theorem rawKernelOmegaTopImage_le_innerKernel
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.rawKernelOmegaTopImage N ≤ (R.innerQuotientMap N).ker := by
+  rintro y ⟨x, hx, rfl⟩
+  apply MonoidHom.mem_ker.mpr
+  simpa only [rawQuotientMap, MonoidHom.comp_apply] using
+    MonoidHom.mem_ker.mp hx.1
+
+/-- Preimage of the intermediate omega image before quotienting by the
+original normal image. -/
+def rawKernelOmegaIntermediatePreimage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subgroup R.frame.top.range := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  exact (R.rawKernelOmegaTopImage N).comap
+    (QuotientGroup.mk' (R.outerTopNormal N.1))
+
+/-- Pulling the omega image back from the intermediate quotient gives
+exactly the first-top image of its original pullback.  The reverse inclusion
+uses that the original denominator is already contained in that pullback. -/
+theorem rawKernelOmegaIntermediatePreimage_eq_map
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.rawKernelOmegaIntermediatePreimage N =
+      (R.rawKernelOmegaOriginalPreimage N).map
+        R.frame.top.rangeRestrict := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  ext y
+  constructor
+  · intro hy
+    change QuotientGroup.mk' (R.outerTopNormal N.1) y ∈
+      (R.rawKernelOmegaLift N).map (R.outerQuotientMap N) at hy
+    obtain ⟨q, hq, hqy⟩ := hy
+    obtain ⟨u, rfl⟩ := QuotientGroup.mk'_surjective N.1 q
+    rw [R.outerQuotientMap_apply] at hqy
+    have hdiv : R.frame.top.rangeRestrict u / y ∈
+        R.outerTopNormal N.1 :=
+      QuotientGroup.eq_iff_div_mem.mp hqy
+    obtain ⟨n, hn, hntop⟩ := hdiv
+    have hnOmega : n ∈ R.rawKernelOmegaOriginalPreimage N :=
+      R.originalNormal_le_rawKernelOmegaOriginalPreimage N hn
+    refine ⟨u * n⁻¹,
+      (R.rawKernelOmegaOriginalPreimage N).mul_mem hq
+        ((R.rawKernelOmegaOriginalPreimage N).inv_mem hnOmega), ?_⟩
+    rw [map_mul, map_inv, hntop]
+    group
+  · rintro ⟨u, hu, rfl⟩
+    change QuotientGroup.mk' (R.outerTopNormal N.1)
+        (R.frame.top.rangeRestrict u) ∈
+      (R.rawKernelOmegaLift N).map (R.outerQuotientMap N)
+    exact ⟨QuotientGroup.mk' N.1 u, hu, rfl⟩
+
+instance rawKernelOmegaIntermediatePreimage_normal
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaIntermediatePreimage N).Normal := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  exact Subgroup.Normal.comap inferInstance
+    (QuotientGroup.mk' (R.outerTopNormal N.1))
+
+/-- The top layer `K` in the paper, lifted to the natural eight-coordinate
+module used by the finite coupled registry. -/
+def innerOmegaNaturalAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) :=
+  R.secondFrame.sharedOriginalAxis
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+    R.topEquiv R.module_action_eq
+    (R.rawKernelOmegaIntermediatePreimage N)
+
+theorem innerOmegaNaturalAxis_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.innerOmegaNaturalAxis N).toSubmodule =
+      R.secondFrame.ambientAxis
+        ((R.rawKernelOmegaOriginalPreimage N).map
+          R.frame.top.rangeRestrict) := by
+  change R.secondFrame.ambientAxis
+      (R.rawKernelOmegaIntermediatePreimage N) = _
+  rw [R.rawKernelOmegaIntermediatePreimage_eq_map N]
+
+/-- Pair-sum image of the first-layer omega intersection, before descending
+from the intermediate group to its top range. -/
+def outerOmegaPairSumPullbackAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation R.secondFrame.pulledBackCoordinateTopAction :=
+  intertwinerImage
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    R.secondFrame.pulledBackCoordinateTopAction
+    R.secondFrame.pairSumIntertwiner (R.outerOmegaAxis N)
+
+/-- Pair-constant preimage of the first-layer omega intersection, before
+descending to the intermediate top range. -/
+def outerOmegaConstantPullbackAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation R.secondFrame.pulledBackCoordinateTopAction :=
+  intertwinerPreimage
+    R.secondFrame.pulledBackCoordinateTopAction
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    R.secondFrame.pairConstantIntertwiner (R.outerOmegaAxis N)
+
+/-- Transport a natural axis on the intermediate pair top to the selected
+literal degree-eight top. -/
+def transportInnerNaturalAxis
+    (M : Subrepresentation R.secondFrame.coordinateTopAction) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) where
+  toSubmodule := M.toSubmodule
+  apply_mem_toSubmodule g v hv := by
+    rw [R.module_action_eq]
+    exact M.apply_mem_toSubmodule (R.topEquiv g) hv
+
+/-- The middle layer `W = (B+C)/C`, expressed by pair-sum. -/
+def outerOmegaPairSumAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) :=
+  R.transportInnerNaturalAxis
+    (R.secondFrame.descendPulledBackSubrepresentation
+      (R.outerOmegaPairSumPullbackAxis N))
+
+/-- The bottom layer `L = B ∩ C`, expressed in pair-constant coordinates. -/
+def outerOmegaConstantAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) :=
+  R.transportInnerNaturalAxis
+    (R.secondFrame.descendPulledBackSubrepresentation
+      (R.outerOmegaConstantPullbackAxis N))
+
+theorem outerOmegaPairSumAxis_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.outerOmegaPairSumAxis N).toSubmodule =
+      (R.frame.ambientAxis (R.rawKernelOmegaOriginalPreimage N)).map
+        R.secondFrame.pairSum :=
+  rfl
+
+theorem outerOmegaConstantAxis_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.outerOmegaConstantAxis N).toSubmodule =
+      (R.frame.ambientAxis (R.rawKernelOmegaOriginalPreimage N)).comap
+        R.secondFrame.pairConstant :=
+  rfl
+
+/-- The three actual omega axes satisfy the product containment consumed by
+the generated coupled-head registry.  No finite census identification is
+used here: this is the literal two-frame commutator calculation. -/
+theorem omegaAxes_productSpan_le
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    binaryCoordinateProductSpan
+        (R.innerOmegaNaturalAxis N).toSubmodule
+        (R.outerOmegaPairSumAxis N).toSubmodule ≤
+      (R.outerOmegaConstantAxis N).toSubmodule := by
+  rw [R.innerOmegaNaturalAxis_toSubmodule N,
+    R.outerOmegaPairSumAxis_toSubmodule N,
+    R.outerOmegaConstantAxis_toSubmodule N]
+  exact R.frame.nestedPair_productSpan_le_constantPreimage
+    R.secondFrame N.1 (R.rawKernelOmegaOriginalPreimage N)
+    (R.originalNormal_le_rawKernelOmegaOriginalPreimage N)
+    (R.rawKernelOmegaOriginalPreimage_commutator_mem N)
+
+/-- The actual image of direct-kernel omega in the second zero-cut module.
+It is invariant under the selected literal top quotient because the lifted
+omega subgroup is normal in the original quotient. -/
+def innerOmegaSubrepresentation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation (R.innerSectionModule N).ρ :=
+  (R.innerSectionModuleChart N).normalSubrepresentation
+    (R.innerQuotientMap N) (R.innerQuotientMap_surjective N)
+    (R.innerSectionModule N) (R.rawKernelOmegaTopImage N)
 
 /-- The first map in the exact two-layer filtration of the direct quartet
 kernel.  Its target is the actual second zero-cut kernel. -/

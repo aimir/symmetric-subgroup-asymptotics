@@ -97,6 +97,29 @@ theorem pairConstant_action (u : U) (a : I → ZMod 2) :
   change a (F.frame.symm (((u⁻¹ : U) : Equiv.Perm X) (F.frame (i,b)))).1=_
   rw [F.intertwine,map_inv,F.pairConstant_frame]
 
+/-- Displacement by one literal pair-kernel element is the pair-constant
+coordinatewise product of its flip vector with the pair-sum vector.  This
+is the local commutator identity used by the coupled three-head bound. -/
+theorem kernel_displacement_eq_pairConstant_product
+    (k : F.top.ker) (f : X → ZMod 2) :
+    permutationFunctionRepresentation (ZMod 2) U X (k : U) f - f =
+      F.pairConstant (fun i => F.bits k i * F.pairSum f i) := by
+  have hinv : F.bits k⁻¹ = F.bits k := by
+    have h := congrArg Multiplicative.toAdd (F.bitsHom.map_inv k)
+    change F.bits k⁻¹ = -F.bits k at h
+    simpa only [CharTwo.neg_eq] using h
+  funext x
+  obtain ⟨⟨i, b⟩, rfl⟩ := F.frame.surjective x
+  change f ((((k⁻¹ : F.top.ker) : U) : Equiv.Perm X)
+      (F.frame (i, b))) - f (F.frame (i, b)) = _
+  rw [F.kernel_action_frame, F.pairConstant_frame, hinv]
+  change f (F.frame (i, b + F.bits k i)) - f (F.frame (i, b)) =
+    F.bits k i * (f (F.frame (i, 0)) + f (F.frame (i, 1)))
+  generalize hbit : F.bits k i = a
+  fin_cases a <;> fin_cases b <;>
+    simp only [zero_add, add_zero, one_mul, zero_mul,
+      CharTwo.add_self_eq_zero, CharTwo.sub_eq_add, add_comm]
+
 /-- If the supplied original kernel element flips every pair, the
 coordinate displacement is its literal original representation minus one. -/
 theorem pairDelta_eq_original_displacement (z : F.top.ker)

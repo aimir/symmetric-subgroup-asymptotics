@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryPairZeroCutExtension
+import SymmetricSubgroupAsymptotics.BinaryPairLargeSectionCharacter
 import SymmetricSubgroupAsymptotics.FiniteSurjectiveKernelTransport
 
 /-!
@@ -117,6 +118,87 @@ noncomputable def zeroCutBaseEquivLiteralTop
     (F.zeroCutBase N) (F.literalTopQuotientMap e N)
     (F.zeroCutBase_surjective N) (F.literalTopQuotientMap_surjective e N)
     (F.literalTopQuotientMap_ker_eq_zeroCutBase_ker e N).symm
+
+/-- The actual zero-cut module, with its acting quotient transported to the
+chosen literal top quotient. -/
+def literalZeroCutModule
+    (N : Subgroup U) [N.Normal] :
+    Rep (ZMod 2) (G ⟸ F.literalTopNormal e N) :=
+  Rep.of ((F.zeroCutModule N).ρ.comp
+    (F.zeroCutBaseEquivLiteralTop e N).symm.toMonoidHom)
+
+/-- Module chart on the literal-top quotient map.  This is the zero-cut
+chart itself with only the acting quotient relabelled. -/
+noncomputable def literalZeroCutModuleChart
+    (N : Subgroup U) [N.Normal] :
+    OriginalKernelModuleChart (F.literalTopQuotientMap e N)
+      (F.literalZeroCutModule e N) where
+  equiv := (F.zeroCutKernelEquiv N).trans
+    (MulEquiv.subgroupCongr
+      (F.literalTopQuotientMap_ker_eq_zeroCutBase_ker e N).symm)
+  conjugate q a := by
+    have hcomp := congrArg (fun h : (U ⟸ N) →*
+        (G ⟸ F.literalTopNormal e N) => h q)
+      (surjectiveTargetEquivOfKernelEq_comp
+        (F.zeroCutBase N) (F.literalTopQuotientMap e N)
+        (F.zeroCutBase_surjective N)
+        (F.literalTopQuotientMap_surjective e N)
+        (F.literalTopQuotientMap_ker_eq_zeroCutBase_ker e N).symm)
+    have hbase :
+        (F.zeroCutBaseEquivLiteralTop e N).symm
+            (F.literalTopQuotientMap e N q) = F.zeroCutBase N q := by
+      rw [← hcomp]
+      exact (F.zeroCutBaseEquivLiteralTop e N).symm_apply_apply _
+    change
+      ((F.zeroCutKernelEquiv N)
+          (Multiplicative.ofAdd
+            ((F.zeroCutModule N).ρ
+              ((F.zeroCutBaseEquivLiteralTop e N).symm
+                (F.literalTopQuotientMap e N q)) a)) : U ⟸ N) =
+        q * ((F.zeroCutKernelEquiv N) (Multiplicative.ofAdd a) : U ⟸ N) * q⁻¹
+    rw [hbase]
+    exact (F.zeroCutModuleChart N).conjugate q a
+
+/-- The undoubled section module with its acting quotient transported to
+the chosen literal top quotient. -/
+def literalSectionModule
+    (N : Subgroup U) [N.Normal] :
+    Rep (ZMod 2) (G ⟸ F.literalTopNormal e N) :=
+  Rep.of ((F.sectionRepresentation N).comp
+    (F.zeroCutBaseEquivLiteralTop e N).symm.toMonoidHom)
+
+/-- Module chart for the same literal quotient using the direct section
+`kernelSpace / normalSpace`, which is more convenient for lifting finite
+coordinate subspaces. -/
+noncomputable def literalSectionModuleChart
+    (N : Subgroup U) [N.Normal] :
+    OriginalKernelModuleChart (F.literalTopQuotientMap e N)
+      (F.literalSectionModule e N) where
+  equiv := (F.sectionKernelEquiv N).trans
+    (MulEquiv.subgroupCongr
+      (F.literalTopQuotientMap_ker_eq_zeroCutBase_ker e N).symm)
+  conjugate q a := by
+    have hcomp := congrArg (fun h : (U ⟸ N) →*
+        (G ⟸ F.literalTopNormal e N) => h q)
+      (surjectiveTargetEquivOfKernelEq_comp
+        (F.zeroCutBase N) (F.literalTopQuotientMap e N)
+        (F.zeroCutBase_surjective N)
+        (F.literalTopQuotientMap_surjective e N)
+        (F.literalTopQuotientMap_ker_eq_zeroCutBase_ker e N).symm)
+    have hbase :
+        (F.zeroCutBaseEquivLiteralTop e N).symm
+            (F.literalTopQuotientMap e N q) = F.zeroCutBase N q := by
+      rw [← hcomp]
+      exact (F.zeroCutBaseEquivLiteralTop e N).symm_apply_apply _
+    change
+      ((F.sectionKernelEquiv N)
+          (Multiplicative.ofAdd
+            (F.sectionRepresentation N
+              ((F.zeroCutBaseEquivLiteralTop e N).symm
+                (F.literalTopQuotientMap e N q)) a)) : U ⟸ N) =
+        q * ((F.sectionKernelEquiv N) (Multiplicative.ofAdd a) : U ⟸ N) * q⁻¹
+    rw [hbase]
+    exact (F.sectionModuleChart N).conjugate q a
 
 end BinaryPairFrame
 end SymmetricSubgroupAsymptotics

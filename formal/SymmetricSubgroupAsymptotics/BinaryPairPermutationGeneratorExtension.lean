@@ -104,6 +104,16 @@ theorem pairSumIntertwiner_surjective :
   intro a
   exact ⟨F.pairSumSection a, F.pairSum_pairSumSection a⟩
 
+/-- A subrepresentation of the pair module pulled back to the original
+group descends to the intrinsic top range because `rangeRestrict` is onto. -/
+def descendPulledBackSubrepresentation
+    (M : Subrepresentation F.pulledBackCoordinateTopAction) :
+    Subrepresentation F.coordinateTopAction where
+  toSubmodule := M.toSubmodule
+  apply_mem_toSubmodule t v hv := by
+    obtain ⟨u, rfl⟩ := F.top.rangeRestrict_surjective t
+    exact M.apply_mem_toSubmodule u hv
+
 /-- The pair-constant inclusion and pair-sum quotient are exact in the
 literal point coordinates. -/
 theorem pairConstant_pairSum_exact :
