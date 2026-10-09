@@ -139,6 +139,32 @@ theorem moduleStable_finrank_eq_two_or_four_of_two_equal_isotypes
   rw [hsum]
   omega
 
+/-- With two equidimensional character components, any stable submodule
+has even total dimension.  Unlike the rank-split theorem, this does not
+assume that its coordinate projections are onto. -/
+theorem moduleStable_finrank_even_of_two_equal_isotypes
+    [Nonempty ι]
+    (scalar : ι → J → k)
+    (K : ModuleStable (V := V) scalar)
+    (e : V ≃ₗ[k] k)
+    (htwo : Nat.card (Label scalar) = 2)
+    (component_equidimensional : ∀ a b : Label scalar,
+      Module.finrank k (encode scalar (scalarizedStable scalar K e) a) =
+        Module.finrank k (encode scalar (scalarizedStable scalar K e) b)) :
+    Even (Module.finrank k K.1) := by
+  let K' := scalarizedStable scalar K e
+  let a₀ : Label scalar := coordinateLabel scalar (Classical.choice inferInstance)
+  let d := Module.finrank k (encode scalar K' a₀)
+  have hsum : Module.finrank k K'.1 = 2 * d := by
+    rw [finrank_eq_sum_encode scalar K']
+    simp_rw [component_equidimensional _ a₀]
+    rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ,
+      Fintype.card_eq_nat_card, htwo]
+  have hscalar := scalarizedStable_finrank scalar K e
+  refine ⟨d, ?_⟩
+  rw [← hscalar, hsum]
+  omega
+
 end DiagonalInvariantSubmodules
 end SymmetricSubgroupAsymptotics
 
