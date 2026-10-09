@@ -24,6 +24,48 @@ noncomputable section
 open scoped Classical
 
 namespace SymmetricSubgroupAsymptotics
+
+namespace BinaryPairFrame
+
+variable {X : Type} {s : ℕ} {U : Subgroup (Equiv.Perm X)}
+  (F : BinaryPairFrame U (Fin s))
+
+/-- The intrinsic normal space and the ambient registry axis are the same
+subspace after including the pair kernel in the full coordinate module. -/
+theorem normalSpace_map_subtype_eq_ambientAxis (N : Subgroup U) :
+    (F.normalSpace N).map F.kernelSpace.subtype = F.ambientAxis N := by
+  ext v
+  constructor
+  · rintro ⟨m, hm, rfl⟩
+    obtain ⟨k, hk⟩ := hm
+    refine (F.mem_ambientAxis N _).2
+      ⟨k.toMul.val, k.toMul.property, ?_⟩
+    exact congrArg Subtype.val hk
+  · intro hv
+    obtain ⟨k, hk, hkv⟩ := (F.mem_ambientAxis N v).1 hv
+    let m : F.kernelSpace := (F.kernelSpaceHom k).toAdd
+    refine ⟨m, ?_, ?_⟩
+    · exact ⟨Additive.ofMul (⟨k, hk⟩ : N.subgroupOf F.top.ker), rfl⟩
+    · exact hkv
+
+theorem normalSpace_finrank_eq_ambientAxis (N : Subgroup U) :
+    Module.finrank (ZMod 2) (F.normalSpace N) =
+      Module.finrank (ZMod 2) (F.ambientAxis N) := by
+  have h := (Submodule.equivMapOfInjective F.kernelSpace.subtype
+    Subtype.val_injective (F.normalSpace N)).finrank_eq
+  rw [F.normalSpace_map_subtype_eq_ambientAxis N] at h
+  exact h
+
+theorem ambientAxis_top :
+    F.ambientAxis (⊤ : Subgroup U) = F.kernelSpace := by
+  apply le_antisymm (F.ambientAxis_le_kernelSpace ⊤)
+  intro v hv
+  obtain ⟨k, rfl⟩ := hv
+  exact (F.mem_ambientAxis ⊤ (F.bits k.toMul)).2
+    ⟨k.toMul, Subgroup.mem_top, rfl⟩
+
+end BinaryPairFrame
+
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
 
@@ -152,6 +194,67 @@ theorem quotientMap_kernel_rank_le_zeroCutModule
   rw [binaryCentralOmega_card_eq_pow_finrank, hkernelCard] at hcard
   exact (Nat.pow_le_pow_iff_right (by decide : 1 < (2 : ℕ))).mp hcard
 
+/-- The two module states selected by `N` and by the top original normal
+recover the exact dimension of the retained zero-cut section.  This turns
+finite module-state dimensions into the rank bounds consumed by the anchor
+constructor. -/
+theorem zeroCutModule_finrank_add_moduleState
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2) (R.frame.zeroCutModule N.1) +
+        Module.finrank (ZMod 2) (D.moduleState (R.moduleState N)) =
+      Module.finrank (ZMod 2)
+        (D.moduleState
+          (R.moduleState
+            (⟨⊤, inferInstance⟩ :
+              {M : Subgroup (preE7PairAction s p) // M.Normal}))) := by
+  letI : N.1.Normal := N.2
+  let topAxis : {M : Subgroup (preE7PairAction s p) // M.Normal} :=
+    ⟨⊤, inferInstance⟩
+  have hquot := (R.frame.normalSpace N.1).finrank_quotient_add_finrank
+  have hnormal := R.frame.normalSpace_finrank_eq_ambientAxis N.1
+  have hstateN := congrArg
+    (fun W : Subrepresentation
+        (permutationFunctionRepresentation (ZMod 2) D.top (Fin s)) ↦
+      Module.finrank (ZMod 2) W)
+    (R.moduleState_spec N)
+  have hstateTop := congrArg
+    (fun W : Subrepresentation
+        (permutationFunctionRepresentation (ZMod 2) D.top (Fin s)) ↦
+      Module.finrank (ZMod 2) W)
+    (R.moduleState_spec topAxis)
+  change Module.finrank (ZMod 2)
+      (R.frame.kernelSpace ⨸ R.frame.normalSpace N.1) +
+      Module.finrank (ZMod 2) (R.frame.normalSpace N.1) =
+        Module.finrank (ZMod 2) R.frame.kernelSpace at hquot
+  change Module.finrank (ZMod 2) (D.moduleState (R.moduleState N)) =
+    Module.finrank (ZMod 2) (R.frame.ambientAxis N.1) at hstateN
+  change Module.finrank (ZMod 2) (D.moduleState (R.moduleState topAxis)) =
+    Module.finrank (ZMod 2) (R.frame.ambientAxis (⊤ :
+      Subgroup (preE7PairAction s p))) at hstateTop
+  rw [BinaryPairFrame.zeroCutModule, hstateN, ← hnormal,
+    show (⟨⊤, inferInstance⟩ :
+      {M : Subgroup (preE7PairAction s p) // M.Normal}) = topAxis from rfl,
+    hstateTop, R.frame.ambientAxis_top]
+  exact hquot
+
+theorem moduleState_le_topModuleState
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    D.moduleState (R.moduleState N) ≤
+      D.moduleState
+        (R.moduleState
+          (⟨⊤, inferInstance⟩ :
+            {M : Subgroup (preE7PairAction s p) // M.Normal})) := by
+  let topAxis : {M : Subgroup (preE7PairAction s p) // M.Normal} :=
+    ⟨⊤, inferInstance⟩
+  rw [R.moduleState_spec N,
+    show (⟨⊤, inferInstance⟩ :
+      {M : Subgroup (preE7PairAction s p) // M.Normal}) = topAxis from rfl,
+    R.moduleState_spec topAxis]
+  change R.frame.ambientAxis N.1 ≤
+    R.frame.ambientAxis (⊤ : Subgroup (preE7PairAction s p))
+  rw [R.frame.ambientAxis_top]
+  exact R.frame.ambientAxis_le_kernelSpace N.1
+
 end DegreeTwoPairTopRealization
 
 /-! ## Finite registry assembly -/
@@ -194,6 +297,32 @@ noncomputable def ofUniformCounts
   relativeCount := fun _ ↦ relative
   topSocleGenerator := fun i ↦ (top.data i).quotientSocleGenerator
   zeroCutRank_le := zeroCutRank_le
+
+/-- Finite-state form of `ofUniformCounts`.  The section cap is checked only
+on module states contained in the actual kernel-module state.  The generic
+dimension identity above then proves the required bound for every original
+normal subgroup. -/
+noncomputable def ofFiniteStateBounds
+    (ordinary relative : ℕ)
+    (top : D.normalRegistry.QuotientSocleGeneratorFamily ordinary)
+    (sectionRank_le : ∀ j,
+      D.moduleState j ≤
+          D.moduleState
+            (R.moduleState
+              (⟨⊤, inferInstance⟩ :
+                {M : Subgroup (preE7PairAction s p) // M.Normal})) →
+        Module.finrank (ZMod 2)
+            (D.moduleState
+              (R.moduleState
+                (⟨⊤, inferInstance⟩ :
+                  {M : Subgroup (preE7PairAction s p) // M.Normal}))) ≤
+          Module.finrank (ZMod 2) (D.moduleState j) + relative) :
+    DegreeTwoPairTopStructuralAnchorData D p R :=
+  ofUniformCounts ordinary relative top (fun N ↦ by
+    have hsum := R.zeroCutModule_finrank_add_moduleState N
+    have hbound := sectionRank_le (R.moduleState N)
+      (R.moduleState_le_topModuleState N)
+    omega)
 
 def profileOfState
     (i : D.normalRegistry.State) (j : D.ModuleState) :
