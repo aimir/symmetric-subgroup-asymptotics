@@ -98,6 +98,16 @@ theorem literalTopQuotientMap_ker_eq_zeroCutBase_ker
     F.zeroCutBase_apply, QuotientGroup.eq_one_iff]
   exact F.literalTop_mem_normal_iff e N u
 
+/-- The kernel retained while passing to any literal model of the pair top
+is the actual elementary binary zero-cut kernel. -/
+theorem literalTopQuotientMap_kernel_isPGroup
+    (N : Subgroup U) [N.Normal] :
+    IsPGroup 2 (F.literalTopQuotientMap e N).ker := by
+  rw [F.literalTopQuotientMap_ker_eq_zeroCutBase_ker e N]
+  have hmodule : IsPGroup 2 (Multiplicative (F.zeroCutModule N)) :=
+    primeModule_isPGroup 2 (F.zeroCutModule N)
+  exact hmodule.of_equiv (F.zeroCutKernelEquiv N)
+
 /-- The intrinsic zero-cut top quotient is canonically the corresponding
 quotient of the chosen literal top. -/
 noncomputable def zeroCutBaseEquivLiteralTop
