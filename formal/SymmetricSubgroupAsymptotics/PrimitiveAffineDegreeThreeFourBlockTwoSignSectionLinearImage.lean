@@ -150,6 +150,24 @@ def degreeThreeFourBlockTwoSignSectionPairLinearMap
       (degreeThreeFourBlockTwoSignSectionPairKernelTopHom
         block P hr hs hcomponent N)
 
+/-- The same faithful pair-kernel image with the source relabelled as the
+standard `C₂²`. -/
+def degreeThreeFourBlockTwoSignSectionPairBitsLinearMap
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P)) :
+    (Multiplicative (ZMod 2) × Multiplicative (ZMod 2)) →*
+      LinearThree.GL3 :=
+  (degreeThreeFourBlockTwoSignSectionPairLinearMap
+    block P hr hs hcomponent hbinary htwo N).comp
+      (degreeThreeFourBlockTwoSign_pairKernelEquiv
+        block P hr hs hcomponent htwo).symm.toMonoidHom
+
 theorem degreeThreeFourBlockTwoSignSectionPairLinearMap_injective
     (hr : Nat.card block.Fibre = 3)
     (hs : Nat.card block.Points = 4)
@@ -167,6 +185,47 @@ theorem degreeThreeFourBlockTwoSignSectionPairLinearMap_injective
     block P hr hs hcomponent hbinary htwo N
   exact degreeThreeFourBlockTwoSignSectionLinearMap_reflects
     block P hr hs hcomponent hbinary htwo N _ _ hxy
+
+theorem degreeThreeFourBlockTwoSignSectionPairBitsLinearMap_injective
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P)) :
+    Function.Injective
+      (degreeThreeFourBlockTwoSignSectionPairBitsLinearMap
+        block P hr hs hcomponent hbinary htwo N) :=
+  (degreeThreeFourBlockTwoSignSectionPairLinearMap_injective
+    block P hr hs hcomponent hbinary htwo N).comp
+      (degreeThreeFourBlockTwoSign_pairKernelEquiv
+        block P hr hs hcomponent htwo).symm.injective
+
+theorem degreeThreeFourBlockTwoSignSectionPairBitsLinearMap_range
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P)) :
+    (degreeThreeFourBlockTwoSignSectionPairBitsLinearMap
+      block P hr hs hcomponent hbinary htwo N).range =
+      (degreeThreeFourBlockTwoSignSectionPairLinearMap
+        block P hr hs hcomponent hbinary htwo N).range := by
+  apply le_antisymm
+  · rintro _ ⟨x, rfl⟩
+    exact ⟨(degreeThreeFourBlockTwoSign_pairKernelEquiv
+      block P hr hs hcomponent htwo).symm x, rfl⟩
+  · rintro _ ⟨k, rfl⟩
+    exact ⟨degreeThreeFourBlockTwoSign_pairKernelEquiv
+      block P hr hs hcomponent htwo k, by
+        simp only [degreeThreeFourBlockTwoSignSectionPairBitsLinearMap,
+          MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom,
+          MulEquiv.symm_apply_apply]⟩
 
 /-- The matrix pair-kernel image is a literal Klein four group. -/
 theorem degreeThreeFourBlockTwoSignSectionPairLinearRange_card
@@ -307,18 +366,25 @@ theorem degreeThreeFourBlockTwoSignSectionLinearRange_card_le_eight
     block P hr hs hcomponent hbinary htwo N
   let psi := degreeThreeFourBlockTwoSignSectionPairLinearMap
     block P hr hs hcomponent hbinary htwo N
+  let f := degreeThreeFourBlockTwoSignSectionPairBitsLinearMap
+    block P hr hs hcomponent hbinary htwo N
+  have hfrange : f.range = psi.range :=
+    degreeThreeFourBlockTwoSignSectionPairBitsLinearMap_range
+      block P hr hs hcomponent hbinary htwo N
   have hle : psi.range ≤ phi.range := by
     rintro _ ⟨k, rfl⟩
     exact ⟨degreeThreeFourBlockTwoSignSectionPairKernelTopHom
       block P hr hs hcomponent N k, rfl⟩
-  exact LinearThree.card_le_eight_of_normalizes_klein
-    phi.range psi.range hle
-    (degreeThreeFourBlockTwoSignSectionPairLinearRange_normal
-      block P hr hs hcomponent hbinary htwo N)
-    (degreeThreeFourBlockTwoSignSectionPairLinearRange_card
-      block P hr hs hcomponent hbinary htwo N)
-    (degreeThreeFourBlockTwoSignSectionPairLinearRange_square
-      block P hr hs hcomponent hbinary htwo N)
+  have hfle : f.range ≤ phi.range := hfrange.trans_le hle
+  have hfnormal : (f.range.subgroupOf phi.range).Normal := by
+    rw [hfrange]
+    exact degreeThreeFourBlockTwoSignSectionPairLinearRange_normal
+      block P hr hs hcomponent hbinary htwo N
+  exact LinearThree.card_le_eight_of_normalizes_kleinRange
+    phi.range f
+      (degreeThreeFourBlockTwoSignSectionPairBitsLinearMap_injective
+        block P hr hs hcomponent hbinary htwo N)
+      hfle hfnormal
 
 /-- A sign-class exchanger has matrix image outside the Klein pair-kernel
 image. -/
@@ -410,6 +476,129 @@ theorem degreeThreeFourBlockTwoSignSectionLinearRange_card_eq_eight
     block P hr hs hcomponent hbinary htwo N
   rw [hKcard] at hcard
   omega
+
+/-- The exact order-eight matrix image is carried to the standard
+monomial `D8` action by one change of basis. -/
+noncomputable def degreeThreeFourBlockTwoSignSectionLinearRangeD8Conjugacy
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P)) :
+    LinearThree.SubgroupD8Conjugacy
+      (degreeThreeFourBlockTwoSignSectionLinearMap
+        block P hr hs hcomponent hbinary htwo N).range := by
+  let phi := degreeThreeFourBlockTwoSignSectionLinearMap
+    block P hr hs hcomponent hbinary htwo N
+  let psi := degreeThreeFourBlockTwoSignSectionPairLinearMap
+    block P hr hs hcomponent hbinary htwo N
+  let f := degreeThreeFourBlockTwoSignSectionPairBitsLinearMap
+    block P hr hs hcomponent hbinary htwo N
+  have hfrange : f.range = psi.range :=
+    degreeThreeFourBlockTwoSignSectionPairBitsLinearMap_range
+      block P hr hs hcomponent hbinary htwo N
+  have hle : psi.range ≤ phi.range := by
+    rintro _ ⟨k, rfl⟩
+    exact ⟨degreeThreeFourBlockTwoSignSectionPairKernelTopHom
+      block P hr hs hcomponent N k, rfl⟩
+  have hfle : f.range ≤ phi.range := hfrange.trans_le hle
+  have hfnormal : (f.range.subgroupOf phi.range).Normal := by
+    rw [hfrange]
+    exact degreeThreeFourBlockTwoSignSectionPairLinearRange_normal
+      block P hr hs hcomponent hbinary htwo N
+  exact
+    LinearThree.subgroupD8Conjugacy_of_card_eight_of_normalizes_kleinRange
+      phi.range f
+        (degreeThreeFourBlockTwoSignSectionPairBitsLinearMap_injective
+          block P hr hs hcomponent hbinary htwo N)
+        hfle hfnormal
+        (degreeThreeFourBlockTwoSignSectionLinearRange_card_eq_eight
+          block P hr hs hcomponent hbinary htwo N)
+
+/-- The group equivalence underlying the action-compatible section
+recognition. -/
+noncomputable def degreeThreeFourBlockTwoSignSectionLinearRangeEquivD8
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P)) :
+    (degreeThreeFourBlockTwoSignSectionLinearMap
+      block P hr hs hcomponent hbinary htwo N).range ≃*
+        DegreeSixS3Wreath.D8 :=
+  (degreeThreeFourBlockTwoSignSectionLinearRangeD8Conjugacy
+    block P hr hs hcomponent hbinary htwo N).equiv
+
+/-- The actual section top maps onto the standard dihedral group through
+its faithful order-eight matrix image. -/
+noncomputable def degreeThreeFourBlockTwoSignSectionD8Map
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P)) :
+    (G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
+      degreeThreeFourBlockTwoSignSectionAxis block P N)) →*
+        DegreeSixS3Wreath.D8 :=
+  (degreeThreeFourBlockTwoSignSectionLinearRangeEquivD8
+      block P hr hs hcomponent hbinary htwo N).toMonoidHom.comp
+    (degreeThreeFourBlockTwoSignSectionLinearMap
+      block P hr hs hcomponent hbinary htwo N).rangeRestrict
+
+theorem degreeThreeFourBlockTwoSignSectionD8Map_surjective
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P)) :
+    Function.Surjective
+      (degreeThreeFourBlockTwoSignSectionD8Map
+        block P hr hs hcomponent hbinary htwo N) :=
+  (degreeThreeFourBlockTwoSignSectionLinearRangeEquivD8
+      block P hr hs hcomponent hbinary htwo N).surjective.comp
+    (degreeThreeFourBlockTwoSignSectionLinearMap
+      block P hr hs hcomponent hbinary htwo N).rangeRestrict_surjective
+
+/-- Matrix compatibility retained by the section's dihedral quotient.
+This is the input needed to transport the full ternary semidirect product,
+and is stronger than an abstract identification of the order-eight top. -/
+theorem degreeThreeFourBlockTwoSignSectionD8Map_matrix
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
+    (htwo : (degreeThreeFourBlockSignedIsotypeProfile
+      block P hr hs hcomponent).isotypeCount = 2)
+    (N : TwoSignProperAxis (E block P))
+    (x : G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
+      degreeThreeFourBlockTwoSignSectionAxis block P N)) :
+    let D := degreeThreeFourBlockTwoSignSectionLinearRangeD8Conjugacy
+      block P hr hs hcomponent hbinary htwo N
+    DegreeSixS3Wreath.standardD8LinearMap
+        (degreeThreeFourBlockTwoSignSectionD8Map
+          block P hr hs hcomponent hbinary htwo N x) =
+      D.conjugator *
+        degreeThreeFourBlockTwoSignSectionLinearMap
+          block P hr hs hcomponent hbinary htwo N x *
+        D.conjugator⁻¹ := by
+  let D := degreeThreeFourBlockTwoSignSectionLinearRangeD8Conjugacy
+    block P hr hs hcomponent hbinary htwo N
+  exact D.matrix_eq
+    ((degreeThreeFourBlockTwoSignSectionLinearMap
+      block P hr hs hcomponent hbinary htwo N).rangeRestrict x)
 
 /-- The kernel left above the dihedral matrix image has order at most four. -/
 theorem degreeThreeFourBlockTwoSignSectionLinearMap_kernel_card_le_four
