@@ -70,6 +70,13 @@ structure DegreeTwoPairBinaryKernelAnchor
     Module.finrank (ZMod 2) (Additive (binaryCentralOmega kernel)) ≤
       profile.relative
 
+/-- The pure ordinary profile supplied by a `t`-generator socle theorem. -/
+def degreeTwoPairGeneralProfile (t : ℕ) : DegreeTwoPairRelativeProfile where
+  binaryPrimary := 0
+  linear := 0
+  ordinary := t
+  relative := 0
+
 attribute [instance] DegreeTwoPairBinaryKernelAnchor.kernel_normal
 
 namespace DegreeTwoPairBinaryKernelAnchor
@@ -77,6 +84,34 @@ namespace DegreeTwoPairBinaryKernelAnchor
 variable {Q : Type} [Group Q] [Finite Q]
   {profile : DegreeTwoPairRelativeProfile}
   (A : DegreeTwoPairBinaryKernelAnchor Q profile)
+
+/-- A Zmud tuple which is jointly faithful on the whole quotient is the
+degenerate binary-kernel anchor with common kernel `⊥`.  This turns a
+finite socle-generator certificate directly into pair-row data and avoids
+manufacturing a source-dependent relative label. -/
+noncomputable def ofSocleGeneratorBound
+    (hZmud : ZmudFaithfulCharacterTupleInput) {t : ℕ}
+    (hgen : SocleNormalGeneratorBound Q t) :
+    DegreeTwoPairBinaryKernelAnchor Q (degreeTwoPairGeneralProfile t) := by
+  let T : CharacterSlotTuple Q := hZmud.generalTuple hgen
+  exact
+    { binary := Fin.elim0
+      binary_twoGroup := fun i ↦ Fin.elim0 i
+      linear := Fin.elim0
+      ordinary := T.general
+      kernel := ⊥
+      kernel_eq := by
+        symm
+        apply bot_unique
+        intro q hq
+        simp only [Subgroup.mem_inf, Subgroup.mem_iInf,
+          MonoidHom.mem_ker] at hq
+        exact Subgroup.mem_bot.mpr
+          (T.faithful q (fun i ↦ Fin.elim0 i)
+            (fun i ↦ Fin.elim0 i) hq.2)
+      kernel_twoGroup := IsPGroup.of_bot
+      relative_dimension := by
+        rw [Module.finrank_zero_of_subsingleton] }
 
 private def PrefixLabel (J : Type) [Group J] [Finite J]
     [Invertible (Nat.card J : ℂ)] : Type :=

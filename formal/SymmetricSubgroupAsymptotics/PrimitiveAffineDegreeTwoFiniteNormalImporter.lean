@@ -37,10 +37,9 @@ universe u
 /-! ## A width-independent complete finite normal registry -/
 
 /-- A finite, duplicate-free enumeration of all literal normal subgroups of
-one permutation group.  The `complete` field is normally supplied by
+one finite group.  The `complete` field is normally supplied by
 `FiniteNormalJoinRegistry.complete`, rather than by a producer assertion. -/
-structure FiniteNormalStateRegistry {w : ℕ}
-    (U : Subgroup (Equiv.Perm (Fin w))) : Type 1 where
+structure FiniteNormalStateRegistry (U : Type) [Group U] [Finite U] : Type 1 where
   State : Type
   [state_finite : Finite State]
   state : State → Subgroup U
@@ -52,10 +51,10 @@ attribute [instance] FiniteNormalStateRegistry.state_finite
 
 namespace FiniteNormalStateRegistry
 
-variable {w : ℕ} {U : Subgroup (Equiv.Perm (Fin w))}
+variable {U : Type} [Group U] [Finite U]
   (R : FiniteNormalStateRegistry U)
 
-/-- The type of literal normal axes of a finite permutation group is
+/-- The type of literal normal axes of a finite group is
 finite.  This noncomputable instance supports semantic pilot registries and
 the few uniform natural groups for which no compressed word table is
 needed. -/
@@ -99,11 +98,13 @@ noncomputable def normalAxisEquiv :
 
 /-- Reindex an arbitrary literal normal-axis sum by the checked states. -/
 theorem fusionAxisEnvelopeTotal_eq_stateSum
-    (C : {N : Subgroup U // N.Normal} → ℝ) :
-    fusionAxisEnvelopeTotal U C = ∑ i : R.State, C (R.normalAxis i) := by
+    {w : ℕ} {V : Subgroup (Equiv.Perm (Fin w))}
+    (S : FiniteNormalStateRegistry V)
+    (C : {N : Subgroup V // N.Normal} → ℝ) :
+    fusionAxisEnvelopeTotal V C = ∑ i : S.State, C (S.normalAxis i) := by
   unfold fusionAxisEnvelopeTotal
-  exact (Fintype.sum_equiv R.normalAxisEquiv
-    (fun i : R.State => C (R.normalAxis i)) C (fun _ => rfl)).symm
+  exact (Fintype.sum_equiv S.normalAxisEquiv
+    (fun i : S.State => C (S.normalAxis i)) C (fun _ => rfl)).symm
 
 /-- Build the semantic registry from the existing conjugacy-cover and
 normal-join-word certificates.  This constructor is independent of the
@@ -199,14 +200,14 @@ end FiniteNormalStateRegistry
 
 /-- A dependent payload recorded only on the checked finite normal states. -/
 structure FiniteNormalStateFamily
-    {w : ℕ} {U : Subgroup (Equiv.Perm (Fin w))}
+    {U : Type} [Group U] [Finite U]
     (R : FiniteNormalStateRegistry U)
     (Payload : {N : Subgroup U // N.Normal} → Type u) : Type (max 1 u) where
   state : ∀ i : R.State, Payload (R.normalAxis i)
 
 namespace FiniteNormalStateFamily
 
-variable {w : ℕ} {U : Subgroup (Equiv.Perm (Fin w))}
+variable {U : Type} [Group U] [Finite U]
   {R : FiniteNormalStateRegistry U}
   {Payload : {N : Subgroup U // N.Normal} → Type u}
   (F : FiniteNormalStateFamily R Payload)
