@@ -55,6 +55,27 @@ namespace FiniteNormalStateRegistry
 variable {w : ℕ} {U : Subgroup (Equiv.Perm (Fin w))}
   (R : FiniteNormalStateRegistry U)
 
+/-- The type of literal normal axes of a finite permutation group is
+finite.  This noncomputable instance supports semantic pilot registries and
+the few uniform natural groups for which no compressed word table is
+needed. -/
+noncomputable instance normalAxesFinite :
+    Finite {N : Subgroup U // N.Normal} :=
+  Finite.of_injective
+    (fun N : {N : Subgroup U // N.Normal} => (N.1 : Set U)) (by
+      intro A B h
+      exact Subtype.ext (SetLike.coe_injective h))
+
+/-- Canonical census-free registry of all literal normal subgroups.  This
+does not assert a producer list is complete: its states are the normal axes
+themselves. -/
+noncomputable def allNormals : FiniteNormalStateRegistry U where
+  State := {N : Subgroup U // N.Normal}
+  state := Subtype.val
+  state_normal := Subtype.property
+  state_injective := Subtype.val_injective
+  complete N := ⟨⟨N, inferInstance⟩, rfl⟩
+
 /-- A state viewed as a literal normal axis. -/
 def normalAxis (i : R.State) : {N : Subgroup U // N.Normal} :=
   ⟨R.state i, R.state_normal i⟩

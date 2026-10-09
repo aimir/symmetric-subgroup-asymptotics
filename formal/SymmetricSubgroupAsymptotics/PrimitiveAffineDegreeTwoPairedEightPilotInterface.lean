@@ -47,8 +47,12 @@ noncomputable def normalRegistry : FiniteNormalStateRegistry Top :=
 /-- Complete concrete pair-top interface for the selected `paired8-1`
 pilot. -/
 noncomputable def finiteInterface : DegreeTwoPairTopFiniteInterface 8 :=
-  DegreeTwoPairTopFiniteInterface.withCanonicalModuleRegistry
-    Top normalRegistry
+  DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
+    PrimitiveAffineEightFrameRow0NormalCertificate.topConjugacy.toCardinalCover
+    PrimitiveAffineEightFrameRow0NormalCertificate.topAmbient
+    PrimitiveAffineEightFrameRow0NormalCertificate.stateGenerators
+    PrimitiveAffineEightFrameRow0NormalCertificate.data
+    Top PrimitiveAffineEightFrameRow0TopCertificate.originalEquiv
 
 theorem normal_complete (N : Subgroup finiteInterface.top) [N.Normal] :
     ∃ i, finiteInterface.normalRegistry.state i = N :=

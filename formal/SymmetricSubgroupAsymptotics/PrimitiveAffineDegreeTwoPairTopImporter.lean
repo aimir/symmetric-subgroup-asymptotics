@@ -110,6 +110,32 @@ noncomputable def withCanonicalModuleRegistry
       moduleStateCount_eq := rfl
       cyclicCount_eq := rfl }
 
+/-- Canonical semantic interface on an explicitly specified finite top.
+Both axes are the literal normal subgroups and invariant subrepresentations
+themselves.  It is useful for uniform natural tops and as a fallback while a
+compressed generated table is being connected. -/
+noncomputable def withCanonicalRegistries
+    (top : Subgroup (Equiv.Perm (Fin s))) :
+    DegreeTwoPairTopFiniteInterface s :=
+  withCanonicalModuleRegistry top
+    (FiniteNormalStateRegistry.allNormals (U := top))
+
+/-- Direct shared-top adapter: transport an executable complete normal-word
+registry to its literal permutation top and install the canonical natural
+module registry. -/
+noncomputable def ofWordRegistryEquiv
+    {G I ι κ : Type} [Group G] [Finite G] [Finite I]
+    {c : ℕ} {representative : Fin c → G}
+    (C : FiniteConjugacyCardinalCover representative)
+    (ambient : ι → G) (stateGenerators : I → κ → G)
+    (normalData : FiniteNormalJoinWordRegistryData
+      C ambient stateGenerators)
+    (top : Subgroup (Equiv.Perm (Fin s)))
+    (e : G ≃* top) : DegreeTwoPairTopFiniteInterface s :=
+  withCanonicalModuleRegistry top
+    (FiniteNormalStateRegistry.ofWordRegistryEquiv
+      C ambient stateGenerators normalData e)
+
 end DegreeTwoPairTopFiniteInterface
 
 /-- A literal finite top realized as the top action of an original pair
