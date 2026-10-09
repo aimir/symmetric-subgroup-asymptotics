@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryPairLiteralTopQuotient
+import SymmetricSubgroupAsymptotics.CompositeKernelExact
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopOriginalNormalSignature
 
 /-!
@@ -124,12 +125,64 @@ theorem innerQuotientMap_kernel_isPGroup
   exact R.secondFrame.literalTopQuotientMap_kernel_isPGroup R.topEquiv
     (R.outerTopNormal N.1)
 
+/-- Literal module coordinates on the second zero-cut kernel. -/
+noncomputable def innerZeroCutKernelEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Multiplicative
+        (R.secondFrame.zeroCutModule (R.outerTopNormal N.1)) ≃*
+      (R.innerQuotientMap N).ker := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  exact (R.secondFrame.zeroCutKernelEquiv (R.outerTopNormal N.1)).trans
+    (MulEquiv.subgroupCongr
+      (R.secondFrame.literalTopQuotientMap_ker_eq_zeroCutBase_ker
+        R.topEquiv (R.outerTopNormal N.1)).symm)
+
 /-- The direct map through both pair quotients before replacing the selected
 normal by its equal finite-registry state. -/
 noncomputable def rawQuotientMap
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     (preE7PairAction s p ⫽ N.1) →* (D.top ⫽ R.topNormal N.1) :=
   (R.innerQuotientMap N).comp (R.outerQuotientMap N)
+
+/-- The first map in the exact two-layer filtration of the direct quartet
+kernel.  Its target is the actual second zero-cut kernel. -/
+def rawKernelProjection
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawQuotientMap N).ker →* (R.innerQuotientMap N).ker :=
+  compositeKernelProjection (R.outerQuotientMap N) (R.innerQuotientMap N)
+
+theorem rawKernelProjection_surjective
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Function.Surjective (R.rawKernelProjection N) :=
+  compositeKernelProjection_surjective
+    (R.outerQuotientMap N) (R.innerQuotientMap N)
+    (R.outerQuotientMap_surjective N)
+
+/-- The kernel of the first filtration map is canonically the actual first
+zero-cut kernel. -/
+noncomputable def outerKernelEquivRawKernelProjectionKer
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.outerQuotientMap N).ker ≃* (R.rawKernelProjection N).ker :=
+  compositeKernelFiberEquiv
+    (R.outerQuotientMap N) (R.innerQuotientMap N)
+
+/-- Literal module coordinates on the first kernel, now regarded as the
+kernel of the direct-kernel projection. -/
+noncomputable def outerZeroCutKernelEquivRawKernelProjectionKer
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Multiplicative (R.frame.zeroCutModule N.1) ≃*
+      (R.rawKernelProjection N).ker :=
+  (R.frame.zeroCutKernelEquiv N.1).trans
+    ((MulEquiv.subgroupCongr
+      (R.outerQuotientMap_ker_eq_zeroCutBase_ker N).symm).trans
+        (R.outerKernelEquivRawKernelProjectionKer N))
+
+theorem rawKernelProjection_ker_isPGroup
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    IsPGroup 2 (R.rawKernelProjection N).ker :=
+  (R.outerQuotientMap_kernel_isPGroup N).of_equiv
+    (R.outerKernelEquivRawKernelProjectionKer N)
 
 theorem rawQuotientMap_surjective
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
