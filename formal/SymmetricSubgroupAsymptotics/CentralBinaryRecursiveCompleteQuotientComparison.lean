@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeThreeFourBlockTwoSignCentralSeries
+import SymmetricSubgroupAsymptotics.BinaryStructuredPolynomialBound
 
 /-!
 # Recursive complete comparison through a central binary step
@@ -354,6 +355,78 @@ theorem coefficient_le_two_pow
           rw [Nat.card_fun]
           norm_num [C2]
         _ ≤ 2 ^ a := Nat.pow_le_pow_right (by norm_num) hquotientCard
+    change D.productCoefficient + D.baseCoefficient *
+        Nat.card ((A ⧸ image.1) →* C2) ≤ _
+    calc
+      D.productCoefficient + D.baseCoefficient *
+          Nat.card ((A ⧸ image.1) →* C2) ≤
+        2 ^ c + 2 ^ c * 2 ^ a :=
+          Nat.add_le_add hproduct (Nat.mul_le_mul hbase hhom)
+      _ = 2 ^ c * (1 + 2 ^ a) := by ring
+      _ ≤ 2 ^ c * 2 ^ (a + 1) := by
+        apply Nat.mul_le_mul_left
+        rw [pow_succ]
+        have hone : 1 ≤ 2 ^ a := Nat.one_le_two_pow
+        omega
+      _ = 2 ^ (c + a + 1) := by
+        rw [← pow_add]
+        congr 2
+        omega
+  unfold coefficient
+  calc
+    (∑ M : NormalAxis R,
+        ((D.quotient M).productCoefficient +
+          (D.quotient M).baseCoefficient *
+            Nat.card ((D.quotient M).A →* C2))) ≤
+      ∑ _M : NormalAxis R, 2 ^ (c + a + 1) := by
+        apply Finset.sum_le_sum
+        intro M _
+        exact hterm M
+    _ = Nat.card (NormalAxis R) * 2 ^ (c + a + 1) := by
+      simp [Finset.sum_const]
+    _ ≤ 2 ^ (m * m) * 2 ^ (c + a + 1) :=
+      Nat.mul_le_mul_right _ hnormal
+    _ = 2 ^ (m * m + c + a + 1) := by
+      rw [← pow_add]
+      congr 2
+      omega
+
+/-- Logarithmic form of the recursive coefficient bound.  Unlike
+`coefficient_le_two_pow`, this uses the binary character rank of every
+projective quotient, so the parameter `a` bounds the base-two logarithm of
+the projective order rather than the order itself.  This is the useful form
+for iterating central binary extensions of the ternary section. -/
+theorem coefficient_le_two_pow_of_card_le_pow
+    (m a c : ℕ)
+    (hR : Nat.card R ≤ 2 ^ m)
+    (hA : Nat.card A ≤ 2 ^ a)
+    (hbase : D.baseCoefficient ≤ 2 ^ c)
+    (hproduct : D.productCoefficient ≤ 2 ^ c) :
+    D.coefficient ≤ 2 ^ (m * m + c + a + 1) := by
+  have hnormal : Nat.card (NormalAxis R) ≤ 2 ^ (m * m) :=
+    normalSubgroup_card_le_two_pow_sq m hR
+  have hterm : ∀ M : NormalAxis R,
+      (D.quotient M).productCoefficient +
+          (D.quotient M).baseCoefficient *
+            Nat.card ((D.quotient M).A →* C2) ≤
+        2 ^ (c + a + 1) := by
+    intro M
+    letI : M.1.Normal := M.2
+    let image := ProjectiveCentralQuotient.normalImage
+      D.projection D.projection_surjective M
+    have hquotientCard : Nat.card (A ⧸ image.1) ≤ 2 ^ a := by
+      exact (Nat.card_le_card_of_surjective
+        (QuotientGroup.mk' image.1)
+        (QuotientGroup.mk'_surjective image.1)).trans hA
+    have hcharacter : binaryCharacterRank (A ⧸ image.1) ≤ a :=
+      binaryCharacterRank_le_of_card_le_pow (A ⧸ image.1) a hquotientCard
+    have hhom : Nat.card ((A ⧸ image.1) →* C2) ≤ 2 ^ a := by
+      have hcard : Nat.card ((A ⧸ image.1) →* C2) =
+          2 ^ binaryCharacterRank (A ⧸ image.1) := by
+        rw [binaryAbelianizationGroupHom_card]
+        simp
+      rw [hcard]
+      exact Nat.pow_le_pow_right (by norm_num) hcharacter
     change D.productCoefficient + D.baseCoefficient *
         Nat.card ((A ⧸ image.1) →* C2) ≤ _
     calc
