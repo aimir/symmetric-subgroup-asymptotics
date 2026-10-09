@@ -131,6 +131,44 @@ noncomputable def doubleProductComparison (hA : Nat.card A = 4) :
       DegreeThreeFourBlockTwoSignComparator.qStarToBinary4
       DegreeThreeFourBlockTwoSignComparator.qStarToBinary4_surjective J
 
+/-- A small uniform coefficient for the order-four comparison. -/
+theorem comparison_coefficient_le (hA : Nat.card A = 4) :
+    (comparison A hA).coefficient ≤ 2 ^ 7 := by
+  let D := comparison A hA
+  apply D.coefficient_le_two_pow 2 2 0
+  · rw [hA]
+  · norm_num [C2, Nat.card_zmod]
+  · change 1 ≤ 2 ^ 0
+    norm_num
+  · change 1 ≤ 2 ^ 0
+    norm_num
+
+/-- A uniform coefficient after adjoining one binary factor. -/
+theorem productComparison_coefficient_le (hA : Nat.card A = 4) :
+    (productComparison A hA).coefficient ≤ 2 ^ 14 := by
+  let D := productComparison A hA
+  apply D.coefficient_le_two_pow 3 4 0
+  · rw [Nat.card_prod, hA]
+    norm_num [C2, Nat.card_zmod]
+  · norm_num [C2, Nat.card_zmod]
+  · change 1 ≤ 2 ^ 0
+    norm_num
+  · change 1 ≤ 2 ^ 0
+    norm_num
+
+/-- A uniform coefficient after adjoining two binary factors. -/
+theorem doubleProductComparison_coefficient_le (hA : Nat.card A = 4) :
+    (doubleProductComparison A hA).coefficient ≤ 2 ^ 25 := by
+  let D := doubleProductComparison A hA
+  apply D.coefficient_le_two_pow 4 8 0
+  · rw [Nat.card_prod, Nat.card_prod, hA]
+    norm_num [C2, Nat.card_zmod]
+  · norm_num [C2, Nat.card_zmod]
+  · change 1 ≤ 2 ^ 0
+    norm_num
+  · change 1 ≤ 2 ^ 0
+    norm_num
+
 end OrderFourCentralBinaryRecursiveComparison
 end SymmetricSubgroupAsymptotics
 
