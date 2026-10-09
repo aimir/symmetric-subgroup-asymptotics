@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeThreeFourBlockTwoSignSource
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeSixS3WreathSource
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoQuotientEnvelopeTransport
+import SymmetricSubgroupAsymptotics.FiniteGroupPaddedGenerators
 
 /-!
 # Structural ingredients for the two-sign four-block source
@@ -145,6 +146,58 @@ theorem completeQuotientWeight_le_twoSign_strata
               (twoSignProperAxis N) J) :=
       add_le_add habove hbelow
     _ = _ := by ring
+
+/-- The literal proper axes form a subtype of the full normal menu.  For a
+group of order at most `2^12`, their number is therefore at most `2^144`.
+This avoids enumerating the proper ternary sections. -/
+theorem twoSignProperAxis_card_le_two_pow_144
+    {G : Type*} [Group G] [Finite G]
+    (E : Subgroup G) (hG : Nat.card G ≤ 2 ^ 12) :
+    Nat.card (TwoSignProperAxis E) ≤ 2 ^ 144 := by
+  have hinjective : Function.Injective
+      (fun N : TwoSignProperAxis E ↦ (N.1.1 : NormalAxis G)) := by
+    intro N M h
+    apply Subtype.ext
+    apply Subtype.ext
+    exact h
+  calc
+    Nat.card (TwoSignProperAxis E) ≤ Nat.card (NormalAxis G) :=
+      Nat.card_le_card_of_injective _ hinjective
+    _ ≤ 2 ^ (12 * 12) := normalSubgroup_card_le_two_pow_sq 12 hG
+    _ = 2 ^ 144 := by norm_num
+
+/-- Uniform numerical budget for the whole two-sign source.  A possible
+rank-two bottom, the signed top, and every proper ternary section all fit
+simultaneously under the historical `2^384` coefficient. -/
+theorem twoSign_uniform_mainCoefficient_le
+    {G : Type*} [Group G] [Finite G]
+    (E : Subgroup G) (hG : Nat.card G ≤ 2 ^ 12) :
+    (2 : ℝ) ^ (200 : ℕ) + (2 : ℝ) ^ (128 : ℕ) +
+        ∑ _N : TwoSignProperAxis E, (2 : ℝ) ^ (200 : ℕ) ≤
+      (2 : ℝ) ^ (384 : ℝ) := by
+  have hcard := twoSignProperAxis_card_le_two_pow_144 E hG
+  have hcardReal : (Nat.card (TwoSignProperAxis E) : ℝ) ≤
+      (2 : ℝ) ^ (144 : ℕ) := by
+    exact_mod_cast hcard
+  have hsections :
+      (∑ _N : TwoSignProperAxis E, (2 : ℝ) ^ (200 : ℕ)) ≤
+        (2 : ℝ) ^ (344 : ℕ) := by
+    calc
+      (∑ _N : TwoSignProperAxis E, (2 : ℝ) ^ (200 : ℕ)) =
+          (Nat.card (TwoSignProperAxis E) : ℝ) *
+            (2 : ℝ) ^ (200 : ℕ) := by
+        rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ,
+          Fintype.card_eq_nat_card]
+      _ ≤ (2 : ℝ) ^ (144 : ℕ) * (2 : ℝ) ^ (200 : ℕ) := by
+        exact mul_le_mul_of_nonneg_right hcardReal (by positivity)
+      _ = (2 : ℝ) ^ (344 : ℕ) := by rw [← pow_add]; norm_num
+  calc
+    (2 : ℝ) ^ (200 : ℕ) + (2 : ℝ) ^ (128 : ℕ) +
+        ∑ _N : TwoSignProperAxis E, (2 : ℝ) ^ (200 : ℕ) ≤
+      (2 : ℝ) ^ (200 : ℕ) + (2 : ℝ) ^ (128 : ℕ) +
+        (2 : ℝ) ^ (344 : ℕ) := add_le_add_left hsections _
+    _ ≤ (2 : ℝ) ^ (384 : ℕ) := by norm_num
+    _ = (2 : ℝ) ^ (384 : ℝ) := (Real.rpow_natCast 2 384).symm
 
 /-- Pull a normal axis back along a surjective group map. -/
 private def normalAxisComap
