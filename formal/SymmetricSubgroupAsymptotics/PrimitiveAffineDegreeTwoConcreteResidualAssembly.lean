@@ -1,6 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCatalogue
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenPairFiniteCatalogue
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopConcreteBranches
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopBinaryKernelRows
 
 /-!
 # Concrete degree-two pair-top assembly
@@ -52,7 +52,7 @@ structure PairTopSemanticData : Type 1 where
       (realization : DegreeTwoPairTopRealization
         (TwelveCatalogue.row j).finite p),
       (TwelveCatalogue.row j).branch ≠ .ternary →
-      DegreeTwoPairTopAnchoredRowData
+      DegreeTwoPairTopBinaryKernelRowData
         (TwelveCatalogue.row j).finite
         (TwelveCatalogue.row j).expectedProfiles p realization
   twelveTernary :
@@ -64,28 +64,28 @@ structure PairTopSemanticData : Type 1 where
     ∀ (j : Fin 24) (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopTowerRealization
         (SixteenCatalogue.paired8 j) p),
-      DegreeTwoPairTopTowerAnchoredRowData
+      DegreeTwoPairTopTowerBinaryKernelRowData
         (SixteenCatalogue.paired8 j)
         degreeTwoSixteenPairProfiles p realization
   sixteenZero16 :
     ∀ (j : Fin 29) (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopRealization
         (SixteenCatalogue.zero16 j) p),
-      DegreeTwoPairTopAnchoredRowData
+      DegreeTwoPairTopBinaryKernelRowData
         (SixteenCatalogue.zero16 j)
         degreeTwoSixteenPairProfiles p realization
   sixteenTwoAffine16 :
     ∀ (j : Fin 15) (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopRealization
         (SixteenCatalogue.twoAffine16 j) p),
-      DegreeTwoPairTopAnchoredRowData
+      DegreeTwoPairTopBinaryKernelRowData
         (SixteenCatalogue.twoAffine16 j)
         degreeTwoSixteenPairProfiles p realization
   sixteenPrimitive16 :
     ∀ (j : Fin 20) (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopRealization
         (SixteenCatalogue.primitive16 j) p),
-      DegreeTwoPairTopAnchoredRowData
+      DegreeTwoPairTopBinaryKernelRowData
         (SixteenCatalogue.primitive16 j)
         degreeTwoSixteenPairProfiles p realization
   sixteenNatural :
@@ -101,7 +101,7 @@ noncomputable def twelveResolution
     (D : PairTopSemanticData)
     (lit : PreE7CharacterLiterature) :
     DegreeTwoTwelvePairTopCatalogueResolution TwelveCatalogue :=
-  degreeTwoTwelveResolution_of_anchored_and_ternary lit TwelveCatalogue
+  degreeTwoTwelveResolution_of_binaryKernel_and_ternary lit TwelveCatalogue
     D.twelveRelative D.twelveTernary
 
 /-- Resolve the complete concrete count-sixteen table, including the
@@ -111,7 +111,7 @@ noncomputable def sixteenResolution
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature) :
     DegreeTwoSixteenPairTopCatalogueResolution SixteenCatalogue :=
-  degreeTwoSixteenResolution_of_anchored_and_naturalSocle hZmud lit
+  degreeTwoSixteenResolution_of_binaryKernel_and_naturalSocle hZmud lit
     SixteenCatalogue
     D.sixteenPaired8 D.sixteenZero16 D.sixteenTwoAffine16
     D.sixteenPrimitive16 D.sixteenNatural
