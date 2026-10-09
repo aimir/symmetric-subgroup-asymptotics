@@ -147,6 +147,20 @@ theorem degreeThreePostFourOneSignComparatorAction_injective
     (degreeThreePostFourOneSignTopAction block P hr)
     (degreeThreePostFourOneSignTopAction_injective block P hr)
 
+/-- The literal faithful `s+2` point comparator. -/
+abbrev DegreeThreePostFourOneSignComparator
+    (hr : Nat.card block.Fibre = 3) :=
+  (degreeThreePostFourOneSignComparatorAction block P hr).range
+
+/-- Identification of the abstract central product with its literal
+permutation comparator. -/
+def degreeThreePostFourOneSignComparatorEquiv
+    (hr : Nat.card block.Fibre = 3) :
+    DegreeThreePostFourOneSignTop block P hr × C2 ≃*
+      DegreeThreePostFourOneSignComparator block P hr :=
+  MonoidHom.ofInjective
+    (degreeThreePostFourOneSignComparatorAction_injective block P hr)
+
 /-- The two quotient maps from `top × C₂` give a global comparison for the
 central binary signed quotient. -/
 noncomputable def degreeThreePostFourOneSignGlobalComparison
