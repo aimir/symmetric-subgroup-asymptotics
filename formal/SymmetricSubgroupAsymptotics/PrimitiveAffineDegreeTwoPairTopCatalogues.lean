@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopImporter
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopOriginalNormalSignature
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoEightPairFiniteCatalogue
 
 /-!
@@ -81,18 +81,6 @@ noncomputable def degreeTwoSixteenPairRelativeNumerics
     (by norm_num)
 
 /-! ## Reusable resolutions -/
-
-/-- A finite top occurring one level below the top of the original pair
-frame, as in the paired-six and paired-eight branches. -/
-structure DegreeTwoPairTopTowerRealization {s t : ℕ}
-    (D : DegreeTwoPairTopFiniteInterface t)
-    (p : PreE7PairActionClass s) : Type 1 where
-  frame : BinaryPairFrame (preE7PairAction s p) (Fin s)
-  secondFrame : BinaryPairFrame frame.top.range (Fin t)
-  topEquiv : D.top ≃* secondFrame.top.range
-  module_action_eq : ∀ g v,
-    permutationFunctionRepresentation (ZMod 2) D.top (Fin t) g v =
-      secondFrame.coordinateTopAction (topEquiv g) v
 
 /-- One finite top row resolved all the way to the final representative
 source.  Relative rows expose the exact universal-lift conclusion and its

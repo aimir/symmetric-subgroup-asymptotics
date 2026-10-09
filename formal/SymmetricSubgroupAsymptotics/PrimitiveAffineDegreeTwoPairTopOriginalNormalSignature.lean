@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairRelativeCharacterEnvelope
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairRelativeAnchorLabels
 import SymmetricSubgroupAsymptotics.BinaryPairSharedBinding
 
 /-!
@@ -24,6 +24,20 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
+
+/-- A finite pair top reached through two successive pair frames.  This is
+the semantic shape of the count-sixteen paired-eight rows: an original
+sixteen-pair normal is first mapped to the outer top, then that normal is
+mapped through the eight-pair frame before the finite registries are read. -/
+structure DegreeTwoPairTopTowerRealization {s t : ℕ}
+    (D : DegreeTwoPairTopFiniteInterface t)
+    (p : PreE7PairActionClass s) : Type 1 where
+  frame : BinaryPairFrame (preE7PairAction s p) (Fin s)
+  secondFrame : BinaryPairFrame frame.top.range (Fin t)
+  topEquiv : D.top ≃* secondFrame.top.range
+  module_action_eq : ∀ g v,
+    permutationFunctionRepresentation (ZMod 2) D.top (Fin t) g v =
+      secondFrame.coordinateTopAction (topEquiv g) v
 
 namespace DegreeTwoPairTopRealization
 
@@ -86,6 +100,81 @@ theorem moduleState_spec
 
 end DegreeTwoPairTopRealization
 
+namespace DegreeTwoPairTopTowerRealization
+
+variable {s t : ℕ} {D : DegreeTwoPairTopFiniteInterface t}
+  {p : PreE7PairActionClass s}
+  (R : DegreeTwoPairTopTowerRealization D p)
+
+/-- The image of an original normal in the first pair top. -/
+def outerTopNormal
+    (N : Subgroup (preE7PairAction s p)) : Subgroup R.frame.top.range :=
+  N.map R.frame.top.rangeRestrict
+
+theorem outerTopNormal_normal
+    (N : Subgroup (preE7PairAction s p)) [N.Normal] :
+    (R.outerTopNormal N).Normal :=
+  Subgroup.Normal.map inferInstance _ R.frame.top.rangeRestrict_surjective
+
+/-- The image in the second pair top, transported to the literal catalogue
+top. -/
+def topNormal
+    (N : Subgroup (preE7PairAction s p)) : Subgroup D.top :=
+  ((R.outerTopNormal N).map R.secondFrame.top.rangeRestrict).comap
+    R.topEquiv.toMonoidHom
+
+theorem topNormal_normal
+    (N : Subgroup (preE7PairAction s p)) [N.Normal] :
+    (R.topNormal N).Normal := by
+  letI : (R.outerTopNormal N).Normal := R.outerTopNormal_normal N
+  apply Subgroup.Normal.comap
+  exact Subgroup.Normal.map inferInstance _
+    R.secondFrame.top.rangeRestrict_surjective
+
+def topNormalAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    {T : Subgroup D.top // T.Normal} := by
+  letI : N.1.Normal := N.2
+  exact ⟨R.topNormal N.1, R.topNormal_normal N.1⟩
+
+/-- The unique finite top-normal state selected after both pair maps. -/
+noncomputable def topNormalState
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    D.normalRegistry.State :=
+  D.normalRegistry.normalAxisEquiv.symm (R.topNormalAxis N)
+
+theorem topNormalState_spec
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    D.normalRegistry.state (R.topNormalState N) = R.topNormal N.1 := by
+  have h := D.normalRegistry.normalAxisEquiv.apply_symm_apply
+    (R.topNormalAxis N)
+  exact congrArg Subtype.val h
+
+/-- The intersection of the first top image with the second pair kernel,
+transported to the literal eight-coordinate permutation module. -/
+def moduleAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  exact R.secondFrame.sharedOriginalAxis
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+    R.topEquiv R.module_action_eq (R.outerTopNormal N.1)
+
+/-- The unique finite module state selected after both pair maps. -/
+noncomputable def moduleState
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    D.ModuleState :=
+  D.moduleStateEquiv.symm (R.moduleAxis N)
+
+theorem moduleState_spec
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    D.moduleState (R.moduleState N) = R.moduleAxis N :=
+  D.moduleStateEquiv.apply_symm_apply (R.moduleAxis N)
+
+end DegreeTwoPairTopTowerRealization
+
 /-- A profile table on the two independently complete finite registries.
 The `profile_mem` proof is checked only after the actual original-normal
 signature has selected its two states. -/
@@ -142,7 +231,88 @@ noncomputable def relativeLiftConclusion
       allowed_capacity := P.allowed_capacity
       profile_mem := P.profile_mem }
 
+/-- Complete the universal pair-relative lift from the actual anchored
+character construction on each original quotient.  This is the direct
+semantic route used by the finite pair-top registries: their two states
+select the profile, while the anchored data supplies the source-dependent
+restriction label and its kernel theorem. -/
+noncomputable def relativeAnchorLiftConclusion
+    (lit : PreE7CharacterLiterature)
+    (data : ∀ N,
+      DegreeTwoPairRelativeAnchorLabels
+        (preE7PairAction s p ⨸ N.1) (P.profile N)) :
+    DegreeTwoPairTopRelativeLiftConclusion D p := by
+  let lift : DegreeTwoPairRelativeLiftData s p :=
+    DegreeTwoPairRelativeLiftData.ofRelativeAnchorLabels
+      lit P.profile P.capacity data
+  exact
+    { lift := lift
+      topNormalState := R.topNormalState
+      moduleState := R.moduleState
+      profileOfState := P.profileOfState
+      profile_eq := fun _ => rfl
+      allowedProfiles := P.allowedProfiles
+      allowed_capacity := P.allowed_capacity
+      profile_mem := P.profile_mem }
+
 end DegreeTwoPairTopStateProfile
+
+/-- A profile table for a finite top reached through two pair frames.  It is
+the tower analogue of `DegreeTwoPairTopStateProfile` and keeps every profile
+attached to the actual original normal rather than to an independently
+chosen catalogue state. -/
+structure DegreeTwoPairTopTowerStateProfile {s t : ℕ}
+    (D : DegreeTwoPairTopFiniteInterface t)
+    (p : PreE7PairActionClass s)
+    (R : DegreeTwoPairTopTowerRealization D p) : Type where
+  profileOfState : D.normalRegistry.State → D.ModuleState →
+    DegreeTwoPairRelativeProfile
+  allowedProfiles : Finset DegreeTwoPairRelativeProfile
+  allowed_capacity : ∀ profile ∈ allowedProfiles,
+    profile.slope ≤ preE7CharacterWindow (2 * s)
+  profile_mem : ∀ N,
+    profileOfState (R.topNormalState N) (R.moduleState N) ∈
+      allowedProfiles
+
+namespace DegreeTwoPairTopTowerStateProfile
+
+variable {s t : ℕ} {D : DegreeTwoPairTopFiniteInterface t}
+  {p : PreE7PairActionClass s}
+  {R : DegreeTwoPairTopTowerRealization D p}
+  (P : DegreeTwoPairTopTowerStateProfile D p R)
+
+def profile
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    DegreeTwoPairRelativeProfile :=
+  P.profileOfState (R.topNormalState N) (R.moduleState N)
+
+theorem capacity
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (P.profile N).slope ≤ preE7CharacterWindow (2 * s) :=
+  P.allowed_capacity _ (P.profile_mem N)
+
+/-- Direct tower-row lift from actual anchored labels on every original
+quotient. -/
+noncomputable def relativeAnchorLiftConclusion
+    (lit : PreE7CharacterLiterature)
+    (data : ∀ N,
+      DegreeTwoPairRelativeAnchorLabels
+        (preE7PairAction s p ⨸ N.1) (P.profile N)) :
+    DegreeTwoPairTopRelativeLiftConclusion D p := by
+  let lift : DegreeTwoPairRelativeLiftData s p :=
+    DegreeTwoPairRelativeLiftData.ofRelativeAnchorLabels
+      lit P.profile P.capacity data
+  exact
+    { lift := lift
+      topNormalState := R.topNormalState
+      moduleState := R.moduleState
+      profileOfState := P.profileOfState
+      profile_eq := fun _ => rfl
+      allowedProfiles := P.allowedProfiles
+      allowed_capacity := P.allowed_capacity
+      profile_mem := P.profile_mem }
+
+end DegreeTwoPairTopTowerStateProfile
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
