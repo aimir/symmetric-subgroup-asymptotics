@@ -365,9 +365,11 @@ The normal stratification is a theorem, rather than a field of the supplied
 data.  Thus a caller cannot omit a normal stratum: the section type is
 definitionally the full finite type of nonbottom axes not containing E. -/
 noncomputable def degreeThreeFourBlockTwoSignComparison_of_literalBounds
+    (bottomCoefficient : ℝ)
     (topCoefficient : ℝ)
     (sectionCoefficient : TwoSignProperAxis (E block P) → ℝ)
     (tailCoefficient : ℝ)
+    (bottomCoefficient_nonneg : 0 ≤ bottomCoefficient)
     (topCoefficient_nonneg : 0 ≤ topCoefficient)
     (sectionCoefficient_nonneg :
       ∀ i, 0 ≤ sectionCoefficient i)
@@ -385,14 +387,17 @@ noncomputable def degreeThreeFourBlockTwoSignComparison_of_literalBounds
         sectionCoefficient i *
           completeQuotientWeight
             (R := DegreeThreeFourBlockTwoSignComparator.QStar) J)
-    (tail_bound : ∀ {b : ℕ}
+    (bottom_bound : ∀ {b : ℕ}
       (J : Subgroup (Equiv.Perm (Fin b))),
       (Nat.card
           (GroupEpimorphism J (preE7NonPairAction w U)) : ℝ) ≤
-        tailCoefficient *
-          (2 : ℝ) ^ ((Real.logb 2 3 / 3) * b))
+        bottomCoefficient *
+            completeQuotientWeight
+              (R := DegreeThreeFourBlockTwoSignComparator.QStar) J +
+          tailCoefficient *
+            (2 : ℝ) ^ ((Real.logb 2 3 / 3) * b))
     (mainCoefficient_le :
-      topCoefficient +
+      bottomCoefficient + topCoefficient +
           ∑ i : TwoSignProperAxis (E block P), sectionCoefficient i ≤
         (2 : ℝ) ^ (384 : ℝ))
     (tailCoefficient_le :
@@ -401,9 +406,11 @@ noncomputable def degreeThreeFourBlockTwoSignComparison_of_literalBounds
   Section := TwoSignProperAxis (E block P)
   sectionAxis := twoSignProperAxis
   Q := DegreeThreeFourBlockTwoSignComparator.QStar
+  bottomCoefficient := bottomCoefficient
   topCoefficient := topCoefficient
   sectionCoefficient := sectionCoefficient
   tailCoefficient := tailCoefficient
+  bottomCoefficient_nonneg := bottomCoefficient_nonneg
   topCoefficient_nonneg := topCoefficient_nonneg
   sectionCoefficient_nonneg := sectionCoefficient_nonneg
   tailCoefficient_nonneg := tailCoefficient_nonneg
@@ -412,7 +419,7 @@ noncomputable def degreeThreeFourBlockTwoSignComparison_of_literalBounds
     exact completeQuotientWeight_le_twoSign_strata (E block P) J
   top_bound := top_bound
   section_bound := section_bound
-  tail_bound := tail_bound
+  bottom_bound := bottom_bound
   mainCoefficient_le := mainCoefficient_le
   tailCoefficient_le := tailCoefficient_le
 
