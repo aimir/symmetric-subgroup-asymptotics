@@ -27,6 +27,129 @@ namespace SymmetricSubgroupAsymptotics
 variable {Q V : Type*} [Group Q] [Finite Q]
   [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
+/-- An irreducible representation of an overgroup together with an
+explicit copy of a prescribed irreducible subgroup representation in its
+restriction.  This is the small piece of Frobenius reciprocity needed by
+the relative binary-kernel construction. -/
+structure OvergroupRestrictionConstituent
+    {H W : Type*} [Group H] [AddCommGroup W] [Module ℂ W]
+    [FiniteDimensional ℂ W]
+    (tau : Representation ℂ H W) [Representation.IsIrreducible tau]
+    {Q : Type*} [Group Q] (phi : H →* Q) : Type 1 where
+  Space : Type
+  addCommGroup : AddCommGroup Space
+  module : Module ℂ Space
+  finiteDimensional : FiniteDimensional ℂ Space
+  action : Representation ℂ Q Space
+  irreducible : Representation.IsIrreducible action
+  inclusion : tau.IntertwiningMap (action.comp phi)
+  inclusion_injective : Function.Injective inclusion
+
+attribute [instance]
+  OvergroupRestrictionConstituent.addCommGroup
+  OvergroupRestrictionConstituent.module
+  OvergroupRestrictionConstituent.finiteDimensional
+  OvergroupRestrictionConstituent.irreducible
+
+namespace OvergroupRestrictionConstituent
+
+variable {W : Type*} [AddCommGroup W] [Module ℂ W]
+  [FiniteDimensional ℂ W]
+
+/-- Frobenius reciprocity and Maschke produce an irreducible overgroup
+constituent whose restriction contains the prescribed subgroup
+irreducible.  The proof chooses a simple summand of the induced module,
+splits its inclusion, and applies the induction--restriction adjunction to
+the resulting nonzero projection. -/
+noncomputable def choose
+    {Q : Type*} [Group Q] [Finite Q]
+    (H : Subgroup Q)
+    (tau : Representation ℂ H W) [Representation.IsIrreducible tau] :
+    OvergroupRestrictionConstituent tau H.subtype := by
+  let I := Representation.ind H.subtype tau
+  letI : FiniteDimensional ℂ (Representation.IndV H.subtype tau) :=
+    induced_finiteDimensional H tau
+  letI : Nontrivial tau.asModule :=
+    IsSimpleModule.nontrivial ℂ[H] tau.asModule
+  letI : Nontrivial W := tau.asModuleEquiv.toEquiv.symm.nontrivial
+  have hmk : Function.Injective
+      (Representation.IndV.mk H.subtype tau (1 : Q)) := by
+    intro x y hxy
+    have hmap := congrArg
+      ((Rep.indResHomEquiv H.subtype (Rep.of tau)
+        (Rep.ind H.subtype (Rep.of tau)))
+        (𝟙 (Rep.ind H.subtype (Rep.of tau)))).hom.toLinearMap hxy
+    simpa using hmap
+  letI : Nontrivial (Representation.IndV H.subtype tau) := hmk.nontrivial
+  letI : Nontrivial I.asModule := I.asModuleEquiv.toEquiv.nontrivial
+  letI : NeZero (Nat.card Q : ℂ) :=
+    ⟨by exact_mod_cast (Nat.card_pos (α := Q)).ne'⟩
+  letI : IsSemisimpleModule ℂ[Q] I.asModule := inferInstance
+  obtain ⟨S, hS⟩ :=
+    IsSemisimpleModule.exists_simple_submodule ℂ[Q] I.asModule
+  let T : Subrepresentation I := Subrepresentation.ofSubmodule' S
+  letI : IsSimpleModule ℂ[Q] S := hS
+  letI : AddCommGroup T.toSubmodule := inferInstance
+  letI : AddCommGroup T.toRepresentation.asModule := inferInstance
+  have hsimple : IsSimpleModule ℂ[Q] T.toRepresentation.asModule :=
+    (submoduleRepresentationModuleEquiv I S).toLinearMap
+      |>.isSimpleModule_iff_of_bijective
+        (submoduleRepresentationModuleEquiv I S).bijective
+      |>.mp hS
+  let f : T.toRepresentation.asModule →ₗ[ℂ[Q]] I.asModule :=
+    Representation.IntertwiningMap.equivLinearMapAsModule
+      T.toRepresentation I (subrepresentationInclusion I T)
+  have hf : Function.Injective f := Subtype.val_injective
+  let idT : T.toRepresentation.asModule →ₗ[ℂ[Q]]
+      T.toRepresentation.asModule := LinearMap.id
+  obtain ⟨p, hp⟩ :=
+    IsSemisimpleModule.extension_property f hf idT
+  let pRep : I.IntertwiningMap T.toRepresentation :=
+    (Representation.IntertwiningMap.equivLinearMapAsModule
+      I T.toRepresentation).symm p
+  have hpRep_ne : pRep ≠ 0 := by
+    intro hpRep
+    have hp0 : p = 0 := by
+      calc
+        p = (Representation.IntertwiningMap.equivLinearMapAsModule
+            I T.toRepresentation) pRep := by
+              exact (Representation.IntertwiningMap.equivLinearMapAsModule
+                I T.toRepresentation).apply_symm_apply p |>.symm
+        _ = (Representation.IntertwiningMap.equivLinearMapAsModule
+            I T.toRepresentation) 0 := congrArg _ hpRep
+        _ = 0 := map_zero _
+    letI : Nontrivial T.toRepresentation.asModule :=
+      IsSimpleModule.nontrivial ℂ[Q] T.toRepresentation.asModule
+    obtain ⟨x, hx⟩ := exists_ne (0 : T.toRepresentation.asModule)
+    have happ := LinearMap.congr_fun hp x
+    rw [hp0] at happ
+    exact hx (by simpa only [idT, LinearMap.zero_comp,
+      LinearMap.zero_apply, LinearMap.id_coe, id_eq] using happ.symm)
+  let inclusion : tau.IntertwiningMap
+      (T.toRepresentation.comp H.subtype) :=
+    inducedHomRestrictionEquiv H tau T.toRepresentation pRep
+  have hinclusion_ne : inclusion ≠ 0 := by
+    intro hz
+    apply hpRep_ne
+    apply (inducedHomRestrictionEquiv H tau T.toRepresentation).injective
+    exact hz
+  have hinclusion : Function.Injective inclusion :=
+    (Representation.IsIrreducible.injective_or_eq_zero inclusion).resolve_right
+      hinclusion_ne
+  exact
+    { Space := T.toSubmodule
+      addCommGroup := inferInstance
+      module := inferInstance
+      finiteDimensional := inferInstance
+      action := T.toRepresentation
+      irreducible :=
+        (Representation.irreducible_iff_isSimpleModule_asModule
+          T.toRepresentation).mpr hsimple
+      inclusion := inclusion
+      inclusion_injective := hinclusion }
+
+end OvergroupRestrictionConstituent
+
 /-- A chosen irreducible constituent of the restriction of `rho` to a
 normal subgroup.  The inclusion is retained explicitly because downstream
 kernel arguments compare the constituent with the original action. -/
