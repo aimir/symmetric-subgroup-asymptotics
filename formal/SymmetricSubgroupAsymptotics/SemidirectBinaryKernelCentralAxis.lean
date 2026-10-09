@@ -106,6 +106,23 @@ variable {N H N' H' : Type*}
   [Finite H]
   {phi : H →* MulAut N} {psi : H' →* MulAut N'}
 
+/-- A semidirect-product map is injective when both component maps are
+injective. -/
+theorem map_injective
+    (fN : N →* N') (fH : H →* H')
+    (hcompat : ∀ h : H,
+      fN.comp (phi h).toMonoidHom =
+        (psi (fH h)).toMonoidHom.comp fN)
+    (hfN : Function.Injective fN)
+    (hfH : Function.Injective fH) :
+    Function.Injective (SemidirectProduct.map fN fH hcompat) := by
+  intro x y hxy
+  apply SemidirectProduct.ext
+  · apply hfN
+    exact congrArg SemidirectProduct.left hxy
+  · apply hfH
+    exact congrArg SemidirectProduct.right hxy
+
 /-- The central order-two axis in a semidirect-product map whose normal
 factor map is an isomorphism. -/
 noncomputable def ofTopKernel
