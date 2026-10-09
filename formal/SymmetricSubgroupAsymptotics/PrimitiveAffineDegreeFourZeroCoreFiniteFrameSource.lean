@@ -186,18 +186,19 @@ rows.  `fixed` is the subspace recomputed by the finite checker; its
 membership equation ties the reported dimension to the actual subgroup
 `A`, actual normalizer element `g`, and actual generator matrices. -/
 structure FiniteFrameOddNormalizerWitness
-    {G V : Type} [Group G] [Finite G] [AddCommGroup V] [Module (ZMod 2) V]
-    (ρ : Representation (ZMod 2) G V) : Type 1 where
+    {k G V : Type} [Field k] [Group G] [Finite G]
+    [AddCommGroup V] [Module k V]
+    (ρ : Representation k G V) : Type 1 where
   A : Subgroup G
   odd_order : ¬ 2 ∣ Nat.card A
   g : G
   g_normalizes : g ∈ Subgroup.normalizer (A : Set G)
   g_order_two_power : ∃ a : ℕ, orderOf g = 2 ^ a
-  fixed : Submodule (ZMod 2) V
+  fixed : Submodule k V
   mem_fixed_iff : ∀ v : V, v ∈ fixed ↔
     (∀ a : A, ρ a.1 v = v) ∧ ρ g v = v
   dimension : ℕ
-  dimension_eq : Module.finrank (ZMod 2) fixed = dimension
+  dimension_eq : Module.finrank k fixed = dimension
 
 /-- The literal finite-row shape for the eight-block calculation: a
 complete normal registry for the top and a complete invariant-submodule
@@ -216,8 +217,9 @@ retains the top normal registry and the actual odd subgroup and normalizer
 element.  The generic odd-invariants/chain-ring theorem, rather than this
 data object, must turn `fixed.dimension` into a uniform module-head bound. -/
 structure FiniteFrameOddNormalizerRow
-    {G V : Type} [Group G] [Finite G] [AddCommGroup V] [Module (ZMod 2) V]
-    (ρ : Representation (ZMod 2) G V) (slots : ℕ) : Type 1 where
+    {k G V : Type} [Field k] [Group G] [Finite G]
+    [AddCommGroup V] [Module k V]
+    (ρ : Representation k G V) (slots : ℕ) : Type 1 where
   topSlots : ℕ
   top : FiniteTopRelativeBinaryRankRegistry G topSlots
   fixedWitness : FiniteFrameOddNormalizerWitness ρ
