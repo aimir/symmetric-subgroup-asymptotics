@@ -1,0 +1,51 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState0TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState1TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState2TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState3TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState4TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState5TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState6TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState7TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState8TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState9TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState10TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState11TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState12TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState13TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState14TransitionChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalState15TransitionChecks
+
+
+/-! Assembled parent and representative transition checks.  Generated from a selected certificate; Lean rechecks all words. -/
+set_option autoImplicit false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 0
+noncomputable section
+open scoped Classical
+
+namespace SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalParentTransitionChecks
+
+abbrev Source := PrimitiveAffineSixteenFrameRow8NormalCore.Source
+local instance sourceGroup : Group Source := PrimitiveAffineSixteenFrameRow8TopCertificate.group
+
+def parentWords : Fin 16 → Fin 17 → Fin 6 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState0TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState1TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState2TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState3TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState4TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState5TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState6TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState7TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState8TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState9TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState10TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState11TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState12TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState13TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState14TransitionChecks.parentWords) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState15TransitionChecks.parentWords) (fun i => Fin.elim0 i)))))))))))))))))
+
+def representativeWord : Fin 16 → Fin 17 →
+    FiniteGeneratorWord (Fin 6) :=
+  (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState0TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState1TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState2TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState3TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState4TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState5TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState6TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState7TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState8TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState9TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState10TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState11TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState12TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState13TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState14TransitionChecks.representativeWord) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState15TransitionChecks.representativeWord) (fun i => Fin.elim0 i)))))))))))))))))
+
+theorem parentWords_checked : ∀ (i : Fin 16) (j : Fin 17) (k : Fin 6),
+    (parentWords i j k).eval (PrimitiveAffineSixteenFrameRow8NormalCore.stateGenerators (PrimitiveAffineSixteenFrameRow8NormalCore.child i j)) =
+      PrimitiveAffineSixteenFrameRow8NormalCore.stateGenerators i k :=
+  (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState0TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState1TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState2TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState3TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState4TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState5TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState6TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState7TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState8TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState9TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState10TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState11TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState12TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState13TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState14TransitionChecks.parentWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState15TransitionChecks.parentWords_checked) (fun i => Fin.elim0 i)))))))))))))))))
+
+theorem representativeWords_checked : ∀ (i : Fin 16) (j : Fin 17),
+    (representativeWord i j).eval (PrimitiveAffineSixteenFrameRow8NormalCore.stateGenerators (PrimitiveAffineSixteenFrameRow8NormalCore.child i j)) =
+      PrimitiveAffineSixteenFrameRow8NormalCore.topRepresentative j :=
+  (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState0TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState1TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState2TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState3TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState4TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState5TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState6TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState7TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState8TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState9TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState10TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState11TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState12TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState13TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState14TransitionChecks.representativeWords_checked) (Fin.cases (PrimitiveAffineSixteenFrameRow8NormalState15TransitionChecks.representativeWords_checked) (fun i => Fin.elim0 i)))))))))))))))))
+
+end SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow8NormalParentTransitionChecks
+
+end
