@@ -206,6 +206,28 @@ theorem centralSeriesWreath_completeQuotientWeight_le
       rw [Non2UnipotentPrefixFiniteMenu.completeQuotientWeight_congr
         qStarEquiv J]
 
+/-- The bottom epimorphism term is included in the same complete comparison.
+This is the form used when the original two-sign translation layer itself
+has dimension two. -/
+theorem centralSeriesWreath_epimorphism_card_le
+    {R : Type*} [Group R] [Finite R]
+    (pi : R →* DegreeSixS3Wreath.G)
+    (hpi : Function.Surjective pi)
+    (S : BinaryNormalKernelCentralSeries R pi.ker)
+    (hkernel : Nat.card pi.ker ≤ 4)
+    {b : ℕ} (J : Subgroup (Equiv.Perm (Fin b))) :
+    (Nat.card (GroupEpimorphism J R) : ℝ) ≤
+      ((centralSeriesWreathComparison pi hpi S hkernel).coefficient : ℝ) *
+        completeQuotientWeight (R := QStar) J := by
+  let N : {N : Subgroup R // N.Normal} := ⟨⊥, inferInstance⟩
+  have hbottom :
+      (Nat.card (GroupEpimorphism J R) : ℝ) ≤
+        completeQuotientWeight (R := R) J :=
+    card_groupEpimorphism_le_completeQuotientWeight J N
+      (QuotientGroup.quotientBot (G := R)).symm
+  exact hbottom.trans
+    (centralSeriesWreath_completeQuotientWeight_le pi hpi S hkernel J)
+
 /-- The two central binary layers cost at most `2^200` whenever the whole
 section has order at most `2^9`.  The actual sections have order at most
 `72 · 4 = 288`, so this leaves substantial room in the final `2^384`
