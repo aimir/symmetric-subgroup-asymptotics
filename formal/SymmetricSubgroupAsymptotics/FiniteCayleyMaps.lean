@@ -14,7 +14,7 @@ noncomputable section
 
 namespace SymmetricSubgroupAsymptotics.EncodedCayleyCertificate
 
-variable {G H ι Code : Type*} [Group G] [Group H] {generators : ι → G}
+variable {G H ι Code : Type*} [Group G] [Monoid H] {generators : ι → G}
     {E : GeneratorEncoding generators Code} {n : ℕ}
     (C : EncodedCayleyCertificate E n)
     (values : Fin n → H) (images : ι → H)

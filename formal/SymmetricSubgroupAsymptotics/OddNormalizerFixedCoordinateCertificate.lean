@@ -14,6 +14,7 @@ into the exact `FiniteFrameOddNormalizerWitness` consumed by the importer.
 
 set_option autoImplicit false
 set_option maxHeartbeats 800000
+set_option synthInstance.maxHeartbeats 100000
 set_option linter.unusedSectionVars false
 noncomputable section
 open scoped BigOperators Classical
@@ -50,6 +51,75 @@ structure BinaryOddNormalizerCoordinateCertificate : Type where
   coordinate_normalizer_fixed : ∀ i,
     rho g (coordinates.inclusion (Pi.single i 1)) =
       coordinates.inclusion (Pi.single i 1)
+
+/-- Export-friendly form of `BinaryOddNormalizerCoordinateCertificate`.
+All maps in the reconstruction identity are linear, so it is enough for a
+finite producer to check the identity on the 32 standard basis vectors.
+This avoids an artificial enumeration of all `2^32` module elements. -/
+structure BinaryOddNormalizerBasisCoordinateCertificate : Type where
+  A : Subgroup G
+  generators : Fin r → G
+  generated : Subgroup.closure (Set.range generators) = A
+  odd_order : ¬ 2 ∣ Nat.card A
+  g : G
+  g_normalizes : g ∈ Subgroup.normalizer (A : Set G)
+  g_order_two_power : ∃ a : ℕ, orderOf g = 2 ^ a
+  coordinates : BinaryCoordinateSpace w d
+  correctionGenerator : Fin r → Module.End (ZMod 2) (Fin w → ZMod 2)
+  correctionNormalizer : Module.End (ZMod 2) (Fin w → ZMod 2)
+  basis_reconstruction : ∀ i : Fin w,
+    coordinates.inclusion (coordinates.coordinates (Pi.single i 1)) =
+      Pi.single i 1 +
+        (∑ j, correctionGenerator j
+          (rho (generators j) (Pi.single i 1) - Pi.single i 1)) +
+        correctionNormalizer (rho g (Pi.single i 1) - Pi.single i 1)
+  coordinate_generator_fixed : ∀ j i,
+    rho (generators j) (coordinates.inclusion (Pi.single i 1)) =
+      coordinates.inclusion (Pi.single i 1)
+  coordinate_normalizer_fixed : ∀ i,
+    rho g (coordinates.inclusion (Pi.single i 1)) =
+      coordinates.inclusion (Pi.single i 1)
+
+namespace BinaryOddNormalizerBasisCoordinateCertificate
+
+variable {rho : Representation (ZMod 2) G (Fin w → ZMod 2)}
+  (C : BinaryOddNormalizerBasisCoordinateCertificate
+    (w := w) (r := r) (d := d) rho)
+
+/-- Standard-basis checking is sound for the full reconstruction identity. -/
+noncomputable def toCoordinateCertificate :
+    BinaryOddNormalizerCoordinateCertificate
+      (w := w) (r := r) (d := d) rho where
+  A := C.A
+  generators := C.generators
+  generated := C.generated
+  odd_order := C.odd_order
+  g := C.g
+  g_normalizes := C.g_normalizes
+  g_order_two_power := C.g_order_two_power
+  coordinates := C.coordinates
+  correctionGenerator := C.correctionGenerator
+  correctionNormalizer := C.correctionNormalizer
+  reconstruction := by
+    let lhs : Module.End (ZMod 2) (Fin w → ZMod 2) :=
+      C.coordinates.inclusion.comp C.coordinates.coordinates
+    let rhs : Module.End (ZMod 2) (Fin w → ZMod 2) :=
+      LinearMap.id +
+        (∑ j, (C.correctionGenerator j).comp
+          (rho (C.generators j) - LinearMap.id)) +
+        C.correctionNormalizer.comp (rho C.g - LinearMap.id)
+    have hmaps : lhs = rhs := by
+      apply (Pi.basisFun (ZMod 2) (Fin w)).ext
+      intro i
+      simpa [lhs, rhs, LinearMap.add_apply, LinearMap.sub_apply] using
+        C.basis_reconstruction i
+    intro v
+    simpa [lhs, rhs, LinearMap.add_apply, LinearMap.sub_apply] using
+      LinearMap.congr_fun hmaps v
+  coordinate_generator_fixed := C.coordinate_generator_fixed
+  coordinate_normalizer_fixed := C.coordinate_normalizer_fixed
+
+end BinaryOddNormalizerBasisCoordinateCertificate
 
 namespace BinaryOddNormalizerCoordinateCertificate
 
