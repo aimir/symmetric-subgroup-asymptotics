@@ -103,6 +103,75 @@ noncomputable def ofWordRegistry
   state_injective := hinjective
   complete N := D.complete N
 
+/-- Duplicate-safe form of `ofWordRegistry`.  Its state type is the finite
+range of the generated subgroup map, so no separate pairwise-distinctness
+certificate is needed.  This is useful when an older complete word registry
+was generated before the importer required canonical state indices. -/
+noncomputable def ofWordRegistryRange
+    {I ι κ : Type} [Finite I]
+    {c : ℕ} {representative : Fin c → U}
+    (C : FiniteConjugacyCardinalCover representative)
+    (ambient : ι → U) (stateGenerators : I → κ → U)
+    (D : FiniteNormalJoinWordRegistryData C ambient stateGenerators) :
+    FiniteNormalStateRegistry U := by
+  let rawState : I → Subgroup U := fun i =>
+    Subgroup.closure (Set.range (stateGenerators i))
+  let State := Set.range rawState
+  let enumerate : I → State := fun i => ⟨rawState i, ⟨i, rfl⟩⟩
+  letI : Finite State := Finite.of_surjective enumerate (by
+    rintro ⟨_, i, rfl⟩
+    exact ⟨i, rfl⟩)
+  exact
+    { State := State
+      state := Subtype.val
+      state_normal := by
+        rintro ⟨_, i, rfl⟩
+        exact (D.normality i).normal D.ambient_full
+      state_injective := Subtype.val_injective
+      complete := by
+        intro N _
+        obtain ⟨i, hi⟩ := D.complete N
+        exact ⟨enumerate i, hi⟩ }
+
+/-- Transport a complete word registry from its executable finite Cayley
+group to the literal permutation subgroup used by a catalogue row.  The
+finite range again removes any need to re-prove that old generated state
+indices were duplicate-free. -/
+noncomputable def ofWordRegistryEquiv
+    {G I ι κ : Type} [Group G] [Finite G] [Finite I]
+    {c : ℕ} {representative : Fin c → G}
+    (C : FiniteConjugacyCardinalCover representative)
+    (ambient : ι → G) (stateGenerators : I → κ → G)
+    (D : FiniteNormalJoinWordRegistryData C ambient stateGenerators)
+    (e : G ≃* U) : FiniteNormalStateRegistry U := by
+  let rawState : I → Subgroup U := fun i =>
+    (Subgroup.closure (Set.range (stateGenerators i))).map e.toMonoidHom
+  let State := Set.range rawState
+  let enumerate : I → State := fun i => ⟨rawState i, ⟨i, rfl⟩⟩
+  letI : Finite State := Finite.of_surjective enumerate (by
+    rintro ⟨_, i, rfl⟩
+    exact ⟨i, rfl⟩)
+  exact
+    { State := State
+      state := Subtype.val
+      state_normal := by
+        rintro ⟨_, i, rfl⟩
+        letI : (Subgroup.closure
+            (Set.range (stateGenerators i))).Normal :=
+          (D.normality i).normal D.ambient_full
+        exact Subgroup.Normal.map inferInstance _ e.surjective
+      state_injective := Subtype.val_injective
+      complete := by
+        intro N _
+        let M : Subgroup G := N.comap e.toMonoidHom
+        letI : M.Normal := Subgroup.Normal.comap inferInstance e.toMonoidHom
+        obtain ⟨i, hi⟩ := D.complete M
+        refine ⟨enumerate i, ?_⟩
+        change (Subgroup.closure
+          (Set.range (stateGenerators i))).map e.toMonoidHom = N
+        rw [hi]
+        exact Subgroup.map_comap_eq_self_of_surjective e.surjective N }
+
 end FiniteNormalStateRegistry
 
 /-! ## Dependent payload dispatch -/

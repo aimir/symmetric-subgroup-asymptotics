@@ -84,6 +84,32 @@ noncomputable def moduleStateEquiv :
   Equiv.ofBijective D.moduleState
     ⟨D.moduleState_injective, D.module_complete⟩
 
+/-- Complete a checked top-normal registry with the canonical semantic
+registry of all invariant subrepresentations of the natural binary
+permutation module.  This is a census-free bridge for small pilot rows and
+for legacy top certificates whose old module table used a different
+representation.  A compressed generated module registry can later replace
+it without changing any downstream state-profile theorem. -/
+noncomputable def withCanonicalModuleRegistry
+    (top : Subgroup (Equiv.Perm (Fin s)))
+    (normalRegistry : FiniteNormalStateRegistry top) :
+    DegreeTwoPairTopFiniteInterface s := by
+  let rho := permutationFunctionRepresentation (ZMod 2) top (Fin s)
+  exact
+    { top := top
+      normalRegistry := normalRegistry
+      ModuleState := Subrepresentation rho
+      moduleState := id
+      moduleState_injective := Function.injective_id
+      moduleRegistry :=
+        BinaryInvariantCyclicOrbitRegistry.allSubrepresentations
+      normalCount := Nat.card normalRegistry.State
+      moduleStateCount := Nat.card (Subrepresentation rho)
+      cyclicCount := Nat.card (Fin s → ZMod 2)
+      normalCount_eq := rfl
+      moduleStateCount_eq := rfl
+      cyclicCount_eq := rfl }
+
 end DegreeTwoPairTopFiniteInterface
 
 /-- A literal finite top realized as the top action of an original pair

@@ -105,6 +105,56 @@ theorem complete [Finite V] (W : Subrepresentation rho) :
     ∃ i, states i = W :=
   C.toOrbitRegistry.complete W
 
+/-! ## Canonical semantic registry -/
+
+/-- The full orbit span of one vector, packaged as an invariant
+subrepresentation. -/
+def orbitSubrepresentation (rho : Representation k G V) (v : V) :
+    Subrepresentation rho where
+  toSubmodule := binaryOrbitSpan rho v
+  apply_mem_toSubmodule g x hx := by
+    induction hx using Submodule.span_induction with
+    | mem y hy =>
+        obtain ⟨h, rfl⟩ := hy
+        change rho g (rho h v) ∈ binaryOrbitSpan rho v
+        rw [← Module.End.mul_apply, ← map_mul]
+        exact Submodule.subset_span ⟨g * h, rfl⟩
+    | zero => simp
+    | add x y _ _ hx hy =>
+        simpa only [map_add] using
+          (binaryOrbitSpan rho v).add_mem hx hy
+    | smul a x _ hx =>
+        simpa only [map_smul] using
+          (binaryOrbitSpan rho v).smul_mem a hx
+
+/-- For a finite module, the type of invariant subrepresentations is
+finite.  This instance is intentionally noncomputable; compressed producer
+tables may replace it when exact state counts are useful. -/
+noncomputable instance allSubrepresentationsFinite [Finite V] :
+    Finite (Subrepresentation rho) :=
+  Finite.of_injective
+    (fun W : Subrepresentation rho => (W : Set V)) SetLike.coe_injective
+
+/-- A census-free complete registry whose states are all invariant
+subrepresentations and whose orbit/cyclic indices are the vectors
+themselves.  It is a small-width semantic fallback and a useful pilot target
+for generated compressed registries: completeness follows from the general
+join theorem, not from an asserted producer flag. -/
+noncomputable def allSubrepresentations [Finite V] :
+    BinaryInvariantCyclicOrbitRegistry rho
+      (fun W : Subrepresentation rho => W) where
+  Orbit := V
+  orbitRepresentative := id
+  orbitRepresentative_complete v := ⟨v, 1, by simp⟩
+  Cyclic := V
+  cyclicRepresentative := id
+  orbitCyclic := id
+  orbit_span_eq := fun _ => rfl
+  bottom := ⊥
+  bottom_eq := rfl
+  child W v := W ⊔ orbitSubrepresentation rho v
+  child_eq := fun _ _ => rfl
+
 end BinaryInvariantCyclicOrbitRegistry
 
 end SymmetricSubgroupAsymptotics
