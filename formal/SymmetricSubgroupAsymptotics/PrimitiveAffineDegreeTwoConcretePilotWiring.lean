@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoConcreteResidualAssembly
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1Resolution
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow3Resolution
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopRelativeKernelOrbitRows
 
 /-!
 # Concrete pilot wiring in the degree-two residual source
@@ -42,7 +43,7 @@ structure RemainingPairTopSemanticData : Type 1 where
         (TwelveCatalogue.row j).finite p),
       j ≠ (0 : Fin 301) →
       (TwelveCatalogue.row j).branch ≠ .ternary →
-      DegreeTwoPairTopBinaryKernelRowData
+      DegreeTwoPairTopRelativeKernelOrbitRowData
         (TwelveCatalogue.row j).finite
         (TwelveCatalogue.row j).expectedProfiles p realization
   twelveTernary :
@@ -54,21 +55,21 @@ structure RemainingPairTopSemanticData : Type 1 where
     ∀ (j : Fin 24) (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopTowerRealization
         (SixteenCatalogue.paired8 j) p),
-      DegreeTwoPairTopTowerBinaryKernelRowData
+      DegreeTwoPairTopTowerRelativeKernelOrbitRowData
         (SixteenCatalogue.paired8 j)
         degreeTwoSixteenPairProfiles p realization
   sixteenZero16 :
     ∀ (j : Fin 29) (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopRealization
         (SixteenCatalogue.zero16 j) p),
-      DegreeTwoPairTopBinaryKernelRowData
+      DegreeTwoPairTopRelativeKernelOrbitRowData
         (SixteenCatalogue.zero16 j)
         degreeTwoSixteenPairProfiles p realization
   sixteenTwoAffine16 :
     ∀ (j : Fin 15) (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopRealization
         (SixteenCatalogue.twoAffine16 j) p),
-      DegreeTwoPairTopBinaryKernelRowData
+      DegreeTwoPairTopRelativeKernelOrbitRowData
         (SixteenCatalogue.twoAffine16 j)
         degreeTwoSixteenPairProfiles p realization
   sixteenPrimitive16 :
@@ -76,7 +77,7 @@ structure RemainingPairTopSemanticData : Type 1 where
       (realization : DegreeTwoPairTopRealization
         (SixteenCatalogue.primitive16 j) p),
       j ≠ (2 : Fin 20) →
-      DegreeTwoPairTopBinaryKernelRowData
+      DegreeTwoPairTopRelativeKernelOrbitRowData
         (SixteenCatalogue.primitive16 j)
         degreeTwoSixteenPairProfiles p realization
   sixteenNatural :
