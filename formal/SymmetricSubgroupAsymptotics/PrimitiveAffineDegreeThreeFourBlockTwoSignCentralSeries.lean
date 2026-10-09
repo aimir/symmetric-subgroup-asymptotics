@@ -47,6 +47,49 @@ structure BinaryNormalKernelCentralSeries
 
 attribute [instance] BinaryNormalKernelCentralSeries.normalC
 
+/-- A central subgroup of order two inside a normal subgroup of order at
+most four supplies the whole two-step binary central series.  This version
+does not require the ambient group to be a 2-group; it is useful for split
+extensions with an odd normal layer which centralizes the selected binary
+axis. -/
+noncomputable def binaryNormalKernelCentralSeries_of_central_order_two
+    {G : Type*} [Group G] [Finite G]
+    (K : Subgroup G) [K.Normal]
+    (C : Subgroup G) [C.Normal]
+    (hCleK : C ≤ K)
+    (hCcard : Nat.card C = 2)
+    (hCcenter : C ≤ Subgroup.center G)
+    (hKcard : Nat.card K ≤ 4) :
+    BinaryNormalKernelCentralSeries G K := by
+  let q : G →* G ⧸ C := QuotientGroup.mk' C
+  let L : Subgroup (G ⧸ C) := K.map q
+  letI : L.Normal :=
+    Subgroup.Normal.map inferInstance q (QuotientGroup.mk'_surjective C)
+  let f : K →* L := q.subgroupMap K
+  have hf : Function.Surjective f := q.subgroupMap_surjective K
+  have hker : f.ker = C.subgroupOf K := by
+    rw [MonoidHom.ker_subgroupMap, QuotientGroup.ker_mk']
+  have hkerCard : Nat.card f.ker = 2 := by
+    rw [hker,
+      Nat.card_congr (Subgroup.subgroupOfEquivOfLe hCleK).toEquiv,
+      hCcard]
+  have hcard := f.ker.card_mul_index
+  rw [Subgroup.index_ker, f.range_eq_top_of_surjective hf,
+    Nat.card_congr Subgroup.topEquiv.toEquiv, hkerCard] at hcard
+  have hLcard : Nat.card L ≤ 2 := by omega
+  have hLcenter : L ≤ Subgroup.center (G ⧸ C) := by
+    by_cases hsmall : Nat.card L ≤ 1
+    · rw [L.eq_bot_of_card_le hsmall]
+      exact bot_le
+    · exact NormalOrderTwo.le_center L (by omega)
+  exact
+    { C := C
+      normalC := inferInstance
+      C_le_K := hCleK
+      C_card := hCcard
+      C_le_center := hCcenter
+      quotientKernel_le_center := hLcenter }
+
 /-- A nontrivial normal subgroup of order at most four in a finite 2-group
 has a central series with at most two binary factors.
 
@@ -74,34 +117,9 @@ noncomputable def binaryNormalKernelCentralSeries_of_card_le_four
     have hxc := hCcenter hx
     simpa [Subgroup.mem_center_iff.mp hxc g, mul_assoc] using hx
   letI : C.Normal := hCnormal
-  let q : G →* G ⧸ C := QuotientGroup.mk' C
-  let L : Subgroup (G ⧸ C) := K.map q
-  letI : L.Normal :=
-    Subgroup.Normal.map inferInstance q (QuotientGroup.mk'_surjective C)
-  let f : K →* L := q.subgroupMap K
-  have hf : Function.Surjective f := q.subgroupMap_surjective K
-  have hker : f.ker = C.subgroupOf K := by
-    rw [MonoidHom.ker_subgroupMap, QuotientGroup.ker_mk']
-  have hkerCard : Nat.card f.ker = 2 := by
-    rw [hker,
-      Nat.card_congr (Subgroup.subgroupOfEquivOfLe hCleK).toEquiv,
-      hCcard]
-  have hcard := f.ker.card_mul_index
-  rw [Subgroup.index_ker, f.range_eq_top_of_surjective hf,
-    Nat.card_congr Subgroup.topEquiv.toEquiv, hkerCard] at hcard
-  have hLcard : Nat.card L ≤ 2 := by omega
-  have hLcenter : L ≤ Subgroup.center (G ⧸ C) := by
-    by_cases hsmall : Nat.card L ≤ 1
-    · rw [L.eq_bot_of_card_le hsmall]
-      exact bot_le
-    · exact NormalOrderTwo.le_center L (by omega)
-  exact
-    { C := C
-      normalC := hCnormal
-      C_le_K := hCleK
-      C_card := hCcard
-      C_le_center := hCcenter
-      quotientKernel_le_center := hLcenter }
+  letI : C.Normal := hCnormal
+  exact binaryNormalKernelCentralSeries_of_central_order_two
+    K C hCleK hCcard hCcenter hKcard
 
 /-- Top-level data for applying the central-binary quotient comparison to
 all literal normal quotients of one group.  The two maps out of `Q` are the
