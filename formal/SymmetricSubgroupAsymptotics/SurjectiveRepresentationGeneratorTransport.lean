@@ -115,6 +115,21 @@ theorem UniformSubrepresentationGeneratorBound.comp_mulEquiv
       (sigma.comp e.toMonoidHom) n :=
   hgen.comp_of_surjective sigma e.toMonoidHom e.surjective
 
+/-- A uniform bound after restriction to a subgroup is already a uniform
+bound for the original action. -/
+theorem UniformSubrepresentationGeneratorBound.of_subgroup_restriction
+    (rho : Representation k G V) (P : Subgroup G) {n : ℕ}
+    (hgen : UniformSubrepresentationGeneratorBound
+      (rho.comp P.subtype) n) :
+    UniformSubrepresentationGeneratorBound rho n := by
+  intro M
+  let MP : Subrepresentation (rho.comp P.subtype) :=
+    { toSubmodule := M.toSubmodule
+      apply_mem_toSubmodule := fun g x hx ↦
+        M.apply_mem_toSubmodule g.1 hx }
+  apply representationGeneratedBy_of_subgroup_restriction P M.toRepresentation
+  simpa only [MP, Subrepresentation.toRepresentation] using hgen MP
+
 /-- Conjugating the subgroup of restriction preserves a uniform generator
 bound.  The linear equivalence is the action of the conjugating element
 itself. -/
