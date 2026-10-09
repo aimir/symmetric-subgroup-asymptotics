@@ -77,6 +77,16 @@ def degreeTwoPairGeneralProfile (t : ℕ) : DegreeTwoPairRelativeProfile where
   ordinary := t
   relative := 0
 
+/-- The profile supplied by a faithful ordinary prefix on a quotient whose
+common kernel is binary.  The ordinary positions see the quotient by that
+kernel; the relative positions pay only for the binary kernel itself. -/
+def degreeTwoPairOrdinaryRelativeProfile
+    (ordinary relative : ℕ) : DegreeTwoPairRelativeProfile where
+  binaryPrimary := 0
+  linear := 0
+  ordinary := ordinary
+  relative := relative
+
 attribute [instance] DegreeTwoPairBinaryKernelAnchor.kernel_normal
 
 namespace DegreeTwoPairBinaryKernelAnchor
@@ -112,6 +122,62 @@ noncomputable def ofSocleGeneratorBound
       kernel_twoGroup := IsPGroup.of_bot
       relative_dimension := by
         rw [Module.finrank_zero_of_subsingleton] }
+
+/-- Inflate a Zmud tuple through an arbitrary surjective quotient with
+binary kernel.  The inflated constituents have common kernel exactly
+`π.ker`, so the ordinary prefix and the binary relative tail form a
+`DegreeTwoPairBinaryKernelAnchor`.
+
+This is the reusable semantic bridge needed by the pair-top catalogues: a
+finite top registry supplies the socle generators of the quotient, while a
+finite invariant-module registry supplies the relative binary rank. -/
+noncomputable def ofSurjectiveBinaryKernel
+    {B : Type} [Group B] [Finite B]
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (π : Q →* B) (hπ : Function.Surjective π)
+    {ordinary relative : ℕ}
+    (hgen : SocleNormalGeneratorBound B ordinary)
+    (hker : IsPGroup 2 π.ker)
+    (hrank :
+      Module.finrank (ZMod 2) (Additive (binaryCentralOmega π.ker)) ≤
+        relative) :
+    DegreeTwoPairBinaryKernelAnchor Q
+      (degreeTwoPairOrdinaryRelativeProfile ordinary relative) := by
+  let rho : Fin ordinary → FiniteIrreducibleRepresentation ℂ B :=
+    Classical.choose (hZmud B ordinary hgen)
+  have hrho : ∀ b : B, (∀ i, (rho i).action b = 1) → b = 1 :=
+    Classical.choose_spec (hZmud B ordinary hgen)
+  let inflated : Fin ordinary → FiniteIrreducibleRepresentation ℂ Q :=
+    fun i ↦
+      { Space := (rho i).Space
+        addCommGroup := inferInstance
+        module := inferInstance
+        finiteDimensional := inferInstance
+        action := (rho i).action.comp π
+        irreducible := representation_irreducible_comp
+          (rho i).action π hπ }
+  exact
+    { binary := Fin.elim0
+      binary_twoGroup := fun i ↦ Fin.elim0 i
+      linear := Fin.elim0
+      ordinary := inflated
+      kernel := π.ker
+      kernel_eq := by
+        ext q
+        simp only [Subgroup.mem_inf, Subgroup.mem_iInf,
+          MonoidHom.mem_ker]
+        constructor
+        · intro hq
+          refine ⟨⟨fun i ↦ Fin.elim0 i, fun i ↦ Fin.elim0 i⟩, ?_⟩
+          intro i
+          change (rho i).action (π q) = 1
+          rw [hq, map_one]
+        · rintro ⟨⟨_, _⟩, hord⟩
+          apply hrho
+          intro i
+          simpa only [inflated, MonoidHom.comp_apply] using hord i
+      kernel_twoGroup := hker
+      relative_dimension := hrank }
 
 private def PrefixLabel (J : Type) [Group J] [Finite J]
     [Invertible (Nat.card J : ℂ)] : Type :=
