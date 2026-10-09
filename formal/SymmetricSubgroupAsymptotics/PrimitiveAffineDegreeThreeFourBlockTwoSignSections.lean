@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeThreeFourBlockTwoSignProjectiveSeries
 import SymmetricSubgroupAsymptotics.OriginalKernelArbitraryNormalQuotient
+import Mathlib.GroupTheory.SchurZassenhaus
 
 /-!
 # Literal ternary sections below the four-block translation layer
@@ -202,6 +203,135 @@ theorem degreeThreeFourBlockTwoSignSectionTop_isPGroup
   change IsPGroup 2 (G ⧸ D)
   exact (degreeThreeFourBlockTwoSign_signedQuotient_isPGroup
     block P hr hs hcomponent hbinary).of_surjective f hf
+
+/-! ## Literal Schur complement of every proper section
+
+The section kernel is ternary and its actual acting top is binary.  Thus
+Schur--Zassenhaus applies to the descended extension itself.  Keeping the
+chosen complement as a subgroup of the literal quotient is useful for the
+next step: the two-sign module action can be compared with the natural
+`D8` action without replacing the original extension by a split hypothesis.
+-/
+
+/-- Every proper two-sign section splits over its literal ternary kernel.
+The complement lives in the actual quotient `U / N`. -/
+theorem degreeThreeFourBlockTwoSignSectionComplement_exists
+    (hr : Nat.card block.Fibre = 3)
+    (hs : Nat.card block.Points = 4)
+    (hcomponent : Nat.card block.Component = 6)
+    (hbinary : IsPGroup 2
+      (PairChart block P hr hs hcomponent).action)
+    (N : TwoSignProperAxis (E block P)) :
+    ∃ H : Subgroup
+        (G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N),
+      Subgroup.IsComplement'
+        (degreeThreeFourBlockTwoSignSectionBase block P N).ker H := by
+  let pi := degreeThreeFourBlockTwoSignSectionBase block P N
+  have hkernel : IsPGroup 3 pi.ker :=
+    degreeThreeFourBlockTwoSignSectionKernel_isPGroup block P hr N
+  have htop : IsPGroup 2
+      (G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
+        degreeThreeFourBlockTwoSignSectionAxis block P N)) :=
+    degreeThreeFourBlockTwoSignSectionTop_isPGroup
+      block P hr hs hcomponent hbinary N
+  obtain ⟨a, ha⟩ := hkernel.exists_card_eq
+  obtain ⟨c, hc⟩ := htop.exists_card_eq
+  apply Subgroup.exists_right_complement'_of_coprime
+  have hindex : pi.ker.index =
+      Nat.card
+        (G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
+          degreeThreeFourBlockTwoSignSectionAxis block P N)) := by
+    rw [Subgroup.index_ker, pi.range_eq_top_of_surjective
+      (degreeThreeFourBlockTwoSignSectionBase_surjective block P N),
+      Nat.card_congr Subgroup.topEquiv.toEquiv]
+  rw [ha, hindex, hc]
+  exact (Nat.Coprime.pow_left a
+    (by decide : Nat.Coprime 3 2)).pow_right c
+
+/-- Restriction of the descended top map to a chosen literal Schur
+complement. -/
+def degreeThreeFourBlockTwoSignSectionComplementTopHom
+    (N : TwoSignProperAxis (E block P))
+    (H : Subgroup
+      (G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N)) :
+    H →*
+      G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
+        degreeThreeFourBlockTwoSignSectionAxis block P N) :=
+  (degreeThreeFourBlockTwoSignSectionBase block P N).comp H.subtype
+
+/-- A complementary subgroup maps injectively to the literal acting top. -/
+theorem degreeThreeFourBlockTwoSignSectionComplementTopHom_injective
+    (N : TwoSignProperAxis (E block P))
+    (H : Subgroup
+      (G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N))
+    (hH : Subgroup.IsComplement'
+      (degreeThreeFourBlockTwoSignSectionBase block P N).ker H) :
+    Function.Injective
+      (degreeThreeFourBlockTwoSignSectionComplementTopHom
+        block P N H) := by
+  intro x y hxy
+  have hker : (x : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N)⁻¹ *
+      (y : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) ∈
+        (degreeThreeFourBlockTwoSignSectionBase block P N).ker := by
+    apply MonoidHom.mem_ker.mpr
+    change
+      (degreeThreeFourBlockTwoSignSectionBase block P N
+        (x : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N))⁻¹ *
+        degreeThreeFourBlockTwoSignSectionBase block P N
+          (y : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) = 1
+    rw [hxy, inv_mul_cancel]
+  have hmemH :
+      (x : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N)⁻¹ *
+        (y : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) ∈ H :=
+    H.mul_mem (H.inv_mem x.property) y.property
+  have hbot :
+      (x : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N)⁻¹ *
+        (y : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) ∈
+          (⊥ : Subgroup
+            (G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N)) :=
+    hH.disjoint.le_bot ⟨hker, hmemH⟩
+  apply Subtype.ext
+  exact inv_mul_eq_one.mp (Subgroup.mem_bot.mp hbot)
+
+/-- The chosen complement is exactly the actual acting top, not merely a
+subgroup of the same order. -/
+noncomputable def degreeThreeFourBlockTwoSignSectionComplementTopEquiv
+    (N : TwoSignProperAxis (E block P))
+    (H : Subgroup
+      (G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N))
+    (hH : Subgroup.IsComplement'
+      (degreeThreeFourBlockTwoSignSectionBase block P N).ker H) :
+    H ≃*
+      G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
+        degreeThreeFourBlockTwoSignSectionAxis block P N) := by
+  let pi := degreeThreeFourBlockTwoSignSectionBase block P N
+  let f := degreeThreeFourBlockTwoSignSectionComplementTopHom block P N H
+  apply MulEquiv.ofBijective f
+  apply (Nat.bijective_iff_injective_and_card f).mpr
+  refine ⟨degreeThreeFourBlockTwoSignSectionComplementTopHom_injective
+    block P N H hH, ?_⟩
+  calc
+    Nat.card H = pi.ker.index := hH.card_right
+    _ = Nat.card
+        (G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
+          degreeThreeFourBlockTwoSignSectionAxis block P N)) := by
+      rw [Subgroup.index_ker, pi.range_eq_top_of_surjective
+        (degreeThreeFourBlockTwoSignSectionBase_surjective block P N),
+        Nat.card_congr Subgroup.topEquiv.toEquiv]
+
+/-- Internal semidirect-product coordinates on the literal section.  The
+kernel and complement remain the actual subgroups of `U / N`. -/
+noncomputable def degreeThreeFourBlockTwoSignSectionSemidirectEquiv
+    (N : TwoSignProperAxis (E block P))
+    (H : Subgroup
+      (G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N))
+    (hH : Subgroup.IsComplement'
+      (degreeThreeFourBlockTwoSignSectionBase block P N).ker H) :
+    let K := (degreeThreeFourBlockTwoSignSectionBase block P N).ker
+    K ⋊[(K.normalizerMonoidHom).comp
+        (Subgroup.inclusion (K.normalizer_eq_top ▸ le_top))] H ≃*
+      G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N :=
+  SemidirectProduct.mulEquivSubgroup hH
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
