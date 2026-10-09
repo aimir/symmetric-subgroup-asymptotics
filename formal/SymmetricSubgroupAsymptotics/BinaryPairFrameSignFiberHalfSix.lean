@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.BinaryPairFrameSignFiberCyclic
 import SymmetricSubgroupAsymptotics.PermutationalWreathFunctionCoinduced
+import SymmetricSubgroupAsymptotics.RepresentationDualSubquotientGenerators
 import SymmetricSubgroupAsymptotics.TraceyAffineInducedModuleInput
 
 /-!
@@ -59,7 +60,7 @@ theorem signFiber_uniformSubrepresentationGeneratorBound_three_of_card_six
   have hind := hTraceyHalf 3 A H (by omega) (ZMod 3) local
   have hind3 : UniformSubrepresentationGeneratorBound
       (Representation.ind H.subtype local) 3 := by
-    simpa only [Module.finrank_self, hHindex, one_mul] using hind
+    simpa [hHindex] using hind
   have htop : Function.Surjective
       ((rightHom (D := Multiplicative (ZMod 2)) (Q := A) (I := J)).comp rho) := by
     intro u
