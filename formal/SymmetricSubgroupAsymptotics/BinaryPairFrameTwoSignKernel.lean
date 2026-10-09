@@ -381,6 +381,31 @@ theorem twoSignCentralAxis_le_center
     (k : G) * u = (u * k * u⁻¹) * u := by rw [hkfixed']
     _ = u * k := by simp [mul_assoc]
 
+/-- The diagonal sign axis, packaged inside the literal top projection. -/
+noncomputable def twoSignTopCentralAxis
+    [Finite X] [Finite I] [Nonempty I]
+    (htrans : MulAction.IsPretransitive G X)
+    (htwo : Nat.card (CoordinateSign F) = 2) :
+    CentralOrderTwoKernelAxis F.top.rangeRestrict := by
+  let C := twoSignCentralAxis F htwo
+  have hCnormal : C.Normal := by
+    constructor
+    intro z hz u
+    have hzc := twoSignCentralAxis_le_center F htwo hz
+    simpa [Subgroup.mem_center_iff.mp hzc u, mul_assoc] using hz
+  letI : C.Normal := hCnormal
+  exact
+    { C := C
+      normalC := hCnormal
+      C_le_kernel := by
+        intro z hz
+        apply MonoidHom.mem_ker.mpr
+        apply Subtype.ext
+        exact MonoidHom.mem_ker.mp
+          (twoSignCentralAxis_le_top_ker F htwo hz)
+      C_card := twoSignCentralAxis_card F htrans htwo
+      C_le_center := twoSignCentralAxis_le_center F htwo }
+
 /-- The literal pair kernel has a two-step central series obtained from
 the diagonal sign axis. -/
 noncomputable def twoSignKernelCentralSeries
