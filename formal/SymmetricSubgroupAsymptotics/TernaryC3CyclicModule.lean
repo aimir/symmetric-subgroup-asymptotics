@@ -33,6 +33,27 @@ abbrev ternaryNaturalC3Representation :
   (permutationFunctionRepresentation (ZMod 3) (Equiv.Perm (Fin 3))
     (Fin 3)).comp TernaryNaturalC3.subtype
 
+/-- Every order-three subgroup of the permutations of three labelled
+points is the standard alternating subgroup. -/
+theorem orderThree_subgroup_fin_three_eq_ternaryNaturalC3
+    (T : Subgroup (Equiv.Perm (Fin 3)))
+    (hT : Nat.card T = 3) : T = TernaryNaturalC3 := by
+  have hle : T ≤ TernaryNaturalC3 := by
+    intro g hg
+    rw [Equiv.Perm.mem_alternatingGroup]
+    have hpowT := pow_card_eq_one' (x := (⟨g, hg⟩ : T))
+    rw [hT] at hpowT
+    have hpow : g ^ 3 = 1 := congrArg Subtype.val hpowT
+    have hsignpow : Equiv.Perm.sign g ^ 3 = 1 := by
+      rw [← map_pow, hpow, map_one]
+    rcases Int.units_eq_one_or (Equiv.Perm.sign g) with hsign | hsign
+    · exact hsign
+    · rw [hsign] at hsignpow
+      norm_num at hsignpow
+  apply Subgroup.eq_of_le_of_card_ge hle
+  rw [nat_card_alternatingGroup, hT]
+  norm_num [Nat.card_eq_fintype_card]
+
 private def ternaryUnit : Fin 3 → ZMod 3 := ![1, 0, 0]
 
 private def ternaryDifference : Fin 3 → ZMod 3 := ![1, -1, 0]
