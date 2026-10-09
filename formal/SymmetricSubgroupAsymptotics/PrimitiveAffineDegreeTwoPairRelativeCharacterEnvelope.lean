@@ -88,6 +88,40 @@ noncomputable def toQuotientEnvelope :
 
 end DegreeTwoPairRelativeLabelCertificate
 
+/-! ## Complete-source character certificates as relative profiles -/
+
+/-- Regard an ordinary mixed character tuple as a relative profile with an
+empty relative tail.  This is the profile used by the natural `A_s`/`S_s`
+branch: one ordinary irreducible, or two full-order linear characters. -/
+def mixedCharacterProfile {Q : Type} [Group Q]
+    (c : CharacterQuotientCertificate Q) : DegreeTwoPairRelativeProfile where
+  binaryPrimary := c.tuple.binaryCount
+  linear := c.tuple.linearCount
+  ordinary := c.tuple.generalCount
+  relative := 0
+
+theorem mixedCharacterProfile_slope {Q : Type} [Group Q]
+    (c : CharacterQuotientCertificate Q) (hmode : c.mode = .mixed) :
+    (mixedCharacterProfile c).slope = c.slope := by
+  unfold mixedCharacterProfile DegreeTwoPairRelativeProfile.slope
+    CharacterQuotientCertificate.slope
+  rw [hmode]
+  simp [CharacterQuotientMode.generalSlope]
+
+/-- Install an existing complete-source mixed-character certificate in the
+pair-relative envelope.  This is a theorem adapter, not a new premise: the
+epimorphism estimate is exactly `CharacterQuotientCertificate.envelope`. -/
+noncomputable def mixedCharacterQuotientEnvelope
+    (lit : PreE7CharacterLiterature)
+    {Q : Type} [Group Q] [Finite Q]
+    (c : CharacterQuotientCertificate Q) (hmode : c.mode = .mixed) :
+    DegreeTwoPairRelativeQuotientEnvelope Q (mixedCharacterProfile c) where
+  coefficient := Nat.card (Q ≃* Q)
+  coefficient_nonneg := Nat.cast_nonneg _
+  bound b J := by
+    rw [mixedCharacterProfile_slope c hmode]
+    exact c.envelope lit b J
+
 namespace DegreeTwoPairRelativeLiftData
 
 /-- Universal fixed-prefix/relative-tail lift theorem in the form required
@@ -107,6 +141,24 @@ noncomputable def ofLabelCertificates
   profile := profile
   capacity := capacity
   envelope N := (certificate N).toQuotientEnvelope
+
+/-- Universal lift data for rows whose quotient certificates are already in
+the complete-source mixed mode.  In particular the natural alternating and
+symmetric tops do not need an artificial relative-label implementation. -/
+noncomputable def ofMixedCharacterCertificates
+    {s : ℕ} {p : PreE7PairActionClass s}
+    (lit : PreE7CharacterLiterature)
+    (certificate : ∀ N,
+      CharacterQuotientCertificate (preE7PairAction s p ⨸ N.1))
+    (mode : ∀ N, (certificate N).mode = .mixed)
+    (capacity : ∀ N,
+      (certificate N).slope ≤ preE7CharacterWindow (2 * s)) :
+    DegreeTwoPairRelativeLiftData s p where
+  profile N := mixedCharacterProfile (certificate N)
+  capacity N := by
+    rw [mixedCharacterProfile_slope (certificate N) (mode N)]
+    exact capacity N
+  envelope N := mixedCharacterQuotientEnvelope lit (certificate N) (mode N)
 
 end DegreeTwoPairRelativeLiftData
 
