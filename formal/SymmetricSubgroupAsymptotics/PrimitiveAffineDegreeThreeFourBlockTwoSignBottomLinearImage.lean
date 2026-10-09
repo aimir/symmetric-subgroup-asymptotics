@@ -726,7 +726,7 @@ theorem degreeThreeFourBlockTwoSignBottomLinearMap_kernel_card_le_four
     block P hr hs hcomponent hfin
   have htop : Nat.card (G ⧸ E block P) ≤ 32 := by
     rcases degreeThreeFourBlockTwoSign_signedQuotient_card_cases
-      block P hr hs hcomponent htwo with h16 | h32
+      block P hr hs hcomponent hbinary htwo with h16 | h32
     · omega
     · omega
   have himage :=
