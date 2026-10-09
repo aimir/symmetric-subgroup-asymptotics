@@ -92,7 +92,7 @@ structure PairTopSemanticData : Type 1 where
     ∀ (kind : DegreeTwoSixteenNaturalTop)
       (p : PreE7PairActionClass 16)
       (realization : DegreeTwoSixteenNaturalTopRealization kind p),
-      DegreeTwoSixteenNaturalCharacterData kind p realization
+      DegreeTwoSixteenNaturalSocleGeneratorData kind p realization
 
 namespace PairTopSemanticData
 
@@ -108,9 +108,11 @@ noncomputable def twelveResolution
 twenty-four paired-eight rows and all 64 literal degree-sixteen rows. -/
 noncomputable def sixteenResolution
     (D : PairTopSemanticData)
+    (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature) :
     DegreeTwoSixteenPairTopCatalogueResolution SixteenCatalogue :=
-  degreeTwoSixteenResolution_of_anchored_and_natural lit SixteenCatalogue
+  degreeTwoSixteenResolution_of_anchored_and_naturalSocle hZmud lit
+    SixteenCatalogue
     D.sixteenPaired8 D.sixteenZero16 D.sixteenTwoAffine16
     D.sixteenPrimitive16 D.sixteenNatural
 
@@ -140,7 +142,8 @@ noncomputable def source
     hZmud lit publishedThree publishedFour sixPairTable publishedSix
     eightPairTable publishedEight
     TwelveCatalogue publishedTwelve (pairTopData.twelveResolution lit)
-    SixteenCatalogue publishedSixteen (pairTopData.sixteenResolution lit)
+    SixteenCatalogue publishedSixteen
+      (pairTopData.sixteenResolution hZmud lit)
 
 end DegreeTwoConcreteResidualAssembly
 end PrimitiveAffineImprimitiveBlockTransfer

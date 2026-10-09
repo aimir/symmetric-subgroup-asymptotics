@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopCatalogues
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopOriginalNormalSignature
+import SymmetricSubgroupAsymptotics.SocleNormalGeneratorNumber
 
 /-!
 # Concrete comparator and natural branches of the pair-top catalogues
@@ -260,6 +261,62 @@ noncomputable def source (lit : PreE7CharacterLiterature) :
 
 end DegreeTwoSixteenNaturalCharacterData
 
+/-- Structural form of the natural-top theorem.  Two normal generators for
+the socle of every literal original quotient suffice; the actual character
+tuple is then supplied by the published Žmud theorem.  Keeping this datum
+separate from `DegreeTwoSixteenNaturalCharacterData` prevents a finite-row
+producer from having to manufacture complex representations. -/
+structure DegreeTwoSixteenNaturalSocleGeneratorData
+    (kind : DegreeTwoSixteenNaturalTop)
+    (p : PreE7PairActionClass 16)
+    (realization : DegreeTwoSixteenNaturalTopRealization kind p) : Prop where
+  socleGenerators : ∀ N,
+    SocleNormalGeneratorBound (preE7PairAction 16 p ⨸ N.1) 2
+
+namespace DegreeTwoSixteenNaturalSocleGeneratorData
+
+variable {kind : DegreeTwoSixteenNaturalTop}
+  {p : PreE7PairActionClass 16}
+  {realization : DegreeTwoSixteenNaturalTopRealization kind p}
+  (D : DegreeTwoSixteenNaturalSocleGeneratorData kind p realization)
+
+private theorem logb_two_five_lt_seven_thirds :
+    Real.logb 2 5 < (7 : ℝ) / 3 := by
+  have hp : (5 : ℝ) ^ (3 : ℕ) < (2 : ℝ) ^ (7 : ℕ) := by norm_num
+  have hlog := Real.logb_lt_logb (by norm_num : (1 : ℝ) < 2)
+    (by positivity : (0 : ℝ) < (5 : ℝ) ^ (3 : ℕ)) hp
+  simp only [Real.logb_pow,
+    Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2), mul_one] at hlog
+  exact (lt_div_iff₀ (by norm_num : (0 : ℝ) < 3)).2 (by
+    simpa only [mul_comm] using hlog)
+
+/-- Two general positions fit well inside the exact width-32 character
+window. -/
+theorem twoGeneral_capacity :
+    (2 : ℝ) * (Real.logb 2 5 / 3) ≤ preE7CharacterWindow 32 := by
+  have hlog := logb_two_five_lt_seven_thirds
+  norm_num [preE7CharacterWindow, preE7CharacterRho, halfDegree] at hlog ⊢
+  linarith
+
+/-- Direct final source for a natural `A_16` or `S_16` top from its uniform
+two-generator socle theorem. -/
+noncomputable def source
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature) :
+    PreE7RankTailSourceOrYonedaTopData 32
+      (preE7SmallPairNonPairAction 16 (by norm_num) p) :=
+  let certificate : ∀ N,
+      CharacterQuotientCertificate (preE7PairAction 16 p ⨸ N.1) :=
+    fun N ↦ hZmud.generalCertificate (D.socleGenerators N)
+  let lift := DegreeTwoPairRelativeLiftData.ofMixedCharacterCertificates
+    lit certificate (fun _ ↦ rfl) (fun N ↦ by
+      rw [ZmudFaithfulCharacterTupleInput.generalCertificate_slope]
+      exact twoGeneral_capacity)
+  lift.rankTailSource (by norm_num)
+    (degreeTwoSixteenPairRelativeNumerics lift)
+
+end DegreeTwoSixteenNaturalSocleGeneratorData
+
 namespace DegreeTwoPairTopAnchoredRowData
 
 /-- Resolve a literal count-sixteen row from its actual anchored labels and
@@ -372,6 +429,46 @@ noncomputable def degreeTwoSixteenResolution_of_anchored_and_natural
     (fun j p realization =>
       (primitive16 j p realization).sixteenResolvedData lit)
     natural
+
+/-- Structural natural-top variant of
+`degreeTwoSixteenResolution_of_anchored_and_natural`.  The natural rows now
+consume the uniform two-generator socle conclusion rather than chosen
+character representations. -/
+noncomputable def degreeTwoSixteenResolution_of_anchored_and_naturalSocle
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
+    (T : DegreeTwoSixteenPairTopFiniteCatalogue)
+    (paired8 : ∀ (j : Fin 24) (p : PreE7PairActionClass 16)
+      (realization : DegreeTwoPairTopTowerRealization (T.paired8 j) p),
+      DegreeTwoPairTopTowerAnchoredRowData (T.paired8 j)
+        degreeTwoSixteenPairProfiles p realization)
+    (zero16 : ∀ (j : Fin 29) (p : PreE7PairActionClass 16)
+      (realization : DegreeTwoPairTopRealization (T.zero16 j) p),
+      DegreeTwoPairTopAnchoredRowData (T.zero16 j)
+        degreeTwoSixteenPairProfiles p realization)
+    (twoAffine16 : ∀ (j : Fin 15) (p : PreE7PairActionClass 16)
+      (realization : DegreeTwoPairTopRealization (T.twoAffine16 j) p),
+      DegreeTwoPairTopAnchoredRowData (T.twoAffine16 j)
+        degreeTwoSixteenPairProfiles p realization)
+    (primitive16 : ∀ (j : Fin 20) (p : PreE7PairActionClass 16)
+      (realization : DegreeTwoPairTopRealization (T.primitive16 j) p),
+      DegreeTwoPairTopAnchoredRowData (T.primitive16 j)
+        degreeTwoSixteenPairProfiles p realization)
+    (natural : ∀ (kind : DegreeTwoSixteenNaturalTop)
+      (p : PreE7PairActionClass 16)
+      (realization : DegreeTwoSixteenNaturalTopRealization kind p),
+      DegreeTwoSixteenNaturalSocleGeneratorData kind p realization) :
+    DegreeTwoSixteenPairTopCatalogueResolution T where
+  paired8 j p realization :=
+    (paired8 j p realization).sixteenResolvedData lit |>.toResolvedRow
+  zero16 j p realization :=
+    (zero16 j p realization).sixteenResolvedData lit |>.toResolvedRow
+  twoAffine16 j p realization :=
+    (twoAffine16 j p realization).sixteenResolvedData lit |>.toResolvedRow
+  primitive16 j p realization :=
+    (primitive16 j p realization).sixteenResolvedData lit |>.toResolvedRow
+  natural kind p realization :=
+    (natural kind p realization).source hZmud lit
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
