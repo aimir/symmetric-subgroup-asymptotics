@@ -407,6 +407,24 @@ structure DegreeTwoPairTopSchurData {s : ℕ}
 
 namespace DegreeTwoPairTopSchurData
 
+/-- Direct constructor when a generated natural-module registry has already
+been reduced to its uniform theorem.  This lets a compressed registry live
+beside an existing interface whose normal axis is already published, without
+replacing the interface's canonical semantic module index. -/
+noncomputable def ofUniform {s : ℕ}
+    {D : DegreeTwoPairTopFiniteInterface s}
+    {p : PreE7PairActionClass s}
+    {R : DegreeTwoPairTopRealization D p}
+    (ordinary relative : ℕ)
+    (top : D.normalRegistry.QuotientSocleGeneratorFamily ordinary)
+    (uniform : UniformSubrepresentationGeneratorBound
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin s)) relative) :
+    DegreeTwoPairTopSchurData D p R where
+  ordinary := ordinary
+  relative := relative
+  top := top
+  dualUniform := permutationFunctionRepresentation_dual_uniform uniform
+
 /-- Assemble the Schur row directly from the two checked finite registries:
 quotient-socle generators on the normal axis and cyclic module generators on
 the invariant-state axis. -/
