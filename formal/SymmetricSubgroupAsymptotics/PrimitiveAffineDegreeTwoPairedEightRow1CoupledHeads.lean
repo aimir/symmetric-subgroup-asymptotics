@@ -1,5 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule
 import SymmetricSubgroupAsymptotics.BinaryCoupledHeadCertificate
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightSharedTops
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerCoupledHeads
 
 /-!
 # Coupled paired-eight heads for paired8-1
@@ -7887,6 +7889,24 @@ noncomputable def completeRegistry :
       representation topAmbient states 4 where
   coupled := registry
   complete := PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.registry.complete
+
+/-- Catalogue-facing semantic package for the selected paired-eight row.
+For every realization of the two successive pair frames, the generated
+table now bounds the three actual omega axes attached to every original
+normal subgroup. -/
+noncomputable def towerCoupledHeadData
+    {p : Non2UnipotentPrefixFiniteMenu.PreE7PairActionClass 16}
+    (R : Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
+      DegreeTwoPairTopTowerRealization
+        Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
+          DegreeTwoPairedEightSharedTops.top1 p) :
+    Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
+      DegreeTwoPairTopTowerCoupledHeadData R 4 where
+  Generator := Fin 4
+  State := Fin 11
+  generators := topAmbient
+  state := states
+  registry := completeRegistry
 
 end SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads
 

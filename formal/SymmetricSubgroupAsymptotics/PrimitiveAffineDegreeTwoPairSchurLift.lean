@@ -57,6 +57,26 @@ theorem half_le_logb_two_thirtyEight_div_twentyFive :
     Nat.cast_ofNat] at hlog
   linarith
 
+/-- Add further relative Schur positions to an already constructed mixed
+profile.  This is the profile operation needed when elementary binary
+layers are lifted successively. -/
+def degreeTwoPairAddRelativeProfile
+    (profile : DegreeTwoPairRelativeProfile) (relative : ℕ) :
+    DegreeTwoPairRelativeProfile where
+  binaryPrimary := profile.binaryPrimary
+  linear := profile.linear
+  ordinary := profile.ordinary
+  relative := profile.relative + relative
+
+theorem degreeTwoPairAddRelativeProfile_slope
+    (profile : DegreeTwoPairRelativeProfile) (relative : ℕ) :
+    (degreeTwoPairAddRelativeProfile profile relative).slope =
+      profile.slope +
+        (relative : ℝ) * Real.logb 2 (38 / 25) := by
+  unfold degreeTwoPairAddRelativeProfile DegreeTwoPairRelativeProfile.slope
+  push_cast
+  ring
+
 /-- Lift an ordinary top envelope through an actual elementary binary
 extension whose kernel representation has bounded Schur capacity.
 
@@ -137,6 +157,86 @@ noncomputable def degreeTwoPairSchurLiftEnvelope
         rw [← Real.rpow_add (by norm_num : (0 : ℝ) < 2)]
         unfold DegreeTwoPairRelativeProfile.slope
           degreeTwoPairGeneralProfile degreeTwoPairOrdinaryRelativeProfile
+        ring
+
+/-- Lift an arbitrary existing mixed pair profile through one more actual
+elementary binary extension.  The earlier prefix and relative positions are
+retained, and only the new layer's Schur capacity is appended to the
+relative count.
+
+This generalization is needed for literal towers: applying the original
+one-layer theorem twice would otherwise discard the first layer's relative
+positions at the intermediate quotient. -/
+noncomputable def degreeTwoPairSchurLiftEnvelope_addRelative
+    {Q B V : Type} [Group Q] [Finite Q] [Group B] [Finite B]
+    [AddCommGroup V] [Module (ZMod 2) V] [Finite V]
+    (pi : Q →* B) (hpi : Function.Surjective pi)
+    (M : Rep (ZMod 2) B) (E : OriginalKernelModuleChart pi M)
+    (profile : DegreeTwoPairRelativeProfile) (relative : ℕ)
+    (top : DegreeTwoPairRelativeQuotientEnvelope B profile)
+    (capacity_le : representationSchurCapacity M.ρ ≤ relative) :
+    DegreeTwoPairRelativeQuotientEnvelope Q
+      (degreeTwoPairAddRelativeProfile profile relative) where
+  coefficient := top.coefficient *
+    ((Nat.card M : ℝ) * Nat.card (groupCohomology.H1 M))
+  coefficient_nonneg := mul_nonneg top.coefficient_nonneg (by positivity)
+  bound := by
+    intro b J
+    let extensionConstant : ℝ :=
+      (Nat.card M : ℝ) * Nat.card (groupCohomology.H1 M)
+    have hraw := fusionEpimorphism_survival_card_le_schur_of_permutation_source
+      2 J pi hpi M E (fun _ ↦ True)
+    have hcard : Nat.card {f : GroupEpimorphism J Q // True} =
+        Nat.card (GroupEpimorphism J Q) := by simp
+    rw [hcard] at hraw
+    have hraw' : (Nat.card (GroupEpimorphism J Q) : ℝ) ≤
+        Nat.card (GroupEpimorphism J B) *
+          (extensionConstant *
+            (2 : ℝ) ^
+              (representationSchurCapacity M.ρ * ((b : ℝ) / 2))) := by
+      simpa only [extensionConstant] using hraw
+    have hb : 0 ≤ (b : ℝ) := Nat.cast_nonneg b
+    have hrelative : 0 ≤ (relative : ℝ) := Nat.cast_nonneg relative
+    have hlog := half_le_logb_two_thirtyEight_div_twentyFive
+    have hexponent :
+        representationSchurCapacity M.ρ * ((b : ℝ) / 2) ≤
+          (relative : ℝ) * Real.logb 2 (38 / 25) * b := by
+      have hcap : representationSchurCapacity M.ρ ≤ (relative : ℝ) :=
+        capacity_le
+      calc
+        representationSchurCapacity M.ρ * ((b : ℝ) / 2) ≤
+            (relative : ℝ) * ((b : ℝ) / 2) :=
+          mul_le_mul_of_nonneg_right hcap (by positivity)
+        _ ≤ (relative : ℝ) * Real.logb 2 (38 / 25) * b := by
+          nlinarith
+    have hschur :
+        (2 : ℝ) ^
+            (representationSchurCapacity M.ρ * ((b : ℝ) / 2)) ≤
+          (2 : ℝ) ^
+            ((relative : ℝ) * Real.logb 2 (38 / 25) * b) :=
+      Real.rpow_le_rpow_of_exponent_le (by norm_num) hexponent
+    calc
+      (Nat.card (GroupEpimorphism J Q) : ℝ) ≤
+          Nat.card (GroupEpimorphism J B) *
+            (extensionConstant *
+              (2 : ℝ) ^
+                (representationSchurCapacity M.ρ * ((b : ℝ) / 2))) :=
+        hraw'
+      _ ≤ (top.coefficient *
+            (2 : ℝ) ^ (profile.slope * b)) *
+            (extensionConstant *
+              (2 : ℝ) ^
+                ((relative : ℝ) * Real.logb 2 (38 / 25) * b)) := by
+        apply mul_le_mul
+        · exact top.bound b J
+        · exact mul_le_mul_of_nonneg_left hschur (by positivity)
+        · positivity
+        · positivity
+      _ = (top.coefficient * extensionConstant) *
+            (2 : ℝ) ^
+              ((degreeTwoPairAddRelativeProfile profile relative).slope * b) := by
+        rw [degreeTwoPairAddRelativeProfile_slope, ← Real.rpow_add
+          (by norm_num : (0 : ℝ) < 2)]
         ring
 
 end PrimitiveAffineImprimitiveBlockTransfer
