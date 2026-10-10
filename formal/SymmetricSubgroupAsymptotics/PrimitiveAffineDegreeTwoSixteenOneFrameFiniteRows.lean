@@ -38,6 +38,16 @@ namespace DegreeTwoSixteenOneFrameFiniteRowData
 variable {D : DegreeTwoPairTopFiniteInterface 16}
   (F : DegreeTwoSixteenOneFrameFiniteRowData D)
 
+/-- Named constructor for an independently generated count-sixteen
+one-frame package. -/
+noncomputable def ofCertificates
+    (topSocle : D.normalRegistry.QuotientSocleGeneratorFamily 2)
+    (natural : UniformSubrepresentationGeneratorBound
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin 16)) 4) :
+    DegreeTwoSixteenOneFrameFiniteRowData D where
+  topSocle := topSocle
+  natural := natural
+
 /-- Install the two finite certificates in the common `(2,4)` Schur row. -/
 noncomputable def schurData
     {p : PreE7PairActionClass 16}

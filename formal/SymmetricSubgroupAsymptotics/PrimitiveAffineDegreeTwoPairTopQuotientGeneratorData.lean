@@ -1,6 +1,8 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerCoupledHeads
 import SymmetricSubgroupAsymptotics.DualGeneratorSchurCapacity
+import SymmetricSubgroupAsymptotics.FiniteSelfDualNestedQuotientGenerator
 import SymmetricSubgroupAsymptotics.Non2SchurRowDegrees
+import SymmetricSubgroupAsymptotics.PermutationFunctionSelfDual
 
 /-!
 # Finite nested-quotient generator declarations for pair tops
@@ -32,6 +34,23 @@ structure DegreeTwoPairTopNestedQuotientGeneratorData
         (nestedQuotientRepresentation A B hAB).dual 1 ∨
       Module.finrank (ZMod 2)
         (nestedQuotientRepresentation A B hAB).asModule ≤ 2
+
+/-- Build the pair-top declaration from a compact self-dual finite-state
+table exported beside the natural-module registry. -/
+noncomputable def DegreeTwoPairTopNestedQuotientGeneratorData.ofFiniteTable
+    {t s : ℕ} (D : DegreeTwoPairTopFiniteInterface t)
+    (states : Fin s → Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)))
+    (registry : BinaryInvariantCyclicOrbitRegistry
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) states)
+    (table : FiniteSelfDualNestedQuotientGeneratorData registry
+      (permutationFunctionRepresentationSelfDual
+        (k := ZMod 2) (G := D.top) (X := Fin t))) :
+    DegreeTwoPairTopNestedQuotientGeneratorData D where
+  certificate := table.subrepresentationQuotient_generated_or_finrank_le_two
+    registry
+    (permutationFunctionRepresentationSelfDual
+      (k := ZMod 2) (G := D.top) (X := Fin t))
 
 namespace DegreeTwoPairTopNestedQuotientGeneratorData
 

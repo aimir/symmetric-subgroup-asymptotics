@@ -50,6 +50,16 @@ variable {D : DegreeTwoPairTopFiniteInterface 12}
   {kappa sectionCap : ℕ}
   (F : DegreeTwoTwelveJointFiniteRowData D kappa sectionCap)
 
+/-- Named constructor for an independently generated joint-row package. -/
+noncomputable def ofCertificates
+    (topSocle : D.normalRegistry.QuotientSocleGeneratorFamily kappa)
+    (natural : UniformSubrepresentationGeneratorBound
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin 12))
+      sectionCap) :
+    DegreeTwoTwelveJointFiniteRowData D kappa sectionCap where
+  topSocle := topSocle
+  natural := natural
+
 /-- Install the two finite certificates in the universal Schur construction.
 The result is independent of every choice made by the realization. -/
 noncomputable def schurData

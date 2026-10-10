@@ -55,6 +55,17 @@ namespace DegreeTwoPairedEightFiniteRowData
 variable {D : DegreeTwoPairTopFiniteInterface 8}
   (F : DegreeTwoPairedEightFiniteRowData D)
 
+/-- Constructor used by one-row generated package files.  Keeping this
+boundary named makes the emitted assembly file independently checkable. -/
+noncomputable def ofCertificates
+    (coupled : DegreeTwoPairTopCoupledRegistryData D 4)
+    (quotientGenerators : DegreeTwoPairTopNestedQuotientGeneratorData D)
+    (topSocle : D.normalRegistry.QuotientSocleGeneratorFamily 2) :
+    DegreeTwoPairedEightFiniteRowData D where
+  coupled := coupled
+  quotientGenerators := quotientGenerators
+  topSocle := topSocle
+
 /-- Finite top, quotient-generator, and coupled-head declarations construct
 the entire paired-eight orbit row for every tower realization. -/
 noncomputable def rowData

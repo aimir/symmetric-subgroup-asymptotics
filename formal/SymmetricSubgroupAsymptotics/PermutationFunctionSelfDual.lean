@@ -57,6 +57,19 @@ noncomputable def permutationFunctionRepresentationSelfDual :
     simp only [Basis.toDualEquiv_apply, Basis.toDual_apply_left,
       Pi.basisFun_repr, permutationFunctionRepresentation_apply])
 
+/-- The standard self-duality is the coordinate dot product.  Generated
+finite orthogonal-complement tables use this formula directly. -/
+theorem permutationFunctionRepresentationSelfDual_apply
+    (v w : X → k) :
+    permutationFunctionRepresentationSelfDual v w =
+      ∑ x, v x * w x := by
+  simp only [permutationFunctionRepresentationSelfDual,
+    Basis.toDualEquiv_apply, Basis.toDual_apply_left,
+    Pi.basisFun_repr, Finsupp.linearCombination_apply,
+    Finsupp.sum_fintype, Pi.basisFun_apply, Pi.single_apply]
+  simp only [ite_mul, one_mul, zero_mul, Finset.sum_ite_eq',
+    Finset.mem_univ, if_true]
+
 /-- A uniform generator bound for the natural permutation module also holds
 for its dual, with the same padded tuple length. -/
 theorem permutationFunctionRepresentation_dual_uniform

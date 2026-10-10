@@ -50,6 +50,16 @@ namespace DegreeTwoTwelveExceptionalFiniteRowData
 variable {D : DegreeTwoPairTopFiniteInterface 12}
   (F : DegreeTwoTwelveExceptionalFiniteRowData D)
 
+/-- Named constructor for one independently generated core or paired-six
+package. -/
+noncomputable def ofCertificates
+    (topSocle : D.normalRegistry.QuotientSocleGeneratorFamily 1)
+    (natural : UniformSubrepresentationGeneratorBound
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin 12)) 3) :
+    DegreeTwoTwelveExceptionalFiniteRowData D where
+  topSocle := topSocle
+  natural := natural
+
 /-- Install the two finite certificates in the common `(1,3)` Schur row. -/
 noncomputable def schurData
     {p : PreE7PairActionClass 12}
