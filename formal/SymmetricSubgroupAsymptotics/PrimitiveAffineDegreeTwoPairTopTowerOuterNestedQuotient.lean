@@ -413,6 +413,62 @@ noncomputable def rawKernelOmegaOuterEquivSectionImage
   (R.rawKernelOmegaOuterEquivZeroCutImage N).trans
     (R.rawKernelOmegaOuterZeroCutImageEquivSectionImage N)
 
+/-- Pulling the descended section image back to the original action agrees
+with pulling the first-top section image back along the top map. -/
+noncomputable def outerSectionImageInflationEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    ((R.outerOmegaSectionImageOnOriginalQuotient N).toRepresentation.comp
+      (QuotientGroup.mk' N.1)).Equiv
+      ((R.outerOmegaSectionImage N).toRepresentation.comp
+        R.frame.top.rangeRestrict) :=
+  Representation.Equiv.mk (LinearEquiv.refl _ _) (by
+    intro u
+    apply LinearMap.ext
+    intro v
+    apply Subtype.ext
+    rfl)
+
+/-- Pulling the coordinate quotient/section-image equivalence back along
+the original top map preserves it verbatim. -/
+noncomputable def outerNestedQuotientSectionImageInflationEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    ((nestedQuotientRepresentation
+      (R.frame.normalTopPermutationSubrepresentation N.1)
+      (R.outerOmegaAxis N)
+      (R.outerNormalAxis_le_outerOmegaAxis N)).comp
+        R.frame.top.rangeRestrict).Equiv
+      ((R.outerOmegaSectionImage N).toRepresentation.comp
+        R.frame.top.rangeRestrict) :=
+  Representation.Equiv.mk
+    (R.outerNestedQuotientSectionImageEquiv N).toLinearEquiv
+    (fun u ↦
+      (R.outerNestedQuotientSectionImageEquiv N).isIntertwining'
+        (R.frame.top.rangeRestrict u))
+
+/-- After inflation to the original physical group, the actual raw outer
+kernel is precisely the retained coordinate quotient `B/A`.  This is the
+action-level bridge from the physical kernel to the two endpoint quotients
+in the pair-sum exact sequence. -/
+noncomputable def rawKernelOmegaOuterInflationEquivNestedQuotient
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    ((R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation.comp
+      (QuotientGroup.mk' N.1)).Equiv
+      ((nestedQuotientRepresentation
+        (R.frame.normalTopPermutationSubrepresentation N.1)
+        (R.outerOmegaAxis N)
+        (R.outerNormalAxis_le_outerOmegaAxis N)).comp
+          R.frame.top.rangeRestrict) := by
+  let e0 := R.rawKernelOmegaOuterEquivSectionImage N
+  let e0comp :
+      ((R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation.comp
+        (QuotientGroup.mk' N.1)).Equiv
+      ((R.outerOmegaSectionImageOnOriginalQuotient N).toRepresentation.comp
+        (QuotientGroup.mk' N.1)) :=
+    Representation.Equiv.mk e0.toLinearEquiv
+      (fun u ↦ e0.isIntertwining' (QuotientGroup.mk' N.1 u))
+  exact e0comp.trans ((R.outerSectionImageInflationEquiv N).trans
+    (R.outerNestedQuotientSectionImageInflationEquiv N).symm)
+
 end DegreeTwoPairTopTowerRealization
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
