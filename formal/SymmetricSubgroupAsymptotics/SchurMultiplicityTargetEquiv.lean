@@ -61,6 +61,18 @@ theorem schurSocleMultiplicity_eq_of_source_linearEquiv
     (Module.finrank_pos (R := k) (M := Module.End R V))
   exact hhom
 
+/-- Equivalent finite modules have endomorphism rings of the same ground
+field dimension. -/
+theorem moduleEnd_finrank_eq_of_linearEquiv
+    {V : Type} [AddCommGroup V] [Module R V] [Module k V]
+    [IsScalarTower k R V]
+    [FiniteDimensional k X] [FiniteDimensional k V]
+    (e : X ≃ₗ[R] V) :
+    Module.finrank k (Module.End R X) =
+      Module.finrank k (Module.End R V) := by
+  exact (schurHomCongrSource (k := k) (A := X) e).finrank_eq.trans
+    (schurHomCongrTarget (k := k) (X := V) e).finrank_eq
+
 /-- A representation equivalence is, in particular, an equivalence of the
 corresponding group-algebra modules. -/
 noncomputable def representationEquivLinearEquivAsModule

@@ -156,6 +156,19 @@ theorem representation_comp_isSimpleModule
   exact (f.isSimpleModule_iff_of_bijective ⟨Function.injective_id,
     Function.surjective_id⟩).mpr inferInstance
 
+/-- The Schur endomorphism dimension of a representation is unchanged by
+surjective inflation. -/
+theorem representationEnd_finrank_comp_eq
+    [FiniteDimensional k V]
+    (γ : D →* B) (hγ : Function.Surjective γ)
+    (ρ : Representation k B V) :
+    Module.finrank k (Module.End k[D] (ρ.comp γ).asModule) =
+      Module.finrank k (Module.End k[B] ρ.asModule) := by
+  rw [← (Representation.IntertwiningMap.equivLinearMapAsModule
+    (ρ.comp γ) (ρ.comp γ)).finrank_eq,
+    ← (Representation.IntertwiningMap.equivLinearMapAsModule ρ ρ).finrank_eq]
+  exact (representationIntertwiningCompEquiv γ hγ ρ ρ).finrank_eq.symm
+
 /-- Schur multiplicity of an arbitrary simple source and finite target is
 unchanged when both representations are inflated along a surjective group
 homomorphism. -/
