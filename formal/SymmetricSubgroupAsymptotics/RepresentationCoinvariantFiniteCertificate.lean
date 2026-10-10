@@ -45,6 +45,30 @@ theorem representationGeneratorDisplacementSpan_le_coinvariantsKer
   exact Representation.Coinvariants.sub_mem_ker
     (ρ := B.toRepresentation) (generators i) v
 
+/-- The intrinsic coinvariant-relation space is invariant under the
+original representation.  Conjugating one displacement produces another
+literal displacement. -/
+theorem representationCoinvariantsKer_apply_mem
+    (rho : Representation k G V) (g : G) (v : V)
+    (hv : v ∈ Representation.Coinvariants.ker rho) :
+    rho g v ∈ Representation.Coinvariants.ker rho := by
+  induction hv using Submodule.span_induction with
+  | mem v hv =>
+      obtain ⟨⟨h, x⟩, rfl⟩ := hv
+      apply Submodule.subset_span
+      refine ⟨⟨g * h * g⁻¹, rho g x⟩, ?_⟩
+      simp only [map_sub, map_mul, map_inv, Module.End.mul_apply]
+      rw [show rho g⁻¹ (rho g x) = x by
+        change (rho g⁻¹ * rho g) x = x
+        rw [← map_mul, inv_mul_cancel, map_one]
+        rfl]
+  | zero => simpa only [map_zero] using
+      (Representation.Coinvariants.ker rho).zero_mem
+  | add x y _ _ hx hy => simpa only [map_add] using
+      (Representation.Coinvariants.ker rho).add_mem hx hy
+  | smul a x _ hx => simpa only [map_smul] using
+      (Representation.Coinvariants.ker rho).smul_mem a hx
+
 /-- If the displayed tuple generates the acting group, its literal
 displacements already span every coinvariant relation.  This identifies a
 finite certificate's generator span with the intrinsic representation head;
