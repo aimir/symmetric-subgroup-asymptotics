@@ -25,6 +25,24 @@ theorem binaryOrbitSpan_point (ρ : Representation k G V) (v : V) :
   apply Submodule.subset_span
   exact ⟨1,by simp⟩
 
+/-- An ordinary full-orbit span is invariant under the original group
+action. -/
+theorem binaryOrbitSpan_apply_mem (ρ : Representation k G V)
+    (v : V) (g : G) {x : V} (hx : x ∈ binaryOrbitSpan ρ v) :
+    ρ g x ∈ binaryOrbitSpan ρ v := by
+  induction hx using Submodule.span_induction with
+  | mem x hx =>
+      obtain ⟨h, rfl⟩ := hx
+      have heq : ρ g (ρ h v) = ρ (g * h) v := by
+        simp only [map_mul, Module.End.mul_apply]
+      rw [heq]
+      exact Submodule.subset_span ⟨g * h, rfl⟩
+  | zero => simpa using (binaryOrbitSpan ρ v).zero_mem
+  | add x y _ _ hx hy =>
+      simpa only [map_add] using (binaryOrbitSpan ρ v).add_mem hx hy
+  | smul a x _ hx =>
+      simpa only [map_smul] using (binaryOrbitSpan ρ v).smul_mem a hx
+
 /-- Each local join has a checked literal orbit-span equality. The point
 set is only the retained module, not the much larger original group. -/
 structure BinaryInvariantRegistry (ρ : Representation k G V)
