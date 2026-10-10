@@ -86,6 +86,36 @@ noncomputable def rawKernelOmegaInnerSectionIntertwiner
     obtain ⟨z, rfl⟩ := Additive.toMul.surjective z
     exact R.rawKernelOmegaInnerSectionMap_equivariant N q z
 
+/-- Corestrict the omega projection to its exact inner image. -/
+noncomputable def rawKernelOmegaInnerImageIntertwiner
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (binaryKernelOmegaConjugationRepresentation
+      (R.rawQuotientMap N)).IntertwiningMap
+      ((R.innerOmegaSubrepresentation N).toRepresentation.comp
+        (R.rawQuotientMap N)) where
+  toLinearMap := (R.rawKernelOmegaInnerSectionMap N).codRestrict
+    (R.innerOmegaSubrepresentation N).toSubmodule (fun z ↦ by
+      rw [← R.rawKernelOmegaInnerSectionMap_range_eq N]
+      exact ⟨z, rfl⟩)
+  isIntertwining' := by
+    intro q
+    apply LinearMap.ext
+    intro z
+    apply Subtype.ext
+    exact Representation.IntertwiningMap.isIntertwining _ _
+      (R.rawKernelOmegaInnerSectionIntertwiner N) q z
+
+theorem rawKernelOmegaInnerImageIntertwiner_surjective
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Function.Surjective (R.rawKernelOmegaInnerImageIntertwiner N) := by
+  rintro ⟨v, hv⟩
+  have hvrange : v ∈
+      LinearMap.range (R.rawKernelOmegaInnerSectionMap N) := by
+    rw [R.rawKernelOmegaInnerSectionMap_range_eq N]
+    exact hv
+  obtain ⟨z, hz⟩ := hvrange
+  exact ⟨z, Subtype.ext hz⟩
+
 end DegreeTwoPairTopTowerRealization
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
