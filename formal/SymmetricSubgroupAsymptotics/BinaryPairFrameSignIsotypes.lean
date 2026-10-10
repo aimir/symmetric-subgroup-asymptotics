@@ -163,6 +163,9 @@ theorem coordinateSign_fibre_card_cases_six
   have hmpos : 0 < Nat.card {i : I //
       coordinateSign F i = coordinateSign F i0} :=
     Nat.card_pos_iff.mpr ⟨⟨⟨i0, rfl⟩⟩, inferInstance⟩
+  have hmle : Nat.card {i : I //
+      coordinateSign F i = coordinateSign F i0} ≤ 3 := by
+    nlinarith [hproduct]
   omega
 
 /-- At twelve coordinates, at least three sign classes force one isotype
@@ -183,6 +186,9 @@ theorem coordinateSign_fibre_card_cases_twelve
   have hmpos : 0 < Nat.card {i : I //
       coordinateSign F i = coordinateSign F i0} :=
     Nat.card_pos_iff.mpr ⟨⟨⟨i0, rfl⟩⟩, inferInstance⟩
+  have hmle : Nat.card {i : I //
+      coordinateSign F i = coordinateSign F i0} ≤ 4 := by
+    nlinarith [hproduct]
   omega
 
 /-- At eighteen coordinates, at least six sign classes force every
@@ -202,6 +208,9 @@ theorem coordinateSign_fibre_card_cases_eighteen
   have hmpos : 0 < Nat.card {i : I //
       coordinateSign F i = coordinateSign F i0} :=
     Nat.card_pos_iff.mpr ⟨⟨⟨i0, rfl⟩⟩, inferInstance⟩
+  have hmle : Nat.card {i : I //
+      coordinateSign F i = coordinateSign F i0} ≤ 3 := by
+    nlinarith [hproduct]
   omega
 
 end BinaryPairFrame

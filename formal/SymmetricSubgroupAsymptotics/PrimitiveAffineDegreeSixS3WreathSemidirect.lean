@@ -114,7 +114,7 @@ def semidirectMap : G →* SemidirectModel where
 semidirect model. -/
 def semidirectEquiv : G ≃* SemidirectModel :=
   MulEquiv.ofBijective semidirectMap (by
-    constructor <;> native_decide)
+    constructor <;> decide +kernel)
 
 @[simp] theorem semidirectEquiv_right (g : G) :
     (semidirectEquiv g).right = projection g := rfl

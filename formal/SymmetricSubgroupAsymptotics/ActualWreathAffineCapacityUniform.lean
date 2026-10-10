@@ -69,11 +69,11 @@ noncomputable def jointCapacitySharpenTo_of_ambientDual_uniform
     letI : FiniteDimensional (ZMod (E S phi C).p) (E S phi C).V :=
       (E S phi C).finiteDimensional
     letI : FiniteDimensional (ZMod (E S phi C).p)
-        ((E S phi C).originalKernelChart.sectionRepresentation
+        ((originalChart S phi C).sectionRepresentation
           (pi S phi) (E S phi C).quotientRepresentation N.1) := by
       change FiniteDimensional (ZMod (E S phi C).p)
         ((E S phi C).V ⧸
-          (E S phi C).originalKernelChart.normalSpace
+          (originalChart S phi C).normalSpace
             (pi S phi) (E S phi C).quotientRepresentation N.1)
       infer_instance
     have hgen : RepresentationGeneratedBy
@@ -82,12 +82,13 @@ noncomputable def jointCapacitySharpenTo_of_ambientDual_uniform
         S phi C H huniform N.1
     have hinflated : representationSchurCapacity
         (inflatedSectionRepresentation S phi C N.1) ≤ H :=
-      representationSchurCapacity_le_of_dual_generated
-        (inflatedSectionRepresentation S phi C N.1) H hgen
+      by
+        simpa using representationSchurCapacity_le_of_dual_generated
+          (inflatedSectionRepresentation S phi C N.1) H hgen
     have heq := representationSchurCapacity_comp
       (QuotientGroup.mk' ((pi S phi).ker ⊔ N.1))
       (QuotientGroup.mk'_surjective ((pi S phi).ker ⊔ N.1))
-      ((E S phi C).originalKernelChart.sectionRepresentation
+      ((originalChart S phi C).sectionRepresentation
         (pi S phi) (E S phi C).quotientRepresentation N.1).rho
     rw [← heq]
     exact hinflated

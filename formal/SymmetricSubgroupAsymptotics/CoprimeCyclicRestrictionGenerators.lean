@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.InducedTernaryWidthGenerators
+import SymmetricSubgroupAsymptotics.RepresentationDualSubquotientGenerators
 import Mathlib.RepresentationTheory.Maschke
 
 /-!

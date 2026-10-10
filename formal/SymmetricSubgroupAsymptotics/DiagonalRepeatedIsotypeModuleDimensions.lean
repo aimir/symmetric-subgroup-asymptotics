@@ -68,7 +68,7 @@ theorem scalarizedStable_fullCoordinates
     ⟨E x.1, ⟨x.1, x.2, rfl⟩⟩
   refine ⟨y, ?_⟩
   change e (x.1 i) = c
-  rw [hx, e.apply_symm_apply]
+  simpa only [e.apply_symm_apply] using congrArg e hx
 
 /-- Scalarization preserves the dimension of the original correlated
 submodule. -/
@@ -131,9 +131,15 @@ theorem moduleStable_finrank_eq_two_or_four_of_two_equal_isotypes
       _ = 2 := hfibre a₀
   have hsum : Module.finrank k K'.1 = 2 * d := by
     rw [finrank_eq_sum_encode scalar K']
-    simp_rw [component_equidimensional _ a₀]
-    rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ,
-      Fintype.card_eq_nat_card, htwo]
+    calc
+      ∑ a : Label scalar, Module.finrank k (encode scalar K' a) =
+          ∑ _a : Label scalar, d := by
+        apply Finset.sum_congr rfl
+        intro a _ha
+        exact component_equidimensional a a₀
+      _ = 2 * d := by
+        rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ,
+          Fintype.card_eq_nat_card, htwo]
   have hscalar := scalarizedStable_finrank scalar K e
   rw [← hscalar]
   rw [hsum]
@@ -157,9 +163,15 @@ theorem moduleStable_finrank_even_of_two_equal_isotypes
   let d := Module.finrank k (encode scalar K' a₀)
   have hsum : Module.finrank k K'.1 = 2 * d := by
     rw [finrank_eq_sum_encode scalar K']
-    simp_rw [component_equidimensional _ a₀]
-    rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ,
-      Fintype.card_eq_nat_card, htwo]
+    calc
+      ∑ a : Label scalar, Module.finrank k (encode scalar K' a) =
+          ∑ _a : Label scalar, d := by
+        apply Finset.sum_congr rfl
+        intro a _ha
+        exact component_equidimensional a a₀
+      _ = 2 * d := by
+        rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ,
+          Fintype.card_eq_nat_card, htwo]
   have hscalar := scalarizedStable_finrank scalar K e
   refine ⟨d, ?_⟩
   rw [← hscalar, hsum]
