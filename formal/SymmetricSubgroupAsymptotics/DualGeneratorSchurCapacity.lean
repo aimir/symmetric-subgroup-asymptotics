@@ -136,6 +136,42 @@ theorem representationSchurCapacity_le_of_dual_generated
     apply (div_le_iff₀ hpos).mpr
     exact_mod_cast hhom
 
+/-- A dual-generator certificate may be transported across an equivariant
+linear equivalence before applying the Schur-capacity bound.  This is useful
+when a concrete section is presented by a quotient chart while the finite
+certificate is stated for a literal coordinate quotient. -/
+theorem representationSchurCapacity_le_of_equiv_dual_generated
+    {U : Type} [AddCommGroup U] [Module k U]
+    (rho : Representation k G V) (sigma : Representation k G U)
+    [FiniteDimensional k U]
+    (e : rho.Equiv sigma) (H : ℕ)
+    (hgen : RepresentationGeneratedBy rho.dual H) :
+    representationSchurCapacity sigma ≤ H := by
+  let d : rho.dual.IntertwiningMap sigma.dual :=
+    RepresentationHeadExact.dualMap e.symm.toIntertwiningMap
+  have hd : Function.Surjective d :=
+    LinearMap.dualMap_surjective_of_injective e.symm.injective
+  have hgen' : RepresentationGeneratedBy sigma.dual H :=
+    representationGeneratedBy_of_surjective rho.dual sigma.dual d hd hgen
+  exact representationSchurCapacity_le_of_dual_generated sigma H hgen'
+
+/-- If a quotient-group representation inflates to a representation
+equivalent to one with a generated contragredient, then the quotient-group
+representation has the same capacity bound.  Surjectivity of the acting
+group map makes inflation capacity-neutral. -/
+theorem representationSchurCapacity_le_of_comp_equiv_dual_generated
+    {Q U : Type} [Group Q] [AddCommGroup U] [Module k U]
+    (rho : Representation k G V) (sigma : Representation k Q U)
+    [FiniteDimensional k U]
+    (q : G →* Q) (hq : Function.Surjective q)
+    (e : rho.Equiv (sigma.comp q)) (H : ℕ)
+    (hgen : RepresentationGeneratedBy rho.dual H) :
+    representationSchurCapacity sigma ≤ H := by
+  have hcomp : representationSchurCapacity (sigma.comp q) ≤ H :=
+    representationSchurCapacity_le_of_equiv_dual_generated
+      rho (sigma.comp q) e H hgen
+  rwa [representationSchurCapacity_comp q hq sigma] at hcomp
+
 /-- A generated contragredient gives the integral Schur-scaled row bound
 used by the coupled nonfixed argument.  For a simple source `X`, dualising
 embeds `Hom(X, sigma)` into `Hom(sigma⁺, X⁺)`.  Evaluation on `H`
