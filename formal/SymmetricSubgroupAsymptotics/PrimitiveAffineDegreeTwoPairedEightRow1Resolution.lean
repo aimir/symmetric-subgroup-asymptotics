@@ -327,6 +327,117 @@ theorem outerNestedQuotient_nonfixed_schurSocleMultiplicity_le_two_mul
     tau T q (R.outerNestedQuotientPairSumMap_surjective N) (X := X)
   exact hsplit.trans (by omega)
 
+/-- The same two-layer estimate after pullback along any surjective action
+map onto the first pair top.  This is the form used after inflating the
+physical outer kernel back to the original action. -/
+theorem outerNestedQuotient_comp_nonfixed_le_two_mul
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
+    {H A : Type} [Group H]
+    (gamma : H →* R.frame.top.range)
+    (hgamma : Function.Surjective gamma)
+    [AddCommGroup A] [Module (ZMod 2) A] [Finite A]
+    (sigma : Representation (ZMod 2) H A)
+    (X : Submodule (ZMod 2)[H] sigma.asModule)
+    [Finite X] [IsSimpleModule (ZMod 2)[H] X]
+    (hnonfixed : ¬ representationSubmoduleFixed sigma X) :
+    schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[H])
+        (A := ((nestedQuotientRepresentation
+          (R.frame.normalTopPermutationSubrepresentation N.1)
+          (R.outerOmegaAxis N)
+          (R.outerNormalAxis_le_outerOmegaAxis N)).comp gamma).asModule)
+        (X := X) ≤
+      2 * Module.finrank (Module.End (ZMod 2)[H] X) X := by
+  let tau := nestedQuotientRepresentation
+    (R.frame.normalTopPermutationSubrepresentation N.1)
+    (R.outerOmegaAxis N)
+    (R.outerNormalAxis_le_outerOmegaAxis N)
+  let q0 := R.outerNestedQuotientPairSumMap N
+  let K := nestedQuotientRepresentation
+    (R.outerNormalConstantPullbackAxis N)
+    (R.outerOmegaConstantPullbackAxis N)
+    (R.outerNormalConstant_le_outerOmegaConstant N)
+  let T := nestedQuotientRepresentation
+    (R.outerNormalPairSumPullbackAxis N)
+    (R.outerOmegaPairSumPullbackAxis N)
+    (R.outerNormalPairSum_le_outerOmegaPairSum N)
+  let q : (tau.comp gamma).IntertwiningMap (T.comp gamma) :=
+    { toLinearMap := q0.toLinearMap
+      isIntertwining' h := q0.isIntertwining' (gamma h) }
+  let eK0 := R.outerNestedQuotientPairSumKernelEquiv N
+  let eK : (K.comp gamma).Equiv q.ker.toRepresentation :=
+    Representation.Equiv.mk eK0.toLinearEquiv (by
+      intro h
+      exact eK0.isIntertwining' (gamma h))
+  let eT0 := R.outerPairSumQuotientEquiv N
+  let eT : (T.comp gamma).Equiv
+      ((nestedQuotientRepresentation
+        (R.outerNormalPairSumAxis N)
+        (R.outerOmegaPairSumAxis N)
+        (R.outerNormalPairSumAxis_le_outerOmegaPairSumAxis N)).comp
+          (R.outerTopToLiteral.comp gamma)) :=
+    Representation.Equiv.mk eT0.toLinearEquiv (by
+      intro h
+      exact eT0.isIntertwining' (gamma h))
+  let eKlit0 := R.outerConstantQuotientEquiv N
+  let eKlit : (K.comp gamma).Equiv
+      ((nestedQuotientRepresentation
+        (R.outerNormalConstantAxis N)
+        (R.outerOmegaConstantAxis N)
+        (R.outerNormalConstantAxis_le_outerOmegaConstantAxis N)).comp
+          (R.outerTopToLiteral.comp gamma)) :=
+    Representation.Equiv.mk eKlit0.toLinearEquiv (by
+      intro h
+      exact eKlit0.isIntertwining' (gamma h))
+  letI : FiniteDimensional (ZMod 2) X :=
+    Module.Finite.of_finite (ZMod 2) X
+  have hfinal : Function.Surjective (R.outerTopToLiteral.comp gamma) :=
+    R.outerTopToLiteral_surjective.comp hgamma
+  have hKliteral :=
+    QuotientGenerators.subrepresentationQuotient_comp_nonfixed_le_end_finrank
+      (R.outerTopToLiteral.comp gamma) hfinal
+      (R.outerNormalConstantAxis N) (R.outerOmegaConstantAxis N)
+      (R.outerNormalConstantAxis_le_outerOmegaConstantAxis N)
+      sigma X hnonfixed
+  have hTliteral :=
+    QuotientGenerators.subrepresentationQuotient_comp_nonfixed_le_end_finrank
+      (R.outerTopToLiteral.comp gamma) hfinal
+      (R.outerNormalPairSumAxis N) (R.outerOmegaPairSumAxis N)
+      (R.outerNormalPairSumAxis_le_outerOmegaPairSumAxis N)
+      sigma X hnonfixed
+  have hKsub : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[H])
+        (A := q.ker.toRepresentation.asModule) (X := X) =
+      schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[H])
+        (A := q.ker.asSubmodule) (X := X) :=
+    schurSocleMultiplicity_eq_of_target_linearEquiv
+      (submoduleRepresentationModuleEquiv (tau.comp gamma) q.ker.asSubmodule)
+  have hK : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[H])
+        (A := q.ker.asSubmodule) (X := X) ≤
+      Module.finrank (Module.End (ZMod 2)[H] X) X := by
+    rw [← hKsub,
+      ← schurSocleMultiplicity_eq_of_representationEquiv
+        (K.comp gamma) q.ker.toRepresentation eK,
+      schurSocleMultiplicity_eq_of_representationEquiv
+        (K.comp gamma) _ eKlit]
+    exact hKliteral
+  have hT : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[H])
+        (A := (T.comp gamma).asModule) (X := X) ≤
+      Module.finrank (Module.End (ZMod 2)[H] X) X := by
+    rw [schurSocleMultiplicity_eq_of_representationEquiv
+      (T.comp gamma) _ eT]
+    exact hTliteral
+  have hq : Function.Surjective q :=
+    R.outerNestedQuotientPairSumMap_surjective N
+  have hsplit := representationSchurMultiplicity_le_kernel_add_target
+    (tau.comp gamma) (T.comp gamma) q hq (X := X)
+  exact hsplit.trans (by omega)
+
 /-- Every nonfixed simple row in the actual inner omega image costs one
 Schur dimension.  The ordinary state quotients use the cyclic-dual table;
 the unique exceptional quotient is a binary plane. -/
