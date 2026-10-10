@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.FiniteTwoNormalSocleGenerators
+import SymmetricSubgroupAsymptotics.SocleNormalGeneratorNumber
 import Mathlib.GroupTheory.QuotientGroup.Basic
 
 /-!
@@ -205,6 +206,33 @@ noncomputable def topQuotientSocleGenerator :
   letI : Subsingleton (G ⧸ (⊤ : Subgroup G)) :=
     QuotientGroup.subsingleton_quotient_top
   exact socleNormalGeneratorBound_one_of_subsingleton _
+
+/-- A three-state normal chain gives a uniformly padded two-position socle
+generator on every quotient.  This packages the bottom/middle/top dispatch
+once, so named structural families do not need a finite quotient table. -/
+noncomputable def quotientSocleGeneratorBound_two
+    (N : {N : Subgroup G // N.Normal}) :
+    SocleNormalGeneratorBound (G ⧸ N.1) 2 := by
+  rcases D.normal_eq_bot_or_middle_or_top N.1 N.2 with
+      hbot | hmiddle | htop
+  · let e : G ⧸ N.1 ≃* G :=
+      (QuotientGroup.quotientMulEquivOfEq hbot).trans
+        QuotientGroup.quotientBot
+    exact ((D.mapEquiv e.symm).socleNormalGeneratorBound).mono
+      (by norm_num)
+  · letI : IsSimpleGroup (G ⧸ D.middle) :=
+      D.quotientMiddleIsSimpleGroup
+    let e : G ⧸ N.1 ≃* G ⧸ D.middle :=
+      QuotientGroup.quotientMulEquivOfEq hmiddle
+    letI : IsSimpleGroup (G ⧸ N.1) := e.isSimpleGroup
+    exact (socleNormalGeneratorBound_one_of_isSimpleGroup _).mono
+      (by norm_num)
+  · letI : Subsingleton (G ⧸ (⊤ : Subgroup G)) :=
+      QuotientGroup.subsingleton_quotient_top
+    letI : Subsingleton (G ⧸ N.1) :=
+      (QuotientGroup.quotientMulEquivOfEq htop).toEquiv.subsingleton
+    exact (socleNormalGeneratorBound_one_of_subsingleton _).mono
+      (by norm_num)
 
 end FiniteThreeNormalChainData
 end SymmetricSubgroupAsymptotics

@@ -144,6 +144,50 @@ theorem uniform [Finite V] :
     (fun j ↦ C.cyclicRepresentative (B.generator i j))
     (B.state_eq i)
 
+/-- A cyclic-generator registry for a restricted group action also bounds
+the same invariant subspaces for the ambient group.  The restricted orbit
+of each stored vector lies in its ambient orbit, while ambient invariance of
+the target subspace gives the reverse containment. -/
+theorem uniform_of_comp
+    {L : Type*} [Group L]
+    (rho : Representation k G V) (f : L →* G)
+    {states : I → Subrepresentation (rho.comp f)}
+    {C : BinaryInvariantCyclicOrbitRegistry (rho.comp f) states}
+    {H : ℕ}
+    (B : BinaryInvariantCyclicGeneratorBound C H)
+    [Finite V] :
+    UniformSubrepresentationGeneratorBound rho H := by
+  intro W
+  let restricted : Subrepresentation (rho.comp f) :=
+    { toSubmodule := W.toSubmodule
+      apply_mem_toSubmodule := fun g _ hv ↦
+        W.apply_mem_toSubmodule (f g) hv }
+  obtain ⟨i, hi⟩ := C.complete restricted
+  let generator : Fin H → V :=
+    fun j ↦ C.cyclicRepresentative (B.generator i j)
+  have hstate : (states i).toSubmodule = W.toSubmodule := by
+    exact congrArg Subrepresentation.toSubmodule hi
+  have horbit (v : V) :
+      binaryOrbitSpan (rho.comp f) v ≤ binaryOrbitSpan rho v := by
+    apply Submodule.span_le.mpr
+    rintro _ ⟨g, rfl⟩
+    exact Submodule.subset_span ⟨f g, rfl⟩
+  have hleft : W.toSubmodule ≤
+      ⨆ j, binaryOrbitSpan rho (generator j) := by
+    rw [← hstate, B.state_eq i]
+    exact iSup_mono fun j ↦ horbit (generator j)
+  have hgenerator_mem (j : Fin H) : generator j ∈ W.toSubmodule := by
+    rw [← hstate, B.state_eq i]
+    exact (le_iSup
+      (fun q ↦ binaryOrbitSpan (rho.comp f) (generator q)) j)
+      (binaryOrbitSpan_point (rho.comp f) (generator j))
+  have hright : (⨆ j, binaryOrbitSpan rho (generator j)) ≤
+      W.toSubmodule := by
+    exact iSup_le fun j ↦ binaryOrbitSpan_le rho W
+      (hgenerator_mem j)
+  exact representationGeneratedBy_of_iSup_binaryOrbitSpan rho W H generator
+    (le_antisymm hleft hright)
+
 end BinaryInvariantCyclicGeneratorBound
 
 namespace BinaryInvariantCyclicOrbitRegistry

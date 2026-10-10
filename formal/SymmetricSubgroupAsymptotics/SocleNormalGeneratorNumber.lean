@@ -105,6 +105,24 @@ theorem socleNormalGeneratorBound_iff_normalGen_le
     exact exists_normal_generating_tuple_of_normalGen_le
       (finiteGroupSocle G) h
 
+namespace SocleNormalGeneratorBound
+
+/-- A socle normal-generator certificate may be padded by identity
+elements.  This is the direct tuple form used by the finite package
+constructors, so callers do not need to pass through the numerical
+`normalGen` invariant. -/
+theorem mono {G : Type} [Group G] {m n : ℕ}
+    (h : SocleNormalGeneratorBound G m) (hmn : m ≤ n) :
+    SocleNormalGeneratorBound G n := by
+  obtain ⟨x, hx⟩ := h
+  exact exists_normal_generating_tuple_of_length_le x
+    (fun i ↦ by
+      rw [← hx]
+      exact Subgroup.subset_normalClosure (Set.mem_range_self i))
+    hx hmn
+
+end SocleNormalGeneratorBound
+
 /-- Generator-number form of the published Zmud input. -/
 noncomputable def ZmudFaithfulCharacterTupleInput.ofNormalGen
     (hZmud : ZmudFaithfulCharacterTupleInput)
