@@ -782,6 +782,59 @@ theorem displacementState_ne_seven (i : Fin 11) :
     displacementState i ≠ (7 : Fin 11) := by
   fin_cases i <;> decide
 
+/-- The intrinsic displacement kernel embeds into the literal natural state
+named by `displacementState`. -/
+noncomputable def coinvariantsKernelEmbedding (i : Fin 11) :
+    (representationCoinvariantsKernelSubrepresentation
+        (states i).toRepresentation).toRepresentation.IntertwiningMap
+      (states (displacementState i)).toRepresentation where
+  toLinearMap :=
+    { toFun := fun x ↦ ⟨x.1.1, by
+        have hx : x.1.1 ∈
+            (Representation.Coinvariants.ker
+              (states i).toRepresentation).map
+                (states i).toSubmodule.subtype :=
+          ⟨x.1, x.2, rfl⟩
+        rwa [coinvariantsKernel_map_eq_state i] at hx⟩
+      map_add' := by intro x y; exact Subtype.ext rfl
+      map_smul' := by intro c x; exact Subtype.ext rfl }
+  isIntertwining' := by
+    intro g
+    apply LinearMap.ext
+    intro x
+    exact Subtype.ext rfl
+
+theorem coinvariantsKernelEmbedding_injective (i : Fin 11) :
+    Function.Injective (coinvariantsKernelEmbedding i) := by
+  intro x y hxy
+  apply Subtype.ext
+  apply Subtype.ext
+  exact congrArg Subtype.val hxy
+
+/-- Uniform nonfixed-row bound for every one of the eleven literal states.
+The quotient to coinvariants is fixed, while the exact displacement kernel
+embeds into a certified natural state of multiplicity at most one. -/
+theorem state_nonfixed_schurSocleMultiplicity_le_one
+    (i : Fin 11)
+    {A : Type} [AddCommGroup A] [Module (ZMod 2) A]
+    (sigma : Representation (ZMod 2) Top A)
+    (S : Submodule (ZMod 2)[Top] sigma.asModule)
+    [Finite S] [IsSimpleModule (ZMod 2)[Top] S]
+    (hnonfixed : ¬ representationSubmoduleFixed sigma S) :
+    schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[Top])
+        (A := (states i).toRepresentation.asModule) (X := S) ≤ 1 := by
+  letI : FiniteDimensional (ZMod 2) S :=
+    Module.Finite.of_finite (ZMod 2) S
+  exact (schurSocleMultiplicity_le_of_nonfixed_coinvariantsKernel_injection
+    sigma S hnonfixed (states i).toRepresentation
+      (states (displacementState i)).toRepresentation
+      (coinvariantsKernelEmbedding i)
+      (coinvariantsKernelEmbedding_injective i)).trans
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.
+      subrepresentation_schurSocleMultiplicity_le_one_of_module
+        (states (displacementState i)))
+
 namespace P0_0
 
 noncomputable def certificate :
