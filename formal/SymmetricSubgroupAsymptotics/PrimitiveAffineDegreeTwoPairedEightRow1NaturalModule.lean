@@ -34,7 +34,7 @@ def actionEquiv : Source ≃* Top := PrimitiveAffineEightFrameRow0TopCertificate
 
 def topAmbient (i : Fin 4) : Top := actionEquiv (PrimitiveAffineEightFrameRow0TopCertificate.ambient i)
 
-private theorem topAmbient_full :
+theorem topAmbient_full :
     Subgroup.closure (Set.range topAmbient) = ⊤ := by
   apply top_unique
   intro y _hy
