@@ -58,6 +58,83 @@ theorem originalNormal_le_rawKernelOmegaFixedOriginalPreimage
   rw [QuotientGroup.eq_one_iff.mpr hu]
   exact Subgroup.one_mem _
 
+/-- Image of the fixed omega lift in the intermediate pair top. -/
+def rawKernelOmegaFixedTopImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subgroup (R.frame.top.range ⨸ R.outerTopNormal N.1) :=
+  (R.rawKernelOmegaFixedLift N).map (R.outerQuotientMap N)
+
+instance rawKernelOmegaFixedTopImage_normal
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaFixedTopImage N).Normal :=
+  Subgroup.Normal.map inferInstance _ (R.outerQuotientMap_surjective N)
+
+theorem rawKernelOmegaFixedTopImage_le_innerKernel
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.rawKernelOmegaFixedTopImage N ≤ (R.innerQuotientMap N).ker := by
+  rintro y ⟨x, hx, rfl⟩
+  apply MonoidHom.mem_ker.mpr
+  simpa only [rawQuotientMap, MonoidHom.comp_apply] using
+    MonoidHom.mem_ker.mp hx.1.1
+
+/-- Pull the fixed intermediate image back before the second quotient. -/
+def rawKernelOmegaFixedIntermediatePreimage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subgroup R.frame.top.range := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  exact (R.rawKernelOmegaFixedTopImage N).comap
+    (QuotientGroup.mk' (R.outerTopNormal N.1))
+
+/-- The fixed intermediate pullback is exactly the first-top image of the
+fixed original pullback. -/
+theorem rawKernelOmegaFixedIntermediatePreimage_eq_map
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.rawKernelOmegaFixedIntermediatePreimage N =
+      (R.rawKernelOmegaFixedOriginalPreimage N).map
+        R.frame.top.rangeRestrict := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  ext y
+  constructor
+  · intro hy
+    change QuotientGroup.mk' (R.outerTopNormal N.1) y ∈
+      (R.rawKernelOmegaFixedLift N).map (R.outerQuotientMap N) at hy
+    obtain ⟨q, hq, hqy⟩ := hy
+    obtain ⟨u, rfl⟩ := QuotientGroup.mk'_surjective N.1 q
+    rw [R.outerQuotientMap_apply] at hqy
+    have hdiv : R.frame.top.rangeRestrict u / y ∈
+        R.outerTopNormal N.1 :=
+      QuotientGroup.eq_iff_div_mem.mp hqy
+    obtain ⟨n, hn, hntop⟩ := hdiv
+    have hnFixed : n ∈ R.rawKernelOmegaFixedOriginalPreimage N :=
+      R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N hn
+    refine ⟨u * n⁻¹,
+      (R.rawKernelOmegaFixedOriginalPreimage N).mul_mem hq
+        ((R.rawKernelOmegaFixedOriginalPreimage N).inv_mem hnFixed), ?_⟩
+    rw [map_mul, map_inv, hntop]
+    group
+  · rintro ⟨u, hu, rfl⟩
+    change QuotientGroup.mk' (R.outerTopNormal N.1)
+        (R.frame.top.rangeRestrict u) ∈
+      (R.rawKernelOmegaFixedLift N).map (R.outerQuotientMap N)
+    exact ⟨QuotientGroup.mk' N.1 u, hu, rfl⟩
+
+theorem outerTopNormal_le_rawKernelOmegaFixedIntermediatePreimage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.outerTopNormal N.1 ≤ R.rawKernelOmegaFixedIntermediatePreimage N := by
+  rw [R.rawKernelOmegaFixedIntermediatePreimage_eq_map N]
+  exact Subgroup.map_mono
+    (R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N)
+
+instance rawKernelOmegaFixedIntermediatePreimage_normal
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaFixedIntermediatePreimage N).Normal := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  exact Subgroup.Normal.comap inferInstance
+    (QuotientGroup.mk' (R.outerTopNormal N.1))
+
 /-- A fixed omega vector gives a central element of the original quotient.
 The statement keeps the concrete omega embedding visible for later
 coordinate calculations. -/
@@ -298,8 +375,7 @@ def fixedOmegaInnerNaturalAxis
   R.secondFrame.sharedOriginalAxis
     (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
     R.topEquiv R.module_action_eq
-    ((R.rawKernelOmegaFixedOriginalPreimage N).map
-      R.frame.top.rangeRestrict)
+    (R.rawKernelOmegaFixedIntermediatePreimage N)
 
 /-- The fixed inner axis before transporting the second-frame top to the
 literal catalogue top. -/
@@ -308,8 +384,7 @@ def fixedOmegaInnerCoordinateAxis
     Subrepresentation R.secondFrame.coordinateTopAction :=
   R.secondFrame.sharedOriginalAxis
     R.secondFrame.coordinateTopAction (MulEquiv.refl _) (fun _ _ ↦ rfl)
-    ((R.rawKernelOmegaFixedOriginalPreimage N).map
-      R.frame.top.rangeRestrict)
+    (R.rawKernelOmegaFixedIntermediatePreimage N)
 
 /-- The first-kernel coordinate state contributed by the fixed omega lift,
 before separating its pair-sum and pair-constant coordinates. -/
@@ -368,15 +443,15 @@ theorem fixedOmegaInnerNaturalAxis_toSubmodule
       R.secondFrame.ambientAxis
         ((R.rawKernelOmegaFixedOriginalPreimage N).map
           R.frame.top.rangeRestrict) :=
-  rfl
+  congrArg R.secondFrame.ambientAxis
+    (R.rawKernelOmegaFixedIntermediatePreimage_eq_map N)
 
 theorem fixedOmegaInnerCoordinateAxis_le_kernelTop
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     R.fixedOmegaInnerCoordinateAxis N ≤
       R.secondFrame.kernelTopPermutationSubrepresentation :=
   R.secondFrame.ambientAxis_le_kernelSpace
-    ((R.rawKernelOmegaFixedOriginalPreimage N).map
-      R.frame.top.rangeRestrict)
+    (R.rawKernelOmegaFixedIntermediatePreimage N)
 
 theorem fixedOmegaPairSumAxis_toSubmodule
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
@@ -399,26 +474,24 @@ theorem moduleAxis_le_fixedOmegaInnerNaturalAxis
     R.moduleAxis N ≤ R.fixedOmegaInnerNaturalAxis N := by
   intro v hv
   change v ∈ R.secondFrame.ambientAxis
-    ((R.rawKernelOmegaFixedOriginalPreimage N).map
-      R.frame.top.rangeRestrict)
+    (R.rawKernelOmegaFixedIntermediatePreimage N)
   change v ∈ R.secondFrame.ambientAxis (R.outerTopNormal N.1) at hv
   obtain ⟨k, hk, rfl⟩ := (R.secondFrame.mem_ambientAxis _ v).1 hv
   exact (R.secondFrame.mem_ambientAxis _ _).2
-    ⟨k, Subgroup.map_mono
-      (R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N) hk, rfl⟩
+    ⟨k, R.outerTopNormal_le_rawKernelOmegaFixedIntermediatePreimage N hk,
+      rfl⟩
 
 theorem innerNormalCoordinateAxis_le_fixedOmegaInnerCoordinateAxis
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     R.innerNormalCoordinateAxis N ≤ R.fixedOmegaInnerCoordinateAxis N := by
   intro v hv
   change v ∈ R.secondFrame.ambientAxis
-    ((R.rawKernelOmegaFixedOriginalPreimage N).map
-      R.frame.top.rangeRestrict)
+    (R.rawKernelOmegaFixedIntermediatePreimage N)
   change v ∈ R.secondFrame.ambientAxis (R.outerTopNormal N.1) at hv
   obtain ⟨k, hk, rfl⟩ := (R.secondFrame.mem_ambientAxis _ v).1 hv
   exact (R.secondFrame.mem_ambientAxis _ _).2
-    ⟨k, Subgroup.map_mono
-      (R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N) hk, rfl⟩
+    ⟨k, R.outerTopNormal_le_rawKernelOmegaFixedIntermediatePreimage N hk,
+      rfl⟩
 
 theorem outerNormalAxis_le_fixedOmegaOuterAxis
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
@@ -625,9 +698,9 @@ theorem fixedOmegaInner_coinvariantsKer_le_moduleAxis
       (R.secondFrame.sharedOriginalAxis
         (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
         R.topEquiv R.module_action_eq
-        ((R.rawKernelOmegaFixedOriginalPreimage N).map
-          R.frame.top.rangeRestrict)).toRepresentation ≤
+        (R.rawKernelOmegaFixedIntermediatePreimage N)).toRepresentation ≤
     (R.secondFrame.ambientAxis (R.outerTopNormal N.1)).comap _
+  rw [R.rawKernelOmegaFixedIntermediatePreimage_eq_map N]
   apply coinvariantsKer_sharedOriginalAxis_le_ambientAxis
     R.secondFrame
     (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
