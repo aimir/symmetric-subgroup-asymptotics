@@ -682,6 +682,35 @@ noncomputable def outerOmegaZeroCutMap
   (((R.frame.zeroCutMap N.1).comp
     (R.outerOmegaRetainedKernel N).subtype).toAdditive).toZModLinearMap 2
 
+/-- Faithful bit coordinates identify the retained first-kernel omega
+intersection with the actual outer omega axis used by the coupled table. -/
+noncomputable def outerOmegaRetainedKernelEquivAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Additive (R.outerOmegaRetainedKernel N) ≃ₗ[ZMod 2]
+      (R.outerOmegaAxis N).toSubmodule := by
+  let f : Additive (R.outerOmegaRetainedKernel N) →ₗ[ZMod 2]
+      (R.outerOmegaAxis N).toSubmodule :=
+    ((((R.frame.bitsHom.comp
+      (R.outerOmegaRetainedKernel N).subtype).toAdditive).toZModLinearMap 2).
+        codRestrict (R.outerOmegaAxis N).toSubmodule (fun l ↦ by
+          exact (R.frame.bits_mem_ambientAxis
+            (R.rawKernelOmegaOriginalPreimage N) l.toMul.1).2 l.toMul.2))
+  apply LinearEquiv.ofBijective f
+  constructor
+  · intro l m hlm
+    apply Additive.toMul.injective
+    apply Subtype.ext
+    exact R.frame.bitsHom_injective
+      (congrArg (fun v : (R.outerOmegaAxis N).toSubmodule ↦
+        Multiplicative.ofAdd (v : Fin s → ZMod 2)) hlm)
+  · rintro ⟨v, hv⟩
+    obtain ⟨l, hl, hlv⟩ := (R.frame.mem_ambientAxis
+      (R.rawKernelOmegaOriginalPreimage N) v).1 hv
+    let lOmega : R.outerOmegaRetainedKernel N := ⟨l, hl⟩
+    refine ⟨Additive.ofMul lOmega, ?_⟩
+    apply Subtype.ext
+    exact hlv
+
 /-- The outer coordinates of the omega-filtration kernel are exactly the
 zero-cut image of the retained first-kernel intersection. -/
 theorem rawKernelOmegaOuterCoordinateMap_range_eq
