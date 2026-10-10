@@ -35,6 +35,41 @@ theorem product_mem (x : Fin w → ZMod 2) (hx : x ∈ K)
     x * y ∈ binaryCoordinateProductSpan K W :=
   Submodule.subset_span ⟨x, hx, y, hy, rfl⟩
 
+/-- Coordinatewise product spans of invariant subspaces remain invariant
+under a permutation action. -/
+theorem apply_mem
+    {G : Type*} [Group G] [MulAction G (Fin w)]
+    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
+    (A B : Subrepresentation rho) (g : G)
+    (z : Fin w → ZMod 2)
+    (hz : z ∈ binaryCoordinateProductSpan A.toSubmodule B.toSubmodule) :
+    rho g z ∈ binaryCoordinateProductSpan A.toSubmodule B.toSubmodule := by
+  induction hz using Submodule.span_induction with
+  | mem z hz =>
+      obtain ⟨x, hx, y, hy, rfl⟩ := hz
+      have hmul : rho g (x * y) = rho g x * rho g y := by
+        rfl
+      rw [hmul]
+      exact product_mem A.toSubmodule B.toSubmodule
+        _ (A.apply_mem_toSubmodule g hx)
+        _ (B.apply_mem_toSubmodule g hy)
+  | zero => simpa only [map_zero] using
+      (binaryCoordinateProductSpan A.toSubmodule B.toSubmodule).zero_mem
+  | add x y _ _ hx hy => simpa only [map_add] using
+      (binaryCoordinateProductSpan A.toSubmodule B.toSubmodule).add_mem hx hy
+  | smul a x _ hx => simpa only [map_smul] using
+      (binaryCoordinateProductSpan A.toSubmodule B.toSubmodule).smul_mem a hx
+
+/-- The product span as an actual subrepresentation of the natural
+permutation module. -/
+def subrepresentation
+    {G : Type*} [Group G] [MulAction G (Fin w)]
+    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
+    (A B : Subrepresentation rho) : Subrepresentation rho where
+  toSubmodule := binaryCoordinateProductSpan A.toSubmodule B.toSubmodule
+  apply_mem_toSubmodule g _ hz :=
+    apply_mem A.toSubmodule B.toSubmodule A B g _ hz
+
 /-- Bilinearity reduces product-span containment to products of spanning
 families. -/
 theorem le_of_basis_products
