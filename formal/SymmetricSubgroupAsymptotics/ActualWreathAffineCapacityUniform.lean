@@ -59,7 +59,7 @@ noncomputable def jointCapacitySharpenTo_of_ambientDual_uniform
       (E S phi C).quotientRepresentation
       (E S phi C).originalKernelChart where
   capacity := H
-  capacity_nonneg := Nat.zero_le H
+  capacity_nonneg := by positivity
   section_capacity := by
     intro N
     letI : N.1.Normal := N.2
