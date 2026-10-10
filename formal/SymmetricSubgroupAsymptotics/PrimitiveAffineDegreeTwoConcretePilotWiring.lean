@@ -1,20 +1,24 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoConcreteResidualAssembly
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1Resolution
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow3Resolution
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1Resolution
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopRelativeKernelOrbitRows
 
 /-!
 # Concrete pilot wiring in the degree-two residual source
 
-The first count-twelve row and the third primitive count-sixteen row already
-have checked quotient-socle and natural-module certificates.  This file wires
-those endpoints into the literal catalogues.  Consequently the remaining
-semantic input cannot replace either pilot with a project-owned row premise.
+The first count-twelve row, the first paired-eight row, and the third
+primitive count-sixteen row already have checked finite certificates.  This
+file wires those endpoints into the literal catalogues.  Consequently the
+remaining semantic input cannot replace any pilot with a project-owned row
+premise.  The paired-eight slot retains only its actual omega-socle dual
+generator theorem; its prefix, relative characters, and resolved row are
+constructed here.
 
 The resulting constructor still exposes the unresolved catalogue rows, but
-its type records the strict progress toward the complete concrete degree-two
-source: count-twelve row index `0` and primitive-sixteen row index `2` are
-discharged by their generated finite certificates.
+its type records strict progress toward the complete concrete degree-two
+source: count-twelve row index `0`, paired-eight row index `0`, and
+primitive-sixteen row index `2` are wired to their generated certificates.
 -/
 
 set_option autoImplicit false
@@ -29,11 +33,12 @@ namespace DegreeTwoConcretePilotWiring
 namespace Concrete := DegreeTwoConcreteResidualAssembly
 namespace TwelvePilot := PrimitiveAffineDegreeTwoTwelveRow1Resolution
 namespace SixteenPilot := PrimitiveAffineDegreeTwoPrimitiveSixteenRow3Resolution
+namespace PairedEightPilot := PrimitiveAffineDegreeTwoPairedEightRow1Resolution
 
 abbrev TwelveCatalogue := Concrete.TwelveCatalogue
 abbrev SixteenCatalogue := Concrete.SixteenCatalogue
 
-/-- Semantic data for precisely the rows not covered by the two checked
+/-- Semantic data for precisely the rows not covered by the three checked
 pilots.  The disequality hypotheses prevent the pilot rows from reappearing
 as abstract assumptions. -/
 structure RemainingPairTopSemanticData : Type 1 where
@@ -55,9 +60,15 @@ structure RemainingPairTopSemanticData : Type 1 where
     ∀ (j : Fin 24) (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopTowerRealization
         (SixteenCatalogue.paired8 j) p),
+      j ≠ (0 : Fin 24) →
       DegreeTwoPairTopTowerRelativeKernelOrbitRowData
         (SixteenCatalogue.paired8 j)
         degreeTwoSixteenPairProfiles p realization
+  sixteenPaired8Row1 :
+    ∀ (p : PreE7PairActionClass 16)
+      (realization : DegreeTwoPairTopTowerRealization
+        (SixteenCatalogue.paired8 (0 : Fin 24)) p),
+      PairedEightPilot.OmegaSocleDualGenerated realization
   sixteenZero16 :
     ∀ (j : Fin 29) (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopRealization
@@ -104,15 +115,20 @@ noncomputable def twelveResolution
     · exact ((D.twelveRelative j p realization hj hbranch).twelveResolvedData
         lit).toResolvedRow
 
-/-- Count-sixteen resolution with primitive row index `2` supplied by the
-checked row-three quotient-socle and natural-module certificates. -/
+/-- Count-sixteen resolution with paired-eight row index `0` and primitive
+row index `2` supplied by their checked finite certificates. -/
 noncomputable def sixteenResolution
     (D : RemainingPairTopSemanticData)
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature) :
     DegreeTwoSixteenPairTopCatalogueResolution SixteenCatalogue where
-  paired8 j p realization :=
-    ((D.sixteenPaired8 j p realization).sixteenResolvedData lit).toResolvedRow
+  paired8 j p realization := by
+    by_cases hj : j = (0 : Fin 24)
+    · subst j
+      exact PairedEightPilot.resolvedRow hZmud lit realization
+        (D.sixteenPaired8Row1 p realization)
+    · exact ((D.sixteenPaired8 j p realization hj).sixteenResolvedData
+        lit).toResolvedRow
   zero16 j p realization :=
     ((D.sixteenZero16 j p realization).sixteenResolvedData lit).toResolvedRow
   twoAffine16 j p realization :=
@@ -128,9 +144,9 @@ noncomputable def sixteenResolution
 
 end RemainingPairTopSemanticData
 
-/-- Degree-two residual source with both checked catalogue pilots installed
-at their literal indices.  Only the other 300 relative/comparator positions
-and the other 19 primitive-sixteen positions occur in `remaining`. -/
+/-- Degree-two residual source with all three checked catalogue pilots
+installed at their literal indices.  The remaining structure excludes the
+full row objects at those positions. -/
 noncomputable def source
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
