@@ -561,9 +561,9 @@ structure PreE7FiniteQcharZmudAxes
   action_injective : Function.Injective action
   degree_window : preE7CharacterRho * w ≤
     ((evenWidth w : ℝ) - ((max 2 degree : ℕ) : ℝ)) / 8
-  state : ∀ j : registry.State, ¬ E ≤ registry.state j →
+  state : ∀ j : registry.State, ¬ E ≤ (registry.normalAxis j).1 →
     PreE7BinaryLinearZmudTupleData
-      (preE7NonPairAction w i ⨸ registry.state j)
+      (preE7NonPairAction w i ⨸ (registry.normalAxis j).1)
   state_capacity : ∀ j h,
     ((state j h).linearCount : ℝ) * (Real.logb 2 3 / 3) +
         ((state j h).generalCount : ℝ) * (Real.logb 2 5 / 3) ≤
@@ -575,6 +575,25 @@ namespace PreE7FiniteQcharZmudAxes
 
 variable {w : ℕ} {i : PreE7NonPairActionClass w}
   (D : PreE7FiniteQcharZmudAxes w i)
+
+/-- The selected quotient comparator before character tuples are installed. -/
+noncomputable def interval :
+    CharacterIntervalComparator (preE7NonPairAction w i) :=
+  CharacterIntervalComparator.ofQuotientAction D.degree D.action
+    D.action_injective
+
+/-- The hot coefficient on one retained normal state.  It is independent of
+the later choice of Zmud representations. -/
+noncomputable def mainCoefficient (j : D.registry.State) : ℝ :=
+  if D.E ≤ D.registry.state j then D.interval.coefficient else 0
+
+/-- The cold coefficient on one retained normal state.  It too is determined
+before applying Zmud. -/
+noncomputable def tailCoefficient (j : D.registry.State) : ℝ :=
+  if D.E ≤ (D.registry.normalAxis j).1 then D.interval.tail
+  else (Nat.card
+    ((preE7NonPairAction w i ⨸ (D.registry.normalAxis j).1) ≃*
+      (preE7NonPairAction w i ⨸ (D.registry.normalAxis j).1)) : ℝ)
 
 /-- Apply Zmud only after the selected finite state has been fixed. -/
 noncomputable def toAxes
@@ -597,6 +616,18 @@ noncomputable def toAxes
 @[simp] theorem toAxes_degree
     (hZmud : ZmudFaithfulCharacterTupleInput) :
     (D.toAxes hZmud).degree = D.degree := rfl
+
+@[simp] theorem toAxes_mainCoefficient
+    (hZmud : ZmudFaithfulCharacterTupleInput) (j : D.registry.State) :
+    (D.toAxes hZmud).template.mainCoefficient
+        (D.registry.normalAxis j) = D.mainCoefficient j :=
+  rfl
+
+@[simp] theorem toAxes_tailCoefficient
+    (hZmud : ZmudFaithfulCharacterTupleInput) (j : D.registry.State) :
+    (D.toAxes hZmud).template.tailCoefficient
+        (D.registry.normalAxis j) = D.tailCoefficient j :=
+  rfl
 
 end PreE7FiniteQcharZmudAxes
 
@@ -644,18 +675,14 @@ created from finite linear/Zmud data at final assembly time. -/
 structure PreE7FiniteQcharZmudMenuData
     (w : ℕ) (i : PreE7NonPairActionClass w) : Type 1 where
   axes : PreE7FiniteQcharZmudAxes w i
-  main_state_total_bound : ∀
-      (hZmud : ZmudFaithfulCharacterTupleInput) b,
+  main_state_total_bound : ∀ b,
     (∑ j : axes.registry.State,
-      (axes.toAxes hZmud).template.mainCoefficient
-        (axes.registry.normalAxis j)) ≤
+      axes.mainCoefficient j) ≤
       (2 : ℝ) ^
         (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
-  tail_state_total_bound : ∀
-      (hZmud : ZmudFaithfulCharacterTupleInput) b,
+  tail_state_total_bound : ∀ b,
     (∑ j : axes.registry.State,
-      (axes.toAxes hZmud).template.tailCoefficient
-        (axes.registry.normalAxis j)) ≤
+      axes.tailCoefficient j) ≤
       (2 : ℝ) ^
         (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
 
@@ -670,8 +697,14 @@ noncomputable def toMenuData
     (hZmud : ZmudFaithfulCharacterTupleInput) :
     PreE7FiniteQcharMenuData w i where
   axes := D.axes.toAxes hZmud
-  main_state_total_bound := D.main_state_total_bound hZmud
-  tail_state_total_bound := D.tail_state_total_bound hZmud
+  main_state_total_bound := by
+    intro b
+    simpa only [PreE7FiniteQcharZmudAxes.toAxes_mainCoefficient] using
+      D.main_state_total_bound b
+  tail_state_total_bound := by
+    intro b
+    simpa only [PreE7FiniteQcharZmudAxes.toAxes_tailCoefficient] using
+      D.tail_state_total_bound b
 
 @[simp] theorem toMenuData_degree
     (hZmud : ZmudFaithfulCharacterTupleInput) :
