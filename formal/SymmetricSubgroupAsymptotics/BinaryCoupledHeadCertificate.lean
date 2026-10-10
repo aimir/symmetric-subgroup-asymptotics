@@ -181,6 +181,46 @@ theorem binaryCoupledDenominator_eq_sup_coinvariantsKer
     representationGeneratorDisplacementSpan_eq_coinvariantsKer
       rho generators hgen L]
 
+/-- For a permutation module, the intrinsic product-plus-coinvariant
+denominator is an invariant subspace of the upper state. -/
+def binaryIntrinsicCoupledDenominatorSubrepresentation
+    [MulAction G (Fin w)]
+    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
+    (K W L : Subrepresentation rho)
+    (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
+      L.toSubmodule) : Subrepresentation L.toRepresentation := by
+  let P : Subrepresentation L.toRepresentation := {
+    toSubmodule :=
+      (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule).comap
+        L.toSubmodule.subtype
+    apply_mem_toSubmodule := by
+      intro g z hz
+      change rho g z.1 ∈ binaryCoordinateProductSpan
+        K.toSubmodule W.toSubmodule
+      apply binaryCoordinateProductSpan.apply_mem
+        K.toSubmodule W.toSubmodule K W g z.1
+      exact hz }
+  let C : Subrepresentation L.toRepresentation := {
+    toSubmodule := Representation.Coinvariants.ker L.toRepresentation
+    apply_mem_toSubmodule := by
+      intro g z hz
+      exact representationCoinvariantsKer_apply_mem
+        L.toRepresentation g z hz }
+  exact P ⊔ C
+
+@[simp] theorem binaryIntrinsicCoupledDenominatorSubrepresentation_toSubmodule
+    [MulAction G (Fin w)]
+    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
+    (K W L : Subrepresentation rho)
+    (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
+      L.toSubmodule) :
+    (binaryIntrinsicCoupledDenominatorSubrepresentation
+      rho K W L hproduct).toSubmodule =
+      (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule).comap
+          L.toSubmodule.subtype ⊔
+        Representation.Coinvariants.ker L.toRepresentation :=
+  rfl
+
 /-- A sparse coordinate chart inside the product-plus-displacement
 denominator.  A term is either a basis vector of the product space or one
 literal retained-generator displacement in the upper state. -/
