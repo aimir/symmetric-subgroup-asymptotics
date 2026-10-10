@@ -190,13 +190,22 @@ theorem twoSign_uniform_mainCoefficient_le
           Fintype.card_eq_nat_card]
       _ ≤ (2 : ℝ) ^ (144 : ℕ) * (2 : ℝ) ^ (200 : ℕ) := by
         exact mul_le_mul_of_nonneg_right hcardReal (by positivity)
-      _ = (2 : ℝ) ^ (344 : ℕ) := by rw [← pow_add]; norm_num
+      _ = (2 : ℝ) ^ (344 : ℕ) := by rw [← pow_add]
+  have h200 : (2 : ℝ) ^ (200 : ℕ) ≤ (2 : ℝ) ^ (344 : ℕ) :=
+    pow_le_pow_right₀ (by norm_num) (by norm_num)
+  have h128 : (2 : ℝ) ^ (128 : ℕ) ≤ (2 : ℝ) ^ (344 : ℕ) :=
+    pow_le_pow_right₀ (by norm_num) (by norm_num)
   calc
     (2 : ℝ) ^ (200 : ℕ) + (2 : ℝ) ^ (128 : ℕ) +
         ∑ _N : TwoSignProperAxis E, (2 : ℝ) ^ (200 : ℕ) ≤
       (2 : ℝ) ^ (200 : ℕ) + (2 : ℝ) ^ (128 : ℕ) +
         (2 : ℝ) ^ (344 : ℕ) := add_le_add_left hsections _
-    _ ≤ (2 : ℝ) ^ (384 : ℕ) := by norm_num
+    _ ≤ 3 * (2 : ℝ) ^ (344 : ℕ) := by linarith
+    _ ≤ 4 * (2 : ℝ) ^ (344 : ℕ) := by positivity
+    _ = (2 : ℝ) ^ (346 : ℕ) := by
+      rw [show (4 : ℝ) = 2 ^ (2 : ℕ) by norm_num, ← pow_add]
+    _ ≤ (2 : ℝ) ^ (384 : ℕ) :=
+      pow_le_pow_right₀ (by norm_num) (by norm_num)
     _ = (2 : ℝ) ^ (384 : ℝ) := (Real.rpow_natCast 2 384).symm
 
 /-- Pull a normal axis back along a surjective group map. -/

@@ -81,13 +81,21 @@ noncomputable def degreeThreeSixOrTwelveIdentitySource_of_capacity_one
     · have hw18 : w = 18 := by simpa only [hs] using hw
       have hq12 : quotientDegree block = 12 := by
         simpa only [hs] using hq
-      rw [hw18, hq12]
+      have hw18R : (w : ℝ) = 18 := by exact_mod_cast hw18
+      have heven : evenWidth w = 18 := by
+        rw [hw18]
+        norm_num [evenWidth, halfDegree]
+      rw [hw18R, heven, hq12]
       norm_num [preE7CharacterRho, evenWidth, halfDegree]
       linarith
     · have hw36 : w = 36 := by simpa only [hs] using hw
       have hq24 : quotientDegree block = 24 := by
         simpa only [hs] using hq
-      rw [hw36, hq24]
+      have hw36R : (w : ℝ) = 36 := by exact_mod_cast hw36
+      have heven : evenWidth w = 36 := by
+        rw [hw36]
+        norm_num [evenWidth, halfDegree]
+      rw [hw36R, heven, hq24]
       norm_num [preE7CharacterRho, evenWidth, halfDegree]
       linarith
 

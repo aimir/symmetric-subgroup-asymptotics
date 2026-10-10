@@ -57,7 +57,7 @@ theorem representationGeneratedBy_one_of_transitive_monomial
       apply rho.asModuleEquiv.injective
       rw [Representation.asModuleEquiv_map_smul,
         Representation.asAlgebraHom_single,
-        LinearEquiv.apply_symm_apply, hgc]
+        LinearMap.smul_apply, LinearEquiv.apply_symm_apply, hgc]
       change d • Pi.single (top g i₀) c = Pi.single j z
       rw [hg]
       funext x

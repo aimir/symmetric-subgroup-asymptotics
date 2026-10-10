@@ -83,9 +83,8 @@ theorem translationSubmodule_quotientRepresentation_coordinate_transport_quotien
     (((elementaryChart block P).quotientRepresentation.ρ q v).1
         ((quotientEmbedding block P q).right • i)) =
       (binaryAffineLocalLinearRepresentation block P).ρ
-        (localMap block P
-          ((quotientEmbedding block P q).left
-            ((quotientEmbedding block P q).right • i)))
+        ((quotientEmbedding block P q).left
+          ((quotientEmbedding block P q).right • i))
         (v.1 i) := by
   obtain ⟨a, rfl⟩ := QuotientGroup.mk'_surjective (E block P) q
   exact translationSubmodule_quotientRepresentation_coordinate_transport

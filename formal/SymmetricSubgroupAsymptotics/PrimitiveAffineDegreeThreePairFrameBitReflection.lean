@@ -104,8 +104,10 @@ theorem degreeThreeSignedQuotientPairFrame_affineTranslation_eq_localBit
   let pointEquiv := degreeThreeSignedQuotientPointEquiv block
   let bitEquiv := degreeThreeBitEquiv block hr
   let j := (quotientEmbedding block P q).right⁻¹ • i
+  have htopEq : F.top g = (quotientEmbedding block P q).right :=
+    degreeThreeSignedQuotientPairFrame_top_apply block P hr q
   have htop : F.top g j = i := by
-    change (quotientEmbedding block P q).right • j = i
+    rw [htopEq]
     simp only [j, smul_inv_smul]
   have htransport :
       pointEquiv.symm
@@ -143,7 +145,7 @@ theorem degreeThreeSignedQuotientPairFrame_affineTranslation_eq_localBit
           ((quotientEmbedding block P q).left i)) := by
     apply F.frame.injective
     rw [← hcalc]
-    simpa only [zero_add, htop] using haffine.symm
+    simpa only [zero_add, htop, F.frame.apply_symm_apply] using haffine.symm
   exact congrArg Prod.snd hpairs
 
 end PrimitiveAffineImprimitiveBlockTransfer
