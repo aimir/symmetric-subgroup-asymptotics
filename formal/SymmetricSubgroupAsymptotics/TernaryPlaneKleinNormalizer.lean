@@ -30,27 +30,8 @@ standard bits. -/
 theorem kleinRange_eq_pairSubgroup
     (f : V4 →* GL3) (_hf : Function.Injective f) :
     f.range = kleinPairSubgroup (f firstBit) (f secondBit) := by
-  apply le_antisymm
-  · rintro y ⟨x, rfl⟩
-    rcases x with ⟨a, b⟩
-    rcases C2Wreath.cases a with rfl | rfl <;>
-      rcases C2Wreath.cases b with rfl | rfl
-    · simpa only [map_one] using
-        (Subgroup.one_mem (kleinPairSubgroup (f firstBit) (f secondBit)))
-    · exact Subgroup.subset_closure
-        (Set.mem_insert_iff.mpr (Or.inr (Set.mem_singleton _)))
-    · exact Subgroup.subset_closure (Set.mem_insert_iff.mpr (Or.inl rfl))
-    · rw [show (C2Wreath.gen, C2Wreath.gen) =
-          firstBit * secondBit by rfl, map_mul]
-      exact Subgroup.mul_mem _
-        (Subgroup.subset_closure (Set.mem_insert_iff.mpr (Or.inl rfl)))
-        (Subgroup.subset_closure (Set.mem_insert_iff.mpr
-          (Or.inr (Set.mem_singleton _))))
-  · apply Subgroup.closure_le.mpr
-    intro y hy
-    rcases hy with rfl | rfl
-    · exact ⟨firstBit, rfl⟩
-    · exact ⟨secondBit, rfl⟩
+  simpa only [firstBit, secondBit, kleinFirstBit, kleinSecondBit] using
+    binaryKleinRange_eq_pairSubgroup f _hf
 
 private theorem firstBit_ne_one : firstBit ≠ 1 := by decide
 private theorem secondBit_ne_one : secondBit ≠ 1 := by decide
