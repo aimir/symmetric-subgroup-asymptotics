@@ -221,6 +221,44 @@ def binaryIntrinsicCoupledDenominatorSubrepresentation
         Representation.Coinvariants.ker L.toRepresentation :=
   rfl
 
+/-- Once the recorded tuple generates the action group, the literal
+product-plus-recorded-displacement denominator is itself an invariant
+subrepresentation. -/
+def binaryCoupledDenominatorSubrepresentation
+    [MulAction G (Fin w)]
+    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
+    (generators : J → G)
+    (hgen : Subgroup.closure (Set.range generators) = ⊤)
+    (K W L : Subrepresentation rho)
+    (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
+      L.toSubmodule) : Subrepresentation L.toRepresentation where
+  toSubmodule := binaryCoupledDenominator rho generators L
+    (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule) hproduct
+  apply_mem_toSubmodule g _ hz := by
+    rw [binaryCoupledDenominator_eq_sup_coinvariantsKer
+      rho generators L hgen
+      (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule) hproduct]
+      at hz ⊢
+    exact (binaryIntrinsicCoupledDenominatorSubrepresentation
+      rho K W L hproduct).apply_mem_toSubmodule g hz
+
+theorem binaryCoupledDenominatorSubrepresentation_eq_intrinsic
+    [MulAction G (Fin w)]
+    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
+    (generators : J → G)
+    (hgen : Subgroup.closure (Set.range generators) = ⊤)
+    (K W L : Subrepresentation rho)
+    (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
+      L.toSubmodule) :
+    binaryCoupledDenominatorSubrepresentation
+        rho generators hgen K W L hproduct =
+      binaryIntrinsicCoupledDenominatorSubrepresentation
+        rho K W L hproduct := by
+  apply Subrepresentation.toSubmodule_injective
+  exact binaryCoupledDenominator_eq_sup_coinvariantsKer
+    rho generators L hgen
+      (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule) hproduct
+
 /-- The residual upper-layer representation after dividing by both the
 cross-layer product and every intrinsic coinvariant relation. -/
 def binaryIntrinsicCoupledQuotientRepresentation
