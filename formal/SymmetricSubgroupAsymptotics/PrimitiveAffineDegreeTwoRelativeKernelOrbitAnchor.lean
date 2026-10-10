@@ -717,6 +717,23 @@ noncomputable def ofSocleDualSchurCapacity
     (semisimple_representationGeneratedBy_of_schurCapacity_le
       S.toRepresentation.dual r hcap)
 
+/-- Natural-side Schur-capacity endpoint.  Semisimplicity of the canonical
+socle and finite-dimensional biduality transfer the bound to the dual
+before constructing the separating orbit tuple. -/
+noncomputable def ofSocleSchurCapacity
+    (hcap : representationSchurCapacity
+      (finiteRepresentationSocle
+        (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation ≤ r) :
+    BinaryKernelOmegaLinearOrbits pi r := by
+  let rho := binaryKernelOmegaConjugationRepresentation pi
+  let S := finiteRepresentationSocle rho
+  letI : IsSemisimpleModule (ZMod 2)[Q]
+      S.toRepresentation.asModule :=
+    finiteRepresentationSocle_isSemisimple rho
+  exact ofSocleDualSchurCapacity
+    (representationDual_schurCapacity_le_of_semisimple
+      S.toRepresentation r hcap)
+
 /-- Turn a generated tuple in the dual omega module into the literal
 complex central characters used by the relative-kernel lift. -/
 noncomputable def toOrbitCharacters :
