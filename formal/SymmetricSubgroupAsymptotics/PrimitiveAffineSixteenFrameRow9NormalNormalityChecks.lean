@@ -1,0 +1,71 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState0Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState1Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState2Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState3Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState4Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState5Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState6Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState7Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState8Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState9Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState10Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState11Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState12Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState13Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState14Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState15Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityState16Checks
+
+
+/-! Assembled normality checks.  Generated from a selected certificate; Lean rechecks all words. -/
+set_option autoImplicit false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 0
+noncomputable section
+open scoped Classical
+
+namespace SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityChecks
+
+abbrev Source := PrimitiveAffineSixteenFrameRow9NormalCore.Source
+local instance sourceGroup : Group Source := PrimitiveAffineSixteenFrameRow9TopCertificate.group
+
+def normality (i : Fin 17) :
+    FiniteNormalityWordCertificate PrimitiveAffineSixteenFrameRow9NormalCore.topAmbient (PrimitiveAffineSixteenFrameRow9NormalCore.stateGenerators i) :=
+by
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState0Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState1Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState2Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState3Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState4Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState5Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState6Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState7Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState8Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState9Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState10Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState11Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState12Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState13Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState14Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState15Checks.normality ?_ i
+  intro i
+  exact Fin.cases PrimitiveAffineSixteenFrameRow9NormalNormalityState16Checks.normality (fun i ↦ Fin.elim0 i) i
+
+end SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow9NormalNormalityChecks
+
+end
