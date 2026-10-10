@@ -33,6 +33,7 @@ namespace PrimitiveAffineDegreeTwoPairedEightRow1Resolution
 namespace Shared := DegreeTwoPairedEightSharedTops
 namespace Catalogue := DegreeTwoSixteenPairFiniteCatalogue
 namespace Socles := DegreeTwoPairedEightRow1QuotientSocles
+namespace Natural := PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule
 namespace Coupled :=
   SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads
 
@@ -44,6 +45,29 @@ theorem omegaHeadDemand_le_four
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
     (Coupled.towerCoupledHeadData R).omegaHeadDemand N ≤ 4 :=
   (Coupled.towerCoupledHeadData R).omegaHeadDemand_le N
+
+/-- For row 1 the four stored permutations generate the literal top, so
+the checked demand is the intrinsic three-layer expression with the full
+commutator/coinvariant subspace in its final denominator. -/
+theorem omegaHeadDemand_eq_intrinsic
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
+    (Coupled.towerCoupledHeadData R).omegaHeadDemand N =
+      Module.finrank (ZMod 2)
+          (R.innerOmegaNaturalAxis N).toRepresentation.Coinvariants +
+        Module.finrank (ZMod 2)
+          (R.outerOmegaPairSumAxis N).toRepresentation.Coinvariants +
+        Module.finrank (ZMod 2)
+          ((R.outerOmegaConstantAxis N).toSubmodule ⫽
+            ((binaryCoordinateProductSpan
+                (R.innerOmegaNaturalAxis N).toSubmodule
+                (R.outerOmegaPairSumAxis N).toSubmodule).comap
+                  (R.outerOmegaConstantAxis N).toSubmodule.subtype ⊔
+              Representation.Coinvariants.ker
+                (R.outerOmegaConstantAxis N).toRepresentation)) :=
+  (Coupled.towerCoupledHeadData R).omegaHeadDemand_eq_intrinsic
+    Natural.topAmbient_full N
 
 /-- The natural representation carried by the canonical socle of the
 central omega of one actual direct quotient kernel. -/
