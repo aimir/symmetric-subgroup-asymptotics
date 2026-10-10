@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerQuotient
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoRelativeKernelOrbitAnchor
 import SymmetricSubgroupAsymptotics.RepresentationFixedExact
+import SymmetricSubgroupAsymptotics.SchurTargetExtension
 
 /-!
 # The omega filtration through two pair kernels

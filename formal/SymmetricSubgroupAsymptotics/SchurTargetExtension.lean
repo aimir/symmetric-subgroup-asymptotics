@@ -1,6 +1,5 @@
 import SymmetricSubgroupAsymptotics.SchurMultiplicity
 import SymmetricSubgroupAsymptotics.SchurMultiplicityTargetEquiv
-import SymmetricSubgroupAsymptotics.RepresentationCoordinateHeads
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 
 /-!
@@ -124,8 +123,7 @@ theorem representationSchurMultiplicity_le_kernel_add_target
         (k := k) (R := k[G]) (A := rho.asModule) (X := X) ≤
       schurSocleMultiplicity
           (k := k) (R := k[G])
-          (A := (Subrepresentation.ofSubmodule'
-            q.ker.asSubmodule).toRepresentation.asModule) (X := X) +
+          (A := q.ker.asSubmodule) (X := X) +
         schurSocleMultiplicity
           (k := k) (R := k[G]) (A := sigma.asModule) (X := X) := by
   let f : rho.asModule →ₗ[k[G]] sigma.asModule :=
@@ -134,19 +132,14 @@ theorem representationSchurMultiplicity_le_kernel_add_target
   have hK : K = f.ker := by
     ext v
     rfl
-  let eK : K ≃ₗ[k[G]]
-      (Subrepresentation.ofSubmodule' K).toRepresentation.asModule :=
-    submoduleRepresentationModuleEquiv rho K
   let eQ : (rho.asModule ⧸ K) ≃ₗ[k[G]] sigma.asModule := by
     rw [hK]
     exact f.quotKerEquivOfSurjective hq
-  have hmK := schurSocleMultiplicity_eq_of_target_linearEquiv
-    (k := k) (R := k[G]) (X := X) eK
   have hmQ := schurSocleMultiplicity_eq_of_target_linearEquiv
     (k := k) (R := k[G]) (X := X) eQ
   have hm := schurSocleMultiplicity_le_submodule_add_quotient
     (k := k) (R := k[G]) (A := rho.asModule) (X := X) K
-  rw [hmK, hmQ] at hm
+  rw [hmQ] at hm
   exact hm
 
 /-- The ground-field dimension occupied by one simple isotypic row cannot

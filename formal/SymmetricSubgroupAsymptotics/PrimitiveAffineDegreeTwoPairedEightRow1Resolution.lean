@@ -104,6 +104,37 @@ theorem omegaSocle_schurSocleMultiplicity_eq_rawOmega
   finiteRepresentationSocle_schurSocleMultiplicity_eq
     (binaryKernelOmegaConjugationRepresentation (R.rawQuotientMap N))
 
+/-- The first concrete nonfixed-row split: socle multiplicity is bounded
+by the literal kernel and inner image of the omega projection. -/
+theorem omegaSocle_schurSocleMultiplicity_le_projectionKernel_add_inner
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
+    (X : Submodule (ZMod 2)[preE7PairAction 16 p ⧸ N.1]
+      (OmegaSocleRepresentation R N).asModule)
+    [IsSimpleModule (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X] :
+    schurSocleMultiplicity
+        (k := ZMod 2)
+        (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1])
+        (A := (OmegaSocleRepresentation R N).asModule) (X := X) ≤
+      schurSocleMultiplicity
+          (k := ZMod 2)
+          (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1])
+          (A := (R.rawKernelOmegaInnerImageIntertwiner N).ker.asSubmodule)
+          (X := X) +
+        schurSocleMultiplicity
+          (k := ZMod 2)
+          (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1])
+          (A := ((R.innerOmegaSubrepresentation N).toRepresentation.comp
+            (R.rawQuotientMap N)).asModule) (X := X) := by
+  rw [R.omegaSocle_schurSocleMultiplicity_eq_rawOmega N X]
+  exact representationSchurMultiplicity_le_kernel_add_target
+    (binaryKernelOmegaConjugationRepresentation (R.rawQuotientMap N))
+    ((R.innerOmegaSubrepresentation N).toRepresentation.comp
+      (R.rawQuotientMap N))
+    (R.rawKernelOmegaInnerImageIntertwiner N)
+    (R.rawKernelOmegaInnerImageIntertwiner_surjective N)
+
 /-- The checked coupled head closes the fixed simple row; a three-layer
 same-simple-type multiplicity estimate closes every nonfixed row.  This
 is the exact algebraic composition of those two inputs for one actual
