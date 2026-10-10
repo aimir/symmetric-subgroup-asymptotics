@@ -238,6 +238,37 @@ def binaryIntrinsicCoupledQuotientRepresentation
   L.toRepresentation.quotient D.toSubmodule
     (fun g ↦ D.apply_mem_toSubmodule g)
 
+/-- The residual coupled quotient is an actual trivial representation: its
+denominator contains every displacement of the upper state. -/
+@[simp] theorem binaryIntrinsicCoupledQuotientRepresentation_apply
+    [MulAction G (Fin w)]
+    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
+    (K W L : Subrepresentation rho)
+    (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
+      L.toSubmodule)
+    (g : G)
+    (z : L.toSubmodule ⫽
+      (binaryIntrinsicCoupledDenominatorSubrepresentation
+        rho K W L hproduct).toSubmodule) :
+    binaryIntrinsicCoupledQuotientRepresentation
+        rho K W L hproduct g z = z := by
+  let D := binaryIntrinsicCoupledDenominatorSubrepresentation
+    rho K W L hproduct
+  change (L.toRepresentation.quotient D.toSubmodule
+      (fun h ↦ D.apply_mem_toSubmodule h)) g z = z
+  refine Submodule.Quotient.induction_on D.toSubmodule z ?_
+  intro v
+  change D.toSubmodule.mkQ (L.toRepresentation g v) =
+    D.toSubmodule.mkQ v
+  apply (Submodule.Quotient.eq D.toSubmodule).mpr
+  change L.toRepresentation g v - v ∈
+    (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule).comap
+        L.toSubmodule.subtype ⊔
+      Representation.Coinvariants.ker L.toRepresentation
+  exact le_sup_right
+    (Representation.Coinvariants.sub_mem_ker
+      (ρ := L.toRepresentation) g v)
+
 /-- A sparse coordinate chart inside the product-plus-displacement
 denominator.  A term is either a basis vector of the product space or one
 literal retained-generator displacement in the upper state. -/
