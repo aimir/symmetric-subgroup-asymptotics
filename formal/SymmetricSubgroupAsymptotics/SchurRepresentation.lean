@@ -93,6 +93,93 @@ theorem schurSocleMultiplicity_comp_eq
   simpa only [S', representationInflatedSubmodule, φ, hφ, ha,
     OrderIso.apply_symm_apply] using h
 
+/-- Intertwining maps are unchanged when both representations are inflated
+along a surjective acting-group map. -/
+noncomputable def representationIntertwiningCompEquiv
+    (γ : D →* B) (hγ : Function.Surjective γ)
+    (ρ : Representation k B V) (σ : Representation k B A) :
+    ρ.IntertwiningMap σ ≃ₗ[k]
+      (ρ.comp γ).IntertwiningMap (σ.comp γ) where
+  toFun f :=
+    { toLinearMap := f.toLinearMap
+      isIntertwining' d := f.isIntertwining' (γ d) }
+  invFun f :=
+    { toLinearMap := f.toLinearMap
+      isIntertwining' := by
+        intro b
+        obtain ⟨d, rfl⟩ := hγ b
+        exact f.isIntertwining' d }
+  left_inv f := by ext; rfl
+  right_inv f := by ext; rfl
+  map_add' f g := by ext; rfl
+  map_smul' c f := by ext; rfl
+
+/-- Simplicity of a representation module is preserved by inflation along
+a surjective acting-group map. -/
+theorem representation_comp_isSimpleModule
+    (γ : D →* B) (hγ : Function.Surjective γ)
+    (ρ : Representation k B V) [IsSimpleModule k[B] ρ.asModule] :
+    IsSimpleModule k[D] (ρ.comp γ).asModule := by
+  let φ := MonoidAlgebra.mapDomainRingHom k γ
+  letI : RingHomSurjective φ := ⟨Finsupp.mapDomain_surjective hγ⟩
+  let f : (ρ.comp γ).asModule →ₛₗ[φ] ρ.asModule :=
+    { toFun := fun x ↦ x
+      map_add' := by intro x y; rfl
+      map_smul' := by
+        intro r x
+        exact representation_comp_monoidAlgebra_smul γ ρ r x }
+  exact (f.isSimpleModule_iff_of_bijective ⟨Function.injective_id,
+    Function.surjective_id⟩).mpr inferInstance
+
+/-- Schur multiplicity of an arbitrary simple source and finite target is
+unchanged when both representations are inflated along a surjective group
+homomorphism. -/
+theorem schurSocleMultiplicity_comp_eq_representation
+    [FiniteDimensional k V] [FiniteDimensional k A]
+    (γ : D →* B) (hγ : Function.Surjective γ)
+    (ρ : Representation k B V) (σ : Representation k B A)
+    [IsSimpleModule k[B] ρ.asModule] :
+    schurSocleMultiplicity
+        (k := k) (R := k[D])
+        (A := (σ.comp γ).asModule) (X := (ρ.comp γ).asModule) =
+      schurSocleMultiplicity
+        (k := k) (R := k[B])
+        (A := σ.asModule) (X := ρ.asModule) := by
+  letI : IsSimpleModule k[D] (ρ.comp γ).asModule :=
+    representation_comp_isSimpleModule γ hγ ρ
+  have hhom :=
+    (representationIntertwiningCompEquiv γ hγ ρ σ).finrank_eq
+  have hend :=
+    (representationIntertwiningCompEquiv γ hγ ρ ρ).finrank_eq
+  have hleft : Module.finrank k ((ρ.comp γ).IntertwiningMap (σ.comp γ)) =
+      schurSocleMultiplicity
+          (k := k) (R := k[D])
+          (A := (σ.comp γ).asModule) (X := (ρ.comp γ).asModule) *
+        Module.finrank k (Module.End k[D] (ρ.comp γ).asModule) := by
+    rw [(Representation.IntertwiningMap.equivLinearMapAsModule
+      (ρ.comp γ) (σ.comp γ)).finrank_eq]
+    exact schurHom_finrank_eq_multiplicity
+      (k := k) (R := k[D])
+      (A := (σ.comp γ).asModule) (X := (ρ.comp γ).asModule)
+  have hright : Module.finrank k (ρ.IntertwiningMap σ) =
+      schurSocleMultiplicity
+          (k := k) (R := k[B])
+          (A := σ.asModule) (X := ρ.asModule) *
+        Module.finrank k (Module.End k[B] ρ.asModule) := by
+    rw [(Representation.IntertwiningMap.equivLinearMapAsModule ρ σ).finrank_eq]
+    exact schurHom_finrank_eq_multiplicity
+      (k := k) (R := k[B]) (A := σ.asModule) (X := ρ.asModule)
+  have hend' : Module.finrank k (Module.End k[D] (ρ.comp γ).asModule) =
+      Module.finrank k (Module.End k[B] ρ.asModule) := by
+    rw [← (Representation.IntertwiningMap.equivLinearMapAsModule
+      (ρ.comp γ) (ρ.comp γ)).finrank_eq,
+      ← (Representation.IntertwiningMap.equivLinearMapAsModule ρ ρ).finrank_eq]
+    exact hend.symm
+  rw [hright, hleft, hend'] at hhom
+  apply Nat.eq_of_mul_eq_mul_right
+    (Module.finrank_pos (R := k) (M := Module.End k[B] ρ.asModule))
+  exact hhom.symm
+
 /-- The intrinsic Schur capacity of a representation is never larger than
 the dimension of its underlying target space. -/
 theorem representationSchurCapacity_le_dimension [FiniteDimensional k A]
