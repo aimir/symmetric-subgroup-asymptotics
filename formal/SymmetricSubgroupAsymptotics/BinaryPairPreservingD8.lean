@@ -157,8 +157,11 @@ theorem pairPreservingSignature_injective {X : Type*}
   · exact (huFirst z).trans
       ((congrArg (fun p : Equiv.Perm (Fin 2) => p i) htop).trans
         (hvFirst z).symm)
-  · rcases (show z = 0 ∨ z = 1 by decide) with rfl | rfl
-    · exact DFunLike.congr_fun hzero i
+  · have hz : z = 0 ∨ z = 1 := by
+      have hbits : ∀ b : ZMod 2, b = 0 ∨ b = 1 := by decide +kernel
+      exact hbits z
+    rcases hz with rfl | rfl
+    · exact congrFun hzero i
     · have huNe :
           (frame.symm ((u.1 : Equiv.Perm X) (frame (i, 1)))).2 ≠
             (frame.symm ((u.1 : Equiv.Perm X) (frame (i, 0)))).2 := by
@@ -184,7 +187,9 @@ theorem pairPreservingSignature_injective {X : Type*}
         have hpair := frame.injective hin
         exact one_ne_zero (congrArg Prod.snd hpair)
       exact binary_other_unique _ _ _ huNe
-        (by rwa [← DFunLike.congr_fun hzero i] at hvNe)
+        (by
+          intro hcross
+          exact hvNe (hcross.trans (congrFun hzero i)))
 
 /-- There are at most eight permutations preserving two displayed pairs. -/
 theorem pairPreserving_card_le_eight {X : Type*} [Finite X]
