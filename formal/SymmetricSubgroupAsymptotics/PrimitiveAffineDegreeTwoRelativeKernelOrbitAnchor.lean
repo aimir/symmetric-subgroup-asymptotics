@@ -353,6 +353,79 @@ namespace BinaryKernelOmegaLinearOrbits
 variable {pi : Q →* B} {r : ℕ}
   (C : BinaryKernelOmegaLinearOrbits pi r)
 
+/-- It is enough to generate the dual of an essential invariant
+subrepresentation of omega.  Each chosen functional is extended to the
+whole omega module.  If their ambient orbits vanished on a nonzero point,
+they would vanish on its orbit span and hence on a nonzero point of the
+essential subrepresentation, contradicting dual separation there.
+
+This is the form used by the paired-eight socle argument: the detecting
+subrepresentation is semisimple even when the whole omega module is not. -/
+noncomputable def ofEssentialDualGenerated
+    (S : Subrepresentation
+      (binaryKernelOmegaConjugationRepresentation pi))
+    (essential : ∀ x : Additive (binaryCentralOmega pi.ker), x ≠ 0 →
+      ∃ y : S.toSubmodule, y ≠ 0 ∧
+        (y : Additive (binaryCentralOmega pi.ker)) ∈
+          binaryOrbitSpan
+            (binaryKernelOmegaConjugationRepresentation pi) x)
+    (hgen : RepresentationGeneratedBy S.toRepresentation.dual r) :
+    BinaryKernelOmegaLinearOrbits pi r := by
+  let rho := binaryKernelOmegaConjugationRepresentation pi
+  obtain ⟨representative, hspan⟩ :=
+    orbit_span_eq_top_of_representationGeneratedBy
+      S.toRepresentation.dual hgen
+  let functional : Fin r →
+      Module.Dual (ZMod 2) (Additive (binaryCentralOmega pi.ker)) :=
+    fun i ↦ S.toSubmodule.dualLift (representative i)
+  exact
+    { functional := functional
+      separates := by
+        intro z hz
+        apply Additive.ofMul.injective
+        change Additive.ofMul z = 0
+        by_contra hz0
+        obtain ⟨y, hy0, hyOrbit⟩ := essential (Additive.ofMul z) hz0
+        have hvanish (i : Fin r) :
+            ∀ x : Additive (binaryCentralOmega pi.ker),
+              x ∈ binaryOrbitSpan rho (Additive.ofMul z) →
+                functional i x = 0 := by
+          intro x hx
+          induction hx using Submodule.span_induction with
+          | mem x hx =>
+              obtain ⟨q, rfl⟩ := hx
+              simpa only [rho,
+                binaryKernelOmegaConjugationRepresentation_apply] using
+                  hz i q
+          | zero => simp only [map_zero]
+          | add x y _ _ hx hy => simp only [map_add, hx, hy, add_zero]
+          | smul a x _ hx => simp only [map_smul, hx, smul_zero]
+        let evaluation : Module.Dual (ZMod 2) S.toSubmodule →ₗ[ZMod 2]
+            ZMod 2 :=
+          { toFun := fun f ↦ f y
+            map_add' := by intro f g; rfl
+            map_smul' := by intro a f; rfl }
+        have hevaluation : evaluation = 0 := by
+          apply LinearMap.ext_on_range hspan
+          intro iq
+          rcases iq with ⟨i, q⟩
+          let yq : S.toSubmodule := S.toRepresentation q⁻¹ y
+          have hyqOrbit :
+              (yq : Additive (binaryCentralOmega pi.ker)) ∈
+                binaryOrbitSpan rho (Additive.ofMul z) := by
+            exact binaryOrbitSpan_apply_mem rho (Additive.ofMul z) q⁻¹
+              hyOrbit
+          have hv := hvanish i yq hyqOrbit
+          change representative i yq = 0
+          simpa only [functional, Submodule.dualLift_of_subtype] using hv
+        have hall : ∀ f : Module.Dual (ZMod 2) S.toSubmodule, f y = 0 := by
+          intro f
+          have hf := LinearMap.congr_fun hevaluation f
+          simpa only [evaluation, LinearMap.zero_apply] using hf
+        have hyzero : y = 0 :=
+          (Module.forall_dual_apply_eq_zero_iff (ZMod 2) y).mp hall
+        exact hy0 hyzero }
+
 /-- Turn a generated tuple in the dual omega module into the literal
 complex central characters used by the relative-kernel lift. -/
 noncomputable def toOrbitCharacters :
