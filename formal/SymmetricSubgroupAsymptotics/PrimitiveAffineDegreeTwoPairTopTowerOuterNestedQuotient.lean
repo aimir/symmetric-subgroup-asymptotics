@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerQuotient
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerOmegaFiltration
 import SymmetricSubgroupAsymptotics.BinaryPairRankThreeResidual
 import SymmetricSubgroupAsymptotics.RepresentationNestedQuotientExact
 
@@ -254,6 +255,43 @@ noncomputable def outerConstantQuotientEquiv
         (R.outerNormalConstantAxis_le_outerOmegaConstantAxis N)).comp
           R.outerTopToLiteral) :=
   R.outerPullbackNestedQuotientEquiv _ _ _
+
+/-- The actual outer projection kernel, expressed as its exact image in the
+first zero-cut representation. -/
+abbrev rawKernelOmegaOuterZeroCutImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  (R.rawKernelOmegaOuterIntertwiner N).range
+
+/-- The injective outer coordinate map identifies the actual projection
+kernel with its zero-cut image. -/
+noncomputable def rawKernelOmegaOuterEquivZeroCutImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation.Equiv
+      (R.rawKernelOmegaOuterZeroCutImage N).toRepresentation := by
+  let q := R.rawKernelOmegaOuterIntertwiner N
+  let e := RepresentationHeadExact.rangeProjection q
+  apply e.ofBijective
+  constructor
+  · intro x y hxy
+    exact R.rawKernelOmegaOuterIntertwiner_injective N
+      (congrArg Subtype.val hxy)
+  · exact RepresentationHeadExact.rangeProjection_surjective q
+
+/-- The underlying zero-cut image is exactly the previously computed image
+of the retained first-kernel omega intersection. -/
+theorem rawKernelOmegaOuterZeroCutImage_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaOuterZeroCutImage N).toSubmodule =
+      LinearMap.range (R.outerOmegaZeroCutMap N) := by
+  rw [← R.rawKernelOmegaOuterCoordinateMap_range_eq N]
+  ext v
+  constructor
+  · rintro ⟨z, rfl⟩
+    exact ⟨R.rawKernelOmegaInnerKernelEquivProjectionKernel N z, rfl⟩
+  · rintro ⟨z, rfl⟩
+    obtain ⟨w, rfl⟩ :=
+      (R.rawKernelOmegaInnerKernelEquivProjectionKernel N).surjective z
+    exact ⟨w, rfl⟩
 
 end DegreeTwoPairTopTowerRealization
 end PrimitiveAffineImprimitiveBlockTransfer
