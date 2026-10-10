@@ -3,6 +3,7 @@ import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicGeneratorBound
 import SymmetricSubgroupAsymptotics.BinaryCoordinateOrbitSpanCertificate
 import SymmetricSubgroupAsymptotics.BinaryOrbitSpanRebase
 import SymmetricSubgroupAsymptotics.FiniteLinearOrbitMinimalStabilizerCover
+import SymmetricSubgroupAsymptotics.PermutationSemiregularSchurCapacity
 import SymmetricSubgroupAsymptotics.PermutationFunctionSelfDual
 
 /-!
@@ -55,6 +56,141 @@ def representation : Representation (ZMod 2) Top ModelModule :=
 
 def sourceRepresentation : Representation (ZMod 2) Source ModelModule :=
   representation.comp actionEquiv.toMonoidHom
+
+/-! ## A regular binary subgroup of the literal top -/
+
+/-- The three involutory ambient generators give the eight translations of
+the literal eight-point set.  The row indices are retained explicitly so
+the subgroup and its order are checked in the finite source group. -/
+def binarySubgroup : Subgroup Source where
+  carrier := {x | x.index = 0 ∨ x.index = 2 ∨ x.index = 3 ∨
+    x.index = 4 ∨ x.index = 9 ∨ x.index = 10 ∨
+    x.index = 12 ∨ x.index = 19}
+  one_mem' := by decide +kernel
+  mul_mem' := by decide +kernel
+  inv_mem' := by decide +kernel
+
+private instance binarySubgroupMembership :
+    DecidablePred (fun x : Source ↦ x ∈ binarySubgroup) :=
+  fun x ↦ by
+    change Decidable (x.index = 0 ∨ x.index = 2 ∨ x.index = 3 ∨
+      x.index = 4 ∨ x.index = 9 ∨ x.index = 10 ∨
+      x.index = 12 ∨ x.index = 19)
+    infer_instance
+
+theorem binarySubgroup_card : Nat.card binarySubgroup = 8 := by
+  rw [Nat.card_eq_fintype_card]
+  decide +kernel
+
+theorem binarySubgroup_isPGroup : IsPGroup 2 binarySubgroup :=
+  IsPGroup.of_card (n := 3) (by simpa using binarySubgroup_card)
+
+private def binaryRepresentativeRow (x : Fin 8) : Fin 24 :=
+  (#[0, 3, 9, 2, 4, 12, 19, 10] : Array (Fin 24))[x.val]!
+
+/-- Translation carrying the base point to a prescribed point. -/
+def binaryRepresentative (x : Fin 8) : binarySubgroup :=
+  ⟨⟨binaryRepresentativeRow x⟩, by
+    fin_cases x <;> decide +kernel⟩
+
+private theorem binaryRepresentative_zero (x : Fin 8) :
+    (((actionEquiv (binaryRepresentative x).1 : Top) :
+      Equiv.Perm (Fin 8)) 0) = x := by
+  fin_cases x <;> native_decide
+
+/-- The natural permutation representation restricted to the regular
+binary subgroup. -/
+def binaryRestrictedRepresentation :
+    Representation (ZMod 2) binarySubgroup ModelModule :=
+  sourceRepresentation.comp binarySubgroup.subtype
+
+private def binaryFixedEval :
+    binaryRestrictedRepresentation.invariants →ₗ[ZMod 2] ZMod 2 where
+  toFun f := f.1 0
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+private theorem binaryFixedEval_injective :
+    Function.Injective binaryFixedEval := by
+  intro f g hfg
+  apply Subtype.ext
+  funext x
+  let u := binaryRepresentative x
+  have hu :
+      ((((actionEquiv (u : Source) : Top) : Equiv.Perm (Fin 8))⁻¹) x) = 0 := by
+    have h := congrArg
+      (fun y ↦ (((actionEquiv (u : Source) : Top) :
+        Equiv.Perm (Fin 8))⁻¹) y)
+      (binaryRepresentative_zero x)
+    simpa only [Equiv.Perm.inv_def, Equiv.apply_symm_apply] using h
+  have hf := congrFun (f.2 u) x
+  have hg := congrFun (g.2 u) x
+  change f.1
+      ((((actionEquiv (u : Source) : Top) : Equiv.Perm (Fin 8))⁻¹) x) =
+        f.1 x at hf
+  change g.1
+      ((((actionEquiv (u : Source) : Top) : Equiv.Perm (Fin 8))⁻¹) x) =
+        g.1 x at hg
+  change f.1 0 = g.1 0 at hfg
+  rw [hu] at hf hg
+  exact hf.symm.trans (hfg.trans hg)
+
+theorem binaryRestricted_invariants_finrank :
+    Module.finrank (ZMod 2) binaryRestrictedRepresentation.invariants = 1 := by
+  apply le_antisymm
+  · have h := binaryFixedEval.finrank_le_finrank_of_injective
+      binaryFixedEval_injective
+    simpa only [Module.finrank_self] using h
+  · let one : binaryRestrictedRepresentation.invariants :=
+      ⟨fun _ ↦ 1, fun _ ↦ rfl⟩
+    have hne : binaryRestrictedRepresentation.invariants ≠ ⊥ := by
+      intro h
+      have hone : one ∈ (⊥ : Submodule (ZMod 2) ModelModule) := by
+        rw [← h]
+        exact one.2
+      have hz : (one : ModelModule) = 0 := Submodule.mem_bot.mp hone
+      have := congrFun hz 0
+      norm_num at this
+    exact Submodule.one_le_finrank_iff.mpr hne
+
+private def binaryInvariantInclusion
+    (B : Subrepresentation representation) :
+    Representation.invariants
+        ((B.toRepresentation.comp actionEquiv.toMonoidHom).comp
+          binarySubgroup.subtype) →ₗ[ZMod 2]
+      binaryRestrictedRepresentation.invariants where
+  toFun f := ⟨f.1.1, fun u ↦ congrArg Subtype.val (f.2 u)⟩
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+private theorem binaryInvariantInclusion_injective
+    (B : Subrepresentation representation) :
+    Function.Injective (binaryInvariantInclusion B) := by
+  intro f g hfg
+  apply Subtype.ext
+  apply Subtype.ext
+  exact congrArg Subtype.val hfg
+
+/-- Every invariant state in the natural eight-point module has Schur
+capacity at most one.  This is detected uniformly on the checked regular
+binary subgroup, so no state-by-state simple-module classification is
+needed. -/
+theorem subrepresentation_schurCapacity_le_one
+    (B : Subrepresentation representation) :
+    representationSchurCapacity B.toRepresentation ≤ 1 := by
+  let sigma := B.toRepresentation.comp actionEquiv.toMonoidHom
+  have hcap := representationSchurCapacity_le_pSubgroup_invariants
+    binarySubgroup binarySubgroup_isPGroup sigma
+  have hinv : Module.finrank (ZMod 2)
+      (Representation.invariants (sigma.comp binarySubgroup.subtype)) ≤ 1 := by
+    have h := (binaryInvariantInclusion B).finrank_le_finrank_of_injective
+      (binaryInvariantInclusion_injective B)
+    rw [binaryRestricted_invariants_finrank] at h
+    exact h
+  have hcap' : representationSchurCapacity sigma ≤ 1 :=
+    hcap.trans (by exact_mod_cast hinv)
+  simpa only [sigma, representationSchurCapacity_comp
+    actionEquiv.toMonoidHom actionEquiv.surjective] using hcap'
 
 def sourceWord (word : List (Fin 4)) : Source :=
   (word.reverse.map PrimitiveAffineEightFrameRow0TopCertificate.ambient).prod
