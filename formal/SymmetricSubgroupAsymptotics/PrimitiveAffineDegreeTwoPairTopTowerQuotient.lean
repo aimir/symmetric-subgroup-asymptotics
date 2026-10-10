@@ -5,6 +5,7 @@ import SymmetricSubgroupAsymptotics.CompositeKernelExact
 import SymmetricSubgroupAsymptotics.NormalKernelCentralOmega
 import SymmetricSubgroupAsymptotics.OriginalKernelNormalSubrepresentation
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopOriginalNormalSignature
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopStructuralAnchor
 
 /-!
 # The direct quotient map for two successive pair frames
@@ -336,6 +337,14 @@ theorem rawKernelOmegaIntermediatePreimage_eq_map
       (R.rawKernelOmegaLift N).map (R.outerQuotientMap N)
     exact ⟨QuotientGroup.mk' N.1 u, hu, rfl⟩
 
+/-- The original normal image is contained in the intermediate pullback of
+the direct-kernel omega image. -/
+theorem outerTopNormal_le_rawKernelOmegaIntermediatePreimage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.outerTopNormal N.1 ≤ R.rawKernelOmegaIntermediatePreimage N := by
+  rw [R.rawKernelOmegaIntermediatePreimage_eq_map N]
+  exact Subgroup.map_mono (R.originalNormal_le_rawKernelOmegaOriginalPreimage N)
+
 instance rawKernelOmegaIntermediatePreimage_normal
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     (R.rawKernelOmegaIntermediatePreimage N).Normal := by
@@ -354,6 +363,59 @@ def innerOmegaNaturalAxis
     (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
     R.topEquiv R.module_action_eq
     (R.rawKernelOmegaIntermediatePreimage N)
+
+/-- The same numerator before transporting the second-frame top to the
+literal catalogue top. -/
+def innerOmegaCoordinateAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation R.secondFrame.coordinateTopAction :=
+  R.secondFrame.sharedOriginalAxis
+    R.secondFrame.coordinateTopAction (MulEquiv.refl _)
+    (fun _ _ ↦ rfl) (R.rawKernelOmegaIntermediatePreimage N)
+
+/-- The denominator axis before transport to the literal catalogue top. -/
+def innerNormalCoordinateAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation R.secondFrame.coordinateTopAction :=
+  R.secondFrame.sharedOriginalAxis
+    R.secondFrame.coordinateTopAction (MulEquiv.refl _)
+    (fun _ _ ↦ rfl) (R.outerTopNormal N.1)
+
+theorem innerNormalCoordinateAxis_le_innerOmegaCoordinateAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.innerNormalCoordinateAxis N ≤ R.innerOmegaCoordinateAxis N := by
+  intro v hv
+  change v ∈ R.secondFrame.ambientAxis
+    (R.rawKernelOmegaIntermediatePreimage N)
+  change v ∈ R.secondFrame.ambientAxis (R.outerTopNormal N.1) at hv
+  obtain ⟨k, hk, rfl⟩ := (R.secondFrame.mem_ambientAxis _ v).1 hv
+  exact (R.secondFrame.mem_ambientAxis _ _).2
+    ⟨k, R.outerTopNormal_le_rawKernelOmegaIntermediatePreimage N hk, rfl⟩
+
+theorem innerOmegaCoordinateAxis_le_kernelTop
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.innerOmegaCoordinateAxis N ≤
+      R.secondFrame.kernelTopPermutationSubrepresentation :=
+  R.secondFrame.ambientAxis_le_kernelSpace
+    (R.rawKernelOmegaIntermediatePreimage N)
+
+theorem innerNormalCoordinateAxis_eq_normalTopPermutation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.innerNormalCoordinateAxis N =
+      R.secondFrame.normalTopPermutationSubrepresentation
+        (R.outerTopNormal N.1) := by
+  apply Subrepresentation.toSubmodule_injective
+  change R.secondFrame.ambientAxis (R.outerTopNormal N.1) =
+    (R.secondFrame.normalSpace (R.outerTopNormal N.1)).map
+      R.secondFrame.kernelSpace.subtype
+  exact (R.secondFrame.normalSpace_map_subtype_eq_ambientAxis
+    (R.outerTopNormal N.1)).symm
+
+theorem innerOmegaCoordinateAxis_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.innerOmegaCoordinateAxis N).toSubmodule =
+      (R.innerOmegaNaturalAxis N).toSubmodule :=
+  rfl
 
 theorem innerOmegaNaturalAxis_toSubmodule
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
