@@ -147,6 +147,101 @@ theorem rawKernelOmega_invariants_finrank_le_kernel_add_inner
   exact RepresentationFixedExact.finrank_invariants_le_of_range_eq_ker
     i q hi hexact
 
+/-- Pair-constant coordinates include the actual constant preimage `L`
+into the retained first-kernel omega axis. -/
+noncomputable def outerOmegaConstantInclusion
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.outerOmegaConstantPullbackAxis N).toRepresentation.IntertwiningMap
+      (R.outerOmegaAxis N).toRepresentation where
+  toLinearMap :=
+    { toFun := fun a ↦ ⟨R.secondFrame.pairConstant a.1, a.2⟩
+      map_add' := by intro a b; exact Subtype.ext (map_add _ _ _)
+      map_smul' := by intro c a; exact Subtype.ext (map_smul _ _ _) }
+  isIntertwining' := by
+    intro g
+    apply LinearMap.ext
+    intro a
+    apply Subtype.ext
+    exact Representation.IntertwiningMap.isIntertwining _ _
+      R.secondFrame.pairConstantIntertwiner g a.1
+
+theorem outerOmegaConstantInclusion_injective
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Function.Injective (R.outerOmegaConstantInclusion N) := by
+  intro a b hab
+  apply Subtype.ext
+  exact R.secondFrame.pairConstantIntertwiner_injective
+    (congrArg Subtype.val hab)
+
+/-- Pair-sum maps the retained outer omega axis onto its exact image `W`. -/
+noncomputable def outerOmegaPairSumProjection
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.outerOmegaAxis N).toRepresentation.IntertwiningMap
+      (R.outerOmegaPairSumPullbackAxis N).toRepresentation where
+  toLinearMap :=
+    { toFun := fun b ↦
+        ⟨R.secondFrame.pairSum b.1, ⟨b.1, b.2, rfl⟩⟩
+      map_add' := by intro a b; exact Subtype.ext (map_add _ _ _)
+      map_smul' := by intro c a; exact Subtype.ext (map_smul _ _ _) }
+  isIntertwining' := by
+    intro g
+    apply LinearMap.ext
+    intro b
+    apply Subtype.ext
+    exact Representation.IntertwiningMap.isIntertwining _ _
+      R.secondFrame.pairSumIntertwiner g b.1
+
+theorem outerOmegaPairSumProjection_surjective
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Function.Surjective (R.outerOmegaPairSumProjection N) := by
+  rintro ⟨w, ⟨b, hb, hbw⟩⟩
+  refine ⟨⟨b, hb⟩, ?_⟩
+  exact Subtype.ext hbw
+
+/-- The pair-constant inclusion and pair-sum projection remain exact after
+restriction to the actual retained omega axis. -/
+theorem outerOmega_constant_pairSum_exact
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.outerOmegaConstantInclusion N).toLinearMap.range =
+      (R.outerOmegaPairSumProjection N).toLinearMap.ker := by
+  ext b
+  constructor
+  · rintro ⟨a, rfl⟩
+    apply Subtype.ext
+    exact R.secondFrame.pairSum_pairConstant a.1
+  · intro hb
+    have hsum : R.secondFrame.pairSum b.1 = 0 :=
+      congrArg Subtype.val hb
+    have hdelta : b.1 ∈ R.secondFrame.pairDelta.ker := by
+      change R.secondFrame.pairConstant
+        (R.secondFrame.pairSum b.1) = 0
+      rw [hsum, map_zero]
+    rw [R.secondFrame.pairDelta_ker] at hdelta
+    obtain ⟨a, ha⟩ := hdelta
+    let aL : (R.outerOmegaConstantPullbackAxis N).toSubmodule :=
+      ⟨a, by
+        change R.secondFrame.pairConstant a ∈
+          (R.outerOmegaAxis N).toSubmodule
+        rw [ha]
+        exact b.2⟩
+    refine ⟨aL, ?_⟩
+    exact Subtype.ext ha
+
+/-- Fixed-space subadditivity on the literal outer `L-B-W` sequence. -/
+theorem outerOmega_invariants_finrank_le_constant_add_pairSum
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (R.outerOmegaAxis N).toRepresentation.invariants ≤
+      Module.finrank (ZMod 2)
+          (R.outerOmegaConstantPullbackAxis N).toRepresentation.invariants +
+        Module.finrank (ZMod 2)
+          (R.outerOmegaPairSumPullbackAxis N).toRepresentation.invariants :=
+  RepresentationFixedExact.finrank_invariants_le_of_range_eq_ker
+    (R.outerOmegaConstantInclusion N)
+    (R.outerOmegaPairSumProjection N)
+    (R.outerOmegaConstantInclusion_injective N)
+    (R.outerOmega_constant_pairSum_exact N)
+
 end DegreeTwoPairTopTowerRealization
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
