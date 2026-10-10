@@ -1,18 +1,18 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCatalogue
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopRelativeKernelOrbitRows
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopStructuralAnchor
 
 /-!
 # Shared templates for the exceptional count-twelve branches
 
 The ten relative exceptional rows and the eight ternary rows use two
-different endpoints.  A core or paired-six row retains a finite two-axis
-profile table together with explicit prefix/kernel-orbit inputs on its
-actual quotients.  A ternary row retains the ordinary finite QCHAR data for
-the compressed action.  These are raw construction inputs rather than
-resolved-row premises.
+different endpoints.  A core or paired-six row retains one-position
+quotient-socle generators and a three-generator natural-module bound.  A
+ternary row retains the ordinary finite QCHAR data for the compressed
+action.  These are raw construction inputs rather than resolved-row
+premises.
 
-One converter below constructs each complete relative row from the
-profile/orbit package.  A second converter installs a QCHAR package in any
+One converter below constructs each complete relative row from its two
+literal-top certificates.  A second converter installs a QCHAR package in any
 ternary catalogue slot.  The literal catalogue structure then collects the
 eight core packages, two paired-six packages, and eight ternary packages
 without duplicating either semantic conversion.
@@ -29,57 +29,53 @@ namespace DegreeTwoTwelveExceptionalTemplates
 
 /-! ## Core and paired-six relative rows -/
 
-/-- Raw profile and orbit data shared by the binary-core and paired-six
-families.  The state table is finite and declared on the literal top.  The
-last field records the concrete prefix and omega-orbit construction on the
-actual quotient selected by those states. -/
-structure DegreeTwoTwelveExceptionalOrbitPackage
+/-- The two realization-free finite certificates shared by the binary-core
+and paired-six families. -/
+structure DegreeTwoTwelveExceptionalFiniteRowData
     (D : DegreeTwoPairTopFiniteInterface 12) : Type 1 where
-  profileOfState : D.normalRegistry.State → D.ModuleState →
-    DegreeTwoPairRelativeProfile
-  profile_mem : ∀ i j,
-    profileOfState i j ∈ degreeTwoTwelvePairExceptionalProfiles
-  input : ∀ (p : PreE7PairActionClass 12)
-    (R : DegreeTwoPairTopRealization D p)
-    (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal}),
-    DegreeTwoPairRelativeKernelOrbitInput
-      (preE7PairAction 12 p ⧸ N.1)
-      (profileOfState (R.topNormalState N) (R.moduleState N))
+  topSocle : D.normalRegistry.QuotientSocleGeneratorFamily 1
+  natural : UniformSubrepresentationGeneratorBound
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin 12)) 3
 
 /-- Family name for the eight binary-core packages. -/
-abbrev DegreeTwoTwelveCoreOrbitPackage :=
-  DegreeTwoTwelveExceptionalOrbitPackage
+abbrev DegreeTwoTwelveCoreFiniteRowPackage :=
+  DegreeTwoTwelveExceptionalFiniteRowData
 
 /-- Family name for the two paired-six packages. -/
-abbrev DegreeTwoTwelvePairedSixOrbitPackage :=
-  DegreeTwoTwelveExceptionalOrbitPackage
+abbrev DegreeTwoTwelvePairedSixFiniteRowPackage :=
+  DegreeTwoTwelveExceptionalFiniteRowData
 
-namespace DegreeTwoTwelveExceptionalOrbitPackage
+namespace DegreeTwoTwelveExceptionalFiniteRowData
 
 variable {D : DegreeTwoPairTopFiniteInterface 12}
-  (F : DegreeTwoTwelveExceptionalOrbitPackage D)
+  (F : DegreeTwoTwelveExceptionalFiniteRowData D)
 
-/-- The shared finite-profile conversion for both exceptional relative
-families. -/
-noncomputable def rowData
+/-- Install the two finite certificates in the common `(1,3)` Schur row. -/
+noncomputable def schurData
+    {p : PreE7PairActionClass 12}
+    {R : DegreeTwoPairTopRealization D p} :
+    DegreeTwoPairTopSchurData D p R :=
+  DegreeTwoPairTopSchurData.ofUniform 1 3 F.topSocle F.natural
+
+/-- Resolve every realization of an exceptional relative row from the
+finite `(1,3)` package. -/
+noncomputable def liftConclusion
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization D p) :
-    DegreeTwoPairTopRelativeKernelOrbitRowData D
-      degreeTwoTwelvePairExceptionalProfiles p R where
-  stateProfile :=
-    { profileOfState := F.profileOfState
-      allowedProfiles := degreeTwoTwelvePairExceptionalProfiles
-      allowed_capacity := degreeTwoTwelvePairExceptionalProfiles_capacity
-      profile_mem := fun N ↦
-        F.profile_mem (R.topNormalState N) (R.moduleState N) }
-  profiles_eq := rfl
-  input := F.input p R
+    DegreeTwoPairTopRelativeLiftConclusion D p :=
+  (F.schurData (R := R)).liftConclusion hZmud lit
+    degreeTwoTwelvePairExceptionalProfiles
+    degreeTwoTwelvePairExceptionalProfiles_capacity
+    (by native_decide)
 
 /-- Install one core or paired-six package at a literal exceptional
 catalogue row. -/
 noncomputable def catalogueResolvedRow
     {row : DegreeTwoTwelvePairTopRow}
-    (F : DegreeTwoTwelveExceptionalOrbitPackage row.finite)
+    (F : DegreeTwoTwelveExceptionalFiniteRowData row.finite)
+    (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
     (hbranch : row.branch = .core ∨ row.branch = .paired)
     {p : PreE7PairActionClass 12}
@@ -91,9 +87,10 @@ noncomputable def catalogueResolvedRow
     · rw [row.expectedProfiles_eq, hcore]
     · rw [row.expectedProfiles_eq, hpaired]
   rw [hprofiles]
-  exact ((F.rowData R).twelveResolvedData lit).toResolvedRow
+  let lift := F.liftConclusion hZmud lit R
+  exact .relative lift rfl (degreeTwoTwelvePairRelativeNumerics lift.lift)
 
-end DegreeTwoTwelveExceptionalOrbitPackage
+end DegreeTwoTwelveExceptionalFiniteRowData
 
 /-! ## Four-ternary-orbit comparator rows -/
 
@@ -142,11 +139,11 @@ three actual catalogue branches. -/
 structure DegreeTwoTwelveExceptionalCatalogueData : Type 1 where
   core : ∀ (j : Fin 301),
     (Catalogue.catalogue.row j).branch = .core →
-    DegreeTwoTwelveCoreOrbitPackage
+    DegreeTwoTwelveCoreFiniteRowPackage
       (Catalogue.catalogue.row j).finite
   paired : ∀ (j : Fin 301),
     (Catalogue.catalogue.row j).branch = .paired →
-    DegreeTwoTwelvePairedSixOrbitPackage
+    DegreeTwoTwelvePairedSixFiniteRowPackage
       (Catalogue.catalogue.row j).finite
   ternary : ∀ (j : Fin 301),
     (Catalogue.catalogue.row j).branch = .ternary →
@@ -159,6 +156,7 @@ variable (F : DegreeTwoTwelveExceptionalCatalogueData)
 
 /-- Uniform dispatch for one binary-core row. -/
 noncomputable def coreResolvedRow
+    (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
     (j : Fin 301)
     {p : PreE7PairActionClass 12}
@@ -168,10 +166,11 @@ noncomputable def coreResolvedRow
     DegreeTwoPairTopResolvedRow
       (Catalogue.catalogue.row j).finite
       (Catalogue.catalogue.row j).expectedProfiles p :=
-  (F.core j hbranch).catalogueResolvedRow lit (Or.inl hbranch) R
+  (F.core j hbranch).catalogueResolvedRow hZmud lit (Or.inl hbranch) R
 
 /-- Uniform dispatch for one paired-six row. -/
 noncomputable def pairedResolvedRow
+    (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
     (j : Fin 301)
     {p : PreE7PairActionClass 12}
@@ -181,7 +180,7 @@ noncomputable def pairedResolvedRow
     DegreeTwoPairTopResolvedRow
       (Catalogue.catalogue.row j).finite
       (Catalogue.catalogue.row j).expectedProfiles p :=
-  (F.paired j hbranch).catalogueResolvedRow lit (Or.inr hbranch) R
+  (F.paired j hbranch).catalogueResolvedRow hZmud lit (Or.inr hbranch) R
 
 /-- Uniform dispatch for one four-ternary-orbit row. -/
 noncomputable def ternaryResolvedRow

@@ -82,11 +82,13 @@ noncomputable def twelveResolution
       (fun i hi ↦ TwelveFiniteCatalogue.joint_parameters i hi)
       j realization hbranch
   | core =>
-    exact D.twelveExceptional.coreResolvedRow lit j realization hbranch
+    exact D.twelveExceptional.coreResolvedRow
+      hZmud lit j realization hbranch
   | ternary =>
     exact D.twelveExceptional.ternaryResolvedRow j realization hbranch
   | paired =>
-    exact D.twelveExceptional.pairedResolvedRow lit j realization hbranch
+    exact D.twelveExceptional.pairedResolvedRow
+      hZmud lit j realization hbranch
 
 /-- Assemble the complete one-frame count-sixteen finite catalogue by
 inserting the generated primitive row-three pilot. -/
