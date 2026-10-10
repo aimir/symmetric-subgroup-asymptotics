@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.RepresentationDualSubquotientGenerators
+import SymmetricSubgroupAsymptotics.InducedTernaryWidthGenerators
 import Mathlib.Algebra.MonoidAlgebra.MapDomain
 import Mathlib.Algebra.Group.Subgroup.Pointwise
 
@@ -49,6 +50,7 @@ theorem representationGeneratedBy_comp_of_surjective
     | zero => simp
     | add x y hx hy =>
         rw [map_add, add_smul, add_smul, map_add, hx, hy]
+        exact (map_add sigma.asModuleEquiv _ _).symm
     | single g t =>
         simp only [MonoidAlgebra.mapDomainRingHom_apply,
           MonoidAlgebra.mapDomain_single, Representation.single_smul,
@@ -78,7 +80,8 @@ theorem representationGeneratedBy_comp_of_surjective
         have hsame :
             rho.asModuleEquiv.symm
                 (sigma.asModuleEquiv (r • y)) =
-              s • rho.asModuleEquiv.symm (sigma.asModuleEquiv y) := by
+              (s • rho.asModuleEquiv.symm (sigma.asModuleEquiv y) :
+                rho.asModule) := by
           apply rho.asModuleEquiv.injective
           rw [haction]
           simp only [LinearEquiv.apply_symm_apply, hs]
@@ -140,7 +143,7 @@ theorem uniformSubrepresentationGeneratorBound_conjugate_restriction
     UniformSubrepresentationGeneratorBound
       (rho.comp K.subtype) n := by
   let e : K ≃* (g • K : Subgroup G) :=
-    equivSMul (MulAut.conj g) K
+    Subgroup.equivSMul (MulAut.conj g) K
   let sigma : Representation k K V :=
     (rho.comp (g • K : Subgroup G).subtype).comp e.toMonoidHom
   have hsigma : UniformSubrepresentationGeneratorBound sigma n :=

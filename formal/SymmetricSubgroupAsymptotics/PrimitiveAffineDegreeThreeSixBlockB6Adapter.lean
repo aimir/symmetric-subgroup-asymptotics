@@ -18,7 +18,7 @@ can discharge the degree-three residual endpoint.
 
 set_option autoImplicit false
 noncomputable section
-open scoped Classical
+open scoped Classical Pointwise
 
 namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
