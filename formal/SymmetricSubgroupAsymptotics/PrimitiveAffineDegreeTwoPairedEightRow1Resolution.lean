@@ -501,6 +501,124 @@ theorem innerOmega_nonfixed_schurSocleMultiplicity_le_end_finrank
       (schurSocleMultiplicity_le_nat_mul_end_finrank_of_capacity_le
         (sigma.comp (R.rawQuotientMap N)) 1 hcap (X := X))
 
+/-- Every nonfixed simple row in the physical outer projection kernel costs
+two Schur dimensions.  The proof inflates the actual kernel and simple row
+back to the original action, uses the action-level identification with
+`B/A`, applies the two endpoint quotient theorem, and descends the resulting
+multiplicity unchanged. -/
+theorem outerOmega_nonfixed_schurSocleMultiplicity_le_two_mul_end_finrank
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
+    (X : Submodule (ZMod 2)[preE7PairAction 16 p ⧸ N.1]
+      (OmegaSocleRepresentation R N).asModule)
+    [IsSimpleModule (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X]
+    (hnonfixed : ¬ representationSubmoduleFixed
+      (OmegaSocleRepresentation R N) X) :
+    schurSocleMultiplicity
+        (k := ZMod 2)
+        (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1])
+        (A := (R.rawKernelOmegaInnerImageIntertwiner N).ker.asSubmodule)
+        (X := X) ≤
+      2 * Module.finrank
+        (Module.End (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X) X := by
+  let Q := preE7PairAction 16 p ⧸ N.1
+  let G := preE7PairAction 16 p
+  let gamma : G →* Q := QuotientGroup.mk' N.1
+  have hgamma : Function.Surjective gamma := QuotientGroup.mk'_surjective _
+  let omega := OmegaSocleRepresentation R N
+  let outer := (R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation
+  let rhoX := (Subrepresentation.ofSubmodule' X).toRepresentation
+  let sigmaG := omega.comp gamma
+  let XG := representationInflatedSubmodule gamma hgamma omega X
+  letI : FiniteDimensional (ZMod 2) X :=
+    Module.Finite.of_finite (ZMod 2) X
+  letI : IsSimpleModule (ZMod 2)[Q] rhoX.asModule := by
+    exact IsSimpleModule.congr
+      (submoduleRepresentationModuleEquiv omega X)
+  letI : IsSimpleModule (ZMod 2)[G] (rhoX.comp gamma).asModule :=
+    representation_comp_isSimpleModule gamma hgamma rhoX
+  letI : IsSimpleModule (ZMod 2)[G] XG :=
+    representationInflatedSubmodule_isSimple gamma hgamma omega X
+  letI : FiniteDimensional (ZMod 2) XG :=
+    FiniteDimensional.of_injective
+      (XG.subtype.restrictScalars (ZMod 2)) XG.subtype_injective
+  have hnonfixedG : ¬ representationSubmoduleFixed sigmaG XG := by
+    intro hfixed
+    exact hnonfixed
+      ((representationInflatedSubmodule_fixed_iff
+        gamma hgamma omega X).1 hfixed)
+  have hcoord := outerNestedQuotient_comp_nonfixed_le_two_mul
+    R N R.frame.top.rangeRestrict R.frame.top.rangeRestrict_surjective
+    sigmaG XG hnonfixedG
+  let tau := nestedQuotientRepresentation
+    (R.frame.normalTopPermutationSubrepresentation N.1)
+    (R.outerOmegaAxis N)
+    (R.outerNormalAxis_le_outerOmegaAxis N)
+  let eOuter := R.rawKernelOmegaOuterInflationEquivNestedQuotient N
+  have htarget : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[G])
+        (A := (outer.comp gamma).asModule) (X := XG) =
+      schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[G])
+        (A := (tau.comp R.frame.top.rangeRestrict).asModule) (X := XG) :=
+    schurSocleMultiplicity_eq_of_representationEquiv
+      (outer.comp gamma) (tau.comp R.frame.top.rangeRestrict) eOuter
+  have hphysicalG : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[G])
+        (A := (outer.comp gamma).asModule) (X := XG) ≤
+      2 * Module.finrank (Module.End (ZMod 2)[G] XG) XG := by
+    rw [htarget]
+    exact hcoord
+  let eXrep := representationInflatedSubmoduleEquiv
+    gamma hgamma omega X
+  let eXmodule : (rhoX.comp gamma).asModule ≃ₗ[(ZMod 2)[G]] XG :=
+    (representationEquivLinearEquivAsModule
+      (rhoX.comp gamma)
+      (Subrepresentation.ofSubmodule' XG).toRepresentation
+      eXrep).trans
+        (submoduleRepresentationModuleEquiv sigmaG XG)
+  have hsourceG : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[G])
+        (A := (outer.comp gamma).asModule)
+        (X := (rhoX.comp gamma).asModule) =
+      schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[G])
+        (A := (outer.comp gamma).asModule) (X := XG) :=
+    schurSocleMultiplicity_eq_of_source_linearEquiv eXmodule
+  have hinflate := schurSocleMultiplicity_comp_eq_representation
+    gamma hgamma rhoX outer
+  have hsourceQ : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[Q])
+        (A := outer.asModule) (X := rhoX.asModule) =
+      schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[Q])
+        (A := outer.asModule) (X := X) :=
+    schurSocleMultiplicity_eq_of_source_linearEquiv
+      (submoduleRepresentationModuleEquiv omega X)
+  have htargetQ : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[Q])
+        (A := outer.asModule) (X := X) =
+      schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[Q])
+        (A := (R.rawKernelOmegaInnerImageIntertwiner N).ker.asSubmodule)
+        (X := X) :=
+    schurSocleMultiplicity_eq_of_target_linearEquiv
+      (submoduleRepresentationModuleEquiv
+        (binaryKernelOmegaConjugationRepresentation
+          (R.rawQuotientMap N))
+        (R.rawKernelOmegaInnerImageIntertwiner N).ker.asSubmodule)
+  have hendG := moduleFinrankOverEnd_eq_of_linearEquiv eXmodule
+  have hendInflate := representationFinrankOverEnd_comp_eq
+    gamma hgamma rhoX
+  have hendQ := moduleFinrankOverEnd_eq_of_linearEquiv
+    (submoduleRepresentationModuleEquiv omega X)
+  have hend : Module.finrank (Module.End (ZMod 2)[G] XG) XG =
+      Module.finrank (Module.End (ZMod 2)[Q] X) X :=
+    hendG.symm.trans (hendInflate.trans hendQ)
+  rw [← hsourceG, hinflate, hsourceQ, htargetQ, hend] at hphysicalG
+  simpa only [outer, Q] using hphysicalG
+
 /-- The checked coupled head closes the fixed simple row; a three-layer
 same-simple-type multiplicity estimate closes every nonfixed row.  This
 is the exact algebraic composition of those two inputs for one actual
