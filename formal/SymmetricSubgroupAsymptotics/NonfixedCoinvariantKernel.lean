@@ -1,6 +1,8 @@
 import SymmetricSubgroupAsymptotics.RepresentationCoinvariantFiniteCertificate
+import SymmetricSubgroupAsymptotics.RepresentationCoordinateHeads
 import SymmetricSubgroupAsymptotics.RepresentationSchurRows
 import SymmetricSubgroupAsymptotics.SchurMultiplicity
+import SymmetricSubgroupAsymptotics.SchurMultiplicityTargetEquiv
 
 /-!
 # Nonfixed simple maps land in the coinvariant kernel
@@ -151,6 +153,73 @@ theorem schurSocleMultiplicity_le_coinvariantsKernel_of_nonfixed
   apply Nat.le_of_mul_le_mul_right hhom
   letI : Nontrivial S := IsSimpleModule.nontrivial k[G] S
   exact Module.finrank_pos (R := k) (M := Module.End k[G] S)
+
+/-- An injective target intertwiner can only increase every simple-source
+Schur multiplicity. -/
+theorem schurSocleMultiplicity_le_of_injective_intertwiner
+    {W : Type u} [AddCommGroup W] [Module k W]
+    [FiniteDimensional k V] [FiniteDimensional k W]
+    (rho : Representation k G V) (tau : Representation k G W)
+    (i : rho.IntertwiningMap tau) (hi : Function.Injective i)
+    {X : Type u} [AddCommGroup X] [Module k X]
+    [Module k[G] X] [IsScalarTower k k[G] X]
+    [FiniteDimensional k X] [IsSimpleModule k[G] X] :
+    schurSocleMultiplicity
+        (k := k) (R := k[G]) (A := rho.asModule) (X := X) ≤
+      schurSocleMultiplicity
+        (k := k) (R := k[G]) (A := tau.asModule) (X := X) := by
+  let iR : rho.asModule →ₗ[k[G]] tau.asModule :=
+    Representation.IntertwiningMap.equivLinearMapAsModule rho tau i
+  let post : (X →ₗ[k[G]] rho.asModule) →ₗ[k]
+      (X →ₗ[k[G]] tau.asModule) where
+    toFun f := iR.comp f
+    map_add' f g := by ext x; rfl
+    map_smul' c f := by ext x; rfl
+  have hpost : Function.Injective post := by
+    intro f g hfg
+    apply LinearMap.ext
+    intro x
+    apply hi
+    exact DFunLike.congr_fun hfg x
+  have hhom := post.finrank_le_finrank_of_injective hpost
+  rw [schurHom_finrank_eq_multiplicity
+        (k := k) (R := k[G]) (A := rho.asModule) (X := X),
+    schurHom_finrank_eq_multiplicity
+        (k := k) (R := k[G]) (A := tau.asModule) (X := X)] at hhom
+  apply Nat.le_of_mul_le_mul_right hhom
+  letI : Nontrivial X := IsSimpleModule.nontrivial k[G] X
+  exact Module.finrank_pos (R := k) (M := Module.End k[G] X)
+
+/-- To bound a nonfixed row of `rho`, it is enough to inject its intrinsic
+displacement kernel into a certified target representation. -/
+theorem schurSocleMultiplicity_le_of_nonfixed_coinvariantsKernel_injection
+    [FiniteDimensional k V]
+    (sigma : Representation k G A)
+    (S : Submodule k[G] sigma.asModule)
+    [FiniteDimensional k S]
+    [IsSimpleModule k[G] S]
+    (hnonfixed : ¬ representationSubmoduleFixed sigma S)
+    (rho : Representation k G V)
+    {W : Type u} [AddCommGroup W] [Module k W]
+    [FiniteDimensional k W]
+    (tau : Representation k G W)
+    (i : (representationCoinvariantsKernelSubrepresentation rho).
+      toRepresentation.IntertwiningMap tau)
+    (hi : Function.Injective i) :
+    schurSocleMultiplicity
+        (k := k) (R := k[G]) (A := rho.asModule) (X := S) ≤
+      schurSocleMultiplicity
+        (k := k) (R := k[G]) (A := tau.asModule) (X := S) := by
+  let K := representationCoinvariantsKernelSubrepresentation rho
+  have hkernel := schurSocleMultiplicity_le_of_injective_intertwiner
+    K.toRepresentation tau i hi (X := S)
+  have heq := schurSocleMultiplicity_eq_of_target_linearEquiv
+    (k := k) (R := k[G]) (X := S)
+      (submoduleRepresentationModuleEquiv rho K.asSubmodule)
+  exact (schurSocleMultiplicity_le_coinvariantsKernel_of_nonfixed
+    sigma S hnonfixed rho).trans (by
+      rw [heq]
+      exact hkernel)
 
 end SymmetricSubgroupAsymptotics
 
