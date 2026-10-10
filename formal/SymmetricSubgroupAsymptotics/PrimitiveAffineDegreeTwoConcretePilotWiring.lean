@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoConcreteResidualAssembly
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1Resolution
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveExceptionalTemplates
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow3Resolution
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightCoupledCatalogue
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopRelativeKernelOrbitRows
@@ -39,6 +40,7 @@ namespace TwelveJointFinite := DegreeTwoTwelveJointFiniteRows
 namespace TwelveJointCatalogue :=
   DegreeTwoTwelveJointFiniteRows.LiteralCatalogue
 namespace TwelveFiniteCatalogue := DegreeTwoTwelvePairFiniteCatalogue
+namespace TwelveExceptional := DegreeTwoTwelveExceptionalTemplates
 
 abbrev TwelveCatalogue := Concrete.TwelveCatalogue
 abbrev SixteenCatalogue := Concrete.SixteenCatalogue
@@ -52,19 +54,7 @@ structure RemainingPairTopSemanticData : Type 1 where
   twelveJoint :
     TwelveJointCatalogue.RemainingDegreeTwoTwelveJointFiniteRowData
   twelveExceptional :
-    ∀ (j : Fin 301) (p : PreE7PairActionClass 12)
-      (realization : DegreeTwoPairTopRealization
-        (TwelveCatalogue.row j).finite p),
-      (TwelveCatalogue.row j).branch ≠ .joint →
-      (TwelveCatalogue.row j).branch ≠ .ternary →
-      DegreeTwoPairTopRelativeKernelOrbitRowData
-        (TwelveCatalogue.row j).finite
-        (TwelveCatalogue.row j).expectedProfiles p realization
-  twelveTernary :
-    ∀ (j : Fin 301) (p : PreE7PairActionClass 12),
-      DegreeTwoPairTopRealization (TwelveCatalogue.row j).finite p →
-      (TwelveCatalogue.row j).branch = .ternary →
-      DegreeTwoTwelveTernaryComparatorData p
+    TwelveExceptional.DegreeTwoTwelveExceptionalCatalogueData
   sixteenPaired8 :
     RemainingDegreeTwoPairedEightFiniteRowData
   sixteenZero16 :
@@ -110,14 +100,17 @@ noncomputable def twelveResolution
         TwelveCatalogue :=
     TwelveJointCatalogue.ofGeneratedRow1 TwelvePilot.finiteData D.twelveJoint
   intro j p realization
-  by_cases hjoint : (TwelveCatalogue.row j).branch = .joint
-  · exact jointFinite.resolvedRow hZmud lit
+  cases hbranch : (TwelveCatalogue.row j).branch with
+  | joint =>
+    exact jointFinite.resolvedRow hZmud lit
       (fun i hi ↦ TwelveFiniteCatalogue.joint_parameters i hi)
-      j realization hjoint
-  · by_cases hternary : (TwelveCatalogue.row j).branch = .ternary
-    · exact (D.twelveTernary j p realization hternary).resolvedRow
-    · let row := D.twelveExceptional j p realization hjoint hternary
-      exact (row.twelveResolvedData lit).toResolvedRow
+      j realization hbranch
+  | core =>
+    exact D.twelveExceptional.coreResolvedRow lit j realization hbranch
+  | ternary =>
+    exact D.twelveExceptional.ternaryResolvedRow j realization hbranch
+  | paired =>
+    exact D.twelveExceptional.pairedResolvedRow lit j realization hbranch
 
 /-- Count-sixteen resolution with every paired-eight row and primitive row
 index `2` supplied by finite certificates. -/
