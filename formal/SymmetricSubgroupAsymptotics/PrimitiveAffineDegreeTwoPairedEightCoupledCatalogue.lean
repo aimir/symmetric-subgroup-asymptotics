@@ -86,6 +86,54 @@ noncomputable def rowData
 
 end DegreeTwoPairedEightFiniteRowData
 
+/-- Variant of the finite paired-eight package for named large tops whose
+normal lattice is known structurally.  Its module and coupled fields are
+still independently generated from the retained literal tuple, while the
+socle input ranges directly over all normal subgroups. -/
+structure DegreeTwoPairedEightStructuralFiniteRowData
+    (D : DegreeTwoPairTopFiniteInterface 8) : Type 1 where
+  coupled : DegreeTwoPairTopCoupledRegistryData D 4
+  quotientGenerators : DegreeTwoPairTopNestedQuotientGeneratorData D
+  topSocle : ∀ N : {N : Subgroup D.top // N.Normal},
+    SocleNormalGeneratorBound (D.top ⧸ N.1) 2
+
+namespace DegreeTwoPairedEightStructuralFiniteRowData
+
+variable {D : DegreeTwoPairTopFiniteInterface 8}
+  (F : DegreeTwoPairedEightStructuralFiniteRowData D)
+
+/-- Named assembly boundary for one structural paired-eight package. -/
+noncomputable def ofCertificates
+    (coupled : DegreeTwoPairTopCoupledRegistryData D 4)
+    (quotientGenerators : DegreeTwoPairTopNestedQuotientGeneratorData D)
+    (topSocle : ∀ N : {N : Subgroup D.top // N.Normal},
+      SocleNormalGeneratorBound (D.top ⧸ N.1) 2) :
+    DegreeTwoPairedEightStructuralFiniteRowData D where
+  coupled := coupled
+  quotientGenerators := quotientGenerators
+  topSocle := topSocle
+
+/-- The structural all-normal socle theorem feeds the same universal
+paired-tower converter as a generated normal-state family. -/
+noncomputable def rowData
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization D p) :
+    DegreeTwoPairTopTowerRelativeKernelOrbitRowData
+      D degreeTwoSixteenPairProfiles p R :=
+  DegreeTwoPairTopTowerRelativeKernelOrbitRowData.
+    ofOrdinaryRelativeRawSocleSchurCapacity hZmud 2 4
+      (by native_decide)
+      degreeTwoSixteenPairProfiles_capacity
+      (fun N ↦ F.topSocle
+        ⟨D.normalRegistry.state (R.topNormalState N),
+          D.normalRegistry.state_normal (R.topNormalState N)⟩)
+      (fun N ↦
+        F.quotientGenerators.omegaSocle_schurCapacity_le_four
+          F.coupled R N)
+
+end DegreeTwoPairedEightStructuralFiniteRowData
+
 /-- The already generated finite declaration for paired8-1. -/
 noncomputable def generatedPairedEightRow1FiniteData :
     DegreeTwoPairedEightFiniteRowData Shared.top1 where

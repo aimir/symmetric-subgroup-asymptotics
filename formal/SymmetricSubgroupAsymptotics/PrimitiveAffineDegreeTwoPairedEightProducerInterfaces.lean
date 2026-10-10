@@ -9,9 +9,9 @@ names for the retained generator tuple, its literal subgroup, and the target
 interface.  These aliases expose exactly those objects; they do not rebuild
 an action table or a normal registry.
 
-Rows 23 and 24 are the structural alternating and symmetric tops and use a
-separate structural producer.  They are intentionally absent from this
-direct selected-emitter interface.
+Rows 23 and 24 are the structural alternating and symmetric tops.  Their
+generator APIs are exposed here as well, while their quotient-socle fields
+remain assigned to the separate structural theorem.
 -/
 
 set_option autoImplicit false
@@ -143,6 +143,18 @@ def generators := PrimitiveAffineEightFrameRow29TopCertificate.generators
 abbrev Top := Subgroup.closure (Set.range generators)
 noncomputable def interface := Shared.top22
 end Row22
+
+namespace Row23
+def generators := Shared.top23Generators
+abbrev Top := Subgroup.closure (Set.range generators)
+noncomputable def interface := Shared.top23
+end Row23
+
+namespace Row24
+def generators := Shared.top24Generators
+abbrev Top := Subgroup.closure (Set.range generators)
+noncomputable def interface := Shared.top24
+end Row24
 
 end PrimitiveAffineDegreeTwoPairedEightProducerInterfaces
 end PrimitiveAffineImprimitiveBlockTransfer
