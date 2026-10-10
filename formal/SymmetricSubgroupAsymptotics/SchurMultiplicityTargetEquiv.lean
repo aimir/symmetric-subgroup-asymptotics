@@ -37,6 +37,30 @@ theorem schurSocleMultiplicity_eq_of_target_linearEquiv
     (Module.finrank_pos (R := k) (M := Module.End R X))
   exact hhom
 
+/-- An explicit equivalence of simple source modules preserves their Schur
+multiplicity in every finite target. -/
+theorem schurSocleMultiplicity_eq_of_source_linearEquiv
+    {V : Type} [AddCommGroup V] [Module R V] [Module k V]
+    [IsScalarTower k R V]
+    [FiniteDimensional k A] [FiniteDimensional k X]
+    [FiniteDimensional k V]
+    [IsSimpleModule R X] [IsSimpleModule R V]
+    (e : X ≃ₗ[R] V) :
+    schurSocleMultiplicity (k := k) (R := R) (A := A) (X := X) =
+      schurSocleMultiplicity (k := k) (R := R) (A := A) (X := V) := by
+  have hhom := (schurHomCongrSource (k := k) (A := A) e).finrank_eq
+  have hend₁ := (schurHomCongrSource (k := k) (A := X) e).finrank_eq
+  have hend₂ := (schurHomCongrTarget (k := k) (X := V) e).finrank_eq
+  have hend : Module.finrank k (Module.End R X) =
+      Module.finrank k (Module.End R V) := hend₁.trans hend₂
+  rw [schurHom_finrank_eq_multiplicity
+        (k := k) (R := R) (A := A) (X := X),
+    schurHom_finrank_eq_multiplicity
+        (k := k) (R := R) (A := A) (X := V), hend] at hhom
+  apply Nat.eq_of_mul_eq_mul_right
+    (Module.finrank_pos (R := k) (M := Module.End R V))
+  exact hhom
+
 /-- A representation equivalence is, in particular, an equivalence of the
 corresponding group-algebra modules. -/
 noncomputable def representationEquivLinearEquivAsModule
