@@ -95,6 +95,24 @@ abbrev omegaIntrinsicCoupledQuotientRepresentation
     (R.outerOmegaConstantAxis N)
     (R.omegaAxes_productSpan_le N) g z
 
+theorem omegaIntrinsicCoupledQuotientRepresentation_invariants_eq_top
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (C.omegaIntrinsicCoupledQuotientRepresentation N).invariants = ⊤ := by
+  apply top_unique
+  intro z _ g
+  exact C.omegaIntrinsicCoupledQuotientRepresentation_apply N g z
+
+/-- Thus the quotient dimension in the coupled demand is literally the
+dimension of the fixed row of its residual representation. -/
+theorem omegaIntrinsicCoupledQuotientRepresentation_invariants_finrank_eq
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (C.omegaIntrinsicCoupledQuotientRepresentation N).invariants =
+      Module.finrank (ZMod 2)
+        (C.omegaIntrinsicCoupledQuotientRepresentation N).asModule := by
+  rw [C.omegaIntrinsicCoupledQuotientRepresentation_invariants_eq_top N,
+    finrank_top]
+
 /-- When the stored tuple generates the literal top, the third coupled
 term uses the full intrinsic displacement subspace of `L`.  Thus the
 catalogue demand is exactly `d(K) + d(W) + dim L/(KW + [L,S])`. -/
