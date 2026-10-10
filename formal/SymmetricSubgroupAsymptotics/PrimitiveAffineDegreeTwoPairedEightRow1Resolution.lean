@@ -3,6 +3,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1Quoti
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopRelativeKernelOrbitRows
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerOmegaFiltration
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerNestedQuotient
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerOuterNestedQuotient
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenPairFiniteCatalogue
 
@@ -220,6 +221,111 @@ theorem omegaSocle_schurSocleMultiplicity_le_projectionKernel_add_inner
       (R.rawQuotientMap N))
     (R.rawKernelOmegaInnerImageIntertwiner N)
     (R.rawKernelOmegaInnerImageIntertwiner_surjective N)
+
+/-- Over the actual first pair top, every nonfixed simple row in the retained
+outer quotient costs at most two Schur dimensions.  The exact pair-sum map
+splits it into two nested quotients of paired-eight states, each covered by
+the uniform finite quotient theorem. -/
+theorem outerNestedQuotient_nonfixed_schurSocleMultiplicity_le_two_mul
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
+    {A : Type} [AddCommGroup A] [Module (ZMod 2) A] [Finite A]
+    (sigma : Representation (ZMod 2) R.frame.top.range A)
+    (X : Submodule (ZMod 2)[R.frame.top.range] sigma.asModule)
+    [Finite X] [IsSimpleModule (ZMod 2)[R.frame.top.range] X]
+    (hnonfixed : ¬ representationSubmoduleFixed sigma X) :
+    schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
+        (A := (nestedQuotientRepresentation
+          (R.frame.normalTopPermutationSubrepresentation N.1)
+          (R.outerOmegaAxis N)
+          (R.outerNormalAxis_le_outerOmegaAxis N)).asModule) (X := X) ≤
+      2 * Module.finrank
+        (Module.End (ZMod 2)[R.frame.top.range] X) X := by
+  let tau := nestedQuotientRepresentation
+    (R.frame.normalTopPermutationSubrepresentation N.1)
+    (R.outerOmegaAxis N)
+    (R.outerNormalAxis_le_outerOmegaAxis N)
+  let q := R.outerNestedQuotientPairSumMap N
+  let K := nestedQuotientRepresentation
+    (R.outerNormalConstantPullbackAxis N)
+    (R.outerOmegaConstantPullbackAxis N)
+    (R.outerNormalConstant_le_outerOmegaConstant N)
+  let T := nestedQuotientRepresentation
+    (R.outerNormalPairSumPullbackAxis N)
+    (R.outerOmegaPairSumPullbackAxis N)
+    (R.outerNormalPairSum_le_outerOmegaPairSum N)
+  letI : FiniteDimensional (ZMod 2) X :=
+    Module.Finite.of_finite (ZMod 2) X
+  have hKliteral :=
+    QuotientGenerators.subrepresentationQuotient_comp_nonfixed_le_end_finrank
+      R.outerTopToLiteral R.outerTopToLiteral_surjective
+      (R.outerNormalConstantAxis N) (R.outerOmegaConstantAxis N)
+      (R.outerNormalConstantAxis_le_outerOmegaConstantAxis N)
+      sigma X hnonfixed
+  have hTliteral :=
+    QuotientGenerators.subrepresentationQuotient_comp_nonfixed_le_end_finrank
+      R.outerTopToLiteral R.outerTopToLiteral_surjective
+      (R.outerNormalPairSumAxis N) (R.outerOmegaPairSumAxis N)
+      (R.outerNormalPairSumAxis_le_outerOmegaPairSumAxis N)
+      sigma X hnonfixed
+  have hKequiv : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
+        (A := K.asModule) (X := X) =
+      schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
+        (A := (q.ker.toRepresentation).asModule) (X := X) :=
+    schurSocleMultiplicity_eq_of_representationEquiv
+      K q.ker.toRepresentation
+      (R.outerNestedQuotientPairSumKernelEquiv N)
+  have hKsub : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
+        (A := q.ker.toRepresentation.asModule) (X := X) =
+      schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
+        (A := q.ker.asSubmodule) (X := X) :=
+    schurSocleMultiplicity_eq_of_target_linearEquiv
+      (submoduleRepresentationModuleEquiv tau q.ker.asSubmodule)
+  have hKtransport : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
+        (A := K.asModule) (X := X) =
+      schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
+        (A := ((nestedQuotientRepresentation
+          (R.outerNormalConstantAxis N)
+          (R.outerOmegaConstantAxis N)
+          (R.outerNormalConstantAxis_le_outerOmegaConstantAxis N)).comp
+            R.outerTopToLiteral).asModule) (X := X) :=
+    schurSocleMultiplicity_eq_of_representationEquiv
+      K _ (R.outerConstantQuotientEquiv N)
+  have hTtransport : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
+        (A := T.asModule) (X := X) =
+      schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
+        (A := ((nestedQuotientRepresentation
+          (R.outerNormalPairSumAxis N)
+          (R.outerOmegaPairSumAxis N)
+          (R.outerNormalPairSumAxis_le_outerOmegaPairSumAxis N)).comp
+            R.outerTopToLiteral).asModule) (X := X) :=
+    schurSocleMultiplicity_eq_of_representationEquiv
+      T _ (R.outerPairSumQuotientEquiv N)
+  have hK : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
+        (A := q.ker.asSubmodule) (X := X) ≤
+      Module.finrank (Module.End (ZMod 2)[R.frame.top.range] X) X := by
+    rw [← hKsub, ← hKequiv, hKtransport]
+    exact hKliteral
+  have hT : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
+        (A := T.asModule) (X := X) ≤
+      Module.finrank (Module.End (ZMod 2)[R.frame.top.range] X) X := by
+    rw [hTtransport]
+    exact hTliteral
+  have hsplit := representationSchurMultiplicity_le_kernel_add_target
+    tau T q (R.outerNestedQuotientPairSumMap_surjective N) (X := X)
+  exact hsplit.trans (by omega)
 
 /-- Every nonfixed simple row in the actual inner omega image costs one
 Schur dimension.  The ordinary state quotients use the cyclic-dual table;
