@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoRelativeKernelAnchor
 import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicOrbitRegistry
+import SymmetricSubgroupAsymptotics.RepresentationSchurRows
 import SymmetricSubgroupAsymptotics.SemisimpleModuleGenerators
 import SymmetricSubgroupAsymptotics.TraceyPrimePowerInput
 import Mathlib.LinearAlgebra.Dual.Lemmas
@@ -326,6 +327,53 @@ theorem representationDual_isSemisimple
   exact
     (Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule
       rho.dual).mp hdualRep
+
+/-- A fixed-row dimension bound together with the matching Schur-scaled
+multiplicity bound on every nonfixed simple row controls the full Schur
+capacity.  The shared factor `finrank End(S) S` is essential: it is what
+lets repeated copies of one nontrivial simple type share generator
+positions. -/
+theorem representationSchurCapacity_le_of_fixed_nonfixed_multiplicity
+    {k G V : Type*} [Field k] [Group G]
+    [AddCommGroup V] [Module k V] [FiniteDimensional k V]
+    (rho : Representation k G V) (cap : ℕ)
+    (hfixed : Module.finrank k rho.invariants ≤ cap)
+    (hnonfixed : ∀ S : Submodule k[G] rho.asModule,
+      [IsSimpleModule k[G] S] →
+      ¬ representationSubmoduleFixed rho S →
+      schurSocleMultiplicity
+          (k := k) (R := k[G]) (A := rho.asModule) (X := S) ≤
+        cap * Module.finrank (Module.End k[G] S) S) :
+    representationSchurCapacity rho ≤ cap := by
+  unfold representationSchurCapacity schurCapacity
+  apply csSup_le (Set.insert_nonempty _ _)
+  rintro x (rfl | ⟨S, hS, rfl⟩)
+  · positivity
+  · letI : IsSimpleModule k[G] S := hS
+    letI : Nontrivial S := IsSimpleModule.nontrivial k[G] S
+    letI : FiniteDimensional k S :=
+      FiniteDimensional.of_injective
+        (S.subtype.restrictScalars k) S.subtype_injective
+    by_cases hSfixed : representationSubmoduleFixed rho S
+    · exact (schurSimpleRatio_le_invariants_of_fixed rho S hSfixed).trans
+        (by exact_mod_cast hfixed)
+    · rw [schurSimpleRatio_eq_multiplicity_division
+        (k := k) (R := k[G]) (A := rho.asModule) (X := S)]
+      have hepos : 0 < Module.finrank (Module.End k[G] S) S := by
+        have hspos : 0 < Module.finrank k S :=
+          Module.finrank_pos (R := k) (M := S)
+        have htower := schur_simple_finrank_tower
+          (k := k) (R := k[G]) (X := S)
+        by_contra he
+        have hezero : Module.finrank (Module.End k[G] S) S = 0 :=
+          Nat.eq_zero_of_not_pos he
+        rw [htower, hezero, mul_zero] at hspos
+        omega
+      have heposR :
+          (0 : ℝ) < Module.finrank (Module.End k[G] S) S := by
+        exact_mod_cast hepos
+      apply (div_le_iff₀ heposR).mpr
+      exact_mod_cast hnonfixed S hSfixed
 
 /-- Every nonzero cyclic orbit meets the finite representation socle.
 Equivalently, the socle is an essential subrepresentation. -/
