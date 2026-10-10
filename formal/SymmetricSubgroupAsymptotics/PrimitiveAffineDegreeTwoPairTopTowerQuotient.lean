@@ -610,6 +610,26 @@ noncomputable def outerZeroCutKernelEquivRawKernelProjectionKer
       (R.outerQuotientMap_ker_eq_zeroCutBase_ker N).symm).trans
         (R.outerKernelEquivRawKernelProjectionKer N))
 
+@[simp] theorem outerZeroCutKernelEquivRawKernelProjectionKer_val
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (l : R.frame.top.ker) :
+    ((((R.outerZeroCutKernelEquivRawKernelProjectionKer N)
+          (R.frame.zeroCutMap N.1 l) :
+        (R.rawKernelProjection N).ker) :
+      (R.rawQuotientMap N).ker) :
+        preE7PairAction s p ⧸ N.1) =
+      QuotientGroup.mk' N.1 (l : preE7PairAction s p) := by
+  change (((R.outerKernelEquivRawKernelProjectionKer N)
+      ((MulEquiv.subgroupCongr
+        (R.outerQuotientMap_ker_eq_zeroCutBase_ker N).symm)
+          (R.frame.zeroCutKernelEquiv N.1
+            (R.frame.zeroCutMap N.1 l))) :
+        (R.rawKernelProjection N).ker) :
+          (R.rawQuotientMap N).ker) :
+            preE7PairAction s p ⧸ N.1) = _
+  rw [R.frame.zeroCutKernelEquiv_apply N.1 l]
+  rfl
+
 /-- Elements of direct-kernel omega killed by the second-kernel projection
 lie literally in the first kernel of the two-frame extension. -/
 def rawKernelOmegaOuterInclusion
