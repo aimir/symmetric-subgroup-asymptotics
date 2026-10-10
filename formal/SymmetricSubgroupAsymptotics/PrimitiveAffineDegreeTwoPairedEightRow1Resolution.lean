@@ -53,7 +53,7 @@ abbrev OmegaSocleRepresentation
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :=
   (finiteRepresentationSocle
     (binaryKernelOmegaConjugationRepresentation
-      (R.quotientMap N))).toRepresentation
+      (R.rawQuotientMap N))).toRepresentation
 
 /-- The checked coupled head closes the fixed simple row; a three-layer
 same-simple-type multiplicity estimate closes every nonfixed row.  This
@@ -107,7 +107,7 @@ noncomputable def rowData
     DegreeTwoPairTopTowerRelativeKernelOrbitRowData
       Shared.top1 degreeTwoSixteenPairProfiles p R :=
   DegreeTwoPairTopTowerRelativeKernelOrbitRowData.
-    ofOrdinaryRelativeSocleSchurCapacity hZmud 2 4
+    ofOrdinaryRelativeRawSocleSchurCapacity hZmud 2 4
       (by native_decide)
       degreeTwoSixteenPairProfiles_capacity
       (fun N ↦

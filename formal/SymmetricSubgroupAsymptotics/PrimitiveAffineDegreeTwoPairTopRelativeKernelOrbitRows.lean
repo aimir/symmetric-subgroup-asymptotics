@@ -536,6 +536,44 @@ noncomputable def ofOrdinaryRelativeSocleSchurCapacity
         (realization.quotientMap_kernel_isPGroup N)
         (socleCapacity N)
 
+/-- Raw two-frame version of the natural omega-socle constructor.  The
+ordinary top certificate is transported only by rewriting the proved
+equality between the actual top normal and its registry state.  The omega
+action itself stays on the literal composite quotient used by the tower
+filtration. -/
+noncomputable def ofOrdinaryRelativeRawSocleSchurCapacity
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (ordinary relative : ℕ)
+    (profile_mem : degreeTwoPairOrdinaryRelativeProfile ordinary relative ∈
+      expectedProfiles)
+    (allowed_capacity : ∀ profile ∈ expectedProfiles,
+      profile.slope ≤ preE7CharacterWindow (2 * s))
+    (topSocle : ∀ N, SocleNormalGeneratorBound
+      (D.top ⧸ D.normalRegistry.state (realization.topNormalState N))
+      ordinary)
+    (socleCapacity : ∀ N, representationSchurCapacity
+      (finiteRepresentationSocle
+        (binaryKernelOmegaConjugationRepresentation
+          (realization.rawQuotientMap N))).toRepresentation ≤ relative) :
+    DegreeTwoPairTopTowerRelativeKernelOrbitRowData
+      D expectedProfiles p realization where
+  stateProfile :=
+    { profileOfState := fun _ _ ↦
+        degreeTwoPairOrdinaryRelativeProfile ordinary relative
+      allowedProfiles := expectedProfiles
+      allowed_capacity := allowed_capacity
+      profile_mem := fun _ ↦ profile_mem }
+  profiles_eq := rfl
+  input := fun N ↦
+    DegreeTwoPairRelativeKernelOrbitInput.
+      ofSurjectiveBinaryKernelSocleSchurCapacity hZmud
+        (realization.rawQuotientMap N)
+        (realization.rawQuotientMap_surjective N)
+        (by
+          simpa only [realization.topNormalState_spec N] using topSocle N)
+        (realization.rawQuotientMap_kernel_isPGroup N)
+        (socleCapacity N)
+
 noncomputable def sixteenResolvedData
     {D : DegreeTwoPairTopFiniteInterface 8}
     {expectedProfiles : Finset DegreeTwoPairRelativeProfile}
