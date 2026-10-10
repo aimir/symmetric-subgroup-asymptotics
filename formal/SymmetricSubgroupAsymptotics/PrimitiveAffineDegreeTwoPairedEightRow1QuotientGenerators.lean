@@ -184,6 +184,59 @@ theorem subrepresentationQuotient_nonfixed_schurSocleMultiplicity_le_end_finrank
   exact nestedQuotient_nonfixed_schurSocleMultiplicity_le_end_finrank
     i j hAB sigma S hnonfixed
 
+/-- The semantic quotient bound survives pullback along any surjective group
+map.  This is the form consumed by an original pair action: the finite state
+quotient lives over the literal top, while its action on the actual quotient
+group is obtained by inflation. -/
+theorem subrepresentationQuotient_comp_nonfixed_le_end_finrank
+    {H X : Type*} [Group H]
+    (gamma : H →* Top) (hgamma : Function.Surjective gamma)
+    (A B : Subrepresentation representation) (hAB : A ≤ B)
+    [AddCommGroup X] [Module (ZMod 2) X] [Finite X]
+    (sigma : Representation (ZMod 2) H X)
+    (S : Submodule (ZMod 2)[H] sigma.asModule)
+    [Finite S] [IsSimpleModule (ZMod 2)[H] S]
+    (hnonfixed : ¬ representationSubmoduleFixed sigma S) :
+    schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[H])
+        (A := ((nestedQuotientRepresentation A B hAB).comp gamma).asModule)
+        (X := S) ≤
+      Module.finrank (Module.End (ZMod 2)[H] S) S := by
+  letI : FiniteDimensional (ZMod 2) X :=
+    Module.Finite.of_finite (ZMod 2) X
+  letI : FiniteDimensional (ZMod 2) S :=
+    Module.Finite.of_finite (ZMod 2) S
+  obtain ⟨i, hi⟩ := Natural.registry.complete A
+  obtain ⟨j, hj⟩ := Natural.registry.complete B
+  subst A
+  subst B
+  by_cases hexception : i = 4 ∧ j = 8
+  · obtain ⟨rfl, rfl⟩ := hexception
+    have hone : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[H])
+        (A := ((nestedQuotientRepresentation
+          (states 4) (states 8) hAB).comp gamma).asModule) (X := S) ≤ 1 :=
+      schurSocleMultiplicity_le_one_of_finrank_le_two_of_nonfixed
+        sigma S hnonfixed (exceptional_finrank_le_two hAB)
+    have hpos : 0 < Module.finrank (Module.End (ZMod 2)[H] S) S := by
+      letI : Nontrivial S := IsSimpleModule.nontrivial (ZMod 2)[H] S
+      exact Module.finrank_pos
+        (R := Module.End (ZMod 2)[H] S) (M := S)
+    exact hone.trans hpos
+  · let tau := nestedQuotientRepresentation (states i) (states j) hAB
+    have hgen := nestedQuotient_dual_generated i j hAB hexception
+    have hgenComp : RepresentationGeneratedBy (tau.dual.comp gamma) 1 :=
+      RepresentationGeneratedBy.comp_of_surjective
+        tau.dual gamma hgamma hgen
+    let E := representationDualCompEquiv tau gamma
+    have hdual : RepresentationGeneratedBy (tau.comp gamma).dual 1 :=
+      representationGeneratedBy_of_surjective
+        (tau.dual.comp gamma) (tau.comp gamma).dual
+        E.symm.toIntertwiningMap E.symm.surjective hgenComp
+    have hschur := schurSocleMultiplicity_le_of_dual_generated
+      (tau.comp gamma) 1 hdual (X := S)
+    simpa only [tau, one_mul] using hschur
+
 end PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators
 end SymmetricSubgroupAsymptotics
 

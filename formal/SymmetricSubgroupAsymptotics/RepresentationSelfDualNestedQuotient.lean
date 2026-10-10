@@ -23,6 +23,21 @@ universe u
 variable {k G V : Type u} [Field k] [Group G]
   [AddCommGroup V] [Module k V]
 
+/-- Contragredient commutes equivariantly with pullback along a group map.
+The underlying linear equivalence is the identity; the only calculation is
+that a homomorphism preserves inverses. -/
+def representationDualCompEquiv
+    {H : Type u} [Group H] (rho : Representation k G V) (f : H →* G) :
+    (rho.comp f).dual.Equiv (rho.dual.comp f) :=
+  Representation.Equiv.mk (LinearEquiv.refl k (Module.Dual k V)) (by
+    intro h
+    apply LinearMap.ext
+    intro phi
+    apply LinearMap.ext
+    intro v
+    change phi (rho (f h⁻¹) v) = phi (rho (f h)⁻¹ v)
+    rw [map_inv])
+
 /-- Regard `A` as a subrepresentation of `B` when both sit in the same
 ambient representation. -/
 def nestedSubrepresentation
