@@ -188,6 +188,73 @@ theorem outerNormalConstantAxis_le_outerOmegaConstantAxis
     R.outerNormalConstantAxis N ≤ R.outerOmegaConstantAxis N :=
   R.outerNormalConstant_le_outerOmegaConstant N
 
+/-- The first top acts on the pair coordinates through the selected literal
+degree-eight top. -/
+def outerTopToLiteral : R.frame.top.range →* D.top :=
+  R.topEquiv.symm.toMonoidHom.comp R.secondFrame.top.rangeRestrict
+
+theorem outerTopToLiteral_surjective :
+    Function.Surjective R.outerTopToLiteral :=
+  R.topEquiv.symm.surjective.comp
+    R.secondFrame.top.rangeRestrict_surjective
+
+/-- Descending two pulled-back axes and transporting them to the catalogue
+top commutes with forming their nested quotient. -/
+noncomputable def outerPullbackNestedQuotientEquiv
+    (A B : Subrepresentation R.secondFrame.pulledBackCoordinateTopAction)
+    (hAB : A ≤ B) :
+    (nestedQuotientRepresentation A B hAB).Equiv
+      ((nestedQuotientRepresentation
+        (R.transportOuterPullbackAxis A)
+        (R.transportOuterPullbackAxis B) hAB).comp
+          R.outerTopToLiteral) :=
+  Representation.Equiv.mk (LinearEquiv.refl _ _) (by
+    intro g
+    apply LinearMap.ext
+    intro x
+    obtain ⟨b, rfl⟩ :=
+      (nestedSubrepresentation A B hAB).toSubmodule.mkQ_surjective x
+    apply congrArg
+      (nestedSubrepresentation
+        (R.transportOuterPullbackAxis A)
+        (R.transportOuterPullbackAxis B) hAB).toSubmodule.mkQ
+    apply Subtype.ext
+    change R.secondFrame.pulledBackCoordinateTopAction g b.1 =
+      permutationFunctionRepresentation (ZMod 2) D.top (Fin t)
+        (R.outerTopToLiteral g) b.1
+    rw [R.module_action_eq, R.topEquiv.apply_symm_apply]
+    rfl)
+
+/-- The right endpoint of the outer exact sequence is the inflation of a
+literal paired-eight state quotient. -/
+noncomputable def outerPairSumQuotientEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (nestedQuotientRepresentation
+      (R.outerNormalPairSumPullbackAxis N)
+      (R.outerOmegaPairSumPullbackAxis N)
+      (R.outerNormalPairSum_le_outerOmegaPairSum N)).Equiv
+      ((nestedQuotientRepresentation
+        (R.outerNormalPairSumAxis N)
+        (R.outerOmegaPairSumAxis N)
+        (R.outerNormalPairSumAxis_le_outerOmegaPairSumAxis N)).comp
+          R.outerTopToLiteral) :=
+  R.outerPullbackNestedQuotientEquiv _ _ _
+
+/-- The kernel endpoint of the outer exact sequence is likewise the
+inflation of a literal paired-eight state quotient. -/
+noncomputable def outerConstantQuotientEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (nestedQuotientRepresentation
+      (R.outerNormalConstantPullbackAxis N)
+      (R.outerOmegaConstantPullbackAxis N)
+      (R.outerNormalConstant_le_outerOmegaConstant N)).Equiv
+      ((nestedQuotientRepresentation
+        (R.outerNormalConstantAxis N)
+        (R.outerOmegaConstantAxis N)
+        (R.outerNormalConstantAxis_le_outerOmegaConstantAxis N)).comp
+          R.outerTopToLiteral) :=
+  R.outerPullbackNestedQuotientEquiv _ _ _
+
 end DegreeTwoPairTopTowerRealization
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
