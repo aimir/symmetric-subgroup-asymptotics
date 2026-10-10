@@ -3,6 +3,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1Resolution
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveExceptionalTemplates
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow3Resolution
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenOneFrameFiniteRows
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenNaturalFiniteRows
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightCoupledCatalogue
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopRelativeKernelOrbitRows
 
@@ -16,8 +17,8 @@ natural-module declarations; the paired-eight rows use their three finite
 declarations; and all 64 one-frame count-sixteen rows share the finite
 `(2,4)` Schur package.
 
-The only remaining count-sixteen semantic boundary is the natural
-`A_16`/`S_16` alternative.
+The natural `A_16`/`S_16` alternative is likewise reduced to two explicit
+literal-top packages and one common structural converter.
 -/
 
 set_option autoImplicit false
@@ -39,6 +40,7 @@ namespace TwelveJointCatalogue :=
 namespace TwelveFiniteCatalogue := DegreeTwoTwelvePairFiniteCatalogue
 namespace TwelveExceptional := DegreeTwoTwelveExceptionalTemplates
 namespace SixteenOneFrameCatalogue := DegreeTwoSixteenOneFrameFiniteRows.Catalogue
+namespace SixteenNaturalFinite := DegreeTwoSixteenNaturalFiniteRows
 
 abbrev TwelveCatalogue := Concrete.TwelveCatalogue
 abbrev SixteenCatalogue := Concrete.SixteenCatalogue
@@ -57,10 +59,7 @@ structure RemainingPairTopSemanticData : Type 1 where
   sixteenOneFrame :
     SixteenOneFrameCatalogue.RemainingDegreeTwoSixteenOneFrameFiniteRowData
   sixteenNatural :
-    ∀ (kind : DegreeTwoSixteenNaturalTop)
-      (p : PreE7PairActionClass 16)
-      (realization : DegreeTwoSixteenNaturalTopRealization kind p),
-      DegreeTwoSixteenNaturalSocleGeneratorData kind p realization
+    SixteenNaturalFinite.DegreeTwoSixteenNaturalFiniteCatalogueData
 
 namespace RemainingPairTopSemanticData
 
@@ -117,7 +116,7 @@ noncomputable def sixteenResolution
     (D.sixteenOneFrameFiniteCatalogue.primitive16ResolvedRow
       hZmud lit j realization)
   natural kind p realization :=
-    (D.sixteenNatural kind p realization).source hZmud lit
+    D.sixteenNatural.source hZmud lit kind p realization
 
 end RemainingPairTopSemanticData
 
