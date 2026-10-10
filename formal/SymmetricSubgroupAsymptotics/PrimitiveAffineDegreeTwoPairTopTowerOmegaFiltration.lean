@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerQuotient
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoRelativeKernelOrbitAnchor
+import SymmetricSubgroupAsymptotics.RepresentationFixedExact
 
 /-!
 # The omega filtration through two pair kernels
@@ -115,6 +116,36 @@ theorem rawKernelOmegaInnerImageIntertwiner_surjective
     exact hv
   obtain ⟨z, hz⟩ := hvrange
   exact ⟨z, Subtype.ext hz⟩
+
+/-- Fixed vectors in direct-kernel omega are bounded by the two literal
+terms of the projection filtration: its actual kernel and its exact inner
+image. -/
+theorem rawKernelOmega_invariants_finrank_le_kernel_add_inner
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (binaryKernelOmegaConjugationRepresentation
+          (R.rawQuotientMap N)).invariants ≤
+      Module.finrank (ZMod 2)
+          (R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation.invariants +
+        Module.finrank (ZMod 2)
+          ((R.innerOmegaSubrepresentation N).toRepresentation.comp
+            (R.rawQuotientMap N)).invariants := by
+  let q := R.rawKernelOmegaInnerImageIntertwiner N
+  let i : q.ker.toRepresentation.IntertwiningMap
+      (binaryKernelOmegaConjugationRepresentation
+        (R.rawQuotientMap N)) where
+    toLinearMap := q.ker.toSubmodule.subtype
+    isIntertwining' := by intro _; rfl
+  have hi : Function.Injective i := Subtype.val_injective
+  have hexact : i.toLinearMap.range = q.toLinearMap.ker := by
+    ext z
+    constructor
+    · rintro ⟨w, rfl⟩
+      exact w.property
+    · intro hz
+      exact ⟨⟨z, hz⟩, rfl⟩
+  exact RepresentationFixedExact.finrank_invariants_le_of_range_eq_ker
+    i q hi hexact
 
 end DegreeTwoPairTopTowerRealization
 end PrimitiveAffineImprimitiveBlockTransfer
