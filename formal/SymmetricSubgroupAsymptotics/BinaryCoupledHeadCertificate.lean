@@ -259,6 +259,58 @@ theorem binaryCoupledDenominatorSubrepresentation_eq_intrinsic
     rho generators L hgen
       (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule) hproduct
 
+/-- The quotient representation whose denominator is the literal finite
+table expression `KW +` recorded-generator displacements. -/
+def binaryCoupledQuotientRepresentation
+    [MulAction G (Fin w)]
+    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
+    (generators : J → G)
+    (hgen : Subgroup.closure (Set.range generators) = ⊤)
+    (K W L : Subrepresentation rho)
+    (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
+      L.toSubmodule) :
+    Representation (ZMod 2) G
+      (L.toSubmodule ⫽
+        (binaryCoupledDenominatorSubrepresentation
+          rho generators hgen K W L hproduct).toSubmodule) :=
+  let D := binaryCoupledDenominatorSubrepresentation
+    rho generators hgen K W L hproduct
+  L.toRepresentation.quotient D.toSubmodule
+    (fun g ↦ D.apply_mem_toSubmodule g)
+
+/-- The literal table quotient is pointwise fixed by the original action. -/
+@[simp] theorem binaryCoupledQuotientRepresentation_apply
+    [MulAction G (Fin w)]
+    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
+    (generators : J → G)
+    (hgen : Subgroup.closure (Set.range generators) = ⊤)
+    (K W L : Subrepresentation rho)
+    (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
+      L.toSubmodule)
+    (g : G)
+    (z : (binaryCoupledQuotientRepresentation
+      rho generators hgen K W L hproduct).asModule) :
+    binaryCoupledQuotientRepresentation
+        rho generators hgen K W L hproduct g z = z := by
+  let D := binaryCoupledDenominatorSubrepresentation
+    rho generators hgen K W L hproduct
+  change (L.toRepresentation.quotient D.toSubmodule
+      (fun h ↦ D.apply_mem_toSubmodule h)) g z = z
+  refine Submodule.Quotient.induction_on D.toSubmodule z ?_
+  intro v
+  change D.toSubmodule.mkQ (L.toRepresentation g v) =
+    D.toSubmodule.mkQ v
+  apply (Submodule.Quotient.eq D.toSubmodule).mpr
+  change L.toRepresentation g v - v ∈
+    binaryCoupledDenominator rho generators L
+      (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule) hproduct
+  rw [binaryCoupledDenominator_eq_sup_coinvariantsKer
+    rho generators L hgen
+    (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule) hproduct]
+  exact le_sup_right
+    (Representation.Coinvariants.sub_mem_ker
+      (ρ := L.toRepresentation) g v)
+
 /-- The residual upper-layer representation after dividing by both the
 cross-layer product and every intrinsic coinvariant relation. -/
 def binaryIntrinsicCoupledQuotientRepresentation
