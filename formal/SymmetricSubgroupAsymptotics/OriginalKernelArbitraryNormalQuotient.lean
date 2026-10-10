@@ -46,6 +46,20 @@ private def sameKernelEquiv {G C D : Type*} [Group G] [Group C] [Group D]
 /-- The original kernel in its supplied additive coordinates. -/
 def kernelCoordinates : π.ker →* Multiplicative A := E.equiv.symm
 
+/-- Kernel coordinates turn conjugation in the original extension into the
+specified quotient-module action. -/
+@[simp] theorem kernelCoordinates_conjugate
+    (q : Q) (x : π.ker) :
+    (E.kernelCoordinates π A (MulAut.conjNormal q x)).toAdd =
+      A.ρ (π q) (E.kernelCoordinates π A x).toAdd := by
+  apply Multiplicative.ofAdd.injective
+  apply E.equiv.injective
+  apply Subtype.ext
+  rw [E.equiv.apply_symm_apply]
+  rw [E.conjugate]
+  change q * (x : Q) * q⁻¹ = _
+  rfl
+
 /-- The literal image of `N ∩ ker π` in the original kernel module. -/
 def normalSpace : Submodule (ZMod p) A :=
   sectionSubgroupImage (E.kernelCoordinates π A) (N.subgroupOf π.ker)
