@@ -153,6 +153,81 @@ theorem binaryRestricted_invariants_finrank :
       norm_num at this
     exact Submodule.one_le_finrank_iff.mpr hne
 
+/-- The same regular subgroup inside the literal permutation top. -/
+def binaryTopSubgroup : Subgroup Top :=
+  binarySubgroup.map actionEquiv.toMonoidHom
+
+def binarySubgroupEquivTop : binarySubgroup ≃* binaryTopSubgroup :=
+  actionEquiv.subgroupMap binarySubgroup
+
+theorem binaryTopSubgroup_isPGroup : IsPGroup 2 binaryTopSubgroup :=
+  binarySubgroup_isPGroup.of_equiv binarySubgroupEquivTop
+
+def binaryTopRestrictedRepresentation :
+    Representation (ZMod 2) binaryTopSubgroup ModelModule :=
+  representation.comp binaryTopSubgroup.subtype
+
+private def binaryTopFixedPullback :
+    binaryTopRestrictedRepresentation.invariants →ₗ[ZMod 2]
+      binaryRestrictedRepresentation.invariants where
+  toFun f := ⟨f.1, fun u ↦ f.2 (binarySubgroupEquivTop u)⟩
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+private theorem binaryTopFixedPullback_injective :
+    Function.Injective binaryTopFixedPullback := by
+  intro f g hfg
+  apply Subtype.ext
+  exact congrArg Subtype.val hfg
+
+theorem binaryTopRestricted_invariants_finrank_le_one :
+    Module.finrank (ZMod 2)
+      binaryTopRestrictedRepresentation.invariants ≤ 1 := by
+  have h := binaryTopFixedPullback.finrank_le_finrank_of_injective
+    binaryTopFixedPullback_injective
+  rw [binaryRestricted_invariants_finrank] at h
+  exact h
+
+private def binaryTopInvariantInclusion
+    (B : Subrepresentation representation) :
+    Representation.invariants
+        (B.toRepresentation.comp binaryTopSubgroup.subtype) →ₗ[ZMod 2]
+      binaryTopRestrictedRepresentation.invariants where
+  toFun f := ⟨f.1.1, fun u ↦ congrArg Subtype.val (f.2 u)⟩
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+private theorem binaryTopInvariantInclusion_injective
+    (B : Subrepresentation representation) :
+    Function.Injective (binaryTopInvariantInclusion B) := by
+  intro f g hfg
+  apply Subtype.ext
+  apply Subtype.ext
+  exact congrArg Subtype.val hfg
+
+theorem subrepresentation_binaryTop_invariants_finrank_le_one
+    (B : Subrepresentation representation) :
+    Module.finrank (ZMod 2)
+        (Representation.invariants
+          (B.toRepresentation.comp binaryTopSubgroup.subtype)) ≤ 1 := by
+  exact ((binaryTopInvariantInclusion B).finrank_le_finrank_of_injective
+    (binaryTopInvariantInclusion_injective B)).trans
+      binaryTopRestricted_invariants_finrank_le_one
+
+/-- Every simple row in an invariant state occurs with Schur multiplicity
+at most one.  This is the exact integral estimate needed when the raw omega
+filtration is split into its three natural-module layers. -/
+theorem subrepresentation_schurSocleMultiplicity_le_one
+    (B : Subrepresentation representation)
+    (S : Submodule (ZMod 2)[Top] B.toRepresentation.asModule)
+    [IsSimpleModule (ZMod 2)[Top] S] :
+    schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[Top])
+        (A := B.toRepresentation.asModule) (X := S) ≤ 1 := by
+  exact (schurSocleMultiplicity_le_pSubgroup_invariants
+    binaryTopSubgroup binaryTopSubgroup_isPGroup B.toRepresentation S).trans
+      (subrepresentation_binaryTop_invariants_finrank_le_one B)
+
 private def binaryInvariantInclusion
     (B : Subrepresentation representation) :
     Representation.invariants
