@@ -45,6 +45,63 @@ theorem representationGeneratorDisplacementSpan_le_coinvariantsKer
   exact Representation.Coinvariants.sub_mem_ker
     (ρ := B.toRepresentation) (generators i) v
 
+/-- If the displayed tuple generates the acting group, its literal
+displacements already span every coinvariant relation.  This identifies a
+finite certificate's generator span with the intrinsic representation head;
+no unrecorded group elements are needed in the denominator. -/
+theorem representationGeneratorDisplacementSpan_eq_coinvariantsKer
+    (rho : Representation k G V) (generators : I → G)
+    (hgen : Subgroup.closure (Set.range generators) = ⊤)
+    (B : Subrepresentation rho) :
+    representationGeneratorDisplacementSpan rho generators B =
+      Representation.Coinvariants.ker B.toRepresentation := by
+  apply le_antisymm
+  · exact representationGeneratorDisplacementSpan_le_coinvariantsKer
+      rho generators B
+  · let D := representationGeneratorDisplacementSpan rho generators B
+    let S : Subgroup G :=
+      { carrier := {g | ∀ v : B.toSubmodule,
+          B.toRepresentation g v - v ∈ D}
+        one_mem' := by
+          intro v
+          simp only [map_one, Module.End.one_apply, sub_self]
+          exact D.zero_mem
+        mul_mem' := by
+          intro g h hg hh v
+          have heq :
+              B.toRepresentation (g * h) v - v =
+                (B.toRepresentation g (B.toRepresentation h v) -
+                    B.toRepresentation h v) +
+                  (B.toRepresentation h v - v) := by
+            rw [map_mul]
+            change _
+            abel
+          rw [heq]
+          exact D.add_mem (hg (B.toRepresentation h v)) (hh v)
+        inv_mem' := by
+          intro g hg v
+          have hcancel :
+              B.toRepresentation g (B.toRepresentation g⁻¹ v) = v := by
+            change (B.toRepresentation g * B.toRepresentation g⁻¹) v = v
+            rw [← map_mul, mul_inv_cancel, map_one]
+            rfl
+          have heq :
+              B.toRepresentation g⁻¹ v - v =
+                -(B.toRepresentation g (B.toRepresentation g⁻¹ v) -
+                    B.toRepresentation g⁻¹ v) := by
+            rw [hcancel]
+            abel
+          rw [heq]
+          exact D.neg_mem (hg (B.toRepresentation g⁻¹ v)) }
+    have hclosure : Subgroup.closure (Set.range generators) ≤ S := by
+      apply (Subgroup.closure_le S).mpr
+      rintro _ ⟨i, rfl⟩ v
+      exact Submodule.subset_span ⟨⟨i, v⟩, rfl⟩
+    apply Submodule.span_le.mpr
+    rintro _ ⟨⟨g, v⟩, rfl⟩
+    have hgS : g ∈ S := hclosure (by rw [hgen]; trivial)
+    exact hgS v
+
 /-- A checked codimension bound on the literal generator-displacement span
 implies the same bound for the full coinvariant head. -/
 theorem representationCoinvariants_finrank_le_of_displacementSpan
