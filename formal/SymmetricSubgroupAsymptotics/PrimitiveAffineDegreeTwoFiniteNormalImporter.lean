@@ -1,7 +1,7 @@
 import SymmetricSubgroupAsymptotics.FiniteNormalJoinWordRegistry
 import SymmetricSubgroupAsymptotics.Non2PreE7RankTailSourceDichotomyClosure
 import SymmetricSubgroupAsymptotics.ZmudFaithfulCharacterInput
-import SymmetricSubgroupAsymptotics.BinaryIrreducibleTuple
+import Mathlib.Tactic.FinCases
 
 /-!
 # Finite normal-state importer for the remaining degree-two pair catalogues
@@ -500,6 +500,34 @@ end PreE7FiniteQcharAxes
 
 /-! ## Compact selected QCHAR packages -/
 
+/-- The faithful complex-unit sign of the two-element group. -/
+def binaryComplexUnitSign : Multiplicative (ZMod 2) →* ℂˣ where
+  toFun x := if x.toAdd = 0 then 1 else -1
+  map_one' := by simp
+  map_mul' x y := by
+    change (if x.toAdd + y.toAdd = 0 then (1 : ℂˣ) else -1) =
+      (if x.toAdd = 0 then 1 else -1) *
+        (if y.toAdd = 0 then 1 else -1)
+    have hx : x.toAdd = 0 ∨ x.toAdd = 1 := by
+      generalize x.toAdd = z
+      fin_cases z <;> simp
+    have hy : y.toAdd = 0 ∨ y.toAdd = 1 := by
+      generalize y.toAdd = z
+      fin_cases z <;> simp
+    have htwo : (1 : ZMod 2) + 1 = 0 := by decide
+    rcases hx with hx | hx <;> rcases hy with hy | hy <;>
+      simp [hx, hy, htwo]
+
+@[simp] theorem binaryComplexUnitSign_eq_one
+    (x : Multiplicative (ZMod 2)) :
+    binaryComplexUnitSign x = 1 ↔ x = 1 := by
+  change (if x.toAdd = 0 then (1 : ℂˣ) else -1) = 1 ↔ x = 1
+  by_cases h : x.toAdd = 0
+  · have hx : x = 1 := Multiplicative.toAdd.injective h
+    simp [hx]
+  · have hx : x ≠ 1 := fun he ↦ h (congrArg Multiplicative.toAdd he)
+    simp [h, hx]
+
 /-- Finite structural form of a linear/Zmud tuple when all selected linear
 characters have binary image.  An emitter only records homomorphisms into
 the two-element group; the common converter supplies their complex signs. -/
@@ -525,17 +553,17 @@ variable {Q : Type} [Group Q]
 noncomputable def toLinearZmud : PreE7LinearZmudTupleData Q where
   linearCount := D.linearCount
   generalCount := D.generalCount
-  linear j := (binaryScalarSign (k := ℂ)).comp (D.linear j)
+  linear j := binaryComplexUnitSign.comp (D.linear j)
   generalKernel := D.generalKernel
   generalSocleGenerator := D.generalSocleGenerator
   kernel_inf := by
     have hker : ∀ j,
-        ((binaryScalarSign (k := ℂ)).comp (D.linear j)).ker =
+        (binaryComplexUnitSign.comp (D.linear j)).ker =
           (D.linear j).ker := by
       intro j
       ext q
       simp only [MonoidHom.mem_ker, MonoidHom.comp_apply,
-        binaryScalarSign_eq_one]
+        binaryComplexUnitSign_eq_one]
     simp only [hker]
     exact D.kernel_inf
 
