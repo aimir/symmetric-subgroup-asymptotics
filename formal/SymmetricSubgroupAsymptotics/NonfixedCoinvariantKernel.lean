@@ -221,6 +221,71 @@ theorem schurSocleMultiplicity_le_of_nonfixed_coinvariantsKernel_injection
       rw [heq]
       exact hkernel)
 
+/-- Every intertwiner carries intrinsic displacements to intrinsic
+displacements.  This is the representation-level map on the nonfixed
+part, before any quotient or finite-state identification is chosen. -/
+noncomputable def coinvariantsKernelIntertwiner
+    (rho : Representation k G V)
+    {W : Type u} [AddCommGroup W] [Module k W]
+    (tau : Representation k G W)
+    (q : rho.IntertwiningMap tau) :
+    (representationCoinvariantsKernelSubrepresentation rho).
+        toRepresentation.IntertwiningMap
+      (representationCoinvariantsKernelSubrepresentation tau).
+        toRepresentation where
+  toLinearMap :=
+    { toFun := fun x => ⟨q x.1, by
+          change q x.1 ∈ Representation.Coinvariants.ker tau
+          rw [← Representation.Coinvariants.mk_eq_zero tau]
+          rw [← Representation.Coinvariants.map_mk q x.1]
+          rw [(Representation.Coinvariants.mk_eq_zero rho).mpr x.2,
+            map_zero]⟩
+      map_add' := by intro x y; exact Subtype.ext (map_add q x.1 y.1)
+      map_smul' := by intro c x; exact Subtype.ext (map_smul q c x.1) }
+  isIntertwining' := by
+    intro g
+    apply LinearMap.ext
+    intro x
+    apply Subtype.ext
+    exact Representation.IntertwiningMap.isIntertwining rho tau q g x.1
+
+/-- Right exactness of the intrinsic displacement space: a surjective
+intertwiner maps the source coinvariant kernel onto the target one.  The
+proof works on the literal spanning displacements, so it does not assume a
+splitting of the quotient. -/
+theorem coinvariantsKernelIntertwiner_surjective
+    (rho : Representation k G V)
+    {W : Type u} [AddCommGroup W] [Module k W]
+    (tau : Representation k G W)
+    (q : rho.IntertwiningMap tau)
+    (hq : Function.Surjective q) :
+    Function.Surjective (coinvariantsKernelIntertwiner rho tau q) := by
+  intro y
+  rcases y with ⟨y, hy⟩
+  change y ∈ Submodule.span k
+    (Set.range fun gx : G × W => tau gx.1 gx.2 - gx.2) at hy
+  induction hy using Submodule.span_induction with
+  | mem y hy =>
+      obtain ⟨⟨g, w⟩, rfl⟩ := hy
+      obtain ⟨v, rfl⟩ := hq w
+      let x :
+          (representationCoinvariantsKernelSubrepresentation rho).
+            toRepresentation.asModule :=
+        ⟨rho g v - v, Representation.Coinvariants.sub_mem_ker g v⟩
+      refine ⟨x, ?_⟩
+      apply Subtype.ext
+      change q (rho g v - v) = tau g (q v) - q v
+      rw [map_sub, Representation.IntertwiningMap.isIntertwining]
+  | zero =>
+      exact ⟨0, by simp⟩
+  | add x y _ _ hx hy =>
+      obtain ⟨x', rfl⟩ := hx
+      obtain ⟨y', rfl⟩ := hy
+      exact ⟨x' + y', by simp⟩
+  | smul c x _ hx =>
+      obtain ⟨x', rfl⟩ := hx
+      exact ⟨c • x', by simp⟩
+
 end SymmetricSubgroupAsymptotics
 
 end
