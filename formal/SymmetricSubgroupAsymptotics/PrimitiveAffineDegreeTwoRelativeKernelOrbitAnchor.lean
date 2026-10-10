@@ -65,8 +65,68 @@ noncomputable def binaryKernelOmegaConjugate
     (pi : Q →* B) (z : binaryCentralOmega pi.ker) :
     binaryKernelOmegaConjugateOmega pi 1 z = z := by
   apply binaryCentralOmegaEmbedding_injective
+  apply Subtype.ext
   rw [binaryKernelOmegaConjugate_val]
   simp
+
+@[simp] theorem binaryKernelOmegaConjugateOmega_mul
+    (pi : Q →* B) (q q' : Q) (z : binaryCentralOmega pi.ker) :
+    binaryKernelOmegaConjugateOmega pi (q * q') z =
+      binaryKernelOmegaConjugateOmega pi q
+        (binaryKernelOmegaConjugateOmega pi q' z) := by
+  apply binaryCentralOmegaEmbedding_injective
+  apply Subtype.ext
+  change (binaryKernelOmegaConjugate pi (q * q') z : Q) =
+    (binaryKernelOmegaConjugate pi q
+      (binaryKernelOmegaConjugateOmega pi q' z) : Q)
+  rw [binaryKernelOmegaConjugate_val, binaryKernelOmegaConjugate_val,
+    binaryKernelOmegaConjugate_val]
+  group
+
+/-- Ambient conjugation as an automorphic action on the intrinsic central
+omega of the binary kernel. -/
+noncomputable def binaryKernelOmegaConjugationHom
+    (pi : Q →* B) (q : Q) :
+    binaryCentralOmega pi.ker →* binaryCentralOmega pi.ker where
+  toFun := binaryKernelOmegaConjugateOmega pi q
+  map_one' := by
+    apply binaryCentralOmegaEmbedding_injective
+    apply Subtype.ext
+    rw [binaryKernelOmegaConjugate_val]
+    simp
+  map_mul' z w := by
+    apply binaryCentralOmegaEmbedding_injective
+    apply Subtype.ext
+    change (binaryKernelOmegaConjugate pi q (z * w) : Q) =
+      (binaryKernelOmegaConjugate pi q z : Q) *
+        (binaryKernelOmegaConjugate pi q w : Q)
+    rw [binaryKernelOmegaConjugate_val, binaryKernelOmegaConjugate_val,
+      binaryKernelOmegaConjugate_val]
+    group
+
+/-- The binary linear representation obtained from ambient conjugation on
+the central involutions of the kernel. -/
+noncomputable def binaryKernelOmegaConjugationRepresentation
+    (pi : Q →* B) :
+    Representation (ZMod 2) Q (Additive (binaryCentralOmega pi.ker)) where
+  toFun q :=
+    (binaryKernelOmegaConjugationHom pi q).toAdditive.toZModLinearMap 2
+  map_one' := by
+    apply LinearMap.ext
+    intro z
+    apply Additive.toMul.injective
+    exact binaryKernelOmegaConjugateOmega_one pi (Additive.toMul z)
+  map_mul' q q' := by
+    apply LinearMap.ext
+    intro z
+    apply Additive.toMul.injective
+    exact binaryKernelOmegaConjugateOmega_mul pi q q' (Additive.toMul z)
+
+@[simp] theorem binaryKernelOmegaConjugationRepresentation_apply
+    (pi : Q →* B) (q : Q) (z : binaryCentralOmega pi.ker) :
+    binaryKernelOmegaConjugationRepresentation pi q (Additive.ofMul z) =
+      Additive.ofMul (binaryKernelOmegaConjugateOmega pi q z) :=
+  rfl
 
 /-- A tuple of irreducible kernel representations whose ambient conjugacy
 orbits separate the intrinsic central involutions.  This is the exact
