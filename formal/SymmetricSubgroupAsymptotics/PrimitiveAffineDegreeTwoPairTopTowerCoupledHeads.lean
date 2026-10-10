@@ -113,6 +113,58 @@ theorem omegaIntrinsicCoupledQuotientRepresentation_invariants_finrank_eq
   rw [C.omegaIntrinsicCoupledQuotientRepresentation_invariants_eq_top N,
     finrank_top]
 
+/-- The same residual row with the literal stored-generator denominator
+appearing in `omegaHeadDemand`. -/
+abbrev omegaCoupledQuotientRepresentation
+    (hgen : Subgroup.closure (Set.range C.generators) = ⊤)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  binaryCoupledQuotientRepresentation
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+    C.generators hgen
+    (R.innerOmegaNaturalAxis N)
+    (R.outerOmegaPairSumAxis N)
+    (R.outerOmegaConstantAxis N)
+    (R.omegaAxes_productSpan_le N)
+
+@[simp] theorem omegaCoupledQuotientRepresentation_apply
+    (hgen : Subgroup.closure (Set.range C.generators) = ⊤)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (g : D.top)
+    (z : (C.omegaCoupledQuotientRepresentation hgen N).asModule) :
+    C.omegaCoupledQuotientRepresentation hgen N g z = z :=
+  binaryCoupledQuotientRepresentation_apply
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+    C.generators hgen
+    (R.innerOmegaNaturalAxis N)
+    (R.outerOmegaPairSumAxis N)
+    (R.outerOmegaConstantAxis N)
+    (R.omegaAxes_productSpan_le N) g z
+
+theorem omegaCoupledQuotientRepresentation_invariants_eq_top
+    (hgen : Subgroup.closure (Set.range C.generators) = ⊤)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (C.omegaCoupledQuotientRepresentation hgen N).invariants = ⊤ := by
+  apply top_unique
+  intro z _ g
+  exact C.omegaCoupledQuotientRepresentation_apply hgen N g z
+
+theorem omegaCoupledQuotientRepresentation_invariants_finrank_eq
+    (hgen : Subgroup.closure (Set.range C.generators) = ⊤)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (C.omegaCoupledQuotientRepresentation hgen N).invariants =
+      Module.finrank (ZMod 2)
+        ((R.outerOmegaConstantAxis N).toSubmodule ⫽
+          binaryCoupledDenominator
+            (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+            C.generators (R.outerOmegaConstantAxis N)
+            (binaryCoordinateProductSpan
+              (R.innerOmegaNaturalAxis N).toSubmodule
+              (R.outerOmegaPairSumAxis N).toSubmodule)
+            (R.omegaAxes_productSpan_le N)) := by
+  rw [C.omegaCoupledQuotientRepresentation_invariants_eq_top hgen N,
+    finrank_top]
+
 /-- When the stored tuple generates the literal top, the third coupled
 term uses the full intrinsic displacement subspace of `L`.  Thus the
 catalogue demand is exactly `d(K) + d(W) + dim L/(KW + [L,S])`. -/
