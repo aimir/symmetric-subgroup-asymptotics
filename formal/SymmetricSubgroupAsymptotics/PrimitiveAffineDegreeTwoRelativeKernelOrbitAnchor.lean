@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoRelativeKernelAnchor
+import Mathlib.LinearAlgebra.Dual.Lemmas
 
 /-!
 # Relative characters from normal orbits in a binary kernel
@@ -99,6 +100,142 @@ structure BinaryKernelOmegaCoordinateOrbits
   separates : ∀ z : binaryCentralOmega pi.ker,
     (∀ i q, binaryOmegaCoordinate (coordinate i)
       (binaryKernelOmegaConjugateOmega pi q z) = 1) → z = 1
+
+/-- A linear functional on the intrinsic omega module, regarded as a
+multiplicative binary character.  Unlike `binaryOmegaCoordinate`, this
+does not require the functional to be one of the canonical dual-basis
+coordinates. -/
+def binaryOmegaLinearFunctional
+    {G : Type*} [Group G]
+    (f : Module.Dual (ZMod 2) (Additive (binaryCentralOmega G))) :
+    binaryCentralOmega G →* Multiplicative (ZMod 2) where
+  toFun z := Multiplicative.ofAdd (f (Additive.ofMul z))
+  map_one' := by simp
+  map_mul' x y := by
+    apply Multiplicative.toAdd.injective
+    simp only [toAdd_mul, toAdd_ofAdd, map_add]
+
+@[simp] theorem binaryOmegaLinearFunctional_apply
+    {G : Type*} [Group G]
+    (f : Module.Dual (ZMod 2) (Additive (binaryCentralOmega G)))
+    (z : binaryCentralOmega G) :
+    (binaryOmegaLinearFunctional f z).toAdd = f (Additive.ofMul z) :=
+  rfl
+
+/-- The complex scalar character attached to an arbitrary binary linear
+functional on central omega. -/
+def binaryOmegaLinearScalarCharacter
+    {G : Type*} [Group G]
+    (f : Module.Dual (ZMod 2) (Additive (binaryCentralOmega G))) :
+    binaryOmegaSubgroup G →* ℂ :=
+  binaryScalarSign.comp
+    ((binaryOmegaLinearFunctional f).comp
+      binaryOmegaSubgroupEquiv.symm.toMonoidHom)
+
+/-- Dual-functional form of the orbit certificate.  This is the natural
+output of a module-generator argument: the chosen functionals may be
+arbitrary linear combinations of the canonical omega coordinates. -/
+structure BinaryKernelOmegaLinearOrbits
+    (pi : Q →* B) (r : ℕ) : Type where
+  functional : Fin r →
+    Module.Dual (ZMod 2) (Additive (binaryCentralOmega pi.ker))
+  separates : ∀ z : binaryCentralOmega pi.ker,
+    (∀ i q, functional i
+      (Additive.ofMul (binaryKernelOmegaConjugateOmega pi q z)) = 0) →
+      z = 1
+
+/-- Explicit dual-orbit span certificate.  The finite tuple records one
+representative per slot and literal ambient translates of those
+representatives.  Spanning the whole dual is a directly checkable linear
+algebra condition and implies point separation on omega. -/
+structure BinaryKernelOmegaDualOrbitSpan
+    (pi : Q →* B) (r : ℕ) : Type where
+  representative : Fin r →
+    Module.Dual (ZMod 2) (Additive (binaryCentralOmega pi.ker))
+  orbit : Fin r × Q →
+    Module.Dual (ZMod 2) (Additive (binaryCentralOmega pi.ker))
+  orbit_apply : ∀ i q z,
+    orbit (i, q) (Additive.ofMul z) =
+      representative i
+        (Additive.ofMul (binaryKernelOmegaConjugateOmega pi q z))
+  spans : Submodule.span (ZMod 2) (Set.range orbit) = ⊤
+
+namespace BinaryKernelOmegaDualOrbitSpan
+
+variable {pi : Q →* B} {r : ℕ}
+  (C : BinaryKernelOmegaDualOrbitSpan pi r)
+
+/-- A spanning tuple of ambient dual orbits separates every omega
+element. -/
+def toLinearOrbits : BinaryKernelOmegaLinearOrbits pi r where
+  functional := C.representative
+  separates := by
+    intro z hz
+    let evaluation :
+        Module.Dual (ZMod 2) (Additive (binaryCentralOmega pi.ker)) →ₗ[ZMod 2]
+          ZMod 2 :=
+      { toFun := fun f ↦ f (Additive.ofMul z)
+        map_add' := by intro f g; rfl
+        map_smul' := by intro a f; rfl }
+    have hevaluation : evaluation = 0 := by
+      apply LinearMap.ext_on_range C.spans
+      intro iq
+      rcases iq with ⟨i, q⟩
+      change C.orbit (i, q) (Additive.ofMul z) = 0
+      rw [C.orbit_apply]
+      exact hz i q
+    have hall : ∀ f : Module.Dual (ZMod 2)
+        (Additive (binaryCentralOmega pi.ker)),
+        f (Additive.ofMul z) = 0 := by
+      intro f
+      have hf := LinearMap.congr_fun hevaluation f
+      simpa only [evaluation, LinearMap.zero_apply] using hf
+    have hz0 : Additive.ofMul z = 0 :=
+      (Module.forall_dual_apply_eq_zero_iff
+        (ZMod 2) (Additive.ofMul z)).mp hall
+    apply Additive.ofMul.injective
+    simpa only [ofMul_one] using hz0
+
+end BinaryKernelOmegaDualOrbitSpan
+
+namespace BinaryKernelOmegaLinearOrbits
+
+variable {pi : Q →* B} {r : ℕ}
+  (C : BinaryKernelOmegaLinearOrbits pi r)
+
+/-- Turn a generated tuple in the dual omega module into the literal
+complex central characters used by the relative-kernel lift. -/
+noncomputable def toOrbitCharacters :
+    BinaryKernelOmegaOrbitCharacters pi r where
+  character i := binaryOmegaLinearScalarCharacter (C.functional i)
+  separates := by
+    intro z hz
+    apply C.separates z
+    intro i q
+    have h := hz i q
+    have hsign : binaryOmegaLinearFunctional (C.functional i)
+        (binaryKernelOmegaConjugateOmega pi q z) = 1 := by
+      apply (binaryScalarSign_eq_one (k := ℂ) _).mp
+      simpa only [binaryOmegaLinearScalarCharacter, MonoidHom.comp_apply,
+        MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply] using h
+    have hadd := congrArg Multiplicative.toAdd hsign
+    simpa only [binaryOmegaLinearFunctional_apply,
+      toAdd_one] using hadd
+
+end BinaryKernelOmegaLinearOrbits
+
+namespace BinaryKernelOmegaDualOrbitSpan
+
+variable {pi : Q →* B} {r : ℕ}
+  (C : BinaryKernelOmegaDualOrbitSpan pi r)
+
+/-- Compose the checked dual-orbit span directly with the complex
+orbit-character construction. -/
+noncomputable def toOrbitCharacters :
+    BinaryKernelOmegaOrbitCharacters pi r :=
+  C.toLinearOrbits.toOrbitCharacters
+
+end BinaryKernelOmegaDualOrbitSpan
 
 namespace BinaryKernelOmegaCoordinateOrbits
 
