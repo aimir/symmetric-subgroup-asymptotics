@@ -139,7 +139,7 @@ theorem moduleStable_finrank_eq_two_or_four_of_two_equal_isotypes
         exact component_equidimensional a a₀
       _ = 2 * d := by
         rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ,
-          Fintype.card_eq_nat_card, htwo]
+          Fintype.card_eq_nat_card, htwo, Nat.cast_id]
   have hscalar := scalarizedStable_finrank scalar K e
   rw [← hscalar]
   rw [hsum]
@@ -171,7 +171,7 @@ theorem moduleStable_finrank_even_of_two_equal_isotypes
         exact component_equidimensional a a₀
       _ = 2 * d := by
         rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ,
-          Fintype.card_eq_nat_card, htwo]
+          Fintype.card_eq_nat_card, htwo, Nat.cast_id]
   have hscalar := scalarizedStable_finrank scalar K e
   refine ⟨d, ?_⟩
   rw [← hscalar, hsum]
