@@ -1,0 +1,96 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientSocles
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopRelativeKernelOrbitRows
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenPairFiniteCatalogue
+
+/-!
+# Relative-kernel resolution of paired-eight row 1
+
+The first paired-eight row already has two independent literal finite
+certificates.  Its top-normal registry supplies two ordinary prefix
+characters, and its coupled K/W/L table proves the exact four-position
+head inequality for every original normal subgroup.  This file attaches
+those certificates to the actual direct two-frame quotient and isolates
+the remaining representation-theoretic conclusion: four generators of
+the dual of that quotient kernel's canonical omega socle.
+
+Once that conclusion is supplied, the orbit-character layer constructs
+the relative irreducibles and resolves the literal catalogue row.  No
+binary-kernel row, relative-character tuple, or resolved-row premise is
+accepted here.
+-/
+
+set_option autoImplicit false
+noncomputable section
+open scoped Classical
+
+namespace SymmetricSubgroupAsymptotics
+namespace Non2UnipotentPrefixFiniteMenu
+namespace PrimitiveAffineImprimitiveBlockTransfer
+namespace PrimitiveAffineDegreeTwoPairedEightRow1Resolution
+
+namespace Shared := DegreeTwoPairedEightSharedTops
+namespace Catalogue := DegreeTwoSixteenPairFiniteCatalogue
+namespace Socles := DegreeTwoPairedEightRow1QuotientSocles
+namespace Coupled :=
+  SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads
+
+/-- The checked coupled table applies to the three actual omega axes for
+every original normal subgroup of every realization of this row. -/
+theorem omegaHeadDemand_le_four
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
+    (Coupled.towerCoupledHeadData R).omegaHeadDemand N ≤ 4 :=
+  (Coupled.towerCoupledHeadData R).omegaHeadDemand_le N
+
+/-- Actual four-position generator conclusion still to be derived from the
+checked coupled head inequality and the three same-top permutation-module
+sections.  The type is tied to the direct quotient kernel for each original
+normal subgroup. -/
+abbrev OmegaSocleDualGenerated
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p) : Prop :=
+  ∀ N, RepresentationGeneratedBy
+    (finiteRepresentationSocle
+      (binaryKernelOmegaConjugationRepresentation
+        (R.quotientMap N))).toRepresentation.dual 4
+
+/-- Concrete orbit-character row for paired8-1.  The two ordinary prefix
+positions come from the checked quotient-socle family; the four relative
+positions are converted into literal central characters and irreducible
+whole-quotient representations by the universal orbit theorem. -/
+noncomputable def rowData
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (dualGenerated : OmegaSocleDualGenerated R) :
+    DegreeTwoPairTopTowerRelativeKernelOrbitRowData
+      Shared.top1 degreeTwoSixteenPairProfiles p R :=
+  DegreeTwoPairTopTowerRelativeKernelOrbitRowData.
+    ofOrdinaryRelativeSocleDualGenerated hZmud 2 4
+      (by native_decide)
+      degreeTwoSixteenPairProfiles_capacity
+      (fun N ↦
+        (Socles.family.data (R.topNormalState N)).quotientSocleGenerator)
+      dualGenerated
+
+/-- Catalogue-facing resolution of literal paired-eight index zero. -/
+noncomputable def resolvedRow
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization
+      (Catalogue.catalogue.paired8 (0 : Fin 24)) p)
+    (dualGenerated : OmegaSocleDualGenerated R) :
+    DegreeTwoPairTopResolvedRow
+      (Catalogue.catalogue.paired8 (0 : Fin 24))
+      degreeTwoSixteenPairProfiles p :=
+  ((rowData hZmud R dualGenerated).sixteenResolvedData lit).toResolvedRow
+
+end PrimitiveAffineDegreeTwoPairedEightRow1Resolution
+end PrimitiveAffineImprimitiveBlockTransfer
+end Non2UnipotentPrefixFiniteMenu
+end SymmetricSubgroupAsymptotics
+
+end
