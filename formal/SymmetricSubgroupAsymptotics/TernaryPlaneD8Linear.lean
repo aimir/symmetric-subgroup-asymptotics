@@ -132,13 +132,43 @@ theorem standardKleinLinearMap_injective :
     Function.Injective standardKleinLinearMap :=
   standardD8LinearMap_injective.comp d8BaseBits_injective
 
-/-- The standard dihedral matrix image is exactly the normalizer of its
-diagonal Klein four. -/
-set_option maxRecDepth 100000 in
-theorem standardD8LinearRange_eq_normalizer :
-    standardD8LinearMap.range =
-      Subgroup.normalizer (standardKleinLinearMap.range : Set LinearThree.GL3) := by
+/-- Conjugation by the standard dihedral top preserves its base-sign
+Klein four.  The finite check here has only eight top elements and four
+base elements; equality with the full normalizer is recovered downstream
+from the explicit normalizer-card certificate. -/
+private theorem d8BaseBits_conjugate
+    (d : D8) (v : V4) :
+    ∃ w : V4,
+      d * d8BaseBits v * d⁻¹ = d8BaseBits w := by
+  revert d v
   decide +kernel
+
+theorem standardD8LinearRange_le_normalizer :
+    standardD8LinearMap.range ≤
+      Subgroup.normalizer (standardKleinLinearMap.range : Set LinearThree.GL3) := by
+  have hforward (d : D8) (x : LinearThree.GL3)
+      (hx : x ∈ standardKleinLinearMap.range) :
+      standardD8LinearMap d * x * (standardD8LinearMap d)⁻¹ ∈
+        standardKleinLinearMap.range := by
+    obtain ⟨v, rfl⟩ := hx
+    obtain ⟨w, hw⟩ := d8BaseBits_conjugate d v
+    refine ⟨w, ?_⟩
+    change standardD8LinearMap (d8BaseBits w) =
+      standardD8LinearMap d *
+        standardD8LinearMap (d8BaseBits v) *
+          (standardD8LinearMap d)⁻¹
+    simpa only [map_mul, map_inv] using
+      congrArg standardD8LinearMap hw.symm
+  rintro _ ⟨d, rfl⟩
+  apply Subgroup.mem_normalizer_iff.mpr
+  intro x
+  constructor
+  · exact hforward d x
+  · intro hx
+    have hback := hforward d⁻¹
+      (standardD8LinearMap d * x * (standardD8LinearMap d)⁻¹) hx
+    simpa only [map_inv, inv_inv, mul_assoc, inv_mul_cancel_left,
+      mul_inv_cancel_right, inv_mul_cancel, mul_one] using hback
 
 end DegreeSixS3Wreath
 end SymmetricSubgroupAsymptotics

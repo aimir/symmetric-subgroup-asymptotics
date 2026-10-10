@@ -71,6 +71,32 @@ theorem kleinRange_normalizer_card_eq_eight
   · rw [← map_pow, secondBit_square, map_one]
   · rw [← map_mul, mul_comm, map_mul]
 
+end LinearThree
+
+namespace DegreeSixS3Wreath
+
+/-- The standard dihedral image exhausts the normalizer of its diagonal
+Klein four.  Inclusion is structural; equality follows because both groups
+have the certified order eight. -/
+theorem standardD8LinearRange_eq_normalizer :
+    standardD8LinearMap.range =
+      Subgroup.normalizer (standardKleinLinearMap.range : Set LinearThree.GL3) := by
+  apply Subgroup.eq_of_le_of_card_ge standardD8LinearRange_le_normalizer
+  have hrange : Nat.card standardD8LinearMap.range = 8 := by
+    rw [Nat.card_congr
+      (MonoidHom.ofInjective standardD8LinearMap_injective).toEquiv, card_D8]
+  have hnormal :
+      Nat.card
+        (Subgroup.normalizer
+          (standardKleinLinearMap.range : Set LinearThree.GL3)) = 8 :=
+    LinearThree.kleinRange_normalizer_card_eq_eight
+      standardKleinLinearMap standardKleinLinearMap_injective
+  rw [hrange, hnormal]
+
+end DegreeSixS3Wreath
+
+namespace LinearThree
+
 /-- Action-compatible recognition of the normalizer of a faithful Klein
 image.  The displayed change of basis carries every matrix in the source
 normalizer to the standard matrix of its `D8` label. -/
