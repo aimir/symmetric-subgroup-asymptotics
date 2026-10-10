@@ -79,13 +79,15 @@ theorem representationGeneratedBy_comp_of_surjective
         simpa using W.add_mem iy iz
     | smul r y _hy iy =>
         obtain ⟨s, hs⟩ := Finsupp.mapDomain_surjective hphi r
+        have hmap : (MonoidAlgebra.mapDomainRingHom k phi) s = r := by
+          simpa only [MonoidAlgebra.mapDomainRingHom_apply] using hs
         have hsame :
             rho.asModuleEquiv.symm
                 (sigma.asModuleEquiv (r • y)) =
               (inferInstance : SMul k[G] rho.asModule).smul s
                 (rho.asModuleEquiv.symm (sigma.asModuleEquiv y)) := by
           apply rho.asModuleEquiv.injective
-          simpa only [LinearEquiv.apply_symm_apply, hs] using
+          simpa only [LinearEquiv.apply_symm_apply, hmap] using
             (haction s (sigma.asModuleEquiv y)).symm
         rw [hsame]
         exact W.smul_mem s iy
