@@ -133,6 +133,19 @@ def binaryCoupledDenominator
   P.comap L.toSubmodule.subtype ⊔
     representationGeneratorDisplacementSpan rho generators L
 
+/-- For a generating tuple, the coupled denominator is literally the
+product subspace plus the full coinvariant-relation subspace of `L`. -/
+theorem binaryCoupledDenominator_eq_sup_coinvariantsKer
+    (hgen : Subgroup.closure (Set.range generators) = ⊤)
+    (P : Submodule (ZMod 2) (Fin w → ZMod 2))
+    (hPL : P ≤ L.toSubmodule) :
+    binaryCoupledDenominator rho generators L P hPL =
+      P.comap L.toSubmodule.subtype ⊔
+        Representation.Coinvariants.ker L.toRepresentation := by
+  rw [binaryCoupledDenominator,
+    representationGeneratorDisplacementSpan_eq_coinvariantsKer
+      rho generators hgen L]
+
 /-- A sparse coordinate chart inside the product-plus-displacement
 denominator.  A term is either a basis vector of the product space or one
 literal retained-generator displacement in the upper state. -/
