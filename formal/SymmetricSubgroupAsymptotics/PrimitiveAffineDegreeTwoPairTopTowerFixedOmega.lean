@@ -301,6 +301,16 @@ def fixedOmegaInnerNaturalAxis
     ((R.rawKernelOmegaFixedOriginalPreimage N).map
       R.frame.top.rangeRestrict)
 
+/-- The fixed inner axis before transporting the second-frame top to the
+literal catalogue top. -/
+def fixedOmegaInnerCoordinateAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation R.secondFrame.coordinateTopAction :=
+  R.secondFrame.sharedOriginalAxis
+    R.secondFrame.coordinateTopAction (MulEquiv.refl _) (fun _ _ ↦ rfl)
+    ((R.rawKernelOmegaFixedOriginalPreimage N).map
+      R.frame.top.rangeRestrict)
+
 /-- The first-kernel coordinate state contributed by the fixed omega lift,
 before separating its pair-sum and pair-constant coordinates. -/
 def fixedOmegaOuterAxis
@@ -360,6 +370,14 @@ theorem fixedOmegaInnerNaturalAxis_toSubmodule
           R.frame.top.rangeRestrict) :=
   rfl
 
+theorem fixedOmegaInnerCoordinateAxis_le_kernelTop
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.fixedOmegaInnerCoordinateAxis N ≤
+      R.secondFrame.kernelTopPermutationSubrepresentation :=
+  R.secondFrame.ambientAxis_le_kernelSpace
+    ((R.rawKernelOmegaFixedOriginalPreimage N).map
+      R.frame.top.rangeRestrict)
+
 theorem fixedOmegaPairSumAxis_toSubmodule
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     (R.fixedOmegaPairSumAxis N).toSubmodule =
@@ -379,6 +397,19 @@ theorem fixedOmegaConstantAxis_toSubmodule
 theorem moduleAxis_le_fixedOmegaInnerNaturalAxis
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     R.moduleAxis N ≤ R.fixedOmegaInnerNaturalAxis N := by
+  intro v hv
+  change v ∈ R.secondFrame.ambientAxis
+    ((R.rawKernelOmegaFixedOriginalPreimage N).map
+      R.frame.top.rangeRestrict)
+  change v ∈ R.secondFrame.ambientAxis (R.outerTopNormal N.1) at hv
+  obtain ⟨k, hk, rfl⟩ := (R.secondFrame.mem_ambientAxis _ v).1 hv
+  exact (R.secondFrame.mem_ambientAxis _ _).2
+    ⟨k, Subgroup.map_mono
+      (R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N) hk, rfl⟩
+
+theorem innerNormalCoordinateAxis_le_fixedOmegaInnerCoordinateAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.innerNormalCoordinateAxis N ≤ R.fixedOmegaInnerCoordinateAxis N := by
   intro v hv
   change v ∈ R.secondFrame.ambientAxis
     ((R.rawKernelOmegaFixedOriginalPreimage N).map
@@ -432,6 +463,63 @@ abbrev fixedOmegaInnerQuotientRepresentation
   nestedQuotientRepresentation
     (R.moduleAxis N) (R.fixedOmegaInnerNaturalAxis N)
     (R.moduleAxis_le_fixedOmegaInnerNaturalAxis N)
+
+/-- The image of the fixed inner coordinate quotient in the actual second
+section module. -/
+abbrev fixedOmegaInnerSectionImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  intertwinerImage
+    R.secondFrame.kernelTopPermutationSubrepresentation.toRepresentation
+    (R.secondFrame.sectionTopRepresentation (R.outerTopNormal N.1))
+    (R.secondFrame.sectionTopIntertwiner (R.outerTopNormal N.1))
+    (nestedSubrepresentation (R.fixedOmegaInnerCoordinateAxis N)
+      R.secondFrame.kernelTopPermutationSubrepresentation
+      (R.fixedOmegaInnerCoordinateAxis_le_kernelTop N))
+
+/-- Transporting the fixed inner quotient to the physical second top leaves
+its underlying quotient unchanged. -/
+def fixedOmegaInnerQuotientCoordinateEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    ((R.fixedOmegaInnerQuotientRepresentation N).comp
+      R.topEquiv.symm.toMonoidHom).Equiv
+      (nestedQuotientRepresentation
+        (R.innerNormalCoordinateAxis N)
+        (R.fixedOmegaInnerCoordinateAxis N)
+        (R.innerNormalCoordinateAxis_le_fixedOmegaInnerCoordinateAxis N)) :=
+  Representation.Equiv.mk (LinearEquiv.refl _ _) (by
+    intro g
+    apply LinearMap.ext
+    intro x
+    obtain ⟨b, rfl⟩ :=
+      (nestedSubrepresentation
+        (R.moduleAxis N) (R.fixedOmegaInnerNaturalAxis N)
+        (R.moduleAxis_le_fixedOmegaInnerNaturalAxis N)).toSubmodule.
+          mkQ_surjective x
+    apply congrArg
+      (nestedSubrepresentation
+        (R.innerNormalCoordinateAxis N)
+        (R.fixedOmegaInnerCoordinateAxis N)
+        (R.innerNormalCoordinateAxis_le_fixedOmegaInnerCoordinateAxis N)).
+          toSubmodule.mkQ
+    apply Subtype.ext
+    rw [R.module_action_eq, R.topEquiv.apply_symm_apply])
+
+/-- The fixed inner quotient is the exact fixed coordinate image in the
+actual second-frame section. -/
+noncomputable def fixedOmegaInnerQuotientSectionImageEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    ((R.fixedOmegaInnerQuotientRepresentation N).comp
+      R.topEquiv.symm.toMonoidHom).Equiv
+      (R.fixedOmegaInnerSectionImage N).toRepresentation := by
+  let hAB : R.secondFrame.normalTopPermutationSubrepresentation
+      (R.outerTopNormal N.1) ≤ R.fixedOmegaInnerCoordinateAxis N := by
+    rw [← R.innerNormalCoordinateAxis_eq_normalTopPermutation N]
+    exact R.innerNormalCoordinateAxis_le_fixedOmegaInnerCoordinateAxis N
+  let eImage := R.secondFrame.sectionTopNestedQuotientImageEquiv
+    (R.outerTopNormal N.1) (R.fixedOmegaInnerCoordinateAxis N) hAB
+      (R.fixedOmegaInnerCoordinateAxis_le_kernelTop N)
+  rw [← R.innerNormalCoordinateAxis_eq_normalTopPermutation N] at eImage
+  exact (R.fixedOmegaInnerQuotientCoordinateEquiv N).trans eImage
 
 /-- The fixed outer layer after removing the original-normal axis. -/
 abbrev fixedOmegaOuterQuotientRepresentation
