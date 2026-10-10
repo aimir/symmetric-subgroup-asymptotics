@@ -83,7 +83,7 @@ theorem d8PairAction_preserves (g : D8) :
   · rw [h, C2Wreath.action_inr_gen]
     fin_cases i <;>
       simp [binaryBlockAction, twoBlockPairEquiv,
-        C2Wreath.blockSwap, C2Wreath.gen_ne_one]
+        C2Wreath.blockSwap, C2Wreath.gen_ne_one] <;> decide
 
 /-- Relabel the standard dihedral pair action through an arbitrary pair
 chart. -/
@@ -96,9 +96,7 @@ theorem d8PairActionOnFrame_preserves {X : Type*}
     Preserves frame (d8PairActionOnFrame frame g)
       (binaryBlockAction g.right) := by
   intro x
-  simpa only [d8PairActionOnFrame, MonoidHom.comp_apply,
-    MulEquiv.coe_toMonoidHom, Equiv.permCongr_apply,
-    frame.symm_apply_apply, frame.apply_symm_apply] using
+  simpa [d8PairActionOnFrame] using
       d8PairAction_preserves g x
 
 /-- The standard dihedral action, codomain-restricted to the full group
@@ -144,7 +142,8 @@ theorem pairPreservingSignature_injective {X : Type*}
     congrArg Prod.snd huv
   apply Subtype.ext
   apply Equiv.ext
-  rintro ⟨i, z⟩
+  intro x
+  obtain ⟨⟨i, z⟩, rfl⟩ := frame.surjective x
   apply frame.symm.injective
   have huFirst (b : ZMod 2) :
       (frame.symm ((u.1 : Equiv.Perm X) (frame (i, b)))).1 =
@@ -198,7 +197,7 @@ theorem pairPreserving_card_le_eight {X : Type*} [Finite X]
         (pairPreservingSignature_injective frame)
     _ = 8 := by
       rw [Nat.card_prod, Nat.card_perm, Nat.card_fun, Nat.card_fin,
-        Nat.card_fin, Nat.card_zmod]
+        Nat.card_zmod]
       norm_num
 
 theorem d8ToPairPreserving_surjective {X : Type*} [Finite X]
