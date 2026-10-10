@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerQuotient
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerFixedOmega
 import SymmetricSubgroupAsymptotics.BinaryCoupledHeadCertificate
 
 /-!
@@ -69,6 +69,37 @@ def omegaHeadDemand
             (R.innerOmegaNaturalAxis N).toSubmodule
             (R.outerOmegaPairSumAxis N).toSubmodule)
           (R.omegaAxes_productSpan_le N))
+
+/-- The coupled three-head demand cut down to the lift of the fixed part of
+the direct omega module.  This is the semantic demand used by every
+paired-eight row: `K` is the second-kernel image of the fixed lift, `W` is
+its outer pair-sum image, and `L` is its outer pair-constant preimage. -/
+def fixedOmegaHeadDemand
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) : ℕ :=
+  Module.finrank (ZMod 2)
+      (R.fixedOmegaInnerNaturalAxis N).toRepresentation.Coinvariants +
+    Module.finrank (ZMod 2)
+      (R.fixedOmegaPairSumAxis N).toRepresentation.Coinvariants +
+    Module.finrank (ZMod 2)
+      ((R.fixedOmegaConstantAxis N).toSubmodule ⫽
+        binaryCoupledDenominator
+          (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+          C.generators (R.fixedOmegaConstantAxis N)
+          (binaryCoordinateProductSpan
+            (R.fixedOmegaInnerNaturalAxis N).toSubmodule
+            (R.fixedOmegaPairSumAxis N).toSubmodule)
+          (R.fixedOmega_productSpan_le_constant N))
+
+/-- A complete coupled registry bounds the fixed-lift demand uniformly.
+This is the catalogue-level cap theorem shared by all paired-eight rows. -/
+theorem fixedOmegaHeadDemand_le
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    C.fixedOmegaHeadDemand N ≤ cap :=
+  C.registry.finrank_add_finrank_add_quotient_le
+    (R.fixedOmegaInnerNaturalAxis N)
+    (R.fixedOmegaPairSumAxis N)
+    (R.fixedOmegaConstantAxis N)
+    (R.fixedOmega_productSpan_le_constant N)
 
 /-- The third coupled row as an actual quotient representation of the
 literal top, with the product commutator and all intrinsic displacements
