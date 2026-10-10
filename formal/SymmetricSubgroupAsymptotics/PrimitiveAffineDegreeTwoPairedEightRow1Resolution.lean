@@ -55,6 +55,34 @@ abbrev OmegaSocleRepresentation
     (binaryKernelOmegaConjugationRepresentation
       (R.rawQuotientMap N))).toRepresentation
 
+/-- The canonical socle contains every fixed omega vector, so its fixed
+row is exactly the fixed row of the full raw omega representation. -/
+theorem omegaSocle_invariants_finrank_eq_rawOmega
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (OmegaSocleRepresentation R N).invariants =
+      Module.finrank (ZMod 2)
+        (binaryKernelOmegaConjugationRepresentation
+          (R.rawQuotientMap N)).invariants := by
+  exact finiteRepresentationSocle_invariants_finrank_eq
+    (binaryKernelOmegaConjugationRepresentation (R.rawQuotientMap N))
+
+theorem omegaSocle_invariants_le_of_rawOmega
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
+    (hraw : Module.finrank (ZMod 2)
+      (binaryKernelOmegaConjugationRepresentation
+        (R.rawQuotientMap N)).invariants ≤
+          (Coupled.towerCoupledHeadData R).omegaHeadDemand N) :
+    Module.finrank (ZMod 2)
+      (OmegaSocleRepresentation R N).invariants ≤
+        (Coupled.towerCoupledHeadData R).omegaHeadDemand N := by
+  rw [R.omegaSocle_invariants_finrank_eq_rawOmega N]
+  exact hraw
+
 /-- The checked coupled head closes the fixed simple row; a three-layer
 same-simple-type multiplicity estimate closes every nonfixed row.  This
 is the exact algebraic composition of those two inputs for one actual
