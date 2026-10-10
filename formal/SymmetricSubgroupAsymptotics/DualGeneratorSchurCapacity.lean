@@ -136,6 +136,65 @@ theorem representationSchurCapacity_le_of_dual_generated
     apply (div_le_iff₀ hpos).mpr
     exact_mod_cast hhom
 
+/-- A generated contragredient gives the integral Schur-scaled row bound
+used by the coupled nonfixed argument.  For a simple source `X`, dualising
+embeds `Hom(X, sigma)` into `Hom(sigma⁺, X⁺)`.  Evaluation on `H`
+generators bounds the latter by `H * dim_k X`; the scalar-extension formula
+`dim_k X = dim_k End(X) * dim_End(X) X` then cancels the first Schur factor. -/
+theorem schurSocleMultiplicity_le_of_dual_generated
+    (sigma : Representation k G W) [FiniteDimensional k W]
+    (H : ℕ) (hgen : RepresentationGeneratedBy sigma.dual H)
+    {X : Type*} [AddCommGroup X] [Module k X]
+    [Module k[G] X] [IsScalarTower k k[G] X]
+    [FiniteDimensional k X] [IsSimpleModule k[G] X] :
+    schurSocleMultiplicity
+        (k := k) (R := k[G]) (A := sigma.asModule) (X := X) ≤
+      H * Module.finrank (Module.End k[G] X) X := by
+  let tau : Representation k G X := Representation.ofModule' X
+  have hdual : Module.finrank k (tau.IntertwiningMap sigma) ≤
+      Module.finrank k (sigma.dual.IntertwiningMap tau.dual) := by
+    let d : (tau.IntertwiningMap sigma) →ₗ[k]
+        (sigma.dual.IntertwiningMap tau.dual) :=
+      { toFun := fun f ↦ RepresentationHeadExact.dualMap f
+        map_add' := by
+          intro f g
+          apply Representation.IntertwiningMap.ext
+          ext l v
+          simp [RepresentationHeadExact.dualMap, LinearMap.dualMap_apply]
+        map_smul' := by
+          intro a f
+          apply Representation.IntertwiningMap.ext
+          ext l v
+          simp [RepresentationHeadExact.dualMap, LinearMap.dualMap_apply] }
+    exact d.finrank_le_finrank_of_injective
+      (dualIntertwiner_injective tau sigma)
+  have htarget : Module.finrank k
+      (sigma.dual.IntertwiningMap tau.dual) ≤
+        H * Module.finrank k X := by
+    have h := intertwiningMap_finrank_le_of_generated_source
+      sigma.dual tau.dual H hgen
+    simpa only [Subspace.dual_finrank_eq] using h
+  have hhom : Module.finrank k (X →ₗ[k[G]] sigma.asModule) ≤
+      H * Module.finrank k X := by
+    have h := hdual.trans htarget
+    rw [(Representation.IntertwiningMap.equivLinearMapAsModule
+      tau sigma).finrank_eq] at h
+    simpa only [tau] using h
+  rw [schurHom_finrank_eq_multiplicity
+      (k := k) (R := k[G]) (A := sigma.asModule) (X := X),
+    schur_simple_finrank_tower (k := k) (R := k[G]) (X := X),
+    Nat.mul_assoc] at hhom
+  have hEnd : 0 < Module.finrank k (Module.End k[G] X) := by
+    letI : Nontrivial X := IsSimpleModule.nontrivial k[G] X
+    exact Module.finrank_pos (R := k) (M := Module.End k[G] X)
+  have hfactor : Module.finrank k (Module.End k[G] X) *
+        schurSocleMultiplicity
+          (k := k) (R := k[G]) (A := sigma.asModule) (X := X) ≤
+      Module.finrank k (Module.End k[G] X) *
+        (H * Module.finrank (Module.End k[G] X) X) := by
+    simpa only [Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc] using hhom
+  exact Nat.le_of_mul_le_mul_left hfactor hEnd
+
 end SymmetricSubgroupAsymptotics
 
 end
