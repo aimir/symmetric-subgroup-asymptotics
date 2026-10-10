@@ -1,5 +1,7 @@
 import SymmetricSubgroupAsymptotics.BinaryPairResidualTop
 import SymmetricSubgroupAsymptotics.PermutationBinaryRankThreeOrder
+import SymmetricSubgroupAsymptotics.RepresentationNestedQuotientAmbient
+import SymmetricSubgroupAsymptotics.RepresentationNestedQuotientImage
 
 /-! The rank-three residual of an original eight-pair frame.
 The ambient denominator is the literal image of normalSpace in the
@@ -46,6 +48,53 @@ theorem normalTop_comap_eq :
       F.normalSpace N :=
   Submodule.comap_map_eq_of_injective (f := F.kernelSpace.subtype)
     Subtype.val_injective (F.normalSpace N)
+
+/-- The kernel of the literal section intertwiner is the nested copy of the
+original normal coordinate axis inside the correlated kernel state. -/
+theorem sectionTopIntertwiner_ker_eq_nestedNormalTop :
+    (F.sectionTopIntertwiner N).ker =
+      nestedSubrepresentation
+        (F.normalTopPermutationSubrepresentation N)
+        F.kernelTopPermutationSubrepresentation
+        (F.normalTop_le_kernelTop N) := by
+  apply Subrepresentation.toSubmodule_injective
+  ext x
+  change (F.normalSpace N).mkQ x = 0 ↔
+    x ∈ (F.normalTopPermutationSubrepresentation N).toSubmodule.comap
+      F.kernelSpace.subtype
+  rw [Submodule.Quotient.mk_eq_zero, F.normalTop_comap_eq N]
+
+/-- The image in an actual pair section of any retained coordinate state
+`B` is the literal nested quotient `B/A`, where `A` is the original normal
+axis.  The statement is equivariant for the actual top action. -/
+noncomputable def sectionTopNestedQuotientImageEquiv
+    (B : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) F.top.range I))
+    (hAB : F.normalTopPermutationSubrepresentation N ≤ B)
+    (hBK : B ≤ F.kernelTopPermutationSubrepresentation) :
+    (nestedQuotientRepresentation
+      (F.normalTopPermutationSubrepresentation N) B hAB).Equiv
+      (intertwinerImage
+        F.kernelTopPermutationSubrepresentation.toRepresentation
+        (F.sectionTopRepresentation N)
+        (F.sectionTopIntertwiner N)
+        (nestedSubrepresentation B
+          F.kernelTopPermutationSubrepresentation hBK)).toRepresentation := by
+  let K := F.kernelTopPermutationSubrepresentation
+  let A := F.normalTopPermutationSubrepresentation N
+  let q := F.sectionTopIntertwiner N
+  let B' := nestedSubrepresentation B K hBK
+  have hAK : A ≤ K := F.normalTop_le_kernelTop N
+  have hker : q.ker = nestedSubrepresentation A K hAK :=
+    F.sectionTopIntertwiner_ker_eq_nestedNormalTop N
+  have hqB : q.ker ≤ B' := by
+    rw [hker]
+    exact nestedSubrepresentation_mono A B K hAB hBK
+  let eAmbient := nestedQuotientAmbientEquiv A B K hAB hBK
+  let eImage := nestedQuotientImageEquiv
+    K.toRepresentation (F.sectionTopRepresentation N) q B' hqB
+  rw [hker] at eImage
+  exact eAmbient.trans eImage
 
 /-- The quotient equivalence is induced by identity on the original
 correlated flip vectors. -/
