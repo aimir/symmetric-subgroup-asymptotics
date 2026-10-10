@@ -199,6 +199,65 @@ theorem innerSectionImage_toSubmodule_eq_innerOmega
     change (R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ b = v
     rw [show (b : R.secondFrame.kernelSpace) = x from hxk, hx]
 
+/-- The literal natural quotient over the selected catalogue top is the
+inflation of the actual inner omega image from the corresponding quotient
+top. -/
+noncomputable def innerNestedQuotientEquivInnerOmegaInflation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (nestedQuotientRepresentation
+      (R.moduleAxis N) (R.innerOmegaNaturalAxis N)
+      (R.moduleAxis_le_innerOmegaNaturalAxis N)).Equiv
+      ((R.innerOmegaSubrepresentation N).toRepresentation.comp
+        (QuotientGroup.mk' (R.topNormal N.1))) := by
+  let tau := nestedQuotientRepresentation
+    (R.moduleAxis N) (R.innerOmegaNaturalAxis N)
+    (R.moduleAxis_le_innerOmegaNaturalAxis N)
+  let I := intertwinerImage
+    R.secondFrame.kernelTopPermutationSubrepresentation.toRepresentation
+    (R.secondFrame.sectionTopRepresentation (R.outerTopNormal N.1))
+    (R.secondFrame.sectionTopIntertwiner (R.outerTopNormal N.1))
+    (nestedSubrepresentation (R.innerOmegaCoordinateAxis N)
+      R.secondFrame.kernelTopPermutationSubrepresentation
+      (R.innerOmegaCoordinateAxis_le_kernelTop N))
+  let e0 : tau.Equiv
+      ((tau.comp R.topEquiv.symm.toMonoidHom).comp
+        R.topEquiv.toMonoidHom) :=
+    Representation.Equiv.mk (LinearEquiv.refl _ _) (by
+      intro g
+      apply LinearMap.ext
+      intro v
+      change tau g v = tau (R.topEquiv.symm (R.topEquiv g)) v
+      rw [R.topEquiv.symm_apply_apply])
+  let e1base := R.innerNestedQuotientSectionImageEquiv N
+  let e1 : ((tau.comp R.topEquiv.symm.toMonoidHom).comp
+      R.topEquiv.toMonoidHom).Equiv
+      (I.toRepresentation.comp R.topEquiv.toMonoidHom) :=
+    Representation.Equiv.mk e1base.toLinearEquiv
+      (fun g ↦ e1base.isIntertwining' (R.topEquiv g))
+  have hI : I.toSubmodule =
+      (R.innerOmegaSubrepresentation N).toSubmodule :=
+    R.innerSectionImage_toSubmodule_eq_innerOmega N
+  let e2Linear : I.toSubmodule ≃ₗ[ZMod 2]
+      (R.innerOmegaSubrepresentation N).toSubmodule where
+    toFun := fun v ↦ ⟨v.1, hI ▸ v.2⟩
+    invFun := fun v ↦ ⟨v.1, hI.symm ▸ v.2⟩
+    left_inv v := Subtype.ext rfl
+    right_inv v := Subtype.ext rfl
+    map_add' _ _ := rfl
+    map_smul' _ _ := rfl
+  let eFull := R.secondFrame.sectionTopEquivLiteralSectionInflation
+    R.topEquiv (R.outerTopNormal N.1)
+  let e2 : (I.toRepresentation.comp R.topEquiv.toMonoidHom).Equiv
+      ((R.innerOmegaSubrepresentation N).toRepresentation.comp
+        (QuotientGroup.mk' (R.topNormal N.1))) :=
+    Representation.Equiv.mk e2Linear (by
+      intro g
+      apply LinearMap.ext
+      intro v
+      apply Subtype.ext
+      exact LinearMap.congr_fun (eFull.isIntertwining' g) v.1)
+  exact e0.trans (e1.trans e2)
+
 end DegreeTwoPairTopTowerRealization
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
