@@ -46,7 +46,7 @@ noncomputable def sharpenToOne_of_sectionDualGenerated
       change FiniteDimensional (ZMod p)
         (A ⧸ E.normalSpace π A N.1)
       infer_instance
-    simpa using representationSchurCapacity_le_of_dual_generated
+    simpa only [Nat.cast_one] using representationSchurCapacity_le_of_dual_generated
       (E.sectionRepresentation π A N.1).ρ 1 (hcyclic N)
   coefficient := H.coefficient
   coefficient_nonneg := H.coefficient_nonneg
