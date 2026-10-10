@@ -90,6 +90,115 @@ noncomputable def innerNestedQuotientSectionImageEquiv
   rw [← R.innerNormalCoordinateAxis_eq_normalTopPermutation N] at eImage
   exact (R.innerNestedQuotientCoordinateEquiv N).trans eImage
 
+/-- The exact section-map image in the preceding equivalence is the inner
+omega subrepresentation already constructed from the physical subgroup
+image. -/
+theorem innerSectionImage_toSubmodule_eq_innerOmega
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (intertwinerImage
+      R.secondFrame.kernelTopPermutationSubrepresentation.toRepresentation
+      (R.secondFrame.sectionTopRepresentation (R.outerTopNormal N.1))
+      (R.secondFrame.sectionTopIntertwiner (R.outerTopNormal N.1))
+      (nestedSubrepresentation (R.innerOmegaCoordinateAxis N)
+        R.secondFrame.kernelTopPermutationSubrepresentation
+        (R.innerOmegaCoordinateAxis_le_kernelTop N))).toSubmodule =
+      (R.innerOmegaSubrepresentation N).toSubmodule := by
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  let E := R.innerSectionModuleChart N
+  let L := (R.rawKernelOmegaTopImage N).subgroupOf
+    (R.innerQuotientMap N).ker
+  have hker : (E.kernelCoordinates
+      (R.innerQuotientMap N) (R.innerSectionModule N)).ker ≤ L := by
+    intro x hx
+    have hx1 : x = 1 := by
+      apply E.equiv.symm.injective
+      exact (MonoidHom.mem_ker.mp hx).trans
+        (map_one E.equiv.symm).symm
+    subst x
+    exact Subgroup.one_mem _
+  ext v
+  constructor
+  · rintro ⟨b, hb, rfl⟩
+    change b.1 ∈ (R.innerOmegaCoordinateAxis N).toSubmodule at hb
+    change b.1 ∈ R.secondFrame.ambientAxis
+      (R.rawKernelOmegaIntermediatePreimage N) at hb
+    obtain ⟨k, hk, hkb⟩ :=
+      (R.secondFrame.mem_ambientAxis _ b.1).1 hb
+    have hbEq : (R.secondFrame.kernelSpaceHom k).toAdd = b := by
+      apply Subtype.ext
+      exact hkb
+    rw [← hbEq]
+    change ((E.kernelCoordinates
+      (R.innerQuotientMap N) (R.innerSectionModule N)
+      (E.equiv (Multiplicative.ofAdd
+        ((R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ
+          (R.secondFrame.kernelSpaceHom k).toAdd)))).toAdd) ∈
+      E.normalSpace (R.innerQuotientMap N)
+        (R.innerSectionModule N) L
+    apply (sectionSubgroupImage_mem_iff
+      (E.kernelCoordinates (R.innerQuotientMap N)
+        (R.innerSectionModule N)) L hker _).2
+    change (E.equiv (Multiplicative.ofAdd
+      ((R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ
+        (R.secondFrame.kernelSpaceHom k).toAdd)) :
+          R.frame.top.range ⧸ R.outerTopNormal N.1) ∈
+      R.rawKernelOmegaTopImage N
+    have he := R.secondFrame.literalSectionModuleChart_equiv_mk
+      R.topEquiv (R.outerTopNormal N.1) k
+    rw [show E = R.secondFrame.literalSectionModuleChart
+      R.topEquiv (R.outerTopNormal N.1) from rfl]
+    rw [he]
+    exact hk
+  · intro hv
+    change v ∈ E.normalSpace (R.innerQuotientMap N)
+      (R.innerSectionModule N) L at hv
+    let y : (R.innerQuotientMap N).ker :=
+      E.equiv (Multiplicative.ofAdd v)
+    have hcoord : (E.kernelCoordinates
+        (R.innerQuotientMap N) (R.innerSectionModule N) y).toAdd = v := by
+      change (E.equiv.symm (E.equiv (Multiplicative.ofAdd v))).toAdd = v
+      rw [E.equiv.symm_apply_apply]
+      rfl
+    have hy : y ∈ L := by
+      apply (sectionSubgroupImage_mem_iff
+        (E.kernelCoordinates (R.innerQuotientMap N)
+          (R.innerSectionModule N)) L hker y).1
+      rwa [hcoord]
+    obtain ⟨x, hx⟩ :=
+      (R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ_surjective v
+    obtain ⟨k, hk⟩ := R.secondFrame.kernelSpaceHom_bijective.2
+      (Multiplicative.ofAdd x)
+    have hxk : (R.secondFrame.kernelSpaceHom k).toAdd = x :=
+      congrArg Multiplicative.toAdd hk
+    have hyval :
+        (y : R.frame.top.range ⧸ R.outerTopNormal N.1) =
+          QuotientGroup.mk' (R.outerTopNormal N.1)
+            (k : R.frame.top.range) := by
+      change ((E.equiv (Multiplicative.ofAdd v) :
+        (R.innerQuotientMap N).ker) :
+          R.frame.top.range ⧸ R.outerTopNormal N.1) = _
+      rw [← hx, ← hxk]
+      have he := R.secondFrame.literalSectionModuleChart_equiv_mk
+        R.topEquiv (R.outerTopNormal N.1) k
+      simpa only [E, innerSectionModuleChart, innerSectionModule,
+        innerQuotientMap] using he
+    have hkOmega : (k : R.frame.top.range) ∈
+        R.rawKernelOmegaIntermediatePreimage N := by
+      change QuotientGroup.mk' (R.outerTopNormal N.1)
+        (k : R.frame.top.range) ∈ R.rawKernelOmegaTopImage N
+      rw [← hyval]
+      exact hy
+    let b : R.secondFrame.kernelTopPermutationSubrepresentation.toSubmodule :=
+      (R.secondFrame.kernelSpaceHom k).toAdd
+    have hb : b.1 ∈ (R.innerOmegaCoordinateAxis N).toSubmodule := by
+      change R.secondFrame.bits k ∈
+        R.secondFrame.ambientAxis
+          (R.rawKernelOmegaIntermediatePreimage N)
+      exact (R.secondFrame.bits_mem_ambientAxis _ k).2 hkOmega
+    refine ⟨b, hb, ?_⟩
+    change (R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ b = v
+    rw [show (b : R.secondFrame.kernelSpace) = x from hxk, hx]
+
 end DegreeTwoPairTopTowerRealization
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
