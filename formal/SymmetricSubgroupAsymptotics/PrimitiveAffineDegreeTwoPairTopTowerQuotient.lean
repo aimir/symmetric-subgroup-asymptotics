@@ -667,6 +667,89 @@ theorem rawKernelOmegaOuterCoordinateMap_injective
   apply (R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm.injective
   exact congrArg Multiplicative.ofAdd hzw
 
+/-- The part of the first pair kernel lying in the original pullback of
+direct-kernel omega. -/
+abbrev outerOmegaRetainedKernel
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  (R.rawKernelOmegaOriginalPreimage N).subgroupOf R.frame.top.ker
+
+/-- Map the retained first-kernel omega intersection to the literal outer
+zero-cut section. -/
+noncomputable def outerOmegaZeroCutMap
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Additive (R.outerOmegaRetainedKernel N) →ₗ[ZMod 2]
+      R.frame.zeroCutModule N.1 :=
+  (((R.frame.zeroCutMap N.1).comp
+    (R.outerOmegaRetainedKernel N).subtype).toAdditive).toZModLinearMap 2
+
+/-- The outer coordinates of the omega-filtration kernel are exactly the
+zero-cut image of the retained first-kernel intersection. -/
+theorem rawKernelOmegaOuterCoordinateMap_range_eq
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    LinearMap.range (R.rawKernelOmegaOuterCoordinateMap N) =
+      LinearMap.range (R.outerOmegaZeroCutMap N) := by
+  ext a
+  constructor
+  · rintro ⟨z, rfl⟩
+    obtain ⟨l, hl⟩ := R.frame.zeroCutMap_surjective N.1
+      (Multiplicative.ofAdd (R.rawKernelOmegaOuterCoordinateMap N z))
+    change R.frame.zeroCutMap N.1 l =
+      (R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm
+        (R.rawKernelOmegaOuterInclusion N z.toMul) at hl
+    have hchart := congrArg
+      (R.outerZeroCutKernelEquivRawKernelProjectionKer N) hl
+    rw [(R.outerZeroCutKernelEquivRawKernelProjectionKer N).apply_symm_apply]
+      at hchart
+    have hval := congrArg
+      (fun y : (R.rawKernelProjection N).ker ↦
+        (((y : (R.rawQuotientMap N).ker) :
+          preE7PairAction s p ⧸ N.1))) hchart
+    have hlOmega : (l : preE7PairAction s p) ∈
+        R.rawKernelOmegaOriginalPreimage N := by
+      change QuotientGroup.mk' N.1 (l : preE7PairAction s p) ∈
+        R.rawKernelOmegaLift N
+      rw [← R.outerZeroCutKernelEquivRawKernelProjectionKer_val N l,
+        hval]
+      rw [← R.rawKernelOmegaEquiv_val N z.toMul]
+      exact (R.rawKernelOmegaEquiv N z.toMul).property
+    let lOmega : R.outerOmegaRetainedKernel N := ⟨l, hlOmega⟩
+    refine ⟨Additive.ofMul lOmega, ?_⟩
+    exact congrArg Multiplicative.toAdd hl
+  · rintro ⟨l, rfl⟩
+    let q : preE7PairAction s p ⧸ N.1 :=
+      QuotientGroup.mk' N.1
+        (l.toMul.1 : preE7PairAction s p)
+    have hqOmega : q ∈ R.rawKernelOmegaLift N := l.toMul.2
+    let x : R.rawKernelOmegaLift N := ⟨q, hqOmega⟩
+    obtain ⟨z, hz⟩ := (R.rawKernelOmegaEquiv N).surjective x
+    have hzval :
+        ((binaryCentralOmegaEmbedding z :
+          (R.rawQuotientMap N).ker) :
+            preE7PairAction s p ⧸ N.1) = q := by
+      rw [← R.rawKernelOmegaEquiv_val N z]
+      exact congrArg Subtype.val hz
+    have hqOuter : q ∈ (R.outerQuotientMap N).ker := by
+      rw [R.outerQuotientMap_ker_eq_zeroCutBase_ker N]
+      exact (R.frame.zeroCutKernelMap N.1 l.toMul.1).property
+    have hzker : z ∈ (R.rawKernelOmegaProjection N).ker := by
+      apply MonoidHom.mem_ker.mpr
+      apply Subtype.ext
+      change R.outerQuotientMap N
+        ((binaryCentralOmegaEmbedding z :
+          (R.rawQuotientMap N).ker) :
+            preE7PairAction s p ⧸ N.1) = 1
+      rw [hzval]
+      exact MonoidHom.mem_ker.mp hqOuter
+    let zker : (R.rawKernelOmegaProjection N).ker := ⟨z, hzker⟩
+    refine ⟨Additive.ofMul zker, ?_⟩
+    apply Multiplicative.ofAdd.injective
+    apply (R.outerZeroCutKernelEquivRawKernelProjectionKer N).injective
+    apply Subtype.ext
+    apply Subtype.ext
+    exact hzval.trans
+      (R.outerZeroCutKernelEquivRawKernelProjectionKer_val
+        N l.toMul.1).symm
+
 theorem rawKernelProjection_ker_isPGroup
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     IsPGroup 2 (R.rawKernelProjection N).ker :=
