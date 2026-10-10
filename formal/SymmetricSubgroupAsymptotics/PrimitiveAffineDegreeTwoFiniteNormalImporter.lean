@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.FiniteNormalJoinWordRegistry
 import SymmetricSubgroupAsymptotics.Non2PreE7RankTailSourceDichotomyClosure
 import SymmetricSubgroupAsymptotics.ZmudFaithfulCharacterInput
+import SymmetricSubgroupAsymptotics.BinaryIrreducibleTuple
 
 /-!
 # Finite normal-state importer for the remaining degree-two pair catalogues
@@ -499,6 +500,47 @@ end PreE7FiniteQcharAxes
 
 /-! ## Compact selected QCHAR packages -/
 
+/-- Finite structural form of a linear/Zmud tuple when all selected linear
+characters have binary image.  An emitter only records homomorphisms into
+the two-element group; the common converter supplies their complex signs. -/
+structure PreE7BinaryLinearZmudTupleData
+    (Q : Type) [Group Q] : Type 1 where
+  linearCount : ℕ
+  generalCount : ℕ
+  linear : Fin linearCount → Q →* Multiplicative (ZMod 2)
+  generalKernel : Subgroup Q
+  [generalKernel_normal : generalKernel.Normal]
+  generalSocleGenerator :
+    SocleNormalGeneratorBound (Q ⨸ generalKernel) generalCount
+  kernel_inf : (⨅ j, (linear j).ker) ⊓ generalKernel = ⊥
+
+attribute [instance] PreE7BinaryLinearZmudTupleData.generalKernel_normal
+
+namespace PreE7BinaryLinearZmudTupleData
+
+variable {Q : Type} [Group Q]
+  (D : PreE7BinaryLinearZmudTupleData Q)
+
+/-- Interpret every retained binary homomorphism as its complex sign. -/
+noncomputable def toLinearZmud : PreE7LinearZmudTupleData Q where
+  linearCount := D.linearCount
+  generalCount := D.generalCount
+  linear j := (binaryScalarSign (k := ℂ)).comp (D.linear j)
+  generalKernel := D.generalKernel
+  generalSocleGenerator := D.generalSocleGenerator
+  kernel_inf := by
+    have hker : ∀ j,
+        ((binaryScalarSign (k := ℂ)).comp (D.linear j)).ker =
+          (D.linear j).ker := by
+      intro j
+      ext q
+      simp only [MonoidHom.mem_ker, MonoidHom.comp_apply,
+        binaryScalarSign_eq_one]
+    simp only [hker]
+    exact D.kernel_inf
+
+end PreE7BinaryLinearZmudTupleData
+
 /-- Structural finite data for a QCHAR row before applying the published
 Zmud theorem.  The selected exporter supplies one linear/Zmud tuple on each
 checked normal state outside the comparator interval.  The converter below
@@ -520,7 +562,7 @@ structure PreE7FiniteQcharZmudAxes
   degree_window : preE7CharacterRho * w ≤
     ((evenWidth w : ℝ) - ((max 2 degree : ℕ) : ℝ)) / 8
   state : ∀ j : registry.State, ¬ E ≤ registry.state j →
-    PreE7LinearZmudTupleData
+    PreE7BinaryLinearZmudTupleData
       (preE7NonPairAction w i ⨸ registry.state j)
   state_capacity : ∀ j h,
     ((state j h).linearCount : ℝ) * (Real.logb 2 3 / 3) +
@@ -548,7 +590,7 @@ noncomputable def toAxes
   degree_window := D.degree_window
   axes :=
     { state := fun j h ↦
-        ⟨(D.state j h).certificate hZmud, rfl, by
+        ⟨(D.state j h).toLinearZmud.certificate hZmud, rfl, by
           simpa only [PreE7LinearZmudTupleData.certificate_slope] using
             D.state_capacity j h⟩ }
 
