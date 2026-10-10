@@ -61,6 +61,22 @@ theorem head_le :
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 0).2.finrank]
   native_decide
 
+/-- The emitted displacement chart is the complete displacement span for
+state `0`. -/
+theorem displacementSpan_eq :
+    representationGeneratorDisplacementSpan representation topAmbient
+        (states 0) =
+      certificate.submodule := by
+  apply certificate.generatorDisplacementSpan_eq_of_basis_mem
+    (charts 0).2
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space 0)
+  intro q j
+  change representation (topAmbient q)
+      ((charts 0).2.inclusion (Pi.single j 1)) -
+        (charts 0).2.inclusion (Pi.single j 1) ∈ displacementChart.space
+  apply (displacementChart.mem_iff _).mpr
+  fin_cases q <;> fin_cases j <;> native_decide
+
 end D0
 
 namespace D1
@@ -94,6 +110,22 @@ theorem head_le :
     representation topAmbient (states 1) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 1).2.finrank]
   native_decide
+
+/-- The emitted displacement chart is the complete displacement span for
+state `1`. -/
+theorem displacementSpan_eq :
+    representationGeneratorDisplacementSpan representation topAmbient
+        (states 1) =
+      certificate.submodule := by
+  apply certificate.generatorDisplacementSpan_eq_of_basis_mem
+    (charts 1).2
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space 1)
+  intro q j
+  change representation (topAmbient q)
+      ((charts 1).2.inclusion (Pi.single j 1)) -
+        (charts 1).2.inclusion (Pi.single j 1) ∈ displacementChart.space
+  apply (displacementChart.mem_iff _).mpr
+  fin_cases q <;> fin_cases j <;> native_decide
 
 end D1
 
@@ -145,6 +177,22 @@ theorem head_le :
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 2).2.finrank]
   native_decide
 
+/-- The emitted displacement chart is the complete displacement span for
+state `2`. -/
+theorem displacementSpan_eq :
+    representationGeneratorDisplacementSpan representation topAmbient
+        (states 2) =
+      certificate.submodule := by
+  apply certificate.generatorDisplacementSpan_eq_of_basis_mem
+    (charts 2).2
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space 2)
+  intro q j
+  change representation (topAmbient q)
+      ((charts 2).2.inclusion (Pi.single j 1)) -
+        (charts 2).2.inclusion (Pi.single j 1) ∈ displacementChart.space
+  apply (displacementChart.mem_iff _).mpr
+  fin_cases q <;> fin_cases j <;> native_decide
+
 end D2
 
 namespace D3
@@ -194,6 +242,22 @@ theorem head_le :
     representation topAmbient (states 3) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 3).2.finrank]
   native_decide
+
+/-- The emitted displacement chart is the complete displacement span for
+state `3`. -/
+theorem displacementSpan_eq :
+    representationGeneratorDisplacementSpan representation topAmbient
+        (states 3) =
+      certificate.submodule := by
+  apply certificate.generatorDisplacementSpan_eq_of_basis_mem
+    (charts 3).2
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space 3)
+  intro q j
+  change representation (topAmbient q)
+      ((charts 3).2.inclusion (Pi.single j 1)) -
+        (charts 3).2.inclusion (Pi.single j 1) ∈ displacementChart.space
+  apply (displacementChart.mem_iff _).mpr
+  fin_cases q <;> fin_cases j <;> native_decide
 
 end D3
 
@@ -245,6 +309,22 @@ theorem head_le :
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 4).2.finrank]
   native_decide
 
+/-- The emitted displacement chart is the complete displacement span for
+state `4`. -/
+theorem displacementSpan_eq :
+    representationGeneratorDisplacementSpan representation topAmbient
+        (states 4) =
+      certificate.submodule := by
+  apply certificate.generatorDisplacementSpan_eq_of_basis_mem
+    (charts 4).2
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space 4)
+  intro q j
+  change representation (topAmbient q)
+      ((charts 4).2.inclusion (Pi.single j 1)) -
+        (charts 4).2.inclusion (Pi.single j 1) ∈ displacementChart.space
+  apply (displacementChart.mem_iff _).mpr
+  fin_cases q <;> fin_cases j <;> native_decide
+
 end D4
 
 namespace D5
@@ -294,6 +374,22 @@ theorem head_le :
     representation topAmbient (states 5) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 5).2.finrank]
   native_decide
+
+/-- The emitted displacement chart is the complete displacement span for
+state `5`. -/
+theorem displacementSpan_eq :
+    representationGeneratorDisplacementSpan representation topAmbient
+        (states 5) =
+      certificate.submodule := by
+  apply certificate.generatorDisplacementSpan_eq_of_basis_mem
+    (charts 5).2
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space 5)
+  intro q j
+  change representation (topAmbient q)
+      ((charts 5).2.inclusion (Pi.single j 1)) -
+        (charts 5).2.inclusion (Pi.single j 1) ∈ displacementChart.space
+  apply (displacementChart.mem_iff _).mpr
+  fin_cases q <;> fin_cases j <;> native_decide
 
 end D5
 
@@ -345,6 +441,22 @@ theorem head_le :
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 6).2.finrank]
   native_decide
 
+/-- The emitted displacement chart is the complete displacement span for
+state `6`. -/
+theorem displacementSpan_eq :
+    representationGeneratorDisplacementSpan representation topAmbient
+        (states 6) =
+      certificate.submodule := by
+  apply certificate.generatorDisplacementSpan_eq_of_basis_mem
+    (charts 6).2
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space 6)
+  intro q j
+  change representation (topAmbient q)
+      ((charts 6).2.inclusion (Pi.single j 1)) -
+        (charts 6).2.inclusion (Pi.single j 1) ∈ displacementChart.space
+  apply (displacementChart.mem_iff _).mpr
+  fin_cases q <;> fin_cases j <;> native_decide
+
 end D6
 
 namespace D7
@@ -394,6 +506,22 @@ theorem head_le :
     representation topAmbient (states 7) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 7).2.finrank]
   native_decide
+
+/-- The emitted displacement chart is the complete displacement span for
+state `7`. -/
+theorem displacementSpan_eq :
+    representationGeneratorDisplacementSpan representation topAmbient
+        (states 7) =
+      certificate.submodule := by
+  apply certificate.generatorDisplacementSpan_eq_of_basis_mem
+    (charts 7).2
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space 7)
+  intro q j
+  change representation (topAmbient q)
+      ((charts 7).2.inclusion (Pi.single j 1)) -
+        (charts 7).2.inclusion (Pi.single j 1) ∈ displacementChart.space
+  apply (displacementChart.mem_iff _).mpr
+  fin_cases q <;> fin_cases j <;> native_decide
 
 end D7
 
@@ -445,6 +573,22 @@ theorem head_le :
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 8).2.finrank]
   native_decide
 
+/-- The emitted displacement chart is the complete displacement span for
+state `8`. -/
+theorem displacementSpan_eq :
+    representationGeneratorDisplacementSpan representation topAmbient
+        (states 8) =
+      certificate.submodule := by
+  apply certificate.generatorDisplacementSpan_eq_of_basis_mem
+    (charts 8).2
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space 8)
+  intro q j
+  change representation (topAmbient q)
+      ((charts 8).2.inclusion (Pi.single j 1)) -
+        (charts 8).2.inclusion (Pi.single j 1) ∈ displacementChart.space
+  apply (displacementChart.mem_iff _).mpr
+  fin_cases q <;> fin_cases j <;> native_decide
+
 end D8
 
 namespace D9
@@ -495,6 +639,22 @@ theorem head_le :
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 9).2.finrank]
   native_decide
 
+/-- The emitted displacement chart is the complete displacement span for
+state `9`. -/
+theorem displacementSpan_eq :
+    representationGeneratorDisplacementSpan representation topAmbient
+        (states 9) =
+      certificate.submodule := by
+  apply certificate.generatorDisplacementSpan_eq_of_basis_mem
+    (charts 9).2
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space 9)
+  intro q j
+  change representation (topAmbient q)
+      ((charts 9).2.inclusion (Pi.single j 1)) -
+        (charts 9).2.inclusion (Pi.single j 1) ∈ displacementChart.space
+  apply (displacementChart.mem_iff _).mpr
+  fin_cases q <;> fin_cases j <;> native_decide
+
 end D9
 
 namespace D10
@@ -544,6 +704,22 @@ theorem head_le :
     representation topAmbient (states 10) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
   native_decide
+
+/-- The emitted displacement chart is the complete displacement span for
+state `10`. -/
+theorem displacementSpan_eq :
+    representationGeneratorDisplacementSpan representation topAmbient
+        (states 10) =
+      certificate.submodule := by
+  apply certificate.generatorDisplacementSpan_eq_of_basis_mem
+    (charts 10).2
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space 10)
+  intro q j
+  change representation (topAmbient q)
+      ((charts 10).2.inclusion (Pi.single j 1)) -
+        (charts 10).2.inclusion (Pi.single j 1) ∈ displacementChart.space
+  apply (displacementChart.mem_iff _).mpr
+  fin_cases q <;> fin_cases j <;> native_decide
 
 end D10
 
