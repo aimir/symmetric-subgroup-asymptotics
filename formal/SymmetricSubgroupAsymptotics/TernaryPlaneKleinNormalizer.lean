@@ -64,8 +64,11 @@ theorem standardD8LinearRange_eq_normalizer :
       Subgroup.normalizer (standardKleinLinearMap.range : Set LinearThree.GL3) := by
   apply Subgroup.eq_of_le_of_card_ge standardD8LinearRange_le_normalizer
   have hrange : Nat.card standardD8LinearMap.range = 8 := by
-    rw [Nat.card_congr
-      (MonoidHom.ofInjective standardD8LinearMap_injective).toEquiv, card_D8]
+    calc
+      Nat.card standardD8LinearMap.range = Nat.card D8 :=
+        Nat.card_congr
+          (MonoidHom.ofInjective standardD8LinearMap_injective).toEquiv.symm
+      _ = 8 := card_D8
   have hnormal :
       Nat.card
         (Subgroup.normalizer
@@ -107,8 +110,10 @@ noncomputable def kleinRangeD8Conjugacy
   have hcomm : f firstBit * f secondBit =
       f secondBit * f firstBit := by
     rw [← map_mul, mul_comm, map_mul]
-  obtain ⟨g, hgPair⟩ := pair_conjugate_standardKlein_certificate
+  let hex := pair_conjugate_standardKlein_certificate
     (f firstBit) (f secondBit) ha hb hab ha2 hb2 hcomm
+  let g := Classical.choose hex
+  have hgPair := Classical.choose_spec hex
   have hg : f.range.map (MulAut.conj g).toMonoidHom =
       DegreeSixS3Wreath.standardKleinLinearMap.range := by
     rw [kleinRange_eq_pairSubgroup f hf]

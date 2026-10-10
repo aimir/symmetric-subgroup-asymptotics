@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.TernaryPlaneD8Linear
+import Mathlib.Data.Fintype.Units
 
 /-!
 # Two-generator model for ternary Klein subgroups
@@ -58,7 +59,7 @@ def kleinFourSubgroup (a b : GL3)
         _ = 1 := hbb
     rcases hx with rfl | rfl | rfl | rfl <;>
       rcases hy with rfl | rfl | rfl | rfl <;>
-      simp [haa, hbb, hcomm, mul_assoc, haba, hbba, hbaba]
+      simp [haa, hbb, hcomm, mul_assoc, haba, hbba]
   inv_mem' := by
     intro x hx
     have haa : a * a = 1 := by simpa only [pow_two] using ha2
@@ -90,7 +91,7 @@ theorem kleinPairSubgroup_eq_kleinFourSubgroup
     (hcomm : a * b = b * a) :
     kleinPairSubgroup a b = kleinFourSubgroup a b ha2 hb2 hcomm := by
   apply le_antisymm
-  · apply Subgroup.closure_le.2
+  · apply (Subgroup.closure_le (kleinFourSubgroup a b ha2 hb2 hcomm)).2
     intro x hx
     rcases hx with rfl | rfl
     · exact Or.inr (Or.inl rfl)
@@ -131,7 +132,7 @@ theorem binaryKleinRange_eq_pairSubgroup
         (Subgroup.subset_closure (Set.mem_insert_iff.mpr (Or.inl rfl)))
         (Subgroup.subset_closure (Set.mem_insert_iff.mpr
           (Or.inr (Set.mem_singleton _))))
-  · apply Subgroup.closure_le.2
+  · apply (Subgroup.closure_le f.range).2
     intro y hy
     rcases hy with rfl | rfl
     · exact ⟨kleinFirstBit, rfl⟩
@@ -217,8 +218,20 @@ theorem map_kleinFourSubgroup_eq_of_conjugated_elements_eq
 
 /-- A fully computable filter for matrices normalizing the literal Klein
 carrier. -/
+def explicitGLFinset : Finset GL3 :=
+  LinearThree.glSet.attach.image fun A => LinearThree.ofGL A.1 A.2
+
+theorem mem_explicitGLFinset (g : GL3) : g ∈ explicitGLFinset := by
+  apply Finset.mem_image.mpr
+  refine ⟨⟨(g : M2), LinearThree.coe_mem_glSet g⟩, by simp, ?_⟩
+  apply Units.ext
+  rfl
+
+/-- A fully computable filter for matrices normalizing the literal Klein
+carrier.  Its ambient enumerator is the explicit list of invertible matrices,
+instead of the noncomputable default `Fintype` on units. -/
 def kleinNormalizerFinset (a b : GL3) : Finset GL3 :=
-  Finset.univ.filter fun g =>
+  explicitGLFinset.filter fun g =>
     conjugatedKleinFourElements a b g = kleinFourElements a b
 
 theorem mem_kleinNormalizerFinset_iff
@@ -227,7 +240,7 @@ theorem mem_kleinNormalizerFinset_iff
     g ∈ kleinNormalizerFinset a b ↔
       g ∈ Subgroup.normalizer (kleinPairSubgroup a b : Set GL3) := by
   rw [kleinNormalizerFinset, Finset.mem_filter]
-  simp only [Finset.mem_univ, true_and]
+  simp only [mem_explicitGLFinset, true_and]
   rw [kleinPairSubgroup_eq_kleinFourSubgroup a b ha2 hb2 hcomm,
     Subgroup.mem_normalizer_iff,
     conjugatedKleinFourElements_eq_iff]
