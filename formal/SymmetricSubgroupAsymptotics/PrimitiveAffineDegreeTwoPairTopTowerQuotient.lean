@@ -464,6 +464,53 @@ def rawKernelProjection
     (R.rawQuotientMap N).ker →* (R.innerQuotientMap N).ker :=
   compositeKernelProjection (R.outerQuotientMap N) (R.innerQuotientMap N)
 
+/-- Project the intrinsic central omega of the direct two-frame kernel onto
+the actual second-frame kernel.  This is the group-level first map in the
+omega filtration; no abstract replacement of either kernel is made. -/
+def rawKernelOmegaProjection
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    binaryCentralOmega (R.rawQuotientMap N).ker →*
+      (R.innerQuotientMap N).ker :=
+  (R.rawKernelProjection N).comp
+    (binaryCentralOmegaEmbedding (G := (R.rawQuotientMap N).ker))
+
+@[simp] theorem rawKernelOmegaEquiv_val
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (z : binaryCentralOmega (R.rawQuotientMap N).ker) :
+    ((R.rawKernelOmegaEquiv N z : R.rawKernelOmegaLift N) :
+        preE7PairAction s p ⧸ N.1) =
+      ((binaryCentralOmegaEmbedding z : (R.rawQuotientMap N).ker) :
+        preE7PairAction s p ⧸ N.1) :=
+  rfl
+
+/-- The image of intrinsic direct-kernel omega under the filtration map is
+exactly the previously constructed intermediate omega image. -/
+theorem rawKernelOmegaProjection_range_eq
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaProjection N).range =
+      (R.rawKernelOmegaTopImage N).subgroupOf (R.innerQuotientMap N).ker := by
+  ext y
+  constructor
+  · rintro ⟨z, rfl⟩
+    change ((R.rawKernelOmegaProjection N z :
+      (R.innerQuotientMap N).ker) :
+        R.frame.top.range ⧸ R.outerTopNormal N.1) ∈
+      R.rawKernelOmegaTopImage N
+    refine ⟨R.rawKernelOmegaEquiv N z,
+      (R.rawKernelOmegaEquiv N z).property, ?_⟩
+    rw [rawKernelOmegaProjection, MonoidHom.comp_apply,
+      compositeKernelProjection_apply, R.rawKernelOmegaEquiv_val N z]
+  · intro hy
+    change (y : R.frame.top.range ⧸ R.outerTopNormal N.1) ∈
+      R.rawKernelOmegaTopImage N at hy
+    obtain ⟨x, hx, hxy⟩ := hy
+    obtain ⟨z, rfl⟩ := (R.rawKernelOmegaEquiv N).surjective x
+    refine ⟨z, ?_⟩
+    apply Subtype.ext
+    rw [rawKernelOmegaProjection, MonoidHom.comp_apply,
+      compositeKernelProjection_apply, R.rawKernelOmegaEquiv_val N z]
+    exact hxy
+
 theorem rawKernelProjection_surjective
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     Function.Surjective (R.rawKernelProjection N) :=
