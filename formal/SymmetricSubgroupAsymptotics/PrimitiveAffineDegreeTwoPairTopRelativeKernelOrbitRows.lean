@@ -206,6 +206,55 @@ noncomputable def ofSocleDualGenerated
   orbitCharacters :=
     (BinaryKernelOmegaLinearOrbits.ofSocleDualGenerated hgen).toOrbitCharacters
 
+/-- Inflate a Zmud tuple through a surjective quotient whose kernel is
+binary, and obtain the relative tail from generators of the dual of the
+kernel omega socle.  This is the direct row constructor for paired-eight
+towers: the literal top quotient supplies the ordinary prefix, while the
+coupled tower controls the central omega of the direct two-frame kernel. -/
+noncomputable def ofSurjectiveBinaryKernelSocleDualGenerated
+    {B : Type} [Group B] [Finite B]
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (pi : Q →* B) (hpi : Function.Surjective pi)
+    {ordinary relative : ℕ}
+    (topSocle : SocleNormalGeneratorBound B ordinary)
+    (kernel_twoGroup : IsPGroup 2 pi.ker)
+    (hgen : RepresentationGeneratedBy
+      (finiteRepresentationSocle
+        (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation.dual
+      relative) :
+    DegreeTwoPairRelativeKernelOrbitInput Q
+      (degreeTwoPairOrdinaryRelativeProfile ordinary relative) := by
+  let topTuple : CharacterSlotTuple B := hZmud.generalTuple topSocle
+  let ordinaryTuple : Fin ordinary → FiniteIrreducibleRepresentation ℂ Q :=
+    fun i ↦
+      { Space := (topTuple.general i).Space
+        addCommGroup := inferInstance
+        module := inferInstance
+        finiteDimensional := inferInstance
+        action := (topTuple.general i).action.comp pi
+        irreducible := representation_irreducible_comp
+          (topTuple.general i).action pi hpi }
+  exact ofSocleDualGenerated pi Fin.elim0 (fun i ↦ Fin.elim0 i)
+    Fin.elim0 ordinaryTuple (by
+      ext q
+      simp only [degreeTwoPairOrdinaryRelativeProfile, Subgroup.mem_inf,
+        Subgroup.mem_iInf, MonoidHom.mem_ker]
+      constructor
+      · intro hq
+        refine ⟨⟨fun i ↦ Fin.elim0 i, fun i ↦ Fin.elim0 i⟩, ?_⟩
+        intro i
+        change (topTuple.general i).action (pi q) = 1
+        rw [hq, map_one]
+      · rintro ⟨⟨_, _⟩, hord⟩
+        apply topTuple.faithful (pi q)
+        · intro i
+          exact Fin.elim0 i
+        · intro i
+          exact Fin.elim0 i
+        · intro i
+          simpa only [ordinaryTuple, MonoidHom.comp_apply] using hord i)
+    kernel_twoGroup hgen
+
 /-- Catalogue endpoint for a Schur-capacity proof on the dual of the
 canonical omega socle. -/
 noncomputable def ofSocleDualSchurCapacity
