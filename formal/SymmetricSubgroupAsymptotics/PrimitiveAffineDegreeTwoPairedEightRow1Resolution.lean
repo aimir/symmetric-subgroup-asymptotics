@@ -44,17 +44,17 @@ theorem omegaHeadDemand_le_four
     (Coupled.towerCoupledHeadData R).omegaHeadDemand N ≤ 4 :=
   (Coupled.towerCoupledHeadData R).omegaHeadDemand_le N
 
-/-- Actual four-position generator conclusion still to be derived from the
+/-- Actual natural omega-socle capacity conclusion to be derived from the
 checked coupled head inequality and the three same-top permutation-module
 sections.  The type is tied to the direct quotient kernel for each original
-normal subgroup. -/
-abbrev OmegaSocleDualGenerated
+normal subgroup; biduality and orbit characters are now automatic. -/
+abbrev OmegaSocleSchurCapacityLeFour
     {p : PreE7PairActionClass 16}
     (R : DegreeTwoPairTopTowerRealization Shared.top1 p) : Prop :=
-  ∀ N, RepresentationGeneratedBy
+  ∀ N, representationSchurCapacity
     (finiteRepresentationSocle
       (binaryKernelOmegaConjugationRepresentation
-        (R.quotientMap N))).toRepresentation.dual 4
+        (R.quotientMap N))).toRepresentation ≤ 4
 
 /-- Concrete orbit-character row for paired8-1.  The two ordinary prefix
 positions come from the checked quotient-socle family; the four relative
@@ -64,16 +64,16 @@ noncomputable def rowData
     (hZmud : ZmudFaithfulCharacterTupleInput)
     {p : PreE7PairActionClass 16}
     (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
-    (dualGenerated : OmegaSocleDualGenerated R) :
+    (socleCapacity : OmegaSocleSchurCapacityLeFour R) :
     DegreeTwoPairTopTowerRelativeKernelOrbitRowData
       Shared.top1 degreeTwoSixteenPairProfiles p R :=
   DegreeTwoPairTopTowerRelativeKernelOrbitRowData.
-    ofOrdinaryRelativeSocleDualGenerated hZmud 2 4
+    ofOrdinaryRelativeSocleSchurCapacity hZmud 2 4
       (by native_decide)
       degreeTwoSixteenPairProfiles_capacity
       (fun N ↦
         (Socles.family.data (R.topNormalState N)).quotientSocleGenerator)
-      dualGenerated
+      socleCapacity
 
 /-- Catalogue-facing resolution of literal paired-eight index zero. -/
 noncomputable def resolvedRow
@@ -82,11 +82,11 @@ noncomputable def resolvedRow
     {p : PreE7PairActionClass 16}
     (R : DegreeTwoPairTopTowerRealization
       (Catalogue.catalogue.paired8 (0 : Fin 24)) p)
-    (dualGenerated : OmegaSocleDualGenerated R) :
+    (socleCapacity : OmegaSocleSchurCapacityLeFour R) :
     DegreeTwoPairTopResolvedRow
       (Catalogue.catalogue.paired8 (0 : Fin 24))
       degreeTwoSixteenPairProfiles p :=
-  ((rowData hZmud R dualGenerated).sixteenResolvedData lit).toResolvedRow
+  ((rowData hZmud R socleCapacity).sixteenResolvedData lit).toResolvedRow
 
 end PrimitiveAffineDegreeTwoPairedEightRow1Resolution
 end PrimitiveAffineImprimitiveBlockTransfer

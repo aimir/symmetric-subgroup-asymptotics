@@ -68,7 +68,7 @@ structure RemainingPairTopSemanticData : Type 1 where
     ∀ (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopTowerRealization
         (SixteenCatalogue.paired8 (0 : Fin 24)) p),
-      PairedEightPilot.OmegaSocleDualGenerated realization
+      PairedEightPilot.OmegaSocleSchurCapacityLeFour realization
   sixteenZero16 :
     ∀ (j : Fin 29) (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopRealization
