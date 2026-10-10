@@ -619,6 +619,33 @@ theorem outerOmega_nonfixed_schurSocleMultiplicity_le_two_mul_end_finrank
   rw [← hsourceG, hinflate, hsourceQ, htargetQ, hend] at hphysicalG
   simpa only [outer, Q] using hphysicalG
 
+/-- The physical outer and inner estimates close the complete nonfixed row
+of the omega socle with the required coefficient three. -/
+theorem omegaSocle_nonfixed_schurSocleMultiplicity_le_three_mul_end_finrank
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
+    (X : Submodule (ZMod 2)[preE7PairAction 16 p ⧸ N.1]
+      (OmegaSocleRepresentation R N).asModule)
+    [IsSimpleModule (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X]
+    (hnonfixed : ¬ representationSubmoduleFixed
+      (OmegaSocleRepresentation R N) X) :
+    schurSocleMultiplicity
+        (k := ZMod 2)
+        (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1])
+        (A := (OmegaSocleRepresentation R N).asModule) (X := X) ≤
+      3 * Module.finrank
+        (Module.End (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X) X := by
+  have hsplit :=
+    omegaSocle_schurSocleMultiplicity_le_projectionKernel_add_inner
+      R N X
+  have houter :=
+    outerOmega_nonfixed_schurSocleMultiplicity_le_two_mul_end_finrank
+      R N X hnonfixed
+  have hinner := innerOmega_nonfixed_schurSocleMultiplicity_le_end_finrank
+    R N X hnonfixed
+  exact hsplit.trans (by omega)
+
 /-- The checked coupled head closes the fixed simple row; a three-layer
 same-simple-type multiplicity estimate closes every nonfixed row.  This
 is the exact algebraic composition of those two inputs for one actual
@@ -687,6 +714,22 @@ theorem omegaSocleSchurCapacityLeFour_of_rawCoupled_nonfixed
   apply omegaSocle_schurCapacity_le_four_of_coupled_nonfixed R N
   · exact R.omegaSocle_invariants_le_of_rawOmega N (hraw N)
   · exact hnonfixed N
+
+/-- After the physical outer and inner layer theorems, the coupled raw fixed
+inequality is the sole remaining input for the all-normal cap-four result. -/
+theorem omegaSocleSchurCapacityLeFour_of_rawCoupled
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (hraw : ∀ N,
+      Module.finrank (ZMod 2)
+          (binaryKernelOmegaConjugationRepresentation
+            (R.rawQuotientMap N)).invariants ≤
+        (Coupled.towerCoupledHeadData R).omegaHeadDemand N) :
+    OmegaSocleSchurCapacityLeFour R := by
+  apply omegaSocleSchurCapacityLeFour_of_rawCoupled_nonfixed R hraw
+  intro N X _hX hnonfixed
+  exact omegaSocle_nonfixed_schurSocleMultiplicity_le_three_mul_end_finrank
+    R N X hnonfixed
 
 /-- Concrete orbit-character row for paired8-1.  The two ordinary prefix
 positions come from the checked quotient-socle family; the four relative
