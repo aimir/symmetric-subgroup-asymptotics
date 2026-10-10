@@ -5,7 +5,6 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow3
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenOneFrameFiniteRows
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenNaturalFiniteRows
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightCoupledCatalogue
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopRelativeKernelOrbitRows
 
 /-!
 # Concrete pilot wiring in the degree-two residual source
@@ -45,10 +44,36 @@ namespace SixteenNaturalFinite := DegreeTwoSixteenNaturalFiniteRows
 abbrev TwelveCatalogue := Concrete.TwelveCatalogue
 abbrev SixteenCatalogue := Concrete.SixteenCatalogue
 
-/-- Semantic and finite data for the rows not already generated.  Joint
-count-twelve, paired-eight, and all one-frame count-sixteen rows accept only
-finite declarations on their literal tops.  Their explicit family fields
-are the boundaries consumed by the serialized certificate exporters. -/
+/-! ## Exact serialized package ledger
+
+After inserting the three checked pilots, the producer boundary consists of
+282 joint-twelve packages, 8 core-twelve packages, 2 paired-six packages,
+8 ternary QCHAR packages, 23 paired-eight packages, 29 zero16 packages,
+15 twoAffine16 packages, 19 primitive16 packages, and 2 natural-top
+packages. -/
+
+/-- Number of explicit packages still assigned to serialized producers. -/
+def remainingSerializedPairTopPackageCount : ℕ :=
+  282 + 8 + 2 + 8 + 23 + 29 + 15 + 19 + 2
+
+@[simp] theorem remainingSerializedPairTopPackageCount_eq :
+    remainingSerializedPairTopPackageCount = 388 := by
+  norm_num [remainingSerializedPairTopPackageCount]
+
+/-- The count-twelve row-one, paired-eight row-one, and primitive16 row-three
+packages are already present in source. -/
+def installedPairTopPilotPackageCount : ℕ := 3
+
+@[simp] theorem completePairTopPackageCount_eq :
+    remainingSerializedPairTopPackageCount +
+      installedPairTopPilotPackageCount = 391 := by
+  norm_num [remainingSerializedPairTopPackageCount,
+    installedPairTopPilotPackageCount]
+
+/-- Exact finite data for the rows not already generated.  Each field is a
+family of raw literal-top certificates or finite QCHAR payloads consumed by
+one of the generic converters above; no field accepts a resolved row or a
+project-owned residual source. -/
 structure RemainingPairTopSemanticData : Type 1 where
   twelveJoint :
     TwelveJointCatalogue.RemainingDegreeTwoTwelveJointFiniteRowData
@@ -122,9 +147,9 @@ noncomputable def sixteenResolution
 
 end RemainingPairTopSemanticData
 
-/-- Degree-two residual source with the checked catalogue pilots and the
-uniform joint-twelve, paired-eight, and one-frame count-sixteen finite
-dispatch installed at their literal indices. -/
+/-- Degree-two residual source with every count-twelve and count-sixteen
+row routed through an explicit finite package and a family-level generic
+converter. -/
 noncomputable def source
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
