@@ -233,7 +233,7 @@ noncomputable def degreeThreeFourBlockTwoSign_signedQuotientD8Comparison
   · intro z hz x
     have hzC : z ∈ S.C := by
       simpa only [QuotientGroup.ker_mk'] using hz
-    exact Subgroup.mem_center_iff.mp (S.C_le_center hzC) x
+    exact (Subgroup.mem_center_iff.mp (S.C_le_center hzC) x).symm
   · rw [QuotientGroup.ker_mk', S.C_card]
 
 /-- Complete `QStar` comparison for the actual signed quotient in the
@@ -309,7 +309,9 @@ theorem degreeThreeFourBlockTwoSign_signedQuotientD8Coefficient_le
     norm_num [C2, Nat.card_zmod]
   have hD8C2 : Nat.card (DegreeSixS3Wreath.D8 × C2) ≤ 16 := by
     rw [Nat.card_prod]
-    norm_num [C2, Nat.card_zmod]
+    have hC2 : Nat.card C2 = 2 := by norm_num [C2, Nat.card_zmod]
+    rw [hC2]
+    omega
   have hD : D.coefficient ≤ 2 ^ 34 := by
     apply D.coefficient_le_two_pow 5 8 0
     · exact hA

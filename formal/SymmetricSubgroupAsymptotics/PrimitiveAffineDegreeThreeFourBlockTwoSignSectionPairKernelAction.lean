@@ -48,7 +48,7 @@ def degreeThreeFourBlockTwoSignSectionPairKernelTopHom
   let C := degreeThreeFourBlockPairChart block P hr hs hcomponent
   let pi := QuotientGroup.mk' (E block P)
   let M := degreeThreeFourBlockTwoSignSectionAxis block P N
-  exact ((elementaryChart block P).originalKernelChart.labelTop
+  exact (OriginalKernelModuleChart.sectionLabelTop
     pi M (QuotientGroup.mk'_surjective (E block P))).comp
       (C.sourceEquiv.symm.toMonoidHom.comp C.frame.top.ker.subtype)
 
@@ -61,7 +61,7 @@ def degreeThreeFourBlockTwoSignSectionPairKernelTopHom
       block P hr hs hcomponent).frame.top.ker) :
     degreeThreeFourBlockTwoSignSectionPairKernelTopHom
         block P hr hs hcomponent N k =
-      (elementaryChart block P).originalKernelChart.labelTop
+      OriginalKernelModuleChart.sectionLabelTop
         (QuotientGroup.mk' (E block P))
         (degreeThreeFourBlockTwoSignSectionAxis block P N)
         (QuotientGroup.mk'_surjective (E block P))
@@ -110,7 +110,7 @@ theorem degreeThreeFourBlockTwoSignSectionPairKernel_displacement_mem
     (degreeThreeFourBlockReindexedTranslationEquiv block P hs).symm x
   have haction :
       (degreeThreeFourBlockTwoSignSectionRepresentation block P N).ρ
-          (chart.labelTop pi M
+          (OriginalKernelModuleChart.sectionLabelTop pi M
             (QuotientGroup.mk'_surjective (E block P)) q)
           (I.mkQ v) = I.mkQ v := by
     have happ := congrArg
@@ -123,31 +123,45 @@ theorem degreeThreeFourBlockTwoSignSectionPairKernel_displacement_mem
       Module.End.one_apply, C, pi, M, chart, I, q, v] using happ
   have hquot : I.mkQ
       ((elementaryChart block P).quotientRepresentation.ρ q v) = I.mkQ v := by
-    rw [chart.sectionRepresentation_mkQ_top pi
+    have htop :=
+      OriginalKernelModuleChart.sectionRepresentation_mkQ_sectionLabelTop
+      (E := chart) pi
       (elementaryChart block P).quotientRepresentation M
-      (QuotientGroup.mk'_surjective (E block P)) q v]
-    exact haction
+      (QuotientGroup.mk'_surjective (E block P)) q v
+    change I.mkQ
+        ((elementaryChart block P).quotientRepresentation.ρ q v) =
+      (degreeThreeFourBlockTwoSignSectionRepresentation block P N).ρ
+        (OriginalKernelModuleChart.sectionLabelTop pi M
+          (QuotientGroup.mk'_surjective (E block P)) q) (I.mkQ v) at htop
+    exact htop.trans haction
+  let y : TranslationSubmodule block P :=
+    (elementaryChart block P).quotientRepresentation.ρ q v
   have hnormal :
-      (elementaryChart block P).quotientRepresentation.ρ q v - v ∈ I :=
+      y - v ∈ I :=
     (Submodule.Quotient.eq I).mp hquot
-  refine ⟨
-    (elementaryChart block P).quotientRepresentation.ρ q v - v,
-    ?_, ?_⟩
-  · simpa only [degreeThreeFourBlockTwoSignSectionNormalSubrepresentation,
+  let W := degreeThreeFourBlockTwoSignSectionNormalSubrepresentation block P N
+  let z : W.toSubmodule := ⟨
+    y - v, by
+      simpa only [W,
+        degreeThreeFourBlockTwoSignSectionNormalSubrepresentation,
       OriginalKernelModuleChart.normalSubrepresentation,
       degreeThreeFourBlockTwoSignSectionNormalSpace, pi, M, chart, I]
-      using hnormal
-  · rw [map_sub]
-    have hdiag :=
-      (degreeThreeFourBlockSignedTranslationCompatibility
-        block P hr hs hcomponent).diagonal_action k v
-    have hv : coordinateLinearEquiv (k := ZMod P.p)
-        (degreeThreeFourBlockIndexEquiv block hs) v.1 = x.1 := by
-      exact congrArg Subtype.val
-        ((degreeThreeFourBlockReindexedTranslationEquiv
-          block P hs).apply_symm_apply x)
-    simpa only [C, q, v, hv] using congrArg
-      (fun y => y - x.1) hdiag
+        using hnormal⟩
+  refine ⟨z, ?_⟩
+  change coordinateLinearEquiv (k := ZMod P.p)
+        (degreeThreeFourBlockIndexEquiv block hs) y.1 -
+      coordinateLinearEquiv (k := ZMod P.p)
+        (degreeThreeFourBlockIndexEquiv block hs) v.1 = _
+  have hdiag :=
+    (degreeThreeFourBlockSignedTranslationCompatibility
+      block P hr hs hcomponent).diagonal_action k v
+  have hv : coordinateLinearEquiv (k := ZMod P.p)
+      (degreeThreeFourBlockIndexEquiv block hs) v.1 = x.1 := by
+    exact congrArg Subtype.val
+      ((degreeThreeFourBlockReindexedTranslationEquiv
+        block P hs).apply_symm_apply x)
+  simpa only [C, q, v, y, hv] using congrArg
+    (fun y => y - x.1) hdiag
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu

@@ -26,7 +26,8 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-private abbrev G := preE7NonPairAction w U
+private abbrev G (w : ℕ) (U : PreE7NonPairActionClass w) :=
+  preE7NonPairAction w U
 
 /-- The chosen bottom complement is a finite 2-group. -/
 theorem degreeThreeFourBlockTwoSignBottomComplement_isPGroup
@@ -71,6 +72,7 @@ theorem degreeThreeFourBlockTwoSignBottomComplementD8Map_kernel_card_le_four
         block P hr hs hcomponent hbinary)
   have hH : Nat.card H ≤ 32 := by
     rw [Nat.card_congr e.toEquiv]
+    change Nat.card (preE7NonPairAction w U ⧸ E block P) ≤ 32
     rcases degreeThreeFourBlockTwoSign_signedQuotient_card_cases
       block P hr hs hcomponent hbinary htwo with h16 | h32
     · omega
@@ -85,6 +87,8 @@ theorem degreeThreeFourBlockTwoSignBottomComplementD8Map_kernel_card_le_four
     rw [SemidirectProduct.card, Nat.card_prod]
     norm_num [Nat.card_zmod]
   rw [hindex] at hfactor
+  change Nat.card f.ker * 8 = Nat.card H at hfactor
+  change Nat.card f.ker ≤ 4
   omega
 
 /-- Central order-two axis in the split bottom map. -/
@@ -167,8 +171,7 @@ theorem degreeThreeFourBlockTwoSignBottomWreathMap_comp_semidirectEquiv
   dsimp only
   apply MonoidHom.ext
   intro x
-  simp only [degreeThreeFourBlockTwoSignBottomWreathMap,
-    MonoidHom.comp_apply, MulEquiv.apply_symm_apply]
+  simp [degreeThreeFourBlockTwoSignBottomWreathMap]
 
 /-- If the chosen complement has no residual binary kernel, the bottom
 wreath epimorphism is an isomorphism. -/
@@ -266,7 +269,7 @@ noncomputable def degreeThreeFourBlockTwoSignBottomWreathKernelCentralSeries
     (hkernel_ne :
       (degreeThreeFourBlockTwoSignBottomComplementD8Map
         block P hr hs hcomponent hbinary htwo hfin).ker ≠ ⊥) :
-    BinaryNormalKernelCentralSeries G
+    BinaryNormalKernelCentralSeries (G w U)
       (degreeThreeFourBlockTwoSignBottomWreathMap
         block P hr hs hcomponent hbinary htwo hfin).ker :=
   (degreeThreeFourBlockTwoSignBottomWreathCentralAxis

@@ -56,7 +56,7 @@ theorem degreeThreeFourBlockTwoSignSectionModule_card_eq_nine
       Module.natCard_eq_pow_finrank
         (K := ZMod P.p)
         (V := DegreeThreeFourBlockTwoSignSectionModule block P N)
-    _ = 3 ^ 2 := by rw [Nat.card_zmod, hp, hdim]
+    _ = 3 ^ 2 := by rw [Nat.card_zmod, hdim, hp]
     _ = 9 := by norm_num
 
 /-- The kernel of the literal descended top map has order nine. -/
@@ -94,7 +94,7 @@ theorem degreeThreeFourBlockTwoSignSectionTop_card_le_thirty_two
       block P hr hs hcomponent).isotypeCount = 2)
     (N : TwoSignProperAxis (E block P)) :
     Nat.card
-      (G ⨸ ((QuotientGroup.mk' (E block P)).ker ⊔
+      (G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
         degreeThreeFourBlockTwoSignSectionAxis block P N)) ≤ 32 := by
   let D := (QuotientGroup.mk' (E block P)).ker ⊔
     degreeThreeFourBlockTwoSignSectionAxis block P N
@@ -102,12 +102,15 @@ theorem degreeThreeFourBlockTwoSignSectionTop_card_le_thirty_two
     dsimp only [D]
     rw [QuotientGroup.ker_mk']
     exact le_sup_left
-  let f : (G ⨸ E block P) →* (G ⨸ D) :=
-    QuotientGroup.lift (E block P) (QuotientGroup.mk' D) hED
+  have hEDker : E block P ≤ (QuotientGroup.mk' D).ker := by
+    rw [QuotientGroup.ker_mk']
+    exact hED
+  let f : (G ⧸ E block P) →* (G ⧸ D) :=
+    QuotientGroup.lift (E block P) (QuotientGroup.mk' D) hEDker
   have hf : Function.Surjective f :=
     QuotientGroup.lift_surjective_of_surjective (E block P)
-      (QuotientGroup.mk' D) (QuotientGroup.mk'_surjective D) hED
-  have hcard : Nat.card (G ⨸ D) ≤ Nat.card (G ⨸ E block P) :=
+      (QuotientGroup.mk' D) (QuotientGroup.mk'_surjective D) hEDker
+  have hcard : Nat.card (G ⧸ D) ≤ Nat.card (G ⧸ E block P) :=
     Nat.card_le_card_of_surjective f hf
   rcases degreeThreeFourBlockTwoSign_signedQuotient_card_cases
     block P hr hs hcomponent hbinary htwo with h | h
@@ -129,9 +132,9 @@ theorem degreeThreeFourBlockTwoSignSectionQuotient_card_le_two_eighty_eight
       block P hr hs hcomponent).isotypeCount = 2)
     (N : TwoSignProperAxis (E block P)) :
     Nat.card
-      (G ⨸ degreeThreeFourBlockTwoSignSectionAxis block P N) ≤ 288 := by
-  let R := G ⨸ degreeThreeFourBlockTwoSignSectionAxis block P N
-  let A := G ⨸ ((QuotientGroup.mk' (E block P)).ker ⊔
+      (G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) ≤ 288 := by
+  let R := G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N
+  let A := G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
     degreeThreeFourBlockTwoSignSectionAxis block P N)
   let pi : R →* A := degreeThreeFourBlockTwoSignSectionBase block P N
   have hkernel : Nat.card pi.ker = 9 :=

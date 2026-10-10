@@ -26,7 +26,8 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-private abbrev G := preE7NonPairAction w U
+private abbrev G (w : ℕ) (U : PreE7NonPairActionClass w) :=
+  preE7NonPairAction w U
 
 local instance : Fact P.p.Prime := (chart block P).primeFact
 
@@ -38,18 +39,30 @@ theorem degreeThreeFourBlockTwoSignBottomComplement_exists
     (hcomponent : Nat.card block.Component = 6)
     (hbinary : IsPGroup 2
       (degreeThreeFourBlockPairChart block P hr hs hcomponent).action) :
-    ∃ H : Subgroup G,
+    ∃ H : Subgroup (G w U),
       Subgroup.IsComplement' (E block P) H := by
   have hkernel : IsPGroup 3 (E block P) :=
     degreeThreeFourBlock_translationIntersection_isPGroup block P hr
-  have htop : IsPGroup 2 (G ⧸ E block P) :=
+  have htop : IsPGroup 2 (G w U ⧸ E block P) :=
     degreeThreeFourBlock_signedQuotient_isPGroup
       block P hr hs hcomponent hbinary
   obtain ⟨a, ha⟩ := hkernel.exists_card_eq
   obtain ⟨c, hc⟩ := htop.exists_card_eq
   apply Subgroup.exists_right_complement'_of_coprime
-  have hindex : (E block P).index = Nat.card (G ⧸ E block P) := by
-    rw [QuotientGroup.card_quotient]
+  have hindex : (E block P).index = Nat.card (G w U ⧸ E block P) := by
+    change (E block P).index =
+      Nat.card (preE7NonPairAction w U ⧸ E block P)
+    have hi := (E block P).card_mul_index
+    have hq := Subgroup.card_eq_card_quotient_mul_card_subgroup (E block P)
+    have hpos : 0 < Nat.card (E block P) := Nat.card_pos
+    apply Nat.mul_left_cancel hpos
+    calc
+      Nat.card (E block P) * (E block P).index =
+          Nat.card (preE7NonPairAction w U) := hi
+      _ = Nat.card (preE7NonPairAction w U ⧸ E block P) *
+          Nat.card (E block P) := hq
+      _ = Nat.card (E block P) *
+          Nat.card (preE7NonPairAction w U ⧸ E block P) := Nat.mul_comm _ _
   rw [ha, hindex, hc]
   exact (Nat.Coprime.pow_left a
     (by decide : Nat.Coprime 3 2)).pow_right c
@@ -61,7 +74,7 @@ noncomputable def degreeThreeFourBlockTwoSignBottomComplement
     (hcomponent : Nat.card block.Component = 6)
     (hbinary : IsPGroup 2
       (degreeThreeFourBlockPairChart block P hr hs hcomponent).action) :
-    Subgroup G :=
+    Subgroup (G w U) :=
   Classical.choose
     (degreeThreeFourBlockTwoSignBottomComplement_exists
       block P hr hs hcomponent hbinary)
@@ -81,34 +94,37 @@ theorem degreeThreeFourBlockTwoSignBottomComplement_isComplement
 
 /-- Restriction of the signed quotient map to a chosen bottom complement. -/
 def degreeThreeFourBlockTwoSignBottomComplementTopHom
-    (H : Subgroup G) : H →* G ⧸ E block P :=
+    (H : Subgroup (G w U)) : H →* G w U ⧸ E block P :=
   (QuotientGroup.mk' (E block P)).comp H.subtype
 
 /-- A complementary subgroup embeds into the signed quotient. -/
 theorem degreeThreeFourBlockTwoSignBottomComplementTopHom_injective
-    (H : Subgroup G)
+    (H : Subgroup (G w U))
     (hH : Subgroup.IsComplement' (E block P) H) :
     Function.Injective
       (degreeThreeFourBlockTwoSignBottomComplementTopHom block P H) := by
   intro x y hxy
-  have hker : (x : G)⁻¹ * (y : G) ∈ E block P := by
+  have hker : (x : G w U)⁻¹ * (y : G w U) ∈ E block P := by
     rw [← QuotientGroup.ker_mk' (E block P)]
     apply MonoidHom.mem_ker.mpr
-    change (QuotientGroup.mk' (E block P) (x : G))⁻¹ *
-      QuotientGroup.mk' (E block P) (y : G) = 1
+    change (QuotientGroup.mk' (E block P) (x : G w U))⁻¹ *
+      QuotientGroup.mk' (E block P) (y : G w U) = 1
+    change
+      ((degreeThreeFourBlockTwoSignBottomComplementTopHom block P H) x)⁻¹ *
+        (degreeThreeFourBlockTwoSignBottomComplementTopHom block P H) y = 1
     rw [hxy, inv_mul_cancel]
-  have hmemH : (x : G)⁻¹ * (y : G) ∈ H :=
+  have hmemH : (x : G w U)⁻¹ * (y : G w U) ∈ H :=
     H.mul_mem (H.inv_mem x.property) y.property
-  have hbot : (x : G)⁻¹ * (y : G) ∈ (⊥ : Subgroup G) :=
+  have hbot : (x : G w U)⁻¹ * (y : G w U) ∈ (⊥ : Subgroup (G w U)) :=
     hH.disjoint.le_bot ⟨hker, hmemH⟩
   apply Subtype.ext
   exact inv_mul_eq_one.mp (Subgroup.mem_bot.mp hbot)
 
 /-- A bottom complement is exactly the signed quotient. -/
 noncomputable def degreeThreeFourBlockTwoSignBottomComplementTopEquiv
-    (H : Subgroup G)
+    (H : Subgroup (G w U))
     (hH : Subgroup.IsComplement' (E block P) H) :
-    H ≃* G ⧸ E block P := by
+    H ≃* G w U ⧸ E block P := by
   let f := degreeThreeFourBlockTwoSignBottomComplementTopHom block P H
   apply MulEquiv.ofBijective f
   apply (Nat.bijective_iff_injective_and_card f).mpr
@@ -116,11 +132,23 @@ noncomputable def degreeThreeFourBlockTwoSignBottomComplementTopEquiv
     block P H hH, ?_⟩
   calc
     Nat.card H = (E block P).index := hH.card_right
-    _ = Nat.card (G ⧸ E block P) := by
-      rw [QuotientGroup.card_quotient]
+    _ = Nat.card (G w U ⧸ E block P) := by
+      change (E block P).index =
+        Nat.card (preE7NonPairAction w U ⧸ E block P)
+      have hi := (E block P).card_mul_index
+      have hq := Subgroup.card_eq_card_quotient_mul_card_subgroup (E block P)
+      have hpos : 0 < Nat.card (E block P) := Nat.card_pos
+      apply Nat.mul_left_cancel hpos
+      calc
+        Nat.card (E block P) * (E block P).index =
+            Nat.card (preE7NonPairAction w U) := hi
+        _ = Nat.card (preE7NonPairAction w U ⧸ E block P) *
+            Nat.card (E block P) := hq
+        _ = Nat.card (E block P) *
+            Nat.card (preE7NonPairAction w U ⧸ E block P) := Nat.mul_comm _ _
 
 @[simp] theorem degreeThreeFourBlockTwoSignBottomComplementTopEquiv_apply
-    (H : Subgroup G)
+    (H : Subgroup (G w U))
     (hH : Subgroup.IsComplement' (E block P) H)
     (h : H) :
     degreeThreeFourBlockTwoSignBottomComplementTopEquiv
@@ -128,11 +156,11 @@ noncomputable def degreeThreeFourBlockTwoSignBottomComplementTopEquiv
 
 /-- Internal semidirect coordinates on the original bottom extension. -/
 noncomputable def degreeThreeFourBlockTwoSignBottomSemidirectEquiv
-    (H : Subgroup G)
+    (H : Subgroup (G w U))
     (hH : Subgroup.IsComplement' (E block P) H) :
     E block P ⋊[((E block P).normalizerMonoidHom).comp
         (Subgroup.inclusion ((E block P).normalizer_eq_top ▸ le_top))] H ≃*
-      G :=
+      G w U :=
   SemidirectProduct.mulEquivSubgroup hH
 
 /-- The chosen bottom complement maps onto the standard dihedral top. -/
@@ -220,6 +248,7 @@ theorem degreeThreeFourBlockTwoSignBottomSemidirect_compatible
             block P hr hs hcomponent hbinary htwo hfin h)).toMonoidHom.comp
           (degreeThreeFourBlockTwoSignBottomKernelTernaryEquiv
             block P hr hs hcomponent hbinary htwo hfin).toMonoidHom := by
+  dsimp only
   let H := degreeThreeFourBlockTwoSignBottomComplement
     block P hr hs hcomponent hbinary
   let c := degreeThreeFourBlockTwoSignBottomTernaryEquiv
@@ -239,14 +268,24 @@ theorem degreeThreeFourBlockTwoSignBottomSemidirect_compatible
       (translationMulEquiv block P (action k)).toAdd =
         (elementaryChart block P).quotientRepresentation.ρ
           (topEquiv h) (translationMulEquiv block P k).toAdd := by
-    rw [degreeThreeFourBlockTwoSignBottomComplementTopEquiv_apply]
-    rw [(elementaryChart block P).quotientRepresentation_apply]
-    rfl
+    change
+      ((elementaryChart block P).equiv
+          (MulAut.conjNormal (h : preE7NonPairAction w U) k)).toAdd =
+        (elementaryChart block P).quotientRepresentation.ρ
+          (QuotientGroup.mk' (E block P) (h : preE7NonPairAction w U))
+          ((elementaryChart block P).equiv k).toAdd
+    exact
+      ((elementaryChart block P).quotientRepresentation_apply
+        (h : preE7NonPairAction w U) k).symm
   have haction := degreeThreeFourBlockTwoSignBottomTernaryEquiv_action
     block P hr hs hcomponent hbinary htwo hfin (topEquiv h)
       (translationMulEquiv block P k).toAdd
   change c ((translationMulEquiv block P (action k)).toAdd) = _
-  rw [hkernel, DegreeSixS3Wreath.monomialAction_toAdd]
+  rw [hkernel]
+  simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom,
+    degreeThreeFourBlockTwoSignBottomKernelTernaryEquiv,
+    degreeThreeFourBlockTwoSignBottomComplementD8Map]
+  rw [DegreeSixS3Wreath.monomialAction_toAdd]
   simpa only [degreeThreeFourBlockTwoSignBottomKernelTernaryEquiv,
     degreeThreeFourBlockTwoSignBottomComplementD8Map,
     MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom,
@@ -312,7 +351,7 @@ noncomputable def degreeThreeFourBlockTwoSignBottomWreathMap
       block P hr hs hcomponent).isotypeCount = 2)
     (hfin : Module.finrank (ZMod P.p)
       (TranslationSubmodule block P) = 2) :
-    G →* DegreeSixS3Wreath.G :=
+    G w U →* DegreeSixS3Wreath.G :=
   DegreeSixS3Wreath.semidirectEquiv.symm.toMonoidHom.comp
     ((degreeThreeFourBlockTwoSignBottomSemidirectMap
       block P hr hs hcomponent hbinary htwo hfin).comp
@@ -362,7 +401,7 @@ theorem degreeThreeFourBlock_translationIntersection_card_of_finrank_two
         Module.finrank (ZMod P.p) (TranslationSubmodule block P) :=
       Module.natCard_eq_pow_finrank (K := ZMod P.p)
         (V := TranslationSubmodule block P)
-    _ = 3 ^ 2 := by rw [Nat.card_zmod, hp, hfin]
+    _ = 3 ^ 2 := by rw [Nat.card_zmod, hfin, hp]
     _ = 9 := by norm_num
 
 /-- In the rank-two branch the original group has order at most 288. -/
@@ -376,15 +415,16 @@ theorem degreeThreeFourBlock_twoSign_rankTwo_order_le_two_eighty_eight
       block P hr hs hcomponent).isotypeCount = 2)
     (hfin : Module.finrank (ZMod P.p)
       (TranslationSubmodule block P) = 2) :
-    Nat.card G ≤ 288 := by
+    Nat.card (G w U) ≤ 288 := by
+  change Nat.card (preE7NonPairAction w U) ≤ 288
   have hE := degreeThreeFourBlock_translationIntersection_card_of_finrank_two
     block P hr hfin
   have hquot := degreeThreeFourBlockTwoSign_signedQuotient_card_cases
     block P hr hs hcomponent hbinary htwo
   have hfactor :=
     Subgroup.card_eq_card_quotient_mul_card_subgroup (E block P)
-  rw [hE] at hfactor
-  rcases hquot with hquot | hquot <;> rw [hquot] at hfactor <;> omega
+  rw [hfactor, hE]
+  rcases hquot with hquot | hquot <;> rw [hquot] <;> omega
 
 /-- The binary kernel left above the bottom wreath quotient has order at
 most four. -/
@@ -402,7 +442,7 @@ theorem degreeThreeFourBlockTwoSignBottomWreathMap_kernel_card_le_four
       block P hr hs hcomponent hbinary htwo hfin).ker ≤ 4 := by
   let pi := degreeThreeFourBlockTwoSignBottomWreathMap
     block P hr hs hcomponent hbinary htwo hfin
-  have hG : Nat.card G ≤ 288 :=
+  have hG : Nat.card (G w U) ≤ 288 :=
     degreeThreeFourBlock_twoSign_rankTwo_order_le_two_eighty_eight
       block P hr hs hcomponent hbinary htwo hfin
   have hfactor := pi.ker.card_mul_index
@@ -414,6 +454,7 @@ theorem degreeThreeFourBlockTwoSignBottomWreathMap_kernel_card_le_four
       Nat.card_congr Subgroup.topEquiv.toEquiv,
       DegreeSixS3Wreath.card_G]
   rw [hindex] at hfactor
+  change Nat.card pi.ker ≤ 4
   omega
 
 end PrimitiveAffineImprimitiveBlockTransfer

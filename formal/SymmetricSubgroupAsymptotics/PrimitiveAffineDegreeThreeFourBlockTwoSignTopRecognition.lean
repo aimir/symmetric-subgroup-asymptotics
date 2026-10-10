@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.BinaryPairPreservingD8
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeThreeFourBlockTwoSignTopFrame
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeThreeFourBlockTwoSignProjectiveSeries
 
 /-!
 # Recognition of the order-eight two-sign top
@@ -19,6 +20,23 @@ namespace SymmetricSubgroupAsymptotics
 namespace BinaryPairFrame
 
 variable {X : Type*} [Finite X] {H : Subgroup (Equiv.Perm X)}
+
+/-- Forget the retained top coordinate while keeping the literal
+pair-preserving certificate. -/
+def pairPreservingEmbedding
+    (D : BinaryPairFrame H (Fin 2)) :
+    H →* pairPreserving D.frame where
+  toFun h := ⟨h, ⟨D.top h, D.intertwine h⟩⟩
+  map_one' := Subtype.ext rfl
+  map_mul' _ _ := Subtype.ext rfl
+
+theorem pairPreservingEmbedding_injective
+    (D : BinaryPairFrame H (Fin 2)) :
+    Function.Injective (pairPreservingEmbedding D) := by
+  intro x y hxy
+  apply Subtype.ext
+  exact congrArg
+    (fun z : pairPreserving D.frame => (z : Equiv.Perm X)) hxy
 
 /-- An order-eight pair action is the full pair-preserving group. -/
 noncomputable def pairPreservingEquivOfCardEight

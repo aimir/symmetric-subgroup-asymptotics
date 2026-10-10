@@ -11,6 +11,7 @@ rank-two theorem for every proper ternary section.
 -/
 
 set_option autoImplicit false
+set_option maxHeartbeats 800000
 noncomputable section
 open scoped Classical
 
@@ -30,8 +31,20 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
 
 local instance : Fact P.p.Prime := (chart block P).primeFact
 
-private abbrev QuotientRep :=
+private abbrev QuotientRep :
+    Representation (ZMod P.p)
+      (preE7NonPairAction w U ⧸ E block P)
+      (TranslationSubmodule block P) :=
   (elementaryChart block P).quotientRepresentation.ρ
+
+/-- The restricted literal coordinate map on an invariant
+subrepresentation. -/
+def degreeThreeFourBlockReindexedSubrepresentationMap
+    (hs : Nat.card block.Points = 4)
+    (W : Subrepresentation (QuotientRep block P)) :
+    W.toSubmodule →ₗ[ZMod P.p] (Fin 4 → (chart block P).V) :=
+  (degreeThreeFourBlockTranslationCoordinateMap block P hs).domRestrict
+    W.toSubmodule
 
 /-- Reindex an invariant subrepresentation into the literal four-coordinate
 ambient module. -/
@@ -39,9 +52,8 @@ def degreeThreeFourBlockReindexedSubrepresentation
     (hs : Nat.card block.Points = 4)
     (W : Subrepresentation (QuotientRep block P)) :
     Submodule (ZMod P.p) (Fin 4 → (chart block P).V) :=
-  W.toSubmodule.map
-    (coordinateLinearEquiv (k := ZMod P.p)
-      (degreeThreeFourBlockIndexEquiv block hs)).toLinearMap
+  LinearMap.range
+    (degreeThreeFourBlockReindexedSubrepresentationMap block P hs W)
 
 /-- Exact linear equivalence from an invariant subrepresentation onto its
 reindexed coordinate image. -/
@@ -50,27 +62,10 @@ noncomputable def degreeThreeFourBlockReindexedSubrepresentationEquiv
     (W : Subrepresentation (QuotientRep block P)) :
     W.toSubmodule ≃ₗ[ZMod P.p]
       degreeThreeFourBlockReindexedSubrepresentation block P hs W := by
-  let e := degreeThreeFourBlockIndexEquiv block hs
-  let f : W.toSubmodule →ₗ[ZMod P.p]
-      degreeThreeFourBlockReindexedSubrepresentation block P hs W where
-    toFun x := ⟨coordinateLinearEquiv (k := ZMod P.p) e x.1,
-      ⟨x.1, x.2, rfl⟩⟩
-    map_add' x y := by
-      apply Subtype.ext
-      exact map_add (coordinateLinearEquiv
-        (k := ZMod P.p) e).toLinearMap x.1 y.1
-    map_smul' c x := by
-      apply Subtype.ext
-      exact map_smul (coordinateLinearEquiv
-        (k := ZMod P.p) e).toLinearMap c x.1
-  apply LinearEquiv.ofBijective f
-  constructor
-  · intro x y hxy
-    apply Subtype.ext
-    apply (coordinateLinearEquiv (k := ZMod P.p) e).injective
-    exact congrArg Subtype.val hxy
-  · rintro ⟨y, x, hx, rfl⟩
-    exact ⟨⟨x, hx⟩, rfl⟩
+  apply LinearEquiv.ofInjective
+    (degreeThreeFourBlockReindexedSubrepresentationMap block P hs W)
+  exact (degreeThreeFourBlockTranslationCoordinateMap_injective
+    block P hs).comp Subtype.val_injective
 
 @[simp] theorem degreeThreeFourBlockReindexedSubrepresentationEquiv_apply
     (hs : Nat.card block.Points = 4)
@@ -78,7 +73,9 @@ noncomputable def degreeThreeFourBlockReindexedSubrepresentationEquiv
     (x : W.toSubmodule) (i : Fin 4) :
     (degreeThreeFourBlockReindexedSubrepresentationEquiv
       block P hs W x).1 i =
-      x.1 ((degreeThreeFourBlockIndexEquiv block hs).symm i) := rfl
+      x.1.1 ((degreeThreeFourBlockIndexEquiv block hs).symm i) := by
+  change degreeThreeFourBlockTranslationCoordinateMap block P hs x.1 i = _
+  rfl
 
 /-- An invariant subrepresentation remains stable under the literal
 diagonal pair-kernel characters after reindexing. -/
@@ -96,13 +93,15 @@ noncomputable def degreeThreeFourBlockReindexedSubrepresentationStable
     block P hr hs hcomponent
   refine ⟨degreeThreeFourBlockReindexedSubrepresentation block P hs W, ?_⟩
   intro k y hy
-  rcases hy with ⟨x, hx, rfl⟩
+  rcases hy with ⟨x, rfl⟩
   let q := C.sourceEquiv.symm k.1
   let z : W.toSubmodule :=
-    ⟨(QuotientRep block P) q x,
-      W.apply_mem_toSubmodule q hx⟩
-  refine ⟨z.1, z.2, ?_⟩
-  simpa only [C, e, A, q, z] using A.diagonal_action k x
+    ⟨(QuotientRep block P) q x.1,
+      W.apply_mem_toSubmodule q x.2⟩
+  refine ⟨z, ?_⟩
+  simpa only [C, e, A, q, z,
+    degreeThreeFourBlockReindexedSubrepresentationMap] using
+      A.diagonal_action k x.1
 
 /-- Restrict one quotient-representation automorphism to an invariant
 subrepresentation. -/
@@ -156,6 +155,7 @@ theorem degreeThreeFourBlockReindexedSubrepresentationAction_zero_iff
       x.1 i = 0 := by
   let q := QuotientGroup.mk' (E block P) a
   let C := degreeThreeFourBlockPairChart block P hr hs hcomponent
+  dsimp only
   let idx := degreeThreeFourBlockIndexEquiv block hs
   let v : W.toSubmodule :=
     (degreeThreeFourBlockReindexedSubrepresentationEquiv
@@ -169,7 +169,7 @@ theorem degreeThreeFourBlockReindexedSubrepresentationAction_zero_iff
   have htop' : C.frame.top (C.sourceEquiv q) i =
       idx ((ambientEmbedding block a).right • idx.symm i) := by
     simpa only [q, C, idx, idx.apply_symm_apply] using htop
-  have hv : v.1 (idx.symm i) = x.1 i := by
+  have hv : v.1.1 (idx.symm i) = x.1 i := by
     have h := degreeThreeFourBlockReindexedSubrepresentationEquiv_apply
       block P hs W v i
     rw [(degreeThreeFourBlockReindexedSubrepresentationEquiv
@@ -181,11 +181,17 @@ theorem degreeThreeFourBlockReindexedSubrepresentationAction_zero_iff
   have hcoordinate :
       (degreeThreeFourBlockReindexedSubrepresentationActionEquiv
         block P hs W q x).1 (C.frame.top (C.sourceEquiv q) i) =
-        L (v.1 (idx.symm i)) := by
+        L (v.1.1 (idx.symm i)) := by
     rw [htop']
+    change (degreeThreeFourBlockReindexedSubrepresentationEquiv
+      block P hs W
+        (degreeThreeFourBlockSubrepresentationActionEquiv
+          block P W q v)).1
+          (idx ((ambientEmbedding block a).right • idx.symm i)) = _
+    rw [degreeThreeFourBlockReindexedSubrepresentationEquiv_apply,
+      idx.symm_apply_apply]
     change (((QuotientRep block P) q v.1).1
-        ((ambientEmbedding block a).right • idx.symm i)) =
-      L (v.1 (idx.symm i))
+        ((ambientEmbedding block a).right • idx.symm i)) = _
     simpa only [q, L] using htransport
   rw [hcoordinate, hv]
   constructor
@@ -248,8 +254,10 @@ theorem degreeThreeFourBlockTwoSign_subrepresentation_components_equidimensional
   have hsigma : sigma i = j := by
     have htop := degreeThreeFourBlockPairChart_top_apply
       block P hr hs hcomponent q (idx.symm i)
+    have hqright : (quotientEmbedding block P q).right =
+        (ambientEmbedding block g).right := rfl
     change C.frame.top (C.sourceEquiv q) i = j
-    rw [show i = idx (idx.symm i) by simp, htop, hright]
+    rw [show i = idx (idx.symm i) by simp, htop, hqright, hright]
     exact idx.apply_symm_apply j
   let T : K ≃ₗ[ZMod P.p] K :=
     degreeThreeFourBlockReindexedSubrepresentationActionEquiv
@@ -280,7 +288,8 @@ theorem degreeThreeFourBlockTwoSign_subrepresentation_components_equidimensional
       scalar K a b sigma T hlabel hzero
   rw [← moduleEncode_finrank_eq_scalarized scalar stableK e a,
     ← moduleEncode_finrank_eq_scalarized scalar stableK e b]
-  exact hmodule
+  simpa only [stableK,
+    degreeThreeFourBlockReindexedSubrepresentationStable, K] using hmodule
 
 /-- Every invariant subrepresentation of the literal two-sign translation
 module has even rank. -/

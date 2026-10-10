@@ -13,8 +13,10 @@ conjugate to the standard monomial `D8` action.
 -/
 
 set_option autoImplicit false
+set_option maxRecDepth 4096
+set_option maxHeartbeats 800000
 noncomputable section
-open scoped Classical
+open scoped Classical Matrix
 
 namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
@@ -144,22 +146,38 @@ theorem degreeThreeFourBlockTwoSignBottomCoordinateEquiv_action
       Matrix.GeneralLinearGroup.toLin' basis (phi0 x) =
         Representation.asGroupHom rho x := by
     dsimp only [phi0, MonoidHom.comp_apply]
-    rw [MulEquiv.apply_symm_apply]
+    change Matrix.GeneralLinearGroup.toLin' basis
+        ((Matrix.GeneralLinearGroup.toLin' basis).symm
+          (Representation.asGroupHom rho x)) =
+      Representation.asGroupHom rho x
+    exact (Matrix.GeneralLinearGroup.toLin' basis).apply_symm_apply _
   have hcoords : basis.equivFun (rho x v) =
       (phi0 x : Matrix (Fin 2) (Fin 2) (ZMod P.p)) *ᵥ
         basis.equivFun v := by
     have happ := congrArg
       (fun L : LinearMap.GeneralLinearGroup (ZMod P.p) V =>
         (L : Module.End (ZMod P.p) V) v) hoperator
-    simpa only [Matrix.GeneralLinearGroup.toLin'_apply,
-      Basis.equivFun_apply] using congrArg basis.equivFun happ.symm
+    have hcomb (z : Fin 2 → ZMod P.p) :
+        basis.equivFun (Fintype.linearCombination (ZMod P.p) basis z) = z := by
+      rw [Fintype.linearCombination_apply,
+        ← Module.Basis.equivFun_symm_apply]
+      exact basis.equivFun.apply_symm_apply z
+    calc
+      basis.equivFun (rho x v) =
+          basis.equivFun
+            ((Matrix.GeneralLinearGroup.toLin' basis (phi0 x)).toLinearEquiv v) :=
+        congrArg basis.equivFun happ.symm
+      _ = (phi0 x : Matrix (Fin 2) (Fin 2) (ZMod P.p)) *ᵥ
+          basis.equivFun v := by
+        rw [Matrix.GeneralLinearGroup.toLin'_apply, hcomb]
+        rfl
   funext i
-  have hi := congrArg (fun z : Fin 2 → ZMod P.p => e (z i)) hcoords
-  simpa only [degreeThreeFourBlockTwoSignBottomCoordinateEquiv,
-    degreeThreeFourBlockTwoSignBottomLinearMap, basis, rho, phi0, e,
-    AddEquiv.trans_apply, AddEquiv.piCongrRight_apply,
-    Matrix.GeneralLinearGroup.toLin_apply,
-    Matrix.GeneralLinearGroup.map_apply, RingHom.map_mulVec] using hi
+  change e (basis.equivFun (rho x v) i) =
+    (((phi0 x : Matrix (Fin 2) (Fin 2) (ZMod P.p)).map e.toRingHom) *ᵥ
+      (fun j => e (basis.equivFun v j))) i
+  rw [hcoords]
+  exact RingHom.map_mulVec e.toRingHom
+    (phi0 x : Matrix (Fin 2) (Fin 2) (ZMod P.p)) (basis.equivFun v) i
 
 /-- Equality of bottom matrices reflects equality of the original quotient
 operators. -/
@@ -326,8 +344,10 @@ theorem degreeThreeFourBlockTwoSignBottomPairLinearRange_square
   let C := degreeThreeFourBlockPairChart block P hr hs hcomponent
   let f := degreeThreeFourBlockTwoSignBottomPairLinearMap
     block P hr hs hcomponent hfin
-  obtain ⟨k, rfl⟩ := z.2
+  obtain ⟨k, hk⟩ := z.2
   apply Subtype.ext
+  change (z : LinearThree.GL3) ^ 2 = 1
+  rw [← hk]
   rw [← map_pow]
   have hk : k ^ 2 = 1 := by
     apply C.frame.bitsHom_injective
@@ -400,7 +420,10 @@ theorem degreeThreeFourBlockTwoSignBottomPairLinearRange_normal
   have hconj := hL.conj_mem _ hxL t
   obtain ⟨y, hy⟩ := hconj
   refine ⟨y, ?_⟩
-  rw [← hx, ← ht, ← map_inv, ← map_mul, ← map_mul]
+  rw [← hx, ← ht]
+  simp only [psi, degreeThreeFourBlockTwoSignBottomPairLinearMap,
+    MonoidHom.comp_apply]
+  rw [← map_inv, ← map_mul, ← map_mul]
   exact congrArg phi hy
 
 /-- The full bottom matrix image has order at most eight. -/
@@ -476,14 +499,21 @@ theorem degreeThreeFourBlockTwoSignBottom_exists_linear_outside_pairRange
   have hcomm : k * k₀ = k₀ * k := by
     apply F.bitsHom_injective
     rw [map_mul, map_mul, mul_comm]
+  have hcomm' :
+      (k : C.action) * (k₀ : C.action) =
+        (k₀ : C.action) * (k : C.action) := by
+    have := congrArg (fun z : F.top.ker => (z : C.action)) hcomm
+    simpa using this
   have hconjMap : psi (MulAut.conjNormal u k₀) = psi k₀ := by
     change phi (f (u * (k₀ : C.action) * u⁻¹)) =
       phi (f (k₀ : C.action))
-    rw [map_mul, map_mul, map_inv, hk,
-      ← degreeThreeFourBlockTwoSignBottomSignedTopHom_pairKernel,
-      ← degreeThreeFourBlockTwoSignBottomSignedTopHom_pairKernel,
-      ← map_mul, hcomm, map_mul]
-    simp only [mul_assoc, inv_mul_cancel, mul_one]
+    simp only [map_mul, map_inv]
+    have hku : phi (f (k : C.action)) = phi (f u) := by
+      change psi k = phi (f u)
+      exact hk
+    rw [← hku, ← map_mul phi, ← map_mul f,
+      hcomm', map_mul f, map_mul phi]
+    simp only [mul_assoc, mul_inv_cancel, mul_one]
   exact hconj
     (degreeThreeFourBlockTwoSignBottomPairLinearMap_injective
       block P hr hs hcomponent hbinary hfin hconjMap)
@@ -531,7 +561,14 @@ theorem degreeThreeFourBlockTwoSignBottomLinearRange_card_eq_eight
   have hcard := K.card_mul_index
   have hupper := degreeThreeFourBlockTwoSignBottomLinearRange_card_le_eight
     block P hr hs hcomponent hbinary htwo hfin
+  change Nat.card phi.range ≤ 8 at hupper
   rw [hKcard] at hcard
+  have hlower : 8 ≤ Nat.card phi.range := by
+    calc
+      8 = 4 * 2 := by norm_num
+      _ ≤ 4 * K.index := Nat.mul_le_mul_left 4 (by omega)
+      _ = Nat.card phi.range := hcard
+  change Nat.card phi.range = 8
   omega
 
 /-- Change of basis carrying the exact bottom matrix image to the standard
@@ -697,16 +734,37 @@ theorem degreeThreeFourBlockTwoSignBottomTernaryEquiv_action
     block P hr hs hcomponent hfin x v
   have hm := congrArg
     (fun A : LinearThree.GL3 =>
-      (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv (g (c v)))
+      (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv
+        (g.toLinearEquiv (c v)))
     (degreeThreeFourBlockTwoSignBottomD8Map_matrix
       block P hr hs hcomponent hbinary htwo hfin x)
+  change
+    (Matrix.GeneralLinearGroup.toLin' b
+        (DegreeSixS3Wreath.standardD8LinearMap (d x))).toLinearEquiv
+        (g.toLinearEquiv (c v)) =
+      (Matrix.GeneralLinearGroup.toLin' b
+        (D.conjugator * phi x * D.conjugator⁻¹)).toLinearEquiv
+        (g.toLinearEquiv (c v)) at hm
   rw [DegreeSixS3Wreath.standardD8LinearMap_toLin_apply] at hm
+  have hcancel :
+      g.toLinearEquiv⁻¹ (g.toLinearEquiv (c v)) = c v := by
+    change g.toLinearEquiv.symm (g.toLinearEquiv (c v)) = c v
+    exact g.toLinearEquiv.symm_apply_apply (c v)
+  change
+    (Matrix.GeneralLinearGroup.toLin' b D.conjugator).toLinearEquiv⁻¹
+        ((Matrix.GeneralLinearGroup.toLin' b D.conjugator).toLinearEquiv
+          (c v)) = c v at hcancel
+  simp only [map_mul, map_inv,
+    LinearMap.GeneralLinearGroup.toLinearEquiv_mul,
+    LinearMap.GeneralLinearGroup.toLinearEquiv_inv,
+    LinearEquiv.mul_apply] at hm
+  rw [hcancel] at hm
   simpa only [degreeThreeFourBlockTwoSignBottomTernaryEquiv,
     c, D, b, g, phi, d, AddEquiv.trans_apply,
     map_mul, map_inv,
     LinearMap.GeneralLinearGroup.toLinearEquiv_mul,
     LinearMap.GeneralLinearGroup.toLinearEquiv_inv,
-    LinearEquiv.mul_apply, LinearEquiv.symm_apply_apply, hc] using hm.symm
+    LinearEquiv.mul_apply, hc] using hm.symm
 
 /-- The residual kernel above the bottom `D8` matrix image has order at
 most four. -/
@@ -727,13 +785,15 @@ theorem degreeThreeFourBlockTwoSignBottomLinearMap_kernel_card_le_four
   have htop : Nat.card (G ⧸ E block P) ≤ 32 := by
     rcases degreeThreeFourBlockTwoSign_signedQuotient_card_cases
       block P hr hs hcomponent hbinary htwo with h16 | h32
-    · omega
-    · omega
+    · rw [h16]
+      norm_num
+    · rw [h32]
   have himage :=
     degreeThreeFourBlockTwoSignBottomLinearRange_card_eq_eight
       block P hr hs hcomponent hbinary htwo hfin
   have hcard := phi.ker.card_mul_index
   rw [Subgroup.index_ker, himage] at hcard
+  change Nat.card phi.ker ≤ 4
   omega
 
 end PrimitiveAffineImprimitiveBlockTransfer

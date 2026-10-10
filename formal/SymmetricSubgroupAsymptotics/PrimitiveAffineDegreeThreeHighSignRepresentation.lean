@@ -32,7 +32,8 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
+local instance highSignRepresentationPrimeFact : Fact P.p.Prime :=
+  (chart block P).primeFact
 
 /-- A chosen scalar coordinate on the one-dimensional local translation
 space. -/
@@ -70,11 +71,13 @@ def degreeThreeNativeSignRepresentation
     Representation (ZMod P.p) (Multiplicative (ZMod 2)) (ZMod P.p) where
   toFun b := degreeThreeNativeSignScalar block P hr b • LinearMap.id
   map_one' := by
-    ext z
-    simp only [degreeThreeNativeSignScalar_one, one_smul,
-      LinearMap.id_apply]
+    apply LinearMap.ext
+    intro z
+    change degreeThreeNativeSignScalar block P hr 1 * z = z
+    rw [degreeThreeNativeSignScalar_one, one_mul]
   map_mul' a b := by
-    ext z
+    apply LinearMap.ext
+    intro z
     change degreeThreeNativeSignScalar block P hr (a * b) * z =
       degreeThreeNativeSignScalar block P hr a *
         (degreeThreeNativeSignScalar block P hr b * z)
@@ -129,11 +132,20 @@ theorem degreeThreeTranslationScalarInclusion_injective
   apply (degreeThreeLocalVectorEquiv block P hr).injective
   exact congrFun hvz i
 
+/-- The elementary quotient representation with its prime field exposed as
+the profile prime.  This avoids repeatedly asking elaboration to unfold the
+literal elementary chart while comparing representation types. -/
+def degreeThreeElementaryQuotientRepresentation :
+    Representation (ZMod P.p) (preE7NonPairAction w U ⧸ E block P)
+      (TranslationSubmodule block P) := by
+  simpa [elementaryChart] using
+    (elementaryChart block P).quotientRepresentation.ρ
+
 /-- Scalarization intertwines quotient conjugation on the correlated
 translation module with the literal signed pair-coordinate action. -/
 def degreeThreeTranslationScalarIntertwiner
     (hr : Nat.card block.Fibre = 3) :
-    ((elementaryChart block P).quotientRepresentation.ρ).IntertwiningMap
+    (degreeThreeElementaryQuotientRepresentation block P).IntertwiningMap
       ((degreeThreeNativeSignedRepresentation block P hr).comp
         (degreeThreeSignedQuotientRangeEquiv block P).toMonoidHom) where
   toLinearMap := degreeThreeTranslationScalarInclusion block P hr
@@ -147,8 +159,12 @@ def degreeThreeTranslationScalarIntertwiner
     have htop : F.top g = (quotientEmbedding block P q).right :=
       degreeThreeSignedQuotientPairFrame_top_apply block P hr q
     have hij : (quotientEmbedding block P q).right • j = i := by
-      rw [← htop]
-      exact smul_inv_smul (F.top g) i
+      calc
+        (quotientEmbedding block P q).right • j =
+            F.top g ((F.top g)⁻¹ i) := by
+          exact congrArg (fun e : Equiv.Perm block.Points ↦
+            e ((F.top g)⁻¹ i)) htop.symm
+        _ = i := (F.top g).apply_symm_apply i
     have htransport :=
       translationSubmodule_quotientRepresentation_coordinate_transport_quotient
         block P q v j
@@ -209,7 +225,8 @@ theorem degreeThreeNativeSignedRepresentation_dual_uniform_high_sign
     BinaryPairFrame.ternarySignedRepresentation_dual_uniform_one_of_six_twelve_or_eighteen
       F htrans hsize
   have hp : P.p = 3 := (degreeThree_translation_prime_dim block P hr).1
-  rw [hp]
+  cases P
+  subst_vars
   simpa [degreeThreeNativeSignedRepresentation,
     degreeThreeNativeSignRepresentation, degreeThreeNativeSignScalar,
     degreeThreeScalarFieldEquiv] using hgeneric
@@ -236,8 +253,27 @@ theorem degreeThreeTranslationQuotient_dual_uniform_high_sign
   let f := degreeThreeTranslationScalarIntertwiner block P hr
   have hf : Function.Injective f :=
     degreeThreeTranslationScalarIntertwiner_injective block P hr
-  apply hfull.of_surjective (RepresentationHeadExact.dualMap f)
-  exact LinearMap.dualMap_surjective_of_injective hf
+  have hhelper : UniformSubrepresentationGeneratorBound
+      (degreeThreeElementaryQuotientRepresentation block P).dual 1 := by
+    have hpull : UniformSubrepresentationGeneratorBound
+        (Representation.dual
+          ((degreeThreeNativeSignedRepresentation block P hr).comp
+            (degreeThreeSignedQuotientRangeEquiv block P).toMonoidHom)) 1 := by
+      have h := hfull.comp_of_surjective
+        (degreeThreeNativeSignedRepresentation block P hr).dual
+        (degreeThreeSignedQuotientRangeEquiv block P).toMonoidHom
+        (degreeThreeSignedQuotientRangeEquiv block P).surjective
+      convert h using 1
+      apply MonoidHom.ext
+      intro q
+      apply LinearMap.ext
+      intro ell
+      apply LinearMap.ext
+      intro v
+      simp [Representation.dual, map_inv]
+    apply hpull.of_surjective (RepresentationHeadExact.dualMap f)
+    exact LinearMap.dualMap_surjective_of_injective hf
+  simpa [degreeThreeElementaryQuotientRepresentation, elementaryChart] using hhelper
 
 /-- Pull the quotient theorem back to the original affine group, in the
 exact ambient representation used by the capacity construction. -/
@@ -265,7 +301,7 @@ theorem degreeThreeActualAmbient_dual_uniform_high_sign
     ((elementaryChart block P).quotientRepresentation.ρ).dual
     (QuotientGroup.mk' (E block P))
     (QuotientGroup.mk'_surjective (E block P))
-  simpa only [Representation.dual_apply, Representation.comp_apply,
+  simpa only [Representation.dual_apply,
     MonoidHom.comp_apply, map_inv,
     ActualWreathAffineCapacity.ambientRepresentation,
     initialState, localTranslationChart, elementaryChart,

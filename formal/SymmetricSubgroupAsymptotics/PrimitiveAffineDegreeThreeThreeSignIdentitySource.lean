@@ -62,7 +62,7 @@ noncomputable def degreeThreeEighteenThreeSignIdentitySource
     simpa only [hpd.1, hpd.2, hp, Fintype.card_eq_nat_card] using hcoeff0
   have hD := degreeThreeTranslationCoefficient_bound
     (Nat.card block.Points) w hs2
-      (by rw [heighteen, hw]; norm_num)
+      (by rw [heighteen, hw])
       H.coefficient hcoeff
   have hM : RelativeCompleteSourceEnvelope.PreE7Margin T := by
     refine
@@ -99,7 +99,7 @@ noncomputable def degreeThreeEighteenThreeSignIdentitySource
       have hraw : preE7CharacterRho * w ≤
           ((evenWidth w : ℝ) - quotientDegree block) / 8 -
             Real.logb 2 3 / 3 * H.capacity := by
-        rw [hw, hq36, hcap]
+        rw [hq36, hcap, hw]
         norm_num [preE7CharacterRho, evenWidth, halfDegree]
         linarith
       simpa only [T, translationLayerEnvelopeOver_v,

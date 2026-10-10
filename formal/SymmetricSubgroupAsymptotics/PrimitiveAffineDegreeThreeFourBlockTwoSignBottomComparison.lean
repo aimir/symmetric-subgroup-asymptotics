@@ -25,7 +25,8 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-private abbrev G := preE7NonPairAction w U
+private abbrev G (w : ℕ) (U : PreE7NonPairActionClass w) :=
+  preE7NonPairAction w U
 
 /-- The complete quotient weight of a rank-two bottom is controlled by the
 fixed degree-ten comparator. -/
@@ -40,7 +41,7 @@ theorem degreeThreeFourBlockTwoSignBottom_completeQuotientWeight_le
     (hfin : Module.finrank (ZMod P.p)
       (TranslationSubmodule block P) = 2)
     {b : ℕ} (J : Subgroup (Equiv.Perm (Fin b))) :
-    completeQuotientWeight (R := G) J ≤
+    completeQuotientWeight (R := G w U) J ≤
       (2 ^ 200 : ℝ) *
         completeQuotientWeight
           (R := DegreeThreeFourBlockTwoSignComparator.QStar) J := by
@@ -55,21 +56,21 @@ theorem degreeThreeFourBlockTwoSignBottom_completeQuotientWeight_le
     have hpi_surjective : Function.Surjective pi :=
       degreeThreeFourBlockTwoSignBottomWreathMap_surjective
         block P hr hs hcomponent hbinary htwo hfin
-    let e : G ≃* DegreeSixS3Wreath.G :=
+    let e : G w U ≃* DegreeSixS3Wreath.G :=
       MulEquiv.ofBijective pi ⟨hpi_injective, hpi_surjective⟩
-    let q : DegreeThreeFourBlockTwoSignComparator.QStarGroup →* G :=
+    let q : DegreeThreeFourBlockTwoSignComparator.QStarGroup →* G w U :=
       e.symm.toMonoidHom.comp
         DegreeThreeFourBlockTwoSignComparator.qStarToWreath
     have hq : Function.Surjective q :=
       e.symm.surjective.comp
         DegreeThreeFourBlockTwoSignComparator.qStarToWreath_surjective
-    have hone : completeQuotientWeight (R := G) J ≤
+    have hone : completeQuotientWeight (R := G w U) J ≤
         completeQuotientWeight
           (R := DegreeThreeFourBlockTwoSignComparator.QStar) J :=
       DegreeThreeFourBlockTwoSignComparator.completeQuotientWeight_le_qStar_of_surjective
         q hq J
     calc
-      completeQuotientWeight (R := G) J ≤
+      completeQuotientWeight (R := G w U) J ≤
           1 * completeQuotientWeight
             (R := DegreeThreeFourBlockTwoSignComparator.QStar) J := by
         simpa only [one_mul] using hone
@@ -84,11 +85,11 @@ theorem degreeThreeFourBlockTwoSignBottom_completeQuotientWeight_le
     have hkernel : Nat.card pi.ker ≤ 4 :=
       degreeThreeFourBlockTwoSignBottomWreathMap_kernel_card_le_four
         block P hr hs hcomponent hbinary htwo hfin
-    have hG : Nat.card G ≤ 2 ^ 9 :=
+    have hG : Nat.card (G w U) ≤ 2 ^ 9 :=
       (degreeThreeFourBlock_twoSign_rankTwo_order_le_two_eighty_eight
         block P hr hs hcomponent hbinary htwo hfin).trans (by norm_num)
     calc
-      completeQuotientWeight (R := G) J ≤
+      completeQuotientWeight (R := G w U) J ≤
           ((DegreeThreeFourBlockTwoSignComparator.centralSeriesWreathComparison
             pi
             (degreeThreeFourBlockTwoSignBottomWreathMap_surjective
@@ -125,13 +126,13 @@ theorem degreeThreeFourBlockTwoSignBottom_epimorphism_card_le
     (hfin : Module.finrank (ZMod P.p)
       (TranslationSubmodule block P) = 2)
     {b : ℕ} (J : Subgroup (Equiv.Perm (Fin b))) :
-    (Nat.card (GroupEpimorphism J G) : ℝ) ≤
+    (Nat.card (GroupEpimorphism J (G w U)) : ℝ) ≤
       (2 ^ 200 : ℝ) *
         completeQuotientWeight
           (R := DegreeThreeFourBlockTwoSignComparator.QStar) J := by
-  let M : {N : Subgroup G // N.Normal} := ⟨⊥, inferInstance⟩
+  let M : {N : Subgroup (G w U) // N.Normal} := ⟨⊥, inferInstance⟩
   have hbottom := card_groupEpimorphism_le_completeQuotientWeight J M
-    (QuotientGroup.quotientBot (G := G)).symm
+    (QuotientGroup.quotientBot (G := G w U)).symm
   exact hbottom.trans
     (degreeThreeFourBlockTwoSignBottom_completeQuotientWeight_le
       block P hr hs hcomponent hbinary htwo hfin J)

@@ -19,6 +19,7 @@ namespace PrimitiveAffineImprimitiveBlockTransfer
 
 open DiagonalInvariantSubmodules
 open DiagonalIsotypeProjection
+open OddMarkerTernaryChart
 
 variable {w : ℕ} {U : PreE7NonPairActionClass w}
   {basePoint : Fin w}
@@ -45,7 +46,7 @@ theorem degreeThreeFourBlockTwoSign_exists_isotype_ne_one
   let scalar := degreeThreeFourBlockTranslationScalar
     block P hr hs hcomponent
   by_contra h
-  push_neg at h
+  push Not at h
   have hbit : ∀ i : Fin 4, C.frame.bits k i = 0 := by
     intro i
     have hi := h (coordinateLabel scalar i)
@@ -59,14 +60,13 @@ theorem degreeThreeFourBlockTwoSign_exists_isotype_ne_one
     have hmul : Multiplicative.ofAdd (C.frame.bits k i) = 1 := by
       apply signScalar_injective
       simpa only [signScalar_one] using hsign
-    exact congrArg Multiplicative.toAdd hmul
+    simpa using congrArg Multiplicative.toAdd hmul
   apply hk
   apply C.frame.bitsHom_injective
-  change C.frame.bitsHom k = C.frame.bitsHom 1
   rw [map_one]
-  apply Multiplicative.toAdd.injective
+  apply congrArg Multiplicative.ofAdd
   funext i
-  simpa only [Multiplicative.toAdd_one, Pi.zero_apply] using hbit i
+  exact hbit i
 
 /-- Scalarization carries a trivial section action to inclusion of every
 changed ambient isotype in the corresponding normal-space isotype. -/
@@ -118,8 +118,11 @@ private theorem degreeThreeFourBlockTwoSignSection_encode_le_of_action_eq_one
     have hxyi := congrFun hxy i
     change e (scalar i k • x.1 i - x.1 i) =
       scalar i k * y.1 i - y.1 i
-    rw [map_sub, map_smul, hxyi]
-    rfl
+    rw [map_sub, map_smul]
+    change scalar i k * e (x.1 i) - e (x.1 i) = _
+    have hxyi' : e (x.1 i) = y.1 i := by
+      simpa only [E, pointwiseScalarEquiv_apply, x] using hxyi
+    rw [hxyi']
   have hsupport : diagonalOperator scalar k y.1 - y.1 =
       (a.1 k - 1) • y.1 := by
     funext i
@@ -128,10 +131,13 @@ private theorem degreeThreeFourBlockTwoSignSection_encode_le_of_action_eq_one
         (a.1 k - 1) * y.1 i
       rw [hi, sub_mul, one_mul]
     · have hyi : y.1 i = 0 := by
-        change extension scalar a z i = 0
-        simp only [extension, hi, dif_neg]
-      simp only [hyi, diagonalOperator_apply, mul_zero, sub_zero,
-        smul_zero]
+        have hz0 : extension scalar a z i = 0 := by
+          simp [DiagonalInvariantSubmodules.extension, hi]
+        simpa only [y] using hz0
+      change scalar i k * y.1 i - y.1 i =
+        (a.1 k - 1) * y.1 i
+      rw [hyi]
+      simp
   have hc : a.1 k - 1 ≠ 0 := sub_ne_zero.mpr ha
   have hyKL : y.1 ∈ KL.1 := by
     have hscaled := KL.1.smul_mem (a.1 k - 1)⁻¹ hscalarDisp
@@ -177,12 +183,14 @@ theorem degreeThreeFourBlockTwoSignSectionPairKernelRepresentation_injective
     have hcodim :=
       degreeThreeFourBlockTwoSignSection_isotype_codimension_one
         block P hr hs hcomponent hbinary htwo N a
+    change Module.finrank (ZMod P.p) (encode scalar KA a) =
+      Module.finrank (ZMod P.p) (encode scalar KL a) + 1 at hcodim
     omega
   intro x y hxy
   have hxy1 :
       degreeThreeFourBlockTwoSignSectionPairKernelRepresentation
           block P hr hs hcomponent N (x⁻¹ * y) = 1 := by
-    rw [map_mul, map_inv, hxy, inv_mul_cancel]
+    rw [map_mul, ← hxy, ← map_mul, inv_mul_cancel, map_one]
   exact inv_mul_eq_one.mp (hker (x⁻¹ * y) hxy1)
 
 /-- Hence the literal pair-kernel map into the actual section top is itself

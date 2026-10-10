@@ -27,7 +27,7 @@ private abbrev C2 := Multiplicative (ZMod 2)
 /-- A central binary extension of the literal ternary wreath comparator is
 controlled by the first two quotient maps of `QStar`. -/
 noncomputable def centralWreathGlobalComparison
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (hpi : Function.Surjective pi)
     (hcentral : ∀ z ∈ pi.ker, ∀ x : R, z * x = x * z)
@@ -45,7 +45,7 @@ noncomputable def centralWreathGlobalComparison
 /-- Recursive comparison for one central binary extension of the literal
 ternary wreath comparator. -/
 noncomputable def centralWreathComparison
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (hpi : Function.Surjective pi)
     (hcentral : ∀ z ∈ pi.ker, ∀ x : R, z * x = x * z)
@@ -57,7 +57,7 @@ noncomputable def centralWreathComparison
 /-- The same extension after adjoining one binary factor.  The final
 required target is definitionally the whole abstract `QStar` product. -/
 noncomputable def centralWreathProductComparison
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (hpi : Function.Surjective pi)
     (hcentral : ∀ z ∈ pi.ker, ∀ x : R, z * x = x * z)
@@ -74,14 +74,14 @@ noncomputable def centralWreathProductComparison
 /-- Descend the ternary action map through the first central factor of its
 kernel. -/
 def wreathMapAfterCentralAxis
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (S : BinaryNormalKernelCentralSeries R pi.ker) :
     R ⧸ S.C →* DegreeSixS3Wreath.G :=
   QuotientGroup.lift S.C pi S.C_le_K
 
 theorem wreathMapAfterCentralAxis_surjective
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (hpi : Function.Surjective pi)
     (S : BinaryNormalKernelCentralSeries R pi.ker) :
@@ -91,7 +91,7 @@ theorem wreathMapAfterCentralAxis_surjective
   exact ⟨QuotientGroup.mk' S.C r, rfl⟩
 
 theorem wreathMapAfterCentralAxis_central_kernel
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (S : BinaryNormalKernelCentralSeries R pi.ker) :
     ∀ z ∈ (wreathMapAfterCentralAxis pi S).ker,
@@ -99,10 +99,10 @@ theorem wreathMapAfterCentralAxis_central_kernel
   intro z hz x
   have hz' : z ∈ pi.ker.map (QuotientGroup.mk' S.C) := by
     simpa only [wreathMapAfterCentralAxis, QuotientGroup.ker_lift] using hz
-  exact Subgroup.mem_center_iff.mp (S.quotientKernel_le_center hz') x
+  exact (Subgroup.mem_center_iff.mp (S.quotientKernel_le_center hz') x).symm
 
 theorem wreathMapAfterCentralAxis_kernel_card_le
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (S : BinaryNormalKernelCentralSeries R pi.ker)
     (hkernel : Nat.card pi.ker ≤ 4) :
@@ -113,7 +113,7 @@ theorem wreathMapAfterCentralAxis_kernel_card_le
   let f : K →* L := q.subgroupMap K
   have hf : Function.Surjective f := q.subgroupMap_surjective K
   have hker : f.ker = S.C.subgroupOf K := by
-    rw [MonoidHom.ker_subgroupMap, QuotientGroup.ker_mk']
+    rw [Subgroup.ker_subgroupMap, QuotientGroup.ker_mk']
   have hkerCard : Nat.card f.ker = 2 := by
     rw [hker,
       Nat.card_congr (Subgroup.subgroupOfEquivOfLe S.C_le_K).toEquiv,
@@ -131,7 +131,7 @@ theorem wreathMapAfterCentralAxis_kernel_card_le
 
 /-- Comparison of the first central quotient with `QStar`. -/
 noncomputable def firstCentralWreathComparison
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (hpi : Function.Surjective pi)
     (S : BinaryNormalKernelCentralSeries R pi.ker)
@@ -146,7 +146,7 @@ noncomputable def firstCentralWreathComparison
 
 /-- Comparison of the first central quotient times `C₂` with `QStar`. -/
 noncomputable def firstCentralWreathProductComparison
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (hpi : Function.Surjective pi)
     (S : BinaryNormalKernelCentralSeries R pi.ker)
@@ -162,7 +162,7 @@ noncomputable def firstCentralWreathProductComparison
 /-- The full two-step central comparison of a ternary section with `QStar`.
 The outer step is the literal quotient by the first central kernel axis. -/
 noncomputable def centralSeriesWreathComparison
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (hpi : Function.Surjective pi)
     (S : BinaryNormalKernelCentralSeries R pi.ker)
@@ -182,13 +182,13 @@ noncomputable def centralSeriesWreathComparison
   · intro z hz x
     have hzC : z ∈ S.C := by
       simpa only [QuotientGroup.ker_mk'] using hz
-    exact Subgroup.mem_center_iff.mp (S.C_le_center hzC) x
+    exact (Subgroup.mem_center_iff.mp (S.C_le_center hzC) x).symm
   · rw [QuotientGroup.ker_mk', S.C_card]
 
 /-- Complete comparison of every normal quotient of the ternary section
 with the literal faithful degree-ten `QStar` action. -/
 theorem centralSeriesWreath_completeQuotientWeight_le
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (hpi : Function.Surjective pi)
     (S : BinaryNormalKernelCentralSeries R pi.ker)
@@ -210,7 +210,7 @@ theorem centralSeriesWreath_completeQuotientWeight_le
 This is the form used when the original two-sign translation layer itself
 has dimension two. -/
 theorem centralSeriesWreath_epimorphism_card_le
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (hpi : Function.Surjective pi)
     (S : BinaryNormalKernelCentralSeries R pi.ker)
@@ -233,7 +233,7 @@ section has order at most `2^9`.  The actual sections have order at most
 `72 · 4 = 288`, so this leaves substantial room in the final `2^384`
 budget. -/
 theorem centralSeriesWreath_coefficient_le
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* DegreeSixS3Wreath.G)
     (hpi : Function.Surjective pi)
     (S : BinaryNormalKernelCentralSeries R pi.ker)

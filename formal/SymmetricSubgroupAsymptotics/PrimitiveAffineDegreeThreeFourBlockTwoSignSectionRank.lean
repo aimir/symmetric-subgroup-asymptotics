@@ -32,6 +32,11 @@ private abbrev G := preE7NonPairAction w U
 
 local instance : Fact P.p.Prime := (chart block P).primeFact
 
+instance degreeThreeFourBlockTwoSignSectionRank_axisNormal
+    (N : TwoSignProperAxis (E block P)) :
+    (degreeThreeFourBlockTwoSignSectionAxis block P N).Normal :=
+  (twoSignProperAxis N).2
+
 /-- The invariant intersection `N ∩ E` in the original translation-module
 coordinates. -/
 abbrev degreeThreeFourBlockTwoSignSectionNormalSpace
@@ -41,6 +46,24 @@ abbrev degreeThreeFourBlockTwoSignSectionNormalSpace
     (QuotientGroup.mk' (E block P))
     (elementaryChart block P).quotientRepresentation
     (degreeThreeFourBlockTwoSignSectionAxis block P N)
+
+instance degreeThreeFourBlockTwoSignSectionRank_module
+    (N : TwoSignProperAxis (E block P)) :
+    Module (ZMod P.p)
+      (DegreeThreeFourBlockTwoSignSectionModule block P N) := by
+  change Module (ZMod P.p)
+    ((TranslationSubmodule block P) ⧸
+      degreeThreeFourBlockTwoSignSectionNormalSpace block P N)
+  infer_instance
+
+instance degreeThreeFourBlockTwoSignSectionRank_finite
+    (N : TwoSignProperAxis (E block P)) :
+    Module.Finite (ZMod P.p)
+      (DegreeThreeFourBlockTwoSignSectionModule block P N) := by
+  change Module.Finite (ZMod P.p)
+    ((TranslationSubmodule block P) ⧸
+      degreeThreeFourBlockTwoSignSectionNormalSpace block P N)
+  infer_instance
 
 /-- In the rank-four branch, a nontrivial proper normal axis cannot meet
 the translation layer trivially.  Otherwise the two disjoint normal
@@ -83,7 +106,10 @@ theorem degreeThreeFourBlockTwoSignSectionNormalSpace_ne_bot_of_finrank_four
           (M.subgroupOf pi.ker) hker k).2
         exact hk
       rw [hspace] at hmem
-      have hz := Submodule.mem_bot.mp hmem
+      have hz :
+          (chart.kernelCoordinates pi
+            (elementaryChart block P).quotientRepresentation k).toAdd = 0 := by
+        simpa only [Submodule.mem_bot] using hmem
       simpa only [map_one, toAdd_one] using hz
     · exact bot_le
   have hdisjoint : Disjoint M (E block P) := by
@@ -110,7 +136,7 @@ theorem degreeThreeFourBlockTwoSignSectionNormalSpace_ne_bot_of_finrank_four
             intro e he
             exact (hcommute x hx e he).eq)
       have hx1 : x = 1 := by
-        exact Subgroup.disjoint_def.mp hdisjoint x hx hxE
+        exact Subgroup.disjoint_def.mp hdisjoint hx hxE
       simpa only [Subgroup.mem_bot] using hx1
     · exact bot_le
   exact N.2 hMbot
@@ -146,6 +172,7 @@ theorem degreeThreeFourBlockTwoSignSectionModule_finrank_eq_two_of_even_normalSp
       (DegreeThreeFourBlockTwoSignSectionModule block P N) +
     Module.finrank (ZMod P.p) I =
       Module.finrank (ZMod P.p) (TranslationSubmodule block P) at hsum
+  change Even (Module.finrank (ZMod P.p) I) at heven
   obtain ⟨d, hd⟩ := heven
   rcases hsplit with htwoRank | hfourRank
   · omega

@@ -3,6 +3,7 @@ import SymmetricSubgroupAsymptotics.CentralBinaryCompleteQuotientComparison
 import SymmetricSubgroupAsymptotics.PrimitiveAffineProjectiveCentralQuotients
 import SymmetricSubgroupAsymptotics.BinaryCoverage
 import SymmetricSubgroupAsymptotics.NormalOrderTwo
+import Mathlib.Algebra.Group.Subgroup.Ker
 
 /-!
 # Central binary series for the two-sign four-block comparison
@@ -68,7 +69,7 @@ noncomputable def binaryNormalKernelCentralSeries_of_central_order_two
   let f : K →* L := q.subgroupMap K
   have hf : Function.Surjective f := q.subgroupMap_surjective K
   have hker : f.ker = C.subgroupOf K := by
-    rw [MonoidHom.ker_subgroupMap, QuotientGroup.ker_mk']
+    rw [Subgroup.ker_subgroupMap, QuotientGroup.ker_mk']
   have hkerCard : Nat.card f.ker = 2 := by
     rw [hker,
       Nat.card_congr (Subgroup.subgroupOfEquivOfLe hCleK).toEquiv,
@@ -103,12 +104,17 @@ noncomputable def binaryNormalKernelCentralSeries_of_card_le_four
     (hKne : K ≠ ⊥) (hKcard : Nat.card K ≤ 4) :
     BinaryNormalKernelCentralSeries G K := by
   letI : Fact (Nat.Prime 2) := ⟨by norm_num⟩
-  obtain ⟨z, hzK, hzcenter, hzorder⟩ :=
-    pGroup_normal_contains_central_prime hG K hKne
+  let hex := pGroup_normal_contains_central_prime hG K hKne
+  let z : G := Classical.choose hex
+  have hzK : z ∈ K := (Classical.choose_spec hex).1
+  have hzcenter : z ∈ Subgroup.center G :=
+    (Classical.choose_spec hex).2.1
+  have hzorder : orderOf z = 2 := (Classical.choose_spec hex).2.2
   let C : Subgroup G := Subgroup.zpowers z
   have hCleK : C ≤ K := Subgroup.zpowers_le.mpr hzK
   have hCcard : Nat.card C = 2 := by
-    rw [C, Nat.card_zpowers, hzorder]
+    change Nat.card (Subgroup.zpowers z) = 2
+    rw [Nat.card_zpowers, hzorder]
   have hCcenter : C ≤ Subgroup.center G :=
     Subgroup.zpowers_le.mpr hzcenter
   have hCnormal : C.Normal := by

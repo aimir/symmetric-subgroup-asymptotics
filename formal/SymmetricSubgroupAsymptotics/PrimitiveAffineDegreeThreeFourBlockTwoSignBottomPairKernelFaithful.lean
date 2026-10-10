@@ -12,6 +12,7 @@ diagonal-action identity then rules out trivial action.
 -/
 
 set_option autoImplicit false
+set_option maxHeartbeats 800000
 noncomputable section
 open scoped Classical
 
@@ -78,7 +79,7 @@ theorem degreeThreeFourBlockTwoSignBottomPairKernelRepresentation_injective
   have hfull : FullCoordinates KA.1 :=
     scalarizedStable_fullCoordinates scalar K e
       (DegreeThreeFourBlockSignedTranslationCompatibility.fullCoordinates
-        (block := block) (P := P) A hbinary)
+        (block := block) (P := P) hbinary)
   have hker : ∀ k : C.frame.top.ker,
       degreeThreeFourBlockTwoSignBottomPairKernelRepresentation
           block P hr hs hcomponent k = 1 → k = 1 := by
@@ -115,15 +116,19 @@ theorem degreeThreeFourBlockTwoSignBottomPairKernelRepresentation_injective
     have hxyi := congrFun hxy i
     have hyi : y.1 i = 1 := hy
     have haki : a.1 k = 1 := by
+      change e (scalar i k • x.1 i) = e (x.1 i) at hcoordinate
+      rw [map_smul] at hcoordinate
       change scalar i k * e (x.1 i) = e (x.1 i) at hcoordinate
-      rw [hxyi, hyi, hi, mul_one] at hcoordinate
+      have hxyi' : e (x.1 i) = y.1 i := by
+        simpa only [pointwiseScalarEquiv_apply, x] using hxyi
+      rw [hxyi', hyi, hi, mul_one] at hcoordinate
       exact hcoordinate
     exact ha haki
   intro x y hxy
   have hxy1 :
       degreeThreeFourBlockTwoSignBottomPairKernelRepresentation
           block P hr hs hcomponent (x⁻¹ * y) = 1 := by
-    rw [map_mul, map_inv, hxy, inv_mul_cancel]
+    rw [map_mul, ← hxy, ← map_mul, inv_mul_cancel, map_one]
   exact inv_mul_eq_one.mp (hker (x⁻¹ * y) hxy1)
 
 end PrimitiveAffineImprimitiveBlockTransfer

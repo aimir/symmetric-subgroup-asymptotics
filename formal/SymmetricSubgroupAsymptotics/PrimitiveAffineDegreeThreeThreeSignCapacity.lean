@@ -22,7 +22,7 @@ namespace SymmetricSubgroupAsymptotics
 
 namespace BinaryPairFrame
 
-variable {X I : Type*} {G : Subgroup (Equiv.Perm X)}
+variable {X I : Type} {G : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame G I)
 
 /-- At eighteen coordinates with exactly three realized signs, every
@@ -62,6 +62,9 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
+local instance threeSignCapacityPrimeFact : Fact P.p.Prime :=
+  (chart block P).primeFact
+
 /-- Native-field form of the three-generator signed-module theorem. -/
 theorem degreeThreeNativeSignedRepresentation_dual_uniform_three_sign
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
@@ -79,7 +82,8 @@ theorem degreeThreeNativeSignedRepresentation_dual_uniform_three_sign
     BinaryPairFrame.ternarySignedRepresentation_dual_uniform_three_of_eighteen_three_signs
       F hTraceyHalf htrans heighteen hthree
   have hp : P.p = 3 := (degreeThree_translation_prime_dim block P hr).1
-  rw [hp]
+  cases P
+  subst_vars
   simpa [degreeThreeNativeSignedRepresentation,
     degreeThreeNativeSignRepresentation, degreeThreeNativeSignScalar,
     degreeThreeScalarFieldEquiv] using hgeneric
@@ -100,8 +104,27 @@ theorem degreeThreeTranslationQuotient_dual_uniform_three_sign
   let f := degreeThreeTranslationScalarIntertwiner block P hr
   have hf : Function.Injective f :=
     degreeThreeTranslationScalarIntertwiner_injective block P hr
-  apply hfull.of_surjective (RepresentationHeadExact.dualMap f)
-  exact LinearMap.dualMap_surjective_of_injective hf
+  have hhelper : UniformSubrepresentationGeneratorBound
+      (degreeThreeElementaryQuotientRepresentation block P).dual 3 := by
+    have hpull : UniformSubrepresentationGeneratorBound
+        (Representation.dual
+          ((degreeThreeNativeSignedRepresentation block P hr).comp
+            (degreeThreeSignedQuotientRangeEquiv block P).toMonoidHom)) 3 := by
+      have h := hfull.comp_of_surjective
+        (degreeThreeNativeSignedRepresentation block P hr).dual
+        (degreeThreeSignedQuotientRangeEquiv block P).toMonoidHom
+        (degreeThreeSignedQuotientRangeEquiv block P).surjective
+      convert h using 1
+      apply MonoidHom.ext
+      intro q
+      apply LinearMap.ext
+      intro ell
+      apply LinearMap.ext
+      intro v
+      simp [Representation.dual, map_inv]
+    apply hpull.of_surjective (RepresentationHeadExact.dualMap f)
+    exact LinearMap.dualMap_surjective_of_injective hf
+  simpa [degreeThreeElementaryQuotientRepresentation, elementaryChart] using hhelper
 
 /-- Pull the quotient bound back to the affine group representation used
 by the actual-wreath capacity construction. -/
@@ -123,7 +146,7 @@ theorem degreeThreeActualAmbient_dual_uniform_three_sign
     ((elementaryChart block P).quotientRepresentation.ρ).dual
     (QuotientGroup.mk' (E block P))
     (QuotientGroup.mk'_surjective (E block P))
-  simpa only [Representation.dual_apply, Representation.comp_apply,
+  simpa only [Representation.dual_apply,
     MonoidHom.comp_apply, map_inv,
     ActualWreathAffineCapacity.ambientRepresentation,
     initialState, localTranslationChart, elementaryChart,
@@ -171,8 +194,7 @@ noncomputable def degreeThreeThreeSignJointCapacity
       (degreeThreeSignedQuotientPairFrame block P hr)) = 3) :
     (degreeThreeThreeSignJointCapacity block P hTraceyHalf hTraceyLog
       hTraceyRefined hTraceyPerm hr hcomponent heighteen hthree).capacity = 3 := by
-  simp only [degreeThreeThreeSignJointCapacity,
-    ActualWreathAffineCapacity.jointCapacitySharpenTo_of_ambientDual_uniform_capacity]
+  simp [degreeThreeThreeSignJointCapacity]
 
 theorem degreeThreeThreeSignJointCapacity_coefficient_eq
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
@@ -188,8 +210,7 @@ theorem degreeThreeThreeSignJointCapacity_coefficient_eq
       hTraceyRefined hTraceyPerm hr hcomponent heighteen hthree).coefficient =
       (translationLayerJointCapacity block P hTraceyHalf hTraceyLog
         hTraceyRefined hTraceyPerm).coefficient := by
-  simp only [degreeThreeThreeSignJointCapacity,
-    ActualWreathAffineCapacity.jointCapacitySharpenTo_of_ambientDual_uniform_coefficient]
+  simp [degreeThreeThreeSignJointCapacity]
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu

@@ -156,10 +156,11 @@ noncomputable def ofTopKernel
     rw [Subgroup.mem_center_iff]
     intro x
     apply SemidirectProduct.ext
-    · simpa only [SemidirectProduct.mul_left,
+    · simp only [SemidirectProduct.mul_left, i,
         SemidirectProduct.left_inr, SemidirectProduct.right_inr,
-        one_mul, MulAut.one_apply, mul_one, map_one] using
-          congrArg (fun a : MulAut N => a x.left) (haction ⟨c, hc⟩)
+        one_mul, map_one, MulAut.one_apply, mul_one]
+      exact (congrArg (fun a : MulAut N => a x.left)
+        (haction ⟨c, hc⟩)).symm
     · simpa only [SemidirectProduct.mul_right,
         SemidirectProduct.right_inr] using
           Subgroup.mem_center_iff.mp (S.C_le_center hc) x.right
@@ -179,7 +180,7 @@ noncomputable def ofTopKernel
     obtain ⟨c, hc, rfl⟩ := hz
     apply MonoidHom.mem_ker.mpr
     apply SemidirectProduct.ext
-    · simp
+    · simp [i]
     · simpa only [SemidirectProduct.map_right,
         SemidirectProduct.right_inr] using
           MonoidHom.mem_ker.mp (S.C_le_K hc)

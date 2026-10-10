@@ -22,7 +22,7 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace BinaryPairFrame
 
-variable {X I : Type*} {G : Subgroup (Equiv.Perm X)}
+variable {X I : Type} {G : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame G I)
 
 /-- A chosen coordinate carrying a realized literal sign. -/
@@ -124,10 +124,10 @@ noncomputable def coordinateSignFiberTopPerm
       _ = chi := inv_smul_smul u.1 chi⟩
   left_inv i := by
     apply Subtype.ext
-    exact (F.top u.1).symm_apply_apply i.1
+    simpa only [map_inv] using (F.top u.1).symm_apply_apply i.1
   right_inv i := by
     apply Subtype.ext
-    exact (F.top u.1).apply_symm_apply i.1
+    simpa only [map_inv] using (F.top u.1).apply_symm_apply i.1
 
 @[simp] theorem coordinateSignFiberTopPerm_apply
     (chi : CoordinateSign F)

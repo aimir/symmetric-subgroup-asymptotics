@@ -41,8 +41,10 @@ theorem quotient_card (hA : Nat.card A = 4) :
     Nat.card (A ⧸ (centralSeries A hA).C) = 2 := by
   let S := centralSeries A hA
   have hmul := Subgroup.card_eq_card_quotient_mul_card_subgroup S.C
+  change Nat.card A = Nat.card (A ⧸ S.C) * Nat.card S.C at hmul
   rw [hA, S.C_card] at hmul
-  omega
+  apply Nat.mul_right_cancel (m := 2) (by norm_num)
+  simpa using hmul.symm
 
 /-- The quotient by the chosen central axis, identified with `C₂`. -/
 noncomputable def quotientEquiv (hA : Nat.card A = 4) :
@@ -67,11 +69,16 @@ theorem projection_ker (hA : Nat.card A = 4) :
   change e (QuotientGroup.mk' S.C x) = 1 ↔ x ∈ S.C
   constructor
   · intro hx
-    apply QuotientGroup.eq_one_iff.mp
-    apply e.injective
-    simpa only [map_one] using hx
+    have hq : QuotientGroup.mk' S.C x = 1 := by
+      apply e.injective
+      simpa only [map_one] using hx
+    rw [← QuotientGroup.ker_mk' S.C]
+    exact MonoidHom.mem_ker.mpr hq
   · intro hx
-    rw [QuotientGroup.eq_one_iff.mpr hx, map_one]
+    have hxker : x ∈ (QuotientGroup.mk' S.C).ker := by
+      rw [QuotientGroup.ker_mk' S.C]
+      exact hx
+    rw [MonoidHom.mem_ker.mp hxker, map_one]
 
 /-- Direct `QStar` data for the central binary quotient of any order-four
 group. -/
@@ -96,7 +103,7 @@ noncomputable def globalComparison (hA : Nat.card A = 4) :
     have hzC : z ∈ S.C := by
       rw [← projection_ker A hA]
       exact hz
-    exact Subgroup.mem_center_iff.mp (S.C_le_center hzC) x
+    exact (Subgroup.mem_center_iff.mp (S.C_le_center hzC) x).symm
   · rw [projection_ker A hA, S.C_card]
 
 /-- Recursive comparison for an arbitrary group of order four. -/
@@ -137,6 +144,7 @@ theorem comparison_coefficient_le (hA : Nat.card A = 4) :
   let D := comparison A hA
   apply D.coefficient_le_two_pow 2 2 0
   · rw [hA]
+    norm_num
   · norm_num [C2, Nat.card_zmod]
   · change 1 ≤ 2 ^ 0
     norm_num

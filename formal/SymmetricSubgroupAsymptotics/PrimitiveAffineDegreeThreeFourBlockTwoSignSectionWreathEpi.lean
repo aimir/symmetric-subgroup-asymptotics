@@ -12,6 +12,7 @@ literal degree-six comparator itself.
 -/
 
 set_option autoImplicit false
+set_option maxHeartbeats 800000
 noncomputable section
 open scoped Classical
 
@@ -26,7 +27,8 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-private abbrev G := preE7NonPairAction w U
+private abbrev G (w : ℕ) (U : PreE7NonPairActionClass w) :=
+  preE7NonPairAction w U
 
 /-- A fixed literal Schur complement in the actual proper section. -/
 noncomputable def degreeThreeFourBlockTwoSignSectionComplement
@@ -36,7 +38,7 @@ noncomputable def degreeThreeFourBlockTwoSignSectionComplement
     (hbinary : IsPGroup 2
       (degreeThreeFourBlockPairChart block P hr hs hcomponent).action)
     (N : TwoSignProperAxis (E block P)) :
-    Subgroup (G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) :=
+    Subgroup (G w U ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) :=
   Classical.choose
     (degreeThreeFourBlockTwoSignSectionComplement_exists
       block P hr hs hcomponent hbinary N)
@@ -141,6 +143,7 @@ theorem degreeThreeFourBlockTwoSignSectionSemidirect_compatible
             block P hr hs hcomponent hbinary htwo N h)).toMonoidHom.comp
           (degreeThreeFourBlockTwoSignSectionKernelTernaryEquiv
             block P hr hs hcomponent hbinary htwo N).toMonoidHom := by
+  dsimp only
   let K := (degreeThreeFourBlockTwoSignSectionBase block P N).ker
   let H := degreeThreeFourBlockTwoSignSectionComplement
     block P hr hs hcomponent hbinary N
@@ -159,18 +162,17 @@ theorem degreeThreeFourBlockTwoSignSectionSemidirect_compatible
   let action := ((K.normalizerMonoidHom).comp
     (Subgroup.inclusion (K.normalizer_eq_top ▸ le_top))) h
   have hconj := chart.conjugate (h :
-    G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) v
+    G w U ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) v
   have hkernel :
       chart.equiv.symm
           (action (chart.equiv (Multiplicative.ofAdd v))) =
         Multiplicative.ofAdd
-          ((degreeThreeFourBlockTwoSignSectionRepresentation block P N).rho
+          ((degreeThreeFourBlockTwoSignSectionRepresentation block P N).ρ
             (topEquiv h) v) := by
     apply chart.equiv.injective
     rw [chart.equiv.apply_symm_apply]
     apply Subtype.ext
-    simpa only [action, Subgroup.normalizerMonoidHom_apply,
-      Subgroup.coe_inclusion,
+    simpa only [action, Subgroup.coe_inclusion,
       degreeThreeFourBlockTwoSignSectionComplementTopEquiv_apply,
       topEquiv] using hconj.symm
   have haction := degreeThreeFourBlockTwoSignSectionTernaryEquiv_action
@@ -178,11 +180,15 @@ theorem degreeThreeFourBlockTwoSignSectionSemidirect_compatible
   change
     c ((chart.equiv.symm
       (action (chart.equiv (Multiplicative.ofAdd v)))).toAdd) = _
-  rw [hkernel, DegreeSixS3Wreath.monomialAction_toAdd]
-  simpa only [degreeThreeFourBlockTwoSignSectionKernelTernaryEquiv,
+  rw [hkernel]
+  simp only [degreeThreeFourBlockTwoSignSectionKernelTernaryEquiv,
     degreeThreeFourBlockTwoSignSectionComplementD8Map,
     MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom,
-    MulEquiv.apply_symm_apply,
+    MulEquiv.apply_symm_apply]
+  rw [DegreeSixS3Wreath.monomialAction_toAdd]
+  simpa [degreeThreeFourBlockTwoSignSectionKernelTernaryEquiv,
+    degreeThreeFourBlockTwoSignSectionComplementD8Map,
+    MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom,
     degreeThreeFourBlockTwoSignSectionComplementTopEquiv_apply,
     topEquiv, c, chart, K, H, action] using haction
 
@@ -243,7 +249,7 @@ noncomputable def degreeThreeFourBlockTwoSignSectionWreathMap
     (htwo : (degreeThreeFourBlockSignedIsotypeProfile
       block P hr hs hcomponent).isotypeCount = 2)
     (N : TwoSignProperAxis (E block P)) :
-    (G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) →*
+    (G w U ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) →*
       DegreeSixS3Wreath.G :=
   DegreeSixS3Wreath.semidirectEquiv.symm.toMonoidHom.comp
     ((degreeThreeFourBlockTwoSignSectionSemidirectMap
@@ -290,7 +296,7 @@ theorem degreeThreeFourBlockTwoSignSectionWreathMap_kernel_card_le_four
     (N : TwoSignProperAxis (E block P)) :
     Nat.card (degreeThreeFourBlockTwoSignSectionWreathMap
       block P hr hs hcomponent hbinary htwo N).ker ≤ 4 := by
-  let R := G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N
+  let R := G w U ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N
   let pi := degreeThreeFourBlockTwoSignSectionWreathMap
     block P hr hs hcomponent hbinary htwo N
   have hR : Nat.card R ≤ 288 :=
@@ -305,6 +311,8 @@ theorem degreeThreeFourBlockTwoSignSectionWreathMap_kernel_card_le_four
       Nat.card_congr Subgroup.topEquiv.toEquiv,
       DegreeSixS3Wreath.card_G]
   rw [hindex] at hfactor
+  change Nat.card pi.ker * 72 = Nat.card R at hfactor
+  change Nat.card pi.ker ≤ 4
   omega
 
 end PrimitiveAffineImprimitiveBlockTransfer

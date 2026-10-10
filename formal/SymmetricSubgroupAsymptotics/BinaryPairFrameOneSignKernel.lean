@@ -21,7 +21,7 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace BinaryPairFrame
 
-variable {X I : Type*} {G : Subgroup (Equiv.Perm X)}
+variable {X I : Type} {G : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame G I)
 
 /-- A unique realized coordinate character is equivalent to every kernel
@@ -107,8 +107,8 @@ theorem top_ker_le_center_of_sign_count_one
   have hkfixed' := congrArg Subtype.val hkfixed
   change u * k * u⁻¹ = k at hkfixed'
   calc
-    k * u = (u * k * u⁻¹) * u := by rw [hkfixed']
-    _ = u * k := by simp [mul_assoc]
+    u * k = (u * k * u⁻¹) * u := by simp [mul_assoc]
+    _ = k * u := by rw [hkfixed']
 
 end BinaryPairFrame
 end SymmetricSubgroupAsymptotics

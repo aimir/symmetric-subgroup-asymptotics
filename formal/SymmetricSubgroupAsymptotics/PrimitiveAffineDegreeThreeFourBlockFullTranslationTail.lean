@@ -100,15 +100,20 @@ noncomputable def degreeThreeFourBlockTranslationCoordinateEquiv_of_finrank_four
       (TranslationSubmodule block P) = 4) :
     TranslationSubmodule block P ≃ₗ[ZMod P.p]
       (Fin 4 → (chart block P).V) := by
+  letI : Fact P.p.Prime := (chart block P).primeFact
   let f := degreeThreeFourBlockTranslationCoordinateMap block P hs
   have hdim : Module.finrank (ZMod P.p) (chart block P).V = 1 := by
     have hdim' := (degreeThree_translation_prime_dim block P hr).2
     change Module.finrank (ZMod P.p) (chart block P).V = 1 at hdim'
     exact hdim'
-  apply LinearEquiv.ofInjectiveOfFinrankEq f
-    (degreeThreeFourBlockTranslationCoordinateMap_injective block P hs)
-  simpa only [Module.finrank_pi, Fintype.card_fin, hdim, Nat.mul_one]
-    using hfull
+  exact LinearEquiv.ofInjectiveOfFinrankEq f
+    (degreeThreeFourBlockTranslationCoordinateMap_injective block P hs) (by
+      have htarget : Module.finrank (ZMod P.p)
+          (Fin 4 → (chart block P).V) = 4 := by
+        simp only [Module.finrank_pi_fintype, Finset.sum_const,
+          Finset.card_univ, Fintype.card_fin, Nat.nsmul_eq_mul,
+          hdim, Nat.mul_one]
+      exact hfull.trans htarget.symm)
 
 private theorem degreeThreeFourBlockTranslationCoordinateEquiv_of_finrank_four_apply
     (hr : Nat.card block.Fibre = 3)
@@ -119,7 +124,10 @@ private theorem degreeThreeFourBlockTranslationCoordinateEquiv_of_finrank_four_a
     degreeThreeFourBlockTranslationCoordinateEquiv_of_finrank_four
         block P hr hs hfull x i =
       x.1 ((degreeThreeFourBlockIndexEquiv block hs).symm i) :=
-  rfl
+  by
+    letI : Fact P.p.Prime := (chart block P).primeFact
+    change degreeThreeFourBlockTranslationCoordinateMap block P hs x i = _
+    rfl
 
 /-- Full translation dimension makes the actual quotient conjugation
 representation faithful.  This is the dimension-form version of the
@@ -290,7 +298,10 @@ theorem degreeThreeFourBlock_translationIntersection_card_of_finrank_four
         Module.finrank (ZMod P.p) (TranslationSubmodule block P) :=
       Module.natCard_eq_pow_finrank (K := ZMod P.p)
         (V := TranslationSubmodule block P)
-    _ = 3 ^ 4 := by rw [Nat.card_zmod, hp, hfull]
+    _ = P.p ^ 4 := by
+      rw [Nat.card_zmod]
+      exact congrArg (fun n ↦ P.p ^ n) hfull
+    _ = 3 ^ 4 := by rw [hp]
     _ = 81 := by norm_num
 
 /-- Every four-block ternary translation intersection has order at most
@@ -314,8 +325,10 @@ theorem degreeThreeFourBlock_translationIntersection_card_le
         Submodule.finrank_le (TranslationSubmodule block P)
       _ = Nat.card block.Points *
           Module.finrank (ZMod P.p) (chart block P).V := by
-        rw [Module.finrank_pi, Fintype.card_eq_nat_card]
-      _ = 4 := by rw [hs, hlocal]; norm_num
+        simp only [Module.finrank_pi_fintype, Finset.sum_const,
+          Finset.card_univ, Fintype.card_eq_nat_card,
+          Nat.nsmul_eq_mul]
+      _ = 4 := by rw [hs, hlocal]
   calc
     Nat.card (E block P) =
         Nat.card (Multiplicative (TranslationSubmodule block P)) :=
@@ -325,9 +338,11 @@ theorem degreeThreeFourBlock_translationIntersection_card_le
         Module.finrank (ZMod P.p) (TranslationSubmodule block P) :=
       Module.natCard_eq_pow_finrank (K := ZMod P.p)
         (V := TranslationSubmodule block P)
-    _ = 3 ^ Module.finrank (ZMod P.p)
-        (TranslationSubmodule block P) := by rw [Nat.card_zmod, hp]
-    _ ≤ 3 ^ 4 := Nat.pow_le_pow_right (by norm_num) hfinrank
+    _ = P.p ^ Module.finrank (ZMod P.p)
+        (TranslationSubmodule block P) := by rw [Nat.card_zmod]
+    _ ≤ P.p ^ 4 := Nat.pow_le_pow_right
+      P.p_prime.one_le hfinrank
+    _ = 3 ^ 4 := by rw [hp]
     _ = 81 := by norm_num
 
 /-- Uniform order bound for every two-sign four-block group.  This is the
@@ -398,7 +413,8 @@ theorem degreeThreeFourBlock_twoSign_fullTranslation_aut_le
     (Nat.card (preE7NonPairAction w U ≃*
         preE7NonPairAction w U) : ℝ) ≤
         (2 : ℝ) ^ (12 * 12 : ℕ) := hcast
-    _ ≤ (2 : ℝ) ^ (384 : ℕ) := by norm_num
+    _ ≤ (2 : ℝ) ^ (384 : ℕ) :=
+      pow_le_pow_right₀ (by norm_num) (by norm_num)
     _ = (2 : ℝ) ^ (384 : ℝ) := (Real.rpow_natCast 2 384).symm
 
 end PrimitiveAffineImprimitiveBlockTransfer

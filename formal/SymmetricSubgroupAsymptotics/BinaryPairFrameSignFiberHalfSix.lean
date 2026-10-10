@@ -24,7 +24,7 @@ namespace BinaryPairFrame
 open OddMarkerTernaryChart
 open PermutationalWreathProduct
 
-variable {X I : Type*} {G : Subgroup (Equiv.Perm X)}
+variable {X I : Type} {G : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame G I)
 
 /-- Tracey's half-dimension theorem gives a uniform three-generator bound
@@ -56,10 +56,10 @@ theorem signFiber_uniformSubrepresentationGeneratorBound_three_of_card_six
     rw [hHeq, MulAction.index_stabilizer_of_transitive A i0J]
     exact hcard
   letI : Fact (3 : ℕ).Prime := ⟨Nat.prime_three⟩
-  let local := FunctionCoinduced.localRepresentation rho sigma i0J
-  have hind := hTraceyHalf 3 A H (by omega) (ZMod 3) local
+  let localRep := FunctionCoinduced.localRepresentation rho sigma i0J
+  have hind := hTraceyHalf 3 A H (by omega) (ZMod 3) localRep
   have hind3 : UniformSubrepresentationGeneratorBound
-      (Representation.ind H.subtype local) 3 := by
+      (Representation.ind H.subtype localRep) 3 := by
     simpa [hHindex] using hind
   have htop : Function.Surjective
       ((rightHom (D := Multiplicative (ZMod 2)) (Q := A) (I := J)).comp rho) := by

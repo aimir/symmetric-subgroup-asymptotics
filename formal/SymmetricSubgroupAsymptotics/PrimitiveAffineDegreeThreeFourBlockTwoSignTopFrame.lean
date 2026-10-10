@@ -22,6 +22,8 @@ noncomputable section
 open scoped Classical
 
 namespace SymmetricSubgroupAsymptotics
+namespace Non2UnipotentPrefixFiniteMenu
+namespace PrimitiveAffineImprimitiveBlockTransfer
 namespace BinaryPairFrame
 
 variable {X : Type} {G : Subgroup (Equiv.Perm X)}
@@ -30,7 +32,8 @@ variable {X : Type} {G : Subgroup (Equiv.Perm X)}
 /-- Every pair frame embeds its source group in the full group preserving
 that same literal pair partition. -/
 def pairPreservingEmbedding {I : Type*} {H : Subgroup (Equiv.Perm X)}
-    (D : BinaryPairFrame H I) : H →* pairPreserving D.frame where
+    (D : BinaryPairFrame H I) : H →*
+      SymmetricSubgroupAsymptotics.BinaryPairFrame.pairPreserving D.frame where
   toFun h := ⟨h.1, ⟨D.top h, D.intertwine h⟩⟩
   map_one' := Subtype.ext rfl
   map_mul' _ _ := Subtype.ext rfl
@@ -41,7 +44,9 @@ theorem pairPreservingEmbedding_injective
     Function.Injective (pairPreservingEmbedding D) := by
   intro a b h
   apply Subtype.ext
-  exact congrArg (fun u : pairPreserving D.frame => (u.1 : Equiv.Perm X)) h
+  exact congrArg (fun u :
+    SymmetricSubgroupAsymptotics.BinaryPairFrame.pairPreserving D.frame ↦
+      (u.1 : Equiv.Perm X)) h
 
 /-- A chosen coordinate carrying a realized literal sign. -/
 noncomputable def fourCoordinateSignRepresentative
@@ -166,14 +171,19 @@ noncomputable def twoSignTopHom
 theorem twoSignBlockMap_equivariant
     (htwo : Nat.card (FourCoordinateSign F) = 2)
     (t : F.top.range) (i : Fin 4) :
-    twoSignBlockMap F htwo (t i) =
+    twoSignBlockMap F htwo ((t.1 : Equiv.Perm (Fin 4)) i) =
       twoSignTopHom F htwo t (twoSignBlockMap F htwo i) := by
   obtain ⟨u, rfl⟩ := F.top.rangeRestrict_surjective t
+  simp only [twoSignBlockMap, twoSignTopHom, MonoidHom.comp_apply,
+    fourCoordinateSignRangeHom_apply]
   change Finite.equivFinOfCardEq htwo
-      (fourCoordinateSign F (F.top u i)) =
-    Finite.equivFinOfCardEq htwo
-      (fourCoordinateSignTopHom F u (fourCoordinateSign F i))
-  rw [fourCoordinateSignTopHom_apply_coordinate]
+      (fourCoordinateSign F ((F.top.rangeRestrict u).1 i)) =
+    (Finite.equivFinOfCardEq htwo).permCongr
+      (fourCoordinateSignTopHom F u)
+      (Finite.equivFinOfCardEq htwo (fourCoordinateSign F i))
+  rw [Equiv.permCongr_apply, Equiv.symm_apply_apply,
+    fourCoordinateSignTopHom_apply_coordinate]
+  rfl
 
 attribute [local instance] Fintype.ofFinite
 
@@ -240,6 +250,8 @@ noncomputable def twoSignTopPairFrame
     (twoSignBlockMap_fibre_card F htrans htwo)
 
 end BinaryPairFrame
+end PrimitiveAffineImprimitiveBlockTransfer
+end Non2UnipotentPrefixFiniteMenu
 
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer

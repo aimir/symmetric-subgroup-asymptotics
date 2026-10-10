@@ -137,7 +137,7 @@ noncomputable def degreeThreeFourBlockTwoSign_signedQuotientOrderFourComparison
   · intro z hz x
     have hzC : z ∈ S.C := by
       simpa only [QuotientGroup.ker_mk'] using hz
-    exact Subgroup.mem_center_iff.mp (S.C_le_center hzC) x
+    exact (Subgroup.mem_center_iff.mp (S.C_le_center hzC) x).symm
   · rw [QuotientGroup.ker_mk', S.C_card]
 
 /-- Complete `QStar` comparison for the actual signed quotient in the

@@ -41,7 +41,7 @@ def degreeThreeFourBlockTwoSignSectionSignedTopHom
   let C := degreeThreeFourBlockPairChart block P hr hs hcomponent
   let pi := QuotientGroup.mk' (E block P)
   let M := degreeThreeFourBlockTwoSignSectionAxis block P N
-  exact ((elementaryChart block P).originalKernelChart.labelTop
+  exact (OriginalKernelModuleChart.sectionLabelTop
     pi M (QuotientGroup.mk'_surjective (E block P))).comp
       C.sourceEquiv.symm.toMonoidHom
 
@@ -54,7 +54,7 @@ def degreeThreeFourBlockTwoSignSectionSignedTopHom
       block P hr hs hcomponent).action) :
     degreeThreeFourBlockTwoSignSectionSignedTopHom
         block P hr hs hcomponent N u =
-      (elementaryChart block P).originalKernelChart.labelTop
+      OriginalKernelModuleChart.sectionLabelTop
         (QuotientGroup.mk' (E block P))
         (degreeThreeFourBlockTwoSignSectionAxis block P N)
         (QuotientGroup.mk'_surjective (E block P))
@@ -120,8 +120,12 @@ theorem degreeThreeFourBlockTwoSign_exists_pairKernel_conjugate_ne
   have hconj : MulAut.conjNormal u k₀ ≠ k₀ := by
     intro he
     have hbits := congrArg (fun k : F.top.ker => F.bits k i₁) he
-    rw [F.bits_conjNormal, ← htop,
-      Equiv.symm_apply_apply, hkbit₀, hkbit₁] at hbits
+    change F.bits (MulAut.conjNormal u k₀) i₁ = F.bits k₀ i₁ at hbits
+    rw [F.bits_conjNormal] at hbits
+    have hinv : (F.top u)⁻¹ i₁ = i₀ := by
+      rw [← htop]
+      exact (F.top u).symm_apply_apply i₀
+    rw [hinv, hkbit₀, hkbit₁] at hbits
     exact one_ne_zero hbits
   exact ⟨u, k₀, hconj⟩
 
@@ -152,6 +156,11 @@ theorem degreeThreeFourBlockTwoSignSection_exists_top_outside_pairKernel
   have hcomm : k * k₀ = k₀ * k := by
     apply F.bitsHom_injective
     rw [map_mul, map_mul, mul_comm]
+  have hcomm' :
+      (k : C.action) * (k₀ : C.action) =
+        (k₀ : C.action) * (k : C.action) := by
+    have := congrArg (fun z : F.top.ker => (z : C.action)) hcomm
+    simpa using this
   have hconjMap :
       degreeThreeFourBlockTwoSignSectionPairKernelTopHom
           block P hr hs hcomponent N (MulAut.conjNormal u k₀) =
@@ -159,13 +168,16 @@ theorem degreeThreeFourBlockTwoSignSection_exists_top_outside_pairKernel
           block P hr hs hcomponent N k₀ := by
     let f := degreeThreeFourBlockTwoSignSectionSignedTopHom
       block P hr hs hcomponent N
+    rw [← degreeThreeFourBlockTwoSignSectionSignedTopHom_pairKernel,
+      ← degreeThreeFourBlockTwoSignSectionSignedTopHom_pairKernel]
     change f (MulAut.conjNormal u k₀ : C.action) = f (k₀ : C.action)
     change f (u * (k₀ : C.action) * u⁻¹) = f (k₀ : C.action)
-    rw [map_mul, map_mul, map_inv, hk,
-      ← degreeThreeFourBlockTwoSignSectionSignedTopHom_pairKernel,
-      ← degreeThreeFourBlockTwoSignSectionSignedTopHom_pairKernel,
-      ← map_mul, hcomm, map_mul]
-    simp only [mul_assoc, inv_mul_cancel, mul_one]
+    rw [map_mul, map_mul, map_inv]
+    have hku : f (k : C.action) = f u := by
+      rw [degreeThreeFourBlockTwoSignSectionSignedTopHom_pairKernel]
+      exact hk
+    rw [← hku, ← map_mul, hcomm', map_mul]
+    simp only [mul_assoc, mul_inv_cancel, mul_one]
   exact hconj
     (degreeThreeFourBlockTwoSignSectionPairKernelTopHom_injective
       block P hr hs hcomponent hbinary htwo N hconjMap)
@@ -196,7 +208,8 @@ theorem degreeThreeFourBlockTwoSignSectionTop_card_ge_eight
             block P hr hs hcomponent).frame.top.ker :=
         Nat.card_congr
           (MulEquiv.ofBijective f.rangeRestrict
-            ⟨hf, f.rangeRestrict_surjective⟩).symm.toEquiv
+            ⟨fun x y h ↦ hf (congrArg Subtype.val h),
+              f.rangeRestrict_surjective⟩).symm.toEquiv
       _ = 4 := degreeThreeFourBlockTwoSign_pairKernel_card
         block P hr hs hcomponent htwo
   obtain ⟨u, hu⟩ :=
@@ -210,9 +223,14 @@ theorem degreeThreeFourBlockTwoSignSectionTop_card_ge_eight
     rw [htop]
     exact Subgroup.mem_top _
   have hindex : 1 < K.index := Subgroup.one_lt_index_of_ne_top hKne
-  have hcard := K.card_mul_index
-  rw [hK] at hcard
-  omega
+  calc
+    8 = 4 * 2 := by norm_num
+    _ ≤ 4 * K.index := Nat.mul_le_mul_left 4 (by omega)
+    _ = Nat.card K * K.index := by rw [hK]
+    _ = Nat.card
+        (G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
+          degreeThreeFourBlockTwoSignSectionAxis block P N)) :=
+      K.card_mul_index
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu

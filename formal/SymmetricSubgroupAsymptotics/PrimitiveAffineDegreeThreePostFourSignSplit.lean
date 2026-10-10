@@ -17,7 +17,7 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace BinaryPairFrame
 
-variable {X I : Type*} {G : Subgroup (Equiv.Perm X)}
+variable {X I : Type} {G : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame G I)
 
 /-- Arithmetic exhaustion of the sign-isotype counts at six, twelve, and
@@ -56,7 +56,8 @@ theorem coordinateSign_high_or_low_six_twelve_eighteen
     · have hqm : q * m = 18 := by simpa only [heighteen] using hproduct
       have hqdvd : q ∣ 18 := ⟨m, hqm.symm⟩
       have hlow : q = 1 ∨ q = 2 ∨ q = 3 := by
-        interval_cases q <;> norm_num at hqdvd ⊢
+        interval_cases q
+        all_goals first | omega | norm_num at hqdvd
       exact Or.inr (Or.inr (Or.inr ⟨heighteen, hlow⟩))
 
 end BinaryPairFrame

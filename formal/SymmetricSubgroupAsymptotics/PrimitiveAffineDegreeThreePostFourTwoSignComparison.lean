@@ -105,6 +105,7 @@ noncomputable def degreeThreePostFourTwoSignProjectiveCentralAxis
   simp only [degreeThreePostFourOneSignProjectiveMap,
     MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom,
     MulEquiv.apply_symm_apply]
+  rfl
 
 /-- Two central binary factors for the literal two-sign projective kernel. -/
 noncomputable def degreeThreePostFourTwoSignProjectiveCentralSeries

@@ -26,8 +26,8 @@ literal affine data alone. -/
 noncomputable def degreeThreeFourBlockTwoSignComparisonSource :
     DegreeThreeFourBlockTwoSignComparisonSource := by
   intro w U basePoint block P _ hr hs hcomponent hbinary htwo
-  rcases degreeThreeFourBlockTwoSign_translation_finrank_eq_two_or_four
-      block P hr hs hcomponent hbinary htwo with hfin | hfin
+  by_cases hfin : Module.finrank (ZMod P.p)
+      (TranslationSubmodule block P) = 2
   · exact degreeThreeFourBlockTwoSignComparison_of_literalBounds
       block P
       (2 ^ 200 : ℝ)
@@ -41,7 +41,7 @@ noncomputable def degreeThreeFourBlockTwoSignComparisonSource :
       (fun J =>
         degreeThreeFourBlockTwoSign_signedQuotient_completeWeight_le
           block P hr hs hcomponent hbinary htwo J)
-      (fun N J =>
+      (fun N {_b} J =>
         degreeThreeFourBlockTwoSignSection_bundledWeight_le
           block P hr hs hcomponent hbinary htwo N J)
       (fun J => by
@@ -52,7 +52,11 @@ noncomputable def degreeThreeFourBlockTwoSignComparisonSource :
         (degreeThreeFourBlock_twoSign_order_le
           block P hr hs hcomponent hbinary htwo))
       (by norm_num)
-  · let tailCoefficient : ℝ :=
+  · have hfin : Module.finrank (ZMod P.p)
+        (TranslationSubmodule block P) = 4 :=
+      (degreeThreeFourBlockTwoSign_translation_finrank_eq_two_or_four
+        block P hr hs hcomponent hbinary htwo).resolve_left hfin
+    let tailCoefficient : ℝ :=
       Nat.card (preE7NonPairAction w U ≃* preE7NonPairAction w U)
     exact degreeThreeFourBlockTwoSignComparison_of_literalBounds
       block P
@@ -67,7 +71,7 @@ noncomputable def degreeThreeFourBlockTwoSignComparisonSource :
       (fun J =>
         degreeThreeFourBlockTwoSign_signedQuotient_completeWeight_le
           block P hr hs hcomponent hbinary htwo J)
-      (fun N J =>
+      (fun N {_b} J =>
         degreeThreeFourBlockTwoSignSection_bundledWeight_le
           block P hr hs hcomponent hbinary htwo N J)
       (fun J => by

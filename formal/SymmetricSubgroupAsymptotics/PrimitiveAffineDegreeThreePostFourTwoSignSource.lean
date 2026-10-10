@@ -104,8 +104,10 @@ private theorem two_rpow_oneHundredSeventy_width_le_menuMass
     lt_trans (by norm_num) Real.log_two_gt_d9
   have hlog : (10 : ℝ) / 3 ≤
       Real.log ((w + b + 2 : ℕ) : ℝ) := by
-    norm_num at hmono
-    linarith
+    have hstrict : (10 : ℝ) / 3 < 5 * Real.log 2 := by
+      nlinarith
+    exact le_trans (le_of_lt hstrict) (by
+      simpa only [Nat.cast_ofNat] using hmono)
   have hw0 : (0 : ℝ) ≤ w := by positivity
   nlinarith [sq_nonneg
     (Real.log ((w + b + 2 : ℕ) : ℝ) - 10 / 3)]
@@ -170,13 +172,19 @@ theorem degreeThreePostFourTwoSign_coefficient_menu
       rw [hs12] at hA
       exact hA.trans (by norm_num)
     have hXprod : Nat.card (X × C2) ≤ 2 ^ 32 := by
-      rw [Nat.card_prod]
-      norm_num [C2, Nat.card_zmod]
-      omega
+      calc
+        Nat.card (X × C2) = Nat.card X * 2 := by
+          rw [Nat.card_prod]
+          norm_num [C2, Nat.card_zmod]
+        _ ≤ (2 ^ 31) * 2 := Nat.mul_le_mul_right 2 hXpow
+        _ = 2 ^ 32 := by norm_num
     have hAprod : Nat.card (A × C2) ≤ 2 ^ 30 := by
-      rw [Nat.card_prod]
-      norm_num [C2, Nat.card_zmod]
-      omega
+      calc
+        Nat.card (A × C2) = Nat.card A * 2 := by
+          rw [Nat.card_prod]
+          norm_num [C2, Nat.card_zmod]
+        _ ≤ (2 ^ 29) * 2 := Nat.mul_le_mul_right 2 hApow
+        _ = 2 ^ 30 := by norm_num
     have hD0 : D0.coefficient ≤ 2 ^ 991 := by
       apply D0.coefficient_le_two_pow_of_card_le_pow
         31 29 0 hXpow hApow
@@ -203,7 +211,11 @@ theorem degreeThreePostFourTwoSign_coefficient_menu
         (D.coefficient : ℝ) ≤ ((2 ^ 2048 : ℕ) : ℝ) := by
           exact_mod_cast hDnat
         _ = (2 : ℝ) ^ (2048 : ℝ) := by
-          norm_num [Real.rpow_natCast]
+          calc
+            ((2 ^ 2048 : ℕ) : ℝ) = (2 : ℝ) ^ (2048 : ℕ) :=
+              Nat.cast_pow 2 2048
+            _ = (2 : ℝ) ^ (2048 : ℝ) :=
+              (Real.rpow_natCast 2 2048).symm
     calc
       H.coefficient * (D.coefficient : ℝ) ≤
           (2 : ℝ) ^ (2560 : ℝ) * (2 : ℝ) ^ (2048 : ℝ) :=
@@ -227,13 +239,19 @@ theorem degreeThreePostFourTwoSign_coefficient_menu
       rw [hs18] at hA
       exact hA.trans (by norm_num)
     have hXprod : Nat.card (X × C2) ≤ 2 ^ 56 := by
-      rw [Nat.card_prod]
-      norm_num [C2, Nat.card_zmod]
-      omega
+      calc
+        Nat.card (X × C2) = Nat.card X * 2 := by
+          rw [Nat.card_prod]
+          norm_num [C2, Nat.card_zmod]
+        _ ≤ (2 ^ 55) * 2 := Nat.mul_le_mul_right 2 hXpow
+        _ = 2 ^ 56 := by norm_num
     have hAprod : Nat.card (A × C2) ≤ 2 ^ 54 := by
-      rw [Nat.card_prod]
-      norm_num [C2, Nat.card_zmod]
-      omega
+      calc
+        Nat.card (A × C2) = Nat.card A * 2 := by
+          rw [Nat.card_prod]
+          norm_num [C2, Nat.card_zmod]
+        _ ≤ (2 ^ 53) * 2 := Nat.mul_le_mul_right 2 hApow
+        _ = 2 ^ 54 := by norm_num
     have hD0 : D0.coefficient ≤ 2 ^ 3079 := by
       apply D0.coefficient_le_two_pow_of_card_le_pow
         55 53 0 hXpow hApow
@@ -260,7 +278,11 @@ theorem degreeThreePostFourTwoSign_coefficient_menu
         (D.coefficient : ℝ) ≤ ((2 ^ 6272 : ℕ) : ℝ) := by
           exact_mod_cast hDnat
         _ = (2 : ℝ) ^ (6272 : ℝ) := by
-          norm_num [Real.rpow_natCast]
+          calc
+            ((2 ^ 6272 : ℕ) : ℝ) = (2 : ℝ) ^ (6272 : ℕ) :=
+              Nat.cast_pow 2 6272
+            _ = (2 : ℝ) ^ (6272 : ℝ) :=
+              (Real.rpow_natCast 2 6272).symm
     calc
       H.coefficient * (D.coefficient : ℝ) ≤
           (2 : ℝ) ^ (2880 : ℝ) * (2 : ℝ) ^ (6272 : ℝ) :=
@@ -281,7 +303,8 @@ theorem degreeThreePostFourTwoSign_margin
     (hr : Nat.card block.Fibre = 3)
     (hs : Nat.card block.Points = 12 ∨ Nat.card block.Points = 18) :
     preE7CharacterRho * w ≤
-      ((evenWidth w : ℝ) - ((Nat.card block.Points + 2) + 2)) / 8 -
+      ((evenWidth w : ℝ) -
+          (((Nat.card block.Points + 2) + 2 : ℕ) : ℝ)) / 8 -
         Real.logb 2 3 / 3 *
           ternaryWidthCore (Nat.card block.Points)
             ((Nat.card block.Points).factorization 3) := by

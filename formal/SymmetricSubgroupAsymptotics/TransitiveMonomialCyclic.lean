@@ -49,6 +49,7 @@ theorem representationGeneratedBy_one_of_transitive_monomial
       rho.asModuleEquiv.symm (Pi.single j z) ∈ W := by
     intro j z
     obtain ⟨g, hg⟩ := MulAction.exists_smul_eq G i₀ j
+    change top g i₀ = j at hg
     obtain ⟨c, hc, hgc⟩ := hmonomial g i₀
     let d : k := z * c⁻¹
     have hmem := W.smul_mem (MonoidAlgebra.single g d) hgenerator

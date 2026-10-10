@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.BinaryPairFrameSignTopAction
 import SymmetricSubgroupAsymptotics.BinaryPairFrameTernarySignedRepresentation
 import SymmetricSubgroupAsymptotics.CoprimeCyclicRestrictionGenerators
 import SymmetricSubgroupAsymptotics.TernarySignedWreathThreeCyclic
+import Mathlib.GroupTheory.Coset.Card
 
 /-!
 # Cyclic submodules on a binary-sized sign fibre
@@ -15,6 +16,7 @@ Maschke projection then makes every subrepresentation on that fibre cyclic.
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option maxHeartbeats 800000
 noncomputable section
 open scoped Classical
 
@@ -23,7 +25,7 @@ namespace BinaryPairFrame
 
 open OddMarkerTernaryChart
 
-variable {X I : Type*} {G : Subgroup (Equiv.Perm X)}
+variable {X I : Type} {G : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame G I)
 
 /-- Restrict the affine wreath coordinates to the stabilizer of one sign
@@ -41,18 +43,20 @@ def signFiberWreathEmbedding
   map_one' := by
     apply PermutationalWreathProduct.ext
     · funext i
-      apply Multiplicative.toAdd.injective
-      simp only [Multiplicative.toAdd_ofAdd, Pi.one_apply,
-        Multiplicative.toAdd_one]
-      exact congrFun F.affineTranslation_one i.1
+      simpa only using congrArg Multiplicative.ofAdd
+        (congrFun F.affineTranslation_one i.1)
     · rfl
   map_mul' u v := by
     apply PermutationalWreathProduct.ext
     · funext i
-      apply Multiplicative.toAdd.injective
+      apply Multiplicative.ofAdd.injective
       change F.affineTranslation (u.1 * v.1) i.1 =
         F.affineTranslation u.1 i.1 +
-          F.affineTranslation v.1 ((F.top u.1)⁻¹ i.1)
+          F.affineTranslation v.1 (u⁻¹ • i).1
+      have hact : (u⁻¹ • i).1 = (F.top u.1)⁻¹ i.1 := by
+        simpa only [Subgroup.coe_inv, map_inv] using
+          coordinateSignFiberTopPerm_apply F chi u⁻¹ i
+      rw [hact]
       have h := congrFun (F.affineTranslation_mul u.1 v.1) i.1
       simpa only [permutationFunctionRepresentation_apply, add_comm] using h
     · rfl
@@ -97,8 +101,9 @@ theorem signFiberRepresentation_single
   funext j
   by_cases hj : j = u • i
   · subst j
-    simp only [signFiberRepresentation_apply, inv_smul_smul,
-      Pi.single_eq_same, mul_one, c]
+    rw [signFiberRepresentation_apply]
+    have hinv : u⁻¹ • (u • i) = i := inv_smul_smul u i
+    rw [hinv, Pi.single_eq_same, Pi.single_eq_same, mul_one]
   · have hpre : u⁻¹ • j ≠ i := by
       intro h
       apply hj
@@ -114,7 +119,7 @@ theorem neZero_card_zmod_three_of_isPGroup_two
   obtain ⟨a, ha⟩ := IsPGroup.iff_card.mp hP
   constructor
   rw [ha, Nat.cast_pow]
-  exact pow_ne_zero a (by norm_num : (2 : ZMod 3) ≠ 0)
+  exact pow_ne_zero a (by decide : (2 : ZMod 3) ≠ 0)
 
 /-- Every subrepresentation on a power-of-two sign fibre is cyclic. -/
 theorem signFiber_uniformSubrepresentationGeneratorBound_one
@@ -127,6 +132,9 @@ theorem signFiber_uniformSubrepresentationGeneratorBound_one
   obtain ⟨P, hP, hPtrans⟩ :=
     exists_transitive_binarySubgroup_of_coordinateSignFiber
       F htrans chi a hcard
+  obtain ⟨i₀, hi₀⟩ := coordinateSign_surjective F chi
+  letI : Nonempty {i : I // coordinateSign F i = chi} :=
+    ⟨⟨i₀, hi₀⟩⟩
   letI : NeZero (Nat.card P : ZMod 3) :=
     neZero_card_zmod_three_of_isPGroup_two hP
   apply uniformSubrepresentationGeneratorBound_of_coprime_cyclic_restriction
@@ -139,9 +147,27 @@ theorem signFiber_uniformSubrepresentationGeneratorBound_one
   intro u i
   let c := signScalar (Multiplicative.ofAdd
     (F.affineTranslation u.1.1 (u.1 • i).1))
-  refine ⟨c, ?_⟩
-  simpa only [Representation.comp_apply, MonoidHom.comp_apply, topP, c] using
-    (signFiberRepresentation_single F chi u.1 i)
+  have hc : c ≠ 0 := by
+    exact (signUnitHom (Multiplicative.ofAdd
+      (F.affineTranslation u.1.1 (u.1 • i).1))).ne_zero
+  refine ⟨c, hc, ?_⟩
+  simp only [MonoidHom.comp_apply, topP]
+  rw [show P.subtype u = u.1 by rfl]
+  have htop : coordinateSignFiberTopHom F chi u.1 i = u.1 • i := rfl
+  rw [htop]
+  funext j
+  by_cases hj : j = u.1 • i
+  · subst j
+    rw [signFiberRepresentation_apply]
+    have hinv : u.1⁻¹ • (u.1 • i) = i := inv_smul_smul u.1 i
+    rw [hinv]
+    simp only [Pi.single, Function.update_self, mul_one, c]
+  · have hpre : u.1⁻¹ • j ≠ i := by
+      intro h
+      apply hj
+      have := congrArg (u.1 • ·) h
+      simpa only [smul_inv_smul] using this
+    simp [signFiberRepresentation_apply, hj, hpre]
 
 /-- Record the signed fibre action in the faithful permutation wreath on
 the fibre itself.  Unlike `signFiberWreathEmbedding`, the top coordinate is
@@ -159,18 +185,23 @@ def signFiberPermutationWreathEmbedding
   map_one' := by
     apply PermutationalWreathProduct.ext
     · funext i
-      apply Multiplicative.toAdd.injective
-      simp only [Multiplicative.toAdd_ofAdd, Pi.one_apply,
-        Multiplicative.toAdd_one]
-      exact congrFun F.affineTranslation_one i.1
+      simpa only using congrArg Multiplicative.ofAdd
+        (congrFun F.affineTranslation_one i.1)
     · exact map_one (coordinateSignFiberTopHom F chi)
   map_mul' u v := by
     apply PermutationalWreathProduct.ext
     · funext i
-      apply Multiplicative.toAdd.injective
+      apply Multiplicative.ofAdd.injective
       change F.affineTranslation (u.1 * v.1) i.1 =
         F.affineTranslation u.1 i.1 +
-          F.affineTranslation v.1 ((F.top u.1)⁻¹ i.1)
+          F.affineTranslation v.1
+            (((coordinateSignFiberTopHom F chi) u)⁻¹ i).1
+      have hact : (((coordinateSignFiberTopHom F chi) u)⁻¹ i).1 =
+          (F.top u.1)⁻¹ i.1 := by
+        rw [← map_inv]
+        simpa only [Subgroup.coe_inv, map_inv] using
+          coordinateSignFiberTopPerm_apply F chi u⁻¹ i
+      rw [hact]
       have h := congrFun (F.affineTranslation_mul u.1 v.1) i.1
       simpa only [permutationFunctionRepresentation_apply, add_comm] using h
     · exact map_mul (coordinateSignFiberTopHom F chi) u v
@@ -214,10 +245,13 @@ theorem signFiber_uniformSubrepresentationGeneratorBound_one_of_card_three
     simpa only [pow_one] using hcard
   let f : P →* PermutationalWreathProduct
       (Multiplicative (ZMod 2)) (Equiv.Perm J) J :=
-    (signFiberPermutationWreathEmbedding F chi).comp P.subtype
+    (signFiberPermutationWreathEmbedding F chi).comp P.toSubgroup.subtype
   let H : Subgroup (PermutationalWreathProduct
       (Multiplicative (ZMod 2)) (Equiv.Perm J) J) := f.range
-  have hHP : IsPGroup 3 H := P.isPGroup'.map f
+  have hHP : IsPGroup 3 H := by
+    let hPgroup : IsPGroup 3 P := P.isPGroup'
+    exact hPgroup.of_surjective f.rangeRestrict
+      f.rangeRestrict_surjective
   obtain ⟨a, ha⟩ := IsPGroup.iff_card.mp hHP
   letI : MulAction.IsPretransitive P J := hPtrans
   letI : Nontrivial J := Finite.one_lt_card_iff_nontrivial.mp (by
@@ -236,7 +270,7 @@ theorem signFiber_uniformSubrepresentationGeneratorBound_one_of_card_three
       simpa only [f, signFiberPermutationWreathEmbedding,
         MonoidHom.comp_apply, PermutationalWreathProduct.one_right] using
         congrArg (fun q : Equiv.Perm J ↦ q i) hright
-    exact hij (hu.symm.trans hfix)
+    exact hij (hfix.symm.trans hu)
   let uH : H := ⟨f u, ⟨u, rfl⟩⟩
   have huH : uH ≠ 1 := by
     intro huH
@@ -245,18 +279,26 @@ theorem signFiber_uniformSubrepresentationGeneratorBound_one_of_card_three
   have hHone : 1 < Nat.card H :=
     Finite.one_lt_card_iff_nontrivial.mpr inferInstance
   have hdiv : Nat.card H ∣ 48 := by
-    have hd := Subgroup.card_dvd_card H
+    have hd := Subgroup.card_subgroup_dvd_card H
+    have hJcard : Nat.card J = 3 := by simpa only [J] using hcard
     rw [PermutationalWreathProduct.natCard_eq,
       Nat.card_congr Multiplicative.toAdd, Nat.card_zmod,
-      Nat.card_perm, J, hcard] at hd
-    norm_num at hd ⊢
+      Nat.card_perm, hJcard] at hd
+    norm_num at hd
+    exact hd
   have hapow : 3 ^ a ∣ 48 := by simpa only [ha] using hdiv
   have hale : a ≤ 1 := by
     have := (Nat.prime_three.pow_dvd_iff_le_factorization
       (by norm_num : 48 ≠ 0)).mp hapow
-    norm_num at this ⊢
+    have hfac : (Nat.factorization 48) 3 = 1 := by native_decide
+    simpa only [hfac] using this
   have haone : a = 1 := by
     rw [ha] at hHone
+    have hapos : 0 < a := by
+      by_contra h
+      have haz : a = 0 := Nat.eq_zero_of_not_pos h
+      subst a
+      norm_num at hHone
     omega
   have hHcard : Nat.card H = 3 := by
     rw [ha, haone, pow_one]
@@ -268,9 +310,9 @@ theorem signFiber_uniformSubrepresentationGeneratorBound_one_of_card_three
       (Q := Equiv.Perm J) (I := J) ternarySignRepresentation).comp
         H.subtype) f.rangeRestrict f.rangeRestrict_surjective
   have hrestriction : UniformSubrepresentationGeneratorBound
-      ((signFiberRepresentation F chi).comp P.subtype) 1 := by
+      ((signFiberRepresentation F chi).comp P.toSubgroup.subtype) 1 := by
     rw [signFiberRepresentation_eq_permutationWreath]
-    simpa only [Representation.comp_apply, MonoidHom.comp_apply, f, H] using
+    simpa only [MonoidHom.comp_apply, f, H] using
       hPuniform
   exact hrestriction.of_subgroup_restriction
     (signFiberRepresentation F chi) P

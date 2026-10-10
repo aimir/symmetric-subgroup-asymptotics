@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryPairFrameOneSignKernel
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeThreeFourBlockTwoSignCentralSeries
+import SymmetricSubgroupAsymptotics.SemidirectBinaryKernelCentralAxis
 
 /-!
 # The two-sign kernel of a transitive binary pair frame
@@ -16,6 +16,7 @@ assumption that the ambient source is a 2-group.
 -/
 
 set_option autoImplicit false
+set_option maxHeartbeats 800000
 noncomputable section
 open scoped Classical
 
@@ -24,7 +25,7 @@ namespace BinaryPairFrame
 
 private abbrev C2 := Multiplicative (ZMod 2)
 
-variable {X I : Type*} {G : Subgroup (Equiv.Perm X)}
+variable {X I : Type} {G : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame G I)
 
 /-- A literal coordinate bit, regarded as a multiplicative binary
@@ -306,6 +307,8 @@ theorem twoSignDifferenceKernel_card
     top_ker_card_eq_four_of_sign_count_two F htrans htwo] at hcard
   have hC2 : Nat.card C2 = 2 := by norm_num [C2, Nat.card_zmod]
   rw [hC2] at hcard
+  have hcard' : Nat.card (twoSignDifferenceHom F htwo).ker * 2 = 4 := by
+    exact hcard
   omega
 
 /-- The actual diagonal subgroup, embedded back in the source group. -/
@@ -378,8 +381,8 @@ theorem twoSignCentralAxis_le_center
   have hkfixed' := congrArg Subtype.val hkfixed
   change u * (k : G) * u⁻¹ = k at hkfixed'
   calc
-    (k : G) * u = (u * k * u⁻¹) * u := by rw [hkfixed']
-    _ = u * k := by simp [mul_assoc]
+    u * (k : G) = (u * k * u⁻¹) * u := by simp [mul_assoc]
+    _ = k * u := by rw [hkfixed']
 
 /-- The diagonal sign axis, packaged inside the literal top projection. -/
 noncomputable def twoSignTopCentralAxis

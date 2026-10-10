@@ -84,6 +84,8 @@ theorem degreeThreeFourBlockTwoSignSectionComplementD8Map_kernel_card_le_four
     rw [SemidirectProduct.card, Nat.card_prod]
     norm_num [Nat.card_zmod]
   rw [hindex] at hfactor
+  change Nat.card f.ker * 8 = Nat.card H at hfactor
+  change Nat.card f.ker ≤ 4
   omega
 
 /-- The central order-two axis in the split section map, before returning
@@ -164,8 +166,7 @@ theorem degreeThreeFourBlockTwoSignSectionWreathMap_comp_semidirectEquiv
   dsimp only
   apply MonoidHom.ext
   intro x
-  simp only [degreeThreeFourBlockTwoSignSectionWreathMap,
-    MonoidHom.comp_apply, MulEquiv.apply_symm_apply]
+  simp [degreeThreeFourBlockTwoSignSectionWreathMap]
 
 /-- If no binary kernel remains in the chosen complement, the literal
 section-to-wreath epimorphism is an isomorphism. -/

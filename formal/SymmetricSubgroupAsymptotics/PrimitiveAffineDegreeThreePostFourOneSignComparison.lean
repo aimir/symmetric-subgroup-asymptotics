@@ -109,7 +109,7 @@ theorem degreeThreePostFourOneSignProjectiveMap_central_kernel
     BinaryPairFrame.top_ker_le_center_of_sign_count_one
       (OneSignFrame block P hr) hone k.2
   have hcomm : (k : (quotientAction block P).range) * u = u * k :=
-    Subgroup.mem_center_iff.mp hkcenter u
+    (Subgroup.mem_center_iff.mp hkcenter u).symm
   change degreeThreeSignedQuotientRangeEquiv block P z *
       degreeThreeSignedQuotientRangeEquiv block P x =
     degreeThreeSignedQuotientRangeEquiv block P x *

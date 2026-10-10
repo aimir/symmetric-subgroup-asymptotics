@@ -20,7 +20,7 @@ namespace BinaryPairFrame
 
 open OddMarkerTernaryChart
 
-variable {X I : Type*} {G : Subgroup (Equiv.Perm X)}
+variable {X I : Type} {G : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame G I)
 
 /-- The inverse affine sign at the inverse-transported coordinate equals
@@ -31,7 +31,6 @@ theorem affineTranslation_inv_at_inv_top
       F.affineTranslation u i := by
   have h := congrFun (F.affineTranslation_mul u u⁻¹) i
   rw [mul_inv_cancel, F.affineTranslation_one] at h
-  simp only [permutationFunctionRepresentation_apply] at h
   have hneg := eq_neg_of_add_eq_zero_left h.symm
   simpa only [ZMod.neg_eq_self_mod_two] using hneg
 
@@ -45,10 +44,10 @@ def ternarySignedCoordinateDualEquiv [Finite I] :
 contragredient. -/
 theorem ternarySignedCoordinateDualEquiv_intertwines
     [Finite I] (u : G) :
-    (ternarySignedCoordinateDualEquiv F).toLinearMap.comp
+    (ternarySignedCoordinateDualEquiv (I := I)).toLinearMap.comp
       (ternarySignedRepresentation F u) =
       ((ternarySignedRepresentation F).dual u).comp
-        (ternarySignedCoordinateDualEquiv F).toLinearMap := by
+        (ternarySignedCoordinateDualEquiv (I := I)).toLinearMap := by
   apply LinearMap.ext
   intro v
   apply (Pi.basisFun (ZMod 3) I).ext
@@ -57,7 +56,8 @@ theorem ternarySignedCoordinateDualEquiv_intertwines
   let c := signScalar
     (Multiplicative.ofAdd (F.affineTranslation u⁻¹ j))
   have hsingle := (ternarySignedRepresentation_single F u⁻¹ i).2
-  have hj : F.top u⁻¹ i = j := rfl
+  have hj : F.top u⁻¹ i = j := by
+    simp only [j, map_inv]
   change
     (Pi.basisFun (ZMod 3) I).toDual
         (ternarySignedRepresentation F u v)
@@ -65,13 +65,14 @@ theorem ternarySignedCoordinateDualEquiv_intertwines
       (Pi.basisFun (ZMod 3) I).toDual v
         (ternarySignedRepresentation F u⁻¹
           ((Pi.basisFun (ZMod 3) I) i))
-  rw [(Pi.basisFun (ZMod 3) I).toDual_apply_right,
+  rw [(Pi.basisFun (ZMod 3) I).toDual_apply_left,
     Pi.basisFun_repr, Pi.basisFun_apply, hsingle]
+  rw [hj]
   rw [show Pi.single j c = c • (Pi.basisFun (ZMod 3) I) j by
     rw [Pi.basisFun_apply]
     ext k
     by_cases hkj : k = j <;> simp [Pi.single_apply, hkj]]
-  rw [map_smul, (Pi.basisFun (ZMod 3) I).toDual_apply_right,
+  rw [map_smul, (Pi.basisFun (ZMod 3) I).toDual_apply_left,
     Pi.basisFun_repr]
   change
     signScalar (Multiplicative.ofAdd (F.affineTranslation u i)) * v j =
@@ -85,7 +86,7 @@ theorem ternarySignedCoordinateDualEquiv_intertwines
 def ternarySignedRepresentationDualEquiv [Finite I] :
     (ternarySignedRepresentation F).Equiv
       (ternarySignedRepresentation F).dual :=
-  Representation.Equiv.mk (ternarySignedCoordinateDualEquiv F)
+  Representation.Equiv.mk (ternarySignedCoordinateDualEquiv (I := I))
     (ternarySignedCoordinateDualEquiv_intertwines F)
 
 /-- Any uniform subrepresentation-generator theorem for the signed module

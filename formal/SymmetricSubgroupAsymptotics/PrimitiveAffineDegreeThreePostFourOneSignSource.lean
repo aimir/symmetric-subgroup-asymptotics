@@ -329,7 +329,14 @@ private theorem two_rpow_oneHundredTwelve_width_le_menuMass
   have hlog : (8 : ℝ) / 3 ≤
       Real.log ((w + b + 2 : ℕ) : ℝ) := by
     norm_num at hmono
-    linarith
+    have hstrict : (8 : ℝ) / 3 < 4 * Real.log 2 := by
+      nlinarith [hlogtwo]
+    have hcast : (((w + b + 2 : ℕ) : ℝ)) =
+        (w : ℝ) + (b : ℝ) + 2 := by
+      push_cast
+      ring
+    rw [hcast]
+    exact hstrict.le.trans hmono
   have hw0 : (0 : ℝ) ≤ w := by positivity
   nlinarith [sq_nonneg
     (Real.log ((w + b + 2 : ℕ) : ℝ) - 8 / 3)]
@@ -412,7 +419,8 @@ theorem degreeThreePostFourOneSign_coefficient_menu
       calc
         (D.coefficient : ℝ) ≤ ((2 ^ 930 : ℕ) : ℝ) := by
           exact_mod_cast hDnat
-        _ = (2 : ℝ) ^ (930 : ℝ) := by norm_num [Real.rpow_natCast]
+        _ = (2 : ℝ) ^ (930 : ℝ) := by
+          exact_mod_cast (rfl : (2 : ℕ) ^ 930 = 2 ^ 930)
     calc
       H.coefficient * (D.coefficient : ℝ) ≤
           (2 : ℝ) ^ (2560 : ℝ) * (2 : ℝ) ^ (930 : ℝ) :=
@@ -444,7 +452,8 @@ theorem degreeThreePostFourOneSign_coefficient_menu
       calc
         (D.coefficient : ℝ) ≤ ((2 ^ 2970 : ℕ) : ℝ) := by
           exact_mod_cast hDnat
-        _ = (2 : ℝ) ^ (2970 : ℝ) := by norm_num [Real.rpow_natCast]
+        _ = (2 : ℝ) ^ (2970 : ℝ) := by
+          exact_mod_cast (rfl : (2 : ℕ) ^ 2970 = 2 ^ 2970)
     calc
       H.coefficient * (D.coefficient : ℝ) ≤
           (2 : ℝ) ^ (2880 : ℝ) * (2 : ℝ) ^ (2970 : ℝ) :=
@@ -539,7 +548,7 @@ noncomputable def degreeThreePostFourOneSignSource
           (by norm_num)) H.capacity_nonneg
       exponent_margin := by
         have hm := degreeThreePostFourOneSign_margin block hr hs
-        simpa only [hcap] using hm
+        simpa only [hcap, Nat.cast_add, Nat.cast_ofNat] using hm
       tail_window := by
         rcases hs with hs | hs | hs
         · have hw18 : w = 18 := by simpa only [hr, hs] using width_eq block

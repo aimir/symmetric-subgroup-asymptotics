@@ -14,6 +14,7 @@ of all fibres and generates the complete submodule.
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
+set_option maxHeartbeats 800000
 noncomputable section
 open scoped BigOperators Classical MonoidAlgebra
 
@@ -22,7 +23,9 @@ namespace BinaryPairFrame
 
 open OddMarkerTernaryChart
 
-variable {X I : Type*} {G : Subgroup (Equiv.Perm X)}
+attribute [local instance] Fintype.ofFinite
+
+variable {X I : Type} {G : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame G I)
 
 /-- Projection onto the coordinates carrying one realized literal sign. -/
@@ -66,6 +69,7 @@ theorem isotypeProjection_coordinateSignScalarLabel
   rw [DiagonalIsotypeProjection.isotypeProjection_apply,
     coordinateSignProjection_apply]
   congr 1
+  apply propext
   constructor
   · intro h
     apply Subtype.ext
@@ -97,6 +101,7 @@ theorem coordinateSignProjection_mem [Finite I]
     exact (ternarySignedRepresentation_kernel_apply F k x i).symm
   rw [hrep]
   exact M.apply_mem_toSubmodule k.1 hx
+  exact hv
 
 /-- Reconstruction is the sum of the literal sign-fibre projections. -/
 theorem sum_coordinateSignProjection [Finite I]
@@ -105,11 +110,16 @@ theorem sum_coordinateSignProjection [Finite I]
   funext i
   rw [Finset.sum_apply]
   let chi := coordinateSign F i
-  apply Finset.sum_eq_single chi
-  · intro psi _hpsi hne
-    simp only [coordinateSignProjection_apply]
-    exact if_neg (fun h ↦ hne h.symm)
-  · simp [chi]
+  change Finset.sum (Finset.univ : Finset (CoordinateSign F))
+    (fun psi ↦ coordinateSignProjection F psi v i) = v i
+  calc
+    _ = coordinateSignProjection F chi v i := by
+      apply Finset.sum_eq_single chi
+      · intro psi _hpsi hne
+        simp only [coordinateSignProjection_apply]
+        exact if_neg (fun h ↦ hne h.symm)
+      · simp
+    _ = v i := by simp [chi]
 
 /-- Extend a vector on one literal sign fibre by zero. -/
 def signFiberExtension (chi : CoordinateSign F) :
@@ -157,13 +167,34 @@ theorem signFiberExtension_equivariant
   funext i
   by_cases hi : coordinateSign F i = chi
   · let ii : {i : I // coordinateSign F i = chi} := ⟨i, hi⟩
-    change
+    have hfix : u.1 • chi = chi :=
+      MulAction.mem_stabilizer_iff.mp u.2
+    have hfixinv : u.1⁻¹ • chi = chi := by
+      calc
+        u.1⁻¹ • chi = u.1⁻¹ • (u.1 • chi) :=
+          congrArg (u.1⁻¹ • ·) hfix.symm
+        _ = chi := inv_smul_smul u.1 chi
+    have hpre : coordinateSign F ((F.top u.1)⁻¹ i) = chi := by
+      calc
+        coordinateSign F ((F.top u.1)⁻¹ i) =
+            coordinateSign F (F.top u.1⁻¹ i) := by rw [map_inv]
+        _ = u.1⁻¹ • coordinateSign F i :=
+          (smul_coordinateSign F u.1⁻¹ i).symm
+        _ = u.1⁻¹ • chi := congrArg (u.1⁻¹ • ·) hi
+        _ = chi := hfixinv
+    have hpre' : coordinateSign F ((Equiv.symm (F.top u.1)) i) = chi := by
+      simpa only [Equiv.Perm.inv_def] using hpre
+    change (if h : coordinateSign F i = chi then
+        signFiberRepresentation F chi u v ⟨i, h⟩ else 0) =
       signScalar (Multiplicative.ofAdd (F.affineTranslation u.1 i)) *
-          v (u⁻¹ • ii) =
-        signScalar (Multiplicative.ofAdd (F.affineTranslation u.1 i)) *
-          (signFiberExtension F chi v) ((F.top u.1)⁻¹ i)
+        (if h : coordinateSign F ((F.top u.1)⁻¹ i) = chi then
+          v ⟨(F.top u.1)⁻¹ i, h⟩ else 0)
+    rw [dif_pos hi, dif_pos hpre, signFiberRepresentation_apply]
     congr 1
-    simp [signFiberExtension, ii]
+    apply congrArg v
+    apply Subtype.ext
+    change F.top u.1⁻¹ i = (F.top u.1)⁻¹ i
+    rw [map_inv]
   · have hpre : coordinateSign F ((F.top u.1)⁻¹ i) ≠ chi := by
       intro hpre
       apply hi
@@ -175,7 +206,9 @@ theorem signFiberExtension_equivariant
         _ = chi := by
           rw [hpre]
           exact MulAction.mem_stabilizer_iff.mp u.2
-    simp [signFiberExtension, hi, hpre,
+    have hpre' : coordinateSign F ((Equiv.symm (F.top u.1)) i) ≠ chi := by
+      simpa only [Equiv.Perm.inv_def] using hpre
+    simp [signFiberExtension, hi, hpre',
       ternarySignedRepresentation_apply]
 
 /-- The piece of an invariant submodule supported on one sign fibre. -/
@@ -242,7 +275,7 @@ theorem ternarySignedRepresentation_uniformSubrepresentationGeneratorBound_one
   let inclusion := signFiberSubrepresentationInclusion F M chi
   let generator : Fin 1 → M.toRepresentation.asModule := fun _ ↦
     M.toRepresentation.asModuleEquiv.symm
-      (inclusion (a 0)).1
+      (inclusion (a 0))
   let W : Submodule (ZMod 3)[G] M.toRepresentation.asModule :=
     Submodule.span (ZMod 3)[G] (Set.range generator)
   let N : Subrepresentation M.toRepresentation :=
@@ -289,9 +322,13 @@ theorem ternarySignedRepresentation_uniformSubrepresentationGeneratorBound_one
         apply hi
         apply (coordinateSignTopPerm F u).injective
         simpa only [coordinateSignTopPerm_apply,
-          coordinateSignTopMap_apply_coordinate, hu] using heq
-      simp [y, z, ternarySignedRepresentation_apply,
-        coordinateSignProjection_apply, hnotpsi]
+          coordinateSignTopMap_apply_coordinate] using heq.trans hu.symm
+      change (ternarySignedRepresentation F u⁻¹
+        (coordinateSignProjection F psi x.1)) i = 0
+      rw [ternarySignedRepresentation_apply]
+      have hcoord : (F.top u⁻¹)⁻¹ i = F.top u i := by
+        rw [map_inv, inv_inv]
+      rw [hcoord, coordinateSignProjection_apply, if_neg hnotpsi, mul_zero]
     have hyext : signFiberExtension F chi
         (signFiberRestriction F chi y.1) = y.1 :=
       signFiberExtension_restriction_of_supported F chi y.1 hysupport
@@ -303,10 +340,14 @@ theorem ternarySignedRepresentation_uniformSubrepresentationGeneratorBound_one
         exact y.2⟩
     have hyN : y ∈ N.toSubmodule := by
       have := hfiber_le yF
-      simpa only [inclusion, signFiberSubrepresentationInclusion, yF,
-        hyext] using this
+      have hincl : inclusion yF = y := by
+        apply Subtype.ext
+        exact hyext
+      rw [← hincl]
+      exact this
     have huz : M.toRepresentation u y = z := by
       simp [y]
+    change z ∈ N.toSubmodule
     rw [← huz]
     exact N.apply_mem_toSubmodule u hyN
   have hsum : (∑ psi : CoordinateSign F,
@@ -318,6 +359,10 @@ theorem ternarySignedRepresentation_uniformSubrepresentationGeneratorBound_one
       (⟨coordinateSignProjection F psi x.1,
         coordinateSignProjection_mem F M psi x.1 x.2⟩ : M.toSubmodule)) = x := by
     apply Subtype.ext
+    change M.toSubmodule.subtype (∑ psi : CoordinateSign F,
+      (⟨coordinateSignProjection F psi x.1,
+        coordinateSignProjection_mem F M psi x.1 x.2⟩ : M.toSubmodule)) = x.1
+    rw [map_sum]
     exact sum_coordinateSignProjection F x.1
   rw [heq] at hsum
   exact hsum

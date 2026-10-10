@@ -37,31 +37,78 @@ noncomputable def degreeThreeNonzeroSignedKernelPostFourSource
     Finite.one_lt_card_iff_nontrivial.mp (by rw [hr]; norm_num)
   have hsplit := degreeThreePostFour_highSign_or_lowSign
     block P hr hcomponent hs
-  rcases hsplit with hhigh | hlow
+  by_cases hhigh :
+      (Nat.card block.Points = 6 ∧
+          2 ≤ Nat.card (BinaryPairFrame.CoordinateSign
+            (degreeThreeSignedQuotientPairFrame block P hr))) ∨
+        (Nat.card block.Points = 12 ∧
+          3 ≤ Nat.card (BinaryPairFrame.CoordinateSign
+            (degreeThreeSignedQuotientPairFrame block P hr))) ∨
+        (Nat.card block.Points = 18 ∧
+          6 ≤ Nat.card (BinaryPairFrame.CoordinateSign
+            (degreeThreeSignedQuotientPairFrame block P hr)))
   · exact degreeThreeSixOrTwelveHighSignIdentitySource block P
       hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
       hr hcomponent hhigh
-  · rcases hlow with ⟨hs6, hone⟩ |
-      ⟨hs12, hone | htwo⟩ |
-      ⟨hs18, hone | htwo | hthree⟩
-    · exact degreeThreePostFourOneSignSource block P
+  · have hlow := hsplit.resolve_left hhigh
+    by_cases hs6 : Nat.card block.Points = 6
+    · have hone : Nat.card (BinaryPairFrame.CoordinateSign
+          (degreeThreeSignedQuotientPairFrame block P hr)) = 1 := by
+        rcases hlow with h6 | h12 | h18
+        · exact h6.2
+        · omega
+        · omega
+      exact degreeThreePostFourOneSignSource block P
         hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
         hr (Or.inl hs6) hone
-    · exact degreeThreePostFourOneSignSource block P
-        hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
-        hr (Or.inr (Or.inl hs12)) hone
-    · exact degreeThreePostFourTwoSignSource block P
-        hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
-        hr (Or.inl hs12) hcomponent htwo
-    · exact degreeThreePostFourOneSignSource block P
-        hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
-        hr (Or.inr (Or.inr hs18)) hone
-    · exact degreeThreePostFourTwoSignSource block P
-        hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
-        hr (Or.inr hs18) hcomponent htwo
-    · exact degreeThreeEighteenThreeSignIdentitySource block P
-        hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
-        hr hcomponent hs18 hthree
+    · by_cases hs12 : Nat.card block.Points = 12
+      · have h12 : Nat.card (BinaryPairFrame.CoordinateSign
+            (degreeThreeSignedQuotientPairFrame block P hr)) = 1 ∨
+            Nat.card (BinaryPairFrame.CoordinateSign
+              (degreeThreeSignedQuotientPairFrame block P hr)) = 2 := by
+          rcases hlow with h6 | h12' | h18
+          · omega
+          · exact h12'.2
+          · omega
+        by_cases hone : Nat.card (BinaryPairFrame.CoordinateSign
+            (degreeThreeSignedQuotientPairFrame block P hr)) = 1
+        · exact degreeThreePostFourOneSignSource block P
+            hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
+            hr (Or.inr (Or.inl hs12)) hone
+        · have htwo := h12.resolve_left hone
+          exact degreeThreePostFourTwoSignSource block P
+            hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
+            hr (Or.inl hs12) hcomponent htwo
+      · have hs18 : Nat.card block.Points = 18 := by
+          rcases hs with hs6' | hs12' | hs18'
+          · exact (hs6 hs6').elim
+          · exact (hs12 hs12').elim
+          · exact hs18'
+        have h18 : Nat.card (BinaryPairFrame.CoordinateSign
+              (degreeThreeSignedQuotientPairFrame block P hr)) = 1 ∨
+            Nat.card (BinaryPairFrame.CoordinateSign
+              (degreeThreeSignedQuotientPairFrame block P hr)) = 2 ∨
+            Nat.card (BinaryPairFrame.CoordinateSign
+              (degreeThreeSignedQuotientPairFrame block P hr)) = 3 := by
+          rcases hlow with h6 | h12 | h18'
+          · omega
+          · omega
+          · exact h18'.2
+        by_cases hone : Nat.card (BinaryPairFrame.CoordinateSign
+            (degreeThreeSignedQuotientPairFrame block P hr)) = 1
+        · exact degreeThreePostFourOneSignSource block P
+            hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
+            hr (Or.inr (Or.inr hs18)) hone
+        · have h23 := h18.resolve_left hone
+          by_cases htwo : Nat.card (BinaryPairFrame.CoordinateSign
+              (degreeThreeSignedQuotientPairFrame block P hr)) = 2
+          · exact degreeThreePostFourTwoSignSource block P
+              hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
+              hr (Or.inr hs18) hcomponent htwo
+          · have hthree := h23.resolve_left htwo
+            exact degreeThreeEighteenThreeSignIdentitySource block P
+              hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
+              hr hcomponent hs18 hthree
 
 /-- Fully concrete degree-three residual source, depending only on the
 published inputs already exposed by the surrounding affine theorem. -/

@@ -22,7 +22,6 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace DegreeSixS3Wreath
 
-private abbrev C2 := Multiplicative (ZMod 2)
 private abbrev V4 := C2 × C2
 
 /-- The standard monomial `D8` representation on the additive ternary

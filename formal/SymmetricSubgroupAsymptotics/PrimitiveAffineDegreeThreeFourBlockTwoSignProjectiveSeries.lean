@@ -222,7 +222,7 @@ theorem degreeThreeFourBlockTwoSign_projectiveMapAfterCentralAxis_central_kernel
   have hz' : z ∈ pi.ker.map (QuotientGroup.mk' S.C) := by
     simpa only [degreeThreeFourBlockTwoSign_projectiveMapAfterCentralAxis,
       pi, S, QuotientGroup.ker_lift] using hz
-  exact Subgroup.mem_center_iff.mp (S.quotientKernel_le_center hz') x
+  exact (Subgroup.mem_center_iff.mp (S.quotientKernel_le_center hz') x).symm
 
 /-- The remaining central projective kernel has order at most two. -/
 theorem degreeThreeFourBlockTwoSign_projectiveMapAfterCentralAxis_kernel_card_le
@@ -248,7 +248,7 @@ theorem degreeThreeFourBlockTwoSign_projectiveMapAfterCentralAxis_kernel_card_le
   let f : K →* L := q.subgroupMap K
   have hf : Function.Surjective f := q.subgroupMap_surjective K
   have hker : f.ker = S.C.subgroupOf K := by
-    rw [MonoidHom.ker_subgroupMap, QuotientGroup.ker_mk']
+    rw [Subgroup.ker_subgroupMap, QuotientGroup.ker_mk']
   have hkerCard : Nat.card f.ker = 2 := by
     rw [hker,
       Nat.card_congr (Subgroup.subgroupOfEquivOfLe S.C_le_K).toEquiv,

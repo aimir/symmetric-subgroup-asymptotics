@@ -81,8 +81,7 @@ noncomputable def degreeThreeHighSignJointCapacity
           (degreeThreeSignedQuotientPairFrame block P hr)))) :
     (degreeThreeHighSignJointCapacity block P hTraceyHalf hTraceyLog
       hTraceyRefined hTraceyPerm hr hcomponent hsize).capacity = 1 := by
-  simp only [degreeThreeHighSignJointCapacity,
-    ActualWreathAffineCapacity.jointCapacitySharpenToOne_of_ambientDual_uniform_capacity]
+  simp [degreeThreeHighSignJointCapacity]
 
 theorem degreeThreeHighSignJointCapacity_coefficient_eq
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
@@ -105,8 +104,7 @@ theorem degreeThreeHighSignJointCapacity_coefficient_eq
       hTraceyRefined hTraceyPerm hr hcomponent hsize).coefficient =
       (translationLayerJointCapacity block P hTraceyHalf hTraceyLog
         hTraceyRefined hTraceyPerm).coefficient := by
-  simp only [degreeThreeHighSignJointCapacity,
-    ActualWreathAffineCapacity.jointCapacitySharpenToOne_of_ambientDual_uniform_coefficient]
+  simp [degreeThreeHighSignJointCapacity]
 
 /-- The high-sign post-four branch closes on the faithful literal signed
 quotient action of degree twice the block count. -/
@@ -201,18 +199,36 @@ noncomputable def degreeThreeSixOrTwelveHighSignIdentitySource
         rcases hs with hs | hs | hs
         · have hw18 : w = 18 := by simpa only [hs] using hw
           have hq12 : quotientDegree block = 12 := by simpa only [hs] using hq
-          rw [hw18, hq12]
-          norm_num [preE7CharacterRho, evenWidth, halfDegree]
+          have hw18R : (w : ℝ) = 18 := by exact_mod_cast hw18
+          have heven18R : (evenWidth w : ℝ) = 18 := by
+            rw [hw18]
+            norm_num [evenWidth, halfDegree]
+          have hq12R : (quotientDegree block : ℝ) = 12 := by
+            exact_mod_cast hq12
+          rw [hw18R, heven18R, hq12R]
+          norm_num [preE7CharacterRho]
           linarith
         · have hw36 : w = 36 := by simpa only [hs] using hw
           have hq24 : quotientDegree block = 24 := by simpa only [hs] using hq
-          rw [hw36, hq24]
-          norm_num [preE7CharacterRho, evenWidth, halfDegree]
+          have hw36R : (w : ℝ) = 36 := by exact_mod_cast hw36
+          have heven36R : (evenWidth w : ℝ) = 36 := by
+            rw [hw36]
+            norm_num [evenWidth, halfDegree]
+          have hq24R : (quotientDegree block : ℝ) = 24 := by
+            exact_mod_cast hq24
+          rw [hw36R, heven36R, hq24R]
+          norm_num [preE7CharacterRho]
           linarith
         · have hw54 : w = 54 := by simpa only [hs] using hw
           have hq36 : quotientDegree block = 36 := by simpa only [hs] using hq
-          rw [hw54, hq36]
-          norm_num [preE7CharacterRho, evenWidth, halfDegree]
+          have hw54R : (w : ℝ) = 54 := by exact_mod_cast hw54
+          have heven54R : (evenWidth w : ℝ) = 54 := by
+            rw [hw54]
+            norm_num [evenWidth, halfDegree]
+          have hq36R : (quotientDegree block : ℝ) = 36 := by
+            exact_mod_cast hq36
+          rw [hw54R, heven54R, hq36R]
+          norm_num [preE7CharacterRho]
           linarith
       simpa only [T, translationLayerEnvelopeOver_v,
         translationLayerEnvelopeOver_eta, Q,

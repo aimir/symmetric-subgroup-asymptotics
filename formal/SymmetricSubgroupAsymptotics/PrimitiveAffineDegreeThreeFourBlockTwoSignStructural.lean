@@ -21,6 +21,7 @@ literal and uses no normal-subgroup census.
 -/
 
 set_option autoImplicit false
+set_option maxHeartbeats 800000
 noncomputable section
 open scoped BigOperators Classical
 
@@ -199,9 +200,14 @@ theorem twoSign_uniform_mainCoefficient_le
     (2 : ℝ) ^ (200 : ℕ) + (2 : ℝ) ^ (128 : ℕ) +
         ∑ _N : TwoSignProperAxis E, (2 : ℝ) ^ (200 : ℕ) ≤
       (2 : ℝ) ^ (200 : ℕ) + (2 : ℝ) ^ (128 : ℕ) +
-        (2 : ℝ) ^ (344 : ℕ) := add_le_add_left hsections _
-    _ ≤ 3 * (2 : ℝ) ^ (344 : ℕ) := by linarith
-    _ ≤ 4 * (2 : ℝ) ^ (344 : ℕ) := by positivity
+        (2 : ℝ) ^ (344 : ℕ) :=
+      add_le_add (le_refl _) hsections
+    _ ≤ (2 : ℝ) ^ (344 : ℕ) + (2 : ℝ) ^ (344 : ℕ) +
+        (2 : ℝ) ^ (344 : ℕ) :=
+      add_le_add (add_le_add h200 h128) (le_refl _)
+    _ = 3 * (2 : ℝ) ^ (344 : ℕ) := by ring
+    _ ≤ 4 * (2 : ℝ) ^ (344 : ℕ) := by
+      exact mul_le_mul_of_nonneg_right (by norm_num) (by positivity)
     _ = (2 : ℝ) ^ (346 : ℕ) := by
       rw [show (4 : ℝ) = 2 ^ (2 : ℕ) by norm_num, ← pow_add]
     _ ≤ (2 : ℝ) ^ (384 : ℕ) :=

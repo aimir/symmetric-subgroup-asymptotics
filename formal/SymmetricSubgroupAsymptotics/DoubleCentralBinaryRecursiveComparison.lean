@@ -19,7 +19,7 @@ namespace DoubleCentralBinaryRecursiveComparison
 
 private abbrev C2 := Multiplicative (ZMod 2)
 
-variable (A : Type*) [Group A] [Finite A]
+variable (A : Type) [Group A] [Finite A]
 
 /-- The universal product comparator for two binary central factors. -/
 abbrev Comparator := (A × C2) × C2
@@ -43,7 +43,7 @@ theorem productProjection_surjective :
 /-- One central binary extension of `A`, controlled by the universal
 double-product comparator. -/
 noncomputable def centralGlobalComparison
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* A)
     (hpi : Function.Surjective pi)
     (hcentral : ∀ z ∈ pi.ker, ∀ x : R, z * x = x * z)
@@ -60,7 +60,7 @@ noncomputable def centralGlobalComparison
 
 /-- Recursive form of the one-step comparison. -/
 noncomputable def centralComparison
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* A)
     (hpi : Function.Surjective pi)
     (hcentral : ∀ z ∈ pi.ker, ∀ x : R, z * x = x * z)
@@ -72,7 +72,7 @@ noncomputable def centralComparison
 /-- The same central extension after adjoining one binary factor.  Its
 last required projective product is exactly the universal comparator. -/
 noncomputable def centralProductComparison
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* A)
     (hpi : Function.Surjective pi)
     (hcentral : ∀ z ∈ pi.ker, ∀ x : R, z * x = x * z)
@@ -87,14 +87,14 @@ noncomputable def centralProductComparison
 
 /-- Descend the projective map through the selected first central axis. -/
 def mapAfterCentralAxis
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* A)
     (S : BinaryNormalKernelCentralSeries R pi.ker) :
     R ⧸ S.C →* A :=
   QuotientGroup.lift S.C pi S.C_le_K
 
 theorem mapAfterCentralAxis_surjective
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* A)
     (hpi : Function.Surjective pi)
     (S : BinaryNormalKernelCentralSeries R pi.ker) :
@@ -104,7 +104,7 @@ theorem mapAfterCentralAxis_surjective
   exact ⟨QuotientGroup.mk' S.C r, rfl⟩
 
 theorem mapAfterCentralAxis_central_kernel
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* A)
     (S : BinaryNormalKernelCentralSeries R pi.ker) :
     ∀ z ∈ (mapAfterCentralAxis A pi S).ker,
@@ -112,10 +112,10 @@ theorem mapAfterCentralAxis_central_kernel
   intro z hz x
   have hz' : z ∈ pi.ker.map (QuotientGroup.mk' S.C) := by
     simpa only [mapAfterCentralAxis, QuotientGroup.ker_lift] using hz
-  exact Subgroup.mem_center_iff.mp (S.quotientKernel_le_center hz') x
+  exact (Subgroup.mem_center_iff.mp (S.quotientKernel_le_center hz') x).symm
 
 theorem mapAfterCentralAxis_kernel_card_le
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* A)
     (S : BinaryNormalKernelCentralSeries R pi.ker)
     (hkernel : Nat.card pi.ker ≤ 4) :
@@ -126,7 +126,7 @@ theorem mapAfterCentralAxis_kernel_card_le
   let f : K →* L := q.subgroupMap K
   have hf : Function.Surjective f := q.subgroupMap_surjective K
   have hker : f.ker = S.C.subgroupOf K := by
-    rw [MonoidHom.ker_subgroupMap, QuotientGroup.ker_mk']
+    rw [Subgroup.ker_subgroupMap, QuotientGroup.ker_mk']
   have hkerCard : Nat.card f.ker = 2 := by
     rw [hker,
       Nat.card_congr (Subgroup.subgroupOfEquivOfLe S.C_le_K).toEquiv,
@@ -134,6 +134,8 @@ theorem mapAfterCentralAxis_kernel_card_le
   have hcard := f.ker.card_mul_index
   rw [Subgroup.index_ker, f.range_eq_top_of_surjective hf,
     Nat.card_congr Subgroup.topEquiv.toEquiv, hkerCard] at hcard
+  have hcard' : 2 * Nat.card L = Nat.card pi.ker := by
+    simpa only [K] using hcard
   have hLcard : Nat.card L ≤ 2 := by omega
   have hkerLift : (mapAfterCentralAxis A pi S).ker = L := by
     simpa only [mapAfterCentralAxis, K, q, L,
@@ -144,7 +146,7 @@ theorem mapAfterCentralAxis_kernel_card_le
 /-- Comparison of the first central quotient with the universal product
 comparator. -/
 noncomputable def firstCentralComparison
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* A)
     (hpi : Function.Surjective pi)
     (S : BinaryNormalKernelCentralSeries R pi.ker)
@@ -158,7 +160,7 @@ noncomputable def firstCentralComparison
 
 /-- Comparison of the first central quotient times `C₂`. -/
 noncomputable def firstCentralProductComparison
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* A)
     (hpi : Function.Surjective pi)
     (S : BinaryNormalKernelCentralSeries R pi.ker)
@@ -174,7 +176,7 @@ noncomputable def firstCentralProductComparison
 /-- Full two-step comparison of an arbitrary central-series extension of
 `A` with `(A × C₂) × C₂`. -/
 noncomputable def centralSeriesComparison
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* A)
     (hpi : Function.Surjective pi)
     (S : BinaryNormalKernelCentralSeries R pi.ker)
@@ -194,12 +196,12 @@ noncomputable def centralSeriesComparison
   · intro z hz x
     have hzC : z ∈ S.C := by
       simpa only [QuotientGroup.ker_mk'] using hz
-    exact Subgroup.mem_center_iff.mp (S.C_le_center hzC) x
+    exact (Subgroup.mem_center_iff.mp (S.C_le_center hzC) x).symm
   · rw [QuotientGroup.ker_mk', S.C_card]
 
 /-- Complete all-normal quotient comparison for the two-step extension. -/
 theorem centralSeries_completeQuotientWeight_le
-    {R : Type*} [Group R] [Finite R]
+    {R : Type} [Group R] [Finite R]
     (pi : R →* A)
     (hpi : Function.Surjective pi)
     (S : BinaryNormalKernelCentralSeries R pi.ker)

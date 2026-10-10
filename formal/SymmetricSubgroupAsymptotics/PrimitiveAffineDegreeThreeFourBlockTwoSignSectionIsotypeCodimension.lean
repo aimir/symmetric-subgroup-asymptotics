@@ -34,7 +34,10 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
 
 local instance : Fact P.p.Prime := (chart block P).primeFact
 
-private abbrev QuotientRep :=
+private abbrev QuotientRep :
+    Representation (ZMod P.p)
+      (preE7NonPairAction w U ⧸ E block P)
+      (TranslationSubmodule block P) :=
   (elementaryChart block P).quotientRepresentation.ρ
 
 /-- A fixed scalar coordinate on the one-dimensional local ternary module. -/
@@ -98,6 +101,7 @@ private theorem stable_finrank_eq_two_mul_component
   simp_rw [hequal _ a]
   rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ,
     Fintype.card_eq_nat_card, htwo]
+  norm_num
 
 /-- In every proper two-sign section, the normal-space intersection has
 codimension one in each literal repeated-sign component. -/

@@ -147,7 +147,7 @@ structure CentralBinaryRecursiveComparison
 
 namespace CentralBinaryRecursiveComparison
 
-variable {Q R A : Type*}
+variable {Q R : Type*} {A : Type}
   [Group Q] [Finite Q] [Group R] [Finite R] [Group A] [Finite A]
   (D : CentralBinaryRecursiveComparison Q R A)
 
@@ -185,12 +185,14 @@ noncomputable def prodC2
     CentralBinaryRecursiveComparison Q (R × C2) (A × C2) := by
   let projectionProduct : R × C2 →* A × C2 :=
     D.projection.prodMap (MonoidHom.id C2)
-  let kernelFst : projectionProduct.ker →* D.projection.ker where
-    toFun z := ⟨z.1.1, by
-      have hz := MonoidHom.mem_ker.mp z.2
-      exact MonoidHom.mem_ker.mpr (congrArg Prod.fst hz)⟩
-    map_one' := Subtype.ext rfl
-    map_mul' _ _ := Subtype.ext rfl
+  let kernelFst : projectionProduct.ker →* D.projection.ker :=
+    { toFun := fun z =>
+        (⟨z.1.1, by
+          have hz := MonoidHom.mem_ker.mp z.2
+          exact MonoidHom.mem_ker.mpr (congrArg Prod.fst hz)⟩ :
+            D.projection.ker)
+      map_one' := Subtype.ext rfl
+      map_mul' := fun _ _ => Subtype.ext rfl }
   have hkernelFst : Function.Injective kernelFst := by
     intro x y hxy
     apply Subtype.ext
@@ -218,7 +220,8 @@ noncomputable def prodC2
   have hc : c = 1 := congrArg Prod.snd hzpair
   apply Prod.ext
   · exact D.central_kernel z hzR x
-  · simp only [hc, one_mul, mul_one]
+  · change c * d = d * c
+    rw [hc, one_mul, mul_one]
 
 /-- Descent through one literal normal axis.  Its projective target is the
 actual quotient of `A` by the image of that axis. -/
@@ -370,8 +373,7 @@ theorem coefficient_le_two_pow
         omega
       _ = 2 ^ (c + a + 1) := by
         rw [← pow_add]
-        congr 2
-        omega
+        congr 1 <;> omega
   unfold coefficient
   calc
     (∑ M : NormalAxis R,
@@ -388,8 +390,7 @@ theorem coefficient_le_two_pow
       Nat.mul_le_mul_right _ hnormal
     _ = 2 ^ (m * m + c + a + 1) := by
       rw [← pow_add]
-      congr 2
-      omega
+      congr 1 <;> omega
 
 /-- Logarithmic form of the recursive coefficient bound.  Unlike
 `coefficient_le_two_pow`, this uses the binary character rank of every
@@ -442,8 +443,7 @@ theorem coefficient_le_two_pow_of_card_le_pow
         omega
       _ = 2 ^ (c + a + 1) := by
         rw [← pow_add]
-        congr 2
-        omega
+        congr 1 <;> omega
   unfold coefficient
   calc
     (∑ M : NormalAxis R,
@@ -460,8 +460,7 @@ theorem coefficient_le_two_pow_of_card_le_pow
       Nat.mul_le_mul_right _ hnormal
     _ = 2 ^ (m * m + c + a + 1) := by
       rw [← pow_add]
-      congr 2
-      omega
+      congr 1 <;> omega
 
 end CentralBinaryRecursiveComparison
 end SymmetricSubgroupAsymptotics

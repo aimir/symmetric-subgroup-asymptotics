@@ -33,7 +33,7 @@ abbrev ternarySignedWreathThreeRepresentation :
       (Fin 3 → ZMod 3) :=
   PermutationalWreathProduct.functionRepresentation
     (Q := Equiv.Perm (Fin 3)) (I := Fin 3)
-    ternarySignRepresentation
+    BinaryPairFrame.ternarySignRepresentation
 
 /-- The canonical order-three subgroup, embedded with trivial base sign. -/
 def ternaryTopC3Hom : TernaryNaturalC3 →* TernarySignedWreathThree :=
@@ -91,10 +91,10 @@ theorem ternarySignedTopC3_uniformSubrepresentationGeneratorBound_one :
           TernarySignedTopC3.subtype := by
     apply MonoidHom.ext
     intro t
-    apply LinearMap.ext
-    intro v
-    obtain ⟨g, rfl⟩ := e.surjective t
-    rfl
+    apply congrArg ternarySignedWreathThreeRepresentation
+    change ternaryTopC3Hom (e.symm t) = t.1
+    have ht := congrArg Subtype.val (e.apply_symm_apply t)
+    simpa only [e, ternaryTopC3Equiv] using ht
   rwa [hrepresentation] at hback
 
 /-- The signed three-coordinate wreath product has order `48`. -/
@@ -122,11 +122,13 @@ theorem ternarySignedWreathThree_orderThree_uniformSubrepresentationGeneratorBou
   letI : Fact (3 : ℕ).Prime := ⟨Nat.prime_three⟩
   let HSylow : Sylow 3 TernarySignedWreathThree :=
     Sylow.ofCard H (by
-      rw [hH, ternarySignedWreathThree_card]
+      have hfac : (Nat.factorization 48) 3 = 1 := by native_decide
+      rw [hH, ternarySignedWreathThree_card, hfac]
       norm_num)
   let TSylow : Sylow 3 TernarySignedWreathThree :=
     Sylow.ofCard TernarySignedTopC3 (by
-      rw [ternarySignedTopC3_card, ternarySignedWreathThree_card]
+      have hfac : (Nat.factorization 48) 3 = 1 := by native_decide
+      rw [ternarySignedTopC3_card, ternarySignedWreathThree_card, hfac]
       norm_num)
   obtain ⟨g, hg⟩ := MulAction.exists_smul_eq
     TernarySignedWreathThree HSylow TSylow
@@ -143,7 +145,7 @@ theorem ternarySignedWreathThree_orderThree_uniformSubrepresentationGeneratorBou
 
 section Reindex
 
-variable {J K : Type*} [Finite J] [Finite K]
+variable {J K : Type} [Finite J] [Finite K]
 
 /-- Relabel the coordinate set in a full signed permutation wreath product. -/
 def ternarySignedWreathCongr (e : J ≃ K) :
@@ -173,8 +175,16 @@ def ternarySignedWreathCongr (e : J ≃ K) :
               a.left (e.symm k) *
                 b.left (e.symm ((e.permCongr a.right)⁻¹ k))
           congr 1
-          simp only [map_inv, Equiv.permCongr_apply, Equiv.apply_symm_apply,
-            Equiv.symm_apply_apply]
+          apply congrArg b.left
+          apply e.injective
+          rw [e.apply_symm_apply]
+          change e (a.right⁻¹ (e.symm k)) =
+            (e.permCongr a.right)⁻¹ k
+          have hmap : e.permCongr (a.right⁻¹) =
+              (e.permCongr a.right)⁻¹ :=
+            map_inv e.permCongrHom a.right
+          rw [← hmap]
+          rfl
         · exact map_mul e.permCongrHom a.right b.right }
   apply MulEquiv.ofBijective f
   constructor
@@ -185,7 +195,8 @@ def ternarySignedWreathCongr (e : J ≃ K) :
         (fun w : PermutationalWreathProduct
           (Multiplicative (ZMod 2)) (Equiv.Perm K) K ↦
             w.left (e j)) hab
-      simpa only [f, e.symm_apply_apply] using hleft
+      change a.left (e.symm (e j)) = b.left (e.symm (e j)) at hleft
+      simpa only [e.symm_apply_apply] using hleft
     · have hright := congrArg
         (fun w : PermutationalWreathProduct
           (Multiplicative (ZMod 2)) (Equiv.Perm K) K ↦ w.right) hab
@@ -198,7 +209,8 @@ def ternarySignedWreathCongr (e : J ≃ K) :
     refine ⟨a, ?_⟩
     apply PermutationalWreathProduct.ext
     · funext k
-      simp only [f, a, e.apply_symm_apply]
+      change b.left (e (e.symm k)) = b.left k
+      rw [e.apply_symm_apply]
     · change e.permCongr (e.symm.permCongr b.right) = b.right
       ext k
       simp [Equiv.permCongr_apply]
@@ -222,9 +234,11 @@ theorem ternaryFunctionCongr_intertwines
     (v : J → ZMod 3) :
     ternaryFunctionCongr e
         (PermutationalWreathProduct.functionRepresentation
-          (Q := Equiv.Perm J) (I := J) ternarySignRepresentation w v) =
+          (Q := Equiv.Perm J) (I := J)
+            BinaryPairFrame.ternarySignRepresentation w v) =
       PermutationalWreathProduct.functionRepresentation
-        (Q := Equiv.Perm K) (I := K) ternarySignRepresentation
+        (Q := Equiv.Perm K) (I := K)
+          BinaryPairFrame.ternarySignRepresentation
         (ternarySignedWreathCongr e w) (ternaryFunctionCongr e v) := by
   funext k
   change
@@ -233,8 +247,16 @@ theorem ternaryFunctionCongr_intertwines
       signScalar (w.left (e.symm k)) *
         v (e.symm ((e.permCongr w.right)⁻¹ k))
   congr 1
-  simp only [map_inv, Equiv.permCongr_apply, Equiv.apply_symm_apply,
-    Equiv.symm_apply_apply]
+  apply congrArg v
+  apply e.injective
+  rw [e.apply_symm_apply]
+  change e (w.right⁻¹ (e.symm k)) =
+    (e.permCongr w.right)⁻¹ k
+  have hmap : e.permCongr (w.right⁻¹) =
+      (e.permCongr w.right)⁻¹ :=
+    map_inv e.permCongrHom w.right
+  rw [← hmap]
+  rfl
 
 /-- Cardinal-three signed fibres have uniformly cyclic invariant
 submodules, with their literal coordinate type retained. -/
@@ -245,7 +267,8 @@ theorem ternarySignedWreath_orderThree_uniformSubrepresentationGeneratorBound_on
     (hH : Nat.card H = 3) :
     UniformSubrepresentationGeneratorBound
       ((PermutationalWreathProduct.functionRepresentation
-        (Q := Equiv.Perm J) (I := J) ternarySignRepresentation).comp
+        (Q := Equiv.Perm J) (I := J)
+          BinaryPairFrame.ternarySignRepresentation).comp
           H.subtype) 1 := by
   letI : Fintype J := Fintype.ofFinite J
   let e : J ≃ Fin 3 :=
@@ -255,7 +278,8 @@ theorem ternarySignedWreath_orderThree_uniformSubrepresentationGeneratorBound_on
       (PermutationalWreathProduct (Multiplicative (ZMod 2))
         (Equiv.Perm J) J) (J → ZMod 3) :=
     PermutationalWreathProduct.functionRepresentation
-      (Q := Equiv.Perm J) (I := J) ternarySignRepresentation
+      (Q := Equiv.Perm J) (I := J)
+        BinaryPairFrame.ternarySignRepresentation
   let H' : Subgroup TernarySignedWreathThree :=
     H.map (ternarySignedWreathCongr e).toMonoidHom
   let eH : H ≃* H' :=
@@ -267,15 +291,19 @@ theorem ternarySignedWreath_orderThree_uniformSubrepresentationGeneratorBound_on
       H' hH'
   have hpull := htarget.comp_mulEquiv
     (ternarySignedWreathThreeRepresentation.comp H'.subtype) eH
-  let f : (WJ.comp H.subtype).IntertwiningMap
-      ((ternarySignedWreathThreeRepresentation.comp H'.subtype).comp
-        eH.toMonoidHom) :=
+  let rhoJ : Representation (ZMod 3) H (J → ZMod 3) :=
+    WJ.comp H.subtype
+  let rhoK : Representation (ZMod 3) H (Fin 3 → ZMod 3) :=
+    (ternarySignedWreathThreeRepresentation.comp H'.subtype).comp
+      eH.toMonoidHom
+  let f : rhoJ.IntertwiningMap rhoK :=
     { toLinearMap := (ternaryFunctionCongr e).toLinearMap
       isIntertwining' := by
         intro h
         apply LinearMap.ext
         intro v
         exact ternaryFunctionCongr_intertwines e h.1 v }
+  change UniformSubrepresentationGeneratorBound rhoJ 1
   apply hpull.of_injective f
   exact (ternaryFunctionCongr e).injective
 

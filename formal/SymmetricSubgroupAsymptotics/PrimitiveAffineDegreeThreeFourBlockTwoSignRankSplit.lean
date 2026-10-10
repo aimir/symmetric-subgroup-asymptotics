@@ -41,17 +41,11 @@ noncomputable def degreeThreeFourBlockReindexedTranslationEquiv
       degreeThreeFourBlockReindexedTranslationSubmodule block P hs := by
   let e := degreeThreeFourBlockIndexEquiv block hs
   let f : TranslationSubmodule block P →ₗ[ZMod P.p]
-      degreeThreeFourBlockReindexedTranslationSubmodule block P hs where
-    toFun x := ⟨coordinateLinearEquiv (k := ZMod P.p) e x.1,
-      ⟨x.1, x.2, rfl⟩⟩
-    map_add' x y := by
-      apply Subtype.ext
-      exact map_add (coordinateLinearEquiv
-        (k := ZMod P.p) e).toLinearMap x.1 y.1
-    map_smul' c x := by
-      apply Subtype.ext
-      exact map_smul (coordinateLinearEquiv
-        (k := ZMod P.p) e).toLinearMap c x.1
+      degreeThreeFourBlockReindexedTranslationSubmodule block P hs :=
+    (((coordinateLinearEquiv (k := ZMod P.p) e).toLinearMap.comp
+      (TranslationSubmodule block P).subtype).codRestrict
+        (degreeThreeFourBlockReindexedTranslationSubmodule block P hs)
+        (fun x ↦ ⟨x.1, x.2, rfl⟩))
   apply LinearEquiv.ofBijective f
   constructor
   · intro x y hxy
@@ -93,6 +87,11 @@ theorem degreeThreeFourBlockPairChart_top_apply
     idx ((quotientEmbedding block P q).right • j)
   rw [F₁.reindex_top_apply, idx.symm_apply_apply,
     F₀.relabelPoints_top_sourceRelabelEquiv]
+  rw [degreeThreeSignedQuotientPairFrame_top_apply]
+  change idx (((quotientEmbedding block P q).right :
+      Equiv.Perm block.Points) j) =
+    idx (((quotientEmbedding block P q).right :
+      Equiv.Perm block.Points) j)
   rfl
 
 /-- Equality of the transported ternary scalar characters is exactly
@@ -126,8 +125,11 @@ theorem degreeThreeFourBlockTranslationScalar_eq_iff_sign
     funext k
     have hfun := congrArg Subtype.val h
     have hk := congrFun hfun k
-    simp only [degreeThreeFourBlockTranslationScalar]
-    rw [hk]
+    have hk' : C.frame.bits k i = C.frame.bits k j := by
+      simpa only [BinaryPairFrame.fourCoordinateSign,
+        BinaryPairFrame.fourCoordinateSignFunction, C] using hk
+    exact congrArg (degreeThreeScalarFieldEquiv block P hr).symm
+      (congrArg (fun z : ZMod 2 ↦ signScalar (Multiplicative.ofAdd z)) hk')
 
 /-- The actual top preserves and reflects equality of transported ternary
 scalar labels. -/
@@ -198,7 +200,8 @@ noncomputable def degreeThreeFourBlockTranslationScalarLabelEquiv
     have hsign₀ :=
       (degreeThreeFourBlockTranslationScalar_eq_iff_sign
         block P hr hs hcomponent _ _).1 hscalar
-    exact hsign₀.trans (Subtype.ext (Classical.choose_spec a.2))
+    exact congrArg Subtype.val
+      (hsign₀.trans (Subtype.ext (Classical.choose_spec a.2)))
 
 /-- In the two-sign branch the transported ternary scalar family has two
 labels. -/
@@ -262,9 +265,37 @@ theorem degreeThreeFourBlockTranslationScalarLabel_fibre_card_two
       · intro hj
         exact ((degreeThreeFourBlockTranslationScalar_eq_iff_sign
           block P hr hs hcomponent j i).2 hj).trans ha
-    _ = 2 := BinaryPairFrame.fourCoordinateSign_fibre_card_eq_two
-      C.frame C.pretransitive htwo'
-        (BinaryPairFrame.fourCoordinateSign C.frame i)
+    _ = 2 := by
+      let chi := BinaryPairFrame.fourCoordinateSign C.frame i
+      let m := Nat.card {j : Fin 4 //
+        BinaryPairFrame.fourCoordinateSign C.frame j = chi}
+      have hproduct :
+          Nat.card (BinaryPairFrame.FourCoordinateSign C.frame) * m = 4 := by
+        calc
+          Nat.card (BinaryPairFrame.FourCoordinateSign C.frame) * m =
+              ∑ _psi : BinaryPairFrame.FourCoordinateSign C.frame, m := by
+            simp only [Finset.sum_const, nsmul_eq_mul, Finset.card_univ,
+              Fintype.card_eq_nat_card, Nat.cast_id]
+          _ = ∑ psi : BinaryPairFrame.FourCoordinateSign C.frame,
+              Nat.card {j : Fin 4 //
+                BinaryPairFrame.fourCoordinateSign C.frame j = psi} := by
+            apply Finset.sum_congr rfl
+            intro psi _hpsi
+            exact (BinaryPairFrame.fourCoordinateSign_fibre_card_eq
+              C.frame C.pretransitive psi chi).symm
+          _ = Nat.card (Sigma fun psi :
+              BinaryPairFrame.FourCoordinateSign C.frame ↦
+                {j : Fin 4 //
+                  BinaryPairFrame.fourCoordinateSign C.frame j = psi}) :=
+            Nat.card_sigma.symm
+          _ = Nat.card (Fin 4) :=
+            Nat.card_congr
+              (Equiv.sigmaFiberEquiv
+                (BinaryPairFrame.fourCoordinateSign C.frame))
+          _ = 4 := Nat.card_fin 4
+      rw [htwo'] at hproduct
+      change m = 2
+      omega
 
 /-- Quotient conjugation, transported to the literal reindexed correlated
 submodule as a linear automorphism. -/
@@ -273,11 +304,13 @@ noncomputable def degreeThreeFourBlockReindexedActionEquiv
     (q : preE7NonPairAction w U ⧸ E block P) :
     degreeThreeFourBlockReindexedTranslationSubmodule block P hs ≃ₗ[ZMod P.p]
       degreeThreeFourBlockReindexedTranslationSubmodule block P hs :=
-  (degreeThreeFourBlockReindexedTranslationEquiv block P hs).symm.trans
-    ((LinearEquiv.ofBijective
+  let e := degreeThreeFourBlockReindexedTranslationEquiv block P hs
+  let r : TranslationSubmodule block P ≃ₗ[ZMod P.p]
+      TranslationSubmodule block P :=
+    LinearEquiv.ofBijective
       ((elementaryChart block P).quotientRepresentation.ρ q)
-      ((elementaryChart block P).quotientRepresentation.ρ.apply_bijective q)).trans
-        (degreeThreeFourBlockReindexedTranslationEquiv block P hs))
+      ((elementaryChart block P).quotientRepresentation.ρ.apply_bijective q)
+  e.symm.trans (r.trans e)
 
 @[simp] theorem degreeThreeFourBlockReindexedActionEquiv_apply
     (hs : Nat.card block.Points = 4)
@@ -287,7 +320,8 @@ noncomputable def degreeThreeFourBlockReindexedActionEquiv
       degreeThreeFourBlockReindexedTranslationEquiv block P hs
         ((elementaryChart block P).quotientRepresentation.ρ q
           ((degreeThreeFourBlockReindexedTranslationEquiv
-            block P hs).symm x)) := rfl
+            block P hs).symm x)) := by
+  rfl
 
 /-- An actual ambient lift transports coordinate zeroes exactly along the
 top permutation in the fixed four-pair chart.  The local factor is an
@@ -306,6 +340,8 @@ theorem degreeThreeFourBlockReindexedAction_zero_iff
       x.1 i = 0 := by
   let q := QuotientGroup.mk' (E block P) a
   let C := degreeThreeFourBlockPairChart block P hr hs hcomponent
+  change (degreeThreeFourBlockReindexedActionEquiv block P hs q x).1
+      (C.frame.top (C.sourceEquiv q) i) = 0 ↔ x.1 i = 0
   let idx := degreeThreeFourBlockIndexEquiv block hs
   let v : TranslationSubmodule block P :=
     (degreeThreeFourBlockReindexedTranslationEquiv block P hs).symm x
@@ -332,9 +368,9 @@ theorem degreeThreeFourBlockReindexedAction_zero_iff
           (C.frame.top (C.sourceEquiv q) i) =
         L (v.1 (idx.symm i)) := by
     rw [htop']
-    change (((elementaryChart block P).quotientRepresentation.ρ q v).1
-        ((ambientEmbedding block a).right • idx.symm i)) =
-      L (v.1 (idx.symm i))
+    rw [degreeThreeFourBlockReindexedActionEquiv_apply,
+      degreeThreeFourBlockReindexedTranslationEquiv_apply,
+      idx.symm_apply_apply]
     simpa only [q, L] using htransport
   rw [hcoordinate, hv]
   constructor
@@ -402,8 +438,10 @@ theorem degreeThreeFourBlockTwoSign_scalarized_components_equidimensional
   have hsigma : sigma i = j := by
     have htop := degreeThreeFourBlockPairChart_top_apply
       block P hr hs hcomponent q (idx.symm i)
+    have hqright : (quotientEmbedding block P q).right =
+        (ambientEmbedding block g).right := rfl
     change C.frame.top (C.sourceEquiv q) i = j
-    rw [show i = idx (idx.symm i) by simp, htop, hright]
+    rw [show i = idx (idx.symm i) by simp, htop, hqright, hright]
     exact idx.apply_symm_apply j
   let T : K ≃ₗ[ZMod P.p] K :=
     degreeThreeFourBlockReindexedActionEquiv block P hs q
@@ -462,14 +500,18 @@ theorem degreeThreeFourBlockTwoSign_translation_finrank_eq_two_or_four
       rw [hlocal, Module.finrank_self])
   have hfull : ModuleFullCoordinates K.1 :=
     DegreeThreeFourBlockSignedTranslationCompatibility.fullCoordinates
-      (block := block) (P := P) A hbinary
+      (block := block) (P := P) hbinary
   have hsplit :=
     moduleStable_finrank_eq_two_or_four_of_two_equal_isotypes
       scalar K e hfull
       (degreeThreeFourBlockTranslationScalarLabel_card_two
         block P hr hs hcomponent htwo)
-      (degreeThreeFourBlockTranslationScalarLabel_fibre_card_two
-        block P hr hs hcomponent htwo)
+      (fun a ↦ by
+        rw [Fintype.card_eq_nat_card]
+        have h := degreeThreeFourBlockTranslationScalarLabel_fibre_card_two
+          block P hr hs hcomponent htwo a
+        rw [Fintype.card_eq_nat_card] at h
+        simpa only [scalar] using h)
       (degreeThreeFourBlockTwoSign_scalarized_components_equidimensional
         block P hr hs hcomponent e)
   have hreindex :=

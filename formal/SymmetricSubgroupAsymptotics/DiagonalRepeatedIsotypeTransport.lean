@@ -119,15 +119,18 @@ def moduleEncodeTransport
     change (T (moduleEncodeInclusion scalar K a (w + z))).1 i =
       (T (moduleEncodeInclusion scalar K a w)).1 i +
         (T (moduleEncodeInclusion scalar K a z)).1 i
-    rw [map_add]
-    rfl
+    rw [map_add (moduleEncodeInclusion scalar K a)]
+    exact congrArg (fun x : K ↦ x.1 i)
+      (map_add T (moduleEncodeInclusion scalar K a w)
+        (moduleEncodeInclusion scalar K a z))
   map_smul' c w := by
     apply Subtype.ext
     funext i
     change (T (moduleEncodeInclusion scalar K a (c • w))).1 i =
       c • (T (moduleEncodeInclusion scalar K a w)).1 i
-    rw [map_smul]
-    rfl
+    rw [map_smul (moduleEncodeInclusion scalar K a)]
+    exact congrArg (fun x : K ↦ x.1 i)
+      (map_smul T c (moduleEncodeInclusion scalar K a w))
 
 theorem moduleEncodeTransport_injective
     (scalar : ι → J → k)
@@ -169,10 +172,13 @@ theorem moduleEncodeTransport_injective
     · rw [hsupported w j hj, hsupported z j hj]
   have hxx : x = x' := T.injective hTx
   apply Subtype.ext
-  have hext := congrArg
-    (fun u : K ↦ moduleRestriction scalar a u.1) hxx
-  simpa only [x, x', moduleEncodeInclusion,
-    moduleRestriction_extension] using hext
+  have hxx_val : (x : ι → V) = (x' : ι → V) := congrArg Subtype.val hxx
+  have hmodule : moduleExtension scalar a w.1 =
+      moduleExtension scalar a z.1 := by
+    simpa only [x, x', moduleEncodeInclusion] using hxx_val
+  exact (moduleRestriction_extension scalar a w.1).symm.trans
+    ((congrArg (moduleRestriction scalar a) hmodule).trans
+      (moduleRestriction_extension scalar a z.1))
 
 /-- A monomial coordinate automorphism which exchanges two fibres makes
 their module-valued encoded pieces equidimensional. -/
@@ -182,6 +188,7 @@ theorem moduleEncode_finrank_eq_of_coordinate_transport
     (a b : Label scalar)
     (sigma : Equiv.Perm ι)
     (T : K ≃ₗ[k] K)
+    [Module.Finite k V]
     (hlabel : ∀ i, scalar (sigma i) = b.1 ↔ scalar i = a.1)
     (hzero : ∀ (x : K) (i : ι),
       (T x).1 (sigma i) = 0 ↔ x.1 i = 0) :
@@ -252,14 +259,16 @@ theorem moduleEncodeToScalar_bijective
     let v : Coordinate scalar a → V := fun i ↦ e.symm (u.1 i)
     have hext : moduleExtension scalar a v = x := by
       apply (pointwiseScalarEquiv (ι := ι) e).injective
-      funext i
-      have hi := congrFun hxu i
-      by_cases hia : scalar i = a.1
-      · simpa only [pointwiseScalarEquiv_apply, moduleExtension, dif_pos hia,
-          extension, e.apply_symm_apply] using hi.symm
-      · simpa only [pointwiseScalarEquiv_apply, moduleExtension, dif_neg hia,
-          extension, map_zero] using hi.symm
+      calc
+        (pointwiseScalarEquiv (ι := ι) e)
+            (moduleExtension scalar a v) = extension scalar a u.1 := by
+          funext i
+          by_cases hia : scalar i = a.1
+          · simp [pointwiseScalarEquiv_apply, extension, moduleExtension, v, hia]
+          · simp [pointwiseScalarEquiv_apply, extension, moduleExtension, v, hia]
+        _ = (pointwiseScalarEquiv (ι := ι) e) x := hxu.symm
     let w : ModuleEncode scalar K.1 a := ⟨v, by
+      change moduleExtension scalar a v ∈ K.1
       rw [hext]
       exact hx⟩
     refine ⟨w, ?_⟩

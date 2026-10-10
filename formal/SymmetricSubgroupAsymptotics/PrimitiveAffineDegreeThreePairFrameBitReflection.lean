@@ -108,7 +108,9 @@ theorem degreeThreeSignedQuotientPairFrame_affineTranslation_eq_localBit
     degreeThreeSignedQuotientPairFrame_top_apply block P hr q
   have htop : F.top g j = i := by
     rw [htopEq]
-    simp only [j, smul_inv_smul]
+    change (quotientEmbedding block P q).right •
+      ((quotientEmbedding block P q).right⁻¹ • i) = i
+    exact smul_inv_smul (quotientEmbedding block P q).right i
   have htransport :
       pointEquiv.symm
         (quotientAction block P q (pointEquiv (bitEquiv 0, j))) =

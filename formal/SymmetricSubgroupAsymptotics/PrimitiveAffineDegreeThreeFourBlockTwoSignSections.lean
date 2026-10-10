@@ -34,6 +34,8 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
 
 private abbrev G := preE7NonPairAction w U
 
+local instance : Fact P.p.Prime := (chart block P).primeFact
+
 private abbrev PairChart
     (hr : Nat.card block.Fibre = 3)
     (hs : Nat.card block.Points = 4)
@@ -43,7 +45,8 @@ private abbrev PairChart
 /-- The original normal subgroup carried by a literal proper two-sign
 axis. -/
 abbrev degreeThreeFourBlockTwoSignSectionAxis
-    (N : TwoSignProperAxis (E block P)) : Subgroup G :=
+    (N : TwoSignProperAxis (E block P)) :
+    Subgroup (preE7NonPairAction w U) :=
   (twoSignProperAxis N).1
 
 local instance degreeThreeFourBlockTwoSignSectionAxis_normal
@@ -101,6 +104,10 @@ theorem degreeThreeFourBlockTwoSignSectionModule_nontrivial
       MonoidHom.mem_ker.mpr hy1
     have hkN : (k.1 : G) ∈
         degreeThreeFourBlockTwoSignSectionAxis block P N := by
+      change k ∈ ((elementaryChart block P).originalKernelChart.sectionMap
+        (QuotientGroup.mk' (E block P))
+        (elementaryChart block P).quotientRepresentation
+        (degreeThreeFourBlockTwoSignSectionAxis block P N)).ker at hk
       rw [(elementaryChart block P).originalKernelChart.sectionMap_ker
         (QuotientGroup.mk' (E block P))
         (elementaryChart block P).quotientRepresentation
@@ -111,7 +118,6 @@ theorem degreeThreeFourBlockTwoSignSectionModule_nontrivial
       change (((elementaryChart block P).equiv.symm
         ((elementaryChart block P).equiv ee) : E block P) : G) = e
       rw [(elementaryChart block P).equiv.symm_apply_apply]
-      rfl
     exact hkval ▸ hkN
   exact ⟨⟨y.toAdd, 0, by
     intro h
@@ -134,7 +140,7 @@ def degreeThreeFourBlockTwoSignSectionBase
     G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N →*
       G ⧸ ((QuotientGroup.mk' (E block P)).ker ⊔
         degreeThreeFourBlockTwoSignSectionAxis block P N) :=
-  (elementaryChart block P).originalKernelChart.base
+  OriginalKernelModuleChart.base
     (QuotientGroup.mk' (E block P))
     (degreeThreeFourBlockTwoSignSectionAxis block P N)
 
@@ -142,7 +148,7 @@ theorem degreeThreeFourBlockTwoSignSectionBase_surjective
     (N : TwoSignProperAxis (E block P)) :
     Function.Surjective
       (degreeThreeFourBlockTwoSignSectionBase block P N) :=
-  (elementaryChart block P).originalKernelChart.base_surjective
+  OriginalKernelModuleChart.base_surjective
     (QuotientGroup.mk' (E block P))
     (degreeThreeFourBlockTwoSignSectionAxis block P N)
 
@@ -165,13 +171,22 @@ theorem degreeThreeFourBlockTwoSignSectionKernel_isPGroup
   letI : Fact P.p.Prime := (chart block P).primeFact
   have hp : P.p = 3 :=
     (degreeThree_translation_prime_dim block P hr).1
-  have hmodule : IsPGroup P.p
+  let W := (elementaryChart block P).originalKernelChart.normalSpace
+    (QuotientGroup.mk' (E block P))
+    (elementaryChart block P).quotientRepresentation
+    (degreeThreeFourBlockTwoSignSectionAxis block P N)
+  have hmodule : IsPGroup (elementaryChart block P).p
       (Multiplicative
-        (DegreeThreeFourBlockTwoSignSectionModule block P N)) :=
+        ((elementaryChart block P).V ⧸ W)) :=
     ZModModule.isPGroup_multiplicative
   have hkernel : IsPGroup P.p
       (degreeThreeFourBlockTwoSignSectionBase block P N).ker :=
-    hmodule.of_equiv
+    (show IsPGroup P.p
+      (Multiplicative
+        (DegreeThreeFourBlockTwoSignSectionModule block P N)) by
+        simpa only [DegreeThreeFourBlockTwoSignSectionModule,
+          OriginalKernelModuleChart.sectionModule, elementaryChart, W]
+          using hmodule).of_equiv
       (degreeThreeFourBlockTwoSignSectionQuotientChart block P N).equiv
   simpa only [hp] using hkernel
 
@@ -193,13 +208,16 @@ theorem degreeThreeFourBlockTwoSignSectionTop_isPGroup
     dsimp only [D]
     rw [QuotientGroup.ker_mk']
     exact le_sup_left
+  have hEDker : E block P ≤ (QuotientGroup.mk' D).ker := by
+    rw [QuotientGroup.ker_mk']
+    exact hED
   let f : R →* G ⧸ D := QuotientGroup.lift (E block P)
-    (QuotientGroup.mk' D) hED
+    (QuotientGroup.mk' D) hEDker
   have hf : Function.Surjective f :=
     QuotientGroup.lift_surjective_of_surjective (E block P)
       (QuotientGroup.mk' D)
       (QuotientGroup.mk'_surjective D)
-      hED
+      hEDker
   change IsPGroup 2 (G ⧸ D)
   exact (degreeThreeFourBlockTwoSign_signedQuotient_isPGroup
     block P hr hs hcomponent hbinary).of_surjective f hf
@@ -274,12 +292,15 @@ theorem degreeThreeFourBlockTwoSignSectionComplementTopHom_injective
       (y : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) ∈
         (degreeThreeFourBlockTwoSignSectionBase block P N).ker := by
     apply MonoidHom.mem_ker.mpr
-    change
-      (degreeThreeFourBlockTwoSignSectionBase block P N
-        (x : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N))⁻¹ *
+    rw [map_mul, map_inv]
+    have hxy' :
         degreeThreeFourBlockTwoSignSectionBase block P N
-          (y : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) = 1
-    rw [hxy, inv_mul_cancel]
+            (x : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) =
+          degreeThreeFourBlockTwoSignSectionBase block P N
+            (y : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) := by
+      simpa only [degreeThreeFourBlockTwoSignSectionComplementTopHom,
+        MonoidHom.comp_apply] using hxy
+    rw [hxy', inv_mul_cancel]
   have hmemH :
       (x : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N)⁻¹ *
         (y : G ⧸ degreeThreeFourBlockTwoSignSectionAxis block P N) ∈ H :=

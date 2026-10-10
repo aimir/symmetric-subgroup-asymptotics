@@ -22,7 +22,7 @@ namespace BinaryPairFrame
 
 open OddMarkerTernaryChart
 
-variable {X I : Type*} {G : Subgroup (Equiv.Perm X)}
+variable {X I : Type} {G : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame G I)
 
 /-- The faithful one-dimensional ternary representation of one binary
@@ -31,10 +31,13 @@ def ternarySignRepresentation :
     Representation (ZMod 3) (Multiplicative (ZMod 2)) (ZMod 3) where
   toFun s := signScalar s • LinearMap.id
   map_one' := by
-    ext z
-    simp only [signScalar_one, one_smul, LinearMap.id_apply]
+    apply LinearMap.ext
+    intro z
+    simp only [signScalar_one, one_smul, LinearMap.id_apply,
+      Module.End.one_apply]
   map_mul' s t := by
-    ext z
+    apply LinearMap.ext
+    intro z
     change signScalar (s * t) * z = signScalar s * (signScalar t * z)
     rw [signScalar_mul, mul_assoc]
 
@@ -54,19 +57,16 @@ def affineWreathEmbedding :
   map_one' := by
     apply PermutationalWreathProduct.ext
     · funext i
-      apply Multiplicative.toAdd.injective
-      simp only [Multiplicative.toAdd_ofAdd, Pi.one_apply,
-        Multiplicative.toAdd_one]
-      exact congrFun F.affineTranslation_one i
+      simpa only using congrArg Multiplicative.ofAdd
+        (congrFun F.affineTranslation_one i)
     · exact map_one F.top.rangeRestrict
   map_mul' u v := by
     apply PermutationalWreathProduct.ext
     · funext i
-      apply Multiplicative.toAdd.injective
       have h := congrFun (F.affineTranslation_mul u v) i
       simpa only [PermutationalWreathProduct.mul_left, Pi.mul_apply,
-        Multiplicative.toAdd_mul, Multiplicative.toAdd_ofAdd,
-        permutationFunctionRepresentation_apply, add_comm] using h
+        permutationFunctionRepresentation_apply, add_comm] using
+          congrArg Multiplicative.ofAdd h
     · exact map_mul F.top.rangeRestrict u v
 
 @[simp] theorem affineWreathEmbedding_left
@@ -122,15 +122,27 @@ theorem ternarySignedRepresentation_single
   funext j
   by_cases hj : j = F.top u i
   · subst j
-    simp only [ternarySignedRepresentation_apply,
-      Equiv.Perm.inv_def, Equiv.symm_apply_apply,
-      Pi.single_eq_same, mul_one, c]
+    rw [ternarySignedRepresentation_apply]
+    change signScalar
+        (Multiplicative.ofAdd (F.affineTranslation u (F.top u i))) *
+          (Pi.single i (1 : ZMod 3) : I → ZMod 3)
+            ((Equiv.symm (F.top u)) (F.top u i)) =
+        (Pi.single (F.top u i)
+          (signScalar
+            (Multiplicative.ofAdd (F.affineTranslation u (F.top u i)))) :
+            I → ZMod 3) (F.top u i)
+    have hinv : (Equiv.symm (F.top u)) (F.top u i) = i :=
+      (F.top u).symm_apply_apply i
+    rw [hinv, Pi.single_eq_same, Pi.single_eq_same, mul_one]
   · have hpre : (F.top u)⁻¹ j ≠ i := by
       intro h
       apply hj
-      have := congrArg (F.top u) h
-      simpa only [Equiv.apply_symm_apply] using this
-    simp [ternarySignedRepresentation_apply, Pi.single_apply, hj, hpre]
+      calc
+        j = F.top u ((F.top u)⁻¹ j) :=
+          ((F.top u).apply_symm_apply j).symm
+        _ = F.top u i := congrArg (F.top u) h
+    simp only [ternarySignedRepresentation_apply,
+      Pi.single_eq_of_ne hpre, Pi.single_eq_of_ne hj, mul_zero]
 
 /-- The full signed coordinate module is cyclic whenever the original pair
 action is transitive.  Later applications use the same argument on one

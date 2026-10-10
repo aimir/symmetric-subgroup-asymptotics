@@ -16,7 +16,9 @@ open scoped BigOperators Classical MonoidAlgebra
 namespace SymmetricSubgroupAsymptotics
 namespace BinaryPairFrame
 
-variable {X I : Type*} {G : Subgroup (Equiv.Perm X)}
+attribute [local instance] Fintype.ofFinite
+
+variable {X I : Type} {G : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame G I)
 
 /-- A common `H`-generator bound on every literal sign fibre gives the same
@@ -39,7 +41,7 @@ theorem ternarySignedRepresentation_uniformSubrepresentationGeneratorBound
   let inclusion := signFiberSubrepresentationInclusion F M chi
   let generator : Fin H → M.toRepresentation.asModule := fun i ↦
     M.toRepresentation.asModuleEquiv.symm
-      (inclusion (a i)).1
+      (inclusion (a i))
   let W : Submodule (ZMod 3)[G] M.toRepresentation.asModule :=
     Submodule.span (ZMod 3)[G] (Set.range generator)
   let N : Subrepresentation M.toRepresentation :=
@@ -84,9 +86,13 @@ theorem ternarySignedRepresentation_uniformSubrepresentationGeneratorBound
         apply hi
         apply (coordinateSignTopPerm F u).injective
         simpa only [coordinateSignTopPerm_apply,
-          coordinateSignTopMap_apply_coordinate, hu] using heq
-      simp [y, z, ternarySignedRepresentation_apply,
-        coordinateSignProjection_apply, hnotpsi]
+          coordinateSignTopMap_apply_coordinate] using heq.trans hu.symm
+      change (ternarySignedRepresentation F u⁻¹
+        (coordinateSignProjection F psi x.1)) i = 0
+      rw [ternarySignedRepresentation_apply]
+      have hcoord : (F.top u⁻¹)⁻¹ i = F.top u i := by
+        rw [map_inv, inv_inv]
+      rw [hcoord, coordinateSignProjection_apply, if_neg hnotpsi, mul_zero]
     have hyext : signFiberExtension F chi
         (signFiberRestriction F chi y.1) = y.1 :=
       signFiberExtension_restriction_of_supported F chi y.1 hysupport
@@ -98,10 +104,14 @@ theorem ternarySignedRepresentation_uniformSubrepresentationGeneratorBound
         exact y.2⟩
     have hyN : y ∈ N.toSubmodule := by
       have := hfiber_le yF
-      simpa only [inclusion, signFiberSubrepresentationInclusion, yF,
-        hyext] using this
+      have hincl : inclusion yF = y := by
+        apply Subtype.ext
+        exact hyext
+      rw [← hincl]
+      exact this
     have huz : M.toRepresentation u y = z := by
       simp [y]
+    change z ∈ N.toSubmodule
     rw [← huz]
     exact N.apply_mem_toSubmodule u hyN
   have hsum : (∑ psi : CoordinateSign F,
@@ -113,6 +123,10 @@ theorem ternarySignedRepresentation_uniformSubrepresentationGeneratorBound
       (⟨coordinateSignProjection F psi x.1,
         coordinateSignProjection_mem F M psi x.1 x.2⟩ : M.toSubmodule)) = x := by
     apply Subtype.ext
+    change M.toSubmodule.subtype (∑ psi : CoordinateSign F,
+      (⟨coordinateSignProjection F psi x.1,
+        coordinateSignProjection_mem F M psi x.1 x.2⟩ : M.toSubmodule)) = x.1
+    rw [map_sum]
     exact sum_coordinateSignProjection F x.1
   rw [heq] at hsum
   exact hsum
