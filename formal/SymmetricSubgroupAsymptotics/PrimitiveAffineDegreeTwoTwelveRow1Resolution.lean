@@ -1,6 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1CayleySocles
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1NaturalModule
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopStructuralAnchor
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveJointFiniteRows
 
 /-!
 # Complete semantic resolution of count-twelve row 1
@@ -26,15 +26,24 @@ namespace Socles :=
   SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1CayleySocles
 namespace Natural :=
   SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1NaturalModule
+namespace JointFinite := DegreeTwoTwelveJointFiniteRows
+
+/-- The two generated row-1 certificates in the common finite package used
+by every joint count-twelve row. -/
+noncomputable def finiteData :
+    JointFinite.DegreeTwoTwelveJointFiniteRowData
+      Catalogue.row1Interface 1 1 where
+  topSocle := Socles.family
+  natural := by
+    change UniformSubrepresentationGeneratorBound Natural.representation 1
+    exact Natural.uniform
 
 /-- The literal row-1 finite certificates in the reusable Schur-lift form. -/
 noncomputable def schurData
     {p : PreE7PairActionClass 12}
     {R : DegreeTwoPairTopRealization Catalogue.row1Interface p} :
     DegreeTwoPairTopSchurData Catalogue.row1Interface p R :=
-  DegreeTwoPairTopSchurData.ofUniform 1 1 Socles.family (by
-    change UniformSubrepresentationGeneratorBound Natural.representation 1
-    exact Natural.uniform)
+  finiteData.schurData
 
 /-- All-original-normal lift for the first joint count-twelve row. -/
 noncomputable def liftConclusion
