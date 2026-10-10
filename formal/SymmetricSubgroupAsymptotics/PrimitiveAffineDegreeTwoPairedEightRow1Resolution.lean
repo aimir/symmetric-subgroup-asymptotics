@@ -199,6 +199,35 @@ abbrev OmegaSocleSchurCapacityLeFour
   ∀ N, representationSchurCapacity
     (OmegaSocleRepresentation R N) ≤ 4
 
+/-- Assemble the all-normal capacity theorem directly from the two
+remaining representation inequalities.  This keeps the unresolved
+boundary on the raw omega filtration and on literal nonfixed simple rows,
+rather than on a project-defined capacity predicate. -/
+theorem omegaSocleSchurCapacityLeFour_of_rawCoupled_nonfixed
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (hraw : ∀ N,
+      Module.finrank (ZMod 2)
+          (binaryKernelOmegaConjugationRepresentation
+            (R.rawQuotientMap N)).invariants ≤
+        (Coupled.towerCoupledHeadData R).omegaHeadDemand N)
+    (hnonfixed : ∀ N
+      (X : Submodule (ZMod 2)[preE7PairAction 16 p ⫽ N.1]
+        (OmegaSocleRepresentation R N).asModule),
+      [IsSimpleModule (ZMod 2)[preE7PairAction 16 p ⫽ N.1] X] →
+      ¬ representationSubmoduleFixed (OmegaSocleRepresentation R N) X →
+      schurSocleMultiplicity
+          (k := ZMod 2)
+          (R := (ZMod 2)[preE7PairAction 16 p ⫽ N.1])
+          (A := (OmegaSocleRepresentation R N).asModule) (X := X) ≤
+        3 * Module.finrank
+          (Module.End (ZMod 2)[preE7PairAction 16 p ⫽ N.1] X) X) :
+    OmegaSocleSchurCapacityLeFour R := by
+  intro N
+  apply omegaSocle_schurCapacity_le_four_of_coupled_nonfixed R N
+  · exact R.omegaSocle_invariants_le_of_rawOmega N (hraw N)
+  · exact hnonfixed N
+
 /-- Concrete orbit-character row for paired8-1.  The two ordinary prefix
 positions come from the checked quotient-socle family; the four relative
 positions are converted into literal central characters and irreducible
