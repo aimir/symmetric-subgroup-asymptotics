@@ -24,6 +24,21 @@ namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
 
+/-- A generated coupled-head table attached only to its literal finite top.
+It is independent of the original pair action and of a realization of the
+two-frame tower, so one finite declaration can serve every realization of a
+catalogue row. -/
+structure DegreeTwoPairTopCoupledRegistryData
+    {t : ℕ} (D : DegreeTwoPairTopFiniteInterface t) (cap : ℕ) : Type 1 where
+  Generator : Type
+  State : Type
+  generators : Generator → D.top
+  state : State → Subrepresentation
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+  registry : BinaryInvariantCompleteCoupledHeadRegistry
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+    generators state cap
+
 /-- A complete coupled-head table on the literal bottom top of a two-frame
 pair tower.  Its state indexing is deliberately independent of the module
 index stored in `DegreeTwoPairTopFiniteInterface`: selected generated rows
@@ -42,6 +57,25 @@ structure DegreeTwoPairTopTowerCoupledHeadData
   registry : BinaryInvariantCompleteCoupledHeadRegistry
     (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
     generators state cap
+
+namespace DegreeTwoPairTopCoupledRegistryData
+
+variable {s t : ℕ} {D : DegreeTwoPairTopFiniteInterface t}
+  {p : PreE7PairActionClass s} {cap : ℕ}
+  (C : DegreeTwoPairTopCoupledRegistryData D cap)
+
+/-- Install a realization-free finite registry on any actual two-frame
+tower carrying the same literal top. -/
+noncomputable def towerData
+    (R : DegreeTwoPairTopTowerRealization D p) :
+    DegreeTwoPairTopTowerCoupledHeadData R cap where
+  Generator := C.Generator
+  State := C.State
+  generators := C.generators
+  state := C.state
+  registry := C.registry
+
+end DegreeTwoPairTopCoupledRegistryData
 
 namespace DegreeTwoPairTopTowerCoupledHeadData
 
@@ -294,6 +328,24 @@ theorem omegaHeads_add_quotient_le
   C.omegaHeadDemand_le N
 
 end DegreeTwoPairTopTowerCoupledHeadData
+
+namespace DegreeTwoPairTopCoupledRegistryData
+
+variable {s t : ℕ} {D : DegreeTwoPairTopFiniteInterface t}
+  {p : PreE7PairActionClass s} {cap : ℕ}
+  (C : DegreeTwoPairTopCoupledRegistryData D cap)
+
+/-- Every tower realization of a finite coupled registry inherits its raw
+fixed-omega cap. -/
+theorem rawKernelOmega_invariants_finrank_le
+    (R : DegreeTwoPairTopTowerRealization D p)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (binaryKernelOmegaConjugationRepresentation
+          (R.rawQuotientMap N)).invariants ≤ cap :=
+  (C.towerData R).rawKernelOmega_invariants_finrank_le N
+
+end DegreeTwoPairTopCoupledRegistryData
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu

@@ -8178,6 +8178,18 @@ noncomputable def completeRegistry :
   coupled := registry
   complete := PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.registry.complete
 
+/-- Realization-free finite declaration for paired8-1. -/
+noncomputable def finiteCoupledHeadData :
+    Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
+      DegreeTwoPairTopCoupledRegistryData
+        Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
+          DegreeTwoPairedEightSharedTops.top1 4 where
+  Generator := Fin 4
+  State := Fin 11
+  generators := topAmbient
+  state := states
+  registry := completeRegistry
+
 /-- Catalogue-facing semantic package for the selected paired-eight row.
 For every realization of the two successive pair frames, the generated
 table now bounds the three actual omega axes attached to every original
@@ -8189,12 +8201,8 @@ noncomputable def towerCoupledHeadData
         Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
           DegreeTwoPairedEightSharedTops.top1 p) :
     Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
-      DegreeTwoPairTopTowerCoupledHeadData R 4 where
-  Generator := Fin 4
-  State := Fin 11
-  generators := topAmbient
-  state := states
-  registry := completeRegistry
+      DegreeTwoPairTopTowerCoupledHeadData R 4 :=
+  finiteCoupledHeadData.towerData R
 
 end SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads
 
