@@ -242,6 +242,51 @@ private theorem coinvariantsKer_sharedOriginalAxis_le_ambientAxis
   change F.bits k⁻¹ = -F.bits k at hinv
   rw [hmul, hinv, sub_eq_add_neg, add_comm]
 
+/-- Quotienting an invariant state by a subspace containing all intrinsic
+displacements costs no more than the state's coinvariant dimension. -/
+private theorem nestedQuotient_finrank_le_coinvariants
+    {G V : Type*} [Group G] [AddCommGroup V] [Module (ZMod 2) V]
+    [FiniteDimensional (ZMod 2) V]
+    {rho : Representation (ZMod 2) G V}
+    (A B : Subrepresentation rho) (hAB : A ≤ B)
+    (hcoinv : Representation.Coinvariants.ker B.toRepresentation ≤
+      A.toSubmodule.comap B.toSubmodule.subtype) :
+    Module.finrank (ZMod 2)
+        (nestedQuotientRepresentation A B hAB).asModule ≤
+      Module.finrank (ZMod 2) B.toRepresentation.Coinvariants := by
+  have hA :=
+    (A.toSubmodule.comap B.toSubmodule.subtype).finrank_quotient_add_finrank
+  have hC :=
+    (Representation.Coinvariants.ker
+      B.toRepresentation).finrank_quotient_add_finrank
+  have hle : Module.finrank (ZMod 2)
+      (Representation.Coinvariants.ker B.toRepresentation) ≤
+        Module.finrank (ZMod 2)
+          (A.toSubmodule.comap B.toSubmodule.subtype) :=
+    Submodule.finrank_mono hcoinv
+  change Module.finrank (ZMod 2)
+      (nestedQuotientRepresentation A B hAB).asModule +
+        Module.finrank (ZMod 2)
+          (A.toSubmodule.comap B.toSubmodule.subtype) =
+      Module.finrank (ZMod 2) B.toSubmodule at hA
+  change Module.finrank (ZMod 2) B.toRepresentation.Coinvariants +
+      Module.finrank (ZMod 2)
+        (Representation.Coinvariants.ker B.toRepresentation) =
+      Module.finrank (ZMod 2) B.toSubmodule at hC
+  omega
+
+/-- Enlarging a quotient denominator can only decrease its dimension. -/
+private theorem finrank_quotient_le_of_le
+    {V : Type*} [AddCommGroup V] [Module (ZMod 2) V]
+    [FiniteDimensional (ZMod 2) V]
+    (A B : Submodule (ZMod 2) V) (hAB : A ≤ B) :
+    Module.finrank (ZMod 2) (V ⧸ B) ≤
+      Module.finrank (ZMod 2) (V ⧸ A) := by
+  have hA := A.finrank_quotient_add_finrank
+  have hB := B.finrank_quotient_add_finrank
+  have hle := Submodule.finrank_mono hAB
+  omega
+
 /-! ## The three literal axes of the fixed lift -/
 
 /-- The second-kernel coordinate state contributed by the fixed omega
@@ -367,6 +412,118 @@ theorem outerNormalPairSumAxis_le_fixedOmegaPairSumAxis
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     R.outerNormalPairSumAxis N ≤ R.fixedOmegaPairSumAxis N :=
   R.outerNormalPairSum_le_fixedOmegaPairSum N
+
+theorem outerNormalConstant_le_fixedOmegaConstant
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.outerNormalConstantAxis N ≤ R.fixedOmegaConstantAxis N := by
+  intro v hv
+  change v ∈
+    (R.frame.ambientAxis
+      (R.rawKernelOmegaFixedOriginalPreimage N)).comap
+        R.secondFrame.pairConstant
+  change R.secondFrame.pairConstant v ∈ R.frame.ambientAxis N.1 at hv
+  obtain ⟨k, hk, hkv⟩ := (R.frame.mem_ambientAxis N.1 _).1 hv
+  exact (R.frame.mem_ambientAxis _ _).2
+    ⟨k, R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N hk, hkv⟩
+
+/-- The fixed inner layer after removing the original-normal axis. -/
+abbrev fixedOmegaInnerQuotientRepresentation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  nestedQuotientRepresentation
+    (R.moduleAxis N) (R.fixedOmegaInnerNaturalAxis N)
+    (R.moduleAxis_le_fixedOmegaInnerNaturalAxis N)
+
+/-- The fixed outer layer after removing the original-normal axis. -/
+abbrev fixedOmegaOuterQuotientRepresentation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  nestedQuotientRepresentation
+    (R.frame.normalTopPermutationSubrepresentation N.1)
+    (R.fixedOmegaOuterAxis N)
+    (R.outerNormalAxis_le_fixedOmegaOuterAxis N)
+
+/-- The literal fixed pair-sum quotient over the catalogue top. -/
+abbrev fixedOmegaPairSumQuotientRepresentation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  nestedQuotientRepresentation
+    (R.outerNormalPairSumAxis N) (R.fixedOmegaPairSumAxis N)
+    (R.outerNormalPairSumAxis_le_fixedOmegaPairSumAxis N)
+
+/-- The literal fixed pair-constant quotient over the catalogue top. -/
+abbrev fixedOmegaConstantQuotientRepresentation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  nestedQuotientRepresentation
+    (R.outerNormalConstantAxis N) (R.fixedOmegaConstantAxis N)
+    (R.outerNormalConstant_le_fixedOmegaConstant N)
+
+/-- Pair-sum on the fixed outer quotient. -/
+noncomputable def fixedOmegaOuterPairSumMap
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.fixedOmegaOuterQuotientRepresentation N).IntertwiningMap
+      (nestedQuotientRepresentation
+        (R.outerNormalPairSumPullbackAxis N)
+        (R.fixedOmegaPairSumPullbackAxis N)
+        (R.outerNormalPairSum_le_fixedOmegaPairSum N)) :=
+  nestedQuotientMap
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    R.secondFrame.pulledBackCoordinateTopAction
+    R.secondFrame.pairSumIntertwiner
+    (R.frame.normalTopPermutationSubrepresentation N.1)
+    (R.fixedOmegaOuterAxis N)
+    (R.outerNormalAxis_le_fixedOmegaOuterAxis N)
+
+theorem fixedOmegaOuterPairSumMap_surjective
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Function.Surjective (R.fixedOmegaOuterPairSumMap N) :=
+  nestedQuotientMap_surjective _ _ _ _ _ _
+
+/-- The kernel of fixed outer pair-sum is exactly the fixed constant
+quotient. -/
+noncomputable def fixedOmegaOuterPairSumKernelEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (nestedQuotientRepresentation
+      (R.outerNormalConstantPullbackAxis N)
+      (R.fixedOmegaConstantPullbackAxis N)
+      (intertwinerPreimage_mono _ _ _
+        (R.outerNormalAxis_le_fixedOmegaOuterAxis N))).Equiv
+      (R.fixedOmegaOuterPairSumMap N).ker.toRepresentation :=
+  nestedQuotientMapKernelEquiv
+    R.secondFrame.pulledBackCoordinateTopAction
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    R.secondFrame.pulledBackCoordinateTopAction
+    R.secondFrame.pairConstantIntertwiner
+    R.secondFrame.pairSumIntertwiner
+    R.secondFrame.pairConstantIntertwiner_injective
+    R.secondFrame.pairConstant_pairSum_exact_linear
+    (R.frame.normalTopPermutationSubrepresentation N.1)
+    (R.fixedOmegaOuterAxis N)
+    (R.outerNormalAxis_le_fixedOmegaOuterAxis N)
+
+/-- Transport the fixed pair-sum quotient from the first physical top to
+the literal catalogue top. -/
+noncomputable def fixedOmegaPairSumPullbackQuotientEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (nestedQuotientRepresentation
+      (R.outerNormalPairSumPullbackAxis N)
+      (R.fixedOmegaPairSumPullbackAxis N)
+      (R.outerNormalPairSum_le_fixedOmegaPairSum N)).Equiv
+      ((R.fixedOmegaPairSumQuotientRepresentation N).comp
+        R.outerTopToLiteral) :=
+  R.outerPullbackNestedQuotientEquiv _ _ _
+
+/-- Transport the fixed pair-constant quotient to the literal catalogue
+top. -/
+noncomputable def fixedOmegaConstantPullbackQuotientEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (nestedQuotientRepresentation
+      (R.outerNormalConstantPullbackAxis N)
+      (R.fixedOmegaConstantPullbackAxis N)
+      (intertwinerPreimage_mono _ _ _
+        (R.outerNormalAxis_le_fixedOmegaOuterAxis N))).Equiv
+      ((R.fixedOmegaConstantQuotientRepresentation N).comp
+        R.outerTopToLiteral) :=
+  R.outerPullbackNestedQuotientEquiv _ _ _
 
 /-- Intrinsic displacements of the fixed inner axis already lie in the
 literal normal denominator. -/
@@ -501,6 +658,80 @@ theorem fixedOmegaConstant_coinvariantsKer_le_normalAxis
   change ((R.fixedOmegaOuterAxis N).toRepresentation u bD).1 - bD.1 ∈ _
   exact hbnormal
 
+/-- The fixed outer quotient splits exactly into its pair-constant and
+pair-sum quotients. -/
+theorem fixedOmegaOuterQuotient_finrank_eq_constant_add_pairSum
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (R.fixedOmegaOuterQuotientRepresentation N).asModule =
+      Module.finrank (ZMod 2)
+          (R.fixedOmegaConstantQuotientRepresentation N).asModule +
+        Module.finrank (ZMod 2)
+          (R.fixedOmegaPairSumQuotientRepresentation N).asModule := by
+  let q := R.fixedOmegaOuterPairSumMap N
+  have hdim := q.toLinearMap.finrank_range_add_finrank_ker
+  rw [LinearMap.range_eq_top.mpr
+    (R.fixedOmegaOuterPairSumMap_surjective N), finrank_top] at hdim
+  have hker :=
+    (R.fixedOmegaOuterPairSumKernelEquiv N).toLinearEquiv.finrank_eq
+  have hsum :=
+    (R.fixedOmegaPairSumPullbackQuotientEquiv N).toLinearEquiv.finrank_eq
+  have hconstant :=
+    (R.fixedOmegaConstantPullbackQuotientEquiv N).toLinearEquiv.finrank_eq
+  change Module.finrank (ZMod 2)
+      (nestedQuotientRepresentation
+        (R.outerNormalPairSumPullbackAxis N)
+        (R.fixedOmegaPairSumPullbackAxis N)
+        (R.outerNormalPairSum_le_fixedOmegaPairSum N)).asModule +
+      Module.finrank (ZMod 2) q.ker =
+    Module.finrank (ZMod 2)
+      (R.fixedOmegaOuterQuotientRepresentation N).asModule at hdim
+  change Module.finrank (ZMod 2)
+      (nestedQuotientRepresentation
+        (R.outerNormalConstantPullbackAxis N)
+        (R.fixedOmegaConstantPullbackAxis N)
+        (intertwinerPreimage_mono _ _ _
+          (R.outerNormalAxis_le_fixedOmegaOuterAxis N))).asModule =
+    Module.finrank (ZMod 2) q.ker at hker
+  change Module.finrank (ZMod 2)
+      (nestedQuotientRepresentation
+        (R.outerNormalPairSumPullbackAxis N)
+        (R.fixedOmegaPairSumPullbackAxis N)
+        (R.outerNormalPairSum_le_fixedOmegaPairSum N)).asModule =
+    Module.finrank (ZMod 2)
+      (R.fixedOmegaPairSumQuotientRepresentation N).asModule at hsum
+  change Module.finrank (ZMod 2)
+      (nestedQuotientRepresentation
+        (R.outerNormalConstantPullbackAxis N)
+        (R.fixedOmegaConstantPullbackAxis N)
+        (intertwinerPreimage_mono _ _ _
+          (R.outerNormalAxis_le_fixedOmegaOuterAxis N))).asModule =
+    Module.finrank (ZMod 2)
+      (R.fixedOmegaConstantQuotientRepresentation N).asModule at hconstant
+  omega
+
+theorem fixedOmegaInnerQuotient_finrank_le_coinvariants
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (R.fixedOmegaInnerQuotientRepresentation N).asModule ≤
+      Module.finrank (ZMod 2)
+        (R.fixedOmegaInnerNaturalAxis N).toRepresentation.Coinvariants :=
+  nestedQuotient_finrank_le_coinvariants
+    (R.moduleAxis N) (R.fixedOmegaInnerNaturalAxis N)
+    (R.moduleAxis_le_fixedOmegaInnerNaturalAxis N)
+    (R.fixedOmegaInner_coinvariantsKer_le_moduleAxis N)
+
+theorem fixedOmegaPairSumQuotient_finrank_le_coinvariants
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (R.fixedOmegaPairSumQuotientRepresentation N).asModule ≤
+      Module.finrank (ZMod 2)
+        (R.fixedOmegaPairSumAxis N).toRepresentation.Coinvariants :=
+  nestedQuotient_finrank_le_coinvariants
+    (R.outerNormalPairSumAxis N) (R.fixedOmegaPairSumAxis N)
+    (R.outerNormalPairSumAxis_le_fixedOmegaPairSumAxis N)
+    (R.fixedOmegaPairSum_coinvariantsKer_le_normalAxis N)
+
 /-- The fixed-lift product lies in the literal original-normal constant
 denominator.  This is the formal `[B,D] = KW ≤ L ∩ N` step. -/
 theorem fixedOmega_productSpan_le_normalConstant
@@ -527,19 +758,6 @@ theorem fixedOmega_productSpan_le_normalConstant
       exact R.rawKernelOmegaFixedOriginalPreimage_commutator_mem
         N k.1 u hk hu)
 
-theorem outerNormalConstant_le_fixedOmegaConstant
-    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    R.outerNormalConstantAxis N ≤ R.fixedOmegaConstantAxis N := by
-  intro v hv
-  change v ∈
-    (R.frame.ambientAxis
-      (R.rawKernelOmegaFixedOriginalPreimage N)).comap
-        R.secondFrame.pairConstant
-  change R.secondFrame.pairConstant v ∈ R.frame.ambientAxis N.1 at hv
-  obtain ⟨k, hk, hkv⟩ := (R.frame.mem_ambientAxis N.1 _).1 hv
-  exact (R.frame.mem_ambientAxis _ _).2
-    ⟨k, R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N hk, hkv⟩
-
 theorem fixedOmega_productSpan_le_constant
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     binaryCoordinateProductSpan
@@ -548,6 +766,56 @@ theorem fixedOmega_productSpan_le_constant
       (R.fixedOmegaConstantAxis N).toSubmodule :=
   (R.fixedOmega_productSpan_le_normalConstant N).trans
     (R.outerNormalConstant_le_fixedOmegaConstant N)
+
+/-- The coupled product/displacement denominator is contained in the
+literal normal constant denominator. -/
+theorem fixedOmegaCoupledDenominator_le_normalConstant
+    {J : Type*} (generators : J → D.top)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    binaryCoupledDenominator
+        (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+        generators (R.fixedOmegaConstantAxis N)
+        (binaryCoordinateProductSpan
+          (R.fixedOmegaInnerNaturalAxis N).toSubmodule
+          (R.fixedOmegaPairSumAxis N).toSubmodule)
+        (R.fixedOmega_productSpan_le_constant N) ≤
+      (R.outerNormalConstantAxis N).toSubmodule.comap
+        (R.fixedOmegaConstantAxis N).toSubmodule.subtype := by
+  apply sup_le
+  · intro z hz
+    exact R.fixedOmega_productSpan_le_normalConstant N hz
+  · exact (representationGeneratorDisplacementSpan_le_coinvariantsKer
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+      generators (R.fixedOmegaConstantAxis N)).trans
+        (R.fixedOmegaConstant_coinvariantsKer_le_normalAxis N)
+
+/-- Consequently the normal constant quotient is no larger than the third
+coupled catalogue term. -/
+theorem fixedOmegaConstantQuotient_finrank_le_coupled
+    {J : Type*} (generators : J → D.top)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (R.fixedOmegaConstantQuotientRepresentation N).asModule ≤
+      Module.finrank (ZMod 2)
+        ((R.fixedOmegaConstantAxis N).toSubmodule ⫽
+          binaryCoupledDenominator
+            (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+            generators (R.fixedOmegaConstantAxis N)
+            (binaryCoordinateProductSpan
+              (R.fixedOmegaInnerNaturalAxis N).toSubmodule
+              (R.fixedOmegaPairSumAxis N).toSubmodule)
+            (R.fixedOmega_productSpan_le_constant N)) := by
+  exact finrank_quotient_le_of_le
+    (binaryCoupledDenominator
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+      generators (R.fixedOmegaConstantAxis N)
+      (binaryCoordinateProductSpan
+        (R.fixedOmegaInnerNaturalAxis N).toSubmodule
+        (R.fixedOmegaPairSumAxis N).toSubmodule)
+      (R.fixedOmega_productSpan_le_constant N))
+    ((R.outerNormalConstantAxis N).toSubmodule.comap
+      (R.fixedOmegaConstantAxis N).toSubmodule.subtype)
+    (R.fixedOmegaCoupledDenominator_le_normalConstant generators N)
 
 end DegreeTwoPairTopTowerRealization
 end PrimitiveAffineImprimitiveBlockTransfer
