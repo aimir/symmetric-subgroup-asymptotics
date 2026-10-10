@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoRelativeKernelAnchor
 import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicOrbitRegistry
+import SymmetricSubgroupAsymptotics.SemisimpleModuleGenerators
 import SymmetricSubgroupAsymptotics.TraceyPrimePowerInput
 import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.Order.Atoms.Finite
@@ -494,6 +495,23 @@ noncomputable def ofSocleDualGenerated
     (finiteRepresentationSocle_essential
       (binaryKernelOmegaConjugationRepresentation pi))
     hgen
+
+/-- Schur-capacity endpoint for the canonical omega socle.  Once the
+paired-eight three-layer argument bounds the capacity of its dual, the
+standard semisimple generator theorem supplies the orbit tuple. -/
+noncomputable def ofSocleDualSchurCapacity
+    [IsSemisimpleModule (ZMod 2)[Q]
+      (finiteRepresentationSocle
+        (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation.dual.asModule]
+    (hcap : representationSchurCapacity
+      (finiteRepresentationSocle
+        (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation.dual ≤ r) :
+    BinaryKernelOmegaLinearOrbits pi r :=
+  ofSocleDualGenerated
+    (semisimple_representationGeneratedBy_of_schurCapacity_le
+      (finiteRepresentationSocle
+        (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation.dual
+      r hcap)
 
 /-- Turn a generated tuple in the dual omega module into the literal
 complex central characters used by the relative-kernel lift. -/
