@@ -7,18 +7,19 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopRelativeKerne
 /-!
 # Concrete pilot wiring in the degree-two residual source
 
-The first count-twelve row, all paired-eight rows, and the third primitive
+Every joint count-twelve row, every paired-eight row, and the third primitive
 count-sixteen row are routed through concrete finite certificates.  This
 file wires those endpoints into the literal catalogues.  Consequently the
-remaining semantic input cannot replace any pilot with a project-owned row
-premise.  Every paired-eight fixed and nonfixed row, Schur-capacity theorem,
-prefix, relative characters, and resolved row is constructed uniformly from
-its three finite declarations.
+remaining semantic input cannot replace any of those families with a
+project-owned row premise.  The 283 joint count-twelve rows are constructed
+uniformly from quotient-socle and natural-module declarations; the
+paired-eight rows are constructed uniformly from their three finite
+declarations.
 
-The resulting constructor still exposes the unresolved catalogue rows, but
-its type records strict progress toward the complete concrete degree-two
-source: count-twelve row index `0`, all paired-eight rows, and
-primitive-sixteen row index `2` are wired to finite certificates.
+The resulting constructor still exposes the exceptional count-twelve and
+unresolved count-sixteen families, but all generic count-twelve rows, all
+paired-eight rows, and primitive-sixteen row index `2` are wired to finite
+certificates.
 -/
 
 set_option autoImplicit false
@@ -34,20 +35,27 @@ namespace Concrete := DegreeTwoConcreteResidualAssembly
 namespace TwelvePilot := PrimitiveAffineDegreeTwoTwelveRow1Resolution
 namespace SixteenPilot := PrimitiveAffineDegreeTwoPrimitiveSixteenRow3Resolution
 namespace PairedEightFinite := DegreeTwoPairedEightFiniteCatalogueData
+namespace TwelveJointFinite := DegreeTwoTwelveJointFiniteRows
+namespace TwelveJointCatalogue :=
+  DegreeTwoTwelveJointFiniteRows.LiteralCatalogue
+namespace TwelveFiniteCatalogue := DegreeTwoTwelvePairFiniteCatalogue
 
 abbrev TwelveCatalogue := Concrete.TwelveCatalogue
 abbrev SixteenCatalogue := Concrete.SixteenCatalogue
 
-/-- Semantic and finite data for the rows not already generated.  The
-disequality hypotheses prevent the two isolated pilot rows from reappearing
-as abstract assumptions, while paired-eight accepts only finite declarations
-on the literal tops. -/
+/-- Semantic and finite data for the rows not already generated.  Joint
+count-twelve and paired-eight rows accept only finite declarations on their
+literal tops.  The count-twelve semantic field is restricted to the ten
+core-or-paired exceptional rows.  The disequality on primitive-sixteen
+prevents its generated pilot from reappearing as an abstract assumption. -/
 structure RemainingPairTopSemanticData : Type 1 where
-  twelveRelative :
+  twelveJoint :
+    TwelveJointCatalogue.RemainingDegreeTwoTwelveJointFiniteRowData
+  twelveExceptional :
     ∀ (j : Fin 301) (p : PreE7PairActionClass 12)
       (realization : DegreeTwoPairTopRealization
         (TwelveCatalogue.row j).finite p),
-      j ≠ (0 : Fin 301) →
+      (TwelveCatalogue.row j).branch ≠ .joint →
       (TwelveCatalogue.row j).branch ≠ .ternary →
       DegreeTwoPairTopRelativeKernelOrbitRowData
         (TwelveCatalogue.row j).finite
@@ -89,21 +97,27 @@ structure RemainingPairTopSemanticData : Type 1 where
 
 namespace RemainingPairTopSemanticData
 
-/-- Count-twelve resolution with row index `0` supplied by the checked
-row-one quotient-socle and natural-module certificates. -/
+/-- Count-twelve resolution with all 283 joint rows supplied by the generic
+finite Schur package.  The generated row-one package is inserted before
+catalogue dispatch. -/
 noncomputable def twelveResolution
     (D : RemainingPairTopSemanticData)
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature) :
     DegreeTwoTwelvePairTopCatalogueResolution TwelveCatalogue := by
+  let jointFinite :
+      TwelveJointFinite.DegreeTwoTwelveJointFiniteCatalogueData
+        TwelveCatalogue :=
+    TwelveJointCatalogue.ofGeneratedRow1 TwelvePilot.finiteData D.twelveJoint
   intro j p realization
-  by_cases hj : j = (0 : Fin 301)
-  · subst j
-    exact TwelvePilot.resolvedRow hZmud lit realization
-  · by_cases hbranch : (TwelveCatalogue.row j).branch = .ternary
-    · exact (D.twelveTernary j p realization hbranch).resolvedRow
-    · exact ((D.twelveRelative j p realization hj hbranch).twelveResolvedData
-        lit).toResolvedRow
+  by_cases hjoint : (TwelveCatalogue.row j).branch = .joint
+  · exact jointFinite.resolvedRow hZmud lit
+      (fun i hi ↦ TwelveFiniteCatalogue.joint_parameters i hi)
+      j realization hjoint
+  · by_cases hternary : (TwelveCatalogue.row j).branch = .ternary
+    · exact (D.twelveTernary j p realization hternary).resolvedRow
+    · let row := D.twelveExceptional j p realization hjoint hternary
+      exact (row.twelveResolvedData lit).toResolvedRow
 
 /-- Count-sixteen resolution with every paired-eight row and primitive row
 index `2` supplied by finite certificates. -/
@@ -131,8 +145,9 @@ noncomputable def sixteenResolution
 end RemainingPairTopSemanticData
 
 /-- Degree-two residual source with the checked catalogue pilots and the
-uniform paired-eight finite dispatch installed at their literal indices.
-The remaining structure excludes full paired-eight row objects entirely. -/
+uniform joint-twelve and paired-eight finite dispatch installed at their
+literal indices.  The remaining structure excludes semantic row objects for
+both complete families. -/
 noncomputable def source
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
