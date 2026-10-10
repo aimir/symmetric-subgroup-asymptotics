@@ -1,5 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoRelativeKernelAnchor
 import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicOrbitRegistry
+import SymmetricSubgroupAsymptotics.DualGeneratorSchurCapacity
+import SymmetricSubgroupAsymptotics.RepresentationDualSubquotientGenerators
 import SymmetricSubgroupAsymptotics.RepresentationSchurRows
 import SymmetricSubgroupAsymptotics.SemisimpleModuleGenerators
 import SymmetricSubgroupAsymptotics.TraceyPrimePowerInput
@@ -327,6 +329,40 @@ theorem representationDual_isSemisimple
   exact
     (Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule
       rho.dual).mp hdualRep
+
+/-- Evaluation is equivariant from a finite-dimensional representation to
+its double contragredient. -/
+noncomputable def representationDoubleDualEquiv
+    {k G V : Type*} [Field k] [Group G]
+    [AddCommGroup V] [Module k V] [FiniteDimensional k V]
+    (rho : Representation k G V) : rho.Equiv rho.dual.dual :=
+  Representation.Equiv.mk (Module.evalEquiv k V) (by
+    intro g
+    apply LinearMap.ext
+    intro x
+    ext f
+    change f (rho g x) = f (rho (g⁻¹)⁻¹ x)
+    rw [inv_inv])
+
+/-- For a semisimple finite-dimensional representation, any integral
+Schur-capacity bound passes to its contragredient.  Evaluation identifies
+the original representation with the double dual, so a generated tuple
+for the original is exactly the dual-generated input for the
+contragredient capacity theorem. -/
+theorem representationDual_schurCapacity_le_of_semisimple
+    {k G V : Type*} [Field k] [Group G]
+    [AddCommGroup V] [Module k V] [FiniteDimensional k V]
+    (rho : Representation k G V)
+    [IsSemisimpleModule k[G] rho.asModule]
+    (cap : ℕ) (hcap : representationSchurCapacity rho ≤ cap) :
+    representationSchurCapacity rho.dual ≤ cap := by
+  have hgen : RepresentationGeneratedBy rho cap :=
+    semisimple_representationGeneratedBy_of_schurCapacity_le rho cap hcap
+  have hdouble : RepresentationGeneratedBy rho.dual.dual cap :=
+    representationGeneratedBy_of_surjective rho rho.dual.dual
+      (representationDoubleDualEquiv rho).toIntertwiningMap
+      (representationDoubleDualEquiv rho).surjective hgen
+  exact representationSchurCapacity_le_of_dual_generated rho.dual cap hdouble
 
 /-- A fixed-row dimension bound together with the matching Schur-scaled
 multiplicity bound on every nonfixed simple row controls the full Schur
