@@ -1,7 +1,8 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoRelativeKernelAnchor
-import SymmetricSubgroupAsymptotics.BinaryInvariantRegistry
+import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicOrbitRegistry
 import SymmetricSubgroupAsymptotics.TraceyPrimePowerInput
 import Mathlib.LinearAlgebra.Dual.Lemmas
+import Mathlib.Order.Atoms.Finite
 
 /-!
 # Relative characters from normal orbits in a binary kernel
@@ -185,6 +186,58 @@ theorem orbit_span_eq_top_of_representationGeneratedBy
       S.toSubmodule := by
     exact hx
   simpa only [LinearEquiv.apply_symm_apply] using hx'
+
+/-- The sum of all minimal nonzero invariant subspaces of a finite
+representation.  This canonical detecting subrepresentation is the module
+socle used by the paired-eight argument. -/
+noncomputable def finiteRepresentationSocle
+    {k G V : Type*} [Field k] [Group G]
+    [AddCommGroup V] [Module k V] [Finite V]
+    (rho : Representation k G V) : Subrepresentation rho := by
+  classical
+  letI : Fintype (Subrepresentation rho) := Fintype.ofFinite _
+  exact (Finset.univ.filter (fun S : Subrepresentation rho ↦ IsAtom S)).sup id
+
+theorem isAtom_le_finiteRepresentationSocle
+    {k G V : Type*} [Field k] [Group G]
+    [AddCommGroup V] [Module k V] [Finite V]
+    {rho : Representation k G V}
+    (S : Subrepresentation rho) (hS : IsAtom S) :
+    S ≤ finiteRepresentationSocle rho := by
+  classical
+  letI : Fintype (Subrepresentation rho) := Fintype.ofFinite _
+  apply Finset.le_sup (f := id)
+  exact Finset.mem_filter.mpr ⟨Finset.mem_univ S, hS⟩
+
+/-- Every nonzero cyclic orbit meets the finite representation socle.
+Equivalently, the socle is an essential subrepresentation. -/
+theorem finiteRepresentationSocle_essential
+    {k G V : Type*} [Field k] [Group G]
+    [AddCommGroup V] [Module k V] [Finite V]
+    (rho : Representation k G V) (x : V) (hx0 : x ≠ 0) :
+    ∃ y : (finiteRepresentationSocle rho).toSubmodule, y ≠ 0 ∧
+      (y : V) ∈ binaryOrbitSpan rho x := by
+  let W : Subrepresentation rho := orbitSubrepresentation rho x
+  have hW : W ≠ ⊥ := by
+    intro hbot
+    have hx : x ∈ W.toSubmodule := binaryOrbitSpan_point rho x
+    rw [hbot] at hx
+    exact hx0 (by simpa only [Submodule.mem_bot] using hx)
+  obtain ⟨S, hS, hSW⟩ :=
+    (eq_bot_or_exists_atom_le W).resolve_left hW
+  obtain ⟨y, hyS, hyBot⟩ := SetLike.exists_of_lt hS.bot_lt
+  have hy0 : y ≠ 0 := by
+    intro hy
+    apply hyBot
+    subst y
+    exact Submodule.zero_mem _
+  let ys : (finiteRepresentationSocle rho).toSubmodule :=
+    ⟨y, isAtom_le_finiteRepresentationSocle S hS hyS⟩
+  refine ⟨ys, ?_, ?_⟩
+  · intro hys
+    apply hy0
+    exact congrArg Subtype.val hys
+  · exact hSW hyS
 
 /-- A tuple of irreducible kernel representations whose ambient conjugacy
 orbits separate the intrinsic central involutions.  This is the exact
@@ -425,6 +478,22 @@ noncomputable def ofEssentialDualGenerated
         have hyzero : y = 0 :=
           (Module.forall_dual_apply_eq_zero_iff (ZMod 2) y).mp hall
         exact hy0 hyzero }
+
+/-- Canonical specialization to the sum of all minimal nonzero invariant
+subspaces of omega.  Its essentiality is automatic for the finite omega
+module, leaving only the dual generator theorem as semantic input. -/
+noncomputable def ofSocleDualGenerated
+    (hgen : RepresentationGeneratedBy
+      (finiteRepresentationSocle
+        (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation.dual
+      r) :
+    BinaryKernelOmegaLinearOrbits pi r :=
+  ofEssentialDualGenerated
+    (finiteRepresentationSocle
+      (binaryKernelOmegaConjugationRepresentation pi))
+    (finiteRepresentationSocle_essential
+      (binaryKernelOmegaConjugationRepresentation pi))
+    hgen
 
 /-- Turn a generated tuple in the dual omega module into the literal
 complex central characters used by the relative-kernel lift. -/

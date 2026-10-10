@@ -173,6 +173,39 @@ noncomputable def ofEssentialDualGenerated
     (BinaryKernelOmegaLinearOrbits.ofEssentialDualGenerated
       S essential hgen).toOrbitCharacters
 
+/-- Canonical semisimple-socle constructor.  Finite-module essentiality is
+proved once in the generic orbit layer, so a row only supplies a generator
+theorem for the dual of omega's actual representation socle. -/
+noncomputable def ofSocleDualGenerated
+    {B : Type} [Group B] [Finite B]
+    (pi : Q →* B)
+    (binary : Fin profile.binaryPrimary → Q →* ℂˣ)
+    (binary_twoGroup : ∀ i, IsPGroup 2 (binary i).range)
+    (linear : Fin profile.linear → Q →* ℂˣ)
+    (ordinary : Fin profile.ordinary →
+      FiniteIrreducibleRepresentation ℂ Q)
+    (kernel_eq : pi.ker =
+      ((⨅ i, (binary i).ker) ⊓ (⨅ i, (linear i).ker)) ⊓
+        (⨅ i, (ordinary i).action.ker))
+    (kernel_twoGroup : IsPGroup 2 pi.ker)
+    (hgen : RepresentationGeneratedBy
+      (finiteRepresentationSocle
+        (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation.dual
+      profile.relative) :
+    DegreeTwoPairRelativeKernelOrbitInput Q profile where
+  PrefixTarget := B
+  prefixTargetGroup := inferInstance
+  prefixTargetFinite := inferInstance
+  quotient := pi
+  binary := binary
+  binary_twoGroup := binary_twoGroup
+  linear := linear
+  ordinary := ordinary
+  kernel_eq := kernel_eq
+  kernel_twoGroup := kernel_twoGroup
+  orbitCharacters :=
+    (BinaryKernelOmegaLinearOrbits.ofSocleDualGenerated hgen).toOrbitCharacters
+
 /-- Construct the full relative-kernel anchor from the literal finite
 orbit-character input. -/
 noncomputable def anchor : DegreeTwoPairRelativeKernelAnchor Q profile :=
