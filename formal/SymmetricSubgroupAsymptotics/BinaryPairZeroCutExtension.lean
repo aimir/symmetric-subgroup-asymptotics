@@ -73,6 +73,16 @@ noncomputable def zeroCutSectionEquiv :
           (F.kernelSpace ⧸ F.normalSpace N)).mkQ a) = a :=
   rfl
 
+/-- The zero-cut/section equivalence is unchanged after inflating both
+actions along the same homomorphism. -/
+noncomputable def zeroCutSectionCompEquiv
+    {H : Type} [Group H]
+    (q : H →* (U ⧸ (F.top.ker ⊔ N))) :
+    ((F.zeroCutModule N).ρ.comp q).Equiv
+      ((F.sectionRepresentation N).comp q) :=
+  Representation.Equiv.mk (F.zeroCutSectionEquiv N).toLinearEquiv
+    (fun h ↦ (F.zeroCutSectionEquiv N).isIntertwining' (q h))
+
 /-- The original normal quotient maps onto the original acting top. -/
 def zeroCutBase : (U ⧸ N) →* U ⧸ (F.top.ker⊔N) :=
   QuotientGroup.lift N (QuotientGroup.mk' (F.top.ker⊔N)) (by
