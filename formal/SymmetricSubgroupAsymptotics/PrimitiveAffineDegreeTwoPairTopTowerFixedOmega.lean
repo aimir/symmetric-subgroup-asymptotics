@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerOmegaFiltration
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerOuterNestedQuotient
 
 /-!
 # The fixed direct-omega lift in a two-frame pair tower
@@ -178,6 +178,143 @@ theorem rawKernelOmegaFixedOriginalPreimage_commutator_mem
       (QuotientGroup.mk' N.1 u)).symm
   rw [hcentral.eq]
   group
+
+/-! ## The three literal axes of the fixed lift -/
+
+/-- The second-kernel coordinate state contributed by the fixed omega
+lift.  This is `K` in the coupled three-head inequality. -/
+def fixedOmegaInnerNaturalAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) :=
+  R.secondFrame.sharedOriginalAxis
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+    R.topEquiv R.module_action_eq
+    ((R.rawKernelOmegaFixedOriginalPreimage N).map
+      R.frame.top.rangeRestrict)
+
+/-- The first-kernel coordinate state contributed by the fixed omega lift,
+before separating its pair-sum and pair-constant coordinates. -/
+def fixedOmegaOuterAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2)
+        R.frame.top.range (Fin s)) :=
+  R.frame.sharedOriginalAxis
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    (MulEquiv.refl R.frame.top.range) (fun _ _ ↦ rfl)
+    (R.rawKernelOmegaFixedOriginalPreimage N)
+
+/-- Pair-sum image `W` of the fixed first-kernel state. -/
+def fixedOmegaPairSumPullbackAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation R.secondFrame.pulledBackCoordinateTopAction :=
+  intertwinerImage
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    R.secondFrame.pulledBackCoordinateTopAction
+    R.secondFrame.pairSumIntertwiner (R.fixedOmegaOuterAxis N)
+
+/-- Pair-constant preimage `L` of the fixed first-kernel state. -/
+def fixedOmegaConstantPullbackAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation R.secondFrame.pulledBackCoordinateTopAction :=
+  intertwinerPreimage
+    R.secondFrame.pulledBackCoordinateTopAction
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    R.secondFrame.pairConstantIntertwiner (R.fixedOmegaOuterAxis N)
+
+/-- Transport the fixed pair-sum state to the literal bottom top. -/
+def fixedOmegaPairSumAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) :=
+  R.transportInnerNaturalAxis
+    (R.secondFrame.descendPulledBackSubrepresentation
+      (R.fixedOmegaPairSumPullbackAxis N))
+
+/-- Transport the fixed pair-constant state to the literal bottom top. -/
+def fixedOmegaConstantAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) :=
+  R.transportInnerNaturalAxis
+    (R.secondFrame.descendPulledBackSubrepresentation
+      (R.fixedOmegaConstantPullbackAxis N))
+
+theorem fixedOmegaInnerNaturalAxis_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.fixedOmegaInnerNaturalAxis N).toSubmodule =
+      R.secondFrame.ambientAxis
+        ((R.rawKernelOmegaFixedOriginalPreimage N).map
+          R.frame.top.rangeRestrict) :=
+  rfl
+
+theorem fixedOmegaPairSumAxis_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.fixedOmegaPairSumAxis N).toSubmodule =
+      (R.frame.ambientAxis
+          (R.rawKernelOmegaFixedOriginalPreimage N)).map
+        R.secondFrame.pairSum :=
+  rfl
+
+theorem fixedOmegaConstantAxis_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.fixedOmegaConstantAxis N).toSubmodule =
+      (R.frame.ambientAxis
+          (R.rawKernelOmegaFixedOriginalPreimage N)).comap
+        R.secondFrame.pairConstant :=
+  rfl
+
+/-- The fixed-lift product lies in the literal original-normal constant
+denominator.  This is the formal `[B,D] = KW ≤ L ∩ N` step. -/
+theorem fixedOmega_productSpan_le_normalConstant
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    binaryCoordinateProductSpan
+        (R.fixedOmegaInnerNaturalAxis N).toSubmodule
+        (R.fixedOmegaPairSumAxis N).toSubmodule ≤
+      (R.outerNormalConstantAxis N).toSubmodule := by
+  rw [R.fixedOmegaInnerNaturalAxis_toSubmodule N,
+    R.fixedOmegaPairSumAxis_toSubmodule N]
+  change binaryCoordinateProductSpan
+      (R.secondFrame.ambientAxis
+        ((R.rawKernelOmegaFixedOriginalPreimage N).map
+          R.frame.top.rangeRestrict))
+      ((R.frame.ambientAxis
+        (R.rawKernelOmegaFixedOriginalPreimage N)).map
+          R.secondFrame.pairSum) ≤
+    (R.frame.ambientAxis N.1).comap R.secondFrame.pairConstant
+  exact R.frame.nestedPair_productSpan_le_normalConstantPreimage
+    R.secondFrame N.1 (R.rawKernelOmegaFixedOriginalPreimage N)
+    (R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N)
+    (by
+      intro u hu k hk
+      exact R.rawKernelOmegaFixedOriginalPreimage_commutator_mem
+        N k.1 u hk hu)
+
+theorem outerNormalConstant_le_fixedOmegaConstant
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.outerNormalConstantAxis N ≤ R.fixedOmegaConstantAxis N := by
+  intro v hv
+  change v ∈
+    (R.frame.ambientAxis
+      (R.rawKernelOmegaFixedOriginalPreimage N)).comap
+        R.secondFrame.pairConstant
+  change R.secondFrame.pairConstant v ∈ R.frame.ambientAxis N.1 at hv
+  obtain ⟨k, hk, hkv⟩ := (R.frame.mem_ambientAxis N.1 _).1 hv
+  exact (R.frame.mem_ambientAxis _ _).2
+    ⟨k, R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N hk, hkv⟩
+
+theorem fixedOmega_productSpan_le_constant
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    binaryCoordinateProductSpan
+        (R.fixedOmegaInnerNaturalAxis N).toSubmodule
+        (R.fixedOmegaPairSumAxis N).toSubmodule ≤
+      (R.fixedOmegaConstantAxis N).toSubmodule :=
+  (R.fixedOmega_productSpan_le_normalConstant N).trans
+    (R.outerNormalConstant_le_fixedOmegaConstant N)
 
 end DegreeTwoPairTopTowerRealization
 end PrimitiveAffineImprimitiveBlockTransfer
