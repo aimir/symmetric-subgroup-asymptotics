@@ -165,6 +165,25 @@ theorem omegaCoupledQuotientRepresentation_invariants_finrank_eq
   rw [C.omegaCoupledQuotientRepresentation_invariants_eq_top hgen N,
     finrank_top]
 
+/-- Representation-level form of the complete finite-table demand: two
+intrinsic invariant-form heads and one actual fixed quotient row. -/
+theorem omegaHeadDemand_eq_head_add_head_add_fixed
+    (hgen : Subgroup.closure (Set.range C.generators) = ⊤)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    C.omegaHeadDemand N =
+      Module.finrank (ZMod 2)
+          ((R.innerOmegaNaturalAxis N).toRepresentation.IntertwiningMap
+            (Representation.trivial (ZMod 2) D.top (ZMod 2))) +
+        Module.finrank (ZMod 2)
+          ((R.outerOmegaPairSumAxis N).toRepresentation.IntertwiningMap
+            (Representation.trivial (ZMod 2) D.top (ZMod 2))) +
+        Module.finrank (ZMod 2)
+          (C.omegaCoupledQuotientRepresentation hgen N).invariants := by
+  unfold omegaHeadDemand
+  rw [representationHead_finrank_eq_coinvariants,
+    representationHead_finrank_eq_coinvariants,
+    C.omegaCoupledQuotientRepresentation_invariants_finrank_eq hgen N]
+
 /-- When the stored tuple generates the literal top, the third coupled
 term uses the full intrinsic displacement subspace of `L`.  Thus the
 catalogue demand is exactly `d(K) + d(W) + dim L/(KW + [L,S])`. -/
