@@ -139,15 +139,16 @@ itself. -/
 theorem uniformSubrepresentationGeneratorBound_conjugate_restriction
     (rho : Representation k G V) (K : Subgroup G) (g : G) {n : ℕ}
     (hgen : UniformSubrepresentationGeneratorBound
-      (rho.comp (g • K : Subgroup G).subtype) n) :
+      (rho.comp (MulAut.conj g • K : Subgroup G).subtype) n) :
     UniformSubrepresentationGeneratorBound
       (rho.comp K.subtype) n := by
-  let e : K ≃* (g • K : Subgroup G) :=
+  let e : K ≃* (MulAut.conj g • K : Subgroup G) :=
     Subgroup.equivSMul (MulAut.conj g) K
   let sigma : Representation k K V :=
-    (rho.comp (g • K : Subgroup G).subtype).comp e.toMonoidHom
+    (rho.comp (MulAut.conj g • K : Subgroup G).subtype).comp e.toMonoidHom
   have hsigma : UniformSubrepresentationGeneratorBound sigma n :=
-    hgen.comp_mulEquiv (rho.comp (g • K : Subgroup G).subtype) e
+    hgen.comp_mulEquiv
+      (rho.comp (MulAut.conj g • K : Subgroup G).subtype) e
   let f : (rho.comp K.subtype).IntertwiningMap sigma :=
     { toLinearMap := rho g
       isIntertwining' := by
@@ -155,7 +156,7 @@ theorem uniformSubrepresentationGeneratorBound_conjugate_restriction
         apply LinearMap.ext
         intro v
         change rho g (rho h.1 v) =
-          rho ((e h : (g • K : Subgroup G)) : G) (rho g v)
+          rho ((e h : (MulAut.conj g • K : Subgroup G)) : G) (rho g v)
         rw [← Module.End.mul_apply, ← map_mul,
           ← Module.End.mul_apply, ← map_mul]
         change rho (g * h.1) v = rho (g * h.1 * g⁻¹ * g) v

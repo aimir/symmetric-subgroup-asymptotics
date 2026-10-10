@@ -70,6 +70,7 @@ subgroup. -/
 private def ternaryNaturalC3Element
     (z : Multiplicative (ZMod 3)) : TernaryNaturalC3 :=
   ⟨OddMarkerTernaryChart.embedding z, by
+    change OddMarkerTernaryChart.embedding z ∈ alternatingGroup (Fin 3)
     rw [← oddMarkerSign_ker]
     exact OddMarkerTernaryChart.embedding_mem_kernel z⟩
 
@@ -229,7 +230,7 @@ theorem naturalC3Ternary_uniformSubrepresentationGeneratorBound_one :
     simp only [Representation.asModuleEquiv_map_smul,
       Representation.asAlgebraHom_single,
       LinearEquiv.apply_symm_apply, generator]
-    exact congrArg Subtype.val hc
+    simpa only [LinearMap.smul_apply] using hc
   rw [heq] at hsum
   exact hsum
 

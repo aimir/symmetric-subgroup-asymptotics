@@ -130,11 +130,12 @@ theorem ternarySignedWreathThree_orderThree_uniformSubrepresentationGeneratorBou
       norm_num)
   obtain ⟨g, hg⟩ := MulAction.exists_smul_eq
     TernarySignedWreathThree HSylow TSylow
-  have hgsub : g • H = TernarySignedTopC3 := by
-    exact congrArg Sylow.toSubgroup hg
+  have hgsub : MulAut.conj g • H = TernarySignedTopC3 := by
+    simpa only [Sylow.smul_def, Sylow.pointwise_smul_def] using
+      congrArg Sylow.toSubgroup hg
   have hconj : UniformSubrepresentationGeneratorBound
       (ternarySignedWreathThreeRepresentation.comp
-        (g • H : Subgroup TernarySignedWreathThree).subtype) 1 := by
+        (MulAut.conj g • H : Subgroup TernarySignedWreathThree).subtype) 1 := by
     rw [hgsub]
     exact ternarySignedTopC3_uniformSubrepresentationGeneratorBound_one
   exact uniformSubrepresentationGeneratorBound_conjugate_restriction
