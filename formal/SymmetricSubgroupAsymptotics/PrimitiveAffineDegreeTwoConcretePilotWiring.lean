@@ -11,8 +11,9 @@ The first count-twelve row, the first paired-eight row, and the third
 primitive count-sixteen row already have checked finite certificates.  This
 file wires those endpoints into the literal catalogues.  Consequently the
 remaining semantic input cannot replace any pilot with a project-owned row
-premise.  The paired-eight slot retains only its actual omega-socle dual
-generator theorem; its prefix, relative characters, and resolved row are
+premise.  The paired-eight slot retains only the two literal representation
+inequalities on raw omega fixed vectors and nonfixed simple rows; its
+Schur-capacity predicate, prefix, relative characters, and resolved row are
 constructed here.
 
 The resulting constructor still exposes the unresolved catalogue rows, but
@@ -64,11 +65,33 @@ structure RemainingPairTopSemanticData : Type 1 where
       DegreeTwoPairTopTowerRelativeKernelOrbitRowData
         (SixteenCatalogue.paired8 j)
         degreeTwoSixteenPairProfiles p realization
-  sixteenPaired8Row1 :
+  sixteenPaired8Row1Fixed :
     ∀ (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopTowerRealization
-        (SixteenCatalogue.paired8 (0 : Fin 24)) p),
-      PairedEightPilot.OmegaSocleSchurCapacityLeFour realization
+        (SixteenCatalogue.paired8 (0 : Fin 24)) p)
+      (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}),
+      Module.finrank (ZMod 2)
+          (binaryKernelOmegaConjugationRepresentation
+            (realization.rawQuotientMap N)).invariants ≤
+        (PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.
+          towerCoupledHeadData realization).omegaHeadDemand N
+  sixteenPaired8Row1Nonfixed :
+    ∀ (p : PreE7PairActionClass 16)
+      (realization : DegreeTwoPairTopTowerRealization
+        (SixteenCatalogue.paired8 (0 : Fin 24)) p)
+      (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
+      (X : Submodule (ZMod 2)[preE7PairAction 16 p ⫽ N.1]
+        (PairedEightPilot.OmegaSocleRepresentation realization N).asModule),
+      [IsSimpleModule (ZMod 2)[preE7PairAction 16 p ⫽ N.1] X] →
+      ¬ representationSubmoduleFixed
+          (PairedEightPilot.OmegaSocleRepresentation realization N) X →
+      schurSocleMultiplicity
+          (k := ZMod 2)
+          (R := (ZMod 2)[preE7PairAction 16 p ⫽ N.1])
+          (A := (PairedEightPilot.OmegaSocleRepresentation
+            realization N).asModule) (X := X) ≤
+        3 * Module.finrank
+          (Module.End (ZMod 2)[preE7PairAction 16 p ⫽ N.1] X) X
   sixteenZero16 :
     ∀ (j : Fin 29) (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopRealization
@@ -126,7 +149,10 @@ noncomputable def sixteenResolution
     by_cases hj : j = (0 : Fin 24)
     · subst j
       exact PairedEightPilot.resolvedRow hZmud lit realization
-        (D.sixteenPaired8Row1 p realization)
+        (PairedEightPilot.omegaSocleSchurCapacityLeFour_of_rawCoupled_nonfixed
+          realization
+          (D.sixteenPaired8Row1Fixed p realization)
+          (D.sixteenPaired8Row1Nonfixed p realization))
     · exact ((D.sixteenPaired8 j p realization hj).sixteenResolvedData
         lit).toResolvedRow
   zero16 j p realization :=
