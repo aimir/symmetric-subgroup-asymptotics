@@ -37,6 +37,39 @@ theorem schurSocleMultiplicity_eq_of_target_linearEquiv
     (Module.finrank_pos (R := k) (M := Module.End R X))
   exact hhom
 
+/-- A representation equivalence is, in particular, an equivalence of the
+corresponding group-algebra modules. -/
+noncomputable def representationEquivLinearEquivAsModule
+    {G B C : Type} [Group G]
+    [AddCommGroup B] [Module k B]
+    [AddCommGroup C] [Module k C]
+    (rho : Representation k G B) (sigma : Representation k G C)
+    (e : rho.Equiv sigma) : rho.asModule ≃ₗ[k[G]] sigma.asModule where
+  toLinearMap :=
+    Representation.IntertwiningMap.equivLinearMapAsModule
+      rho sigma e.toIntertwiningMap
+  invFun := e.symm
+  left_inv := e.symm_apply_apply
+  right_inv := e.apply_symm_apply
+
+/-- Representation-equivalent finite targets have equal multiplicity in
+every simple row. -/
+theorem schurSocleMultiplicity_eq_of_representationEquiv
+    {G B C : Type} [Group G]
+    [AddCommGroup B] [Module k B]
+    [AddCommGroup C] [Module k C]
+    [FiniteDimensional k B] [FiniteDimensional k C]
+    [Module k[G] X] [IsScalarTower k k[G] X]
+    [FiniteDimensional k X] [IsSimpleModule k[G] X]
+    (rho : Representation k G B) (sigma : Representation k G C)
+    (e : rho.Equiv sigma) :
+    schurSocleMultiplicity
+        (k := k) (R := k[G]) (A := rho.asModule) (X := X) =
+      schurSocleMultiplicity
+        (k := k) (R := k[G]) (A := sigma.asModule) (X := X) :=
+  schurSocleMultiplicity_eq_of_target_linearEquiv
+    (representationEquivLinearEquivAsModule rho sigma e)
+
 end SymmetricSubgroupAsymptotics
 
 end
