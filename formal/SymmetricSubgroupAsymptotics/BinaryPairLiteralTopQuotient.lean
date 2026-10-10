@@ -119,6 +119,30 @@ noncomputable def zeroCutBaseEquivLiteralTop
     (F.zeroCutBase_surjective N) (F.literalTopQuotientMap_surjective e N)
     (F.literalTopQuotientMap_ker_eq_zeroCutBase_ker e N).symm
 
+/-- The target equivalence sends the actual top quotient to the literal top
+quotient on every lifted top element. -/
+@[simp] theorem zeroCutBaseEquivLiteralTop_sectionTopQuotient
+    (N : Subgroup U) [N.Normal] (g : G) :
+    F.zeroCutBaseEquivLiteralTop e N
+        (F.sectionTopQuotient N (e g)) =
+      QuotientGroup.mk' (F.literalTopNormal e N) g := by
+  obtain ⟨u, hu⟩ := F.top.rangeRestrict_surjective (e g)
+  have hcomp := congrArg (fun h : (U ⧸ N) →*
+      (G ⧸ F.literalTopNormal e N) =>
+      h (QuotientGroup.mk' N u))
+    (surjectiveTargetEquivOfKernelEq_comp
+      (F.zeroCutBase N) (F.literalTopQuotientMap e N)
+      (F.zeroCutBase_surjective N)
+      (F.literalTopQuotientMap_surjective e N)
+      (F.literalTopQuotientMap_ker_eq_zeroCutBase_ker e N).symm)
+  change F.zeroCutBaseEquivLiteralTop e N
+      (QuotientGroup.mk' (F.top.ker ⊔ N) u) =
+    QuotientGroup.mk' (F.literalTopNormal e N)
+      (e.symm (F.top.rangeRestrict u)) at hcomp
+  rw [← F.sectionTopQuotient_apply N u, hu,
+    e.symm_apply_apply] at hcomp
+  exact hcomp
+
 /-- The actual zero-cut module, with its acting quotient transported to the
 chosen literal top quotient. -/
 def literalZeroCutModule
@@ -166,6 +190,26 @@ def literalSectionModule
     Rep (ZMod 2) (G ⟸ F.literalTopNormal e N) :=
   Rep.of ((F.sectionRepresentation N).comp
     (F.zeroCutBaseEquivLiteralTop e N).symm.toMonoidHom)
+
+/-- Inflating the literal section to the literal top recovers the actual
+section-top representation after transport along the chosen top
+equivalence. -/
+def sectionTopEquivLiteralSectionInflation
+    (N : Subgroup U) [N.Normal] :
+    ((F.sectionTopRepresentation N).comp e.toMonoidHom).Equiv
+      ((F.literalSectionModule e N).ρ.comp
+        (QuotientGroup.mk' (F.literalTopNormal e N))) :=
+  Representation.Equiv.mk
+    (LinearEquiv.refl (ZMod 2) (F.kernelSpace ⧸ F.normalSpace N)) (by
+      intro g
+      apply LinearMap.ext
+      intro v
+      change F.sectionRepresentation N (F.sectionTopQuotient N (e g)) v =
+        F.sectionRepresentation N
+          ((F.zeroCutBaseEquivLiteralTop e N).symm
+            (QuotientGroup.mk' (F.literalTopNormal e N) g)) v
+      rw [← F.zeroCutBaseEquivLiteralTop_sectionTopQuotient e N g,
+        (F.zeroCutBaseEquivLiteralTop e N).symm_apply_apply])
 
 /-- Module chart for the same literal quotient using the direct section
 `kernelSpace / normalSpace`, which is more convenient for lifting finite
