@@ -82,8 +82,8 @@ theorem representationGeneratedBy_comp_of_surjective
         have hsame :
             rho.asModuleEquiv.symm
                 (sigma.asModuleEquiv (r • y)) =
-              (s • rho.asModuleEquiv.symm (sigma.asModuleEquiv y) :
-                rho.asModule) := by
+              (inferInstance : SMul k[G] rho.asModule).smul s
+                (rho.asModuleEquiv.symm (sigma.asModuleEquiv y)) := by
           apply rho.asModuleEquiv.injective
           rw [haction]
           simp only [LinearEquiv.apply_symm_apply, hs]
