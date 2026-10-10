@@ -293,6 +293,126 @@ theorem rawKernelOmegaOuterZeroCutImage_toSubmodule
       (R.rawKernelOmegaInnerKernelEquivProjectionKernel N).surjective z
     exact ⟨w, rfl⟩
 
+/-- The section-image form of the retained outer coordinate state. -/
+abbrev outerOmegaSectionImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  intertwinerImage
+    R.frame.kernelTopPermutationSubrepresentation.toRepresentation
+    (R.frame.sectionTopRepresentation N.1)
+    (R.frame.sectionTopIntertwiner N.1)
+    (nestedSubrepresentation (R.outerOmegaAxis N)
+      R.frame.kernelTopPermutationSubrepresentation
+      (R.outerOmegaAxis_le_kernelTop N))
+
+/-- The zero-cut/section equivalence sends every retained kernel element to
+its literal section coordinate. -/
+@[simp] theorem zeroCutSectionEquiv_outerOmegaZeroCutMap
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (l : R.outerOmegaRetainedKernel N) :
+    R.frame.zeroCutSectionEquiv N.1
+        (R.outerOmegaZeroCutMap N (Additive.ofMul l)) =
+      (R.frame.normalSpace N.1).mkQ
+        (R.frame.kernelSpaceHom l.1).toAdd :=
+  rfl
+
+/-- The retained zero-cut range is carried exactly onto the actual section
+image of `B/A`. -/
+theorem outerOmegaZeroCutRange_map_eq_sectionImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (LinearMap.range (R.outerOmegaZeroCutMap N)).map
+        (R.frame.zeroCutSectionEquiv N.1).toLinearMap =
+      (R.outerOmegaSectionImage N).toSubmodule := by
+  ext v
+  constructor
+  · rintro ⟨a, ⟨l, rfl⟩, rfl⟩
+    let b : R.frame.kernelTopPermutationSubrepresentation.toSubmodule :=
+      (R.frame.kernelSpaceHom l.toMul.1).toAdd
+    have hb : b.1 ∈ (R.outerOmegaAxis N).toSubmodule := by
+      change R.frame.bits l.toMul.1 ∈
+        R.frame.ambientAxis (R.rawKernelOmegaOriginalPreimage N)
+      exact (R.frame.bits_mem_ambientAxis _ l.toMul.1).2 l.toMul.2
+    exact ⟨b, hb, rfl⟩
+  · rintro ⟨b, hb, rfl⟩
+    change b.1 ∈ (R.outerOmegaAxis N).toSubmodule at hb
+    change b.1 ∈
+      R.frame.ambientAxis (R.rawKernelOmegaOriginalPreimage N) at hb
+    obtain ⟨l, hl, hlb⟩ := (R.frame.mem_ambientAxis _ b.1).1 hb
+    let lOmega : R.outerOmegaRetainedKernel N := ⟨l, hl⟩
+    refine ⟨R.outerOmegaZeroCutMap N (Additive.ofMul lOmega),
+      ⟨Additive.ofMul lOmega, rfl⟩, ?_⟩
+    rw [R.zeroCutSectionEquiv_outerOmegaZeroCutMap N lOmega]
+    apply congrArg (R.frame.normalSpace N.1).mkQ
+    apply Subtype.ext
+    exact hlb
+
+/-- The section image, with its action descended from the original quotient
+through the first zero-cut base map. -/
+def outerOmegaSectionImageOnOriginalQuotient
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      ((R.frame.sectionRepresentation N.1).comp
+        (R.frame.zeroCutBase N.1)) where
+  toSubmodule := (R.outerOmegaSectionImage N).toSubmodule
+  apply_mem_toSubmodule q v hv := by
+    obtain ⟨u, rfl⟩ := QuotientGroup.mk'_surjective N.1 q
+    change R.frame.sectionRepresentation N.1
+        (QuotientGroup.mk' (R.frame.top.ker ⊔ N.1) u) v ∈
+      (R.outerOmegaSectionImage N).toSubmodule
+    rw [← R.frame.sectionTopQuotient_apply N.1 u]
+    exact (R.outerOmegaSectionImage N).apply_mem_toSubmodule
+      (R.frame.top.rangeRestrict u) hv
+
+/-- Restricting the inflated zero-cut/section equivalence to the retained
+images identifies the concrete outer kernel image with the corresponding
+section image over the original quotient. -/
+noncomputable def rawKernelOmegaOuterZeroCutImageEquivSectionImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaOuterZeroCutImage N).toRepresentation.Equiv
+      (R.outerOmegaSectionImageOnOriginalQuotient N).toRepresentation := by
+  let e := R.frame.zeroCutSectionCompEquiv N.1
+    (R.frame.zeroCutBase N.1)
+  let f : (R.rawKernelOmegaOuterZeroCutImage N).toRepresentation.
+      IntertwiningMap
+      (R.outerOmegaSectionImageOnOriginalQuotient N).toRepresentation where
+    toLinearMap :=
+      (e.toLinearEquiv.toLinearMap.comp
+        (R.rawKernelOmegaOuterZeroCutImage N).toSubmodule.subtype).codRestrict
+          (R.outerOmegaSectionImageOnOriginalQuotient N).toSubmodule
+          (fun z ↦ by
+            rw [← R.outerOmegaZeroCutRange_map_eq_sectionImage N]
+            exact ⟨z.1, by
+              rw [← R.rawKernelOmegaOuterZeroCutImage_toSubmodule N]
+              exact z.2, rfl⟩)
+    isIntertwining' := by
+      intro q
+      apply LinearMap.ext
+      intro z
+      apply Subtype.ext
+      exact LinearMap.congr_fun (e.isIntertwining' q) z.1
+  apply f.ofBijective
+  constructor
+  · intro x y hxy
+    apply Subtype.ext
+    exact e.injective (congrArg Subtype.val hxy)
+  · rintro ⟨v, hv⟩
+    rw [← R.outerOmegaZeroCutRange_map_eq_sectionImage N] at hv
+    obtain ⟨a, ha, hav⟩ := hv
+    have haImage : a ∈
+        (R.rawKernelOmegaOuterZeroCutImage N).toSubmodule := by
+      rw [R.rawKernelOmegaOuterZeroCutImage_toSubmodule N]
+      exact ha
+    exact ⟨⟨a, haImage⟩, Subtype.ext hav⟩
+
+/-- The actual outer projection kernel is therefore equivalent to the
+retained first-frame section image, both carrying the original quotient
+action. -/
+noncomputable def rawKernelOmegaOuterEquivSectionImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation.Equiv
+      (R.outerOmegaSectionImageOnOriginalQuotient N).toRepresentation :=
+  (R.rawKernelOmegaOuterEquivZeroCutImage N).trans
+    (R.rawKernelOmegaOuterZeroCutImageEquivSectionImage N)
+
 end DegreeTwoPairTopTowerRealization
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
