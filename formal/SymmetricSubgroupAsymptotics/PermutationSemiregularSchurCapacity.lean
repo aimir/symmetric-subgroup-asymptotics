@@ -123,32 +123,29 @@ whole equivariant Hom space into the fixed space of any defining-
 characteristic finite p-subgroup.  This is the integral Hom-dimension form
 of the p-subgroup Schur-capacity argument. -/
 theorem intertwiningMap_finrank_le_pSubgroup_invariants
+    {X₀ : Type} [AddCommGroup X₀] [Module (ZMod p) X₀]
+    [Module (ZMod p)[G₀] X₀]
+    [IsScalarTower (ZMod p) (ZMod p)[G₀] X₀]
+    [Finite X₀] [IsSimpleModule (ZMod p)[G₀] X₀]
     (P : Subgroup G₀) (hP : IsPGroup p P)
-    (sigma : Representation (ZMod p) G₀ V)
-    (S : Submodule (ZMod p)[G₀] sigma.asModule)
-    [IsSimpleModule (ZMod p)[G₀] S] :
-    Module.finrank (ZMod p) (S →ₗ[(ZMod p)[G₀]] sigma.asModule) ≤
+    (sigma : Representation (ZMod p) G₀ V) :
+    Module.finrank (ZMod p) (X₀ →ₗ[(ZMod p)[G₀]] sigma.asModule) ≤
       Module.finrank (ZMod p)
         (Representation.invariants (sigma.comp P.subtype)) := by
-  letI : FiniteDimensional (ZMod p) S := FiniteDimensional.of_injective
-    (S.subtype.restrictScalars (ZMod p)) S.subtype_injective
-  haveI : Nontrivial S := IsSimpleModule.nontrivial (ZMod p)[G₀] S
-  let tau : Representation (ZMod p) P S :=
-    (Subrepresentation.ofSubmodule' S).toRepresentation.comp P.subtype
-  letI : Finite S := Module.finite_of_finite (ZMod p)
+  letI : FiniteDimensional (ZMod p) X₀ := Module.Finite.of_finite (ZMod p) X₀
+  haveI : Nontrivial X₀ := IsSimpleModule.nontrivial (ZMod p)[G₀] X₀
+  let tau : Representation (ZMod p) P X₀ :=
+    (Representation.ofModule' X₀).comp P.subtype
   obtain ⟨s, hs0, hsfixed⟩ := pGroup_representation_nonzero_fixed hP tau
-  let ev : (S →ₗ[(ZMod p)[G₀]] sigma.asModule) →ₗ[ZMod p]
+  let ev : (X₀ →ₗ[(ZMod p)[G₀]] sigma.asModule) →ₗ[ZMod p]
       (Representation.invariants (sigma.comp P.subtype)) := {
     toFun := fun f ↦ ⟨sigma.asModuleEquiv (f s), by
       intro a
       have hf := f.map_smul
         (MonoidAlgebra.single (a : G₀) (1 : ZMod p)) s
       have hs : MonoidAlgebra.single (a : G₀) (1 : ZMod p) • s = s := by
-        apply Subtype.ext
-        change MonoidAlgebra.single (a : G₀) (1 : ZMod p) •
-            (s.1 : sigma.asModule) = (s.1 : sigma.asModule)
-        rw [Representation.single_smul, one_smul]
-        exact congrArg Subtype.val (hsfixed a)
+        change (Representation.ofModule' X₀) (a : G₀) s = s
+        exact hsfixed a
       calc
         sigma a (sigma.asModuleEquiv (f s)) =
             sigma.asModuleEquiv
@@ -179,25 +176,27 @@ omit [Finite G₀] in
 fixed-space dimension.  The positive Schur endomorphism dimension cancels
 from the exact Hom-dimension formula. -/
 theorem schurSocleMultiplicity_le_pSubgroup_invariants
+    {X₀ : Type} [AddCommGroup X₀] [Module (ZMod p) X₀]
+    [Module (ZMod p)[G₀] X₀]
+    [IsScalarTower (ZMod p) (ZMod p)[G₀] X₀]
+    [Finite X₀] [IsSimpleModule (ZMod p)[G₀] X₀]
     (P : Subgroup G₀) (hP : IsPGroup p P)
-    (sigma : Representation (ZMod p) G₀ V)
-    (S : Submodule (ZMod p)[G₀] sigma.asModule)
-    [IsSimpleModule (ZMod p)[G₀] S] :
+    (sigma : Representation (ZMod p) G₀ V) :
     schurSocleMultiplicity
         (k := ZMod p) (R := (ZMod p)[G₀])
-        (A := sigma.asModule) (X := S) ≤
+        (A := sigma.asModule) (X := X₀) ≤
       Module.finrank (ZMod p)
         (Representation.invariants (sigma.comp P.subtype)) := by
   have hhom := intertwiningMap_finrank_le_pSubgroup_invariants
-    P hP sigma S
+    (X₀ := X₀) P hP sigma
   rw [schurHom_finrank_eq_multiplicity
       (k := ZMod p) (R := (ZMod p)[G₀])
-      (A := sigma.asModule) (X := S)] at hhom
+      (A := sigma.asModule) (X := X₀)] at hhom
   have hend : 0 < Module.finrank (ZMod p)
-      (Module.End (ZMod p)[G₀] S) := by
-    letI : Nontrivial S := IsSimpleModule.nontrivial (ZMod p)[G₀] S
+      (Module.End (ZMod p)[G₀] X₀) := by
+    letI : Nontrivial X₀ := IsSimpleModule.nontrivial (ZMod p)[G₀] X₀
     exact Module.finrank_pos (R := ZMod p)
-      (M := Module.End (ZMod p)[G₀] S)
+      (M := Module.End (ZMod p)[G₀] X₀)
   apply Nat.le_of_mul_le_mul_right _ hend
   exact hhom.trans (Nat.le_mul_of_pos_right _ hend)
 

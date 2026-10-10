@@ -217,6 +217,21 @@ theorem subrepresentation_binaryTop_invariants_finrank_le_one
 /-- Every simple row in an invariant state occurs with Schur multiplicity
 at most one.  This is the exact integral estimate needed when the raw omega
 filtration is split into its three natural-module layers. -/
+theorem subrepresentation_schurSocleMultiplicity_le_one_of_module
+    (B : Subrepresentation representation)
+    {X : Type} [AddCommGroup X] [Module (ZMod 2) X]
+    [Module (ZMod 2)[Top] X]
+    [IsScalarTower (ZMod 2) (ZMod 2)[Top] X]
+    [Finite X] [IsSimpleModule (ZMod 2)[Top] X] :
+    schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[Top])
+        (A := B.toRepresentation.asModule) (X := X) ≤ 1 := by
+  exact (schurSocleMultiplicity_le_pSubgroup_invariants
+    (X₀ := X) binaryTopSubgroup binaryTopSubgroup_isPGroup
+      B.toRepresentation).trans
+      (subrepresentation_binaryTop_invariants_finrank_le_one B)
+
+/-- Submodule-specialized form of the uniform state-row bound. -/
 theorem subrepresentation_schurSocleMultiplicity_le_one
     (B : Subrepresentation representation)
     (S : Submodule (ZMod 2)[Top] B.toRepresentation.asModule)
@@ -224,9 +239,7 @@ theorem subrepresentation_schurSocleMultiplicity_le_one
     schurSocleMultiplicity
         (k := ZMod 2) (R := (ZMod 2)[Top])
         (A := B.toRepresentation.asModule) (X := S) ≤ 1 := by
-  exact (schurSocleMultiplicity_le_pSubgroup_invariants
-    binaryTopSubgroup binaryTopSubgroup_isPGroup B.toRepresentation S).trans
-      (subrepresentation_binaryTop_invariants_finrank_le_one B)
+  exact subrepresentation_schurSocleMultiplicity_le_one_of_module B
 
 private def binaryInvariantInclusion
     (B : Subrepresentation representation) :
