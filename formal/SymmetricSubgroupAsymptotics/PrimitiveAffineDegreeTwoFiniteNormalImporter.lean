@@ -343,6 +343,19 @@ noncomputable def certificate
     (hZmud : ZmudFaithfulCharacterTupleInput) :
     (D.certificate hZmud).tuple.generalCount = D.generalCount := rfl
 
+/-- The slope of the generated mixed certificate depends only on the two
+finite slot counts.  In particular, a selected finite exporter never has to
+serialize the irreducible representations supplied by Zmud's theorem. -/
+@[simp] theorem certificate_slope
+    (hZmud : ZmudFaithfulCharacterTupleInput) :
+    (D.certificate hZmud).slope =
+      (D.linearCount : ℝ) * (Real.logb 2 3 / 3) +
+        (D.generalCount : ℝ) * (Real.logb 2 5 / 3) := by
+  simp only [certificate, CharacterQuotientCertificate.slope,
+    certificate_binaryCount, certificate_linearCount,
+    certificate_generalCount, CharacterQuotientMode.generalSlope,
+    Nat.cast_zero, zero_mul, zero_add]
+
 /-- Install one structural tuple as a finite mixed-axis payload.  The only
 remaining analytic check is its explicit slope inequality. -/
 noncomputable def toFiniteMixedAxis
@@ -484,6 +497,67 @@ noncomputable def template : PreE7CharacterTemplateData w i :=
 
 end PreE7FiniteQcharAxes
 
+/-! ## Compact selected QCHAR packages -/
+
+/-- Structural finite data for a QCHAR row before applying the published
+Zmud theorem.  The selected exporter supplies one linear/Zmud tuple on each
+checked normal state outside the comparator interval.  The converter below
+dispatches those finitely many tuples to every literal normal quotient.
+
+This is the intended serialization boundary for the eight degree-two
+count-twelve ternary rows: it contains finite homomorphisms, subgroup data,
+and socle generators, but no emitted complex representations. -/
+structure PreE7FiniteQcharZmudAxes
+    (w : ℕ) (i : PreE7NonPairActionClass w) : Type 1 where
+  width_lower : 8 ≤ w
+  width_upper : w ≤ 12288
+  registry : FiniteNormalStateRegistry (preE7NonPairAction w i)
+  E : Subgroup (preE7NonPairAction w i)
+  [E_normal : E.Normal]
+  degree : ℕ
+  action : preE7NonPairAction w i ⨸ E →* Equiv.Perm (Fin degree)
+  action_injective : Function.Injective action
+  degree_window : preE7CharacterRho * w ≤
+    ((evenWidth w : ℝ) - ((max 2 degree : ℕ) : ℝ)) / 8
+  state : ∀ j : registry.State, ¬ E ≤ registry.state j →
+    PreE7LinearZmudTupleData
+      (preE7NonPairAction w i ⨸ registry.state j)
+  state_capacity : ∀ j h,
+    ((state j h).linearCount : ℝ) * (Real.logb 2 3 / 3) +
+        ((state j h).generalCount : ℝ) * (Real.logb 2 5 / 3) ≤
+      preE7CharacterWindow w
+
+attribute [instance] PreE7FiniteQcharZmudAxes.E_normal
+
+namespace PreE7FiniteQcharZmudAxes
+
+variable {w : ℕ} {i : PreE7NonPairActionClass w}
+  (D : PreE7FiniteQcharZmudAxes w i)
+
+/-- Apply Zmud only after the selected finite state has been fixed. -/
+noncomputable def toAxes
+    (hZmud : ZmudFaithfulCharacterTupleInput) :
+    PreE7FiniteQcharAxes w i where
+  width_lower := D.width_lower
+  width_upper := D.width_upper
+  registry := D.registry
+  E := D.E
+  degree := D.degree
+  action := D.action
+  action_injective := D.action_injective
+  degree_window := D.degree_window
+  axes :=
+    { state := fun j h ↦
+        ⟨(D.state j h).certificate hZmud, rfl, by
+          simpa only [PreE7LinearZmudTupleData.certificate_slope] using
+            D.state_capacity j h⟩ }
+
+@[simp] theorem toAxes_degree
+    (hZmud : ZmudFaithfulCharacterTupleInput) :
+    (D.toAxes hZmud).degree = D.degree := rfl
+
+end PreE7FiniteQcharZmudAxes
+
 /-- Numerically complete finite QCHAR row, again with the arbitrary normal
 axis sums reduced to sums over the emitted registry states. -/
 structure PreE7FiniteQcharMenuData
@@ -522,6 +596,46 @@ noncomputable def rankTailSource :
   .inl (.ordinary .qchar (.character (by rfl) D.menuData))
 
 end PreE7FiniteQcharMenuData
+
+/-- A complete selected QCHAR package whose character representations are
+created from finite linear/Zmud data at final assembly time. -/
+structure PreE7FiniteQcharZmudMenuData
+    (w : ℕ) (i : PreE7NonPairActionClass w) : Type 1 where
+  axes : PreE7FiniteQcharZmudAxes w i
+  main_state_total_bound : ∀
+      (hZmud : ZmudFaithfulCharacterTupleInput) b,
+    (∑ j : axes.registry.State,
+      (axes.toAxes hZmud).template.mainCoefficient
+        (axes.registry.normalAxis j)) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
+  tail_state_total_bound : ∀
+      (hZmud : ZmudFaithfulCharacterTupleInput) b,
+    (∑ j : axes.registry.State,
+      (axes.toAxes hZmud).template.tailCoefficient
+        (axes.registry.normalAxis j)) ≤
+      (2 : ℝ) ^
+        (16 * (w : ℝ) * Real.log ((w + b + 2 : ℕ) : ℝ) ^ 2)
+
+namespace PreE7FiniteQcharZmudMenuData
+
+variable {w : ℕ} {i : PreE7NonPairActionClass w}
+  (D : PreE7FiniteQcharZmudMenuData w i)
+
+/-- Materialize the ordinary finite QCHAR payload from one compact selected
+package and the published Zmud theorem. -/
+noncomputable def toMenuData
+    (hZmud : ZmudFaithfulCharacterTupleInput) :
+    PreE7FiniteQcharMenuData w i where
+  axes := D.axes.toAxes hZmud
+  main_state_total_bound := D.main_state_total_bound hZmud
+  tail_state_total_bound := D.tail_state_total_bound hZmud
+
+@[simp] theorem toMenuData_degree
+    (hZmud : ZmudFaithfulCharacterTupleInput) :
+    (D.toMenuData hZmud).axes.degree = D.axes.degree := rfl
+
+end PreE7FiniteQcharZmudMenuData
 
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

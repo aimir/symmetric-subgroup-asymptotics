@@ -110,7 +110,8 @@ noncomputable def twelveResolution
     exact D.twelveExceptional.coreResolvedRow
       hZmud lit j realization hbranch
   | ternary =>
-    exact D.twelveExceptional.ternaryResolvedRow j realization hbranch
+    exact D.twelveExceptional.ternaryResolvedRow
+      hZmud j realization hbranch
   | paired =>
     exact D.twelveExceptional.pairedResolvedRow
       hZmud lit j realization hbranch

@@ -104,17 +104,20 @@ end DegreeTwoTwelveExceptionalFiniteRowData
 
 /-! ## Four-ternary-orbit comparator rows -/
 
-/-- The raw finite QCHAR payload for one four-ternary-orbit top, uniformly
-transported to every realization of that literal top. -/
+/-- The compact finite QCHAR payload for one four-ternary-orbit top,
+uniformly transported to every realization of that literal top.  Complex
+irreducible representations are supplied later by the published Zmud
+theorem; the serialized package retains only finite linear maps, normal
+subgroups and socle generators. -/
 structure DegreeTwoTwelveTernaryQcharPackage
     (D : DegreeTwoPairTopFiniteInterface 12) : Type 1 where
-  qchar : ∀ (p : PreE7PairActionClass 12),
+  finiteQchar : ∀ (p : PreE7PairActionClass 12),
     DegreeTwoPairTopRealization D p →
-      PreE7FiniteQcharMenuData 24
+      PreE7FiniteQcharZmudMenuData 24
         (preE7SmallPairNonPairAction 12 (by norm_num) p)
   comparator_degree : ∀ (p : PreE7PairActionClass 12)
     (R : DegreeTwoPairTopRealization D p),
-    (qchar p R).axes.degree = 8
+    (finiteQchar p R).axes.degree = 8
 
 namespace DegreeTwoTwelveTernaryQcharPackage
 
@@ -122,34 +125,47 @@ variable {D : DegreeTwoPairTopFiniteInterface 12}
   (F : DegreeTwoTwelveTernaryQcharPackage D)
 
 /-- Named assembly boundary for one selected finite QCHAR emitter. -/
-noncomputable def ofCertificate
-    (qchar : ∀ (p : PreE7PairActionClass 12),
+noncomputable def ofFiniteData
+    (finiteQchar : ∀ (p : PreE7PairActionClass 12),
       DegreeTwoPairTopRealization D p →
-        PreE7FiniteQcharMenuData 24
+        PreE7FiniteQcharZmudMenuData 24
           (preE7SmallPairNonPairAction 12 (by norm_num) p))
     (comparator_degree : ∀ (p : PreE7PairActionClass 12)
       (R : DegreeTwoPairTopRealization D p),
-      (qchar p R).axes.degree = 8) :
+      (finiteQchar p R).axes.degree = 8) :
     DegreeTwoTwelveTernaryQcharPackage D where
-  qchar := qchar
+  finiteQchar := finiteQchar
   comparator_degree := comparator_degree
+
+/-- Apply Zmud to the compact per-state data only when the row is consumed. -/
+noncomputable def qchar
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (p : PreE7PairActionClass 12)
+    (R : DegreeTwoPairTopRealization D p) :
+    PreE7FiniteQcharMenuData 24
+      (preE7SmallPairNonPairAction 12 (by norm_num) p) :=
+  (F.finiteQchar p R).toMenuData hZmud
 
 /-- Convert the raw QCHAR fields to the common comparator package. -/
 noncomputable def comparatorData
+    (hZmud : ZmudFaithfulCharacterTupleInput)
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization D p) :
     DegreeTwoTwelveTernaryComparatorData p where
-  qchar := F.qchar p R
-  comparator_degree := F.comparator_degree p R
+  qchar := F.qchar hZmud p R
+  comparator_degree := by
+    simpa only [qchar, PreE7FiniteQcharZmudMenuData.toMenuData_degree] using
+      F.comparator_degree p R
 
 /-- Install a QCHAR package in any literal ternary row. -/
 noncomputable def catalogueResolvedRow
+    (hZmud : ZmudFaithfulCharacterTupleInput)
     {row : DegreeTwoTwelvePairTopRow}
     (F : DegreeTwoTwelveTernaryQcharPackage row.finite)
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization row.finite p) :
     DegreeTwoPairTopResolvedRow row.finite row.expectedProfiles p :=
-  (F.comparatorData R).resolvedRow
+  (F.comparatorData hZmud R).resolvedRow
 
 end DegreeTwoTwelveTernaryQcharPackage
 
@@ -207,6 +223,7 @@ noncomputable def pairedResolvedRow
 
 /-- Uniform dispatch for one four-ternary-orbit row. -/
 noncomputable def ternaryResolvedRow
+    (hZmud : ZmudFaithfulCharacterTupleInput)
     (j : Fin 301)
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization
@@ -215,7 +232,7 @@ noncomputable def ternaryResolvedRow
     DegreeTwoPairTopResolvedRow
       (Catalogue.catalogue.row j).finite
       (Catalogue.catalogue.row j).expectedProfiles p :=
-  (F.ternary j hbranch).catalogueResolvedRow R
+  (F.ternary j hbranch).catalogueResolvedRow hZmud R
 
 end DegreeTwoTwelveExceptionalCatalogueData
 end DegreeTwoTwelveExceptionalTemplates
