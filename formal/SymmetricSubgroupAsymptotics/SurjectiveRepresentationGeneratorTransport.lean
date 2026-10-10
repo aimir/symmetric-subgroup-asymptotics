@@ -85,8 +85,8 @@ theorem representationGeneratedBy_comp_of_surjective
               (inferInstance : SMul k[G] rho.asModule).smul s
                 (rho.asModuleEquiv.symm (sigma.asModuleEquiv y)) := by
           apply rho.asModuleEquiv.injective
-          rw [haction]
-          simp only [LinearEquiv.apply_symm_apply, hs]
+          simpa only [LinearEquiv.apply_symm_apply, hs] using
+            (haction s (sigma.asModuleEquiv y)).symm
         rw [hsame]
         exact W.smul_mem s iy
   have := htransport xH hxH
