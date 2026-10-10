@@ -61,7 +61,7 @@ def omegaHeadDemand
     Module.finrank (ZMod 2)
       (R.outerOmegaPairSumAxis N).toRepresentation.Coinvariants +
     Module.finrank (ZMod 2)
-      ((R.outerOmegaConstantAxis N).toSubmodule ⫸
+      ((R.outerOmegaConstantAxis N).toSubmodule ⫽
         binaryCoupledDenominator
           (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
           C.generators (R.outerOmegaConstantAxis N)
@@ -69,6 +69,30 @@ def omegaHeadDemand
             (R.innerOmegaNaturalAxis N).toSubmodule
             (R.outerOmegaPairSumAxis N).toSubmodule)
           (R.omegaAxes_productSpan_le N))
+
+/-- When the stored tuple generates the literal top, the third coupled
+term uses the full intrinsic displacement subspace of `L`.  Thus the
+catalogue demand is exactly `d(K) + d(W) + dim L/(KW + [L,S])`. -/
+theorem omegaHeadDemand_eq_intrinsic
+    (hgen : Subgroup.closure (Set.range C.generators) = ⊤)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    C.omegaHeadDemand N =
+      Module.finrank (ZMod 2)
+          (R.innerOmegaNaturalAxis N).toRepresentation.Coinvariants +
+        Module.finrank (ZMod 2)
+          (R.outerOmegaPairSumAxis N).toRepresentation.Coinvariants +
+        Module.finrank (ZMod 2)
+          ((R.outerOmegaConstantAxis N).toSubmodule ⫽
+            ((binaryCoordinateProductSpan
+                (R.innerOmegaNaturalAxis N).toSubmodule
+                (R.outerOmegaPairSumAxis N).toSubmodule).comap
+                  (R.outerOmegaConstantAxis N).toSubmodule.subtype ⊔
+              Representation.Coinvariants.ker
+                (R.outerOmegaConstantAxis N).toRepresentation)) := by
+  unfold omegaHeadDemand
+  rw [binaryCoupledDenominator_eq_sup_coinvariantsKer
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+    C.generators (R.outerOmegaConstantAxis N) hgen]
 
 /-- The complete generated table applies to the semantic axes selected by
 every original normal subgroup.  This is the formal version of the
@@ -94,7 +118,7 @@ theorem omegaHeads_add_quotient_le
       Module.finrank (ZMod 2)
         (R.outerOmegaPairSumAxis N).toRepresentation.Coinvariants +
       Module.finrank (ZMod 2)
-        ((R.outerOmegaConstantAxis N).toSubmodule ⫸
+        ((R.outerOmegaConstantAxis N).toSubmodule ⫽
           binaryCoupledDenominator
             (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
             C.generators (R.outerOmegaConstantAxis N)
