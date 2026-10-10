@@ -33,6 +33,27 @@ def nestedSubrepresentation
     change rho g x.1 ∈ A
     exact A.apply_mem_toSubmodule g hx
 
+/-- Forgetting the outer subtype identifies the nested copy of `A` with
+`A` itself. -/
+def nestedSubrepresentationEquiv
+    {rho : Representation k G V} (A B : Subrepresentation rho)
+    (hAB : A ≤ B) :
+    A.toSubmodule ≃ₗ[k] (nestedSubrepresentation A B hAB).toSubmodule where
+  toFun := fun a => ⟨⟨a.1, hAB a.2⟩, a.2⟩
+  invFun := fun a => ⟨a.1.1, a.2⟩
+  left_inv a := Subtype.ext rfl
+  right_inv a := Subtype.ext (Subtype.ext rfl)
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+theorem finrank_nestedSubrepresentation
+    [FiniteDimensional k V]
+    {rho : Representation k G V} (A B : Subrepresentation rho)
+    (hAB : A ≤ B) :
+    Module.finrank k (nestedSubrepresentation A B hAB).toSubmodule =
+      Module.finrank k A.toSubmodule :=
+  (nestedSubrepresentationEquiv A B hAB).finrank_eq
+
 /-- The literal representation on `B / A`. -/
 def nestedQuotientRepresentation
     {rho : Representation k G V} (A B : Subrepresentation rho)
