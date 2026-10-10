@@ -60,6 +60,13 @@ noncomputable def binaryKernelOmegaConjugate
     simpa only [binaryKernelOmegaConjugate,
       binaryKernelOmegaConjugateOmega, e, z', y] using h
 
+@[simp] theorem binaryKernelOmegaConjugateOmega_one
+    (pi : Q →* B) (z : binaryCentralOmega pi.ker) :
+    binaryKernelOmegaConjugateOmega pi 1 z = z := by
+  apply binaryCentralOmegaEmbedding_injective
+  rw [binaryKernelOmegaConjugate_val]
+  simp
+
 /-- A tuple of irreducible kernel representations whose ambient conjugacy
 orbits separate the intrinsic central involutions.  This is the exact
 semantic output required from a finite dual-orbit certificate. -/
@@ -97,6 +104,36 @@ namespace BinaryKernelOmegaCoordinateOrbits
 
 variable {pi : Q →* B} {r : ℕ}
   (C : BinaryKernelOmegaCoordinateOrbits pi r)
+
+/-- Taking every canonical omega coordinate always separates; this is the
+fallback certificate before finite ambient orbits compress the tuple. -/
+noncomputable def all
+    (h : r = Module.finrank (ZMod 2)
+      (Additive (binaryCentralOmega pi.ker))) :
+    BinaryKernelOmegaCoordinateOrbits pi r where
+  coordinate i := Fin.cast h i
+  separates := by
+    intro z hz
+    apply binaryOmegaCoordinate_faithful z
+    intro i
+    let j : Fin r := Fin.cast h.symm i
+    have hj := hz j 1
+    simpa only [j, Fin.cast_cast, Fin.cast_eq_self,
+      binaryKernelOmegaConjugateOmega_one] using hj
+
+/-- A trivial prefix kernel needs no relative coordinate. -/
+noncomputable def empty
+    (pi : Q →* B) (hker : pi.ker = ⊥) :
+    BinaryKernelOmegaCoordinateOrbits pi 0 where
+  coordinate := Fin.elim0
+  separates := by
+    intro z _
+    apply binaryCentralOmegaEmbedding_injective
+    apply Subtype.ext
+    have hz : ((binaryCentralOmegaEmbedding z : pi.ker) : Q) ∈ pi.ker :=
+      (binaryCentralOmegaEmbedding z).property
+    rw [hker, Subgroup.mem_bot] at hz
+    exact hz
 
 /-- Turn the checked coordinate-orbit certificate into literal complex
 central characters. -/
