@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.BinaryPairResidualTop
 import SymmetricSubgroupAsymptotics.PermutationBinaryRankThreeOrder
 import SymmetricSubgroupAsymptotics.RepresentationNestedQuotientAmbient
 import SymmetricSubgroupAsymptotics.RepresentationNestedQuotientImage
+import SymmetricSubgroupAsymptotics.DualGeneratorSchurCapacity
 
 /-! The rank-three residual of an original eight-pair frame.
 The ambient denominator is the literal image of normalSpace in the
@@ -95,6 +96,37 @@ noncomputable def sectionTopNestedQuotientImageEquiv
     K.toRepresentation (F.sectionTopRepresentation N) q B' hqB
   rw [hker] at eImage
   exact eAmbient.trans eImage
+
+/-- A finite dual-generator certificate for the ambient coordinate quotient
+therefore bounds the Schur capacity of its actual image in the pair
+section. -/
+theorem sectionTopImage_schurCapacity_le_of_nestedQuotient_dual_generated
+    [Finite I]
+    (B : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) F.top.range I))
+    (hAB : F.normalTopPermutationSubrepresentation N ≤ B)
+    (hBK : B ≤ F.kernelTopPermutationSubrepresentation)
+    (H : ℕ)
+    (hgen : RepresentationGeneratedBy
+      (nestedQuotientRepresentation
+        (F.normalTopPermutationSubrepresentation N) B hAB).dual H) :
+    representationSchurCapacity
+      (intertwinerImage
+        F.kernelTopPermutationSubrepresentation.toRepresentation
+        (F.sectionTopRepresentation N)
+        (F.sectionTopIntertwiner N)
+        (nestedSubrepresentation B
+          F.kernelTopPermutationSubrepresentation hBK)).toRepresentation ≤ H :=
+  representationSchurCapacity_le_of_equiv_dual_generated
+    (nestedQuotientRepresentation
+      (F.normalTopPermutationSubrepresentation N) B hAB)
+    (intertwinerImage
+      F.kernelTopPermutationSubrepresentation.toRepresentation
+      (F.sectionTopRepresentation N)
+      (F.sectionTopIntertwiner N)
+      (nestedSubrepresentation B
+        F.kernelTopPermutationSubrepresentation hBK)).toRepresentation
+    (F.sectionTopNestedQuotientImageEquiv N B hAB hBK) H hgen
 
 /-- The quotient equivalence is induced by identity on the original
 correlated flip vectors. -/
