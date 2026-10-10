@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoRelativeKernelOrbitAnchor
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopBinaryKernelRows
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerQuotient
 
 /-!
 # Orbit-character rows for the degree-two pair catalogues
@@ -399,6 +400,43 @@ theorem liftConclusion_profiles_eq (lit : PreE7CharacterLiterature) :
     (A.liftConclusion lit).allowedProfiles = expectedProfiles := by
   change A.stateProfile.allowedProfiles = expectedProfiles
   exact A.profiles_eq
+
+/-- Build a two-frame row with a constant ordinary/relative profile from
+the actual direct quotient map.  The literal top-normal state supplies its
+socle generators, and the direct binary kernel supplies the omega action.
+Thus the resulting row is already attached to every original normal
+subgroup selected by the tower realization. -/
+noncomputable def ofOrdinaryRelativeSocleDualGenerated
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (ordinary relative : ℕ)
+    (profile_mem : degreeTwoPairOrdinaryRelativeProfile ordinary relative ∈
+      expectedProfiles)
+    (allowed_capacity : ∀ profile ∈ expectedProfiles,
+      profile.slope ≤ preE7CharacterWindow (2 * s))
+    (topSocle : ∀ N, SocleNormalGeneratorBound
+      (D.top ⨸ D.normalRegistry.state (realization.topNormalState N))
+      ordinary)
+    (dualGenerated : ∀ N, RepresentationGeneratedBy
+      (finiteRepresentationSocle
+        (binaryKernelOmegaConjugationRepresentation
+          (realization.quotientMap N))).toRepresentation.dual relative) :
+    DegreeTwoPairTopTowerRelativeKernelOrbitRowData
+      D expectedProfiles p realization where
+  stateProfile :=
+    { profileOfState := fun _ _ ↦
+        degreeTwoPairOrdinaryRelativeProfile ordinary relative
+      allowedProfiles := expectedProfiles
+      allowed_capacity := allowed_capacity
+      profile_mem := fun _ ↦ profile_mem }
+  profiles_eq := rfl
+  input := fun N ↦
+    DegreeTwoPairRelativeKernelOrbitInput.
+      ofSurjectiveBinaryKernelSocleDualGenerated hZmud
+        (realization.quotientMap N)
+        (realization.quotientMap_surjective N)
+        (topSocle N)
+        (realization.quotientMap_kernel_isPGroup N)
+        (dualGenerated N)
 
 noncomputable def sixteenResolvedData
     {D : DegreeTwoPairTopFiniteInterface 8}
