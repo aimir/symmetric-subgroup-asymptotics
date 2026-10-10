@@ -221,6 +221,23 @@ def binaryIntrinsicCoupledDenominatorSubrepresentation
         Representation.Coinvariants.ker L.toRepresentation :=
   rfl
 
+/-- The residual upper-layer representation after dividing by both the
+cross-layer product and every intrinsic coinvariant relation. -/
+def binaryIntrinsicCoupledQuotientRepresentation
+    [MulAction G (Fin w)]
+    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
+    (K W L : Subrepresentation rho)
+    (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
+      L.toSubmodule) :
+    Representation (ZMod 2) G
+      (L.toSubmodule ⫽
+        (binaryIntrinsicCoupledDenominatorSubrepresentation
+          rho K W L hproduct).toSubmodule) :=
+  let D := binaryIntrinsicCoupledDenominatorSubrepresentation
+    rho K W L hproduct
+  L.toRepresentation.quotient D.toSubmodule
+    (fun g ↦ D.apply_mem_toSubmodule g)
+
 /-- A sparse coordinate chart inside the product-plus-displacement
 denominator.  A term is either a basis vector of the product space or one
 literal retained-generator displacement in the upper state. -/
