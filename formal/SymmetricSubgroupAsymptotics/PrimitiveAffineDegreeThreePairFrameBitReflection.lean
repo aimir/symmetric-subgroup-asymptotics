@@ -88,6 +88,64 @@ theorem degreeThreeSignedQuotientPairFrame_bits_eq_localBit
     simpa only [zero_add] using hkernel.symm.trans hcalc
   simpa only [q] using congrArg Prod.snd hpairs
 
+/-- For an arbitrary signed-quotient element, the affine bit at a target
+block is the literal local-complement bit in that target block.  The kernel
+formula above is the fixed-top specialization. -/
+theorem degreeThreeSignedQuotientPairFrame_affineTranslation_eq_localBit
+    (hr : Nat.card block.Fibre = 3)
+    (q : preE7NonPairAction w U ⧸ E block P)
+    (i : block.Points) :
+    let F := degreeThreeSignedQuotientPairFrame block P hr
+    F.affineTranslation (degreeThreeSignedQuotientRangeEquiv block P q) i =
+      degreeThreeLocalBit block P hr
+        ((quotientEmbedding block P q).left i) := by
+  let F := degreeThreeSignedQuotientPairFrame block P hr
+  let g := degreeThreeSignedQuotientRangeEquiv block P q
+  let pointEquiv := degreeThreeSignedQuotientPointEquiv block
+  let bitEquiv := degreeThreeBitEquiv block hr
+  let j := (quotientEmbedding block P q).right⁻¹ • i
+  have htop : F.top g j = i := by
+    change (quotientEmbedding block P q).right • j = i
+    simp only [j, smul_inv_smul]
+  have htransport :
+      pointEquiv.symm
+        (quotientAction block P q (pointEquiv (bitEquiv 0, j))) =
+        quotientEmbedding block P q • (bitEquiv 0, j) := by
+    let a : Equiv.Perm (Fin (localDegree block) × block.Points) :=
+      PermutationalWreathProduct.toPerm
+        (D := LocalQuotient block P) (Q := block.Top)
+        (I := block.Points) (Lambda := Fin (localDegree block))
+        (quotientEmbedding block P q)
+    change pointEquiv.symm (pointEquiv.permCongrHom a
+      (pointEquiv (bitEquiv 0, j))) = a (bitEquiv 0, j)
+    exact symm_permCongrHom_apply_self pointEquiv a (bitEquiv 0, j)
+  have hcalc :
+      F.frame.symm ((g.1 : Equiv.Perm (Fin (quotientDegree block)))
+        (F.frame (j, 0))) =
+        (i, degreeThreeLocalBit block P hr
+          ((quotientEmbedding block P q).left i)) := by
+    change
+      (let p := pointEquiv.symm
+          (quotientAction block P q (pointEquiv (bitEquiv 0, j)));
+        (p.2, bitEquiv.symm p.1)) = _
+    rw [htransport, PermutationalWreathProduct.smul_def]
+    rw [show (quotientEmbedding block P q).right • j = i by
+      simpa only [j] using smul_inv_smul
+        (quotientEmbedding block P q).right i]
+    apply Prod.ext rfl
+    simpa only [zero_add] using
+      degreeThreeLocalBit_action block P hr
+        ((quotientEmbedding block P q).left i) 0
+  have haffine := F.affine_action_frame g j 0
+  have hpairs :
+      (i, F.affineTranslation g i) =
+        (i, degreeThreeLocalBit block P hr
+          ((quotientEmbedding block P q).left i)) := by
+    apply F.frame.injective
+    rw [← hcalc]
+    simpa only [zero_add, htop] using haffine.symm
+  exact congrArg Prod.snd hpairs
+
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics

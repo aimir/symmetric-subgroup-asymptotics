@@ -224,6 +224,20 @@ noncomputable def degreeThreeSignedQuotientPairFrame
         exact Equiv.symm_permCongrHom_apply_self e g x
       rw [htransport, PermutationalWreathProduct.smul_def])
 
+/-- The pair-frame top of a quotient element is its literal block
+permutation in the quotient wreath embedding. -/
+@[simp] theorem degreeThreeSignedQuotientPairFrame_top_apply
+    (hr : Nat.card block.Fibre = 3)
+    (q : preE7NonPairAction w U ⧸ E block P) :
+    (degreeThreeSignedQuotientPairFrame block P hr).top
+        (degreeThreeSignedQuotientRangeEquiv block P q) =
+      (quotientEmbedding block P q).right := by
+  change degreeThreeSignedQuotientPairTop block P
+      ((degreeThreeSignedQuotientRangeEquiv block P).symm
+        (degreeThreeSignedQuotientRangeEquiv block P q)) = _
+  rw [(degreeThreeSignedQuotientRangeEquiv block P).symm_apply_apply]
+  rfl
+
 /-- Relabel the original blocks by their finite cardinality, retaining the
 same literal signed quotient action and every correlated pair flip. -/
 noncomputable def degreeThreeSignedQuotientFinPairFrame
