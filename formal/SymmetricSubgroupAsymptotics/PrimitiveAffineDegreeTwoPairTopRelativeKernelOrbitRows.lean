@@ -133,6 +133,46 @@ noncomputable def ofDualGenerated
   ofDualOrbitSpan pi binary binary_twoGroup linear ordinary kernel_eq
     kernel_twoGroup (BinaryKernelOmegaDualOrbitSpan.ofDualGenerated hgen)
 
+/-- Catalogue constructor from the semisimple detecting part of central
+omega.  The supplied essentiality theorem ensures that characters which
+separate this invariant subrepresentation also detect every nonzero
+ambient orbit. -/
+noncomputable def ofEssentialDualGenerated
+    {B : Type} [Group B] [Finite B]
+    (pi : Q →* B)
+    (binary : Fin profile.binaryPrimary → Q →* ℂˣ)
+    (binary_twoGroup : ∀ i, IsPGroup 2 (binary i).range)
+    (linear : Fin profile.linear → Q →* ℂˣ)
+    (ordinary : Fin profile.ordinary →
+      FiniteIrreducibleRepresentation ℂ Q)
+    (kernel_eq : pi.ker =
+      ((⨅ i, (binary i).ker) ⊓ (⨅ i, (linear i).ker)) ⊓
+        (⨅ i, (ordinary i).action.ker))
+    (kernel_twoGroup : IsPGroup 2 pi.ker)
+    (S : Subrepresentation
+      (binaryKernelOmegaConjugationRepresentation pi))
+    (essential : ∀ x : Additive (binaryCentralOmega pi.ker), x ≠ 0 →
+      ∃ y : S.toSubmodule, y ≠ 0 ∧
+        (y : Additive (binaryCentralOmega pi.ker)) ∈
+          binaryOrbitSpan
+            (binaryKernelOmegaConjugationRepresentation pi) x)
+    (hgen : RepresentationGeneratedBy S.toRepresentation.dual
+      profile.relative) :
+    DegreeTwoPairRelativeKernelOrbitInput Q profile where
+  PrefixTarget := B
+  prefixTargetGroup := inferInstance
+  prefixTargetFinite := inferInstance
+  quotient := pi
+  binary := binary
+  binary_twoGroup := binary_twoGroup
+  linear := linear
+  ordinary := ordinary
+  kernel_eq := kernel_eq
+  kernel_twoGroup := kernel_twoGroup
+  orbitCharacters :=
+    (BinaryKernelOmegaLinearOrbits.ofEssentialDualGenerated
+      S essential hgen).toOrbitCharacters
+
 /-- Construct the full relative-kernel anchor from the literal finite
 orbit-character input. -/
 noncomputable def anchor : DegreeTwoPairRelativeKernelAnchor Q profile :=
