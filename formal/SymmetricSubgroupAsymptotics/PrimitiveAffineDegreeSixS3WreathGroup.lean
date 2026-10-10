@@ -111,7 +111,6 @@ theorem card_D8 : Nat.card D8 = 8 := by
   have hc2 : Nat.card C2 = 2 := by
     rw [Nat.card_congr Multiplicative.toAdd, Nat.card_zmod]
   rw [SemidirectProduct.card, Nat.card_prod, hc2]
-  norm_num
 
 end DegreeSixS3Wreath
 end SymmetricSubgroupAsymptotics

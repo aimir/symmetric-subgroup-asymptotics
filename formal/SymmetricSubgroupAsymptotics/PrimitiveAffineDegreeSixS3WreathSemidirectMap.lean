@@ -96,6 +96,9 @@ def monomialAction : D8 →* MulAut TernaryKernel where
 abbrev SemidirectModel :=
   TernaryKernel ⋊[monomialAction] D8
 
+instance : Finite SemidirectModel :=
+  Finite.of_equiv _ SemidirectProduct.equivProd.symm
+
 /-- Literal affine coordinates followed by the coordinatewise sign
 quotient. -/
 def semidirectMap : G →* SemidirectModel where
@@ -134,17 +137,17 @@ theorem semidirectMap_injective : Function.Injective semidirectMap := by
         s3TranslationCoordinate h.left.2 := by
     simpa only [ternaryCoordinates] using congrFun hternary (1 : Fin 2)
   have hsign0 : oddMarkerSign g.left.1 = oddMarkerSign h.left.1 := by
-    have h := congrArg (fun d : D8 => d.left.1) hprojection
-    change oddMarkerSign g.left.1 = oddMarkerSign h.left.1 at h
-    exact h
+    have hs := congrArg (fun d : D8 => d.left.1) hprojection
+    change oddMarkerSign g.left.1 = oddMarkerSign h.left.1 at hs
+    exact hs
   have hsign1 : oddMarkerSign g.left.2 = oddMarkerSign h.left.2 := by
-    have h := congrArg (fun d : D8 => d.left.2) hprojection
-    change oddMarkerSign g.left.2 = oddMarkerSign h.left.2 at h
-    exact h
+    have hs := congrArg (fun d : D8 => d.left.2) hprojection
+    change oddMarkerSign g.left.2 = oddMarkerSign h.left.2 at hs
+    exact hs
   have houter : g.right = h.right := by
-    have h := congrArg SemidirectProduct.right hprojection
-    change g.right = h.right at h
-    exact h
+    have hs := congrArg SemidirectProduct.right hprojection
+    change g.right = h.right at hs
+    exact hs
   apply SemidirectProduct.ext
   · apply Prod.ext
     · apply s3AffineCoordinates_injective
