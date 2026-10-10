@@ -108,6 +108,25 @@ theorem omegaCoupledQuotient_invariants_finrank_eq_demandThird
     omegaCoupledQuotientRepresentation_invariants_finrank_eq
       Natural.topAmbient_full N
 
+/-- The generated cap-four table now bounds three literal representation
+rows: the K and W invariant-form heads and the fixed residual L quotient. -/
+theorem omegaRepresentationRows_le_four
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        ((R.innerOmegaNaturalAxis N).toRepresentation.IntertwiningMap
+          (Representation.trivial (ZMod 2) Natural.Top (ZMod 2))) +
+      Module.finrank (ZMod 2)
+        ((R.outerOmegaPairSumAxis N).toRepresentation.IntertwiningMap
+          (Representation.trivial (ZMod 2) Natural.Top (ZMod 2))) +
+      Module.finrank (ZMod 2)
+        (OmegaCoupledQuotientRepresentation R N).invariants ≤ 4 := by
+  rw [← (Coupled.towerCoupledHeadData R).
+    omegaHeadDemand_eq_head_add_head_add_fixed
+      Natural.topAmbient_full N]
+  exact omegaHeadDemand_le_four R N
+
 /-- The natural representation carried by the canonical socle of the
 central omega of one actual direct quotient kernel. -/
 abbrev OmegaSocleRepresentation
