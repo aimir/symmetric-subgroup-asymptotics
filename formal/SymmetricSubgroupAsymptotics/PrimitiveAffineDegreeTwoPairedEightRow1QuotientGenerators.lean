@@ -3,6 +3,8 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1Natur
 import SymmetricSubgroupAsymptotics.RepresentationSelfDualNestedQuotient
 import SymmetricSubgroupAsymptotics.DualGeneratorSchurCapacity
 import SymmetricSubgroupAsymptotics.Non2SchurRowDegrees
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopQuotientGeneratorData
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightSharedTops
 
 /-!
 # Dual generators for paired-eight state quotients
@@ -236,6 +238,22 @@ theorem subrepresentationQuotient_comp_nonfixed_le_end_finrank
     have hschur := schurSocleMultiplicity_le_of_dual_generated
       (tau.comp gamma) 1 hdual (X := S)
     simpa only [tau, one_mul] using hschur
+
+/-- Realization-free finite declaration exported for catalogue-level paired
+eight wiring. -/
+noncomputable def finiteGeneratorData :
+    Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
+      DegreeTwoPairTopNestedQuotientGeneratorData
+        Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
+          DegreeTwoPairedEightSharedTops.top1 where
+  certificate := by
+    intro A B hAB
+    obtain ⟨i, rfl⟩ := Natural.registry.complete A
+    obtain ⟨j, rfl⟩ := Natural.registry.complete B
+    by_cases hexception : i = 4 ∧ j = 8
+    · obtain ⟨rfl, rfl⟩ := hexception
+      exact Or.inr (exceptional_finrank_le_two hAB)
+    · exact Or.inl (nestedQuotient_dual_generated i j hAB hexception)
 
 end PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators
 end SymmetricSubgroupAsymptotics
