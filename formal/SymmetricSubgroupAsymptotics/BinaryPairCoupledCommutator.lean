@@ -63,6 +63,49 @@ theorem nestedPair_productSpan_le_constantPreimage
   rw [← hcommBits]
   exact hcB
 
+/-- The same commutator calculation with its full denominator retained.
+The product of the two upper coordinate layers is represented by the
+literal commutator `k⁻¹ u k u⁻¹`; when that commutator belongs to `N`,
+its constant coordinate lies in the `N`-axis itself.  The weaker theorem
+above only records containment in `D`, which is enough to locate the third
+state but loses the coupled quotient denominator. -/
+theorem nestedPair_productSpan_le_normalConstantPreimage
+    (N D : Subgroup U) (hND : N ≤ D)
+    (hcomm : ∀ (u : U), u ∈ D → ∀ (k : F.top.ker), (k : U) ∈ D →
+      ((k : U)⁻¹ * u * (k : U) * u⁻¹) ∈ N) :
+    binaryCoordinateProductSpan
+        (E.ambientAxis (D.map F.top.rangeRestrict))
+        ((F.ambientAxis D).map E.pairSum) ≤
+      (F.ambientAxis N).comap E.pairConstant := by
+  apply Submodule.span_le.mpr
+  rintro _ ⟨x, hx, w, hw, rfl⟩
+  obtain ⟨a, haD, hax⟩ := (E.mem_ambientAxis
+    (D.map F.top.rangeRestrict) x).mp hx
+  obtain ⟨f, hfB, hfw⟩ := hw
+  obtain ⟨k, hkD, hkf⟩ := (F.mem_ambientAxis D f).mp hfB
+  obtain ⟨u, huD, hua⟩ := haD
+  have htop : F.top.rangeRestrict u = (a : F.top.range) := hua
+  let c : F.top.ker := k⁻¹ * MulAut.conjNormal u k
+  have hcN : (c : U) ∈ N := by
+    change ((k : U)⁻¹ * u * (k : U) * u⁻¹) ∈ N
+    exact hcomm u huD k hkD
+  have hcA : F.bits c ∈ F.ambientAxis N :=
+    (F.bits_mem_ambientAxis N c).mpr hcN
+  change E.pairConstant (x * w) ∈ F.ambientAxis N
+  rw [← hax, ← hfw, ← hkf]
+  have hdisp := E.kernel_displacement_eq_pairConstant_product a (F.bits k)
+  have hcommBits := F.bits_commutator u k
+  change F.bits c =
+    F.coordinateTopAction (F.top.rangeRestrict u) (F.bits k) -
+      F.bits k at hcommBits
+  rw [htop] at hcommBits
+  change F.bits c =
+    permutationFunctionRepresentation (ZMod 2) F.top.range (Fin s)
+        (a : F.top.range) (F.bits k) - F.bits k at hcommBits
+  rw [hdisp] at hcommBits
+  rw [← hcommBits]
+  exact hcA
+
 end BinaryPairFrame
 end SymmetricSubgroupAsymptotics
 
