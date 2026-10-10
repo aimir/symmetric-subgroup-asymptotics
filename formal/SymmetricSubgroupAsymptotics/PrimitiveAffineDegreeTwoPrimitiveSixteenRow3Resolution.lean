@@ -1,7 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow3CayleySocles
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow3NaturalModule
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenPairFiniteCatalogue
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopStructuralAnchor
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenOneFrameFiniteRows
 
 /-!
 # Complete semantic resolution of primitive count-sixteen row 3
@@ -23,6 +22,7 @@ namespace PrimitiveAffineDegreeTwoPrimitiveSixteenRow3Resolution
 
 namespace Rows := DegreeTwoPrimitiveSixteenInterfaces
 namespace Catalogue := DegreeTwoSixteenPairFiniteCatalogue
+namespace OneFrameFinite := DegreeTwoSixteenOneFrameFiniteRows
 namespace Socles :=
   SymmetricSubgroupAsymptotics.
     PrimitiveAffineDegreeTwoPrimitiveSixteenRow3CayleySocles
@@ -30,15 +30,21 @@ namespace Natural :=
   SymmetricSubgroupAsymptotics.
     PrimitiveAffineDegreeTwoPrimitiveSixteenRow3NaturalModule
 
+/-- The checked row-three certificates in the common one-frame package. -/
+noncomputable def finiteData :
+    OneFrameFinite.DegreeTwoSixteenOneFrameFiniteRowData Rows.row3 where
+  topSocle := Socles.family
+  natural := by
+    change UniformSubrepresentationGeneratorBound Natural.representation 4
+    exact Natural.uniform.mono (by omega)
+
 /-- The checked finite certificates, padded to the common `(2,4)` profile
 used by literal degree-sixteen pair tops. -/
 noncomputable def schurData
     {p : PreE7PairActionClass 16}
     {R : DegreeTwoPairTopRealization Rows.row3 p} :
     DegreeTwoPairTopSchurData Rows.row3 p R :=
-  DegreeTwoPairTopSchurData.ofUniform 2 4 Socles.family (by
-    change UniformSubrepresentationGeneratorBound Natural.representation 4
-    exact Natural.uniform.mono (by omega))
+  finiteData.schurData
 
 /-- All-original-normal lift for primitive degree-sixteen row 3. -/
 noncomputable def liftConclusion
