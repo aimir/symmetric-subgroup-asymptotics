@@ -731,6 +731,25 @@ theorem omegaSocleSchurCapacityLeFour_of_rawCoupled
   exact omegaSocle_nonfixed_schurSocleMultiplicity_le_three_mul_end_finrank
     R N X hnonfixed
 
+/-- The generated coupled registry and the two actual pair sections close
+the fixed row, while the physical three-layer theorem closes every nonfixed
+row.  Thus paired8-1 needs no residual representation premise. -/
+theorem omegaSocleSchurCapacityLeFour
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p) :
+    OmegaSocleSchurCapacityLeFour R := by
+  intro N
+  apply representationSchurCapacity_le_of_fixed_nonfixed_multiplicity
+    (OmegaSocleRepresentation R N) 4
+  · rw [R.omegaSocle_invariants_finrank_eq_rawOmega N]
+    exact (Coupled.towerCoupledHeadData R).
+      rawKernelOmega_invariants_finrank_le N
+  · intro X _hX hnonfixed
+    have hthree :=
+      omegaSocle_nonfixed_schurSocleMultiplicity_le_three_mul_end_finrank
+        R N X hnonfixed
+    exact hthree.trans (by omega)
+
 /-- Concrete orbit-character row for paired8-1.  The two ordinary prefix
 positions come from the checked quotient-socle family; the four relative
 positions are converted into literal central characters and irreducible
