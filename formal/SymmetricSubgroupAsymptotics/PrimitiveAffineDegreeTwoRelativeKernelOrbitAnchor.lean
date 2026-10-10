@@ -1,4 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoRelativeKernelAnchor
+import SymmetricSubgroupAsymptotics.BinaryInvariantRegistry
+import SymmetricSubgroupAsymptotics.TraceyPrimePowerInput
 import Mathlib.LinearAlgebra.Dual.Lemmas
 
 /-!
@@ -21,7 +23,7 @@ kernel.
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
 noncomputable section
-open scoped Classical
+open scoped Classical MonoidAlgebra
 
 namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
@@ -128,6 +130,62 @@ noncomputable def binaryKernelOmegaConjugationRepresentation
       Additive.ofMul (binaryKernelOmegaConjugateOmega pi q z) :=
   rfl
 
+/-- Module generators over the group algebra are equivalently an ordinary
+spanning family of their literal group orbits.  The forward direction is
+the one needed for central-omega dual characters. -/
+theorem orbit_span_eq_top_of_representationGeneratedBy
+    {k G V : Type*} [Field k] [Group G]
+    [AddCommGroup V] [Module k V]
+    (rho : Representation k G V) {r : ℕ}
+    (hgen : RepresentationGeneratedBy rho r) :
+    ∃ representative : Fin r → V,
+      Submodule.span k
+        (Set.range (fun iq : Fin r × G ↦
+          rho iq.2 (representative iq.1))) = ⊤ := by
+  obtain ⟨code, hcode⟩ := hgen
+  let representative : Fin r → V := fun i ↦ rho.asModuleEquiv (code i)
+  let orbit : Fin r × G → V := fun iq ↦
+    rho iq.2 (representative iq.1)
+  let W : Submodule k V := Submodule.span k (Set.range orbit)
+  let S : Subrepresentation rho :=
+    { toSubmodule := W
+      apply_mem_toSubmodule := by
+        intro g x hx
+        induction hx using Submodule.span_induction with
+        | mem x hx =>
+            obtain ⟨⟨i, h⟩, rfl⟩ := hx
+            have heq : rho g (rho h (representative i)) =
+                rho (g * h) (representative i) := by
+              simp only [map_mul, Module.End.mul_apply]
+            rw [heq]
+            exact Submodule.subset_span ⟨(i, g * h), rfl⟩
+        | zero => simpa using W.zero_mem
+        | add x y _ _ hx hy => simpa only [map_add] using W.add_mem hx hy
+        | smul a x _ hx => simpa only [map_smul] using W.smul_mem a hx }
+  have hgenerator (i : Fin r) : code i ∈ S.asSubmodule := by
+    change representative i ∈ W
+    apply Submodule.subset_span
+    exact ⟨(i, 1), by simp only [orbit, map_one, Module.End.one_apply]⟩
+  have hspan : Submodule.span k[G] (Set.range code) ≤ S.asSubmodule := by
+    apply Submodule.span_le.mpr
+    rintro _ ⟨i, rfl⟩
+    exact hgenerator i
+  have hS : S.asSubmodule = ⊤ := by
+    apply top_unique
+    rw [← hcode]
+    exact hspan
+  refine ⟨representative, ?_⟩
+  change W = ⊤
+  apply top_unique
+  intro x _
+  have hx : rho.asModuleEquiv.symm x ∈ S.asSubmodule := by
+    rw [hS]
+    exact Submodule.mem_top
+  have hx' : rho.asModuleEquiv (rho.asModuleEquiv.symm x) ∈
+      S.toSubmodule := by
+    exact hx
+  simpa only [LinearEquiv.apply_symm_apply] using hx'
+
 /-- A tuple of irreducible kernel representations whose ambient conjugacy
 orbits separate the intrinsic central involutions.  This is the exact
 semantic output required from a finite dual-orbit certificate. -/
@@ -224,6 +282,38 @@ namespace BinaryKernelOmegaDualOrbitSpan
 
 variable {pi : Q →* B} {r : ℕ}
   (C : BinaryKernelOmegaDualOrbitSpan pi r)
+
+/-- A generating tuple for the dual of the actual omega conjugation
+representation supplies the literal dual-orbit span certificate.  The
+inverse in the contragredient action turns its evaluation back into
+conjugation by the displayed ambient element. -/
+noncomputable def ofDualGenerated
+    (hgen : RepresentationGeneratedBy
+      (binaryKernelOmegaConjugationRepresentation pi).dual r) :
+    BinaryKernelOmegaDualOrbitSpan pi r := by
+  let rho := binaryKernelOmegaConjugationRepresentation pi
+  obtain ⟨representative, hspan⟩ :=
+    orbit_span_eq_top_of_representationGeneratedBy rho.dual hgen
+  let orbit : Fin r × Q →
+      Module.Dual (ZMod 2) (Additive (binaryCentralOmega pi.ker)) :=
+    fun iq ↦ rho.dual iq.2⁻¹ (representative iq.1)
+  exact
+    { representative := representative
+      orbit := orbit
+      orbit_apply := by
+        intro i q z
+        change representative i
+            (rho ((q⁻¹)⁻¹) (Additive.ofMul z)) =
+          representative i
+            (Additive.ofMul (binaryKernelOmegaConjugateOmega pi q z))
+        rw [inv_inv, binaryKernelOmegaConjugationRepresentation_apply]
+      spans := by
+        apply top_unique
+        rw [← hspan]
+        apply Submodule.span_mono
+        rintro _ ⟨⟨i, q⟩, rfl⟩
+        apply Submodule.subset_span
+        exact ⟨(i, q⁻¹), by simp only [orbit, inv_inv]⟩ }
 
 /-- A spanning tuple of ambient dual orbits separates every omega
 element. -/
