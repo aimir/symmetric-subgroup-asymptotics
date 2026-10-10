@@ -1,6 +1,8 @@
 import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicQuotientGenerator
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule
 import SymmetricSubgroupAsymptotics.RepresentationSelfDualNestedQuotient
+import SymmetricSubgroupAsymptotics.DualGeneratorSchurCapacity
+import SymmetricSubgroupAsymptotics.Non2SchurRowDegrees
 
 /-!
 # Dual generators for paired-eight state quotients
@@ -104,6 +106,62 @@ theorem nestedQuotient_dual_generated
   have htransport := representationGeneratedBy_of_surjective
     _ _ E.toIntertwiningMap E.surjective hgenOrth
   exact htransport
+
+/-- The exceptional reversed quotient is exactly a binary plane. -/
+theorem exceptional_finrank_le_two
+    (h48 : states (4 : Fin 11) ≤ states (8 : Fin 11)) :
+    Module.finrank (ZMod 2)
+      (nestedQuotientRepresentation (states 4) (states 8) h48).asModule ≤ 2 := by
+  change Module.finrank (ZMod 2)
+      ((states 8).toSubmodule ⧸
+        (nestedSubrepresentation (states 4) (states 8) h48).toSubmodule) ≤ 2
+  have hquot :=
+    (nestedSubrepresentation (states 4) (states 8) h48).toSubmodule.
+      finrank_quotient_add_finrank
+  have hden := finrank_nestedSubrepresentation
+    (states 4) (states 8) h48
+  have hfour : Module.finrank (ZMod 2) (states 4).toSubmodule = 4 := by
+    rw [Natural.states_space, (charts 4).2.finrank]
+  have hsix : Module.finrank (ZMod 2) (states 8).toSubmodule = 6 := by
+    rw [Natural.states_space, (charts 8).2.finrank]
+  rw [hden, hfour, hsix] at hquot
+  omega
+
+/-- Uniform finite-state conclusion: every nonfixed simple row in every
+nested paired-eight state quotient is bounded by one dual-generator layer,
+namely its dimension over its Schur division ring.  The ordinary cases use
+the cyclic dual certificate; the unique exceptional case is even smaller,
+because its target is a literal binary plane. -/
+theorem nestedQuotient_nonfixed_schurSocleMultiplicity_le_end_finrank
+    (i j : Fin 11) (hij : states i ≤ states j)
+    {A : Type*} [AddCommGroup A] [Module (ZMod 2) A] [Finite A]
+    (sigma : Representation (ZMod 2) Top A)
+    (S : Submodule (ZMod 2)[Top] sigma.asModule)
+    [Finite S] [IsSimpleModule (ZMod 2)[Top] S]
+    (hnonfixed : ¬ representationSubmoduleFixed sigma S) :
+    schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[Top])
+        (A := (nestedQuotientRepresentation
+          (states i) (states j) hij).asModule) (X := S) ≤
+      Module.finrank (Module.End (ZMod 2)[Top] S) S := by
+  letI : FiniteDimensional (ZMod 2) A :=
+    Module.Finite.of_finite (ZMod 2) A
+  letI : FiniteDimensional (ZMod 2) S :=
+    Module.Finite.of_finite (ZMod 2) S
+  by_cases hexception : i = 4 ∧ j = 8
+  · obtain ⟨rfl, rfl⟩ := hexception
+    have hone := schurSocleMultiplicity_le_one_of_finrank_le_two_of_nonfixed
+      sigma S hnonfixed (exceptional_finrank_le_two hij)
+    have hpos : 0 < Module.finrank (Module.End (ZMod 2)[Top] S) S := by
+      letI : Nontrivial S := IsSimpleModule.nontrivial (ZMod 2)[Top] S
+      exact Module.finrank_pos
+        (R := Module.End (ZMod 2)[Top] S) (M := S)
+    exact hone.trans hpos
+  · have hgen := nestedQuotient_dual_generated i j hij hexception
+    have hschur := schurSocleMultiplicity_le_of_dual_generated
+      (nestedQuotientRepresentation (states i) (states j) hij) 1 hgen
+      (X := S)
+    simpa only [one_mul] using hschur
 
 end PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators
 end SymmetricSubgroupAsymptotics
