@@ -83,6 +83,27 @@ theorem omegaSocle_invariants_le_of_rawOmega
   rw [R.omegaSocle_invariants_finrank_eq_rawOmega N]
   exact hraw
 
+/-- Nonfixed simple rows may likewise be computed in the full raw omega
+module: every simple-source map already lands in the canonical socle. -/
+theorem omegaSocle_schurSocleMultiplicity_eq_rawOmega
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
+    (X : Submodule (ZMod 2)[preE7PairAction 16 p ⧸ N.1]
+      (OmegaSocleRepresentation R N).asModule)
+    [IsSimpleModule (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X] :
+    schurSocleMultiplicity
+        (k := ZMod 2)
+        (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1])
+        (A := (OmegaSocleRepresentation R N).asModule) (X := X) =
+      schurSocleMultiplicity
+        (k := ZMod 2)
+        (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1])
+        (A := (binaryKernelOmegaConjugationRepresentation
+          (R.rawQuotientMap N)).asModule) (X := X) :=
+  finiteRepresentationSocle_schurSocleMultiplicity_eq
+    (binaryKernelOmegaConjugationRepresentation (R.rawQuotientMap N))
+
 /-- The checked coupled head closes the fixed simple row; a three-layer
 same-simple-type multiplicity estimate closes every nonfixed row.  This
 is the exact algebraic composition of those two inputs for one actual
