@@ -70,6 +70,31 @@ def omegaHeadDemand
             (R.outerOmegaPairSumAxis N).toSubmodule)
           (R.omegaAxes_productSpan_le N))
 
+/-- The third coupled row as an actual quotient representation of the
+literal top, with the product commutator and all intrinsic displacements
+divided out. -/
+abbrev omegaIntrinsicCoupledQuotientRepresentation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  binaryIntrinsicCoupledQuotientRepresentation
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+    (R.innerOmegaNaturalAxis N)
+    (R.outerOmegaPairSumAxis N)
+    (R.outerOmegaConstantAxis N)
+    (R.omegaAxes_productSpan_le N)
+
+/-- The actual third coupled row is fixed pointwise by the literal top. -/
+@[simp] theorem omegaIntrinsicCoupledQuotientRepresentation_apply
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (g : D.top)
+    (z : (C.omegaIntrinsicCoupledQuotientRepresentation N).asModule) :
+    C.omegaIntrinsicCoupledQuotientRepresentation N g z = z :=
+  binaryIntrinsicCoupledQuotientRepresentation_apply
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+    (R.innerOmegaNaturalAxis N)
+    (R.outerOmegaPairSumAxis N)
+    (R.outerOmegaConstantAxis N)
+    (R.omegaAxes_productSpan_le N) g z
+
 /-- When the stored tuple generates the literal top, the third coupled
 term uses the full intrinsic displacement subspace of `L`.  Thus the
 catalogue demand is exactly `d(K) + d(W) + dim L/(KW + [L,S])`. -/
