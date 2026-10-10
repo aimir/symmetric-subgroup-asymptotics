@@ -138,6 +138,23 @@ theorem pairConstant_pairSum_exact :
     rw [F.pairDelta_ker] at hdelta
     exact hdelta
 
+/-- Ground-field form of the same exact sequence, for constructions of
+subrepresentation quotients before passing to group-algebra modules. -/
+theorem pairConstant_pairSum_exact_linear :
+    LinearMap.range F.pairConstantIntertwiner.toLinearMap =
+      LinearMap.ker F.pairSumIntertwiner.toLinearMap := by
+  ext f
+  constructor
+  · rintro ⟨a, rfl⟩
+    exact F.pairSum_pairConstant a
+  · intro hf
+    have hsum : F.pairSum f = 0 := hf
+    have hdelta : f ∈ F.pairDelta.ker := by
+      change F.pairConstant (F.pairSum f) = 0
+      rw [hsum, map_zero]
+    rw [F.pairDelta_ker] at hdelta
+    exact hdelta
+
 /-- A uniform `H`-generator theorem on the pulled-back pair module gives a
 uniform `2H`-generator theorem on the full point permutation module. -/
 theorem permutationFunctionRepresentation_uniform_of_pairTop
