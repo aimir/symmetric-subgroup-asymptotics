@@ -118,6 +118,90 @@ variable {G₀ V : Type} [Group G₀] [Finite G₀]
   [AddCommGroup V] [Module (ZMod p) V] [Finite V]
 
 omit [Finite G₀] in
+/-- Evaluation at one nonzero fixed vector of a simple source injects its
+whole equivariant Hom space into the fixed space of any defining-
+characteristic finite p-subgroup.  This is the integral Hom-dimension form
+of the p-subgroup Schur-capacity argument. -/
+theorem intertwiningMap_finrank_le_pSubgroup_invariants
+    (P : Subgroup G₀) (hP : IsPGroup p P)
+    (sigma : Representation (ZMod p) G₀ V)
+    (S : Submodule (ZMod p)[G₀] sigma.asModule)
+    [IsSimpleModule (ZMod p)[G₀] S] :
+    Module.finrank (ZMod p) (S →ₗ[(ZMod p)[G₀]] sigma.asModule) ≤
+      Module.finrank (ZMod p)
+        (Representation.invariants (sigma.comp P.subtype)) := by
+  letI : FiniteDimensional (ZMod p) S := FiniteDimensional.of_injective
+    (S.subtype.restrictScalars (ZMod p)) S.subtype_injective
+  haveI : Nontrivial S := IsSimpleModule.nontrivial (ZMod p)[G₀] S
+  let tau : Representation (ZMod p) P S :=
+    (Subrepresentation.ofSubmodule' S).toRepresentation.comp P.subtype
+  letI : Finite S := Module.finite_of_finite (ZMod p)
+  obtain ⟨s, hs0, hsfixed⟩ := pGroup_representation_nonzero_fixed hP tau
+  let ev : (S →ₗ[(ZMod p)[G₀]] sigma.asModule) →ₗ[ZMod p]
+      (Representation.invariants (sigma.comp P.subtype)) := {
+    toFun := fun f ↦ ⟨sigma.asModuleEquiv (f s), by
+      intro a
+      have hf := f.map_smul
+        (MonoidAlgebra.single (a : G₀) (1 : ZMod p)) s
+      have hs : MonoidAlgebra.single (a : G₀) (1 : ZMod p) • s = s := by
+        apply Subtype.ext
+        change MonoidAlgebra.single (a : G₀) (1 : ZMod p) •
+            (s.1 : sigma.asModule) = (s.1 : sigma.asModule)
+        rw [Representation.single_smul, one_smul]
+        exact congrArg Subtype.val (hsfixed a)
+      calc
+        sigma a (sigma.asModuleEquiv (f s)) =
+            sigma.asModuleEquiv
+              (MonoidAlgebra.single (a : G₀) (1 : ZMod p) • f s) := by
+          rw [Representation.asModuleEquiv_map_smul,
+            Representation.asAlgebraHom_single, one_smul]
+        _ = sigma.asModuleEquiv
+              (f (MonoidAlgebra.single (a : G₀) (1 : ZMod p) • s)) := by
+          rw [hf]
+        _ = sigma.asModuleEquiv (f s) := by rw [hs]⟩
+    map_add' := by intro f g; apply Subtype.ext; rfl
+    map_smul' := by intro c f; apply Subtype.ext; rfl }
+  have hev : Function.Injective ev := by
+    intro f g hfg
+    by_contra hne
+    have hd : f - g ≠ 0 := sub_ne_zero.mpr hne
+    have hinj : Function.Injective (f - g) :=
+      LinearMap.injective_of_ne_zero hd
+    have hzero : (f - g) s = 0 := by
+      have hval := congrArg Subtype.val hfg
+      have hfgs : f s = g s := sigma.asModuleEquiv.injective hval
+      simpa only [LinearMap.sub_apply, sub_eq_zero] using hfgs
+    exact hs0 (hinj (hzero.trans (map_zero (f - g)).symm))
+  exact ev.finrank_le_finrank_of_injective hev
+
+omit [Finite G₀] in
+/-- The simple socle multiplicity itself is bounded by the same restricted
+fixed-space dimension.  The positive Schur endomorphism dimension cancels
+from the exact Hom-dimension formula. -/
+theorem schurSocleMultiplicity_le_pSubgroup_invariants
+    (P : Subgroup G₀) (hP : IsPGroup p P)
+    (sigma : Representation (ZMod p) G₀ V)
+    (S : Submodule (ZMod p)[G₀] sigma.asModule)
+    [IsSimpleModule (ZMod p)[G₀] S] :
+    schurSocleMultiplicity
+        (k := ZMod p) (R := (ZMod p)[G₀])
+        (A := sigma.asModule) (X := S) ≤
+      Module.finrank (ZMod p)
+        (Representation.invariants (sigma.comp P.subtype)) := by
+  have hhom := intertwiningMap_finrank_le_pSubgroup_invariants
+    P hP sigma S
+  rw [schurHom_finrank_eq_multiplicity
+      (k := ZMod p) (R := (ZMod p)[G₀])
+      (A := sigma.asModule) (X := S)] at hhom
+  have hend : 0 < Module.finrank (ZMod p)
+      (Module.End (ZMod p)[G₀] S) := by
+    letI : Nontrivial S := IsSimpleModule.nontrivial (ZMod p)[G₀] S
+    exact Module.finrank_pos (R := ZMod p)
+      (M := Module.End (ZMod p)[G₀] S)
+  apply Nat.le_of_mul_le_mul_right _ hend
+  exact hhom.trans (Nat.le_mul_of_pos_right _ hend)
+
+omit [Finite G₀] in
 /-- Restriction to a finite p-subgroup bounds the original Schur capacity
 by the dimension of the subgroup-fixed space.  The simple modules and Hom
 spaces remain those of the original group algebra. -/
