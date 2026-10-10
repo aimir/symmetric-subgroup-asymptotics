@@ -121,6 +121,19 @@ namespace DegreeTwoTwelveTernaryQcharPackage
 variable {D : DegreeTwoPairTopFiniteInterface 12}
   (F : DegreeTwoTwelveTernaryQcharPackage D)
 
+/-- Named assembly boundary for one selected finite QCHAR emitter. -/
+noncomputable def ofCertificate
+    (qchar : ∀ (p : PreE7PairActionClass 12),
+      DegreeTwoPairTopRealization D p →
+        PreE7FiniteQcharMenuData 24
+          (preE7SmallPairNonPairAction 12 (by norm_num) p))
+    (comparator_degree : ∀ (p : PreE7PairActionClass 12)
+      (R : DegreeTwoPairTopRealization D p),
+      (qchar p R).axes.degree = 8) :
+    DegreeTwoTwelveTernaryQcharPackage D where
+  qchar := qchar
+  comparator_degree := comparator_degree
+
 /-- Convert the raw QCHAR fields to the common comparator package. -/
 noncomputable def comparatorData
     {p : PreE7PairActionClass 12}

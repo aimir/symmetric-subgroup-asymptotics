@@ -85,6 +85,20 @@ variable {kind : DegreeTwoSixteenNaturalTop}
   (D : DegreeTwoSixteenNaturalFiniteRowData kind)
   (R : DegreeTwoSixteenNaturalTopRealization kind p)
 
+/-- Named assembly boundary for one independently emitted natural-top
+package. -/
+noncomputable def ofCertificates
+    (topSocle : ∀ N :
+      {N : Subgroup (naturalTopSubgroup kind) // N.Normal},
+      SocleNormalGeneratorBound
+        (naturalTopSubgroup kind ⧸ N.1) 2)
+    (natural : UniformSubrepresentationGeneratorBound
+      (permutationFunctionRepresentation
+        (ZMod 2) (naturalTopSubgroup kind) (Fin 16)) 4) :
+    DegreeTwoSixteenNaturalFiniteRowData kind where
+  topSocle := topSocle
+  natural := natural
+
 /-- Transport the literal-top socle and module certificates through one
 actual original-normal quotient. -/
 noncomputable def envelope
