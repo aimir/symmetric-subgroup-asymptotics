@@ -172,6 +172,35 @@ theorem representationSchurCapacity_le_of_comp_equiv_dual_generated
       rho (sigma.comp q) e H hgen
   rwa [representationSchurCapacity_comp q hq sigma] at hcomp
 
+/-- An integral representation-capacity bound gives the corresponding
+Schur-scaled multiplicity bound on every simple row. -/
+theorem schurSocleMultiplicity_le_nat_mul_end_finrank_of_capacity_le
+    (sigma : Representation k G W) [FiniteDimensional k W]
+    (H : ℕ) (hcap : representationSchurCapacity sigma ≤ H)
+    {X : Type*} [AddCommGroup X] [Module k X]
+    [Module k[G] X] [IsScalarTower k k[G] X]
+    [FiniteDimensional k X] [IsSimpleModule k[G] X] :
+    schurSocleMultiplicity
+        (k := k) (R := k[G]) (A := sigma.asModule) (X := X) ≤
+      H * Module.finrank (Module.End k[G] X) X := by
+  have hratio :
+      (Module.finrank k (X →ₗ[k[G]] sigma.asModule) : ℝ) /
+          Module.finrank k X ≤ H :=
+    (le_csSup schurCapacity_bddAbove
+      (Set.mem_insert_of_mem _ ⟨X, inferInstance, rfl⟩)).trans hcap
+  rw [schurSimpleRatio_eq_multiplicity_division
+      (k := k) (R := k[G]) (A := sigma.asModule) (X := X)] at hratio
+  have hEnd : (0 : ℝ) < Module.finrank (Module.End k[G] X) X := by
+    letI : Nontrivial X := IsSimpleModule.nontrivial k[G] X
+    exact_mod_cast (Module.finrank_pos
+      (R := Module.End k[G] X) (M := X))
+  have hmul :
+      (schurSocleMultiplicity
+        (k := k) (R := k[G]) (A := sigma.asModule) (X := X) : ℝ) ≤
+        H * Module.finrank (Module.End k[G] X) X :=
+    (div_le_iff₀ hEnd).mp hratio
+  exact_mod_cast hmul
+
 /-- A generated contragredient gives the integral Schur-scaled row bound
 used by the coupled nonfixed argument.  For a simple source `X`, dualising
 embeds `Hom(X, sigma)` into `Hom(sigma⁺, X⁺)`.  Evaluation on `H`
