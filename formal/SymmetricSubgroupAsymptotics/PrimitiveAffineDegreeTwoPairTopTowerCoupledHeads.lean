@@ -101,6 +101,26 @@ theorem fixedOmegaHeadDemand_le
     (R.fixedOmegaConstantAxis N)
     (R.fixedOmega_productSpan_le_constant N)
 
+/-- The actual raw fixed omega dimension is bounded by the semantic demand
+read by any complete coupled-head registry. -/
+theorem rawKernelOmega_invariants_finrank_le_fixedOmegaHeadDemand
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (binaryKernelOmegaConjugationRepresentation
+          (R.rawQuotientMap N)).invariants ≤
+      C.fixedOmegaHeadDemand N :=
+  R.rawKernelOmega_invariants_finrank_le_fixedHeads C.generators N
+
+/-- A complete coupled registry therefore bounds the actual fixed part of
+raw omega, with no row-specific representation premise. -/
+theorem rawKernelOmega_invariants_finrank_le
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (binaryKernelOmegaConjugationRepresentation
+          (R.rawQuotientMap N)).invariants ≤ cap :=
+  (C.rawKernelOmega_invariants_finrank_le_fixedOmegaHeadDemand N).trans
+    (C.fixedOmegaHeadDemand_le N)
+
 /-- The third coupled row as an actual quotient representation of the
 literal top, with the product commutator and all intrinsic displacements
 divided out. -/
