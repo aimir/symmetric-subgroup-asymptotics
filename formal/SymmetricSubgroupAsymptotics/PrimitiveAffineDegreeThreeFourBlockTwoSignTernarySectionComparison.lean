@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.CentralBinaryRecursiveCompleteQuotientComparison
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeSixS3WreathSource
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeSixS3WreathGroup
 
 /-!
 # QStar comparison for a two-sign ternary section

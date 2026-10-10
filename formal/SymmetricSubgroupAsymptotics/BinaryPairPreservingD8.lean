@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryPairFrameGenerators
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeSixS3WreathSource
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeSixS3WreathGroup
 
 /-!
 # The full two-pair preserving group is dihedral
