@@ -41,9 +41,24 @@ def kleinFourSubgroup (a b : GL3)
     intro x y hx hy
     have haa : a * a = 1 := by simpa only [pow_two] using ha2
     have hbb : b * b = 1 := by simpa only [pow_two] using hb2
+    have haba : a * (b * a) = b := by
+      calc
+        a * (b * a) = a * (a * b) := by rw [← hcomm]
+        _ = (a * a) * b := by rw [mul_assoc]
+        _ = b := by rw [haa, one_mul]
+    have hbba : b * (b * a) = a := by
+      calc
+        b * (b * a) = (b * b) * a := by rw [mul_assoc]
+        _ = a := by rw [hbb, one_mul]
+    have hbaba : b * (a * (b * a)) = 1 := by
+      calc
+        b * (a * (b * a)) = b * (a * (a * b)) := by rw [← hcomm]
+        _ = b * ((a * a) * b) := by rw [mul_assoc]
+        _ = b * b := by rw [haa, one_mul]
+        _ = 1 := hbb
     rcases hx with rfl | rfl | rfl | rfl <;>
       rcases hy with rfl | rfl | rfl | rfl <;>
-      simp [haa, hbb, hcomm, mul_assoc]
+      simp [haa, hbb, hcomm, mul_assoc, haba, hbba, hbaba]
   inv_mem' := by
     intro x hx
     have haa : a * a = 1 := by simpa only [pow_two] using ha2
@@ -75,7 +90,7 @@ theorem kleinPairSubgroup_eq_kleinFourSubgroup
     (hcomm : a * b = b * a) :
     kleinPairSubgroup a b = kleinFourSubgroup a b ha2 hb2 hcomm := by
   apply le_antisymm
-  · apply Subgroup.closure_le.mpr
+  · apply Subgroup.closure_le.2
     intro x hx
     rcases hx with rfl | rfl
     · exact Or.inr (Or.inl rfl)
@@ -102,7 +117,9 @@ theorem binaryKleinRange_eq_pairSubgroup
     rcases x with ⟨a, b⟩
     rcases C2Wreath.cases a with rfl | rfl <;>
       rcases C2Wreath.cases b with rfl | rfl
-    · simpa only [map_one] using
+    · change f (1 : KleinV4) ∈
+        kleinPairSubgroup (f kleinFirstBit) (f kleinSecondBit)
+      simpa only [map_one] using
         (Subgroup.one_mem
           (kleinPairSubgroup (f kleinFirstBit) (f kleinSecondBit)))
     · exact Subgroup.subset_closure
@@ -114,7 +131,7 @@ theorem binaryKleinRange_eq_pairSubgroup
         (Subgroup.subset_closure (Set.mem_insert_iff.mpr (Or.inl rfl)))
         (Subgroup.subset_closure (Set.mem_insert_iff.mpr
           (Or.inr (Set.mem_singleton _))))
-  · apply Subgroup.closure_le.mpr
+  · apply Subgroup.closure_le.2
     intro y hy
     rcases hy with rfl | rfl
     · exact ⟨kleinFirstBit, rfl⟩
@@ -214,7 +231,7 @@ theorem mem_kleinNormalizerFinset_iff
   rw [kleinPairSubgroup_eq_kleinFourSubgroup a b ha2 hb2 hcomm,
     Subgroup.mem_normalizer_iff,
     conjugatedKleinFourElements_eq_iff]
-  simp only [mem_kleinFourSubgroup_iff]
+  simp only [mem_kleinFourSubgroup_iff, MulAut.conj_apply]
 
 end LinearThree
 end SymmetricSubgroupAsymptotics
