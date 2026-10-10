@@ -69,6 +69,31 @@ theorem representationInflatedSubmodule_isSimple
         (isSimpleModule_iff_isAtom.mp
           (inferInstance : IsSimpleModule k[B] S)))
 
+/-- The representation carried by an inflated submodule is the inflation of
+the representation carried by the original quotient-group submodule. -/
+noncomputable def representationInflatedSubmoduleEquiv
+    (γ : D →* B) (hγ : Function.Surjective γ)
+    (σ : Representation k B A)
+    (S : Submodule k[B] σ.asModule) :
+    ((Subrepresentation.ofSubmodule' S).toRepresentation.comp γ).Equiv
+      (Subrepresentation.ofSubmodule'
+        (representationInflatedSubmodule γ hγ σ S)).toRepresentation := by
+  let eLinear :
+      (Subrepresentation.ofSubmodule' S).toSubmodule ≃ₗ[k]
+        (Subrepresentation.ofSubmodule'
+          (representationInflatedSubmodule γ hγ σ S)).toSubmodule where
+    toFun := fun x ↦ ⟨x.1, x.2⟩
+    invFun := fun x ↦ ⟨x.1, x.2⟩
+    left_inv x := Subtype.ext rfl
+    right_inv x := Subtype.ext rfl
+    map_add' _ _ := rfl
+    map_smul' _ _ := rfl
+  exact Representation.Equiv.mk eLinear (by
+    intro d
+    apply LinearMap.ext
+    intro x
+    exact Subtype.ext rfl)
+
 /-- Schur multiplicity is unchanged when both target and simple row are
 inflated along a surjective acting-group map. -/
 theorem schurSocleMultiplicity_comp_eq
