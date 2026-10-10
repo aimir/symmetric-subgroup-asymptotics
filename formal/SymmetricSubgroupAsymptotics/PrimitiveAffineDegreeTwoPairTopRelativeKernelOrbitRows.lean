@@ -109,6 +109,30 @@ noncomputable def ofDualOrbitSpan
   kernel_twoGroup := kernel_twoGroup
   orbitCharacters := orbits.toOrbitCharacters
 
+/-- Constructor from a generator theorem for the dual of the literal
+central-omega conjugation representation.  This is the catalogue boundary
+used by the coupled-head argument: its generated tuple is converted
+uniformly into ambient orbit characters and then into relative
+irreducibles. -/
+noncomputable def ofDualGenerated
+    {B : Type} [Group B] [Finite B]
+    (pi : Q →* B)
+    (binary : Fin profile.binaryPrimary → Q →* ℂˣ)
+    (binary_twoGroup : ∀ i, IsPGroup 2 (binary i).range)
+    (linear : Fin profile.linear → Q →* ℂˣ)
+    (ordinary : Fin profile.ordinary →
+      FiniteIrreducibleRepresentation ℂ Q)
+    (kernel_eq : pi.ker =
+      ((⨅ i, (binary i).ker) ⊓ (⨅ i, (linear i).ker)) ⊓
+        (⨅ i, (ordinary i).action.ker))
+    (kernel_twoGroup : IsPGroup 2 pi.ker)
+    (hgen : RepresentationGeneratedBy
+      (binaryKernelOmegaConjugationRepresentation pi).dual
+        profile.relative) :
+    DegreeTwoPairRelativeKernelOrbitInput Q profile :=
+  ofDualOrbitSpan pi binary binary_twoGroup linear ordinary kernel_eq
+    kernel_twoGroup (BinaryKernelOmegaDualOrbitSpan.ofDualGenerated hgen)
+
 /-- Construct the full relative-kernel anchor from the literal finite
 orbit-character input. -/
 noncomputable def anchor : DegreeTwoPairRelativeKernelAnchor Q profile :=
