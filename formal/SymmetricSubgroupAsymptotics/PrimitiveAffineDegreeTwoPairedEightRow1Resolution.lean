@@ -44,6 +44,46 @@ theorem omegaHeadDemand_le_four
     (Coupled.towerCoupledHeadData R).omegaHeadDemand N ≤ 4 :=
   (Coupled.towerCoupledHeadData R).omegaHeadDemand_le N
 
+/-- The natural representation carried by the canonical socle of the
+central omega of one actual direct quotient kernel. -/
+abbrev OmegaSocleRepresentation
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :=
+  (finiteRepresentationSocle
+    (binaryKernelOmegaConjugationRepresentation
+      (R.quotientMap N))).toRepresentation
+
+/-- The checked coupled head closes the fixed simple row; a three-layer
+same-simple-type multiplicity estimate closes every nonfixed row.  This
+is the exact algebraic composition of those two inputs for one actual
+original normal subgroup. -/
+theorem omegaSocle_schurCapacity_le_four_of_coupled_nonfixed
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
+    (hfixed : Module.finrank (ZMod 2)
+      (OmegaSocleRepresentation R N).invariants ≤
+        (Coupled.towerCoupledHeadData R).omegaHeadDemand N)
+    (hnonfixed : ∀ X : Submodule
+      (ZMod 2)[preE7PairAction 16 p ⨸ N.1]
+        (OmegaSocleRepresentation R N).asModule,
+      [IsSimpleModule (ZMod 2)[preE7PairAction 16 p ⨸ N.1] X] →
+      ¬ representationSubmoduleFixed (OmegaSocleRepresentation R N) X →
+      schurSocleMultiplicity
+          (k := ZMod 2)
+          (R := (ZMod 2)[preE7PairAction 16 p ⨸ N.1])
+          (A := (OmegaSocleRepresentation R N).asModule) (X := X) ≤
+        3 * Module.finrank
+          (Module.End (ZMod 2)[preE7PairAction 16 p ⨸ N.1] X) X) :
+    representationSchurCapacity (OmegaSocleRepresentation R N) ≤ 4 := by
+  apply representationSchurCapacity_le_of_fixed_nonfixed_multiplicity
+    (OmegaSocleRepresentation R N) 4
+  · exact hfixed.trans (omegaHeadDemand_le_four R N)
+  · intro X hX hXfixed
+    have hthree := hnonfixed X hXfixed
+    exact hthree.trans (by omega)
+
 /-- Actual natural omega-socle capacity conclusion to be derived from the
 checked coupled head inequality and the three same-top permutation-module
 sections.  The type is tied to the direct quotient kernel for each original
@@ -52,9 +92,7 @@ abbrev OmegaSocleSchurCapacityLeFour
     {p : PreE7PairActionClass 16}
     (R : DegreeTwoPairTopTowerRealization Shared.top1 p) : Prop :=
   ∀ N, representationSchurCapacity
-    (finiteRepresentationSocle
-      (binaryKernelOmegaConjugationRepresentation
-        (R.quotientMap N))).toRepresentation ≤ 4
+    (OmegaSocleRepresentation R N) ≤ 4
 
 /-- Concrete orbit-character row for paired8-1.  The two ordinary prefix
 positions come from the checked quotient-socle family; the four relative
