@@ -90,7 +90,7 @@ noncomputable def jointCapacitySharpenToOne_of_ambientDual_uniform
       (QuotientGroup.mk' ((pi S phi).ker ⊔ N.1))
       (QuotientGroup.mk'_surjective ((pi S phi).ker ⊔ N.1))
       ((originalChart S phi C).sectionRepresentation
-        (pi S phi) (E S phi C).quotientRepresentation N.1).rho
+        (pi S phi) (E S phi C).quotientRepresentation N.1).ρ
     rw [← heq]
     exact hinflated
   coefficient := H.coefficient
