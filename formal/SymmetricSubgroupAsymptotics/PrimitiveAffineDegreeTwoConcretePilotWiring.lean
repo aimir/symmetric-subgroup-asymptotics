@@ -2,25 +2,22 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoConcreteResidualAsse
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1Resolution
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveExceptionalTemplates
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow3Resolution
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenOneFrameFiniteRows
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightCoupledCatalogue
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopRelativeKernelOrbitRows
 
 /-!
 # Concrete pilot wiring in the degree-two residual source
 
-Every joint count-twelve row, every paired-eight row, and the third primitive
-count-sixteen row are routed through concrete finite certificates.  This
-file wires those endpoints into the literal catalogues.  Consequently the
-remaining semantic input cannot replace any of those families with a
-project-owned row premise.  The 283 joint count-twelve rows are constructed
-uniformly from quotient-socle and natural-module declarations; the
-paired-eight rows are constructed uniformly from their three finite
-declarations.
+Every joint count-twelve row, every paired-eight row, and every zero16,
+twoAffine16, and primitive16 row is routed through concrete finite
+certificates.  The 283 joint count-twelve rows use quotient-socle and
+natural-module declarations; the paired-eight rows use their three finite
+declarations; and all 64 one-frame count-sixteen rows share the finite
+`(2,4)` Schur package.
 
-The resulting constructor still exposes the exceptional count-twelve and
-unresolved count-sixteen families, but all generic count-twelve rows, all
-paired-eight rows, and primitive-sixteen row index `2` are wired to finite
-certificates.
+The only remaining count-sixteen semantic boundary is the natural
+`A_16`/`S_16` alternative.
 -/
 
 set_option autoImplicit false
@@ -41,15 +38,15 @@ namespace TwelveJointCatalogue :=
   DegreeTwoTwelveJointFiniteRows.LiteralCatalogue
 namespace TwelveFiniteCatalogue := DegreeTwoTwelvePairFiniteCatalogue
 namespace TwelveExceptional := DegreeTwoTwelveExceptionalTemplates
+namespace SixteenOneFrameCatalogue := DegreeTwoSixteenOneFrameFiniteRows.Catalogue
 
 abbrev TwelveCatalogue := Concrete.TwelveCatalogue
 abbrev SixteenCatalogue := Concrete.SixteenCatalogue
 
 /-- Semantic and finite data for the rows not already generated.  Joint
-count-twelve and paired-eight rows accept only finite declarations on their
-literal tops.  The count-twelve semantic field is restricted to the ten
-core-or-paired exceptional rows.  The disequality on primitive-sixteen
-prevents its generated pilot from reappearing as an abstract assumption. -/
+count-twelve, paired-eight, and all one-frame count-sixteen rows accept only
+finite declarations on their literal tops.  Their explicit family fields
+are the boundaries consumed by the serialized certificate exporters. -/
 structure RemainingPairTopSemanticData : Type 1 where
   twelveJoint :
     TwelveJointCatalogue.RemainingDegreeTwoTwelveJointFiniteRowData
@@ -57,28 +54,8 @@ structure RemainingPairTopSemanticData : Type 1 where
     TwelveExceptional.DegreeTwoTwelveExceptionalCatalogueData
   sixteenPaired8 :
     RemainingDegreeTwoPairedEightFiniteRowData
-  sixteenZero16 :
-    ∀ (j : Fin 29) (p : PreE7PairActionClass 16)
-      (realization : DegreeTwoPairTopRealization
-        (SixteenCatalogue.zero16 j) p),
-      DegreeTwoPairTopRelativeKernelOrbitRowData
-        (SixteenCatalogue.zero16 j)
-        degreeTwoSixteenPairProfiles p realization
-  sixteenTwoAffine16 :
-    ∀ (j : Fin 15) (p : PreE7PairActionClass 16)
-      (realization : DegreeTwoPairTopRealization
-        (SixteenCatalogue.twoAffine16 j) p),
-      DegreeTwoPairTopRelativeKernelOrbitRowData
-        (SixteenCatalogue.twoAffine16 j)
-        degreeTwoSixteenPairProfiles p realization
-  sixteenPrimitive16 :
-    ∀ (j : Fin 20) (p : PreE7PairActionClass 16)
-      (realization : DegreeTwoPairTopRealization
-        (SixteenCatalogue.primitive16 j) p),
-      j ≠ (2 : Fin 20) →
-      DegreeTwoPairTopRelativeKernelOrbitRowData
-        (SixteenCatalogue.primitive16 j)
-        degreeTwoSixteenPairProfiles p realization
+  sixteenOneFrame :
+    SixteenOneFrameCatalogue.RemainingDegreeTwoSixteenOneFrameFiniteRowData
   sixteenNatural :
     ∀ (kind : DegreeTwoSixteenNaturalTop)
       (p : PreE7PairActionClass 16)
@@ -112,8 +89,16 @@ noncomputable def twelveResolution
   | paired =>
     exact D.twelveExceptional.pairedResolvedRow lit j realization hbranch
 
-/-- Count-sixteen resolution with every paired-eight row and primitive row
-index `2` supplied by finite certificates. -/
+/-- Assemble the complete one-frame count-sixteen finite catalogue by
+inserting the generated primitive row-three pilot. -/
+noncomputable def sixteenOneFrameFiniteCatalogue
+    (D : RemainingPairTopSemanticData) :
+    SixteenOneFrameCatalogue.DegreeTwoSixteenOneFrameFiniteCatalogueData :=
+  SixteenOneFrameCatalogue.ofGeneratedPrimitiveRow3
+    SixteenPilot.finiteData D.sixteenOneFrame
+
+/-- Count-sixteen resolution with every paired-eight and one-frame row
+supplied by finite certificates. -/
 noncomputable def sixteenResolution
     (D : RemainingPairTopSemanticData)
     (hZmud : ZmudFaithfulCharacterTupleInput)
@@ -123,24 +108,22 @@ noncomputable def sixteenResolution
     exact (((PairedEightFinite.ofGeneratedRow1 D.sixteenPaired8).
       rowData hZmud j realization).sixteenResolvedData lit).toResolvedRow
   zero16 j p realization :=
-    ((D.sixteenZero16 j p realization).sixteenResolvedData lit).toResolvedRow
+    (D.sixteenOneFrameFiniteCatalogue.zero16ResolvedRow
+      hZmud lit j realization)
   twoAffine16 j p realization :=
-    ((D.sixteenTwoAffine16 j p realization).sixteenResolvedData lit).toResolvedRow
-  primitive16 j p realization := by
-    by_cases hj : j = (2 : Fin 20)
-    · subst j
-      exact SixteenPilot.resolvedRow hZmud lit realization
-    · exact ((D.sixteenPrimitive16 j p realization hj).sixteenResolvedData
-        lit).toResolvedRow
+    (D.sixteenOneFrameFiniteCatalogue.twoAffine16ResolvedRow
+      hZmud lit j realization)
+  primitive16 j p realization :=
+    (D.sixteenOneFrameFiniteCatalogue.primitive16ResolvedRow
+      hZmud lit j realization)
   natural kind p realization :=
     (D.sixteenNatural kind p realization).source hZmud lit
 
 end RemainingPairTopSemanticData
 
 /-- Degree-two residual source with the checked catalogue pilots and the
-uniform joint-twelve and paired-eight finite dispatch installed at their
-literal indices.  The remaining structure excludes semantic row objects for
-both complete families. -/
+uniform joint-twelve, paired-eight, and one-frame count-sixteen finite
+dispatch installed at their literal indices. -/
 noncomputable def source
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
