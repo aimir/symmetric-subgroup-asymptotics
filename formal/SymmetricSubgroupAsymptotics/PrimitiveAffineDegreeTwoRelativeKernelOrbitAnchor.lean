@@ -246,6 +246,87 @@ theorem finiteRepresentationSocle_isSemisimple
       (representationSocleModule rho)).isSemisimpleModule_iff).mp
         (representationSocleModule_isSemisimple rho)
 
+/-! The invariant-subspace lattice of a finite-dimensional dual is the
+order dual of the original invariant-subspace lattice.  Keeping the
+annihilator construction at the representation level lets semisimplicity
+of the canonical socle pass to the dual used by the Schur-capacity
+endpoint. -/
+
+/-- The annihilator of an invariant subspace is invariant under the
+contragredient representation. -/
+noncomputable def representationDualAnnihilator
+    {k G V : Type*} [Field k] [Group G]
+    [AddCommGroup V] [Module k V]
+    (rho : Representation k G V) (S : Subrepresentation rho) :
+    Subrepresentation rho.dual where
+  toSubmodule := S.toSubmodule.dualAnnihilator
+  apply_mem_toSubmodule g f hf := by
+    rw [Submodule.mem_dualAnnihilator] at hf ⊢
+    intro x hx
+    change f (rho g⁻¹ x) = 0
+    exact hf _ (S.apply_mem_toSubmodule g⁻¹ hx)
+
+/-- The coannihilator of a dual invariant subspace is invariant in the
+original representation. -/
+noncomputable def representationDualCoannihilator
+    {k G V : Type*} [Field k] [Group G]
+    [AddCommGroup V] [Module k V]
+    (rho : Representation k G V) (T : Subrepresentation rho.dual) :
+    Subrepresentation rho where
+  toSubmodule := T.toSubmodule.dualCoannihilator
+  apply_mem_toSubmodule g x hx := by
+    rw [Submodule.mem_dualCoannihilator] at hx ⊢
+    intro f hf
+    have h := hx (rho.dual g⁻¹ f)
+      (T.apply_mem_toSubmodule g⁻¹ hf)
+    simpa only [Representation.dual_apply,
+      Module.Dual.transpose_apply, inv_inv] using h
+
+/-- Finite-dimensional duality reverses the invariant-subspace lattice. -/
+noncomputable def subrepresentationDualOrderIso
+    {k G V : Type*} [Field k] [Group G]
+    [AddCommGroup V] [Module k V] [FiniteDimensional k V]
+    (rho : Representation k G V) :
+    Subrepresentation rho ≃o (Subrepresentation rho.dual)ᵒᵈ where
+  toFun S := OrderDual.toDual (representationDualAnnihilator rho S)
+  invFun T := representationDualCoannihilator rho (OrderDual.ofDual T)
+  left_inv S := by
+    apply Subrepresentation.toSubmodule_injective
+    exact Subspace.dualAnnihilator_dualCoannihilator_eq
+  right_inv T := by
+    apply Subrepresentation.toSubmodule_injective
+    exact Subspace.dualCoannihilator_dualAnnihilator_eq
+  map_rel_iff' := by
+    intro S T
+    change T.toSubmodule.dualAnnihilator ≤
+        S.toSubmodule.dualAnnihilator ↔ S.toSubmodule ≤ T.toSubmodule
+    exact Subspace.dualAnnihilator_le_dualAnnihilator_iff
+
+/-- A finite-dimensional dual of a semisimple representation is
+semisimple, over an arbitrary field and with no Maschke hypothesis. -/
+theorem representationDual_isSemisimple
+    {k G V : Type*} [Field k] [Group G]
+    [AddCommGroup V] [Module k V] [FiniteDimensional k V]
+    (rho : Representation k G V)
+    [IsSemisimpleModule k[G] rho.asModule] :
+    IsSemisimpleModule k[G] rho.dual.asModule := by
+  have hrep : Representation.IsSemisimpleRepresentation rho :=
+    (Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule
+      rho).mpr inferInstance
+  letI : ComplementedLattice (Subrepresentation rho) := hrep
+  have hdualOrder :
+      ComplementedLattice ((Subrepresentation rho.dual)ᵒᵈ) :=
+    (subrepresentationDualOrderIso rho).complementedLattice
+  have hdualRep : Representation.IsSemisimpleRepresentation rho.dual := by
+    constructor
+    intro T
+    let Td : (Subrepresentation rho.dual)ᵒᵈ := OrderDual.toDual T
+    obtain ⟨Ud, hTU⟩ := hdualOrder.exists_isCompl Td
+    exact ⟨OrderDual.ofDual Ud, hTU.dual⟩
+  exact
+    (Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule
+      rho.dual).mp hdualRep
+
 /-- Every nonzero cyclic orbit meets the finite representation socle.
 Equivalently, the socle is an essential subrepresentation. -/
 theorem finiteRepresentationSocle_essential
