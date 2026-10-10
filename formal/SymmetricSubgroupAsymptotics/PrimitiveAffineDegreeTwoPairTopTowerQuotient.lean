@@ -511,6 +511,79 @@ theorem rawKernelOmegaProjection_range_eq
       compositeKernelProjection_apply, R.rawKernelOmegaEquiv_val N z]
     exact hxy
 
+/-- Additive coordinates for the projected direct-kernel omega inside the
+literal second section module. -/
+noncomputable def rawKernelOmegaInnerSectionMap
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Additive (binaryCentralOmega (R.rawQuotientMap N).ker) →ₗ[ZMod 2]
+      R.innerSectionModule N :=
+  (((R.innerSectionModuleChart N).equiv.symm.toMonoidHom.comp
+    (R.rawKernelOmegaProjection N)).toAdditive).toZModLinearMap 2
+
+@[simp] theorem rawKernelOmegaInnerSectionMap_apply
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (z : binaryCentralOmega (R.rawQuotientMap N).ker) :
+    R.rawKernelOmegaInnerSectionMap N (Additive.ofMul z) =
+      ((R.innerSectionModuleChart N).kernelCoordinates
+        (R.innerQuotientMap N) (R.innerSectionModule N)
+        (R.rawKernelOmegaProjection N z)).toAdd :=
+  rfl
+
+/-- The linear range in second-section coordinates is precisely the actual
+inner omega subrepresentation.  This upgrades the group-level image
+identity to the literal module used by the top action. -/
+theorem rawKernelOmegaInnerSectionMap_range_eq
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    LinearMap.range (R.rawKernelOmegaInnerSectionMap N) =
+      (R.innerOmegaSubrepresentation N).toSubmodule := by
+  let E := R.innerSectionModuleChart N
+  let L := (R.rawKernelOmegaTopImage N).subgroupOf
+    (R.innerQuotientMap N).ker
+  have hker : (E.kernelCoordinates
+      (R.innerQuotientMap N) (R.innerSectionModule N)).ker ≤ L := by
+    intro x hx
+    have hx1 : x = 1 := by
+      apply E.equiv.symm.injective
+      exact (MonoidHom.mem_ker.mp hx).trans
+        (map_one E.equiv.symm).symm
+    subst x
+    exact Subgroup.one_mem _
+  ext v
+  constructor
+  · rintro ⟨z, rfl⟩
+    change ((E.kernelCoordinates
+      (R.innerQuotientMap N) (R.innerSectionModule N)
+      (R.rawKernelOmegaProjection N z.toMul)).toAdd) ∈
+        E.normalSpace (R.innerQuotientMap N)
+          (R.innerSectionModule N) L
+    apply (sectionSubgroupImage_mem_iff
+      (E.kernelCoordinates (R.innerQuotientMap N)
+        (R.innerSectionModule N)) L hker
+      (R.rawKernelOmegaProjection N z.toMul)).2
+    rw [← R.rawKernelOmegaProjection_range_eq N]
+    exact ⟨z.toMul, rfl⟩
+  · intro hv
+    let y : (R.innerQuotientMap N).ker :=
+      E.equiv (Multiplicative.ofAdd v)
+    have hcoord : (E.kernelCoordinates
+        (R.innerQuotientMap N) (R.innerSectionModule N) y).toAdd = v := by
+      change (E.equiv.symm (E.equiv (Multiplicative.ofAdd v))).toAdd = v
+      rw [E.equiv.symm_apply_apply]
+      rfl
+    have hy : y ∈ L := by
+      apply (sectionSubgroupImage_mem_iff
+        (E.kernelCoordinates (R.innerQuotientMap N)
+          (R.innerSectionModule N)) L hker y).1
+      change v ∈ E.normalSpace (R.innerQuotientMap N)
+        (R.innerSectionModule N) L at hv
+      rwa [hcoord]
+    have hyrange : y ∈ (R.rawKernelOmegaProjection N).range := by
+      rw [R.rawKernelOmegaProjection_range_eq N]
+      exact hy
+    obtain ⟨z, hz⟩ := hyrange
+    refine ⟨Additive.ofMul z, ?_⟩
+    rw [R.rawKernelOmegaInnerSectionMap_apply N z, hz, hcoord]
+
 theorem rawKernelProjection_surjective
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     Function.Surjective (R.rawKernelProjection N) :=
