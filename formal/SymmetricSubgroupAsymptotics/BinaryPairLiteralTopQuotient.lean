@@ -244,6 +244,23 @@ noncomputable def literalSectionModuleChart
     rw [hbase]
     exact (F.sectionModuleChart N).conjugate q a
 
+/-- On a literal kernel element, the transported section chart is still the
+original quotient coset. -/
+@[simp] theorem literalSectionModuleChart_equiv_mk
+    (N : Subgroup U) [N.Normal] (k : F.top.ker) :
+    (((F.literalSectionModuleChart e N).equiv
+      (Multiplicative.ofAdd
+        ((F.normalSpace N).mkQ (F.kernelSpaceHom k).toAdd)) :
+          (F.literalTopQuotientMap e N).ker) : U ⧸ N) =
+      QuotientGroup.mk' N (k : U) := by
+  change (((MulEquiv.subgroupCongr
+      (F.literalTopQuotientMap_ker_eq_zeroCutBase_ker e N).symm)
+        (F.sectionKernelEquiv N
+          (F.sectionMap N k)) :
+            (F.literalTopQuotientMap e N).ker) : U ⧸ N) = _
+  rw [F.sectionKernelEquiv_apply N k]
+  rfl
+
 end BinaryPairFrame
 end SymmetricSubgroupAsymptotics
 
