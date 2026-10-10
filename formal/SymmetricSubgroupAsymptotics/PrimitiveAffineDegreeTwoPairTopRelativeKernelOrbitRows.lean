@@ -270,9 +270,6 @@ noncomputable def ofSocleDualSchurCapacity
       ((⨅ i, (binary i).ker) ⊓ (⨅ i, (linear i).ker)) ⊓
         (⨅ i, (ordinary i).action.ker))
     (kernel_twoGroup : IsPGroup 2 pi.ker)
-    [IsSemisimpleModule (ZMod 2)[Q]
-      (finiteRepresentationSocle
-        (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation.dual.asModule]
     (hcap : representationSchurCapacity
       (finiteRepresentationSocle
         (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation.dual ≤

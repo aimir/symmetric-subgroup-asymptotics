@@ -617,18 +617,21 @@ noncomputable def ofSocleDualGenerated
 paired-eight three-layer argument bounds the capacity of its dual, the
 standard semisimple generator theorem supplies the orbit tuple. -/
 noncomputable def ofSocleDualSchurCapacity
-    [IsSemisimpleModule (ZMod 2)[Q]
-      (finiteRepresentationSocle
-        (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation.dual.asModule]
     (hcap : representationSchurCapacity
       (finiteRepresentationSocle
         (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation.dual ≤ r) :
-    BinaryKernelOmegaLinearOrbits pi r :=
-  ofSocleDualGenerated
+    BinaryKernelOmegaLinearOrbits pi r := by
+  let rho := binaryKernelOmegaConjugationRepresentation pi
+  let S := finiteRepresentationSocle rho
+  letI : IsSemisimpleModule (ZMod 2)[Q]
+      S.toRepresentation.asModule :=
+    finiteRepresentationSocle_isSemisimple rho
+  letI : IsSemisimpleModule (ZMod 2)[Q]
+      S.toRepresentation.dual.asModule :=
+    representationDual_isSemisimple S.toRepresentation
+  exact ofSocleDualGenerated
     (semisimple_representationGeneratedBy_of_schurCapacity_le
-      (finiteRepresentationSocle
-        (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation.dual
-      r hcap)
+      S.toRepresentation.dual r hcap)
 
 /-- Turn a generated tuple in the dual omega module into the literal
 complex central characters used by the relative-kernel lift. -/
