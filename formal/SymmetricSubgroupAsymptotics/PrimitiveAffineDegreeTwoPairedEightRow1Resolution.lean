@@ -69,6 +69,45 @@ theorem omegaHeadDemand_eq_intrinsic
   (Coupled.towerCoupledHeadData R).omegaHeadDemand_eq_intrinsic
     Natural.topAmbient_full N
 
+/-- The row-1 table's third term as its concrete pointwise-fixed quotient
+of the actual constant omega axis. -/
+abbrev OmegaCoupledQuotientRepresentation
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :=
+  (Coupled.towerCoupledHeadData R).omegaCoupledQuotientRepresentation
+    Natural.topAmbient_full N
+
+@[simp] theorem omegaCoupledQuotientRepresentation_apply
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
+    (g : Natural.Top)
+    (z : (OmegaCoupledQuotientRepresentation R N).asModule) :
+    OmegaCoupledQuotientRepresentation R N g z = z :=
+  (Coupled.towerCoupledHeadData R).
+    omegaCoupledQuotientRepresentation_apply
+      Natural.topAmbient_full N g z
+
+theorem omegaCoupledQuotient_invariants_finrank_eq_demandThird
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (OmegaCoupledQuotientRepresentation R N).invariants =
+      Module.finrank (ZMod 2)
+        ((R.outerOmegaConstantAxis N).toSubmodule ⫽
+          binaryCoupledDenominator
+            (permutationFunctionRepresentation (ZMod 2) Natural.Top (Fin 8))
+            Natural.topAmbient (R.outerOmegaConstantAxis N)
+            (binaryCoordinateProductSpan
+              (R.innerOmegaNaturalAxis N).toSubmodule
+              (R.outerOmegaPairSumAxis N).toSubmodule)
+            (R.omegaAxes_productSpan_le N)) :=
+  (Coupled.towerCoupledHeadData R).
+    omegaCoupledQuotientRepresentation_invariants_finrank_eq
+      Natural.topAmbient_full N
+
 /-- The natural representation carried by the canonical socle of the
 central omega of one actual direct quotient kernel. -/
 abbrev OmegaSocleRepresentation
