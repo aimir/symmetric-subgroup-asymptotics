@@ -82,6 +82,39 @@ structure BinaryKernelOmegaOrbitCharacters
       (binaryOmegaSubgroupEquiv
         (binaryKernelOmegaConjugateOmega pi q z)) = 1) → z = 1
 
+/-- Finite coordinate form of an orbit certificate.  A producer selects
+canonical dual-basis coordinates of the intrinsic central omega module and
+checks that their ambient conjugates detect every central involution. -/
+structure BinaryKernelOmegaCoordinateOrbits
+    (pi : Q →* B) (r : ℕ) : Type where
+  coordinate : Fin r →
+    Fin (Module.finrank (ZMod 2) (Additive (binaryCentralOmega pi.ker)))
+  separates : ∀ z : binaryCentralOmega pi.ker,
+    (∀ i q, binaryOmegaCoordinate (coordinate i)
+      (binaryKernelOmegaConjugateOmega pi q z) = 1) → z = 1
+
+namespace BinaryKernelOmegaCoordinateOrbits
+
+variable {pi : Q →* B} {r : ℕ}
+  (C : BinaryKernelOmegaCoordinateOrbits pi r)
+
+/-- Turn the checked coordinate-orbit certificate into literal complex
+central characters. -/
+noncomputable def toOrbitCharacters :
+    BinaryKernelOmegaOrbitCharacters pi r where
+  character i := binaryOmegaScalarCharacter (k := ℂ) (C.coordinate i)
+  separates := by
+    intro z hz
+    apply C.separates z
+    intro i q
+    apply (binaryScalarSign_eq_one (k := ℂ) _).mp
+    let omega := binaryKernelOmegaConjugateOmega pi q z
+    have h := hz i q
+    simpa only [binaryOmegaScalarCharacter, MonoidHom.comp_apply,
+      MulEquiv.coe_toMonoidHom, omega, MulEquiv.symm_apply_apply] using h
+
+end BinaryKernelOmegaCoordinateOrbits
+
 namespace BinaryKernelOmegaOrbitCharacters
 
 variable {pi : Q →* B} {r : ℕ}
