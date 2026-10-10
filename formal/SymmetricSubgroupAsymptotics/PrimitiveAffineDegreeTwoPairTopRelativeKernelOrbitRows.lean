@@ -55,10 +55,10 @@ variable {Q : Type} [Group Q] [Finite Q]
 /-- Construct the full relative-kernel anchor from the literal finite
 orbit-character input. -/
 noncomputable def anchor : DegreeTwoPairRelativeKernelAnchor Q profile :=
-  DegreeTwoPairRelativeKernelAnchor.ofBinaryKernelOmegaOrbitIrreducibles
+  DegreeTwoPairRelativeKernelAnchor.ofBinaryKernelOmegaOrbitCharacters
     A.quotient A.binary A.binary_twoGroup A.linear A.ordinary
     A.kernel_eq A.kernel_twoGroup
-    A.orbitCharacters.toOrbitIrreducibles
+    A.orbitCharacters
 
 end DegreeTwoPairRelativeKernelOrbitInput
 

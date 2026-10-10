@@ -218,6 +218,27 @@ noncomputable def ofBinaryKernelOmegaOrbitIrreducibles
       kernel_twoGroup x (fun i ↦ hrelative i)
     simpa using congrArg Subtype.val hx
 
+/-- Character-facing form of
+`ofBinaryKernelOmegaOrbitIrreducibles`.  A finite certificate may stay on
+the intrinsic central omega subgroup; the required kernel irreducibles and
+their ambient lifts are chosen uniformly. -/
+noncomputable def ofBinaryKernelOmegaOrbitCharacters
+    {profile : DegreeTwoPairRelativeProfile}
+    (pi : Q →* B)
+    (binary : Fin profile.binaryPrimary → Q →* ℂˣ)
+    (binary_twoGroup : ∀ i, IsPGroup 2 (binary i).range)
+    (linear : Fin profile.linear → Q →* ℂˣ)
+    (ordinary : Fin profile.ordinary →
+      FiniteIrreducibleRepresentation ℂ Q)
+    (kernel_eq : pi.ker =
+      ((⨅ i, (binary i).ker) ⊓ (⨅ i, (linear i).ker)) ⊓
+        (⨅ i, (ordinary i).action.ker))
+    (kernel_twoGroup : IsPGroup 2 pi.ker)
+    (orbit : BinaryKernelOmegaOrbitCharacters pi profile.relative) :
+    DegreeTwoPairRelativeKernelAnchor Q profile :=
+  ofBinaryKernelOmegaOrbitIrreducibles pi binary binary_twoGroup linear
+    ordinary kernel_eq kernel_twoGroup orbit.toOrbitIrreducibles
+
 end DegreeTwoPairRelativeKernelAnchor
 
 end PrimitiveAffineImprimitiveBlockTransfer
