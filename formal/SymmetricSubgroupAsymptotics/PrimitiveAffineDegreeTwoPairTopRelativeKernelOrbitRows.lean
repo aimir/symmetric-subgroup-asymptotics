@@ -256,6 +256,39 @@ noncomputable def ofSurjectiveBinaryKernelSocleDualGenerated
           simpa only [ordinaryTuple, MonoidHom.comp_apply] using hord i)
     kernel_twoGroup hgen
 
+/-- Direct row constructor from a Schur-capacity bound on the natural
+canonical omega socle.  The universal bidual argument converts it to the
+dual generator tuple required by the orbit-character construction. -/
+noncomputable def ofSurjectiveBinaryKernelSocleSchurCapacity
+    {B : Type} [Group B] [Finite B]
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (pi : Q →* B) (hpi : Function.Surjective pi)
+    {ordinary relative : ℕ}
+    (topSocle : SocleNormalGeneratorBound B ordinary)
+    (kernel_twoGroup : IsPGroup 2 pi.ker)
+    (hcap : representationSchurCapacity
+      (finiteRepresentationSocle
+        (binaryKernelOmegaConjugationRepresentation pi)).toRepresentation ≤
+      relative) :
+    DegreeTwoPairRelativeKernelOrbitInput Q
+      (degreeTwoPairOrdinaryRelativeProfile ordinary relative) := by
+  let rho := binaryKernelOmegaConjugationRepresentation pi
+  let S := finiteRepresentationSocle rho
+  letI : IsSemisimpleModule (ZMod 2)[Q]
+      S.toRepresentation.asModule :=
+    finiteRepresentationSocle_isSemisimple rho
+  letI : IsSemisimpleModule (ZMod 2)[Q]
+      S.toRepresentation.dual.asModule :=
+    representationDual_isSemisimple S.toRepresentation
+  have hdualCap : representationSchurCapacity
+      S.toRepresentation.dual ≤ relative :=
+    representationDual_schurCapacity_le_of_semisimple
+      S.toRepresentation relative hcap
+  exact ofSurjectiveBinaryKernelSocleDualGenerated hZmud pi hpi
+    topSocle kernel_twoGroup
+    (semisimple_representationGeneratedBy_of_schurCapacity_le
+      S.toRepresentation.dual relative hdualCap)
+
 /-- Catalogue endpoint for a Schur-capacity proof on the dual of the
 canonical omega socle. -/
 noncomputable def ofSocleDualSchurCapacity
@@ -468,6 +501,40 @@ noncomputable def ofOrdinaryRelativeSocleDualGenerated
         (topSocle N)
         (realization.quotientMap_kernel_isPGroup N)
         (dualGenerated N)
+
+/-- Two-frame row constructor from natural omega-socle Schur bounds on
+the actual direct quotient attached to every original normal subgroup. -/
+noncomputable def ofOrdinaryRelativeSocleSchurCapacity
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (ordinary relative : ℕ)
+    (profile_mem : degreeTwoPairOrdinaryRelativeProfile ordinary relative ∈
+      expectedProfiles)
+    (allowed_capacity : ∀ profile ∈ expectedProfiles,
+      profile.slope ≤ preE7CharacterWindow (2 * s))
+    (topSocle : ∀ N, SocleNormalGeneratorBound
+      (D.top ⨸ D.normalRegistry.state (realization.topNormalState N))
+      ordinary)
+    (socleCapacity : ∀ N, representationSchurCapacity
+      (finiteRepresentationSocle
+        (binaryKernelOmegaConjugationRepresentation
+          (realization.quotientMap N))).toRepresentation ≤ relative) :
+    DegreeTwoPairTopTowerRelativeKernelOrbitRowData
+      D expectedProfiles p realization where
+  stateProfile :=
+    { profileOfState := fun _ _ ↦
+        degreeTwoPairOrdinaryRelativeProfile ordinary relative
+      allowedProfiles := expectedProfiles
+      allowed_capacity := allowed_capacity
+      profile_mem := fun _ ↦ profile_mem }
+  profiles_eq := rfl
+  input := fun N ↦
+    DegreeTwoPairRelativeKernelOrbitInput.
+      ofSurjectiveBinaryKernelSocleSchurCapacity hZmud
+        (realization.quotientMap N)
+        (realization.quotientMap_surjective N)
+        (topSocle N)
+        (realization.quotientMap_kernel_isPGroup N)
+        (socleCapacity N)
 
 noncomputable def sixteenResolvedData
     {D : DegreeTwoPairTopFiniteInterface 8}
