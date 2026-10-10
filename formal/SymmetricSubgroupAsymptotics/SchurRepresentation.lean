@@ -169,6 +169,29 @@ theorem representationEnd_finrank_comp_eq
     ← (Representation.IntertwiningMap.equivLinearMapAsModule ρ ρ).finrank_eq]
   exact (representationIntertwiningCompEquiv γ hγ ρ ρ).finrank_eq.symm
 
+/-- The dimension of a simple module over its Schur endomorphism ring is
+unchanged by surjective inflation. -/
+theorem representationFinrankOverEnd_comp_eq
+    [FiniteDimensional k V]
+    (γ : D →* B) (hγ : Function.Surjective γ)
+    (ρ : Representation k B V) [IsSimpleModule k[B] ρ.asModule] :
+    Module.finrank (Module.End k[D] (ρ.comp γ).asModule)
+        (ρ.comp γ).asModule =
+      Module.finrank (Module.End k[B] ρ.asModule) ρ.asModule := by
+  letI : IsSimpleModule k[D] (ρ.comp γ).asModule :=
+    representation_comp_isSimpleModule γ hγ ρ
+  have hend := representationEnd_finrank_comp_eq γ hγ ρ
+  have hD := schur_simple_finrank_tower
+    (k := k) (R := k[D]) (X := (ρ.comp γ).asModule)
+  have hB := schur_simple_finrank_tower
+    (k := k) (R := k[B]) (X := ρ.asModule)
+  have hdim : Module.finrank k (ρ.comp γ).asModule =
+      Module.finrank k ρ.asModule := by rfl
+  rw [hD, hB, hend] at hdim
+  apply Nat.eq_of_mul_eq_mul_left
+    (Module.finrank_pos (R := k) (M := Module.End k[B] ρ.asModule))
+  exact hdim
+
 /-- Schur multiplicity of an arbitrary simple source and finite target is
 unchanged when both representations are inflated along a surjective group
 homomorphism. -/

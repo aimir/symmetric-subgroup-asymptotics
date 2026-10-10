@@ -73,6 +73,25 @@ theorem moduleEnd_finrank_eq_of_linearEquiv
   exact (schurHomCongrSource (k := k) (A := X) e).finrank_eq.trans
     (schurHomCongrTarget (k := k) (X := V) e).finrank_eq
 
+/-- Equivalent simple modules have the same dimension over their Schur
+endomorphism division rings. -/
+theorem moduleFinrankOverEnd_eq_of_linearEquiv
+    {V : Type} [AddCommGroup V] [Module R V] [Module k V]
+    [IsScalarTower k R V]
+    [FiniteDimensional k X] [FiniteDimensional k V]
+    [IsSimpleModule R X] [IsSimpleModule R V]
+    (e : X ≃ₗ[R] V) :
+    Module.finrank (Module.End R X) X =
+      Module.finrank (Module.End R V) V := by
+  have hdim := (e.restrictScalars k).finrank_eq
+  have hend := moduleEnd_finrank_eq_of_linearEquiv e
+  have hX := schur_simple_finrank_tower (k := k) (R := R) (X := X)
+  have hV := schur_simple_finrank_tower (k := k) (R := R) (X := V)
+  rw [hX, hV, hend] at hdim
+  apply Nat.eq_of_mul_eq_mul_left
+    (Module.finrank_pos (R := k) (M := Module.End R V))
+  exact hdim
+
 /-- A representation equivalence is, in particular, an equivalence of the
 corresponding group-algebra modules. -/
 noncomputable def representationEquivLinearEquivAsModule
