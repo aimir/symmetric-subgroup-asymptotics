@@ -35,6 +35,8 @@ theorem representationGeneratedBy_comp_of_surjective
     (hgen : RepresentationGeneratedBy sigma n) :
     RepresentationGeneratedBy (sigma.comp phi) n := by
   let rho : Representation k G V := sigma.comp phi
+  letI : Module k[G] rho.asModule :=
+    Representation.instModuleMonoidAlgebraAsModule rho
   obtain ⟨v, hv⟩ := hgen
   let vG : Fin n → rho.asModule := fun i ↦
     rho.asModuleEquiv.symm (sigma.asModuleEquiv (v i))
@@ -142,6 +144,7 @@ theorem uniformSubrepresentationGeneratorBound_conjugate_restriction
       (rho.comp (MulAut.conj g • K : Subgroup G).subtype) n) :
     UniformSubrepresentationGeneratorBound
       (rho.comp K.subtype) n := by
+  let rhoK : Representation k K V := rho.comp K.subtype
   let e : K ≃* (MulAut.conj g • K : Subgroup G) :=
     Subgroup.equivSMul (MulAut.conj g) K
   let sigma : Representation k K V :=
@@ -149,7 +152,7 @@ theorem uniformSubrepresentationGeneratorBound_conjugate_restriction
   have hsigma : UniformSubrepresentationGeneratorBound sigma n :=
     hgen.comp_mulEquiv
       (rho.comp (MulAut.conj g • K : Subgroup G).subtype) e
-  let f : (rho.comp K.subtype).IntertwiningMap sigma :=
+  let f : rhoK.IntertwiningMap sigma :=
     { toLinearMap := rho g
       isIntertwining' := by
         intro h
@@ -161,8 +164,9 @@ theorem uniformSubrepresentationGeneratorBound_conjugate_restriction
           ← Module.End.mul_apply, ← map_mul]
         change rho (g * h.1) v = rho (g * h.1 * g⁻¹ * g) v
         simp [mul_assoc] }
-  apply hsigma.of_injective f
-  exact (rho.apply_bijective g).injective
+  have hbound : UniformSubrepresentationGeneratorBound rhoK n :=
+    hsigma.of_injective f (rho.apply_bijective g).injective
+  exact hbound
 
 end SymmetricSubgroupAsymptotics
 
