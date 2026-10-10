@@ -163,6 +163,27 @@ theorem nestedQuotient_nonfixed_schurSocleMultiplicity_le_end_finrank
       (X := S)
     simpa only [one_mul] using hschur
 
+/-- Catalogue-free semantic form of the finite theorem.  Completeness of
+the eleven-state registry selects the two endpoints of an arbitrary nested
+pair, after which the checked quotient table supplies the bound. -/
+theorem subrepresentationQuotient_nonfixed_schurSocleMultiplicity_le_end_finrank
+    (A B : Subrepresentation representation) (hAB : A ≤ B)
+    {X : Type*} [AddCommGroup X] [Module (ZMod 2) X] [Finite X]
+    (sigma : Representation (ZMod 2) Top X)
+    (S : Submodule (ZMod 2)[Top] sigma.asModule)
+    [Finite S] [IsSimpleModule (ZMod 2)[Top] S]
+    (hnonfixed : ¬ representationSubmoduleFixed sigma S) :
+    schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[Top])
+        (A := (nestedQuotientRepresentation A B hAB).asModule) (X := S) ≤
+      Module.finrank (Module.End (ZMod 2)[Top] S) S := by
+  obtain ⟨i, hi⟩ := Natural.registry.complete A
+  obtain ⟨j, hj⟩ := Natural.registry.complete B
+  subst A
+  subst B
+  exact nestedQuotient_nonfixed_schurSocleMultiplicity_le_end_finrank
+    i j hAB sigma S hnonfixed
+
 end PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators
 end SymmetricSubgroupAsymptotics
 
