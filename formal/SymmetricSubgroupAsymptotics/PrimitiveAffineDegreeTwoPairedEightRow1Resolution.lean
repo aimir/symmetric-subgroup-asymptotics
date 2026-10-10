@@ -2,6 +2,8 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1Coupl
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientSocles
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopRelativeKernelOrbitRows
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerOmegaFiltration
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerNestedQuotient
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenPairFiniteCatalogue
 
 /-!
@@ -34,6 +36,8 @@ namespace Shared := DegreeTwoPairedEightSharedTops
 namespace Catalogue := DegreeTwoSixteenPairFiniteCatalogue
 namespace Socles := DegreeTwoPairedEightRow1QuotientSocles
 namespace Natural := PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule
+namespace QuotientGenerators :=
+  PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators
 namespace Coupled :=
   SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads
 
@@ -216,6 +220,69 @@ theorem omegaSocle_schurSocleMultiplicity_le_projectionKernel_add_inner
       (R.rawQuotientMap N))
     (R.rawKernelOmegaInnerImageIntertwiner N)
     (R.rawKernelOmegaInnerImageIntertwiner_surjective N)
+
+/-- Every nonfixed simple row in the actual inner omega image costs one
+Schur dimension.  The ordinary state quotients use the cyclic-dual table;
+the unique exceptional quotient is a binary plane. -/
+theorem innerOmega_nonfixed_schurSocleMultiplicity_le_end_finrank
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
+    (X : Submodule (ZMod 2)[preE7PairAction 16 p ⧸ N.1]
+      (OmegaSocleRepresentation R N).asModule)
+    [IsSimpleModule (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X]
+    (hnonfixed : ¬ representationSubmoduleFixed
+      (OmegaSocleRepresentation R N) X) :
+    schurSocleMultiplicity
+        (k := ZMod 2)
+        (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1])
+        (A := ((R.innerOmegaSubrepresentation N).toRepresentation.comp
+          (R.rawQuotientMap N)).asModule) (X := X) ≤
+      Module.finrank
+        (Module.End (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X) X := by
+  let A := R.moduleAxis N
+  let B := R.innerOmegaNaturalAxis N
+  let hAB := R.moduleAxis_le_innerOmegaNaturalAxis N
+  obtain ⟨i, hi⟩ := Natural.registry.complete A
+  obtain ⟨j, hj⟩ := Natural.registry.complete B
+  subst A
+  subst B
+  let tau := nestedQuotientRepresentation
+    (Natural.states i) (Natural.states j) hAB
+  let sigma := (R.innerOmegaSubrepresentation N).toRepresentation
+  let q := QuotientGroup.mk' (R.topNormal N.1)
+  let E : tau.Equiv (sigma.comp q) :=
+    R.innerNestedQuotientEquivInnerOmegaInflation N
+  letI : FiniteDimensional (ZMod 2) X :=
+    Module.Finite.of_finite (ZMod 2) X
+  by_cases hexception : i = 4 ∧ j = 8
+  · obtain ⟨rfl, rfl⟩ := hexception
+    have htau : Module.finrank (ZMod 2) tau.asModule ≤ 2 := by
+      simpa only [tau] using QuotientGenerators.exceptional_finrank_le_two hAB
+    have htarget : Module.finrank (ZMod 2)
+        ((sigma.comp (R.rawQuotientMap N)).asModule) ≤ 2 := by
+      have hE := E.toLinearEquiv.finrank_eq
+      have hsigma : Module.finrank (ZMod 2) sigma.asModule ≤ 2 := by
+        rw [← hE]
+        exact htau
+      simpa only [sigma] using hsigma
+    exact schurSocleMultiplicity_le_one_of_finrank_le_two_of_nonfixed
+      (OmegaSocleRepresentation R N) X hnonfixed htarget
+  · have hgen : RepresentationGeneratedBy tau.dual 1 := by
+      simpa only [tau] using
+        QuotientGenerators.nestedQuotient_dual_generated i j hAB hexception
+    have hq : Function.Surjective q := QuotientGroup.mk'_surjective _
+    have hcapSigma : representationSchurCapacity sigma ≤ 1 :=
+      representationSchurCapacity_le_of_comp_equiv_dual_generated
+        tau sigma q hq E 1 hgen
+    have hcap : representationSchurCapacity
+        (sigma.comp (R.rawQuotientMap N)) ≤ 1 := by
+      rw [representationSchurCapacity_comp (R.rawQuotientMap N)
+        (R.rawQuotientMap_surjective N)]
+      exact hcapSigma
+    simpa only [sigma, one_mul] using
+      (schurSocleMultiplicity_le_nat_mul_end_finrank_of_capacity_le
+        (sigma.comp (R.rawQuotientMap N)) 1 hcap (X := X))
 
 /-- The checked coupled head closes the fixed simple row; a three-layer
 same-simple-type multiplicity estimate closes every nonfixed row.  This
