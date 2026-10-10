@@ -1,6 +1,10 @@
 import SymmetricSubgroupAsymptotics.BinaryPairLiteralTopQuotient
+import SymmetricSubgroupAsymptotics.FiniteThreeNormalChainSocleGenerators
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopConcreteBranches
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopStructuralAnchor
+import SymmetricSubgroupAsymptotics.SimpleChiefFamilies
+import SymmetricSubgroupAsymptotics.SocleNormalGeneratorNumber
+import Mathlib.GroupTheory.Perm.Fin
 
 /-!
 # Finite packages for the natural count-sixteen tops
@@ -34,6 +38,85 @@ def naturalTopSubgroup (kind : DegreeTwoSixteenNaturalTop) :
   match kind with
   | .alternating => alternatingGroup (Fin 16)
   | .symmetric => ⊤
+
+/-! ## Structural quotient-socle certificates -/
+
+/-- Every quotient of the natural alternating top has a padded two-place
+socle generator.  The only two normal states are handled symbolically; no
+enumeration of `A_16` is involved. -/
+noncomputable def alternatingTopSocle :
+    ∀ N : {N : Subgroup (alternatingGroup (Fin 16)) // N.Normal},
+      SocleNormalGeneratorBound
+        (alternatingGroup (Fin 16) ⧸ N.1) 2 := by
+  letI : IsSimpleGroup (alternatingGroup (Fin 16)) :=
+    alternatingGroup.isSimpleGroup (by norm_num)
+  intro N
+  rcases N.2.eq_bot_or_eq_top with hbot | htop
+  · let e : alternatingGroup (Fin 16) ⧸ N.1 ≃*
+        alternatingGroup (Fin 16) :=
+      (QuotientGroup.quotientMulEquivOfEq hbot).trans
+        QuotientGroup.quotientBot
+    letI : IsSimpleGroup (alternatingGroup (Fin 16) ⧸ N.1) :=
+      e.isSimpleGroup
+    exact (socleNormalGeneratorBound_one_of_isSimpleGroup _).mono
+      (by norm_num)
+  · letI : Subsingleton
+        (alternatingGroup (Fin 16) ⧸ (⊤ :
+          Subgroup (alternatingGroup (Fin 16)))) :=
+      QuotientGroup.subsingleton_quotient_top
+    letI : Subsingleton (alternatingGroup (Fin 16) ⧸ N.1) :=
+      (QuotientGroup.quotientMulEquivOfEq htop).toEquiv.subsingleton
+    exact (socleNormalGeneratorBound_one_of_subsingleton _).mono
+      (by norm_num)
+
+/-- The literal normal chain `1 < A_16 < S_16`, with a three-cycle as its
+distinguished normal generator.  Simplicity of `A_16` and its index two in
+`S_16` give the complete normal-lattice statement. -/
+noncomputable def symmetricNormalChain :
+    FiniteThreeNormalChainData (Equiv.Perm (Fin 16)) := by
+  letI : IsSimpleGroup (alternatingGroup (Fin 16)) :=
+    alternatingGroup.isSimpleGroup (by norm_num)
+  let cycle : Equiv.Perm (Fin 16) := Fin.cycleRange 2
+  have hcycle : Equiv.Perm.IsThreeCycle cycle :=
+    Fin.isThreeCycle_cycleRange_two
+  refine
+    { middle := alternatingGroup (Fin 16)
+      middle_normal := inferInstance
+      middle_ne_bot :=
+        (Subgroup.isSimpleGroup_iff.mp
+          (show IsSimpleGroup (alternatingGroup (Fin 16)) from
+            inferInstance)).1
+      middle_ne_top := ?_
+      normal_eq_bot_or_middle_or_top := ?_
+      generator := cycle
+      generator_mem := hcycle.mem_alternatingGroup
+      generator_ne_one := hcycle.ne_one }
+  · intro htop
+    have hindex := alternatingGroup.index_eq_two (α := Fin 16)
+    rw [htop, Subgroup.index_top] at hindex
+    omega
+  · intro N hN
+    by_cases hbot : N = ⊥
+    · exact Or.inl hbot
+    · right
+      letI : N.Normal := hN
+      haveI : Nontrivial N := Subgroup.nontrivial_iff_ne_bot.mpr hbot
+      exact indexTwo_maximal (alternatingGroup (Fin 16))
+        alternatingGroup.index_eq_two N
+        (Equiv.Perm.alternatingGroup_le_of_normal
+          (by norm_num) inferInstance)
+
+/-- Every quotient of the natural symmetric top has a padded two-place
+socle generator.  The bottom, alternating, and top normal states are
+dispatched through the structural three-state chain. -/
+noncomputable def symmetricTopSocle :
+    ∀ N : {N : Subgroup (naturalTopSubgroup .symmetric) // N.Normal},
+      SocleNormalGeneratorBound
+        (naturalTopSubgroup .symmetric ⧸ N.1) 2 :=
+  (symmetricNormalChain.mapEquiv
+    (Subgroup.topEquiv :
+      (⊤ : Subgroup (Equiv.Perm (Fin 16))) ≃* Equiv.Perm (Fin 16)).symm).
+      quotientSocleGeneratorBound_two
 
 /-- The two finite theorem families needed for one natural top.  Both
 fields are independent of the original pair action and of a chosen
@@ -98,6 +181,25 @@ noncomputable def ofCertificates
     DegreeTwoSixteenNaturalFiniteRowData kind where
   topSocle := topSocle
   natural := natural
+
+/-- The natural alternating package needs only its finite module
+certificate; the quotient-socle field is supplied by the structural
+two-normal-state theorem above. -/
+noncomputable def alternatingOfNaturalModule
+    (natural : UniformSubrepresentationGeneratorBound
+      (permutationFunctionRepresentation
+        (ZMod 2) (naturalTopSubgroup .alternating) (Fin 16)) 4) :
+    DegreeTwoSixteenNaturalFiniteRowData .alternating :=
+  ofCertificates alternatingTopSocle natural
+
+/-- The natural symmetric package needs only its finite module certificate;
+the quotient-socle field comes from `1 < A_16 < S_16`. -/
+noncomputable def symmetricOfNaturalModule
+    (natural : UniformSubrepresentationGeneratorBound
+      (permutationFunctionRepresentation
+        (ZMod 2) (naturalTopSubgroup .symmetric) (Fin 16)) 4) :
+    DegreeTwoSixteenNaturalFiniteRowData .symmetric :=
+  ofCertificates symmetricTopSocle natural
 
 /-- Transport the literal-top socle and module certificates through one
 actual original-normal quotient. -/
