@@ -3,6 +3,7 @@ import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicGeneratorBound
 import SymmetricSubgroupAsymptotics.BinaryCoordinateOrbitSpanCertificate
 import SymmetricSubgroupAsymptotics.BinaryOrbitSpanRebase
 import SymmetricSubgroupAsymptotics.FiniteLinearOrbitMinimalStabilizerCover
+import SymmetricSubgroupAsymptotics.NonfixedCoinvariantKernel
 import SymmetricSubgroupAsymptotics.PermutationSemiregularSchurCapacity
 import SymmetricSubgroupAsymptotics.PermutationFunctionSelfDual
 
@@ -240,6 +241,62 @@ theorem subrepresentation_schurSocleMultiplicity_le_one
         (k := ZMod 2) (R := (ZMod 2)[Top])
         (A := B.toRepresentation.asModule) (X := S) ≤ 1 := by
   exact subrepresentation_schurSocleMultiplicity_le_one_of_module B
+
+/-- For a nonfixed simple source, every map into a natural state lands in
+that state's intrinsic displacement kernel.  The kernel is again a literal
+subrepresentation of the same state, so the regular binary subgroup bounds
+its multiplicity by one as well. -/
+theorem subrepresentation_nonfixed_schurSocleMultiplicity_le_one
+    (B : Subrepresentation representation)
+    {A : Type} [AddCommGroup A] [Module (ZMod 2) A]
+    (sigma : Representation (ZMod 2) Top A)
+    (S : Submodule (ZMod 2)[Top] sigma.asModule)
+    [Finite S] [IsSimpleModule (ZMod 2)[Top] S]
+    (hnonfixed : ¬ representationSubmoduleFixed sigma S) :
+    schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[Top])
+        (A := B.toRepresentation.asModule) (X := S) ≤ 1 := by
+  letI : FiniteDimensional (ZMod 2) S :=
+    Module.Finite.of_finite (ZMod 2) S
+  let K := representationCoinvariantsKernelSubrepresentation
+    B.toRepresentation
+  have hfactor :
+      schurSocleMultiplicity
+          (k := ZMod 2) (R := (ZMod 2)[Top])
+          (A := B.toRepresentation.asModule) (X := S) ≤
+        schurSocleMultiplicity
+          (k := ZMod 2) (R := (ZMod 2)[Top])
+          (A := K.asSubmodule) (X := S) :=
+    schurSocleMultiplicity_le_coinvariantsKernel_of_nonfixed
+      sigma S hnonfixed B.toRepresentation
+  let inclusion : Representation.invariants
+      (K.toRepresentation.comp binaryTopSubgroup.subtype) →ₗ[ZMod 2]
+        Representation.invariants
+          (B.toRepresentation.comp binaryTopSubgroup.subtype) where
+    toFun f := ⟨f.1.1, fun u ↦ congrArg Subtype.val (f.2 u)⟩
+    map_add' _ _ := rfl
+    map_smul' _ _ := rfl
+  have hinclusion : Function.Injective inclusion := by
+    intro f g hfg
+    apply Subtype.ext
+    apply Subtype.ext
+    exact congrArg Subtype.val hfg
+  have hKfixed : Module.finrank (ZMod 2)
+      (Representation.invariants
+        (K.toRepresentation.comp binaryTopSubgroup.subtype)) ≤ 1 :=
+    (inclusion.finrank_le_finrank_of_injective hinclusion).trans
+      (subrepresentation_binaryTop_invariants_finrank_le_one B)
+  have hK : schurSocleMultiplicity
+      (k := ZMod 2) (R := (ZMod 2)[Top])
+      (A := K.toRepresentation.asModule) (X := S) ≤ 1 :=
+    (schurSocleMultiplicity_le_pSubgroup_invariants
+      (X₀ := S) binaryTopSubgroup binaryTopSubgroup_isPGroup
+        K.toRepresentation).trans hKfixed
+  have heq := schurSocleMultiplicity_eq_of_target_linearEquiv
+    (k := ZMod 2) (R := (ZMod 2)[Top]) (X := S)
+      (submoduleRepresentationModuleEquiv B.toRepresentation K.asSubmodule)
+  rw [heq] at hfactor
+  exact hfactor.trans hK
 
 private def binaryInvariantInclusion
     (B : Subrepresentation representation) :

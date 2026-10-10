@@ -723,6 +723,65 @@ theorem displacementSpan_eq :
 
 end D10
 
+/-! ## Exact intrinsic displacement states -/
+
+/-- Each intrinsic coinvariant kernel is one of the ten cyclic states from
+the natural-module registry. -/
+def displacementState (i : Fin 11) : Fin 11 :=
+  ![0, 0, 1, 3, 3, 3, 3, 3, 8, 8, 9] i
+
+/-- The emitted reverse displacement checks identify the full intrinsic
+coinvariant kernel, after forgetting the nested state subtype, with the
+displayed cyclic natural-module state. -/
+theorem coinvariantsKernel_map_eq_state (i : Fin 11) :
+    (Representation.Coinvariants.ker (states i).toRepresentation).map
+        (states i).toSubmodule.subtype =
+      (states (displacementState i)).toSubmodule := by
+  rw [← representationGeneratorDisplacementSpan_eq_coinvariantsKer
+    representation topAmbient
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.topAmbient_full
+        (states i)]
+  fin_cases i
+  · rw [D0.displacementSpan_eq, D0.certificate.submodule_map_subtype,
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+    native_decide
+  · rw [D1.displacementSpan_eq, D1.certificate.submodule_map_subtype,
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+    native_decide
+  · rw [D2.displacementSpan_eq, D2.certificate.submodule_map_subtype,
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+    native_decide
+  · rw [D3.displacementSpan_eq, D3.certificate.submodule_map_subtype,
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+    native_decide
+  · rw [D4.displacementSpan_eq, D4.certificate.submodule_map_subtype,
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+    native_decide
+  · rw [D5.displacementSpan_eq, D5.certificate.submodule_map_subtype,
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+    native_decide
+  · rw [D6.displacementSpan_eq, D6.certificate.submodule_map_subtype,
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+    native_decide
+  · rw [D7.displacementSpan_eq, D7.certificate.submodule_map_subtype,
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+    native_decide
+  · rw [D8.displacementSpan_eq, D8.certificate.submodule_map_subtype,
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+    native_decide
+  · rw [D9.displacementSpan_eq, D9.certificate.submodule_map_subtype,
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+    native_decide
+  · rw [D10.displacementSpan_eq, D10.certificate.submodule_map_subtype,
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+    native_decide
+
+/-- None of the eleven displacement kernels is the unique noncyclic state
+`7`; this is the finite classification fact used by the nonfixed transfer. -/
+theorem displacementState_ne_seven (i : Fin 11) :
+    displacementState i ≠ (7 : Fin 11) := by
+  fin_cases i <;> decide
+
 namespace P0_0
 
 noncomputable def certificate :

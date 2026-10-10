@@ -117,6 +117,18 @@ def submodule : Submodule (ZMod 2) B.toSubmodule :=
 theorem finrank : Module.finrank (ZMod 2) D.submodule = d :=
   C.submoduleOf_finrank B.toSubmodule D.space_le_state
 
+/-- Forgetting the state subtype sends the checked displacement submodule
+back to its literal coordinate space. -/
+theorem submodule_map_subtype :
+    D.submodule.map B.toSubmodule.subtype = C.space := by
+  ext v
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    exact hx
+  · intro hv
+    have hvB : v ∈ B.toSubmodule := D.space_le_state hv
+    exact ⟨⟨v, hvB⟩, hv, rfl⟩
+
 /-- Every checked coordinate basis vector is a sum of genuine retained
 generator displacements. -/
 theorem le_generatorDisplacementSpan :
