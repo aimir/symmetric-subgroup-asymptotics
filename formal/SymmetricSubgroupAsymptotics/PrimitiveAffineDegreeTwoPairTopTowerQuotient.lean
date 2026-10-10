@@ -610,6 +610,43 @@ noncomputable def outerZeroCutKernelEquivRawKernelProjectionKer
       (R.outerQuotientMap_ker_eq_zeroCutBase_ker N).symm).trans
         (R.outerKernelEquivRawKernelProjectionKer N))
 
+/-- Elements of direct-kernel omega killed by the second-kernel projection
+lie literally in the first kernel of the two-frame extension. -/
+def rawKernelOmegaOuterInclusion
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaProjection N).ker →*
+      (R.rawKernelProjection N).ker where
+  toFun z :=
+    ⟨binaryCentralOmegaEmbedding z.1, z.2⟩
+  map_one' := rfl
+  map_mul' _ _ := rfl
+
+theorem rawKernelOmegaOuterInclusion_injective
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Function.Injective (R.rawKernelOmegaOuterInclusion N) := by
+  intro z w hzw
+  apply Subtype.ext
+  apply binaryCentralOmegaEmbedding_injective
+  exact congrArg Subtype.val hzw
+
+/-- Literal first zero-cut coordinates on the kernel of the omega
+projection. -/
+noncomputable def rawKernelOmegaOuterCoordinateMap
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Additive (R.rawKernelOmegaProjection N).ker →ₗ[ZMod 2]
+      R.frame.zeroCutModule N.1 :=
+  ((((R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm.toMonoidHom.comp
+    (R.rawKernelOmegaOuterInclusion N)).toAdditive)).toZModLinearMap 2
+
+theorem rawKernelOmegaOuterCoordinateMap_injective
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Function.Injective (R.rawKernelOmegaOuterCoordinateMap N) := by
+  intro z w hzw
+  apply Additive.toMul.injective
+  apply R.rawKernelOmegaOuterInclusion_injective N
+  apply (R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm.injective
+  exact congrArg Multiplicative.ofAdd hzw
+
 theorem rawKernelProjection_ker_isPGroup
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     IsPGroup 2 (R.rawKernelProjection N).ker :=
