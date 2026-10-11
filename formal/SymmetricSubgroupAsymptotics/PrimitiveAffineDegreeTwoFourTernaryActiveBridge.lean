@@ -156,6 +156,7 @@ theorem minimalNormal_active_iff_le_retainedAveragingImage
 
 /-- Pull a retained subgroup back to the literal pair kernel. -/
 def activePairPreimage
+    (S : DegreeTwoFourTernaryTopStructure D)
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization D p)
     (N : LiteralNormalAxis (p := p))
@@ -341,6 +342,7 @@ theorem activePairSpace_card_eq_of_le_retainedAveragingImage
 
 /-- Action of the literal degree-twelve top on the exact pair section. -/
 def topPairSectionRepresentation
+    (S : DegreeTwoFourTernaryTopStructure D)
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization D p)
     (N : LiteralNormalAxis (p := p)) :
@@ -488,7 +490,9 @@ noncomputable instance activeCoreKernel_normal
     (R : DegreeTwoPairTopRealization D p)
     (N : LiteralNormalAxis (p := p))
     (M : Subgroup (preE7PairAction 12 p ⧸ N.1)) [M.Normal] :
-    (S.activeCoreKernel R N M).Normal := inferInstance
+    (S.activeCoreKernel R N M).Normal := by
+  letI : (S.topActivePairRepresentation R N M).ker.Normal := inferInstance
+  exact Subgroup.normal_inf_normal _ _
 
 /-- The surviving ternary core acts faithfully on every ambient-minimal
 factor carried by the retained four-plane image.  A nonzero kernel would be
@@ -499,11 +503,11 @@ theorem activeCoreKernel_eq_bot
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization D p)
     (N : LiteralNormalAxis (p := p))
-    (M : Subgroup (preE7PairAction 12 p ⧸ N.1))
+    (M : Subgroup (preE7PairAction 12 p ⧸ N.1)) [M.Normal]
     (hM : IsMinimalNormalSubgroup M)
     (hME : M ≤ S.retainedAveragingImage R N) :
     S.activeCoreKernel R N M = ⊥ := by
-  letI : M.Normal := hM.1
+  classical
   by_contra hK
   let K : Subgroup D.top := S.activeCoreKernel R N M
   letI : K.Normal := inferInstance
@@ -570,9 +574,8 @@ theorem activeCoreKernel_eq_bot
     change d ∈ N.1.subgroupOf R.frame.top.ker
     rw [← R.frame.sectionMap_ker]
     apply MonoidHom.mem_ker.mpr
-    change R.frame.sectionMap N.1 ku⁻¹ *
-      R.frame.sectionMap N.1 (MulAut.conjNormal g ku) = 1
-    rw [map_inv, hs, inv_mul]
+    dsimp [d]
+    rw [map_mul, map_inv, hs, inv_mul]
   have hdBits : R.frame.bits d =
       R.frame.coordinateTopAction (R.frame.top.rangeRestrict g)
           (R.frame.bits ku) - R.frame.bits ku := by
@@ -600,11 +603,10 @@ theorem activePairRepresentation_injective
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization D p)
     (N : LiteralNormalAxis (p := p))
-    (M : Subgroup (preE7PairAction 12 p ⧸ N.1))
+    (M : Subgroup (preE7PairAction 12 p ⧸ N.1)) [M.Normal]
     (hM : IsMinimalNormalSubgroup M)
     (hME : M ≤ S.retainedAveragingImage R N) :
     Function.Injective (S.activePairRepresentation R N M) := by
-  letI : M.Normal := hM.1
   have hK := S.activeCoreKernel_eq_bot R N M hM hME
   rw [injective_iff_map_eq_one]
   intro c hc
@@ -632,7 +634,7 @@ theorem sixteen_le_card_minimalNormal_of_le_retainedAveragingImage
     16 ≤ Nat.card M := by
   letI : M.Normal := hM.1
   rw [S.activePairSpace_card_eq_of_le_retainedAveragingImage R N M hME]
-  exact S.sixteen_le_card_of_nine_le_exponent_three_faithful_representation
+  exact sixteen_le_card_of_nine_le_exponent_three_faithful_representation
     S.core_commutative S.core_exponent_three S.core_card_lower
     (S.activePairRepresentation R N M)
     (S.activePairRepresentation_injective R N M hM hME)
