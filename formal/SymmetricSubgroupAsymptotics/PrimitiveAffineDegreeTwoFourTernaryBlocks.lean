@@ -3,6 +3,8 @@ import SymmetricSubgroupAsymptotics.NormalSubgroupOrbitIndex
 import SymmetricSubgroupAsymptotics.BinaryCoordinateSplitAction
 import SymmetricSubgroupAsymptotics.BinaryPairCoordinateSubgroups
 import SymmetricSubgroupAsymptotics.NormalGeneratorTypeSharing
+import SymmetricSubgroupAsymptotics.PermutationBinaryFourAugmentation
+import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Card
 
 /-!
 # The intrinsic four-block set of a ternary count-twelve top
@@ -26,6 +28,8 @@ namespace DegreeTwoFourTernaryTopStructure
 
 variable {D : DegreeTwoPairTopFiniteInterface 12}
   (S : DegreeTwoFourTernaryTopStructure D)
+
+noncomputable local instance : S.core.Normal := S.core_normal
 
 /-- The quotient of the twelve literal points by the displayed core
 orbits. -/
@@ -366,6 +370,409 @@ theorem compressedAction_ker
     simp only [blockAffineAction, binaryCoordinateAffinePermutation,
       hrealizedTop, hparity, map_one, Equiv.Perm.one_apply, Pi.zero_apply,
       add_zero]
+
+/-! ## The active four-plane socle -/
+
+/-- The image of the actual correlated four-plane subgroup in a retained
+quotient.  Naming the literal image keeps the active-socle statements below
+independent of any choice of coordinates on the quotient. -/
+def retainedAveragingImage
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p)
+    (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal}) :
+    Subgroup (preE7PairAction 12 p ⨸ N.1) :=
+  (S.averagingSubgroup R).map (QuotientGroup.mk' N.1)
+
+noncomputable instance retainedAveragingImage_normal
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p)
+    (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal}) :
+    (S.retainedAveragingImage R N).Normal :=
+  Subgroup.Normal.map inferInstance (QuotientGroup.mk' N.1)
+    (QuotientGroup.mk'_surjective N.1)
+
+/-- Every element of the displayed ternary core fixes every one of its four
+orbits setwise. -/
+theorem core_smul_block (c : S.core) (B : S.Blocks) :
+    (c.1 : D.top) • B = B := by
+  obtain ⟨g, rfl⟩ := B.property
+  apply Subtype.ext
+  change c.1 • (g • MulAction.orbit S.core (0 : Fin 12)) =
+    g • MulAction.orbit S.core (0 : Fin 12)
+  rw [← mul_smul, show c.1 * g = g * (g⁻¹ * c.1 * g) by group, mul_smul]
+  congr 1
+  rw [MulAction.smul_orbit_eq_orbit_smul]
+  apply MulAction.orbit_eq_iff.mpr
+  refine ⟨⟨g⁻¹ * c.1 * g, ?_⟩, rfl⟩
+  exact S.core_normal.conj_mem c.2 g⁻¹
+
+/-- On the ternary preimage, the block-bit affine permutations commute:
+the core fixes the four block labels, while the remaining translations add
+in the abelian binary fibres. -/
+theorem blockAffineAction_commute_on_ternaryPreimage
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p)
+    (u v : preE7PairAction 12 p)
+    (hu : u ∈ S.ternaryPreimage R)
+    (hv : v ∈ S.ternaryPreimage R) :
+    Commute (S.blockAffineAction R u) (S.blockAffineAction R v) := by
+  rw [commute_iff_eq]
+  apply Equiv.ext
+  rintro ⟨B, b⟩
+  have huB : S.realizedTop R u • B = B :=
+    S.core_smul_block ⟨S.realizedTop R u, hu⟩ B
+  have hvB : S.realizedTop R v • B = B :=
+    S.core_smul_block ⟨S.realizedTop R v, hv⟩ B
+  change
+    (S.realizedTop R u • (S.realizedTop R v • B),
+      (b + S.realizedBlockTranslation R v
+        (S.realizedTop R v • B)) +
+        S.realizedBlockTranslation R u
+          (S.realizedTop R u • (S.realizedTop R v • B))) =
+    (S.realizedTop R v • (S.realizedTop R u • B),
+      (b + S.realizedBlockTranslation R u
+        (S.realizedTop R u • B)) +
+        S.realizedBlockTranslation R v
+          (S.realizedTop R v • (S.realizedTop R u • B)))
+  rw [huB, hvB, huB, hvB]
+  apply Prod.ext rfl
+  abel
+
+/-- The full degree-twenty compressed image of the ternary preimage is
+abelian.  This is the nonsplit-safe commutator statement: it uses the
+literal top action and the four block parities simultaneously. -/
+theorem compressedAction_commute_on_ternaryPreimage
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p)
+    (u v : preE7PairAction 12 p)
+    (hu : u ∈ S.ternaryPreimage R)
+    (hv : v ∈ S.ternaryPreimage R) :
+    Commute (S.compressedAction R u) (S.compressedAction R v) := by
+  letI : IsMulCommutative S.core := S.core_commutative
+  have hcore : Commute (S.realizedTop R u) (S.realizedTop R v) :=
+    ⟨congrArg Subtype.val
+      (mul_comm ⟨S.realizedTop R u, hu⟩ ⟨S.realizedTop R v, hv⟩)⟩
+  have htopRange : Commute (R.frame.top.rangeRestrict u)
+      (R.frame.top.rangeRestrict v) := by
+    simpa only [realizedTop, R.topEquiv.apply_symm_apply] using
+      hcore.map R.topEquiv.toMonoidHom
+  have htop : Commute (R.frame.top u) (R.frame.top v) :=
+    ⟨congrArg Subtype.val htopRange.eq⟩
+  have hblock := S.blockAffineAction_commute_on_ternaryPreimage R u v hu hv
+  have hpair : Commute
+      (R.frame.top u, S.blockAffineAction R u)
+      (R.frame.top v, S.blockAffineAction R v) := by
+    constructor
+    exact Prod.ext htop.eq hblock.eq
+  exact (hpair.map
+    (Equiv.Perm.sumCongrHom (Fin 12) (S.Blocks × ZMod 2))).map
+      S.compressedPointEquiv.permCongrHom.toMonoidHom
+
+/-- The ternary preimage has commutator inside the exact correlated
+four-plane subgroup. -/
+theorem ternaryPreimage_commutator_le_averagingSubgroup
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p) :
+    ⁅S.ternaryPreimage R, S.ternaryPreimage R⁆ ≤
+      S.averagingSubgroup R := by
+  rw [← S.compressedAction_ker R, Subgroup.commutator_le]
+  intro u hu v hv
+  apply MonoidHom.mem_ker.mpr
+  rw [map_commutatorElement]
+  exact commutatorElement_eq_one_iff_mul_comm.mpr
+    (S.compressedAction_commute_on_ternaryPreimage R u v hu hv).eq
+
+/-- The retained ternary image is abelian modulo the retained averaging
+image in every original quotient. -/
+theorem retainedTernaryImage_commutator_le_retainedAveragingImage
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p)
+    (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal}) :
+    ⁅S.retainedTernaryImage R N, S.retainedTernaryImage R N⁆ ≤
+      S.retainedAveragingImage R N := by
+  rw [retainedTernaryImage, retainedAveragingImage,
+    ← Subgroup.map_commutator]
+  exact Subgroup.map_mono
+    (S.ternaryPreimage_commutator_le_averagingSubgroup R)
+
+/-- Every ambient-minimal factor on which the retained ternary image acts
+nontrivially is physically carried by the retained four-plane image. -/
+theorem minimalNormal_active_le_retainedAveragingImage
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p)
+    (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal})
+    (M : Subgroup (preE7PairAction 12 p ⧸ N.1))
+    (hactive : ⁅S.retainedTernaryImage R N, M⁆ = M) :
+    M ≤ S.retainedAveragingImage R N := by
+  have hMC : M ≤ S.retainedTernaryImage R N := by
+    rw [← hactive]
+    exact Subgroup.commutator_le_left _ _
+  rw [← hactive]
+  exact (Subgroup.commutator_mono le_rfl hMC).trans
+    (S.retainedTernaryImage_commutator_le_retainedAveragingImage R N)
+
+/-- The whole active socle part is carried by the actual retained
+four-plane image. -/
+theorem nontrivialActionSoclePart_le_retainedAveragingImage
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p)
+    (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal}) :
+    nontrivialActionSoclePart (preE7PairAction 12 p ⧸ N.1)
+        (S.retainedTernaryImage R N) ≤
+      S.retainedAveragingImage R N := by
+  unfold nontrivialActionSoclePart minimalNormalSoclePart
+  apply Finset.sup_le
+  intro M hM
+  exact S.minimalNormal_active_le_retainedAveragingImage R N M
+    (Finset.mem_filter.mp hM).2.2
+
+/-- Restrict a literal four-plane vector to each actual core orbit.  The
+codomain remembers the zero-sum equation separately on every orbit. -/
+def augmentationOrbitRestriction :
+    S.augmentationPlanes →
+      (o : S.OrbitBlocks) →
+        PermutationAugmentation.space (ZMod 2) o.orbit := fun v o =>
+  ⟨fun x => v.1 x.1, by
+    let B : S.Blocks := normalOrbitClassesEquivBlockOrbit S.core
+      (0 : Fin 12) o
+    change ∑ x : B.1, v.1 x.1 = 0
+    exact (S.mem_augmentationPlanes v.1).1 v.2 B⟩
+
+theorem augmentationOrbitRestriction_injective :
+    Function.Injective S.augmentationOrbitRestriction := by
+  intro v w hvw
+  apply Subtype.ext
+  funext x
+  let o : S.OrbitBlocks := Quotient.mk'' x
+  let xo : o.orbit :=
+    ⟨x, (MulAction.orbitRel.Quotient.mem_orbit).mpr rfl⟩
+  exact congrArg (fun f => (f o : o.orbit → ZMod 2) xo) hvw
+
+/-- Each of the four displayed core orbits has exactly three points. -/
+theorem orbit_card_eq_three (o : S.OrbitBlocks) : Nat.card o.orbit = 3 := by
+  have hbase := normal_orbit_card_mul_classes S.core (0 : Fin 12)
+  rw [S.orbitBlocks_card] at hbase
+  have hbaseCard : Nat.card (MulAction.orbit S.core (0 : Fin 12)) = 3 := by
+    have hfin : Nat.card (Fin 12) = 12 := by simp
+    rw [hfin] at hbase
+    omega
+  exact (normal_orbit_card_eq S.core (0 : Fin 12) o).trans hbaseCard
+
+/-- One binary zero-sum plane on a ternary orbit has four elements. -/
+theorem orbitAugmentation_card_eq_four (o : S.OrbitBlocks) :
+    Nat.card (PermutationAugmentation.space (ZMod 2) o.orbit) = 4 := by
+  let x : o.orbit := ⟨o.out,
+    (MulAction.orbitRel.Quotient.mem_orbit).mpr (Quotient.out_eq' o)⟩
+  have hdim := PermutationAugmentation.space_finrank_add_one
+    (k := ZMod 2) x
+  rw [S.orbit_card_eq_three o] at hdim
+  have hfinrank : Module.finrank (ZMod 2)
+      (PermutationAugmentation.space (ZMod 2) o.orbit) = 2 := by omega
+  rw [Module.natCard_eq_pow_finrank (K := ZMod 2), Nat.card_zmod,
+    hfinrank]
+  norm_num
+
+/-- The direct sum of the four ternary augmentation planes has at most
+`4^4 = 256` elements.  The orbit-restriction map is in fact an equivalence,
+but injectivity is the only direction needed for the generator bound. -/
+theorem augmentationPlanes_card_le : Nat.card S.augmentationPlanes ≤ 256 := by
+  calc
+    Nat.card S.augmentationPlanes ≤
+        Nat.card ((o : S.OrbitBlocks) →
+          PermutationAugmentation.space (ZMod 2) o.orbit) :=
+      Nat.card_le_card_of_injective S.augmentationOrbitRestriction
+        S.augmentationOrbitRestriction_injective
+    _ = ∏ o : S.OrbitBlocks,
+        Nat.card (PermutationAugmentation.space (ZMod 2) o.orbit) :=
+      Nat.card_pi
+    _ = ∏ _o : S.OrbitBlocks, 4 := by
+      apply Finset.prod_congr rfl
+      intro o _
+      exact S.orbitAugmentation_card_eq_four o
+    _ = 4 ^ Nat.card S.OrbitBlocks := by
+      rw [Finset.prod_const, Finset.card_univ, Fintype.card_eq_nat_card]
+    _ = 256 := by rw [S.orbitBlocks_card]; norm_num
+
+/-- The actual correlated averaging subgroup injects into the literal sum
+of the four augmentation planes.  No equality with the full literal module
+is asserted: all correlations in the original pair kernel are preserved. -/
+theorem averagingSubgroup_card_le_augmentationPlanes
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p) :
+    Nat.card (S.averagingSubgroup R) ≤ Nat.card S.augmentationPlanes := by
+  let W := (S.realizedAugmentationRepresentation R).toSubmodule
+  let K := R.frame.coordinateKernelSubgroup W
+  let e : K ≃* S.averagingSubgroup R :=
+    K.equivMapOfInjective R.frame.top.ker.subtype Subtype.val_injective
+  let f : S.averagingSubgroup R → Multiplicative W := fun u =>
+    R.frame.coordinateKernelHom W (e.symm u)
+  have hf : Function.Injective f := by
+    intro u v huv
+    apply e.symm.injective
+    apply Subtype.ext
+    apply R.frame.bitsHom_injective
+    exact congrArg
+      (fun z : Multiplicative W => Multiplicative.ofAdd z.toAdd.val) huv
+  exact Nat.card_le_card_of_injective f hf
+
+/-- Passing to a retained quotient cannot increase the cardinality of the
+four-plane image. -/
+theorem retainedAveragingImage_card_le_augmentationPlanes
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p)
+    (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal}) :
+    Nat.card (S.retainedAveragingImage R N) ≤
+      Nat.card S.augmentationPlanes := by
+  exact (Nat.card_le_card_of_surjective
+    ((QuotientGroup.mk' N.1).subgroupMap (S.averagingSubgroup R))
+    (MonoidHom.subgroupMap_surjective _ _)).trans
+      (S.averagingSubgroup_card_le_augmentationPlanes R)
+
+theorem retainedAveragingImage_card_le_256
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p)
+    (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal}) :
+    Nat.card (S.retainedAveragingImage R N) ≤ 256 :=
+  (S.retainedAveragingImage_card_le_augmentationPlanes R N).trans
+    S.augmentationPlanes_card_le
+
+/-- A faithful action of an elementary abelian ternary group of order at
+least nine on a binary vector space needs at least four binary dimensions.
+
+This is the small linear-group calculation used by every one of the eight
+four-ternary rows.  It is stated without reference to the permutation
+realization so that the retained-section argument only has to construct the
+faithful representation. -/
+theorem sixteen_le_card_of_nine_le_exponent_three_faithful_representation
+    {K W : Type} [Group K] [Finite K]
+    [AddCommGroup W] [Module (ZMod 2) W]
+    [FiniteDimensional (ZMod 2) W] [Finite W]
+    (hcomm : IsMulCommutative K)
+    (hexponent : ∀ k : K, k ^ (3 : ℕ) = 1)
+    (hnine : 9 ≤ Nat.card K)
+    (ρ : Representation (ZMod 2) K W)
+    (hfaithful : Function.Injective ρ) :
+    16 ≤ Nat.card W := by
+  letI : IsMulCommutative K := hcomm
+  let d := Module.finrank (ZMod 2) W
+  have hWcard : Nat.card W = 2 ^ d := by
+    rw [Module.natCard_eq_pow_finrank (K := ZMod 2), Nat.card_zmod]
+  letI : Finite (Module.End (ZMod 2) W) :=
+    Finite.of_injective
+      (fun u : Module.End (ZMod 2) W ↦ (u : W → W))
+      LinearMap.coe_injective
+  have hKdvdGL : Nat.card K ∣ Nat.card (Module.End (ZMod 2) W)ˣ := by
+    exact Subgroup.card_dvd_of_injective ρ.toHomUnits (by
+      intro x y hxy
+      apply hfaithful
+      exact congrArg Units.val hxy)
+  letI : AddCommGroup (Additive K) :=
+    { (inferInstance : AddGroup (Additive K)) with
+      add_comm := fun x y => by
+        apply Additive.toMul.injective
+        exact mul_comm x.toMul y.toMul }
+  letI : Module (ZMod 3) (Additive K) :=
+    AddCommGroup.zmodModule (n := 3) (fun x => by
+      apply Additive.toMul.injective
+      change x.toMul ^ (3 : ℕ) = 1
+      exact hexponent x.toMul)
+  letI : Module.Finite (ZMod 3) (Additive K) := Module.Finite.of_finite
+  let e := Module.finrank (ZMod 3) (Additive K)
+  have hKcard : Nat.card K = 3 ^ e := by
+    change Nat.card (Additive K) = 3 ^ e
+    simpa only [e, Nat.card_zmod] using
+      (Module.natCard_eq_pow_finrank (K := ZMod 3) (V := Additive K))
+  have he : 2 ≤ e := by
+    by_contra hnot
+    have he' : e ≤ 1 := by omega
+    have hpow : 3 ^ e ≤ 3 ^ 1 := Nat.pow_le_pow_right (by norm_num) he'
+    rw [← hKcard] at hpow
+    omega
+  have hnine_dvd_K : 9 ∣ Nat.card K := by
+    rw [hKcard, show 9 = 3 ^ (2 : ℕ) by norm_num]
+    exact Nat.pow_dvd_pow 3 he
+  have hnine_dvd_GL : 9 ∣ Nat.card (Module.End (ZMod 2) W)ˣ :=
+    hnine_dvd_K.trans hKdvdGL
+  by_contra hsmall
+  have hd : d ≤ 3 := by
+    by_contra hnot
+    have hfour : 4 ≤ d := by omega
+    have hpow : 2 ^ 4 ≤ 2 ^ d := Nat.pow_le_pow_right (by norm_num) hfour
+    rw [← hWcard] at hpow
+    omega
+  let basis : Module.Basis
+      (Fin (Module.finrank (ZMod 2) W)) (ZMod 2) W :=
+    Module.finBasisOfFinrankEq (ZMod 2) W rfl
+  have hGL : Nat.card (Module.End (ZMod 2) W)ˣ ∈ ({1, 6, 168} : Set ℕ) := by
+    rw [← Nat.card_congr
+      (Matrix.GeneralLinearGroup.toLin' basis).toEquiv,
+      Matrix.card_GL_field]
+    simp only [ZMod.card]
+    have hcases : d = 0 ∨ d = 1 ∨ d = 2 ∨ d = 3 := by omega
+    rcases hcases with hzero | hone | htwo | hthree
+    · have hdim : Module.finrank (ZMod 2) W = 0 := by simpa [d] using hzero
+      rw [hdim]
+      norm_num
+    · have hdim : Module.finrank (ZMod 2) W = 1 := by simpa [d] using hone
+      rw [hdim]
+      norm_num
+    · have hdim : Module.finrank (ZMod 2) W = 2 := by simpa [d] using htwo
+      rw [hdim]
+      norm_num
+    · have hdim : Module.finrank (ZMod 2) W = 3 := by simpa [d] using hthree
+      rw [hdim]
+      norm_num
+  rcases hGL with hGL | hGL | hGL
+  all_goals rw [hGL] at hnine_dvd_GL <;> norm_num at hnine_dvd_GL
+
+/-- Cardinal endpoint for the active four-plane argument.  The two
+representation-theoretic premises are deliberately stated only for ambient
+minimal normal factors; the conclusion then follows from the generic socle
+cardinality theorem, with `16^2 = 256`. -/
+theorem retainedActiveSocle_normalGen_le_two_of_fourPlaneBounds
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p)
+    (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal})
+    (hsection : ∀ M : Subgroup (preE7PairAction 12 p ⧸ N.1),
+      IsMinimalNormalSubgroup M →
+        (⁅S.retainedTernaryImage R N, M⁆ = M ↔
+          M ≤ S.retainedAveragingImage R N))
+    (hmin : ∀ M : Subgroup (preE7PairAction 12 p ⧸ N.1),
+      IsMinimalNormalSubgroup M →
+      M ≤ S.retainedAveragingImage R N → 16 ≤ Nat.card M)
+    (hcard : Nat.card (S.retainedAveragingImage R N) ≤ 256) :
+    MarkedC4.normalGen
+      (nontrivialActionSoclePart (preE7PairAction 12 p ⧸ N.1)
+        (S.retainedTernaryImage R N)) ≤ 2 := by
+  rw [minimalNormalSoclePart_congr
+    (preE7PairAction 12 p ⧸ N.1)
+    (fun M ↦ ⁅S.retainedTernaryImage R N, M⁆ = M)
+    (fun M ↦ M ≤ S.retainedAveragingImage R N) hsection]
+  change MarkedC4.normalGen
+      (finiteGroupSoclePart (preE7PairAction 12 p ⧸ N.1)
+        (S.retainedAveragingImage R N)) ≤ 2
+  exact normalGen_finiteGroupSoclePart_le_of_card
+    (preE7PairAction 12 p ⧸ N.1) (S.retainedAveragingImage R N)
+    16 2 (by norm_num) hmin (hcard.trans_eq (by norm_num))
+
+/-- The same endpoint with the physical `256` ceiling discharged by the
+four-orbit restriction theorem above. -/
+theorem retainedActiveSocle_normalGen_le_two_of_faithfulSections
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p)
+    (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal})
+    (hsection : ∀ M : Subgroup (preE7PairAction 12 p ⧸ N.1),
+      IsMinimalNormalSubgroup M →
+        (⁅S.retainedTernaryImage R N, M⁆ = M ↔
+          M ≤ S.retainedAveragingImage R N))
+    (hmin : ∀ M : Subgroup (preE7PairAction 12 p ⧸ N.1),
+      IsMinimalNormalSubgroup M →
+      M ≤ S.retainedAveragingImage R N → 16 ≤ Nat.card M) :
+    MarkedC4.normalGen
+      (nontrivialActionSoclePart (preE7PairAction 12 p ⧸ N.1)
+        (S.retainedTernaryImage R N)) ≤ 2 :=
+  S.retainedActiveSocle_normalGen_le_two_of_fourPlaneBounds R N
+    hsection hmin (S.retainedAveragingImage_card_le_256 R N)
 
 /-- The only remaining group-theoretic statement after the uniform
 block-parity construction: every original quotient which sees a nonzero
