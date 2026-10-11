@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoFourTernaryCompressionSource
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCatalogue
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoFourTernaryStructure
 
 /-!
 # Exact map for the eight four-ternary-orbit pair tops
@@ -108,92 +109,6 @@ theorem degreeTwoFourTernary_disjointBinaryBound_le_two
     (r : Fin 8) :
     degreeTwoFourTernaryDisjointBinaryBound r ≤ 2 := by
   fin_cases r <;> norm_num
-
-/-- Common block label on the original twelve points.  Its fibres are the
-zero-based versions of `{1,5,9}`, `{2,6,10}`, `{3,7,11}`, `{4,8,12}`. -/
-def degreeTwoFourTernaryBlock (x : Fin 12) : Fin 4 :=
-  ⟨x.val % 4, Nat.mod_lt _ (by norm_num)⟩
-
-/-- Minimal structural input used by the common compression proof.
-
-`same_block_iff_core_orbit` says exactly that the displayed triples are the
-`C`-orbits.  Normality then makes the four-block system top invariant; no
-separate block-action table is needed.  The last field is the one finite
-centralizer check shared by the normal-binary argument.  It is strictly
-smaller than enumerating every normal binary subgroup of the top. -/
-structure DegreeTwoFourTernaryTopStructure
-    (D : DegreeTwoPairTopFiniteInterface 12) : Type 1 where
-  core : Subgroup D.top
-  core_normal : core.Normal
-  core_commutative : IsMulCommutative core
-  core_exponent_three : ∀ c : core, c ^ (3 : ℕ) = 1
-  core_card_lower : 9 ≤ Nat.card core
-  top_transitive : MulAction.IsPretransitive D.top (Fin 12)
-  same_block_iff_core_orbit : ∀ x y : Fin 12,
-    degreeTwoFourTernaryBlock x = degreeTwoFourTernaryBlock y ↔
-      ∃ c : core, c.1.1 x = y
-  quotient_binary :
-    letI : core.Normal := core_normal
-    IsPGroup 2 (D.top ⧸ core)
-  core_centralizer_quotient_card_le_two :
-    letI : core.Normal := core_normal
-    Nat.card ((Subgroup.centralizer (core : Set D.top)).map
-      (QuotientGroup.mk' core)) ≤ 2
-
-namespace DegreeTwoFourTernaryTopStructure
-
-variable {D : DegreeTwoPairTopFiniteInterface 12}
-  (S : DegreeTwoFourTernaryTopStructure D)
-
-/-- A normal subgroup disjoint from the ternary core centralizes the core:
-its commutator lies in both normal subgroups.  Its quotient map is then an
-embedding into the checked centralizer quotient.  This derives the former
-row-wise universal binary-subgroup field from one concrete finite check. -/
-theorem normal_disjoint_core_card_le_two
-    (L : Subgroup D.top) [L.Normal]
-    (hdisjoint : L ⊓ S.core = ⊥) :
-    Nat.card L ≤ 2 := by
-  letI : S.core.Normal := S.core_normal
-  have hcomm : ⁅L, S.core⁆ = ⊥ := by
-    apply le_antisymm
-    · exact (Subgroup.commutator_le_inf (H₁ := L) (H₂ := S.core)).trans_eq
-        hdisjoint
-    · exact bot_le
-  have hcentral : L ≤ Subgroup.centralizer (S.core : Set D.top) :=
-    Subgroup.commutator_eq_bot_iff_le_centralizer.mp hcomm
-  let q := QuotientGroup.mk' S.core
-  let f : L →* D.top ⧸ S.core := q.comp L.subtype
-  have hf : Function.Injective f := by
-    rw [injective_iff_map_eq_one]
-    intro x hx
-    apply Subtype.ext
-    change QuotientGroup.mk' S.core (x : D.top) = 1 at hx
-    have hxcore : (x : D.top) ∈ S.core :=
-      (QuotientGroup.eq_one_iff (x : D.top)).mp hx
-    have hxbot : (x : D.top) ∈ (⊥ : Subgroup D.top) := by
-      rw [← hdisjoint]
-      exact ⟨x.property, hxcore⟩
-    exact Subgroup.mem_bot.mp hxbot
-  let intoCentralizerQuotient : L →
-      (Subgroup.centralizer (S.core : Set D.top)).map q := fun x =>
-    ⟨f x, ⟨⟨x, hcentral x.property⟩, rfl⟩⟩
-  have hinjective : Function.Injective intoCentralizerQuotient := by
-    intro x y hxy
-    apply hf
-    exact congrArg Subtype.val hxy
-  exact (Nat.card_le_card_of_injective intoCentralizerQuotient hinjective).trans
-    S.core_centralizer_quotient_card_le_two
-
-/-- The exact form used later in the socle proof.  The p-group hypothesis is
-retained at the call site, although normality and disjointness already force
-the stronger cardinal bound above. -/
-theorem normal_binary_disjoint_card_le_two
-    (L : Subgroup D.top) [L.Normal]
-    (_ : IsPGroup 2 L) (hdisjoint : L ⊓ S.core = ⊥) :
-    Nat.card L ≤ 2 :=
-  S.normal_disjoint_core_card_le_two L hdisjoint
-
-end DegreeTwoFourTernaryTopStructure
 
 /-- One literal row witness adds only its checked exact orders to the
 uniform structural hypotheses. -/
