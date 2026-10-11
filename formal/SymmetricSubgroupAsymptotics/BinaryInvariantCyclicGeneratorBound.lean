@@ -109,7 +109,7 @@ theorem representationGeneratedBy_of_iSup_binaryOrbitSpan
   let e := submoduleRepresentationModuleEquiv rho W.asSubmodule
   refine ⟨fun j ↦ e ⟨code j, hcode j⟩, ?_⟩
   have hmap := congrArg (Submodule.map e.toLinearMap) hsubtype
-  rw [Submodule.map_top, LinearEquiv.range_eq_top,
+  rw [Submodule.map_top, LinearMap.range_eq_top.mpr e.surjective,
     Submodule.map_span, ← Set.range_comp] at hmap
   simpa only [Function.comp_apply, e] using hmap
 
@@ -134,12 +134,15 @@ variable {rho : Representation k G V}
   {H : ℕ}
   (B : BinaryInvariantCyclicGeneratorBound C H)
 
+include B
+
 /-- A complete cyclic-state registry with bounded generating tuples gives a
 uniform generator theorem on the literal representation. -/
 theorem uniform [Finite V] :
     UniformSubrepresentationGeneratorBound rho H := by
   intro W
-  obtain ⟨i, rfl⟩ := C.complete W
+  obtain ⟨i, rfl⟩ :=
+    BinaryInvariantCyclicOrbitRegistry.complete (C := C) W
   exact representationGeneratedBy_of_iSup_binaryOrbitSpan rho (states i) H
     (fun j ↦ C.cyclicRepresentative (B.generator i j))
     (B.state_eq i)
@@ -149,7 +152,7 @@ the same invariant subspaces for the ambient group.  The restricted orbit
 of each stored vector lies in its ambient orbit, while ambient invariance of
 the target subspace gives the reverse containment. -/
 theorem uniform_of_comp
-    {L : Type*} [Group L]
+    {L : Type} [Group L]
     (rho : Representation k G V) (f : L →* G)
     {states : I → Subrepresentation (rho.comp f)}
     {C : BinaryInvariantCyclicOrbitRegistry (rho.comp f) states}
@@ -162,7 +165,8 @@ theorem uniform_of_comp
     { toSubmodule := W.toSubmodule
       apply_mem_toSubmodule := fun g _ hv ↦
         W.apply_mem_toSubmodule (f g) hv }
-  obtain ⟨i, hi⟩ := C.complete restricted
+  obtain ⟨i, hi⟩ :=
+    BinaryInvariantCyclicOrbitRegistry.complete (C := C) restricted
   let generator : Fin H → V :=
     fun j ↦ C.cyclicRepresentative (B.generator i j)
   have hstate : (states i).toSubmodule = W.toSubmodule := by
@@ -203,20 +207,20 @@ def generatedState : {H : ℕ} → (Fin H → C.Cyclic) → I
   | 0, _ => C.bottom
   | H + 1, generator =>
       C.child
-        (C.generatedState (fun j : Fin H ↦ generator j.castSucc))
+        (generatedState (fun j : Fin H ↦ generator j.castSucc))
         (generator (Fin.last H))
 
 /-- The submodule at `generatedState` is exactly the join of the orbit spans
 of the padded tuple.  Generated certificates therefore only have to check
 the finite final-state equality. -/
 theorem generatedState_eq : ∀ {H : ℕ} (generator : Fin H → C.Cyclic),
-    (states (C.generatedState generator)).toSubmodule =
+    (states (generatedState (C := C) generator)).toSubmodule =
       ⨆ j, binaryOrbitSpan rho (C.cyclicRepresentative (generator j)) := by
   intro H
   induction H with
   | zero =>
       intro generator
-      simpa [generatedState] using C.bottom_eq
+      rw [generatedState, C.bottom_eq, iSup_of_empty]
   | succ H ih =>
       intro generator
       rw [generatedState, C.child_eq, ih]
@@ -235,12 +239,17 @@ theorem generatedState_eq : ∀ {H : ℕ} (generator : Fin H → C.Cyclic),
 tuple's child-table fold ends at its requested state. -/
 noncomputable def generatorBoundOfGeneratedState
     (H : ℕ) (generator : I → Fin H → C.Cyclic)
-    (finalState : ∀ i, C.generatedState (generator i) = i) :
+    (finalState : ∀ i, generatedState (C := C) (generator i) = i) :
     BinaryInvariantCyclicGeneratorBound C H where
   generator := generator
   state_eq := fun i ↦ by
-    rw [← finalState i]
-    exact C.generatedState_eq (generator i)
+    calc
+      (states i).toSubmodule =
+          (states (generatedState (C := C) (generator i))).toSubmodule := by
+        rw [finalState i]
+      _ = ⨆ j, binaryOrbitSpan rho
+          (C.cyclicRepresentative (generator i j)) :=
+        generatedState_eq (C := C) (generator i)
 
 end BinaryInvariantCyclicOrbitRegistry
 
