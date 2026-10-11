@@ -138,6 +138,8 @@ noncomputable def degreeTwoEightPairResidualSource_of_representative
     (source : DegreeTwoEightPairRepresentativeSource) :
     DegreeTwoEightPairResidualSource := by
   intro w U _hw basePoint block _P _hres hFibre hPoints
+  letI : Nontrivial block.Fibre :=
+    Finite.one_lt_card_iff_nontrivial.mp (by omega)
   have hwidth : w = 16 := by
     simpa only [hFibre, hPoints] using width_eq block
   subst w
@@ -150,6 +152,8 @@ noncomputable def degreeTwoTwelvePairResidualSource_of_representative
     (source : DegreeTwoTwelvePairRepresentativeSource) :
     DegreeTwoTwelvePairResidualSource := by
   intro w U _hw basePoint block _P _hres hFibre hPoints
+  letI : Nontrivial block.Fibre :=
+    Finite.one_lt_card_iff_nontrivial.mp (by omega)
   have hwidth : w = 24 := by
     simpa only [hFibre, hPoints] using width_eq block
   subst w
@@ -162,6 +166,8 @@ noncomputable def degreeTwoSixteenPairResidualSource_of_representative
     (source : DegreeTwoSixteenPairRepresentativeSource) :
     DegreeTwoSixteenPairResidualSource := by
   intro w U _hw basePoint block _P _hres hFibre hPoints
+  letI : Nontrivial block.Fibre :=
+    Finite.one_lt_card_iff_nontrivial.mp (by omega)
   have hwidth : w = 32 := by
     simpa only [hFibre, hPoints] using width_eq block
   subst w
