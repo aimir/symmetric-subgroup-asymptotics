@@ -105,6 +105,7 @@ theorem tailCoefficient_nonneg
 /-- Surviving fusion epimorphisms form a subtype of all epimorphisms to the
 same literal quotient. -/
 theorem survivingEpiCount_le_card {b : ℕ}
+    (D : DegreeTwoPairRelativeLiftData s p)
     (P : Subgroup
       (preE7PairAction s p × Equiv.Perm (Fin b)) → Prop)
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
@@ -137,7 +138,7 @@ theorem broad_axis_envelope (b : ℕ)
 /-- Numerical geometry for installing the direct relative tail in the
 ordinary finite-action catalogue.  Width 24 and 32 producers use the same
 padded two-point comparator geometry as the whole character template. -/
-structure Numerics : Type where
+structure Numerics (D : DegreeTwoPairRelativeLiftData s p) : Type where
   v : ℕ
   delta : ℝ
   cutoff : ℝ
@@ -185,8 +186,10 @@ noncomputable def paddedTwoPointNumerics
       delta_upper := hP.delta_upper (2 * s) j
       degree_lower := hP.degree_lower (2 * s) j
       degree_width := hP.degree_width (2 * s) j
-      cold_slope := hP.cold_slope (2 * s) j
-      cold_gap := hP.cold_gap (2 * s) j
+      cold_slope := by
+        simpa [cutoff, v, delta] using hP.cold_slope (2 * s) j
+      cold_gap := by
+        simpa [cutoff, v, delta] using hP.cold_gap (2 * s) j
       tail_gap := le_rfl }
 
 /-- Install all original-normal relative envelopes as one ordinary
@@ -225,8 +228,8 @@ theorem tail_total_polynomial (hs : s < 24) (M : D.Numerics) :
   let K := fusionAxisEnvelopeTotal (preE7PairAction s p) D.tailCoefficient
   refine ⟨K, 0, fusionAxisEnvelopeTotal_nonneg _ _
     D.tailCoefficient_nonneg, fun b => ?_⟩
-  simp only [comparatorCertificate, one_pow, mul_one]
-  exact le_rfl
+  change K ≤ K * (1 + (b : ℝ)) ^ 0
+  simp
 
 /-- The exact numerical package consumed by the ordinary rank-tail owner. -/
 noncomputable def numericalPackage
@@ -236,7 +239,8 @@ noncomputable def numericalPackage
   .ofBoundedTailComparator (D.comparatorCertificate hs M) M.parameters
     (.inl (by
       intro b
-      simp only [comparatorCertificate, fusionAxisEnvelopeTotal]
+      simp only [comparatorCertificate, fusionAxisEnvelopeTotal,
+        Finset.sum_const_zero]
       positivity))
     M.width_upper (D.tail_total_polynomial hs M)
 
