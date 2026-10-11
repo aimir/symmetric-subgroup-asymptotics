@@ -21,7 +21,7 @@ noncomputable section
 
 namespace SymmetricSubgroupAsymptotics
 
-variable {k G V I : Type*} [Field k] [Group G]
+variable {k G V I : Type} [Field k] [Group G]
   [AddCommGroup V] [Module k V]
 
 /-- A complete invariant-axis registry with separate vector-orbit and
