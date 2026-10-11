@@ -140,7 +140,9 @@ noncomputable def toQuotientEnvelope
         lit.kovacsPraegerBinary b J
         (linearCharacterLabels (J := J) (D.binary i))
         (linearCharacterLabels_twoGroup _ (D.binary_twoGroup i))
-      convert h using 1 <;> ring
+      refine h.trans_eq ?_
+      congr 1
+      ring
     have hlinear : ((∏ i, Nat.card
         (linearCharacterLabels (J := J) (D.linear i)) : ℕ) : ℝ) ≤
         (2 : ℝ) ^ (((profile.linear : ℝ) *
@@ -184,31 +186,53 @@ noncomputable def toQuotientEnvelope
           ring
     have hlabels : (Nat.card Label : ℝ) ≤
         D.relativeCoefficient * (2 : ℝ) ^ (profile.slope * b) := by
-      simp only [Label, Nat.card_prod, Nat.card_pi]
+      have hbin' : (Nat.card BinaryLabels : ℝ) ≤
+          (2 : ℝ) ^ (((profile.binaryPrimary : ℝ) * (1 / 2)) * b) := by
+        rw [Nat.card_pi]
+        exact hbin
+      have hlinear' : (Nat.card LinearLabels : ℝ) ≤
+          (2 : ℝ) ^ (((profile.linear : ℝ) *
+            (Real.logb 2 3 / 3)) * b) := by
+        rw [Nat.card_pi]
+        exact hlinear
+      have hordinary' : (Nat.card OrdinaryLabels : ℝ) ≤
+          (2 : ℝ) ^ (((profile.ordinary : ℝ) *
+            (Real.logb 2 5 / 3)) * b) := by
+        rw [Nat.card_pi]
+        exact hordinary
+      simp only [Label, Nat.card_prod]
       push_cast
       calc
-        (Nat.card BinaryLabels : ℝ) * (Nat.card LinearLabels : ℝ) *
-              (Nat.card OrdinaryLabels : ℝ) *
-              (Nat.card (D.RelativeLabel b J) : ℝ) ≤
+        (Nat.card BinaryLabels : ℝ) *
+              ((Nat.card LinearLabels : ℝ) *
+                ((Nat.card OrdinaryLabels : ℝ) *
+                  (Nat.card (D.RelativeLabel b J) : ℝ))) ≤
             (2 : ℝ) ^ (((profile.binaryPrimary : ℝ) * (1 / 2)) * b) *
-              (2 : ℝ) ^ (((profile.linear : ℝ) *
+              ((2 : ℝ) ^ (((profile.linear : ℝ) *
                 (Real.logb 2 3 / 3)) * b) *
-              (2 : ℝ) ^ (((profile.ordinary : ℝ) *
-                (Real.logb 2 5 / 3)) * b) *
-              (D.relativeCoefficient *
-                (2 : ℝ) ^ ((profile.relative : ℝ) *
-                  Real.logb 2 (38 / 25) * b)) := by
-            gcongr
+                ((2 : ℝ) ^ (((profile.ordinary : ℝ) *
+                  (Real.logb 2 5 / 3)) * b) *
+                  (D.relativeCoefficient *
+                    (2 : ℝ) ^ ((profile.relative : ℝ) *
+                      Real.logb 2 (38 / 25) * b)))) := by
+            apply mul_le_mul hbin'
+            · apply mul_le_mul hlinear'
+              · exact mul_le_mul hordinary' (D.relative_card_bound b J)
+                  (Nat.cast_nonneg _) (Real.rpow_nonneg (by norm_num) _)
+              · positivity
+              · positivity
+            · positivity
+            · positivity
         _ = D.relativeCoefficient * (2 : ℝ) ^ (profile.slope * b) := by
           rw [show
             (2 : ℝ) ^ (((profile.binaryPrimary : ℝ) * (1 / 2)) * b) *
-                (2 : ℝ) ^ (((profile.linear : ℝ) *
+                ((2 : ℝ) ^ (((profile.linear : ℝ) *
                   (Real.logb 2 3 / 3)) * b) *
-                (2 : ℝ) ^ (((profile.ordinary : ℝ) *
-                  (Real.logb 2 5 / 3)) * b) *
-                (D.relativeCoefficient *
-                  (2 : ℝ) ^ ((profile.relative : ℝ) *
-                    Real.logb 2 (38 / 25) * b)) =
+                  ((2 : ℝ) ^ (((profile.ordinary : ℝ) *
+                    (Real.logb 2 5 / 3)) * b) *
+                    (D.relativeCoefficient *
+                      (2 : ℝ) ^ ((profile.relative : ℝ) *
+                        Real.logb 2 (38 / 25) * b)))) =
               D.relativeCoefficient *
                 ((2 : ℝ) ^ (((profile.binaryPrimary : ℝ) * (1 / 2)) * b) *
                 (2 : ℝ) ^ (((profile.linear : ℝ) *
@@ -249,7 +273,7 @@ noncomputable def ofRelativeAnchorLabels
     (capacity : ∀ N,
       (profile N).slope ≤ preE7CharacterWindow (2 * s))
     (data : ∀ N, DegreeTwoPairRelativeAnchorLabels
-      (preE7PairAction s p ⨸ N.1) (profile N)) :
+      (preE7PairAction s p ⧸ N.1) (profile N)) :
     DegreeTwoPairRelativeLiftData s p where
   profile := profile
   capacity := capacity
