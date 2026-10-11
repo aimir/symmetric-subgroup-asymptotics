@@ -106,7 +106,7 @@ theorem mixedCharacterProfile_slope {Q : Type} [Group Q]
   unfold mixedCharacterProfile DegreeTwoPairRelativeProfile.slope
     CharacterQuotientCertificate.slope
   rw [hmode]
-  simp [CharacterQuotientMode.generalSlope]
+  simp [CharacterQuotientMode.generalSlope, div_eq_mul_inv]
 
 /-- Install an existing complete-source mixed-character certificate in the
 pair-relative envelope.  This is a theorem adapter, not a new premise: the
@@ -148,10 +148,14 @@ symmetric tops do not need an artificial relative-label implementation. -/
 noncomputable def ofMixedCharacterCertificates
     {s : ℕ} {p : PreE7PairActionClass s}
     (lit : PreE7CharacterLiterature)
-    (certificate : ∀ N,
-      CharacterQuotientCertificate (preE7PairAction s p ⨸ N.1))
-    (mode : ∀ N, (certificate N).mode = .mixed)
-    (capacity : ∀ N,
+    (certificate : ∀ N :
+      {N : Subgroup (preE7PairAction s p) // N.Normal},
+      CharacterQuotientCertificate (preE7PairAction s p ⧸ N.1))
+    (mode : ∀ N :
+      {N : Subgroup (preE7PairAction s p) // N.Normal},
+      (certificate N).mode = .mixed)
+    (capacity : ∀ N :
+      {N : Subgroup (preE7PairAction s p) // N.Normal},
       (certificate N).slope ≤ preE7CharacterWindow (2 * s)) :
     DegreeTwoPairRelativeLiftData s p where
   profile N := mixedCharacterProfile (certificate N)
