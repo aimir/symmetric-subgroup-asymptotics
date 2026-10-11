@@ -575,7 +575,7 @@ theorem activeCoreKernel_eq_bot
     rw [← R.frame.sectionMap_ker]
     apply MonoidHom.mem_ker.mpr
     dsimp [d]
-    rw [map_mul, map_inv, hs, inv_mul]
+    simp only [map_mul, map_inv, hs, inv_mul_cancel]
   have hdBits : R.frame.bits d =
       R.frame.coordinateTopAction (R.frame.top.rangeRestrict g)
           (R.frame.bits ku) - R.frame.bits ku := by
