@@ -1,9 +1,10 @@
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoFourTernaryCatalogueMap
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoFourTernaryStructure
 import SymmetricSubgroupAsymptotics.NormalSubgroupOrbitIndex
 import SymmetricSubgroupAsymptotics.BinaryCoordinateSplitAction
 import SymmetricSubgroupAsymptotics.BinaryPairCoordinateSubgroups
 import SymmetricSubgroupAsymptotics.NormalGeneratorTypeSharing
-import SymmetricSubgroupAsymptotics.PermutationBinaryFourAugmentation
+import SymmetricSubgroupAsymptotics.FiniteSocleNormalGenerators
+import SymmetricSubgroupAsymptotics.ZmudFaithfulCharacterInput
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Card
 
 /-!
@@ -45,8 +46,7 @@ abbrev Blocks :=
 def orbitBlockLabel : S.OrbitBlocks → Fin 4 :=
   Quotient.lift degreeTwoFourTernaryBlock (by
     intro x y hxy
-    apply (S.same_block_iff_core_orbit x y).2
-    exact MulAction.orbitRel_apply.mp hxy)
+    exact ((S.same_block_iff_core_orbit y x).2 hxy).symm)
 
 @[simp] theorem orbitBlockLabel_mk (x : Fin 12) :
     S.orbitBlockLabel (Quotient.mk'' x) =
@@ -55,12 +55,11 @@ def orbitBlockLabel : S.OrbitBlocks → Fin 4 :=
 
 theorem orbitBlockLabel_injective : Function.Injective S.orbitBlockLabel := by
   intro a b hab
-  refine Quotient.inductionOn₂ a b ?_
-  intro x y hxy
-  apply Quotient.sound
-  apply MulAction.orbitRel_apply.mpr
-  apply (S.same_block_iff_core_orbit x y).1
-  simpa only [orbitBlockLabel_mk] using hxy
+  exact Quotient.inductionOn₂ a b (fun x y hxy ↦ by
+    apply Quotient.sound
+    apply MulAction.orbitRel_apply.mpr
+    apply (S.same_block_iff_core_orbit y x).1
+    simpa only [orbitBlockLabel_mk] using hxy.symm) hab
 
 theorem orbitBlockLabel_surjective : Function.Surjective S.orbitBlockLabel := by
   intro z
@@ -76,15 +75,16 @@ def orbitBlockEquiv : S.OrbitBlocks ≃ Fin 4 :=
     ⟨S.orbitBlockLabel_injective, S.orbitBlockLabel_surjective⟩
 
 /-- Exact four-coordinate chart of the actual top block orbit. -/
-def blockEquiv : S.Blocks ≃ Fin 4 :=
-  (normalOrbitClassesEquivBlockOrbit S.core (0 : Fin 12)).symm.trans
+def blockEquiv : S.Blocks ≃ Fin 4 := by
+  letI : MulAction.IsPretransitive D.top (Fin 12) := S.top_transitive
+  exact (normalOrbitClassesEquivBlockOrbit S.core (0 : Fin 12)).symm.trans
     S.orbitBlockEquiv
 
 theorem orbitBlocks_card : Nat.card S.OrbitBlocks = 4 :=
-  Nat.card_congr S.orbitBlockEquiv
+  by simpa using Nat.card_congr S.orbitBlockEquiv
 
 theorem blocks_card : Nat.card S.Blocks = 4 :=
-  Nat.card_congr S.blockEquiv
+  by simpa using Nat.card_congr S.blockEquiv
 
 /-- Sum a binary vector on one member of the actual top orbit of ternary
 blocks.  Using the acted-on block set here keeps every later equivariance
@@ -112,7 +112,8 @@ def augmentationPlanes : Submodule (ZMod 2) (Fin 12 → ZMod 2) :=
   constructor
   · intro h B
     exact congrFun h B
-  · intro h B
+  · intro h
+    funext B
     exact h B
 
 /-- Literal translation of one actual ternary block by a top element. -/
@@ -176,24 +177,47 @@ def realizedTop
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization D p) :
     preE7PairAction 12 p →* D.top :=
-  R.topEquiv.symm.toMonoidHom.comp R.frame.top.rangeRestrict
+  by
+    let _S := S
+    exact R.topEquiv.symm.toMonoidHom.comp R.frame.top.rangeRestrict
 
-/-- The exact averaging subgroup in the original pair lift.  It is the
-intersection of the actual correlated pair kernel with the four ternary
-augmentation planes. -/
+/-- The actual correlated part of the four ternary augmentation planes. -/
+def averagingCoordinateRepresentation
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p) :
+    Subrepresentation R.frame.coordinateTopAction :=
+  S.realizedAugmentationRepresentation R ⊓ R.frame.kernelSubrepresentation
+
+/-- The exact averaging subgroup in the original pair lift. -/
 def averagingSubgroup
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization D p) :
     Subgroup (preE7PairAction 12 p) :=
   R.frame.coordinateSubgroup
-    (S.realizedAugmentationRepresentation R).toSubmodule
+    (S.averagingCoordinateRepresentation R).toSubmodule
 
 noncomputable instance averagingSubgroup_normal
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization D p) :
     (S.averagingSubgroup R).Normal :=
   R.frame.coordinateSubgroup_normal
-    (S.realizedAugmentationRepresentation R)
+    (S.averagingCoordinateRepresentation R)
+
+/-- Exact binary coordinates on the correlated averaging subgroup. -/
+noncomputable def averagingCoordinateEquiv
+    {p : PreE7PairActionClass 12}
+    (R : DegreeTwoPairTopRealization D p) :
+    S.averagingSubgroup R ≃*
+      Multiplicative (S.averagingCoordinateRepresentation R).toSubmodule := by
+  let W := (S.averagingCoordinateRepresentation R).toSubmodule
+  have hW : W ≤ R.frame.kernelSpace := fun _ hv ↦ hv.2
+  let e : R.frame.coordinateKernelSubgroup W ≃* S.averagingSubgroup R :=
+    (R.frame.coordinateKernelSubgroup W).equivMapOfInjective
+      R.frame.top.ker.subtype Subtype.val_injective
+  let f : R.frame.coordinateKernelSubgroup W ≃* Multiplicative W :=
+    MulEquiv.ofBijective (R.frame.coordinateKernelHom W)
+      (R.frame.coordinateKernelHom_bijective W hW)
+  exact e.symm.trans f
 
 /-- Full preimage in the original pair lift of the displayed ternary core
 of its literal top. -/
@@ -267,15 +291,21 @@ def blockAffineAction
   map_one' := by
     apply Equiv.ext
     rintro ⟨B, b⟩
-    simp only [binaryCoordinateAffinePermutation, map_one,
-      Equiv.Perm.one_apply, S.realizedBlockTranslation,
-      R.frame.affineTranslation_one, map_zero, Pi.zero_apply, add_zero]
+    have htop : S.realizedTop R 1 = 1 := map_one _
+    have htranslation : S.realizedBlockTranslation R 1 = 0 := by
+      funext B
+      rw [realizedBlockTranslation, R.frame.affineTranslation_one, map_zero]
+    change (S.realizedTop R 1 • B,
+      b + S.realizedBlockTranslation R 1 (S.realizedTop R 1 • B)) = (B, b)
+    rw [htop, htranslation]
+    simp only [one_smul, Pi.zero_apply, add_zero]
   map_mul' u v := by
     apply Equiv.ext
     rintro ⟨B, b⟩
     apply Prod.ext
-    · simp only [binaryCoordinateAffinePermutation, map_mul,
-        Equiv.Perm.mul_apply]
+    · change S.realizedTop R (u * v) • B =
+        S.realizedTop R u • (S.realizedTop R v • B)
+      simp only [map_mul, mul_smul]
     · change b + S.realizedBlockTranslation R (u * v)
           (S.realizedTop R (u * v) • B) =
         (b + S.realizedBlockTranslation R v
@@ -284,7 +314,8 @@ def blockAffineAction
             (S.realizedTop R u • (S.realizedTop R v • B))
       rw [S.realizedBlockTranslation_mul R u v]
       simp only [Pi.add_apply,
-        permutationFunctionRepresentation_apply, map_mul, mul_smul]
+        permutationFunctionRepresentation_apply, map_mul, mul_smul,
+        inv_smul_smul]
       abel
 
 /-- Relabel the four actual blocks and their binary bits by eight standard
@@ -308,7 +339,7 @@ def compressedAction
     preE7PairAction 12 p →* Equiv.Perm (Fin 20) :=
   S.compressedPointEquiv.permCongrHom.toMonoidHom.comp
     ((Equiv.Perm.sumCongrHom (Fin 12) (S.Blocks × ZMod 2)).comp
-      (R.frame.top.prodMap (S.blockAffineAction R)))
+      (R.frame.top.prod (S.blockAffineAction R)))
 
 theorem compressedAction_ker
     {p : PreE7PairActionClass 12}
@@ -320,7 +351,7 @@ theorem compressedAction_ker
   · intro hu
     have hsum :
         (Equiv.Perm.sumCongrHom (Fin 12) (S.Blocks × ZMod 2))
-            (R.frame.top.prodMap (S.blockAffineAction R) u) = 1 := by
+            (R.frame.top.prod (S.blockAffineAction R) u) = 1 := by
       apply S.compressedPointEquiv.permCongrHom.injective
       rw [map_one]
       exact hu
@@ -334,42 +365,52 @@ theorem compressedAction_ker
       rw [hrange, map_one]
     let k : R.frame.top.ker := ⟨u, htop⟩
     apply (R.frame.kernel_mem_coordinateSubgroup
-      (S.realizedAugmentationRepresentation R).toSubmodule k).2
-    change R.frame.bits k ∈ S.augmentationPlanes
-    apply (S.mem_augmentationPlanes _).2
-    intro B
-    have hb' := congrArg (fun f : Equiv.Perm (S.Blocks × ZMod 2) =>
-      f (B, 0)) hblock
-    have hz : S.realizedBlockTranslation R u B = 0 := by
-      simpa only [blockAffineAction, binaryCoordinateAffinePermutation,
-        hrealizedTop, map_one, Equiv.Perm.one_apply, zero_add]
-        using congrArg Prod.snd hb'
-    rw [realizedBlockTranslation, R.frame.affineTranslation_kernel k] at hz
-    exact hz
+      (S.averagingCoordinateRepresentation R).toSubmodule k).2
+    refine ⟨?_, ?_⟩
+    · apply (S.mem_augmentationPlanes _).2
+      intro B
+      have hb' := congrArg (fun f : Equiv.Perm (S.Blocks × ZMod 2) =>
+        f (B, 0)) hblock
+      have hz : S.realizedBlockTranslation R u B = 0 := by
+        have hz' := congrArg Prod.snd hb'
+        change 0 + S.realizedBlockTranslation R u
+          (S.realizedTop R u • B) = 0 at hz'
+        simpa only [hrealizedTop, one_smul, zero_add] using hz'
+      rw [realizedBlockTranslation, R.frame.affineTranslation_kernel k] at hz
+      exact hz
+    · exact ⟨Additive.ofMul k, rfl⟩
   · intro hu
     have hutop : R.frame.top u = 1 :=
       R.frame.coordinateSubgroup_le_kernel
-        (S.realizedAugmentationRepresentation R).toSubmodule hu
+        (S.averagingCoordinateRepresentation R).toSubmodule hu
     have hrange : R.frame.top.rangeRestrict u = 1 := Subtype.ext hutop
     have hrealizedTop : S.realizedTop R u = 1 := by
       change R.topEquiv.symm (R.frame.top.rangeRestrict u) = 1
       rw [hrange, map_one]
     let k : R.frame.top.ker := ⟨u, hutop⟩
     have hk := (R.frame.kernel_mem_coordinateSubgroup
-      (S.realizedAugmentationRepresentation R).toSubmodule k).1 hu
+      (S.averagingCoordinateRepresentation R).toSubmodule k).1 hu
     have hparity : S.realizedBlockTranslation R u = 0 := by
       funext B
       rw [realizedBlockTranslation, R.frame.affineTranslation_kernel k]
-      exact (S.mem_augmentationPlanes _).1 hk B
-    apply S.compressedPointEquiv.permCongrHom.injective
-    rw [map_one]
-    apply Equiv.Perm.sumCongrHom_injective
+      exact (S.mem_augmentationPlanes _).1 hk.1 B
+    change S.compressedPointEquiv.permCongrHom
+        ((Equiv.Perm.sumCongrHom (Fin 12) (S.Blocks × ZMod 2))
+          (R.frame.top u, S.blockAffineAction R u)) = 1
+    rw [← map_one S.compressedPointEquiv.permCongrHom]
+    apply congrArg S.compressedPointEquiv.permCongrHom
+    rw [← map_one (Equiv.Perm.sumCongrHom (Fin 12)
+      (S.Blocks × ZMod 2))]
+    apply congrArg (Equiv.Perm.sumCongrHom (Fin 12)
+      (S.Blocks × ZMod 2))
     apply Prod.ext hutop
     apply Equiv.ext
     rintro ⟨B, b⟩
-    simp only [blockAffineAction, binaryCoordinateAffinePermutation,
-      hrealizedTop, hparity, map_one, Equiv.Perm.one_apply, Pi.zero_apply,
-      add_zero]
+    change (S.realizedTop R u • B,
+      b + S.realizedBlockTranslation R u (S.realizedTop R u • B)) =
+      (B, b)
+    rw [hrealizedTop, hparity]
+    simp only [one_smul, Pi.zero_apply, add_zero]
 
 /-! ## The active four-plane socle -/
 
@@ -380,7 +421,7 @@ def retainedAveragingImage
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization D p)
     (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal}) :
-    Subgroup (preE7PairAction 12 p ⨸ N.1) :=
+    Subgroup (preE7PairAction 12 p ⧸ N.1) :=
   (S.averagingSubgroup R).map (QuotientGroup.mk' N.1)
 
 noncomputable instance retainedAveragingImage_normal
@@ -395,8 +436,10 @@ noncomputable instance retainedAveragingImage_normal
 orbits setwise. -/
 theorem core_smul_block (c : S.core) (B : S.Blocks) :
     (c.1 : D.top) • B = B := by
-  obtain ⟨g, rfl⟩ := B.property
+  obtain ⟨g, hg⟩ := B.property
   apply Subtype.ext
+  change c.1 • (B : Set (Fin 12)) = (B : Set (Fin 12))
+  rw [← hg]
   change c.1 • (g • MulAction.orbit S.core (0 : Fin 12)) =
     g • MulAction.orbit S.core (0 : Fin 12)
   rw [← mul_smul, show c.1 * g = g * (g⁻¹ * c.1 * g) by group, mul_smul]
@@ -404,7 +447,7 @@ theorem core_smul_block (c : S.core) (B : S.Blocks) :
   rw [MulAction.smul_orbit_eq_orbit_smul]
   apply MulAction.orbit_eq_iff.mpr
   refine ⟨⟨g⁻¹ * c.1 * g, ?_⟩, rfl⟩
-  exact S.core_normal.conj_mem c.2 g⁻¹
+  exact S.core_normal.conj_mem c.1 c.2 g⁻¹
 
 /-- On the ternary preimage, the block-bit affine permutations commute:
 the core fixes the four block labels, while the remaining translations add
@@ -434,9 +477,10 @@ theorem blockAffineAction_commute_on_ternaryPreimage
         (S.realizedTop R u • B)) +
         S.realizedBlockTranslation R v
           (S.realizedTop R v • (S.realizedTop R u • B)))
-  rw [huB, hvB, huB, hvB]
-  apply Prod.ext rfl
-  abel
+  simp only [huB, hvB]
+  apply Prod.ext
+  · rfl
+  · abel
 
 /-- The full degree-twenty compressed image of the ternary preimage is
 abelian.  This is the nonsplit-safe commutator statement: it uses the
@@ -448,21 +492,24 @@ theorem compressedAction_commute_on_ternaryPreimage
     (hu : u ∈ S.ternaryPreimage R)
     (hv : v ∈ S.ternaryPreimage R) :
     Commute (S.compressedAction R u) (S.compressedAction R v) := by
-  letI : IsMulCommutative S.core := S.core_commutative
   have hcore : Commute (S.realizedTop R u) (S.realizedTop R v) :=
-    ⟨congrArg Subtype.val
-      (mul_comm ⟨S.realizedTop R u, hu⟩ ⟨S.realizedTop R v, hv⟩)⟩
+    congrArg Subtype.val
+      ((isMulCommutative_iff.mp S.core_commutative)
+        ⟨S.realizedTop R u, hu⟩
+        ⟨S.realizedTop R v, hv⟩)
   have htopRange : Commute (R.frame.top.rangeRestrict u)
       (R.frame.top.rangeRestrict v) := by
-    simpa only [realizedTop, R.topEquiv.apply_symm_apply] using
-      hcore.map R.topEquiv.toMonoidHom
+    have h := hcore.map R.topEquiv.toMonoidHom
+    change Commute
+      (R.topEquiv (R.topEquiv.symm (R.frame.top.rangeRestrict u)))
+      (R.topEquiv (R.topEquiv.symm (R.frame.top.rangeRestrict v))) at h
+    simpa only [R.topEquiv.apply_symm_apply] using h
   have htop : Commute (R.frame.top u) (R.frame.top v) :=
-    ⟨congrArg Subtype.val htopRange.eq⟩
+    congrArg Subtype.val htopRange.eq
   have hblock := S.blockAffineAction_commute_on_ternaryPreimage R u v hu hv
   have hpair : Commute
       (R.frame.top u, S.blockAffineAction R u)
       (R.frame.top v, S.blockAffineAction R v) := by
-    constructor
     exact Prod.ext htop.eq hblock.eq
   exact (hpair.map
     (Equiv.Perm.sumCongrHom (Fin 12) (S.Blocks × ZMod 2))).map
@@ -528,15 +575,27 @@ theorem nontrivialActionSoclePart_le_retainedAveragingImage
 
 /-- Restrict a literal four-plane vector to each actual core orbit.  The
 codomain remembers the zero-sum equation separately on every orbit. -/
+def orbitCoordinateSum (o : S.OrbitBlocks) :
+    (o.orbit → ZMod 2) →ₗ[ZMod 2] ZMod 2 where
+  toFun v := ∑ x, v x
+  map_add' _ _ := Finset.sum_add_distrib
+  map_smul' _ _ := by
+    simp only [Pi.smul_apply, Finset.smul_sum, RingHom.id_apply]
+
+def orbitAugmentationSpace (o : S.OrbitBlocks) :
+    Submodule (ZMod 2) (o.orbit → ZMod 2) :=
+  (S.orbitCoordinateSum o).ker
+
 def augmentationOrbitRestriction :
     S.augmentationPlanes →
       (o : S.OrbitBlocks) →
-        PermutationAugmentation.space (ZMod 2) o.orbit := fun v o =>
+        S.orbitAugmentationSpace o := fun v o =>
   ⟨fun x => v.1 x.1, by
+    letI : MulAction.IsPretransitive D.top (Fin 12) := S.top_transitive
     let B : S.Blocks := normalOrbitClassesEquivBlockOrbit S.core
       (0 : Fin 12) o
-    change ∑ x : B.1, v.1 x.1 = 0
-    exact (S.mem_augmentationPlanes v.1).1 v.2 B⟩
+    change (S.orbitCoordinateSum o) (fun x => v.1 x.1) = 0
+    simpa only [B] using (S.mem_augmentationPlanes v.1).1 v.2 B⟩
 
 theorem augmentationOrbitRestriction_injective :
     Function.Injective S.augmentationOrbitRestriction := by
@@ -550,6 +609,7 @@ theorem augmentationOrbitRestriction_injective :
 
 /-- Each of the four displayed core orbits has exactly three points. -/
 theorem orbit_card_eq_three (o : S.OrbitBlocks) : Nat.card o.orbit = 3 := by
+  letI : MulAction.IsPretransitive D.top (Fin 12) := S.top_transitive
   have hbase := normal_orbit_card_mul_classes S.core (0 : Fin 12)
   rw [S.orbitBlocks_card] at hbase
   have hbaseCard : Nat.card (MulAction.orbit S.core (0 : Fin 12)) = 3 := by
@@ -560,14 +620,26 @@ theorem orbit_card_eq_three (o : S.OrbitBlocks) : Nat.card o.orbit = 3 := by
 
 /-- One binary zero-sum plane on a ternary orbit has four elements. -/
 theorem orbitAugmentation_card_eq_four (o : S.OrbitBlocks) :
-    Nat.card (PermutationAugmentation.space (ZMod 2) o.orbit) = 4 := by
-  let x : o.orbit := ⟨o.out,
-    (MulAction.orbitRel.Quotient.mem_orbit).mpr (Quotient.out_eq' o)⟩
-  have hdim := PermutationAugmentation.space_finrank_add_one
-    (k := ZMod 2) x
-  rw [S.orbit_card_eq_three o] at hdim
+    Nat.card (S.orbitAugmentationSpace o) = 4 := by
+  have hsurj : Function.Surjective (S.orbitCoordinateSum o) := by
+    intro c
+    refine ⟨fun _ ↦ c, ?_⟩
+    simp only [orbitCoordinateSum, LinearMap.coe_mk, AddHom.coe_mk,
+      Finset.sum_const, Finset.card_univ, Fintype.card_eq_nat_card,
+      S.orbit_card_eq_three o]
+    have htwo : ∀ x : ZMod 2, 2 • x = 0 := by decide
+    rw [show (3 : ℕ) = 2 + 1 by norm_num, add_nsmul, htwo c,
+      zero_add, one_nsmul]
+  have hrange : LinearMap.range (S.orbitCoordinateSum o) = ⊤ :=
+    LinearMap.range_eq_top.mpr hsurj
+  have hdim := (S.orbitCoordinateSum o).finrank_range_add_finrank_ker
+  rw [hrange, finrank_top, Module.finrank_self,
+    Module.finrank_pi, Fintype.card_eq_nat_card,
+    S.orbit_card_eq_three o] at hdim
   have hfinrank : Module.finrank (ZMod 2)
-      (PermutationAugmentation.space (ZMod 2) o.orbit) = 2 := by omega
+      (S.orbitAugmentationSpace o) = 2 := by
+    simpa only [orbitAugmentationSpace] using (show
+      Module.finrank (ZMod 2) (S.orbitCoordinateSum o).ker = 2 by omega)
   rw [Module.natCard_eq_pow_finrank (K := ZMod 2), Nat.card_zmod,
     hfinrank]
   norm_num
@@ -579,11 +651,11 @@ theorem augmentationPlanes_card_le : Nat.card S.augmentationPlanes ≤ 256 := by
   calc
     Nat.card S.augmentationPlanes ≤
         Nat.card ((o : S.OrbitBlocks) →
-          PermutationAugmentation.space (ZMod 2) o.orbit) :=
+          S.orbitAugmentationSpace o) :=
       Nat.card_le_card_of_injective S.augmentationOrbitRestriction
         S.augmentationOrbitRestriction_injective
     _ = ∏ o : S.OrbitBlocks,
-        Nat.card (PermutationAugmentation.space (ZMod 2) o.orbit) :=
+        Nat.card (S.orbitAugmentationSpace o) :=
       Nat.card_pi
     _ = ∏ _o : S.OrbitBlocks, 4 := by
       apply Finset.prod_congr rfl
@@ -600,20 +672,17 @@ theorem averagingSubgroup_card_le_augmentationPlanes
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization D p) :
     Nat.card (S.averagingSubgroup R) ≤ Nat.card S.augmentationPlanes := by
-  let W := (S.realizedAugmentationRepresentation R).toSubmodule
-  let K := R.frame.coordinateKernelSubgroup W
-  let e : K ≃* S.averagingSubgroup R :=
-    K.equivMapOfInjective R.frame.top.ker.subtype Subtype.val_injective
-  let f : S.averagingSubgroup R → Multiplicative W := fun u =>
-    R.frame.coordinateKernelHom W (e.symm u)
-  have hf : Function.Injective f := by
-    intro u v huv
-    apply e.symm.injective
-    apply Subtype.ext
-    apply R.frame.bitsHom_injective
-    exact congrArg
-      (fun z : Multiplicative W => Multiplicative.ofAdd z.toAdd.val) huv
-  exact Nat.card_le_card_of_injective f hf
+  let W := (S.averagingCoordinateRepresentation R).toSubmodule
+  have hW : W ≤ R.frame.kernelSpace := fun _ hv ↦ hv.2
+  have hcard : Nat.card (S.averagingSubgroup R) = Nat.card W :=
+    R.frame.coordinateSubgroup_card W hW
+  rw [hcard]
+  exact Nat.card_le_card_of_injective
+    (fun v : W ↦ ⟨v.1, v.2.1⟩)
+    (by
+      intro x y h
+      apply Subtype.ext
+      exact congrArg (fun z : S.augmentationPlanes => z.1) h)
 
 /-- Passing to a retained quotient cannot increase the cardinality of the
 four-plane image. -/
@@ -653,7 +722,6 @@ theorem sixteen_le_card_of_nine_le_exponent_three_faithful_representation
     (ρ : Representation (ZMod 2) K W)
     (hfaithful : Function.Injective ρ) :
     16 ≤ Nat.card W := by
-  letI : IsMulCommutative K := hcomm
   let d := Module.finrank (ZMod 2) W
   have hWcard : Nat.card W = 2 ^ d := by
     rw [Module.natCard_eq_pow_finrank (K := ZMod 2), Nat.card_zmod]
@@ -670,7 +738,7 @@ theorem sixteen_le_card_of_nine_le_exponent_three_faithful_representation
     { (inferInstance : AddGroup (Additive K)) with
       add_comm := fun x y => by
         apply Additive.toMul.injective
-        exact mul_comm x.toMul y.toMul }
+        exact (isMulCommutative_iff.mp hcomm) x.toMul y.toMul }
   letI : Module (ZMod 3) (Additive K) :=
     AddCommGroup.zmodModule (n := 3) (fun x => by
       apply Additive.toMul.injective
@@ -721,7 +789,7 @@ theorem sixteen_le_card_of_nine_le_exponent_three_faithful_representation
       norm_num
     · have hdim : Module.finrank (ZMod 2) W = 3 := by simpa [d] using hthree
       rw [hdim]
-      norm_num
+      norm_num [Fin.prod_univ_succ]
   rcases hGL with hGL | hGL | hGL
   all_goals rw [hGL] at hnine_dvd_GL <;> norm_num at hnine_dvd_GL
 
@@ -744,6 +812,7 @@ theorem retainedActiveSocle_normalGen_le_two_of_fourPlaneBounds
     MarkedC4.normalGen
       (nontrivialActionSoclePart (preE7PairAction 12 p ⧸ N.1)
         (S.retainedTernaryImage R N)) ≤ 2 := by
+  unfold nontrivialActionSoclePart
   rw [minimalNormalSoclePart_congr
     (preE7PairAction 12 p ⧸ N.1)
     (fun M ↦ ⁅S.retainedTernaryImage R N, M⁆ = M)
@@ -816,32 +885,6 @@ theorem retainedSocleTheorem_of_parts
     (preE7PairAction 12 p ⧸ N.1) C
   exact hmax.trans (max_le ((H.active p R N hN).trans (by norm_num))
     (H.fixed p R N hN))
-
-/-- Assemble the exact-kernel certificate from the remaining whole-socle
-statement. -/
-noncomputable def compressionCertificate
-    (hsocle : S.RetainedSocleTheorem)
-    {p : PreE7PairActionClass 12}
-    (R : DegreeTwoPairTopRealization D p) :
-    DegreeTwoFourTernaryCompressionCertificate p where
-  E := S.averagingSubgroup R
-  compressedAction := S.compressedAction R
-  compressedAction_ker := S.compressedAction_ker R
-  quotientSocleGenerators := fun N hN => hsocle p R N hN
-
-/-- Hence the entire reusable compression theorem has now been reduced to
-the single, action-theoretic socle assertion above. -/
-theorem certificateTheorem_of_retainedSocle
-    (hsocle : S.RetainedSocleTheorem) :
-    S.CertificateTheorem := by
-  intro p R
-  exact ⟨S.compressionCertificate hsocle R⟩
-
-theorem compressionTheorem_of_retainedSocle
-    (hsocle : S.RetainedSocleTheorem) :
-    S.CompressionTheorem :=
-  S.compressionTheorem_of_certificate
-    (S.certificateTheorem_of_retainedSocle hsocle)
 
 end DegreeTwoFourTernaryTopStructure
 
