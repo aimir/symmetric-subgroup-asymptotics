@@ -80,18 +80,34 @@ theorem normal_eq_of_sylow_comap_eq
   let f' := sylowEpimorphismRestriction P hN f
   let g' := sylowEpimorphismRestriction P hM g
   have hker : f'.1.ker = g'.1.ker := by
-    change N.comap (P : Subgroup J).subtype =
-      M.comap (P : Subgroup J).subtype
-    exact h
-  let e : (J ⧸ N) ≃* (J ⧸ M) := epimorphismChangeTarget f' g' hker
+    ext x
+    simp only [f', g', f, g, sylowEpimorphismRestriction,
+      MonoidHom.mem_ker, MonoidHom.comp_apply]
+    change (((x : J) : J ⧸ N) = 1) ↔ (((x : J) : J ⧸ M) = 1)
+    rw [QuotientGroup.eq_one_iff, QuotientGroup.eq_one_iff]
+    exact SetLike.ext_iff.mp h x
+  let ef : ((P : Subgroup J) ⧸ f'.1.ker) ≃* (J ⧸ N) :=
+    QuotientGroup.liftEquiv f'.1.ker f'.2 rfl
+  let eg : ((P : Subgroup J) ⧸ f'.1.ker) ≃* (J ⧸ M) :=
+    QuotientGroup.liftEquiv f'.1.ker g'.2 hker
+  let e : (J ⧸ N) ≃* (J ⧸ M) := ef.symm.trans eg
   have heq : e.toMonoidHom.comp f.1 = g.1 := by
     apply sylow_pGroup_hom_restriction_injective P hM
     ext x
-    exact epimorphismChangeTarget_apply f' g' hker x
+    change e (f'.1 x) = g'.1 x
+    rw [show f'.1 x = ef (QuotientGroup.mk' f'.1.ker x) by rfl]
+    rw [show g'.1 x = eg (QuotientGroup.mk' f'.1.ker x) by rfl]
+    simp only [e, MulEquiv.trans_apply, MulEquiv.symm_apply_apply]
   ext x
-  change f.1 x = 1 ↔ g.1 x = 1
-  rw [← heq]
-  exact e.map_eq_one_iff.symm
+  have hx := DFunLike.congr_fun heq x
+  change e (f.1 x) = g.1 x at hx
+  have hiff : f.1 x = 1 ↔ g.1 x = 1 :=
+    e.map_eq_one_iff.symm.trans (by rw [hx])
+  change (QuotientGroup.mk' N) x = 1 ↔
+    (QuotientGroup.mk' M) x = 1 at hiff
+  change ((x : J ⧸ N) = 1) ↔ ((x : J ⧸ M) = 1) at hiff
+  rw [QuotientGroup.eq_one_iff, QuotientGroup.eq_one_iff] at hiff
+  exact hiff
 
 /-- Kernel version of `normal_eq_of_sylow_comap_eq`.  It is convenient
 when the two normal subgroups already occur as kernels of maps whose images
