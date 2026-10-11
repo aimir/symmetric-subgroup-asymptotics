@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCatalogue
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenPairFiniteCatalogue
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopBinaryKernelRows
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoFourTernaryFiniteChecks
 
 /-!
 # Concrete degree-two pair-top assembly
@@ -11,11 +12,12 @@ Count sixteen is the complete `24 + 29 + 15 + 20` finite table, with the two
 natural alternating/symmetric tops retained as uniform theorem cases.
 
 The final constructor below has no abstract count-twelve or count-sixteen
-catalogue argument and no free row-resolution argument.  Instead it exposes
-the exact semantic inputs that still have to be proved on those concrete
-rows: anchored relative labels, the eight ternary QCHAR comparators, and the
-natural `A_16`/`S_16` character alternative.  Catalogue locators remain
-separate and are explicitly named as published classification hypotheses.
+catalogue argument and no free row-resolution argument.  It exposes the
+anchored relative labels and the natural `A_16`/`S_16` character alternative.
+Catalogue locators remain separate and are explicitly named as published
+classification hypotheses.  The eight four-ternary packages are constructed
+internally from their checked literal top/core data and the uniform active
+socle theorem.
 -/
 
 set_option autoImplicit false
@@ -43,9 +45,9 @@ abbrev PublishedSixteenCatalogueLocator : Prop :=
   PublishedDegreeTwoSixteenPairTopCatalogueLocator SixteenCatalogue
 
 /-- All non-classification semantic data still required on the two concrete
-pair-top catalogues.  The types are attached to the actual row and the actual
-original pair action, so a detached normal/module census cannot inhabit any
-field. -/
+pair-top catalogues.  The eight four-ternary rows are already supplied by
+their checked compression packages; the remaining types are attached to the
+actual row and original pair action. -/
 structure PairTopSemanticData : Type 1 where
   twelveRelative :
     ∀ (j : Fin 301) (p : PreE7PairActionClass 12)
@@ -55,11 +57,6 @@ structure PairTopSemanticData : Type 1 where
       DegreeTwoPairTopBinaryKernelRowData
         (TwelveCatalogue.row j).finite
         (TwelveCatalogue.row j).expectedProfiles p realization
-  twelveTernary :
-    ∀ (j : Fin 301) (p : PreE7PairActionClass 12),
-      DegreeTwoPairTopRealization (TwelveCatalogue.row j).finite p →
-      (TwelveCatalogue.row j).branch = .ternary →
-      DegreeTwoTwelveTernaryComparatorData p
   sixteenPaired8 :
     ∀ (j : Fin 24) (p : PreE7PairActionClass 16)
       (realization : DegreeTwoPairTopTowerRealization
@@ -99,10 +96,14 @@ namespace PairTopSemanticData
 /-- Resolve all 301 concrete count-twelve rows. -/
 noncomputable def twelveResolution
     (D : PairTopSemanticData)
+    (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature) :
     DegreeTwoTwelvePairTopCatalogueResolution TwelveCatalogue :=
-  degreeTwoTwelveResolution_of_binaryKernel_and_ternary lit TwelveCatalogue
-    D.twelveRelative D.twelveTernary
+  degreeTwoTwelveCatalogueResolution_of_relative_and_fourTernary
+    hZmud lit
+    (fun j p realization h ↦
+      (D.twelveRelative j p realization h).twelveResolvedData lit)
+    degreeTwoFourTernaryCompressionPackages
 
 /-- Resolve the complete concrete count-sixteen table, including the
 twenty-four paired-eight rows and all 64 literal degree-sixteen rows. -/
@@ -141,7 +142,8 @@ noncomputable def source
   degreeTwoResidualSource_of_finitePairTopCatalogues
     hZmud lit publishedThree publishedFour sixPairTable publishedSix
     eightPairTable publishedEight
-    TwelveCatalogue publishedTwelve (pairTopData.twelveResolution lit)
+    TwelveCatalogue publishedTwelve
+      (pairTopData.twelveResolution hZmud lit)
     SixteenCatalogue publishedSixteen
       (pairTopData.sixteenResolution hZmud lit)
 

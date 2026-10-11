@@ -48,21 +48,21 @@ abbrev SixteenCatalogue := Concrete.SixteenCatalogue
 
 After inserting the three checked pilots, the producer boundary consists of
 282 joint-twelve packages, 8 core-twelve packages, 2 paired-six packages,
-8 ternary QCHAR packages, 23 paired-eight packages, 29 zero16 packages,
+23 paired-eight packages, 29 zero16 packages,
 15 twoAffine16 packages, 19 primitive16 packages, and 2 natural-top
 packages. -/
 
 /-- Number of explicit packages still assigned to serialized producers. -/
 def remainingSerializedPairTopPackageCount : ℕ :=
-  282 + 8 + 2 + 8 + 23 + 29 + 15 + 19 + 2
+  282 + 8 + 2 + 23 + 29 + 15 + 19 + 2
 
 @[simp] theorem remainingSerializedPairTopPackageCount_eq :
-    remainingSerializedPairTopPackageCount = 388 := by
+    remainingSerializedPairTopPackageCount = 380 := by
   norm_num [remainingSerializedPairTopPackageCount]
 
-/-- The count-twelve row-one, paired-eight row-one, and primitive16 row-three
-packages are already present in source. -/
-def installedPairTopPilotPackageCount : ℕ := 3
+/-- The count-twelve row-one, paired-eight row-one, primitive16 row-three,
+and eight four-ternary compression packages are already present in source. -/
+def installedPairTopPilotPackageCount : ℕ := 11
 
 @[simp] theorem completePairTopPackageCount_eq :
     remainingSerializedPairTopPackageCount +
@@ -71,14 +71,14 @@ def installedPairTopPilotPackageCount : ℕ := 3
     installedPairTopPilotPackageCount]
 
 /-- Exact finite data for the rows not already generated.  Each field is a
-family of raw literal-top certificates or finite QCHAR payloads consumed by
-one of the generic converters above; no field accepts a resolved row or a
-project-owned residual source. -/
+family of raw literal-top certificates consumed by one of the generic
+converters above; no field accepts a resolved row or a project-owned
+residual source. -/
 structure RemainingPairTopSemanticData : Type 1 where
   twelveJoint :
     TwelveJointCatalogue.RemainingDegreeTwoTwelveJointFiniteRowData
-  twelveExceptional :
-    TwelveExceptional.DegreeTwoTwelveExceptionalCatalogueData
+  twelveCorePaired :
+    TwelveExceptional.DegreeTwoTwelveCorePairedCatalogueData
   sixteenPaired8 :
     RemainingDegreeTwoPairedEightFiniteRowData
   sixteenOneFrame :
@@ -107,13 +107,14 @@ noncomputable def twelveResolution
       (fun i hi ↦ TwelveFiniteCatalogue.joint_parameters i hi)
       j realization hbranch
   | core =>
-    exact D.twelveExceptional.coreResolvedRow
+    exact D.twelveCorePaired.coreResolvedRow
       hZmud lit j realization hbranch
   | ternary =>
-    exact D.twelveExceptional.ternaryResolvedRow
-      hZmud j realization hbranch
+    exact (degreeTwoFourTernaryCatalogueCompression
+      degreeTwoFourTernaryCompressionPackages
+      j p realization hbranch).resolvedRow hZmud lit
   | paired =>
-    exact D.twelveExceptional.pairedResolvedRow
+    exact D.twelveCorePaired.pairedResolvedRow
       hZmud lit j realization hbranch
 
 /-- Assemble the complete one-frame count-sixteen finite catalogue by

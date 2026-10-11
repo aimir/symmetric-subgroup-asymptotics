@@ -79,6 +79,20 @@ theorem degreeTwoFourTernaryInterface_eq_catalogue
       (catalogue.row (degreeTwoFourTernaryCatalogueIndex r)).finite := by
   fin_cases r <;> rfl
 
+/-- Every selected row is in the ternary branch of the literal catalogue. -/
+theorem degreeTwoFourTernaryCatalogueIndex_branch
+    (r : Fin 8) :
+    branch (degreeTwoFourTernaryCatalogueIndex r) = .ternary := by
+  fin_cases r <;> rfl
+
+/-- The displayed eight indices exhaust the ternary branch of the literal
+301-row catalogue. -/
+theorem degreeTwoFourTernaryCatalogueIndex_complete
+    (j : Fin 301) (h : branch j = .ternary) :
+    ∃ r : Fin 8, degreeTwoFourTernaryCatalogueIndex r = j := by
+  revert h
+  native_decide +revert
+
 /-- The exact top/core orders have the advertised binary quotient. -/
 theorem degreeTwoFourTernary_order_factorization
     (r : Fin 8) :

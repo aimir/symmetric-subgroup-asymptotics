@@ -173,9 +173,10 @@ end DegreeTwoTwelveTernaryQcharPackage
 
 namespace Catalogue := DegreeTwoTwelvePairFiniteCatalogue
 
-/-- All eighteen exceptional count-twelve packages, separated by their
-three actual catalogue branches. -/
-structure DegreeTwoTwelveExceptionalCatalogueData : Type 1 where
+/-- The ten non-ternary exceptional count-twelve packages.  The eight
+four-ternary rows use the original-lift degree-twenty compression and are
+kept out of this finite top-only interface. -/
+structure DegreeTwoTwelveCorePairedCatalogueData : Type 1 where
   core : ∀ (j : Fin 301),
     (Catalogue.catalogue.row j).branch = .core →
     DegreeTwoTwelveCoreFiniteRowPackage
@@ -184,14 +185,10 @@ structure DegreeTwoTwelveExceptionalCatalogueData : Type 1 where
     (Catalogue.catalogue.row j).branch = .paired →
     DegreeTwoTwelvePairedSixFiniteRowPackage
       (Catalogue.catalogue.row j).finite
-  ternary : ∀ (j : Fin 301),
-    (Catalogue.catalogue.row j).branch = .ternary →
-    DegreeTwoTwelveTernaryQcharPackage
-      (Catalogue.catalogue.row j).finite
 
-namespace DegreeTwoTwelveExceptionalCatalogueData
+namespace DegreeTwoTwelveCorePairedCatalogueData
 
-variable (F : DegreeTwoTwelveExceptionalCatalogueData)
+variable (F : DegreeTwoTwelveCorePairedCatalogueData)
 
 /-- Uniform dispatch for one binary-core row. -/
 noncomputable def coreResolvedRow
@@ -221,20 +218,7 @@ noncomputable def pairedResolvedRow
       (Catalogue.catalogue.row j).expectedProfiles p :=
   (F.paired j hbranch).catalogueResolvedRow hZmud lit (Or.inr hbranch) R
 
-/-- Uniform dispatch for one four-ternary-orbit row. -/
-noncomputable def ternaryResolvedRow
-    (hZmud : ZmudFaithfulCharacterTupleInput)
-    (j : Fin 301)
-    {p : PreE7PairActionClass 12}
-    (R : DegreeTwoPairTopRealization
-      (Catalogue.catalogue.row j).finite p)
-    (hbranch : (Catalogue.catalogue.row j).branch = .ternary) :
-    DegreeTwoPairTopResolvedRow
-      (Catalogue.catalogue.row j).finite
-      (Catalogue.catalogue.row j).expectedProfiles p :=
-  (F.ternary j hbranch).catalogueResolvedRow hZmud R
-
-end DegreeTwoTwelveExceptionalCatalogueData
+end DegreeTwoTwelveCorePairedCatalogueData
 end DegreeTwoTwelveExceptionalTemplates
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
