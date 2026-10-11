@@ -24,7 +24,7 @@ open scoped Classical MonoidAlgebra
 
 namespace SymmetricSubgroupAsymptotics
 
-variable {k G V I : Type*} [Field k] [Group G]
+variable {k G V I : Type} [Field k] [Group G]
   [AddCommGroup V] [Module k V]
 
 namespace RepresentationGeneratedBy
