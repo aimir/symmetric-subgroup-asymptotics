@@ -121,7 +121,8 @@ noncomputable def ofSocleGeneratorBound
             (fun i ↦ Fin.elim0 i) hq.2)
       kernel_twoGroup := IsPGroup.of_bot
       relative_dimension := by
-        rw [Module.finrank_zero_of_subsingleton] }
+        simp only [Module.finrank_zero_of_subsingleton]
+        exact Nat.zero_le _ }
 
 /-- Inflate a Zmud tuple through an arbitrary surjective quotient with
 binary kernel.  The inflated constituents have common kernel exactly
@@ -218,7 +219,10 @@ private theorem kernel_comap_eq_of_prefixLabel_eq
     · intro i
       have hi := representation_comp_ker_eq_of_character_eq
         (A.ordinary i) f g (congrArg Subtype.val (congrFun ho i))
-      exact hi ▸ hord i
+      have hx : x ∈ ((A.ordinary i).action.comp f.1).ker := by
+        simpa only [MonoidHom.mem_ker, MonoidHom.comp_apply] using hord i
+      rw [hi] at hx
+      simpa only [MonoidHom.mem_ker, MonoidHom.comp_apply] using hx
   · rintro ⟨⟨hbin, hlin⟩, hord⟩
     refine ⟨⟨?_, ?_⟩, ?_⟩
     · intro i
@@ -230,7 +234,10 @@ private theorem kernel_comap_eq_of_prefixLabel_eq
     · intro i
       have hi := representation_comp_ker_eq_of_character_eq
         (A.ordinary i) f g (congrArg Subtype.val (congrFun ho i))
-      exact hi.symm ▸ hord i
+      have hx : x ∈ ((A.ordinary i).action.comp g.1).ker := by
+        simpa only [MonoidHom.mem_ker, MonoidHom.comp_apply] using hord i
+      rw [← hi] at hx
+      simpa only [MonoidHom.mem_ker, MonoidHom.comp_apply] using hx
 
 private def AnchorLabel {J : Type} [Group J] [Finite J]
     [Invertible (Nat.card J : ℂ)] : Type :=
@@ -287,39 +294,36 @@ private noncomputable def anchorRestriction
   rintro ⟨q, hq⟩
   obtain ⟨x, rfl⟩ := f.2 q
   have hx : x ∈ M := by
+    change x ∈ A.anchorSource (A.anchorLabel f)
     rw [A.anchorSource_anchorLabel f]
     exact hq
   exact ⟨⟨x, hx⟩, Subtype.ext rfl⟩
 
-private theorem kernel_eq_of_anchorRestriction_eq
+private theorem anchorRestriction_kernel_comap
     {J : Type} [Group J] [Finite J]
     [Invertible (Nat.card J : ℂ)]
-    (f g : GroupEpimorphism J Q)
-    (ha : A.anchorLabel f = A.anchorLabel g)
-    (hr : HEq (A.anchorRestriction f) (A.anchorRestriction g)) :
-    f.1.ker = g.1.ker := by
-  cases ha
-  have hr' : A.anchorRestriction f = A.anchorRestriction g := eq_of_heq hr
+    (f : GroupEpimorphism J Q) :
+    (A.anchorRestriction f).1.ker.map
+        (A.anchorSource (A.anchorLabel f)).subtype = f.1.ker := by
   ext x
   constructor
+  · rintro ⟨y, hy, rfl⟩
+    have hy' : (A.anchorRestriction f).1 y = 1 :=
+      (MonoidHom.mem_ker).mp hy
+    have hy'' := congrArg Subtype.val hy'
+    change f.1 y.1 = 1 at hy''
+    exact hy''
   · intro hx
     have hxM : x ∈ A.anchorSource (A.anchorLabel f) := by
       rw [A.anchorSource_anchorLabel f]
-      exact hx ▸ A.kernel.one_mem
-    let y : A.anchorSource (A.anchorLabel f) := ⟨x, hxM⟩
-    have hv := congrArg (fun e => (e.1 y).1) hr'
-    change f.1 x = g.1 x at hv
-    exact hv ▸ hx
-  · intro hx
-    have hxM : x ∈ A.anchorSource (A.anchorLabel f) := by
-      have hxg : x ∈ A.anchorSource (A.anchorLabel g) := by
-        rw [A.anchorSource_anchorLabel g]
-        exact hx ▸ A.kernel.one_mem
-      exact hxg
-    let y : A.anchorSource (A.anchorLabel f) := ⟨x, hxM⟩
-    have hv := congrArg (fun e => (e.1 y).1) hr'
-    change f.1 x = g.1 x at hv
-    exact hv.symm ▸ hx
+      change f.1 x ∈ A.kernel
+      rw [show f.1 x = 1 from hx]
+      exact A.kernel.one_mem
+    refine ⟨⟨x, hxM⟩, ?_, rfl⟩
+    apply MonoidHom.mem_ker.mpr
+    apply Subtype.ext
+    change f.1 x = 1
+    exact hx
 
 private theorem product_card_le_two_rpow {n : ℕ}
     (c : Fin n → ℕ) (s : ℝ) (b : ℕ)
@@ -353,14 +357,29 @@ noncomputable def toQuotientEnvelope
     intro b J
     letI : Invertible (Nat.card J : ℂ) :=
       invertibleOfNonzero (by exact_mod_cast (Nat.card_pos (α := J)).ne')
+    letI : Finite (A.PrefixLabel J) := by
+      unfold PrefixLabel
+      infer_instance
+    letI : Finite (A.AnchorLabel (J := J)) :=
+      Finite.of_surjective (A.anchorLabel (J := J)) (by
+        rintro ⟨a, f, hf⟩
+        exact ⟨f, Subtype.ext hf⟩)
     let Label := Σ a : A.AnchorLabel (J := J),
       GroupEpimorphism (A.anchorSource a) A.kernel
     let label : GroupEpimorphism J Q → Label := fun f ↦
       ⟨A.anchorLabel f, A.anchorRestriction f⟩
+    let labelKernel : Label → Subgroup J := fun d ↦
+      d.2.1.ker.map (A.anchorSource d.1).subtype
     have hkernel : ∀ f g, label f = label g → f.1.ker = g.1.ker := by
       intro f g h
-      exact A.kernel_eq_of_anchorRestriction_eq f g
-        (congrArg Sigma.fst h) (Sigma.mk.inj_iff.mp h).2
+      calc
+        f.1.ker = labelKernel (label f) := by
+          simpa only [labelKernel, label] using
+            (A.anchorRestriction_kernel_comap f).symm
+        _ = labelKernel (label g) := congrArg labelKernel h
+        _ = g.1.ker := by
+          simpa only [labelKernel, label] using
+            A.anchorRestriction_kernel_comap g
     have hraw := groupEpimorphism_card_le_kernel_labels label hkernel
     have hrelative : ∀ a : A.AnchorLabel (J := J),
         (Nat.card (GroupEpimorphism (A.anchorSource a) A.kernel) : ℝ) ≤
@@ -384,8 +403,11 @@ noncomputable def toQuotientEnvelope
             profile.relative := by
         exact_mod_cast A.relative_dimension
       unfold binaryCharacterSlope
-      nlinarith [Real.logb_nonneg (by norm_num : (1 : ℝ) ≤ 2)
-        (by norm_num : (1 : ℝ) ≤ 38 / 25), Nat.cast_nonneg b]
+      have hlog : 0 ≤ Real.logb 2 ((38 : ℝ) / 25) :=
+        Real.logb_nonneg (by norm_num) (by norm_num)
+      have hb : (0 : ℝ) ≤ b := Nat.cast_nonneg b
+      exact mul_le_mul_of_nonneg_right
+        (mul_le_mul_of_nonneg_right hdim hlog) hb
     have hbin : ((∏ i, Nat.card
         (linearCharacterLabels (J := J) (A.binary i)) : ℕ) : ℝ) ≤
         (2 : ℝ) ^ (((profile.binaryPrimary : ℝ) * (1 / 2)) * b) := by
@@ -395,7 +417,9 @@ noncomputable def toQuotientEnvelope
         lit.kovacsPraegerBinary b J
         (linearCharacterLabels (J := J) (A.binary i))
         (linearCharacterLabels_twoGroup _ (A.binary_twoGroup i))
-      convert h using 1 <;> ring
+      refine h.trans_eq ?_
+      congr 1
+      ring
     have hlinear : ((∏ i, Nat.card
         (linearCharacterLabels (J := J) (A.linear i)) : ℕ) : ℝ) ≤
         (2 : ℝ) ^ (((profile.linear : ℝ) *
@@ -447,24 +471,64 @@ noncomputable def toQuotientEnvelope
       have hcast : (Nat.card (A.AnchorLabel (J := J)) : ℝ) ≤
           (Nat.card (A.PrefixLabel J) : ℝ) := by exact_mod_cast hrange
       refine hcast.trans ?_
-      simp only [PrefixLabel, Nat.card_prod, Nat.card_pi]
+      have hbin' : (Nat.card (∀ i,
+          linearCharacterLabels (J := J) (A.binary i)) : ℝ) ≤
+          (2 : ℝ) ^ (((profile.binaryPrimary : ℝ) * (1 / 2)) * b) := by
+        rw [Nat.card_pi]
+        exact hbin
+      have hlinear' : (Nat.card (∀ i,
+          linearCharacterLabels (J := J) (A.linear i)) : ℝ) ≤
+          (2 : ℝ) ^ (((profile.linear : ℝ) *
+            (Real.logb 2 3 / 3)) * b) := by
+        rw [Nat.card_pi]
+        exact hlinear
+      have hordinary' : (Nat.card (∀ i,
+          epimorphismCharacterLabels (J := J)
+            (A.ordinary i).action) : ℝ) ≤
+          (2 : ℝ) ^ (((profile.ordinary : ℝ) *
+            (Real.logb 2 5 / 3)) * b) := by
+        rw [Nat.card_pi]
+        exact hordinary
+      simp only [PrefixLabel, Nat.card_prod]
       push_cast
       calc
         (Nat.card (∀ i, linearCharacterLabels (J := J) (A.binary i)) : ℝ) *
-              (Nat.card (∀ i, linearCharacterLabels (J := J) (A.linear i)) : ℝ) *
-              (Nat.card (∀ i, epimorphismCharacterLabels
-                (J := J) (A.ordinary i).action) : ℝ) ≤
+              ((Nat.card (∀ i,
+                linearCharacterLabels (J := J) (A.linear i)) : ℝ) *
+                (Nat.card (∀ i, epimorphismCharacterLabels
+                  (J := J) (A.ordinary i).action) : ℝ)) ≤
             (2 : ℝ) ^ (((profile.binaryPrimary : ℝ) * (1 / 2)) * b) *
-              (2 : ℝ) ^ (((profile.linear : ℝ) *
+              ((2 : ℝ) ^ (((profile.linear : ℝ) *
                 (Real.logb 2 3 / 3)) * b) *
-              (2 : ℝ) ^ (((profile.ordinary : ℝ) *
-                (Real.logb 2 5 / 3)) * b) := by gcongr
-        _ = _ := by rw [three_rpow_mul]; congr 2 <;> ring
+                (2 : ℝ) ^ (((profile.ordinary : ℝ) *
+                  (Real.logb 2 5 / 3)) * b)) := by
+            exact mul_le_mul hbin'
+              (mul_le_mul hlinear' hordinary'
+                (Nat.cast_nonneg _) (Real.rpow_nonneg (by norm_num) _))
+              (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))
+              (Real.rpow_nonneg (by norm_num) _)
+        _ = _ := by
+          rw [show
+            (2 : ℝ) ^ (((profile.binaryPrimary : ℝ) * (1 / 2)) * b) *
+                ((2 : ℝ) ^ (((profile.linear : ℝ) *
+                  (Real.logb 2 3 / 3)) * b) *
+                  (2 : ℝ) ^ (((profile.ordinary : ℝ) *
+                    (Real.logb 2 5 / 3)) * b)) =
+              (2 : ℝ) ^ (((profile.binaryPrimary : ℝ) * (1 / 2)) * b) *
+                (2 : ℝ) ^ (((profile.linear : ℝ) *
+                  (Real.logb 2 3 / 3)) * b) *
+                (2 : ℝ) ^ (((profile.ordinary : ℝ) *
+                  (Real.logb 2 5 / 3)) * b) by ring]
+          rw [three_rpow_mul]
+          congr 2
+          ring
     have hlabel : (Nat.card Label : ℝ) ≤
         ((Nat.card (A.kernel ≃* A.kernel) : ℝ) *
           (2 : ℝ) ^ (profile.slope * b)) := by
       letI : Fintype (A.AnchorLabel (J := J)) := Fintype.ofFinite _
-      rw [Label, Nat.card_sigma, Nat.cast_sum]
+      change (Nat.card (Σ a : A.AnchorLabel (J := J),
+        GroupEpimorphism (A.anchorSource a) A.kernel) : ℝ) ≤ _
+      rw [Nat.card_sigma, Nat.cast_sum]
       calc
         ∑ a : A.AnchorLabel (J := J),
             (Nat.card (GroupEpimorphism (A.anchorSource a) A.kernel) : ℝ) ≤
