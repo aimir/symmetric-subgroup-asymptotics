@@ -339,8 +339,11 @@ private theorem labelKernel_label
           (gg.toHomUnits.comp (P : Subgroup
             (A.anchorSource (A.anchorLabel f))).subtype).ker := by
       ext x
-      change ff x = 1 ↔ gg x = 1
-      exact SetLike.ext_iff.mp hPker x
+      have hx := SetLike.ext_iff.mp hPker x
+      simpa only [ff, gg, sylowRestriction, sylowRestrictionOf,
+        sylowEpimorphismRestriction, MonoidHom.mem_ker,
+        MonoidHom.comp_apply, Units.ext_iff, MonoidHom.coe_toHomUnits,
+        Units.val_one] using hx
     have hu := hom_ker_eq_of_sylow_ker_eq P ff.toHomUnits gg.toHomUnits
       (A.constituent_comp_units_range_isPGroup i F)
       (A.constituent_comp_units_range_isPGroup i G)
