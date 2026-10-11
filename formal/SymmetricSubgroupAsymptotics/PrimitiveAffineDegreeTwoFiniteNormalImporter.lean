@@ -35,6 +35,8 @@ namespace Non2UnipotentPrefixFiniteMenu
 
 universe u
 
+attribute [-instance] originalNormalFintype
+
 /-! ## A width-independent complete finite normal registry -/
 
 /-- A finite, duplicate-free enumeration of all literal normal subgroups of
@@ -54,6 +56,9 @@ namespace FiniteNormalStateRegistry
 
 variable {U : Type} [Group U] [Finite U]
   (R : FiniteNormalStateRegistry U)
+
+noncomputable instance stateFintype : Fintype R.State :=
+  Fintype.ofFinite R.State
 
 /-- The type of literal normal axes of a finite group is
 finite.  This noncomputable instance supports semantic pilot registries and
@@ -232,7 +237,7 @@ abbrev PreE7FiniteMixedCharacterAxis
     {w : ℕ} (U : Subgroup (Equiv.Perm (Fin w)))
     (N : {N : Subgroup U // N.Normal}) :=
   N.1 ≠ ⊤ →
-    {c : CharacterQuotientCertificate (U ⨸ N.1) //
+    {c : CharacterQuotientCertificate (U ⧸ N.1) //
       c.IsBinaryMixed ∧ c.slope ≤ preE7CharacterWindow w}
 
 /-- Compact structural input for the mixed tuples stored in the finite
@@ -248,7 +253,7 @@ structure PreE7LinearZmudTupleData (Q : Type) [Group Q] : Type 1 where
   generalKernel : Subgroup Q
   [generalKernel_normal : generalKernel.Normal]
   generalSocleGenerator :
-    SocleNormalGeneratorBound (Q ⨸ generalKernel) generalCount
+    SocleNormalGeneratorBound (Q ⧸ generalKernel) generalCount
   kernel_inf : (⨅ j, (linear j).ker) ⊓ generalKernel = ⊥
 
 attribute [instance] PreE7LinearZmudTupleData.generalKernel_normal
@@ -261,17 +266,17 @@ variable {Q : Type} [Group Q] [Finite Q]
 noncomputable def generalFamily
     (hZmud : ZmudFaithfulCharacterTupleInput) :
     Fin D.generalCount →
-      FiniteIrreducibleRepresentation ℂ (Q ⨸ D.generalKernel) :=
+      FiniteIrreducibleRepresentation ℂ (Q ⧸ D.generalKernel) :=
   Classical.choose
-    (hZmud (Q ⨸ D.generalKernel) D.generalCount
+    (hZmud (Q ⧸ D.generalKernel) D.generalCount
       D.generalSocleGenerator)
 
 theorem generalFamily_faithful
     (hZmud : ZmudFaithfulCharacterTupleInput) :
-    ∀ q : Q ⨸ D.generalKernel,
+    ∀ q : Q ⧸ D.generalKernel,
       (∀ j, (D.generalFamily hZmud j).action q = 1) → q = 1 :=
   Classical.choose_spec
-    (hZmud (Q ⨸ D.generalKernel) D.generalCount
+    (hZmud (Q ⧸ D.generalKernel) D.generalCount
       D.generalSocleGenerator)
 
 /-- Inflate one Zmud constituent from the quotient by the common general
@@ -353,7 +358,7 @@ serialize the irreducible representations supplied by Zmud's theorem. -/
       (D.linearCount : ℝ) * (Real.logb 2 3 / 3) +
         (D.generalCount : ℝ) * (Real.logb 2 5 / 3) := by
   simp only [certificate, CharacterQuotientCertificate.slope,
-    certificate_binaryCount, certificate_linearCount,
+    tuple, certificate_binaryCount, certificate_linearCount,
     certificate_generalCount, CharacterQuotientMode.generalSlope,
     Nat.cast_zero, zero_mul, zero_add]
 
@@ -362,10 +367,11 @@ remaining analytic check is its explicit slope inequality. -/
 noncomputable def toFiniteMixedAxis
     {w : ℕ} {U : Subgroup (Equiv.Perm (Fin w))}
     {N : {N : Subgroup U // N.Normal}}
+    (T : PreE7LinearZmudTupleData (U ⧸ N.1))
     (hZmud : ZmudFaithfulCharacterTupleInput)
-    (hcapacity : (D.certificate hZmud).slope ≤ preE7CharacterWindow w) :
+    (hcapacity : (T.certificate hZmud).slope ≤ preE7CharacterWindow w) :
     PreE7FiniteMixedCharacterAxis U N :=
-  fun _ => ⟨D.certificate hZmud, rfl, hcapacity⟩
+  fun _ => ⟨T.certificate hZmud, rfl, hcapacity⟩
 
 end PreE7LinearZmudTupleData
 
@@ -451,7 +457,7 @@ abbrev PreE7FiniteQcharAxis
     {w : ℕ} (U : Subgroup (Equiv.Perm (Fin w)))
     (E : Subgroup U) (N : {N : Subgroup U // N.Normal}) :=
   ¬ E ≤ N.1 →
-    {c : CharacterQuotientCertificate (U ⨸ N.1) //
+    {c : CharacterQuotientCertificate (U ⧸ N.1) //
       c.IsLinearMixed ∧ c.slope ≤ preE7CharacterWindow w}
 
 /-- Finite-state form of the two degree-sixteen comparator rows.  The
@@ -465,7 +471,7 @@ structure PreE7FiniteQcharAxes
   E : Subgroup (preE7NonPairAction w i)
   [E_normal : E.Normal]
   degree : ℕ
-  action : preE7NonPairAction w i ⨸ E →* Equiv.Perm (Fin degree)
+  action : preE7NonPairAction w i ⧸ E →* Equiv.Perm (Fin degree)
   action_injective : Function.Injective action
   degree_window : preE7CharacterRho * w ≤
     ((evenWidth w : ℝ) - ((max 2 degree : ℕ) : ℝ)) / 8
@@ -510,10 +516,14 @@ def binaryComplexUnitSign : Multiplicative (ZMod 2) →* ℂˣ where
         (if y.toAdd = 0 then 1 else -1)
     have hx : x.toAdd = 0 ∨ x.toAdd = 1 := by
       generalize x.toAdd = z
-      fin_cases z <;> simp
+      fin_cases z
+      · exact Or.inl rfl
+      · exact Or.inr rfl
     have hy : y.toAdd = 0 ∨ y.toAdd = 1 := by
       generalize y.toAdd = z
-      fin_cases z <;> simp
+      fin_cases z
+      · exact Or.inl rfl
+      · exact Or.inr rfl
     have htwo : (1 : ZMod 2) + 1 = 0 := by decide
     rcases hx with hx | hx <;> rcases hy with hy | hy <;>
       simp [hx, hy, htwo]
@@ -539,7 +549,7 @@ structure PreE7BinaryLinearZmudTupleData
   generalKernel : Subgroup Q
   [generalKernel_normal : generalKernel.Normal]
   generalSocleGenerator :
-    SocleNormalGeneratorBound (Q ⨸ generalKernel) generalCount
+    SocleNormalGeneratorBound (Q ⧸ generalKernel) generalCount
   kernel_inf : (⨅ j, (linear j).ker) ⊓ generalKernel = ⊥
 
 attribute [instance] PreE7BinaryLinearZmudTupleData.generalKernel_normal
@@ -585,13 +595,13 @@ structure PreE7FiniteQcharZmudAxes
   E : Subgroup (preE7NonPairAction w i)
   [E_normal : E.Normal]
   degree : ℕ
-  action : preE7NonPairAction w i ⨸ E →* Equiv.Perm (Fin degree)
+  action : preE7NonPairAction w i ⧸ E →* Equiv.Perm (Fin degree)
   action_injective : Function.Injective action
   degree_window : preE7CharacterRho * w ≤
     ((evenWidth w : ℝ) - ((max 2 degree : ℕ) : ℝ)) / 8
   state : ∀ j : registry.State, ¬ E ≤ (registry.normalAxis j).1 →
     PreE7BinaryLinearZmudTupleData
-      (preE7NonPairAction w i ⨸ (registry.normalAxis j).1)
+      (preE7NonPairAction w i ⧸ (registry.normalAxis j).1)
   state_capacity : ∀ j h,
     ((state j h).linearCount : ℝ) * (Real.logb 2 3 / 3) +
         ((state j h).generalCount : ℝ) * (Real.logb 2 5 / 3) ≤
@@ -606,7 +616,7 @@ variable {w : ℕ} {i : PreE7NonPairActionClass w}
 
 /-- The selected quotient comparator before character tuples are installed. -/
 noncomputable def interval :
-    CharacterIntervalComparator (preE7NonPairAction w i) :=
+    CharacterIntervalComparator (preE7NonPairAction w i) D.E :=
   CharacterIntervalComparator.ofQuotientAction D.degree D.action
     D.action_injective
 
@@ -620,8 +630,8 @@ before applying Zmud. -/
 noncomputable def tailCoefficient (j : D.registry.State) : ℝ :=
   if D.E ≤ (D.registry.normalAxis j).1 then D.interval.tail
   else (Nat.card
-    ((preE7NonPairAction w i ⨸ (D.registry.normalAxis j).1) ≃*
-      (preE7NonPairAction w i ⨸ (D.registry.normalAxis j).1)) : ℝ)
+    ((preE7NonPairAction w i ⧸ (D.registry.normalAxis j).1) ≃*
+      (preE7NonPairAction w i ⧸ (D.registry.normalAxis j).1)) : ℝ)
 
 /-- Apply Zmud only after the selected finite state has been fixed. -/
 noncomputable def toAxes
@@ -637,7 +647,7 @@ noncomputable def toAxes
   degree_window := D.degree_window
   axes :=
     { state := fun j h ↦
-        ⟨(D.state j h).toLinearZmud.certificate hZmud, rfl, by
+        ⟨(D.state j h).toLinearZmud.certificate hZmud, ⟨rfl, rfl⟩, by
           simpa only [PreE7LinearZmudTupleData.certificate_slope] using
             D.state_capacity j h⟩ }
 
