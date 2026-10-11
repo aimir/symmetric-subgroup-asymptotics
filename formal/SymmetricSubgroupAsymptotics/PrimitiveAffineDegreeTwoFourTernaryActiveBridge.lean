@@ -606,21 +606,19 @@ theorem activePairRepresentation_injective
     Function.Injective (S.activePairRepresentation R N M) := by
   letI : M.Normal := hM.1
   have hK := S.activeCoreKernel_eq_bot R N M hM hME
-  intro c d hcd
-  have hratio : S.activePairRepresentation R N M (c * d⁻¹) = 1 := by
-    rw [map_mul, map_inv, hcd, inv_mul]
-  have hratioTop : S.topActivePairRepresentation R N M
-      ((c * d⁻¹ : S.core) : D.top) = 1 := hratio
-  have hratioK : ((c * d⁻¹ : S.core) : D.top) ∈
-      S.activeCoreKernel R N M := by
-    exact ⟨MonoidHom.mem_ker.mpr hratioTop, (c * d⁻¹).2⟩
-  have hratioOne : ((c * d⁻¹ : S.core) : D.top) = 1 := by
-    rw [hK] at hratioK
-    exact Subgroup.mem_bot.mp hratioK
-  have hratioOne' : c * d⁻¹ = 1 := by
-    apply Subtype.ext
-    exact hratioOne
-  exact mul_inv_eq_one.mp hratioOne'
+  rw [injective_iff_map_eq_one]
+  intro c hc
+  have hcK : (c.1 : D.top) ∈ S.activeCoreKernel R N M := by
+    refine ⟨?_, c.2⟩
+    apply MonoidHom.mem_ker.mpr
+    change S.topActivePairRepresentation R N M c.1 = 1
+    change S.topActivePairRepresentation R N M c.1 = 1 at hc
+    exact hc
+  have hcbot : (c.1 : D.top) ∈ (⊥ : Subgroup D.top) := by
+    rw [← hK]
+    exact hcK
+  apply Subtype.ext
+  exact Subgroup.mem_bot.mp hcbot
 
 /-- Every ambient-minimal factor in the retained four-plane image has at
 least sixteen elements. -/
