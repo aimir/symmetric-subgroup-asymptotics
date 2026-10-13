@@ -11,7 +11,7 @@ above `N`.  This file packages the finite certificate needed by catalogue
 emitters: list those relative atoms, identify their supremum, and give one
 element whose normal closure modulo `N` is that supremum.
 
-The resulting theorem produces `SocleNormalGeneratorBound (G ⨸ N) t`
+The resulting theorem produces `SocleNormalGeneratorBound (G ⧸ N) t`
 from a uniformly padded `Fin t` tuple.
 All completeness reasoning is semantic; a generated row proves the finite
 state conditions using its checked complete normal registry.
@@ -44,8 +44,10 @@ theorem map_quotient (h : IsMinimalNormalAbove N M) :
     apply le_antisymm hNM
     have hc := congrArg
       (Subgroup.comap (QuotientGroup.mk' N)) hbot
-    simpa only [QuotientGroup.comap_map_mk', sup_eq_right.mpr hNM,
-      MonoidHom.comap_bot, QuotientGroup.ker_mk'] using hc
+    have hMN : M = N := by
+      simpa only [QuotientGroup.comap_map_mk', sup_eq_right.mpr hNM,
+        MonoidHom.comap_bot, QuotientGroup.ker_mk'] using hc
+    exact hMN.le
   · intro L hL hLne hLM
     let K : Subgroup G := L.comap (QuotientGroup.mk' N)
     have hKN : N ≤ K := QuotientGroup.le_comap_mk' N L
@@ -74,7 +76,7 @@ theorem map_quotient (h : IsMinimalNormalAbove N M) :
 /-- The preimage of a quotient minimal normal subgroup is minimal strictly
 above the quotient kernel. -/
 theorem comap_quotient
-    (L : Subgroup (G ⨸ N)) (hL : IsMinimalNormalSubgroup L) :
+    (L : Subgroup (G ⧸ N)) (hL : IsMinimalNormalSubgroup L) :
     IsMinimalNormalAbove N (L.comap (QuotientGroup.mk' N)) := by
   let M : Subgroup G := L.comap (QuotientGroup.mk' N)
   have hNM : N ≤ M := QuotientGroup.le_comap_mk' N L
@@ -212,31 +214,39 @@ noncomputable def mapEquiv {H : Type} [Group H] [Finite H]
       base_normal := D.base_normal.map e.toMonoidHom e.surjective
       carrier_normal := D.carrier_normal.map e.toMonoidHom e.surjective
       carrier_eq := by
+        change Subgroup.map e.toMonoidHom D.carrier =
+          Subgroup.map e.toMonoidHom N ⊔
+            ⨆ i, Subgroup.map e.toMonoidHom (D.component i)
         rw [D.carrier_eq, Subgroup.map_sup, Subgroup.map_iSup]
       generator := fun i ↦ e (D.generator i)
       generated := by
+        change Subgroup.normalClosure
+              (Set.range (fun i ↦ e (D.generator i))) ⊔
+            Subgroup.map e.toMonoidHom N =
+          Subgroup.map e.toMonoidHom D.carrier
         calc
           Subgroup.normalClosure
                 (Set.range (fun i ↦ e (D.generator i))) ⊔
-              E N =
+              Subgroup.map e.toMonoidHom N =
               (Subgroup.normalClosure
                 (Set.range D.generator)).map
-                  e.toMonoidHom ⊔ E N := by
+                  e.toMonoidHom ⊔ Subgroup.map e.toMonoidHom N := by
             rw [Subgroup.map_normalClosure _ _ e.surjective, himage]
           _ = (Subgroup.normalClosure
                 (Set.range D.generator) ⊔ N).map
                   e.toMonoidHom := by rw [Subgroup.map_sup]
-          _ = E D.carrier := by rw [D.generated] }
+          _ = Subgroup.map e.toMonoidHom D.carrier := by rw [D.generated] }
 
 /-- The image of the checked relative-atom supremum is exactly the quotient
 socle. -/
 theorem carrier_map_eq_socle :
-    D.carrier.map (QuotientGroup.mk' N) = finiteGroupSocle (G ⨸ N) := by
+    letI : N.Normal := D.base_normal
+    D.carrier.map (QuotientGroup.mk' N) = finiteGroupSocle (G ⧸ N) := by
   letI : N.Normal := D.base_normal
   apply le_antisymm
   · rw [Subgroup.map_le_iff_le_comap, D.carrier_eq]
     apply sup_le
-    · exact QuotientGroup.le_comap_mk' N (finiteGroupSocle (G ⨸ N))
+    · exact QuotientGroup.le_comap_mk' N (finiteGroupSocle (G ⧸ N))
     · apply iSup_le
       intro i
       rw [← Subgroup.map_le_iff_le_comap]
@@ -264,10 +274,11 @@ theorem carrier_map_eq_socle :
 /-- The checked original tuple gives a normal generating tuple of the
 quotient socle. -/
 noncomputable def quotientSocleGenerator :
-    SocleNormalGeneratorBound (G ⨸ N) t := by
+    letI : N.Normal := D.base_normal
+    SocleNormalGeneratorBound (G ⧸ N) t := by
   letI : N.Normal := D.base_normal
   let x : Fin t → G := D.generator
-  let xq : Fin t → G ⨸ N := fun i ↦ QuotientGroup.mk' N (x i)
+  let xq : Fin t → G ⧸ N := fun i ↦ QuotientGroup.mk' N (x i)
   refine ⟨xq, ?_⟩
   have himage : (QuotientGroup.mk' N) '' Set.range x = Set.range xq := by
     ext q
@@ -286,7 +297,7 @@ noncomputable def quotientSocleGenerator :
           (QuotientGroup.mk' N) := by
       rw [Subgroup.map_sup, QuotientGroup.map_mk'_self, sup_bot_eq]
     _ = D.carrier.map (QuotientGroup.mk' N) := by rw [D.generated]
-    _ = finiteGroupSocle (G ⨸ N) := D.carrier_map_eq_socle
+    _ = finiteGroupSocle (G ⧸ N) := D.carrier_map_eq_socle
 
 end FiniteRelativeSocleGeneratorData
 
@@ -340,7 +351,7 @@ theorem isMinimalNormalAbove_state_iff (base j : R.State) :
       simpa only [hk] using hbaseK
     have hstateLe : R.state k ≤ R.state j := by
       simpa only [hk] using hKle
-    exact (hminimal k hbaseState hstateLe).trans hk
+    exact hk.symm.trans (hminimal k hbaseState hstateLe)
 
 /-- Construct relative-socle data from finite state indices in a complete
 normal registry.  The hypotheses are finite subgroup equalities and order
@@ -397,13 +408,13 @@ variable {t : ℕ} (D : R.QuotientSocleGeneratorFamily t)
 axis and produce its `t`-position quotient-socle witness. -/
 noncomputable def dispatch
     (N : {N : Subgroup U // N.Normal}) :
-    SocleNormalGeneratorBound (U ⨸ N.1) t := by
+    SocleNormalGeneratorBound (U ⧸ N.1) t := by
   let i : R.State := R.normalAxisEquiv.symm N
   have hi : R.normalAxis i = N := R.normalAxisEquiv.apply_symm_apply N
   exact cast
     (congrArg
       (fun M : {M : Subgroup U // M.Normal} ↦
-        SocleNormalGeneratorBound (U ⨸ M.1) t) hi)
+        SocleNormalGeneratorBound (U ⧸ M.1) t) hi)
     (D.data i).quotientSocleGenerator
 
 end QuotientSocleGeneratorFamily
