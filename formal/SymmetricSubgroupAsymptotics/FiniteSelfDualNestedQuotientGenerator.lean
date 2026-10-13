@@ -26,7 +26,7 @@ open scoped Classical
 
 namespace SymmetricSubgroupAsymptotics
 
-variable {k G V I : Type*} [Field k] [Group G]
+variable {k G V I : Type} [Field k] [Group G]
   [AddCommGroup V] [Module k V] [Finite V] [FiniteDimensional k V]
   {rho : Representation k G V}
   {states : I → Subrepresentation rho}
@@ -52,6 +52,9 @@ namespace FiniteSelfDualNestedQuotientGeneratorData
 
 variable (D : FiniteSelfDualNestedQuotientGeneratorData C e)
 
+include D
+
+omit [Finite V] in
 /-- Every nested quotient in the registry has cyclic dual, unless its
 underlying vector-space dimension is at most two. -/
 theorem nestedQuotient_generated_or_finrank_le_two
@@ -68,22 +71,35 @@ theorem nestedQuotient_generated_or_finrank_le_two
         states (D.orthogonalState i) := by
       rw [← D.orthogonalState_eq, ← D.orthogonalState_eq]
       exact horth
+    have transport (A B A' B' : Subrepresentation rho)
+        (hA : A = A') (hB : B = B') (hAB : A ≤ B) (hA'B' : A' ≤ B')
+        (hgen : RepresentationGeneratedBy (nestedQuotientRepresentation A B hAB) 1) :
+        RepresentationGeneratedBy (nestedQuotientRepresentation A' B' hA'B') 1 := by
+      subst A'
+      subst B'
+      exact hgen
+    have hchild : states (D.orthogonalState j) ≤
+        states (C.child (D.orthogonalState j) c) := by
+      intro x hx
+      change x ∈ (states (C.child (D.orthogonalState j) c)).toSubmodule
+      rw [C.child_eq]
+      exact Submodule.mem_sup_left hx
+    have hchildGenerated : RepresentationGeneratedBy
+        (nestedQuotientRepresentation (states (D.orthogonalState j))
+          (states (C.child (D.orthogonalState j) c)) hchild) 1 :=
+      C.childQuotientRepresentation_generated (D.orthogonalState j) c
     have hgenerated : RepresentationGeneratedBy
         (nestedQuotientRepresentation
           (states (D.orthogonalState j))
-          (states (D.orthogonalState i)) hstate) 1 := by
-      simpa only [hc,
-        BinaryInvariantCyclicOrbitRegistry.childQuotientRepresentation,
-        BinaryInvariantCyclicOrbitRegistry.childDenominator,
-        nestedQuotientRepresentation, nestedSubrepresentation] using
-          C.childQuotientRepresentation_generated
-            (D.orthogonalState j) c
+          (states (D.orthogonalState i)) hstate) 1 :=
+      transport _ _ _ _ rfl (congrArg states hc) hchild hstate hchildGenerated
     have hgeneratedOrth : RepresentationGeneratedBy
         (nestedQuotientRepresentation
           (selfDualOrthogonalSubrepresentation rho e (states j))
           (selfDualOrthogonalSubrepresentation rho e (states i))
-          horth) 1 := by
-      simpa only [D.orthogonalState_eq] using hgenerated
+          horth) 1 :=
+      transport _ _ _ _ (D.orthogonalState_eq j).symm
+        (D.orthogonalState_eq i).symm hstate horth hgenerated
     let E := selfDualNestedQuotientEquiv rho e
       (states i) (states j) hij
     exact representationGeneratedBy_of_surjective
@@ -94,8 +110,7 @@ theorem nestedQuotient_generated_or_finrank_le_two
         (nestedSubrepresentation
           (states i) (states j) hij).toSubmodule) ≤ 2
     have hquot :=
-      (nestedSubrepresentation (states i) (states j) hij).toSubmodule.
-        finrank_quotient_add_finrank
+      (nestedSubrepresentation (states i) (states j) hij).toSubmodule.finrank_quotient_add_finrank
     have hden := finrank_nestedSubrepresentation
       (states i) (states j) hij
     rw [hden, D.state_finrank, D.state_finrank] at hquot
