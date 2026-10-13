@@ -459,6 +459,17 @@ noncomputable def rowData
         (SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightRow1QuotientSocles.family.data (R.topNormalState N)).quotientSocleGenerator)
       socleCapacity
 
+/-- Resolution expressed directly on the literal top. Its type does not
+depend on the construction of the other catalogue entries. -/
+noncomputable def resolvedLiteralRowClosed
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization DegreeTwoPairedEightSharedTops.top1 p) :
+    DegreeTwoPairTopResolvedRow DegreeTwoPairedEightSharedTops.top1
+      degreeTwoSixteenPairProfiles p :=
+  ((rowData hZmud R (omegaSocleSchurCapacityLeFour R)).sixteenResolvedData lit).toResolvedRow
+
 /-- Catalogue-facing resolution of literal paired-eight index zero. -/
 noncomputable def resolvedRow
     (hZmud : ZmudFaithfulCharacterTupleInput)
