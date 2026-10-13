@@ -28,7 +28,7 @@ variable {k G V A : Type} [Field k] [Group G]
   [AddCommGroup V] [Module k V]
   [AddCommGroup A] [Module k A]
 
-local instance finiteDimensionalSubmodule {M : Type}
+local instance nonfixedFiniteDimensionalSubmodule {M : Type}
     [AddCommGroup M] [Module k M] [Module k[G] M]
     [IsScalarTower k k[G] M] [FiniteDimensional k M]
     (S : Submodule k[G] M) : FiniteDimensional k S :=
