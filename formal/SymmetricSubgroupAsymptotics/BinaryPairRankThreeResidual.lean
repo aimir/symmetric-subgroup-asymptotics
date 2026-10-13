@@ -63,7 +63,9 @@ theorem sectionTopIntertwiner_ker_eq_nestedNormalTop :
   change (F.normalSpace N).mkQ x = 0 ↔
     x ∈ (F.normalTopPermutationSubrepresentation N).toSubmodule.comap
       F.kernelSpace.subtype
+  change (Submodule.Quotient.mk x : F.kernelSpace ⧸ F.normalSpace N) = 0 ↔ _
   rw [Submodule.Quotient.mk_eq_zero, F.normalTop_comap_eq N]
+  rfl
 
 /-- The image in an actual pair section of any retained coordinate state
 `B` is the literal nested quotient `B/A`, where `A` is the original normal
@@ -88,14 +90,16 @@ noncomputable def sectionTopNestedQuotientImageEquiv
   have hAK : A ≤ K := F.normalTop_le_kernelTop N
   have hker : q.ker = nestedSubrepresentation A K hAK :=
     F.sectionTopIntertwiner_ker_eq_nestedNormalTop N
-  have hqB : q.ker ≤ B' := by
-    rw [hker]
-    exact nestedSubrepresentation_mono A B K hAB hBK
   let eAmbient := nestedQuotientAmbientEquiv A B K hAB hBK
-  let eImage := nestedQuotientImageEquiv
-    K.toRepresentation (F.sectionTopRepresentation N) q B' hqB
-  rw [hker] at eImage
-  exact eAmbient.trans eImage
+  have himage (L : Subrepresentation K.toRepresentation) (hL : L ≤ B')
+      (heq : L = q.ker) :
+      (nestedQuotientRepresentation L B' hL).Equiv
+        (intertwinerImage K.toRepresentation (F.sectionTopRepresentation N) q B').toRepresentation := by
+    subst L
+    exact nestedQuotientImageEquiv
+      K.toRepresentation (F.sectionTopRepresentation N) q B' hL
+  exact eAmbient.trans (himage (nestedSubrepresentation A K hAK)
+    (nestedSubrepresentation_mono A B K hAB hBK) hker.symm)
 
 /-- A finite dual-generator certificate for the ambient coordinate quotient
 therefore bounds the Schur capacity of its actual image in the pair
