@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicQuotientGenerator
+import SymmetricSubgroupAsymptotics.FiniteBinaryNestedQuotientNonfixed
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads
 import SymmetricSubgroupAsymptotics.RepresentationSelfDualNestedQuotient
@@ -77,101 +77,19 @@ theorem orthogonalState_eq (i : Fin 11) :
   simp only [selfDual_apply]
   fin_cases i <;> decide +kernel +revert
 
-/-- Exactly three nested pairs need more than a single reversed child
-edge. Their small or fixed upper layers are handled below. -/
-theorem dualChild_exists_of_le_of_not_exception
-    (i j : Fin 11) (hij : states i ≤ states j)
-    (hexception : ¬ (i = 3 ∧ (j = 7 ∨ j = 9 ∨ j = 10))) :
-    ∃ c : Fin 10,
-      SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.child (orthogonalState j) c = orthogonalState i := by
-  change (states i).toSubmodule ≤ (states j).toSubmodule at hij
-  rw [SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at hij
-  have hchecked : ∀ a : Fin (charts i).1,
-      (charts i).2.inclusion (Pi.single a 1) ∈ (charts j).2.space :=
-    fun a ↦ hij ⟨Pi.single a 1, rfl⟩
-  clear hij
-  revert hchecked hexception
-  fin_cases i <;> fin_cases j <;> decide +kernel +revert
+/-- The finite inclusion test uses only the displayed basis vectors. -/
+private def stateLE (i j : Fin 11) : Prop :=
+  ∀ a : Fin (charts i).1,
+    (charts i).2.inclusion (Pi.single a 1) ∈ (charts j).2.space
 
-/-- Every nonexceptional paired-eight state quotient has cyclic dual. -/
-theorem nestedQuotient_dual_generated
-    (i j : Fin 11) (hij : states i ≤ states j)
-    (hexception : ¬ (i = 3 ∧ (j = 7 ∨ j = 9 ∨ j = 10))) :
-    RepresentationGeneratedBy
-      (nestedQuotientRepresentation (states i) (states j) hij).dual 1 := by
-  obtain ⟨c, hc⟩ :=
-    dualChild_exists_of_le_of_not_exception i j hij hexception
-  let e : representation.Equiv representation.dual :=
-    permutationFunctionRepresentationSelfDual (G := Top)
-  let horth := selfDualOrthogonalSubrepresentation_antitone
-    representation e hij
-  have hstate : states (orthogonalState j) ≤
-      states (orthogonalState i) := by
-    rw [← orthogonalState_eq, ← orthogonalState_eq]
-    exact horth
-  have transport (A B A' B' : Subrepresentation representation)
-      (hA : A = A') (hB : B = B') (hAB : A ≤ B) (hA'B' : A' ≤ B')
-      (hgen : RepresentationGeneratedBy (nestedQuotientRepresentation A B hAB) 1) :
-      RepresentationGeneratedBy (nestedQuotientRepresentation A' B' hA'B') 1 := by
-    subst A'
-    subst B'
-    exact hgen
-  have hchild : states (orthogonalState j) ≤
-      states (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.registry.child (orthogonalState j) c) := by
-    intro x hx
-    change x ∈ (states (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.registry.child (orthogonalState j) c)).toSubmodule
-    rw [SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.registry.child_eq]
-    exact Submodule.mem_sup_left hx
-  have hchildGenerated : RepresentationGeneratedBy
-      (nestedQuotientRepresentation (states (orthogonalState j))
-        (states (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.registry.child (orthogonalState j) c)) hchild) 1 :=
-    SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.registry.childQuotientRepresentation_generated (orthogonalState j) c
-  have hgen : RepresentationGeneratedBy
-      (nestedQuotientRepresentation
-        (states (orthogonalState j))
-        (states (orthogonalState i)) hstate) 1 :=
-    transport _ _ _ _ rfl (congrArg states hc) hchild hstate hchildGenerated
-  have hgenOrth : RepresentationGeneratedBy
-      (nestedQuotientRepresentation
-        (selfDualOrthogonalSubrepresentation representation e (states j))
-        (selfDualOrthogonalSubrepresentation representation e (states i))
-        horth) 1 :=
-    transport _ _ _ _ (orthogonalState_eq j).symm
-      (orthogonalState_eq i).symm hstate horth hgen
-  let E := selfDualNestedQuotientEquiv representation e
-    (states i) (states j) hij
-  have htransport := representationGeneratedBy_of_surjective
-    _ _ E.toIntertwiningMap E.surjective hgenOrth
-  exact htransport
-
-/-- A basis test produces the actual inclusion of two coordinate states. -/
-private theorem states_le_of_basis (i j : Fin 11)
-    (h : ∀ a : Fin (charts i).1,
-      (charts i).2.inclusion (Pi.single a 1) ∈ (charts j).2.space) :
-    states i ≤ states j := by
-  change (states i).toSubmodule ≤ (states j).toSubmodule
-  rw [SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-  exact (charts i).2.le_of_basis_mem _ h
-
-/-- The first exceptional quotient is a binary plane. -/
-theorem exceptional_finrank_le_two
-    (h37 : states (3 : Fin 11) ≤ states (7 : Fin 11)) :
-    Module.finrank (ZMod 2)
-      (nestedQuotientRepresentation (states 3) (states 7) h37).asModule ≤ 2 := by
-  change Module.finrank (ZMod 2)
-      ((states 7).toSubmodule ⧸
-        (nestedSubrepresentation (states 3) (states 7) h37).toSubmodule) ≤ 2
-  have hquot :=
-    (nestedSubrepresentation (states 3) (states 7) h37).toSubmodule.finrank_quotient_add_finrank
-  have hden := finrank_nestedSubrepresentation (states 3) (states 7) h37
-  have hthree : Module.finrank (ZMod 2) (states 3).toSubmodule = 3 := by
-    rw [SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 3).2.finrank]
-    decide +kernel
-  have hfive : Module.finrank (ZMod 2) (states 7).toSubmodule = 5 := by
-    rw [SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 7).2.finrank]
-    decide +kernel
-  rw [hden, hthree, hfive] at hquot
-  omega
+private theorem state_le_iff (i j : Fin 11) :
+    states i ≤ states j ↔ stateLE i j := by
+  change (states i).toSubmodule ≤ (states j).toSubmodule ↔ _
+  rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space,
+    PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+  constructor
+  · exact fun h a ↦ h ⟨Pi.single a 1, rfl⟩
+  · exact fun h ↦ (charts i).2.le_of_basis_mem _ h
 
 /-- The checked displacement table supplies the fixed upper-layer test. -/
 private theorem displacement_mem (j : Fin 11) (g : Top) (v : ModelModule)
@@ -184,38 +102,48 @@ private theorem displacement_mem (j : Fin 11) (g : Top) (v : ModelModule)
       Representation.Coinvariants.sub_mem_ker g (⟨v, hv⟩ : (states j).toSubmodule), rfl⟩
   rwa [SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.coinvariantsKernel_map_eq_state] at hmem
 
-/-- All three exceptions have finite derivations from the same certified
-cyclic-dual quotient or a binary plane. -/
-private theorem exceptional_certificate (j : Fin 11)
-    (hj : j = 7 ∨ j = 9 ∨ j = 10) (h3j : states 3 ≤ states j) :
-    BinaryNestedQuotientNonfixedCertificate representation (states 3) (states j) h3j := by
-  have h38 : states 3 ≤ states 8 := states_le_of_basis 3 8 (by decide +kernel)
-  have h89 : states 8 ≤ states 9 := states_le_of_basis 8 9 (by decide +kernel)
-  have h910 : states 9 ≤ states 10 := states_le_of_basis 9 10 (by decide +kernel)
-  have hbase : BinaryNestedQuotientNonfixedCertificate representation
-      (states 3) (states 8) h38 :=
-    .cyclic _ _ _ (nestedQuotient_dual_generated 3 8 h38 (by decide +kernel))
-  have h9 : BinaryNestedQuotientNonfixedCertificate representation
-      (states 3) (states 9) (h38.trans h89) :=
-    .fixedExtension _ _ _ h38 h89 (displacement_mem 9) hbase
-  rcases hj with rfl | rfl | rfl
-  · exact .small _ _ _ (exceptional_finrank_le_two h3j)
-  · exact h9
-  · exact .fixedExtension _ _ _ (h38.trans h89) h910 (displacement_mem 10) h9
+/-- One checked table covers every nested pair. The general dimension
+induction handles fixed upper layers without exceptional row proofs. -/
+noncomputable def finiteTable :
+    FiniteBinaryNestedQuotientNonfixedData
+      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.registry
+      (permutationFunctionRepresentationSelfDual (G := Top)) where
+  orthogonalState := orthogonalState
+  orthogonalState_eq := orthogonalState_eq
+  stateDimension := fun i ↦ (charts i).1
+  state_finrank := by
+    intro i
+    rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space,
+      (charts i).2.finrank]
+  displacementState := PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.displacementState
+  displacement_mem := displacement_mem
+  step := by
+    intro i j hij
+    have hchecked :
+        (∃ c : Fin 10,
+          PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.child
+            (orthogonalState j) c = orthogonalState i) ∨
+        (charts j).1 ≤ (charts i).1 + 2 ∨
+        ∃ k : Fin 11, stateLE i k ∧ stateLE k j ∧
+          stateLE (PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.displacementState j) k ∧
+          (charts k).1 < (charts j).1 := by
+      have h := (state_le_iff i j).mp hij
+      clear hij
+      revert h
+      unfold stateLE
+      fin_cases i <;> fin_cases j <;> decide +kernel +revert
+    rcases hchecked with hcyclic | hsmall | ⟨k, hik, hkj, hd, hdim⟩
+    · exact Or.inl hcyclic
+    · exact Or.inr (Or.inl hsmall)
+    · exact Or.inr (Or.inr ⟨k, (state_le_iff i k).mpr hik,
+        (state_le_iff k j).mpr hkj, (state_le_iff _ k).mpr hd, hdim⟩)
 
-/-- Realization-free declaration: every nested pair has a finite
-cyclic/small/fixed-extension certificate. -/
+/-- Realization-free declaration obtained by the uniform finite-table
+induction, including every fixed-layer descent. -/
 noncomputable def finiteGeneratorData :
     Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairTopNestedQuotientGeneratorData
         Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 where
-  certificate := by
-    intro A B hAB
-    obtain ⟨i, rfl⟩ := SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.registry.complete A
-    obtain ⟨j, rfl⟩ := SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.registry.complete B
-    by_cases hexception : i = 3 ∧ (j = 7 ∨ j = 9 ∨ j = 10)
-    · obtain ⟨rfl, hj⟩ := hexception
-      exact exceptional_certificate j hj hAB
-    · exact .cyclic _ _ _ (nestedQuotient_dual_generated i j hAB hexception)
+  certificate := finiteTable.subrepresentation_certificate _ _
 
 /-- Uniform finite-state conclusion: every nonfixed simple row in every
 nested paired-eight state quotient is bounded by one dual-generator layer,
