@@ -14,11 +14,13 @@ spaces, all 121 coordinatewise products, all
 -/
 
 set_option autoImplicit false
+set_option backward.isDefEq.respectTransparency false
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 set_option linter.unusedVariables false
+set_option linter.unnecessarySeqFocus false
 noncomputable section
-open scoped BigOperators Classical
+open scoped BigOperators Classical MonoidAlgebra
 
 namespace SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads
 
@@ -35,14 +37,14 @@ private def basis (j : Fin 0) : ℕ := 0
 private def dual (j : Fin 0) : ℕ := 0
 
 def displacementChart : BinaryCoordinateSpace 8 0 :=
-  binaryCoordinateSpaceOfMasks 8 0 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 0 basis dual (by decide +kernel +revert)
 
 private theorem space_le_state :
     displacementChart.space ≤ (states 0).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply displacementChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 noncomputable def certificate :
     BinaryCoordinateDisplacementCertificate representation topAmbient
@@ -59,7 +61,7 @@ theorem head_le :
   apply representationCoinvariants_finrank_le_of_binaryCertificate
     representation topAmbient (states 0) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 0).2.finrank]
-  native_decide
+  decide +kernel +revert
 
 /-- The emitted displacement chart is the complete displacement span for
 state `0`. -/
@@ -75,7 +77,7 @@ theorem displacementSpan_eq :
       ((charts 0).2.inclusion (Pi.single j 1)) -
         (charts 0).2.inclusion (Pi.single j 1) ∈ displacementChart.space
   apply (displacementChart.mem_iff _).mpr
-  fin_cases q <;> fin_cases j <;> native_decide
+  exact Fin.elim0 j
 
 end D0
 
@@ -85,14 +87,14 @@ private def basis (j : Fin 0) : ℕ := 0
 private def dual (j : Fin 0) : ℕ := 0
 
 def displacementChart : BinaryCoordinateSpace 8 0 :=
-  binaryCoordinateSpaceOfMasks 8 0 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 0 basis dual (by decide +kernel +revert)
 
 private theorem space_le_state :
     displacementChart.space ≤ (states 1).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply displacementChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 noncomputable def certificate :
     BinaryCoordinateDisplacementCertificate representation topAmbient
@@ -109,7 +111,7 @@ theorem head_le :
   apply representationCoinvariants_finrank_le_of_binaryCertificate
     representation topAmbient (states 1) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 1).2.finrank]
-  native_decide
+  decide +kernel +revert
 
 /-- The emitted displacement chart is the complete displacement span for
 state `1`. -/
@@ -125,7 +127,7 @@ theorem displacementSpan_eq :
       ((charts 1).2.inclusion (Pi.single j 1)) -
         (charts 1).2.inclusion (Pi.single j 1) ∈ displacementChart.space
   apply (displacementChart.mem_iff _).mpr
-  fin_cases q <;> fin_cases j <;> native_decide
+  fin_cases q <;> fin_cases j <;> decide +kernel +revert
 
 end D1
 
@@ -135,14 +137,14 @@ private def basis (j : Fin 1) : ℕ := 255
 private def dual (j : Fin 1) : ℕ := 128
 
 def displacementChart : BinaryCoordinateSpace 8 1 :=
-  binaryCoordinateSpaceOfMasks 8 1 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 1 basis dual (by decide +kernel +revert)
 
 private theorem space_le_state :
     displacementChart.space ≤ (states 2).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply displacementChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 1) : ℕ :=
   1
@@ -167,7 +169,7 @@ noncomputable def certificate :
   termVector := termVector
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem head_le :
     Module.finrank (ZMod 2) (states 2).toRepresentation.Coinvariants ≤
@@ -175,7 +177,7 @@ theorem head_le :
   apply representationCoinvariants_finrank_le_of_binaryCertificate
     representation topAmbient (states 2) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 2).2.finrank]
-  native_decide
+  decide +kernel +revert
 
 /-- The emitted displacement chart is the complete displacement span for
 state `2`. -/
@@ -191,7 +193,7 @@ theorem displacementSpan_eq :
       ((charts 2).2.inclusion (Pi.single j 1)) -
         (charts 2).2.inclusion (Pi.single j 1) ∈ displacementChart.space
   apply (displacementChart.mem_iff _).mpr
-  fin_cases q <;> fin_cases j <;> native_decide
+  fin_cases q <;> fin_cases j <;> decide +kernel +revert
 
 end D2
 
@@ -201,14 +203,14 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def displacementChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem space_le_state :
     displacementChart.space ≤ (states 3).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply displacementChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2))
@@ -233,7 +235,7 @@ noncomputable def certificate :
   termVector := termVector
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem head_le :
     Module.finrank (ZMod 2) (states 3).toRepresentation.Coinvariants ≤
@@ -241,7 +243,7 @@ theorem head_le :
   apply representationCoinvariants_finrank_le_of_binaryCertificate
     representation topAmbient (states 3) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 3).2.finrank]
-  native_decide
+  decide +kernel +revert
 
 /-- The emitted displacement chart is the complete displacement span for
 state `3`. -/
@@ -257,7 +259,7 @@ theorem displacementSpan_eq :
       ((charts 3).2.inclusion (Pi.single j 1)) -
         (charts 3).2.inclusion (Pi.single j 1) ∈ displacementChart.space
   apply (displacementChart.mem_iff _).mpr
-  fin_cases q <;> fin_cases j <;> native_decide
+  fin_cases q <;> fin_cases j <;> decide +kernel +revert
 
 end D3
 
@@ -267,14 +269,14 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def displacementChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem space_le_state :
     displacementChart.space ≤ (states 4).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply displacementChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2))
@@ -299,7 +301,7 @@ noncomputable def certificate :
   termVector := termVector
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem head_le :
     Module.finrank (ZMod 2) (states 4).toRepresentation.Coinvariants ≤
@@ -307,7 +309,7 @@ theorem head_le :
   apply representationCoinvariants_finrank_le_of_binaryCertificate
     representation topAmbient (states 4) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 4).2.finrank]
-  native_decide
+  decide +kernel +revert
 
 /-- The emitted displacement chart is the complete displacement span for
 state `4`. -/
@@ -323,7 +325,7 @@ theorem displacementSpan_eq :
       ((charts 4).2.inclusion (Pi.single j 1)) -
         (charts 4).2.inclusion (Pi.single j 1) ∈ displacementChart.space
   apply (displacementChart.mem_iff _).mpr
-  fin_cases q <;> fin_cases j <;> native_decide
+  fin_cases q <;> fin_cases j <;> decide +kernel +revert
 
 end D4
 
@@ -333,14 +335,14 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def displacementChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem space_le_state :
     displacementChart.space ≤ (states 5).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply displacementChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 2 else (if j.val < 2 then 3 else 1))
@@ -365,7 +367,7 @@ noncomputable def certificate :
   termVector := termVector
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem head_le :
     Module.finrank (ZMod 2) (states 5).toRepresentation.Coinvariants ≤
@@ -373,7 +375,7 @@ theorem head_le :
   apply representationCoinvariants_finrank_le_of_binaryCertificate
     representation topAmbient (states 5) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 5).2.finrank]
-  native_decide
+  decide +kernel +revert
 
 /-- The emitted displacement chart is the complete displacement span for
 state `5`. -/
@@ -389,7 +391,7 @@ theorem displacementSpan_eq :
       ((charts 5).2.inclusion (Pi.single j 1)) -
         (charts 5).2.inclusion (Pi.single j 1) ∈ displacementChart.space
   apply (displacementChart.mem_iff _).mpr
-  fin_cases q <;> fin_cases j <;> native_decide
+  fin_cases q <;> fin_cases j <;> decide +kernel +revert
 
 end D5
 
@@ -399,14 +401,14 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def displacementChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem space_le_state :
     displacementChart.space ≤ (states 6).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply displacementChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 2 else (if j.val < 2 then 3 else 1))
@@ -431,7 +433,7 @@ noncomputable def certificate :
   termVector := termVector
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem head_le :
     Module.finrank (ZMod 2) (states 6).toRepresentation.Coinvariants ≤
@@ -439,7 +441,7 @@ theorem head_le :
   apply representationCoinvariants_finrank_le_of_binaryCertificate
     representation topAmbient (states 6) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 6).2.finrank]
-  native_decide
+  decide +kernel +revert
 
 /-- The emitted displacement chart is the complete displacement span for
 state `6`. -/
@@ -455,7 +457,7 @@ theorem displacementSpan_eq :
       ((charts 6).2.inclusion (Pi.single j 1)) -
         (charts 6).2.inclusion (Pi.single j 1) ∈ displacementChart.space
   apply (displacementChart.mem_iff _).mpr
-  fin_cases q <;> fin_cases j <;> native_decide
+  fin_cases q <;> fin_cases j <;> decide +kernel +revert
 
 end D6
 
@@ -465,14 +467,14 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def displacementChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem space_le_state :
     displacementChart.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply displacementChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 2 else (if j.val < 2 then 3 else 1))
@@ -497,7 +499,7 @@ noncomputable def certificate :
   termVector := termVector
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem head_le :
     Module.finrank (ZMod 2) (states 7).toRepresentation.Coinvariants ≤
@@ -505,7 +507,7 @@ theorem head_le :
   apply representationCoinvariants_finrank_le_of_binaryCertificate
     representation topAmbient (states 7) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 7).2.finrank]
-  native_decide
+  decide +kernel +revert
 
 /-- The emitted displacement chart is the complete displacement span for
 state `7`. -/
@@ -521,7 +523,7 @@ theorem displacementSpan_eq :
       ((charts 7).2.inclusion (Pi.single j 1)) -
         (charts 7).2.inclusion (Pi.single j 1) ∈ displacementChart.space
   apply (displacementChart.mem_iff _).mpr
-  fin_cases q <;> fin_cases j <;> native_decide
+  fin_cases q <;> fin_cases j <;> decide +kernel +revert
 
 end D7
 
@@ -531,14 +533,14 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def displacementChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem space_le_state :
     displacementChart.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply displacementChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 4 then 3 else (if j.val < 5 then 2 else 2)))
@@ -563,7 +565,7 @@ noncomputable def certificate :
   termVector := termVector
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem head_le :
     Module.finrank (ZMod 2) (states 8).toRepresentation.Coinvariants ≤
@@ -571,7 +573,7 @@ theorem head_le :
   apply representationCoinvariants_finrank_le_of_binaryCertificate
     representation topAmbient (states 8) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 8).2.finrank]
-  native_decide
+  decide +kernel +revert
 
 /-- The emitted displacement chart is the complete displacement span for
 state `8`. -/
@@ -587,7 +589,7 @@ theorem displacementSpan_eq :
       ((charts 8).2.inclusion (Pi.single j 1)) -
         (charts 8).2.inclusion (Pi.single j 1) ∈ displacementChart.space
   apply (displacementChart.mem_iff _).mpr
-  fin_cases q <;> fin_cases j <;> native_decide
+  fin_cases q <;> fin_cases j <;> decide +kernel +revert
 
 end D8
 
@@ -597,14 +599,14 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def displacementChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem space_le_state :
     displacementChart.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply displacementChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 4 then 4 else (if j.val < 5 then 5 else 3)))
@@ -629,7 +631,7 @@ noncomputable def certificate :
   termVector := termVector
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem head_le :
     Module.finrank (ZMod 2) (states 9).toRepresentation.Coinvariants ≤
@@ -637,7 +639,7 @@ theorem head_le :
   apply representationCoinvariants_finrank_le_of_binaryCertificate
     representation topAmbient (states 9) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 9).2.finrank]
-  native_decide
+  decide +kernel +revert
 
 /-- The emitted displacement chart is the complete displacement span for
 state `9`. -/
@@ -653,7 +655,7 @@ theorem displacementSpan_eq :
       ((charts 9).2.inclusion (Pi.single j 1)) -
         (charts 9).2.inclusion (Pi.single j 1) ∈ displacementChart.space
   apply (displacementChart.mem_iff _).mpr
-  fin_cases q <;> fin_cases j <;> native_decide
+  fin_cases q <;> fin_cases j <;> decide +kernel +revert
 
 end D9
 
@@ -663,14 +665,14 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def displacementChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem space_le_state :
     displacementChart.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply displacementChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 3 else 1)) else (if j.val < 5 then (if j.val < 4 then 1 else 3) else (if j.val < 6 then 4 else 2)))
@@ -695,7 +697,7 @@ noncomputable def certificate :
   termVector := termVector
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem head_le :
     Module.finrank (ZMod 2) (states 10).toRepresentation.Coinvariants ≤
@@ -703,7 +705,7 @@ theorem head_le :
   apply representationCoinvariants_finrank_le_of_binaryCertificate
     representation topAmbient (states 10) displacementChart certificate
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
-  native_decide
+  decide +kernel +revert
 
 /-- The emitted displacement chart is the complete displacement span for
 state `10`. -/
@@ -719,7 +721,7 @@ theorem displacementSpan_eq :
       ((charts 10).2.inclusion (Pi.single j 1)) -
         (charts 10).2.inclusion (Pi.single j 1) ∈ displacementChart.space
   apply (displacementChart.mem_iff _).mpr
-  fin_cases q <;> fin_cases j <;> native_decide
+  fin_cases q <;> fin_cases j <;> decide +kernel +revert
 
 end D10
 
@@ -742,39 +744,105 @@ theorem coinvariantsKernel_map_eq_state (i : Fin 11) :
       PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.topAmbient_full
         (states i)]
   fin_cases i
-  · rw [D0.displacementSpan_eq, D0.certificate.submodule_map_subtype,
-      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-    native_decide
-  · rw [D1.displacementSpan_eq, D1.certificate.submodule_map_subtype,
-      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-    native_decide
-  · rw [D2.displacementSpan_eq, D2.certificate.submodule_map_subtype,
-      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-    native_decide
-  · rw [D3.displacementSpan_eq, D3.certificate.submodule_map_subtype,
-      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-    native_decide
-  · rw [D4.displacementSpan_eq, D4.certificate.submodule_map_subtype,
-      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-    native_decide
-  · rw [D5.displacementSpan_eq, D5.certificate.submodule_map_subtype,
-      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-    native_decide
-  · rw [D6.displacementSpan_eq, D6.certificate.submodule_map_subtype,
-      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-    native_decide
-  · rw [D7.displacementSpan_eq, D7.certificate.submodule_map_subtype,
-      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-    native_decide
-  · rw [D8.displacementSpan_eq, D8.certificate.submodule_map_subtype,
-      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-    native_decide
-  · rw [D9.displacementSpan_eq, D9.certificate.submodule_map_subtype,
-      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-    native_decide
-  · rw [D10.displacementSpan_eq, D10.certificate.submodule_map_subtype,
-      PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-    native_decide
+  · calc
+      _ = D0.certificate.submodule.map (states 0).toSubmodule.subtype :=
+        congrArg (Submodule.map (states 0).toSubmodule.subtype) D0.displacementSpan_eq
+      _ = D0.displacementChart.space := D0.certificate.submodule_map_subtype
+      _ = (states (displacementState 0)).toSubmodule := by
+        rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+        ext v
+        simp only [BinaryCoordinateSpace.mem_iff]
+        decide +kernel +revert
+  · calc
+      _ = D1.certificate.submodule.map (states 1).toSubmodule.subtype :=
+        congrArg (Submodule.map (states 1).toSubmodule.subtype) D1.displacementSpan_eq
+      _ = D1.displacementChart.space := D1.certificate.submodule_map_subtype
+      _ = (states (displacementState 1)).toSubmodule := by
+        rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+        ext v
+        simp only [BinaryCoordinateSpace.mem_iff]
+        decide +kernel +revert
+  · calc
+      _ = D2.certificate.submodule.map (states 2).toSubmodule.subtype :=
+        congrArg (Submodule.map (states 2).toSubmodule.subtype) D2.displacementSpan_eq
+      _ = D2.displacementChart.space := D2.certificate.submodule_map_subtype
+      _ = (states (displacementState 2)).toSubmodule := by
+        rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+        ext v
+        simp only [BinaryCoordinateSpace.mem_iff]
+        decide +kernel +revert
+  · calc
+      _ = D3.certificate.submodule.map (states 3).toSubmodule.subtype :=
+        congrArg (Submodule.map (states 3).toSubmodule.subtype) D3.displacementSpan_eq
+      _ = D3.displacementChart.space := D3.certificate.submodule_map_subtype
+      _ = (states (displacementState 3)).toSubmodule := by
+        rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+        ext v
+        simp only [BinaryCoordinateSpace.mem_iff]
+        decide +kernel +revert
+  · calc
+      _ = D4.certificate.submodule.map (states 4).toSubmodule.subtype :=
+        congrArg (Submodule.map (states 4).toSubmodule.subtype) D4.displacementSpan_eq
+      _ = D4.displacementChart.space := D4.certificate.submodule_map_subtype
+      _ = (states (displacementState 4)).toSubmodule := by
+        rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+        ext v
+        simp only [BinaryCoordinateSpace.mem_iff]
+        decide +kernel +revert
+  · calc
+      _ = D5.certificate.submodule.map (states 5).toSubmodule.subtype :=
+        congrArg (Submodule.map (states 5).toSubmodule.subtype) D5.displacementSpan_eq
+      _ = D5.displacementChart.space := D5.certificate.submodule_map_subtype
+      _ = (states (displacementState 5)).toSubmodule := by
+        rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+        ext v
+        simp only [BinaryCoordinateSpace.mem_iff]
+        decide +kernel +revert
+  · calc
+      _ = D6.certificate.submodule.map (states 6).toSubmodule.subtype :=
+        congrArg (Submodule.map (states 6).toSubmodule.subtype) D6.displacementSpan_eq
+      _ = D6.displacementChart.space := D6.certificate.submodule_map_subtype
+      _ = (states (displacementState 6)).toSubmodule := by
+        rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+        ext v
+        simp only [BinaryCoordinateSpace.mem_iff]
+        decide +kernel +revert
+  · calc
+      _ = D7.certificate.submodule.map (states 7).toSubmodule.subtype :=
+        congrArg (Submodule.map (states 7).toSubmodule.subtype) D7.displacementSpan_eq
+      _ = D7.displacementChart.space := D7.certificate.submodule_map_subtype
+      _ = (states (displacementState 7)).toSubmodule := by
+        rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+        ext v
+        simp only [BinaryCoordinateSpace.mem_iff]
+        decide +kernel +revert
+  · calc
+      _ = D8.certificate.submodule.map (states 8).toSubmodule.subtype :=
+        congrArg (Submodule.map (states 8).toSubmodule.subtype) D8.displacementSpan_eq
+      _ = D8.displacementChart.space := D8.certificate.submodule_map_subtype
+      _ = (states (displacementState 8)).toSubmodule := by
+        rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+        ext v
+        simp only [BinaryCoordinateSpace.mem_iff]
+        decide +kernel +revert
+  · calc
+      _ = D9.certificate.submodule.map (states 9).toSubmodule.subtype :=
+        congrArg (Submodule.map (states 9).toSubmodule.subtype) D9.displacementSpan_eq
+      _ = D9.displacementChart.space := D9.certificate.submodule_map_subtype
+      _ = (states (displacementState 9)).toSubmodule := by
+        rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+        ext v
+        simp only [BinaryCoordinateSpace.mem_iff]
+        decide +kernel +revert
+  · calc
+      _ = D10.certificate.submodule.map (states 10).toSubmodule.subtype :=
+        congrArg (Submodule.map (states 10).toSubmodule.subtype) D10.displacementSpan_eq
+      _ = D10.displacementChart.space := D10.certificate.submodule_map_subtype
+      _ = (states (displacementState 10)).toSubmodule := by
+        rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
+        ext v
+        simp only [BinaryCoordinateSpace.mem_iff]
+        decide +kernel +revert
 
 /-- None of the eleven displacement kernels is the unique noncyclic state
 `7`; this is the finite classification fact used by the nonfixed transfer. -/
@@ -809,7 +877,7 @@ theorem coinvariantsKernelEmbedding_injective (i : Fin 11) :
   intro x y hxy
   apply Subtype.ext
   apply Subtype.ext
-  exact congrArg Subtype.val hxy
+  exact congrArg (fun z : (states (displacementState i)).toSubmodule ↦ z.1) hxy
 
 /-- Uniform nonfixed-row bound for every one of the eleven literal states.
 The quotient to coinvariants is fixed, while the exact displacement kernel
@@ -825,14 +893,13 @@ theorem state_nonfixed_schurSocleMultiplicity_le_one
         (k := ZMod 2) (R := (ZMod 2)[Top])
         (A := (states i).toRepresentation.asModule) (X := S) ≤ 1 := by
   letI : FiniteDimensional (ZMod 2) S :=
-    Module.Finite.of_finite (ZMod 2) S
+    Module.Finite.of_finite
   exact (schurSocleMultiplicity_le_of_nonfixed_coinvariantsKernel_injection
     sigma S hnonfixed (states i).toRepresentation
       (states (displacementState i)).toRepresentation
       (coinvariantsKernelEmbedding i)
       (coinvariantsKernelEmbedding_injective i)).trans
-    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.
-      subrepresentation_schurSocleMultiplicity_le_one_of_module
+    (PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.subrepresentation_schurSocleMultiplicity_le_one_of_module
         (states (displacementState i)))
 
 namespace P0_0
@@ -842,7 +909,7 @@ noncomputable def certificate :
       (charts 0).2 (charts 0).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -857,7 +924,7 @@ noncomputable def certificate :
       (charts 0).2 (charts 1).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -872,7 +939,7 @@ noncomputable def certificate :
       (charts 0).2 (charts 2).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -887,7 +954,7 @@ noncomputable def certificate :
       (charts 0).2 (charts 3).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -902,7 +969,7 @@ noncomputable def certificate :
       (charts 0).2 (charts 4).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -917,7 +984,7 @@ noncomputable def certificate :
       (charts 0).2 (charts 5).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -932,7 +999,7 @@ noncomputable def certificate :
       (charts 0).2 (charts 6).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -947,7 +1014,7 @@ noncomputable def certificate :
       (charts 0).2 (charts 7).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -962,7 +1029,7 @@ noncomputable def certificate :
       (charts 0).2 (charts 8).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -977,7 +1044,7 @@ noncomputable def certificate :
       (charts 0).2 (charts 9).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -992,7 +1059,7 @@ noncomputable def certificate :
       (charts 0).2 (charts 10).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -1007,7 +1074,7 @@ noncomputable def certificate :
       (charts 1).2 (charts 0).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -1033,13 +1100,13 @@ noncomputable def certificate :
       (charts 1).2 (charts 1).2 (charts 1).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P1_1
 
@@ -1061,13 +1128,13 @@ noncomputable def certificate :
       (charts 1).2 (charts 2).2 (charts 2).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P1_2
 
@@ -1089,13 +1156,13 @@ noncomputable def certificate :
       (charts 1).2 (charts 3).2 (charts 3).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P1_3
 
@@ -1117,13 +1184,13 @@ noncomputable def certificate :
       (charts 1).2 (charts 4).2 (charts 4).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P1_4
 
@@ -1145,13 +1212,13 @@ noncomputable def certificate :
       (charts 1).2 (charts 5).2 (charts 5).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P1_5
 
@@ -1173,13 +1240,13 @@ noncomputable def certificate :
       (charts 1).2 (charts 6).2 (charts 6).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P1_6
 
@@ -1201,13 +1268,13 @@ noncomputable def certificate :
       (charts 1).2 (charts 7).2 (charts 7).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P1_7
 
@@ -1229,13 +1296,13 @@ noncomputable def certificate :
       (charts 1).2 (charts 8).2 (charts 8).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P1_8
 
@@ -1257,13 +1324,13 @@ noncomputable def certificate :
       (charts 1).2 (charts 9).2 (charts 9).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P1_9
 
@@ -1285,13 +1352,13 @@ noncomputable def certificate :
       (charts 1).2 (charts 10).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P1_10
 
@@ -1302,7 +1369,7 @@ noncomputable def certificate :
       (charts 2).2 (charts 0).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -1328,13 +1395,13 @@ noncomputable def certificate :
       (charts 2).2 (charts 1).2 (charts 2).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P2_1
 
@@ -1356,13 +1423,13 @@ noncomputable def certificate :
       (charts 2).2 (charts 2).2 (charts 2).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P2_2
 
@@ -1384,13 +1451,13 @@ noncomputable def certificate :
       (charts 2).2 (charts 3).2 (charts 8).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P2_3
 
@@ -1412,13 +1479,13 @@ noncomputable def certificate :
       (charts 2).2 (charts 4).2 (charts 8).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P2_4
 
@@ -1440,13 +1507,13 @@ noncomputable def certificate :
       (charts 2).2 (charts 5).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P2_5
 
@@ -1468,13 +1535,13 @@ noncomputable def certificate :
       (charts 2).2 (charts 6).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P2_6
 
@@ -1496,13 +1563,13 @@ noncomputable def certificate :
       (charts 2).2 (charts 7).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P2_7
 
@@ -1524,13 +1591,13 @@ noncomputable def certificate :
       (charts 2).2 (charts 8).2 (charts 8).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P2_8
 
@@ -1552,13 +1619,13 @@ noncomputable def certificate :
       (charts 2).2 (charts 9).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P2_9
 
@@ -1580,13 +1647,13 @@ noncomputable def certificate :
       (charts 2).2 (charts 10).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P2_10
 
@@ -1597,7 +1664,7 @@ noncomputable def certificate :
       (charts 3).2 (charts 0).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -1623,13 +1690,13 @@ noncomputable def certificate :
       (charts 3).2 (charts 1).2 (charts 3).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P3_1
 
@@ -1651,13 +1718,13 @@ noncomputable def certificate :
       (charts 3).2 (charts 2).2 (charts 8).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P3_2
 
@@ -1679,13 +1746,13 @@ noncomputable def certificate :
       (charts 3).2 (charts 3).2 (charts 5).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P3_3
 
@@ -1707,13 +1774,13 @@ noncomputable def certificate :
       (charts 3).2 (charts 4).2 (charts 9).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P3_4
 
@@ -1735,13 +1802,13 @@ noncomputable def certificate :
       (charts 3).2 (charts 5).2 (charts 5).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P3_5
 
@@ -1763,13 +1830,13 @@ noncomputable def certificate :
       (charts 3).2 (charts 6).2 (charts 9).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P3_6
 
@@ -1791,13 +1858,13 @@ noncomputable def certificate :
       (charts 3).2 (charts 7).2 (charts 9).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P3_7
 
@@ -1819,13 +1886,13 @@ noncomputable def certificate :
       (charts 3).2 (charts 8).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P3_8
 
@@ -1847,13 +1914,13 @@ noncomputable def certificate :
       (charts 3).2 (charts 9).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P3_9
 
@@ -1875,13 +1942,13 @@ noncomputable def certificate :
       (charts 3).2 (charts 10).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P3_10
 
@@ -1892,7 +1959,7 @@ noncomputable def certificate :
       (charts 4).2 (charts 0).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -1918,13 +1985,13 @@ noncomputable def certificate :
       (charts 4).2 (charts 1).2 (charts 4).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P4_1
 
@@ -1946,13 +2013,13 @@ noncomputable def certificate :
       (charts 4).2 (charts 2).2 (charts 8).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P4_2
 
@@ -1974,13 +2041,13 @@ noncomputable def certificate :
       (charts 4).2 (charts 3).2 (charts 9).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P4_3
 
@@ -2002,13 +2069,13 @@ noncomputable def certificate :
       (charts 4).2 (charts 4).2 (charts 9).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P4_4
 
@@ -2030,13 +2097,13 @@ noncomputable def certificate :
       (charts 4).2 (charts 5).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P4_5
 
@@ -2058,13 +2125,13 @@ noncomputable def certificate :
       (charts 4).2 (charts 6).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P4_6
 
@@ -2086,13 +2153,13 @@ noncomputable def certificate :
       (charts 4).2 (charts 7).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P4_7
 
@@ -2114,13 +2181,13 @@ noncomputable def certificate :
       (charts 4).2 (charts 8).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P4_8
 
@@ -2142,13 +2209,13 @@ noncomputable def certificate :
       (charts 4).2 (charts 9).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P4_9
 
@@ -2170,13 +2237,13 @@ noncomputable def certificate :
       (charts 4).2 (charts 10).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P4_10
 
@@ -2187,7 +2254,7 @@ noncomputable def certificate :
       (charts 5).2 (charts 0).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -2213,13 +2280,13 @@ noncomputable def certificate :
       (charts 5).2 (charts 1).2 (charts 5).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P5_1
 
@@ -2241,13 +2308,13 @@ noncomputable def certificate :
       (charts 5).2 (charts 2).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P5_2
 
@@ -2269,13 +2336,13 @@ noncomputable def certificate :
       (charts 5).2 (charts 3).2 (charts 5).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P5_3
 
@@ -2297,13 +2364,13 @@ noncomputable def certificate :
       (charts 5).2 (charts 4).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P5_4
 
@@ -2325,13 +2392,13 @@ noncomputable def certificate :
       (charts 5).2 (charts 5).2 (charts 5).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P5_5
 
@@ -2353,13 +2420,13 @@ noncomputable def certificate :
       (charts 5).2 (charts 6).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P5_6
 
@@ -2381,13 +2448,13 @@ noncomputable def certificate :
       (charts 5).2 (charts 7).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P5_7
 
@@ -2409,13 +2476,13 @@ noncomputable def certificate :
       (charts 5).2 (charts 8).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P5_8
 
@@ -2437,13 +2504,13 @@ noncomputable def certificate :
       (charts 5).2 (charts 9).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P5_9
 
@@ -2465,13 +2532,13 @@ noncomputable def certificate :
       (charts 5).2 (charts 10).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P5_10
 
@@ -2482,7 +2549,7 @@ noncomputable def certificate :
       (charts 6).2 (charts 0).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -2508,13 +2575,13 @@ noncomputable def certificate :
       (charts 6).2 (charts 1).2 (charts 6).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P6_1
 
@@ -2536,13 +2603,13 @@ noncomputable def certificate :
       (charts 6).2 (charts 2).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P6_2
 
@@ -2564,13 +2631,13 @@ noncomputable def certificate :
       (charts 6).2 (charts 3).2 (charts 9).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P6_3
 
@@ -2592,13 +2659,13 @@ noncomputable def certificate :
       (charts 6).2 (charts 4).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P6_4
 
@@ -2620,13 +2687,13 @@ noncomputable def certificate :
       (charts 6).2 (charts 5).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P6_5
 
@@ -2648,13 +2715,13 @@ noncomputable def certificate :
       (charts 6).2 (charts 6).2 (charts 9).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P6_6
 
@@ -2676,13 +2743,13 @@ noncomputable def certificate :
       (charts 6).2 (charts 7).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P6_7
 
@@ -2704,13 +2771,13 @@ noncomputable def certificate :
       (charts 6).2 (charts 8).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P6_8
 
@@ -2732,13 +2799,13 @@ noncomputable def certificate :
       (charts 6).2 (charts 9).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P6_9
 
@@ -2760,13 +2827,13 @@ noncomputable def certificate :
       (charts 6).2 (charts 10).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P6_10
 
@@ -2777,7 +2844,7 @@ noncomputable def certificate :
       (charts 7).2 (charts 0).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -2803,13 +2870,13 @@ noncomputable def certificate :
       (charts 7).2 (charts 1).2 (charts 7).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P7_1
 
@@ -2831,13 +2898,13 @@ noncomputable def certificate :
       (charts 7).2 (charts 2).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P7_2
 
@@ -2859,13 +2926,13 @@ noncomputable def certificate :
       (charts 7).2 (charts 3).2 (charts 9).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P7_3
 
@@ -2887,13 +2954,13 @@ noncomputable def certificate :
       (charts 7).2 (charts 4).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P7_4
 
@@ -2915,13 +2982,13 @@ noncomputable def certificate :
       (charts 7).2 (charts 5).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P7_5
 
@@ -2943,13 +3010,13 @@ noncomputable def certificate :
       (charts 7).2 (charts 6).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P7_6
 
@@ -2971,13 +3038,13 @@ noncomputable def certificate :
       (charts 7).2 (charts 7).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P7_7
 
@@ -2999,13 +3066,13 @@ noncomputable def certificate :
       (charts 7).2 (charts 8).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P7_8
 
@@ -3027,13 +3094,13 @@ noncomputable def certificate :
       (charts 7).2 (charts 9).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P7_9
 
@@ -3055,13 +3122,13 @@ noncomputable def certificate :
       (charts 7).2 (charts 10).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P7_10
 
@@ -3072,7 +3139,7 @@ noncomputable def certificate :
       (charts 8).2 (charts 0).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -3098,13 +3165,13 @@ noncomputable def certificate :
       (charts 8).2 (charts 1).2 (charts 8).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P8_1
 
@@ -3126,13 +3193,13 @@ noncomputable def certificate :
       (charts 8).2 (charts 2).2 (charts 8).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P8_2
 
@@ -3154,13 +3221,13 @@ noncomputable def certificate :
       (charts 8).2 (charts 3).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P8_3
 
@@ -3182,13 +3249,13 @@ noncomputable def certificate :
       (charts 8).2 (charts 4).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P8_4
 
@@ -3210,13 +3277,13 @@ noncomputable def certificate :
       (charts 8).2 (charts 5).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P8_5
 
@@ -3238,13 +3305,13 @@ noncomputable def certificate :
       (charts 8).2 (charts 6).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P8_6
 
@@ -3266,13 +3333,13 @@ noncomputable def certificate :
       (charts 8).2 (charts 7).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P8_7
 
@@ -3294,13 +3361,13 @@ noncomputable def certificate :
       (charts 8).2 (charts 8).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P8_8
 
@@ -3322,13 +3389,13 @@ noncomputable def certificate :
       (charts 8).2 (charts 9).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P8_9
 
@@ -3350,13 +3417,13 @@ noncomputable def certificate :
       (charts 8).2 (charts 10).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P8_10
 
@@ -3367,7 +3434,7 @@ noncomputable def certificate :
       (charts 9).2 (charts 0).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -3393,13 +3460,13 @@ noncomputable def certificate :
       (charts 9).2 (charts 1).2 (charts 9).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P9_1
 
@@ -3421,13 +3488,13 @@ noncomputable def certificate :
       (charts 9).2 (charts 2).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P9_2
 
@@ -3449,13 +3516,13 @@ noncomputable def certificate :
       (charts 9).2 (charts 3).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P9_3
 
@@ -3477,13 +3544,13 @@ noncomputable def certificate :
       (charts 9).2 (charts 4).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P9_4
 
@@ -3505,13 +3572,13 @@ noncomputable def certificate :
       (charts 9).2 (charts 5).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P9_5
 
@@ -3533,13 +3600,13 @@ noncomputable def certificate :
       (charts 9).2 (charts 6).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P9_6
 
@@ -3561,13 +3628,13 @@ noncomputable def certificate :
       (charts 9).2 (charts 7).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P9_7
 
@@ -3589,13 +3656,13 @@ noncomputable def certificate :
       (charts 9).2 (charts 8).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P9_8
 
@@ -3617,13 +3684,13 @@ noncomputable def certificate :
       (charts 9).2 (charts 9).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P9_9
 
@@ -3645,13 +3712,13 @@ noncomputable def certificate :
       (charts 9).2 (charts 10).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P9_10
 
@@ -3662,7 +3729,7 @@ noncomputable def certificate :
       (charts 10).2 (charts 0).2 (charts 0).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -3688,13 +3755,13 @@ noncomputable def certificate :
       (charts 10).2 (charts 1).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P10_1
 
@@ -3716,13 +3783,13 @@ noncomputable def certificate :
       (charts 10).2 (charts 2).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P10_2
 
@@ -3744,13 +3811,13 @@ noncomputable def certificate :
       (charts 10).2 (charts 3).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P10_3
 
@@ -3772,13 +3839,13 @@ noncomputable def certificate :
       (charts 10).2 (charts 4).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P10_4
 
@@ -3800,13 +3867,13 @@ noncomputable def certificate :
       (charts 10).2 (charts 5).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P10_5
 
@@ -3828,13 +3895,13 @@ noncomputable def certificate :
       (charts 10).2 (charts 6).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P10_6
 
@@ -3856,13 +3923,13 @@ noncomputable def certificate :
       (charts 10).2 (charts 7).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P10_7
 
@@ -3884,13 +3951,13 @@ noncomputable def certificate :
       (charts 10).2 (charts 8).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P10_8
 
@@ -3912,13 +3979,13 @@ noncomputable def certificate :
       (charts 10).2 (charts 9).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P10_9
 
@@ -3940,13 +4007,13 @@ noncomputable def certificate :
       (charts 10).2 (charts 10).2 (charts 10).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 end P10_10
 
@@ -4097,21 +4164,18 @@ private def basis (j : Fin 0) : ℕ := 0
 private def dual (j : Fin 0) : ℕ := 0
 
 def denominatorChart : BinaryCoordinateSpace 8 0 :=
-  binaryCoordinateSpaceOfMasks 8 0 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 0 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 0).2.space ≤ (states 0).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-  apply (charts 0).2.le_of_basis_mem
-  intro j
-  native_decide
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 0).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 noncomputable def certificate :
     BinaryCoordinateCoupledDenominatorCertificate representation topAmbient
@@ -4124,7 +4188,7 @@ noncomputable def certificate :
 theorem quotient_le
     (h : (states 0).toSubmodule ≤ (states 0).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 0).toSubmodule ⫽
+        ((states 0).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 0)
             (states 0).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4132,7 +4196,7 @@ theorem quotient_le
       representation topAmbient (states 0) (charts 0).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 0).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q0_0
 
@@ -4142,21 +4206,21 @@ private def basis (j : Fin 0) : ℕ := 0
 private def dual (j : Fin 0) : ℕ := 0
 
 def denominatorChart : BinaryCoordinateSpace 8 0 :=
-  binaryCoordinateSpaceOfMasks 8 0 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 0 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 0).2.space ≤ (states 1).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 0).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 1).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 noncomputable def certificate :
     BinaryCoordinateCoupledDenominatorCertificate representation topAmbient
@@ -4169,7 +4233,7 @@ noncomputable def certificate :
 theorem quotient_le
     (h : (states 0).toSubmodule ≤ (states 1).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 1).toSubmodule ⫽
+        ((states 1).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 1)
             (states 0).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4177,7 +4241,7 @@ theorem quotient_le
       representation topAmbient (states 1) (charts 0).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 1).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q0_1
 
@@ -4187,21 +4251,21 @@ private def basis (j : Fin 1) : ℕ := 255
 private def dual (j : Fin 1) : ℕ := 128
 
 def denominatorChart : BinaryCoordinateSpace 8 1 :=
-  binaryCoordinateSpaceOfMasks 8 1 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 1 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 0).2.space ≤ (states 2).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 0).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 2).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 1) : ℕ :=
   1
@@ -4230,12 +4294,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 0).toSubmodule ≤ (states 2).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 2).toSubmodule ⫽
+        ((states 2).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 2)
             (states 0).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4243,7 +4307,7 @@ theorem quotient_le
       representation topAmbient (states 2) (charts 0).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 2).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q0_2
 
@@ -4253,21 +4317,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 0).2.space ≤ (states 3).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 0).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 3).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2))
@@ -4296,12 +4360,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 0).toSubmodule ≤ (states 3).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 3).toSubmodule ⫽
+        ((states 3).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 3)
             (states 0).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4309,7 +4373,7 @@ theorem quotient_le
       representation topAmbient (states 3) (charts 0).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 3).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q0_3
 
@@ -4319,21 +4383,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 0).2.space ≤ (states 4).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 0).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 4).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2))
@@ -4362,12 +4426,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 0).toSubmodule ≤ (states 4).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 4).toSubmodule ⫽
+        ((states 4).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 4)
             (states 0).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4375,7 +4439,7 @@ theorem quotient_le
       representation topAmbient (states 4) (charts 0).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 4).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q0_4
 
@@ -4385,21 +4449,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 0).2.space ≤ (states 5).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 0).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 5).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 2 else (if j.val < 2 then 3 else 1))
@@ -4428,12 +4492,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 0).toSubmodule ≤ (states 5).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 5).toSubmodule ⫽
+        ((states 5).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 5)
             (states 0).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4441,7 +4505,7 @@ theorem quotient_le
       representation topAmbient (states 5) (charts 0).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 5).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q0_5
 
@@ -4451,21 +4515,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 0).2.space ≤ (states 6).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 0).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 6).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 2 else (if j.val < 2 then 3 else 1))
@@ -4494,12 +4558,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 0).toSubmodule ≤ (states 6).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 6).toSubmodule ⫽
+        ((states 6).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 6)
             (states 0).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4507,7 +4571,7 @@ theorem quotient_le
       representation topAmbient (states 6) (charts 0).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 6).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q0_6
 
@@ -4517,21 +4581,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 0).2.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 0).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 2 else (if j.val < 2 then 3 else 1))
@@ -4560,12 +4624,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 0).toSubmodule ≤ (states 7).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 7).toSubmodule ⫽
+        ((states 7).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 7)
             (states 0).toSubmodule h) ≤ 2 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4573,7 +4637,7 @@ theorem quotient_le
       representation topAmbient (states 7) (charts 0).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 7).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q0_7
 
@@ -4583,21 +4647,21 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 0).2.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 0).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 4 then 3 else (if j.val < 5 then 2 else 2)))
@@ -4626,12 +4690,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 0).toSubmodule ≤ (states 8).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 8).toSubmodule ⫽
+        ((states 8).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 8)
             (states 0).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4639,7 +4703,7 @@ theorem quotient_le
       representation topAmbient (states 8) (charts 0).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 8).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q0_8
 
@@ -4649,21 +4713,21 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 0).2.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 0).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 4 then 4 else (if j.val < 5 then 5 else 3)))
@@ -4692,12 +4756,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 0).toSubmodule ≤ (states 9).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 9).toSubmodule ⫽
+        ((states 9).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 9)
             (states 0).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4705,7 +4769,7 @@ theorem quotient_le
       representation topAmbient (states 9) (charts 0).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 9).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q0_9
 
@@ -4715,21 +4779,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 0).2.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 0).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 3 else 1)) else (if j.val < 5 then (if j.val < 4 then 1 else 3) else (if j.val < 6 then 4 else 2)))
@@ -4758,12 +4822,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 0).toSubmodule ≤ (states 10).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 10).toSubmodule ⫽
+        ((states 10).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 10)
             (states 0).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4771,7 +4835,7 @@ theorem quotient_le
       representation topAmbient (states 10) (charts 0).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q0_10
 
@@ -4781,21 +4845,18 @@ private def basis (j : Fin 1) : ℕ := 255
 private def dual (j : Fin 1) : ℕ := 128
 
 def denominatorChart : BinaryCoordinateSpace 8 1 :=
-  binaryCoordinateSpaceOfMasks 8 1 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 1 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 1).2.space ≤ (states 1).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-  apply (charts 1).2.le_of_basis_mem
-  intro j
-  native_decide
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 1).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 1) : ℕ :=
   1
@@ -4824,12 +4885,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 1).toSubmodule ≤ (states 1).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 1).toSubmodule ⫽
+        ((states 1).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 1)
             (states 1).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4837,7 +4898,7 @@ theorem quotient_le
       representation topAmbient (states 1) (charts 1).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 1).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q1_1
 
@@ -4847,21 +4908,21 @@ private def basis (j : Fin 1) : ℕ := 255
 private def dual (j : Fin 1) : ℕ := 128
 
 def denominatorChart : BinaryCoordinateSpace 8 1 :=
-  binaryCoordinateSpaceOfMasks 8 1 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 1 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 1).2.space ≤ (states 2).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 1).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 2).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 1) : ℕ :=
   1
@@ -4890,12 +4951,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 1).toSubmodule ≤ (states 2).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 2).toSubmodule ⫽
+        ((states 2).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 2)
             (states 1).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4903,7 +4964,7 @@ theorem quotient_le
       representation topAmbient (states 2) (charts 1).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 2).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q1_2
 
@@ -4913,21 +4974,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 1).2.space ≤ (states 3).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 1).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 3).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2))
@@ -4956,12 +5017,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 1).toSubmodule ≤ (states 3).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 3).toSubmodule ⫽
+        ((states 3).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 3)
             (states 1).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -4969,7 +5030,7 @@ theorem quotient_le
       representation topAmbient (states 3) (charts 1).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 3).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q1_3
 
@@ -4979,21 +5040,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 1).2.space ≤ (states 4).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 1).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 4).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2))
@@ -5022,12 +5083,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 1).toSubmodule ≤ (states 4).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 4).toSubmodule ⫽
+        ((states 4).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 4)
             (states 1).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5035,7 +5096,7 @@ theorem quotient_le
       representation topAmbient (states 4) (charts 1).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 4).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q1_4
 
@@ -5045,21 +5106,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 1).2.space ≤ (states 5).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 1).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 5).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2))
@@ -5088,12 +5149,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 1).toSubmodule ≤ (states 5).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 5).toSubmodule ⫽
+        ((states 5).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 5)
             (states 1).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5101,7 +5162,7 @@ theorem quotient_le
       representation topAmbient (states 5) (charts 1).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 5).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q1_5
 
@@ -5111,21 +5172,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 1).2.space ≤ (states 6).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 1).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 6).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2))
@@ -5154,12 +5215,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 1).toSubmodule ≤ (states 6).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 6).toSubmodule ⫽
+        ((states 6).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 6)
             (states 1).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5167,7 +5228,7 @@ theorem quotient_le
       representation topAmbient (states 6) (charts 1).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 6).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q1_6
 
@@ -5177,21 +5238,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 1).2.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 1).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2))
@@ -5220,12 +5281,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 1).toSubmodule ≤ (states 7).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 7).toSubmodule ⫽
+        ((states 7).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 7)
             (states 1).toSubmodule h) ≤ 2 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5233,7 +5294,7 @@ theorem quotient_le
       representation topAmbient (states 7) (charts 1).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 7).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q1_7
 
@@ -5243,21 +5304,21 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 1).2.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 1).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 4 then 4 else (if j.val < 5 then 3 else 3)))
@@ -5286,12 +5347,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 1).toSubmodule ≤ (states 8).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 8).toSubmodule ⫽
+        ((states 8).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 8)
             (states 1).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5299,7 +5360,7 @@ theorem quotient_le
       representation topAmbient (states 8) (charts 1).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 8).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q1_8
 
@@ -5309,21 +5370,21 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 1).2.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 1).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 4 then 4 else (if j.val < 5 then 3 else 3)))
@@ -5352,12 +5413,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 1).toSubmodule ≤ (states 9).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 9).toSubmodule ⫽
+        ((states 9).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 9)
             (states 1).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5365,7 +5426,7 @@ theorem quotient_le
       representation topAmbient (states 9) (charts 1).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 9).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q1_9
 
@@ -5375,21 +5436,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 1).2.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 1).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 3 else 1)) else (if j.val < 5 then (if j.val < 4 then 1 else 6) else (if j.val < 6 then 5 else 5)))
@@ -5418,12 +5479,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 1).toSubmodule ≤ (states 10).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 10).toSubmodule ⫽
+        ((states 10).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 10)
             (states 1).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5431,7 +5492,7 @@ theorem quotient_le
       representation topAmbient (states 10) (charts 1).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q1_10
 
@@ -5441,21 +5502,18 @@ private def basis (j : Fin 2) : ℕ := (if j.val < 1 then 15 else 240)
 private def dual (j : Fin 2) : ℕ := (if j.val < 1 then 8 else 128)
 
 def denominatorChart : BinaryCoordinateSpace 8 2 :=
-  binaryCoordinateSpaceOfMasks 8 2 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 2 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 2).2.space ≤ (states 2).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-  apply (charts 2).2.le_of_basis_mem
-  intro j
-  native_decide
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 2).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 2) : ℕ :=
   (if j.val < 1 then 1 else 1)
@@ -5484,12 +5542,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 2).toSubmodule ≤ (states 2).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 2).toSubmodule ⫽
+        ((states 2).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 2)
             (states 2).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5497,7 +5555,7 @@ theorem quotient_le
       representation topAmbient (states 2) (charts 2).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 2).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q2_2
 
@@ -5507,21 +5565,21 @@ private def basis (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 15 
 private def dual (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 8 else 32) else (if j.val < 3 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 4 :=
-  binaryCoordinateSpaceOfMasks 8 4 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 4 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 2).2.space ≤ (states 4).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 2).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 4).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 4) : ℕ :=
   (if j.val < 2 then (if j.val < 1 then 1 else 4) else (if j.val < 3 then 3 else 2))
@@ -5550,12 +5608,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 2).toSubmodule ≤ (states 4).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 4).toSubmodule ⫽
+        ((states 4).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 4)
             (states 2).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5563,7 +5621,7 @@ theorem quotient_le
       representation topAmbient (states 4) (charts 2).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 4).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q2_4
 
@@ -5573,21 +5631,21 @@ private def basis (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 15 
 private def dual (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 8 else 32) else (if j.val < 3 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 4 :=
-  binaryCoordinateSpaceOfMasks 8 4 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 4 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 2).2.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 2).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 4) : ℕ :=
   (if j.val < 2 then (if j.val < 1 then 1 else 4) else (if j.val < 3 then 3 else 2))
@@ -5616,12 +5674,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 2).toSubmodule ≤ (states 7).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 7).toSubmodule ⫽
+        ((states 7).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 7)
             (states 2).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5629,7 +5687,7 @@ theorem quotient_le
       representation topAmbient (states 7) (charts 2).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 7).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q2_7
 
@@ -5639,21 +5697,21 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 2).2.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 2).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 4 then 3 else (if j.val < 5 then 2 else 2)))
@@ -5682,12 +5740,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 2).toSubmodule ≤ (states 8).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 8).toSubmodule ⫽
+        ((states 8).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 8)
             (states 2).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5695,7 +5753,7 @@ theorem quotient_le
       representation topAmbient (states 8) (charts 2).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 8).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q2_8
 
@@ -5705,21 +5763,21 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 2).2.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 2).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 4 then 3 else (if j.val < 5 then 2 else 2)))
@@ -5748,12 +5806,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 2).toSubmodule ≤ (states 9).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 9).toSubmodule ⫽
+        ((states 9).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 9)
             (states 2).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5761,7 +5819,7 @@ theorem quotient_le
       representation topAmbient (states 9) (charts 2).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 9).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q2_9
 
@@ -5771,21 +5829,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 2).2.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 2).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 5 then (if j.val < 4 then 1 else 4) else (if j.val < 6 then 3 else 3)))
@@ -5814,12 +5872,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 2).toSubmodule ≤ (states 10).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 10).toSubmodule ⫽
+        ((states 10).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 10)
             (states 2).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5827,7 +5885,7 @@ theorem quotient_le
       representation topAmbient (states 10) (charts 2).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q2_10
 
@@ -5837,21 +5895,18 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 3).2.space ≤ (states 3).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-  apply (charts 3).2.le_of_basis_mem
-  intro j
-  native_decide
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 3).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 1 else (if j.val < 2 then 1 else 1))
@@ -5880,12 +5935,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 3).toSubmodule ≤ (states 3).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 3).toSubmodule ⫽
+        ((states 3).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 3)
             (states 3).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5893,7 +5948,7 @@ theorem quotient_le
       representation topAmbient (states 3) (charts 3).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 3).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q3_3
 
@@ -5903,21 +5958,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 3).2.space ≤ (states 4).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 3).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 4).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 1 else (if j.val < 2 then 1 else 1))
@@ -5946,12 +6001,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 3).toSubmodule ≤ (states 4).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 4).toSubmodule ⫽
+        ((states 4).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 4)
             (states 3).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -5959,7 +6014,7 @@ theorem quotient_le
       representation topAmbient (states 4) (charts 3).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 4).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q3_4
 
@@ -5969,21 +6024,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 3).2.space ≤ (states 5).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 3).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 5).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 1 else (if j.val < 2 then 1 else 1))
@@ -6012,12 +6067,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 3).toSubmodule ≤ (states 5).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 5).toSubmodule ⫽
+        ((states 5).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 5)
             (states 3).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6025,7 +6080,7 @@ theorem quotient_le
       representation topAmbient (states 5) (charts 3).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 5).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q3_5
 
@@ -6035,21 +6090,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 3).2.space ≤ (states 6).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 3).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 6).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 1 else (if j.val < 2 then 1 else 1))
@@ -6078,12 +6133,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 3).toSubmodule ≤ (states 6).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 6).toSubmodule ⫽
+        ((states 6).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 6)
             (states 3).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6091,7 +6146,7 @@ theorem quotient_le
       representation topAmbient (states 6) (charts 3).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 6).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q3_6
 
@@ -6101,21 +6156,21 @@ private def basis (j : Fin 3) : ℕ := (if j.val < 1 then 51 else (if j.val < 2 
 private def dual (j : Fin 3) : ℕ := (if j.val < 1 then 32 else (if j.val < 2 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 3 :=
-  binaryCoordinateSpaceOfMasks 8 3 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 3 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 3).2.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 3).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 3) : ℕ :=
   (if j.val < 1 then 1 else (if j.val < 2 then 1 else 1))
@@ -6144,12 +6199,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 3).toSubmodule ≤ (states 7).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 7).toSubmodule ⫽
+        ((states 7).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 7)
             (states 3).toSubmodule h) ≤ 2 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6157,7 +6212,7 @@ theorem quotient_le
       representation topAmbient (states 7) (charts 3).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 7).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q3_7
 
@@ -6167,21 +6222,21 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 3).2.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 3).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 4 then 4 else (if j.val < 5 then 3 else 3)))
@@ -6210,12 +6265,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 3).toSubmodule ≤ (states 8).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 8).toSubmodule ⫽
+        ((states 8).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 8)
             (states 3).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6223,7 +6278,7 @@ theorem quotient_le
       representation topAmbient (states 8) (charts 3).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 8).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q3_8
 
@@ -6233,21 +6288,21 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 3).2.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 3).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 4 then 4 else (if j.val < 5 then 3 else 3)))
@@ -6276,12 +6331,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 3).toSubmodule ≤ (states 9).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 9).toSubmodule ⫽
+        ((states 9).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 9)
             (states 3).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6289,7 +6344,7 @@ theorem quotient_le
       representation topAmbient (states 9) (charts 3).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 9).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q3_9
 
@@ -6299,21 +6354,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 3).2.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 3).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 3 else 1)) else (if j.val < 5 then (if j.val < 4 then 1 else 4) else (if j.val < 6 then 5 else 3)))
@@ -6342,12 +6397,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 3).toSubmodule ≤ (states 10).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 10).toSubmodule ⫽
+        ((states 10).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 10)
             (states 3).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6355,7 +6410,7 @@ theorem quotient_le
       representation topAmbient (states 10) (charts 3).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q3_10
 
@@ -6365,21 +6420,18 @@ private def basis (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 15 
 private def dual (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 8 else 32) else (if j.val < 3 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 4 :=
-  binaryCoordinateSpaceOfMasks 8 4 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 4 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 4).2.space ≤ (states 4).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-  apply (charts 4).2.le_of_basis_mem
-  intro j
-  native_decide
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 4).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 4) : ℕ :=
   (if j.val < 2 then (if j.val < 1 then 1 else 1) else (if j.val < 3 then 1 else 1))
@@ -6408,12 +6460,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 4).toSubmodule ≤ (states 4).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 4).toSubmodule ⫽
+        ((states 4).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 4)
             (states 4).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6421,7 +6473,7 @@ theorem quotient_le
       representation topAmbient (states 4) (charts 4).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 4).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q4_4
 
@@ -6431,21 +6483,21 @@ private def basis (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 15 
 private def dual (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 8 else 32) else (if j.val < 3 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 4 :=
-  binaryCoordinateSpaceOfMasks 8 4 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 4 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 4).2.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 4).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 4) : ℕ :=
   (if j.val < 2 then (if j.val < 1 then 1 else 1) else (if j.val < 3 then 1 else 1))
@@ -6474,12 +6526,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 4).toSubmodule ≤ (states 7).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 7).toSubmodule ⫽
+        ((states 7).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 7)
             (states 4).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6487,7 +6539,7 @@ theorem quotient_le
       representation topAmbient (states 7) (charts 4).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 7).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q4_7
 
@@ -6497,21 +6549,21 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 4).2.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 4).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 4 then 4 else (if j.val < 5 then 3 else 2)))
@@ -6540,12 +6592,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 4).toSubmodule ≤ (states 8).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 8).toSubmodule ⫽
+        ((states 8).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 8)
             (states 4).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6553,7 +6605,7 @@ theorem quotient_le
       representation topAmbient (states 8) (charts 4).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 8).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q4_8
 
@@ -6563,21 +6615,21 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 4).2.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 4).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 4 then 4 else (if j.val < 5 then 3 else 2)))
@@ -6606,12 +6658,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 4).toSubmodule ≤ (states 9).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 9).toSubmodule ⫽
+        ((states 9).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 9)
             (states 4).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6619,7 +6671,7 @@ theorem quotient_le
       representation topAmbient (states 9) (charts 4).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 9).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q4_9
 
@@ -6629,21 +6681,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 4).2.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 4).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 5 then (if j.val < 4 then 1 else 5) else (if j.val < 6 then 4 else 3)))
@@ -6672,12 +6724,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 4).toSubmodule ≤ (states 10).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 10).toSubmodule ⫽
+        ((states 10).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 10)
             (states 4).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6685,7 +6737,7 @@ theorem quotient_le
       representation topAmbient (states 10) (charts 4).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q4_10
 
@@ -6695,21 +6747,18 @@ private def basis (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 17 
 private def dual (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 16 else 32) else (if j.val < 3 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 4 :=
-  binaryCoordinateSpaceOfMasks 8 4 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 4 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 5).2.space ≤ (states 5).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-  apply (charts 5).2.le_of_basis_mem
-  intro j
-  native_decide
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 5).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 4) : ℕ :=
   (if j.val < 2 then (if j.val < 1 then 1 else 1) else (if j.val < 3 then 1 else 1))
@@ -6738,12 +6787,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 5).toSubmodule ≤ (states 5).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 5).toSubmodule ⫽
+        ((states 5).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 5)
             (states 5).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6751,7 +6800,7 @@ theorem quotient_le
       representation topAmbient (states 5) (charts 5).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 5).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q5_5
 
@@ -6761,21 +6810,21 @@ private def basis (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 17 
 private def dual (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 16 else 32) else (if j.val < 3 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 4 :=
-  binaryCoordinateSpaceOfMasks 8 4 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 4 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 5).2.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 5).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 4) : ℕ :=
   (if j.val < 2 then (if j.val < 1 then 1 else 1) else (if j.val < 3 then 1 else 1))
@@ -6804,12 +6853,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 5).toSubmodule ≤ (states 7).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 7).toSubmodule ⫽
+        ((states 7).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 7)
             (states 5).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6817,7 +6866,7 @@ theorem quotient_le
       representation topAmbient (states 7) (charts 5).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 7).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q5_7
 
@@ -6827,21 +6876,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 5).2.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 5).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 5 then (if j.val < 4 then 1 else 4) else (if j.val < 6 then 3 else 3)))
@@ -6870,12 +6919,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 5).toSubmodule ≤ (states 9).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 9).toSubmodule ⫽
+        ((states 9).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 9)
             (states 5).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6883,7 +6932,7 @@ theorem quotient_le
       representation topAmbient (states 9) (charts 5).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 9).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q5_9
 
@@ -6893,21 +6942,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 5).2.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 5).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 3 else 1)) else (if j.val < 5 then (if j.val < 4 then 1 else 3) else (if j.val < 6 then 4 else 2)))
@@ -6936,12 +6985,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 5).toSubmodule ≤ (states 10).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 10).toSubmodule ⫽
+        ((states 10).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 10)
             (states 5).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -6949,7 +6998,7 @@ theorem quotient_le
       representation topAmbient (states 10) (charts 5).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q5_10
 
@@ -6959,21 +7008,18 @@ private def basis (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 30 
 private def dual (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 16 else 32) else (if j.val < 3 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 4 :=
-  binaryCoordinateSpaceOfMasks 8 4 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 4 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 6).2.space ≤ (states 6).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-  apply (charts 6).2.le_of_basis_mem
-  intro j
-  native_decide
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 6).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 4) : ℕ :=
   (if j.val < 2 then (if j.val < 1 then 1 else 1) else (if j.val < 3 then 1 else 1))
@@ -7002,12 +7048,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 6).toSubmodule ≤ (states 6).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 6).toSubmodule ⫽
+        ((states 6).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 6)
             (states 6).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7015,7 +7061,7 @@ theorem quotient_le
       representation topAmbient (states 6) (charts 6).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 6).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q6_6
 
@@ -7025,21 +7071,21 @@ private def basis (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 30 
 private def dual (j : Fin 4) : ℕ := (if j.val < 2 then (if j.val < 1 then 16 else 32) else (if j.val < 3 then 64 else 128))
 
 def denominatorChart : BinaryCoordinateSpace 8 4 :=
-  binaryCoordinateSpaceOfMasks 8 4 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 4 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 6).2.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 6).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 4) : ℕ :=
   (if j.val < 2 then (if j.val < 1 then 1 else 1) else (if j.val < 3 then 1 else 1))
@@ -7068,12 +7114,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 6).toSubmodule ≤ (states 7).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 7).toSubmodule ⫽
+        ((states 7).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 7)
             (states 6).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7081,7 +7127,7 @@ theorem quotient_le
       representation topAmbient (states 7) (charts 6).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 7).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q6_7
 
@@ -7091,21 +7137,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 6).2.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 6).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 5 then (if j.val < 4 then 2 else 3) else (if j.val < 6 then 2 else 2)))
@@ -7134,12 +7180,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 6).toSubmodule ≤ (states 9).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 9).toSubmodule ⫽
+        ((states 9).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 9)
             (states 6).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7147,7 +7193,7 @@ theorem quotient_le
       representation topAmbient (states 9) (charts 6).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 9).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q6_9
 
@@ -7157,21 +7203,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 6).2.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 6).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 3 else 1)) else (if j.val < 5 then (if j.val < 4 then 3 else 3) else (if j.val < 6 then 2 else 2)))
@@ -7200,12 +7246,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 6).toSubmodule ≤ (states 10).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 10).toSubmodule ⫽
+        ((states 10).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 10)
             (states 6).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7213,7 +7259,7 @@ theorem quotient_le
       representation topAmbient (states 10) (charts 6).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q6_10
 
@@ -7223,21 +7269,18 @@ private def basis (j : Fin 5) : ℕ := (if j.val < 2 then (if j.val < 1 then 15 
 private def dual (j : Fin 5) : ℕ := (if j.val < 2 then (if j.val < 1 then 8 else 16) else (if j.val < 3 then 32 else (if j.val < 4 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 5 :=
-  binaryCoordinateSpaceOfMasks 8 5 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 5 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 7).2.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-  apply (charts 7).2.le_of_basis_mem
-  intro j
-  native_decide
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 7).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 5) : ℕ :=
   (if j.val < 2 then (if j.val < 1 then 1 else 1) else (if j.val < 3 then 1 else (if j.val < 4 then 1 else 1)))
@@ -7266,12 +7309,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 7).toSubmodule ≤ (states 7).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 7).toSubmodule ⫽
+        ((states 7).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 7)
             (states 7).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7279,7 +7322,7 @@ theorem quotient_le
       representation topAmbient (states 7) (charts 7).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 7).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q7_7
 
@@ -7289,21 +7332,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 7).2.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 7).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 5 then (if j.val < 4 then 1 else 4) else (if j.val < 6 then 3 else 2)))
@@ -7332,12 +7375,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 7).toSubmodule ≤ (states 9).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 9).toSubmodule ⫽
+        ((states 9).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 9)
             (states 7).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7345,7 +7388,7 @@ theorem quotient_le
       representation topAmbient (states 9) (charts 7).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 9).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q7_9
 
@@ -7355,21 +7398,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 7).2.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 7).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 3 else (if j.val < 2 then 2 else 2)) else (if j.val < 5 then (if j.val < 4 then 1 else 4) else (if j.val < 6 then 3 else 2)))
@@ -7398,12 +7441,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 7).toSubmodule ≤ (states 10).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 10).toSubmodule ⫽
+        ((states 10).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 10)
             (states 7).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7411,7 +7454,7 @@ theorem quotient_le
       representation topAmbient (states 10) (charts 7).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q7_10
 
@@ -7421,21 +7464,18 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 8).2.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-  apply (charts 8).2.le_of_basis_mem
-  intro j
-  native_decide
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 8).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 1 else (if j.val < 2 then 1 else 1)) else (if j.val < 4 then 1 else (if j.val < 5 then 1 else 1)))
@@ -7464,12 +7504,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 8).toSubmodule ≤ (states 8).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 8).toSubmodule ⫽
+        ((states 8).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 8)
             (states 8).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7477,7 +7517,7 @@ theorem quotient_le
       representation topAmbient (states 8) (charts 8).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 8).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q8_8
 
@@ -7487,21 +7527,21 @@ private def basis (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 6) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 4 then 32 else (if j.val < 5 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 6 :=
-  binaryCoordinateSpaceOfMasks 8 6 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 6 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 8).2.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 8).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 6) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 1 else (if j.val < 2 then 1 else 1)) else (if j.val < 4 then 1 else (if j.val < 5 then 1 else 1)))
@@ -7530,12 +7570,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 8).toSubmodule ≤ (states 9).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 9).toSubmodule ⫽
+        ((states 9).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 9)
             (states 8).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7543,7 +7583,7 @@ theorem quotient_le
       representation topAmbient (states 9) (charts 8).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 9).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q8_9
 
@@ -7553,21 +7593,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 8).2.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 8).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 1 else (if j.val < 2 then 1 else 1)) else (if j.val < 5 then (if j.val < 4 then 1 else 2) else (if j.val < 6 then 2 else 2)))
@@ -7596,12 +7636,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 8).toSubmodule ≤ (states 10).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 10).toSubmodule ⫽
+        ((states 10).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 10)
             (states 8).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7609,7 +7649,7 @@ theorem quotient_le
       representation topAmbient (states 10) (charts 8).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q8_10
 
@@ -7619,21 +7659,18 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 9).2.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-  apply (charts 9).2.le_of_basis_mem
-  intro j
-  native_decide
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 9).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 1 else (if j.val < 2 then 1 else 1)) else (if j.val < 5 then (if j.val < 4 then 1 else 1) else (if j.val < 6 then 1 else 1)))
@@ -7662,12 +7699,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 9).toSubmodule ≤ (states 9).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 9).toSubmodule ⫽
+        ((states 9).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 9)
             (states 9).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7675,7 +7712,7 @@ theorem quotient_le
       representation topAmbient (states 9) (charts 9).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 9).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q9_9
 
@@ -7685,21 +7722,21 @@ private def basis (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 3 e
 private def dual (j : Fin 7) : ℕ := (if j.val < 3 then (if j.val < 1 then 2 else (if j.val < 2 then 4 else 8)) else (if j.val < 5 then (if j.val < 4 then 16 else 32) else (if j.val < 6 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 7 :=
-  binaryCoordinateSpaceOfMasks 8 7 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 7 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 9).2.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply (charts 9).2.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 7) : ℕ :=
   (if j.val < 3 then (if j.val < 1 then 1 else (if j.val < 2 then 1 else 1)) else (if j.val < 5 then (if j.val < 4 then 1 else 1) else (if j.val < 6 then 1 else 1)))
@@ -7728,12 +7765,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 9).toSubmodule ≤ (states 10).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 10).toSubmodule ⫽
+        ((states 10).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 10)
             (states 9).toSubmodule h) ≤ 1 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7741,7 +7778,7 @@ theorem quotient_le
       representation topAmbient (states 10) (charts 9).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q9_10
 
@@ -7751,21 +7788,18 @@ private def basis (j : Fin 8) : ℕ := (if j.val < 4 then (if j.val < 2 then (if
 private def dual (j : Fin 8) : ℕ := (if j.val < 4 then (if j.val < 2 then (if j.val < 1 then 1 else 2) else (if j.val < 3 then 4 else 8)) else (if j.val < 6 then (if j.val < 5 then 16 else 32) else (if j.val < 7 then 64 else 128)))
 
 def denominatorChart : BinaryCoordinateSpace 8 8 :=
-  binaryCoordinateSpaceOfMasks 8 8 basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks 8 8 basis dual (by decide +kernel +revert)
 
 private theorem product_le_upper :
     (charts 10).2.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
-  apply (charts 10).2.le_of_basis_mem
-  intro j
-  native_decide
 
 private theorem space_le_state :
     denominatorChart.space ≤ (states 10).toSubmodule := by
   rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 private def termCount (j : Fin 8) : ℕ :=
   (if j.val < 4 then (if j.val < 2 then (if j.val < 1 then 1 else 1) else (if j.val < 3 then 1 else 1)) else (if j.val < 6 then (if j.val < 5 then 1 else 1) else (if j.val < 7 then 1 else 1)))
@@ -7794,12 +7828,12 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 theorem quotient_le
     (h : (states 10).toSubmodule ≤ (states 10).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states 10).toSubmodule ⫽
+        ((states 10).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states 10)
             (states 10).toSubmodule h) ≤ 0 := by
   simpa only [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] using
@@ -7807,7 +7841,7 @@ theorem quotient_le
       representation topAmbient (states 10) (charts 10).2
       product_le_upper denominatorChart certificate (by
         rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, (charts 10).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end Q10_10
 
@@ -7837,7 +7871,7 @@ def quotientHead (p ell : Fin 11) : ℕ :=
 theorem quotient_le (p ell : Fin 11)
     (h : (states p).toSubmodule ≤ (states ell).toSubmodule) :
     Module.finrank (ZMod 2)
-      ((states ell).toSubmodule ⫽
+      ((states ell).toSubmodule ⧸
         binaryCoupledDenominator representation topAmbient (states ell)
           (states p).toSubmodule h) ≤ quotientHead p ell := by
   rcases p with ⟨p, hp⟩
@@ -7856,7 +7890,7 @@ theorem quotient_le (p ell : Fin 11)
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 1).2.not_le_of_basis_not_mem
-      (charts 0).2.space 0 (by native_decide)) h
+      (charts 0).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q1_1.quotient_le h
   · exact Q1_2.quotient_le h
   · exact Q1_3.quotient_le h
@@ -7870,25 +7904,25 @@ theorem quotient_le (p ell : Fin 11)
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 2).2.not_le_of_basis_not_mem
-      (charts 0).2.space 0 (by native_decide)) h
+      (charts 0).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 2).2.not_le_of_basis_not_mem
-      (charts 1).2.space 0 (by native_decide)) h
+      (charts 1).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q2_2.quotient_le h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 2).2.not_le_of_basis_not_mem
-      (charts 3).2.space 0 (by native_decide)) h
+      (charts 3).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q2_4.quotient_le h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 2).2.not_le_of_basis_not_mem
-      (charts 5).2.space 0 (by native_decide)) h
+      (charts 5).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 2).2.not_le_of_basis_not_mem
-      (charts 6).2.space 0 (by native_decide)) h
+      (charts 6).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q2_7.quotient_le h
   · exact Q2_8.quotient_le h
   · exact Q2_9.quotient_le h
@@ -7896,15 +7930,15 @@ theorem quotient_le (p ell : Fin 11)
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 3).2.not_le_of_basis_not_mem
-      (charts 0).2.space 0 (by native_decide)) h
+      (charts 0).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 3).2.not_le_of_basis_not_mem
-      (charts 1).2.space 0 (by native_decide)) h
+      (charts 1).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 3).2.not_le_of_basis_not_mem
-      (charts 2).2.space 0 (by native_decide)) h
+      (charts 2).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q3_3.quotient_le h
   · exact Q3_4.quotient_le h
   · exact Q3_5.quotient_le h
@@ -7916,28 +7950,28 @@ theorem quotient_le (p ell : Fin 11)
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 4).2.not_le_of_basis_not_mem
-      (charts 0).2.space 0 (by native_decide)) h
+      (charts 0).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 4).2.not_le_of_basis_not_mem
-      (charts 1).2.space 0 (by native_decide)) h
+      (charts 1).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 4).2.not_le_of_basis_not_mem
-      (charts 2).2.space 1 (by native_decide)) h
+      (charts 2).2.space ⟨1, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 4).2.not_le_of_basis_not_mem
-      (charts 3).2.space 0 (by native_decide)) h
+      (charts 3).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q4_4.quotient_le h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 4).2.not_le_of_basis_not_mem
-      (charts 5).2.space 0 (by native_decide)) h
+      (charts 5).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 4).2.not_le_of_basis_not_mem
-      (charts 6).2.space 0 (by native_decide)) h
+      (charts 6).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q4_7.quotient_le h
   · exact Q4_8.quotient_le h
   · exact Q4_9.quotient_le h
@@ -7945,215 +7979,215 @@ theorem quotient_le (p ell : Fin 11)
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 5).2.not_le_of_basis_not_mem
-      (charts 0).2.space 0 (by native_decide)) h
+      (charts 0).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 5).2.not_le_of_basis_not_mem
-      (charts 1).2.space 0 (by native_decide)) h
+      (charts 1).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 5).2.not_le_of_basis_not_mem
-      (charts 2).2.space 0 (by native_decide)) h
+      (charts 2).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 5).2.not_le_of_basis_not_mem
-      (charts 3).2.space 0 (by native_decide)) h
+      (charts 3).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 5).2.not_le_of_basis_not_mem
-      (charts 4).2.space 0 (by native_decide)) h
+      (charts 4).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q5_5.quotient_le h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 5).2.not_le_of_basis_not_mem
-      (charts 6).2.space 0 (by native_decide)) h
+      (charts 6).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q5_7.quotient_le h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 5).2.not_le_of_basis_not_mem
-      (charts 8).2.space 0 (by native_decide)) h
+      (charts 8).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q5_9.quotient_le h
   · exact Q5_10.quotient_le h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 6).2.not_le_of_basis_not_mem
-      (charts 0).2.space 0 (by native_decide)) h
+      (charts 0).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 6).2.not_le_of_basis_not_mem
-      (charts 1).2.space 0 (by native_decide)) h
+      (charts 1).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 6).2.not_le_of_basis_not_mem
-      (charts 2).2.space 0 (by native_decide)) h
+      (charts 2).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 6).2.not_le_of_basis_not_mem
-      (charts 3).2.space 0 (by native_decide)) h
+      (charts 3).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 6).2.not_le_of_basis_not_mem
-      (charts 4).2.space 0 (by native_decide)) h
+      (charts 4).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 6).2.not_le_of_basis_not_mem
-      (charts 5).2.space 0 (by native_decide)) h
+      (charts 5).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q6_6.quotient_le h
   · exact Q6_7.quotient_le h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 6).2.not_le_of_basis_not_mem
-      (charts 8).2.space 0 (by native_decide)) h
+      (charts 8).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q6_9.quotient_le h
   · exact Q6_10.quotient_le h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 7).2.not_le_of_basis_not_mem
-      (charts 0).2.space 0 (by native_decide)) h
+      (charts 0).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 7).2.not_le_of_basis_not_mem
-      (charts 1).2.space 0 (by native_decide)) h
+      (charts 1).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 7).2.not_le_of_basis_not_mem
-      (charts 2).2.space 1 (by native_decide)) h
+      (charts 2).2.space ⟨1, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 7).2.not_le_of_basis_not_mem
-      (charts 3).2.space 0 (by native_decide)) h
+      (charts 3).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 7).2.not_le_of_basis_not_mem
-      (charts 4).2.space 1 (by native_decide)) h
+      (charts 4).2.space ⟨1, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 7).2.not_le_of_basis_not_mem
-      (charts 5).2.space 0 (by native_decide)) h
+      (charts 5).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 7).2.not_le_of_basis_not_mem
-      (charts 6).2.space 0 (by native_decide)) h
+      (charts 6).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q7_7.quotient_le h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 7).2.not_le_of_basis_not_mem
-      (charts 8).2.space 1 (by native_decide)) h
+      (charts 8).2.space ⟨1, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q7_9.quotient_le h
   · exact Q7_10.quotient_le h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 8).2.not_le_of_basis_not_mem
-      (charts 0).2.space 0 (by native_decide)) h
+      (charts 0).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 8).2.not_le_of_basis_not_mem
-      (charts 1).2.space 0 (by native_decide)) h
+      (charts 1).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 8).2.not_le_of_basis_not_mem
-      (charts 2).2.space 0 (by native_decide)) h
+      (charts 2).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 8).2.not_le_of_basis_not_mem
-      (charts 3).2.space 0 (by native_decide)) h
+      (charts 3).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 8).2.not_le_of_basis_not_mem
-      (charts 4).2.space 0 (by native_decide)) h
+      (charts 4).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 8).2.not_le_of_basis_not_mem
-      (charts 5).2.space 0 (by native_decide)) h
+      (charts 5).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 8).2.not_le_of_basis_not_mem
-      (charts 6).2.space 0 (by native_decide)) h
+      (charts 6).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 8).2.not_le_of_basis_not_mem
-      (charts 7).2.space 0 (by native_decide)) h
+      (charts 7).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q8_8.quotient_le h
   · exact Q8_9.quotient_le h
   · exact Q8_10.quotient_le h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 9).2.not_le_of_basis_not_mem
-      (charts 0).2.space 0 (by native_decide)) h
+      (charts 0).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 9).2.not_le_of_basis_not_mem
-      (charts 1).2.space 0 (by native_decide)) h
+      (charts 1).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 9).2.not_le_of_basis_not_mem
-      (charts 2).2.space 0 (by native_decide)) h
+      (charts 2).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 9).2.not_le_of_basis_not_mem
-      (charts 3).2.space 0 (by native_decide)) h
+      (charts 3).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 9).2.not_le_of_basis_not_mem
-      (charts 4).2.space 0 (by native_decide)) h
+      (charts 4).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 9).2.not_le_of_basis_not_mem
-      (charts 5).2.space 0 (by native_decide)) h
+      (charts 5).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 9).2.not_le_of_basis_not_mem
-      (charts 6).2.space 0 (by native_decide)) h
+      (charts 6).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 9).2.not_le_of_basis_not_mem
-      (charts 7).2.space 0 (by native_decide)) h
+      (charts 7).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 9).2.not_le_of_basis_not_mem
-      (charts 8).2.space 3 (by native_decide)) h
+      (charts 8).2.space ⟨3, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q9_9.quotient_le h
   · exact Q9_10.quotient_le h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 10).2.not_le_of_basis_not_mem
-      (charts 0).2.space 0 (by native_decide)) h
+      (charts 0).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 10).2.not_le_of_basis_not_mem
-      (charts 1).2.space 0 (by native_decide)) h
+      (charts 1).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 10).2.not_le_of_basis_not_mem
-      (charts 2).2.space 0 (by native_decide)) h
+      (charts 2).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 10).2.not_le_of_basis_not_mem
-      (charts 3).2.space 0 (by native_decide)) h
+      (charts 3).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 10).2.not_le_of_basis_not_mem
-      (charts 4).2.space 0 (by native_decide)) h
+      (charts 4).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 10).2.not_le_of_basis_not_mem
-      (charts 5).2.space 0 (by native_decide)) h
+      (charts 5).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 10).2.not_le_of_basis_not_mem
-      (charts 6).2.space 0 (by native_decide)) h
+      (charts 6).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 10).2.not_le_of_basis_not_mem
-      (charts 7).2.space 0 (by native_decide)) h
+      (charts 7).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 10).2.not_le_of_basis_not_mem
-      (charts 8).2.space 0 (by native_decide)) h
+      (charts 8).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exfalso
     rw [PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space, PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.states_space] at h
     exact ((charts 10).2.not_le_of_basis_not_mem
-      (charts 9).2.space 0 (by native_decide)) h
+      (charts 9).2.space ⟨0, by decide +kernel⟩ (by decide +kernel +revert)) h
   · exact Q10_10.quotient_le h
 
 /-- Complete checked coupled-head registry for this literal paired-eight
@@ -8168,7 +8202,7 @@ noncomputable def registry :
   quotient_le := quotient_le
   coupled_le := by
     intro i j ell _h
-    fin_cases i <;> fin_cases j <;> fin_cases ell <;> native_decide
+    fin_cases i <;> fin_cases j <;> fin_cases ell <;> decide +kernel +revert
 
 /-- The finite coupled-head table together with the independently checked
 cyclic-orbit proof that its state list contains every invariant submodule. -/
@@ -8180,10 +8214,8 @@ noncomputable def completeRegistry :
 
 /-- Realization-free finite declaration for paired8-1. -/
 noncomputable def finiteCoupledHeadData :
-    Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
-      DegreeTwoPairTopCoupledRegistryData
-        Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
-          DegreeTwoPairedEightSharedTops.top1 4 where
+    Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairTopCoupledRegistryData
+        Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 4 where
   Generator := Fin 4
   State := Fin 11
   generators := topAmbient
@@ -8196,12 +8228,9 @@ table now bounds the three actual omega axes attached to every original
 normal subgroup. -/
 noncomputable def towerCoupledHeadData
     {p : Non2UnipotentPrefixFiniteMenu.PreE7PairActionClass 16}
-    (R : Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
-      DegreeTwoPairTopTowerRealization
-        Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
-          DegreeTwoPairedEightSharedTops.top1 p) :
-    Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.
-      DegreeTwoPairTopTowerCoupledHeadData R 4 :=
+    (R : Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairTopTowerRealization
+        Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p) :
+    Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairTopTowerCoupledHeadData R 4 :=
   finiteCoupledHeadData.towerData R
 
 end SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads
