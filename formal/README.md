@@ -21,9 +21,9 @@ The runner requires existing import objects and validates available local
 check receipts. It records legacy imports without receipts as unverified;
 it does not recursively certify all installed dependency objects.
 It permits one compiler at a time and one Lean thread, with defaults of
-3 GiB allocator memory and a sampled 4 GiB process-group RSS watchdog.
-Selected modules may use up to `--memory-mb 12288 --rss-limit-mb 16384`,
-allowing 12 GiB allocator memory and a 16 GiB RSS threshold. Larger limits
+16 GiB allocator memory and a sampled 16 GiB process-group RSS watchdog.
+Selected modules may use up to `--memory-mb 16384 --rss-limit-mb 16384`,
+allowing 16 GiB for both limits. Larger limits
 are rejected; use lower limits whenever sufficient.
 The RSS watchdog is sampled, not an operating-system hard allocation limit.
 Every check also has a wall timeout. Split certificates that exceed these
@@ -34,6 +34,15 @@ Cached dependencies allow checking offline. There are no CI workflows.
 The supervisor's small process and receipt regressions run locally with
 `python3 -B scripts/test_check_lean.py` from the repository root; they do
 not invoke Lean or allocate large amounts of memory.
+
+A successful source check does not by itself establish a standard-axioms-only
+proof. Legacy finite certificates may use `native_decide`; their generated
+native-computation axioms must be distinguished from `propext`,
+`Classical.choice`, and `Quot.sound` in the exported theorem's axiom audit.
+Use kernel-checked finite certificates (`decide +kernel`) and recheck affected
+consumers before claiming that stronger boundary. A theorem whose type names
+an entire catalogue can inherit dependencies from its other entries; audit
+literal-row exports and catalogue-facing exports separately.
 
 ## Statements and explicit benchmarks
 
