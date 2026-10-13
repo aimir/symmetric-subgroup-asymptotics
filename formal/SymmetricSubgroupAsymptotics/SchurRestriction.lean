@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.SchurCapacity
+import SymmetricSubgroupAsymptotics.SchurMultiplicity
 
 /-!
 # Schur capacity under a surjective acting-algebra map
@@ -85,19 +86,29 @@ def schurSubmoduleEndEquiv (S : Submodule R A) :
       Module.End T (schurSubmoduleOrderIso φ hφ ha S) where
   toFun f :=
     { toFun := fun x ↦ ⟨f ⟨x.1, x.2⟩, by
-          change f ⟨x.1, x.2⟩ ∈ S
+          change (f ⟨x.1, x.2⟩ : A) ∈ S
           exact (f ⟨x.1, x.2⟩).2⟩
-      map_add' x y := by apply Subtype.ext; exact f.map_add _ _
+      map_add' x y := by
+        apply Subtype.ext
+        exact congrArg Subtype.val (f.map_add _ _)
       map_smul' t x := by
         obtain ⟨r, rfl⟩ := hφ t
         apply Subtype.ext
         have hx : (⟨φ r • x.1, (φ r • x).property⟩ : S) =
             r • (⟨x.1, x.2⟩ : S) := Subtype.ext (ha r x.1).symm
-        rw [hx, f.map_smul, ha] }
+        calc
+          (f ⟨φ r • x.1, (φ r • x).property⟩ : A) =
+              (f (r • (⟨x.1, x.2⟩ : S)) : A) :=
+                congrArg (fun y : S ↦ (f y : A)) hx
+          _ = (r • f ⟨x.1, x.2⟩ : S) :=
+                congrArg Subtype.val (f.map_smul r ⟨x.1, x.2⟩)
+          _ = φ r • (f ⟨x.1, x.2⟩ : A) := ha r _ }
   invFun f :=
     { toFun := fun x ↦ ⟨f ⟨x.1, x.2⟩, by
           exact (f ⟨x.1, x.2⟩).2⟩
-      map_add' x y := by apply Subtype.ext; exact f.map_add _ _
+      map_add' x y := by
+        apply Subtype.ext
+        exact congrArg Subtype.val (f.map_add _ _)
       map_smul' r x := by
         apply Subtype.ext
         have hx :
@@ -106,34 +117,49 @@ def schurSubmoduleEndEquiv (S : Submodule R A) :
             φ r • (⟨x.1, x.2⟩ :
               schurSubmoduleOrderIso φ hφ ha S) :=
           Subtype.ext (ha r x.1)
-        rw [hx, f.map_smul, ha] }
+        change (f ⟨(r • x).1, _⟩ : A) =
+          r • (f ⟨x.1, x.2⟩ : A)
+        calc
+          (f ⟨(r • x).1, _⟩ : A) =
+              (f (φ r • (⟨x.1, x.2⟩ :
+                schurSubmoduleOrderIso φ hφ ha S)) : A) :=
+                  congrArg (fun y : schurSubmoduleOrderIso φ hφ ha S ↦
+                    (f y : A)) hx
+          _ = (φ r • f ⟨x.1, x.2⟩ :
+              schurSubmoduleOrderIso φ hφ ha S) :=
+                congrArg Subtype.val (f.map_smul (φ r) ⟨x.1, x.2⟩)
+          _ = r • (f ⟨x.1, x.2⟩ : A) := (ha r _).symm }
   left_inv f := by ext x; rfl
   right_inv f := by ext x; rfl
   map_add' f g := by ext x; rfl
   map_smul' c f := by ext x; rfl
 
+include φ hφ ha in
 /-- Corresponding simple rows have the same Schur multiplicity under a
 surjective change of acting algebra. -/
 theorem schurSocleMultiplicity_eq_of_surjective_action
     [FiniteDimensional k A]
-    (S : Submodule R A) [FiniteDimensional k S] [IsSimpleModule R S] :
+    (S : Submodule R A) [FiniteDimensional k S] [IsSimpleModule R S]
+    [IsSimpleModule T (schurSubmoduleOrderIso φ hφ ha S)] :
     schurSocleMultiplicity (k := k) (R := R) (A := A) (X := S) =
       schurSocleMultiplicity (k := k) (R := T) (A := A)
         (X := schurSubmoduleOrderIso φ hφ ha S) := by
-  letI : IsSimpleModule T (schurSubmoduleOrderIso φ hφ ha S) :=
-    schurSubmodule_isSimple φ hφ ha S
   letI : FiniteDimensional k
       (schurSubmoduleOrderIso φ hφ ha S) :=
     FiniteDimensional.of_injective
       (schurSubmoduleFieldEquiv φ hφ ha S).symm.toLinearMap
       (schurSubmoduleFieldEquiv φ hφ ha S).symm.injective
-  have hhom := (schurSubmoduleHomEquiv φ hφ ha S).finrank_eq
+  letI : Nontrivial (schurSubmoduleOrderIso φ hφ ha S) :=
+    IsSimpleModule.nontrivial T (schurSubmoduleOrderIso φ hφ ha S)
+  have hhom := (schurSubmoduleHomEquiv
+    (k := k) (R := R) (T := T) (A := A) φ hφ ha S).finrank_eq
   rw [schurHom_finrank_eq_multiplicity
         (k := k) (R := R) (A := A) (X := S),
     schurHom_finrank_eq_multiplicity
         (k := k) (R := T) (A := A)
         (X := schurSubmoduleOrderIso φ hφ ha S)] at hhom
-  have hend := (schurSubmoduleEndEquiv φ hφ ha S).finrank_eq
+  have hend := (schurSubmoduleEndEquiv
+    (k := k) (R := R) (T := T) (A := A) φ hφ ha S).finrank_eq
   rw [hend] at hhom
   apply Nat.eq_of_mul_eq_mul_right
     (by

@@ -24,20 +24,45 @@ variable {k D B V A : Type u} [Field k] [Group D] [Group B]
 def representationSchurCapacity (σ : Representation k B A) : ℝ :=
   schurCapacity k k[B] σ.asModule
 
+/-- Composition with an acting-group homomorphism, with the representation
+type retained explicitly so downstream module structures elaborate
+without falling back to the underlying monoid homomorphism API. -/
+abbrev inflatedRepresentation (γ : D →* B) (σ : Representation k B A) :
+    Representation k D A :=
+  σ.comp γ
+
+/-- The group-algebra action attached to a representation, made explicit
+to avoid asking typeclass search to recover the representation from the
+bare underlying carrier. -/
+def representationAlgebraSmul {H : Type u} [Group H]
+    (ρ : Representation k H A) (r : k[H]) (a : A) : A := by
+  letI : Module k[H] A :=
+    Representation.instModuleMonoidAlgebraAsModule ρ
+  exact r • a
+
 /-- The group-algebra action of an inflated representation is restriction
 along the map of group algebras induced by the acting group homomorphism. -/
 theorem representation_comp_monoidAlgebra_smul
     (γ : D →* B) (σ : Representation k B A)
     (r : k[D]) (a : A) :
-    r • (a : (σ.comp γ).asModule) =
-      (MonoidAlgebra.mapDomainRingHom k γ) r • (a : σ.asModule) := by
+    representationAlgebraSmul (inflatedRepresentation γ σ) r a =
+      representationAlgebraSmul σ
+        ((MonoidAlgebra.mapDomainRingHom k γ) r) a := by
+  letI : Module k[D] A :=
+    Representation.instModuleMonoidAlgebraAsModule
+      (inflatedRepresentation γ σ)
+  letI : Module k[B] A :=
+    Representation.instModuleMonoidAlgebraAsModule σ
+  change r • a = (MonoidAlgebra.mapDomainRingHom k γ) r • a
   induction r using MonoidAlgebra.induction_linear with
   | zero => simp
   | add x y hx hy => rw [map_add, add_smul, add_smul, hx, hy]
   | single g t =>
       rw [Representation.single_smul]
       simp only [MonoidAlgebra.mapDomainRingHom_apply,
-        MonoidAlgebra.mapDomain_single, Representation.single_smul]
+        MonoidAlgebra.mapDomain_single]
+      change t • σ (γ g) a = MonoidAlgebra.single (γ g) t • a
+      rw [Representation.single_smul]
       rfl
 
 /-- A quotient-group submodule regarded as a submodule for a surjectively
@@ -46,21 +71,40 @@ noncomputable def representationInflatedSubmodule
     (γ : D →* B) (hγ : Function.Surjective γ)
     (σ : Representation k B A)
     (S : Submodule k[B] σ.asModule) :
-    Submodule k[D] (σ.comp γ).asModule :=
-  (schurSubmoduleOrderIso
+    Submodule k[D] (inflatedRepresentation γ σ).asModule := by
+  letI : Module k[D] A :=
+    Representation.instModuleMonoidAlgebraAsModule
+      (inflatedRepresentation γ σ)
+  letI : Module k[B] A :=
+    Representation.instModuleMonoidAlgebraAsModule σ
+  let ha : ∀ r : k[D], ∀ a : A,
+      r • a = (MonoidAlgebra.mapDomainRingHom k γ) r • a := by
+    intro r a
+    simpa only [representationAlgebraSmul] using
+      representation_comp_monoidAlgebra_smul γ σ r a
+  exact (schurSubmoduleOrderIso
     (MonoidAlgebra.mapDomainRingHom k γ)
-    (Finsupp.mapDomain_surjective hγ)
-    (representation_comp_monoidAlgebra_smul γ σ)).symm S
+    (Finsupp.mapDomain_surjective hγ) ha).symm S
 
 theorem representationInflatedSubmodule_isSimple
     (γ : D →* B) (hγ : Function.Surjective γ)
     (σ : Representation k B A)
     (S : Submodule k[B] σ.asModule) [IsSimpleModule k[B] S] :
     IsSimpleModule k[D] (representationInflatedSubmodule γ hγ σ S) := by
+  letI : Module k[D] A :=
+    Representation.instModuleMonoidAlgebraAsModule
+      (inflatedRepresentation γ σ)
+  letI : Module k[B] A :=
+    Representation.instModuleMonoidAlgebraAsModule σ
+  let ha : ∀ r : k[D], ∀ a : A,
+      r • a = (MonoidAlgebra.mapDomainRingHom k γ) r • a := by
+    intro r a
+    simpa only [representationAlgebraSmul] using
+      representation_comp_monoidAlgebra_smul γ σ r a
   let e := schurSubmoduleOrderIso
     (MonoidAlgebra.mapDomainRingHom k γ)
     (Finsupp.mapDomain_surjective hγ)
-    (representation_comp_monoidAlgebra_smul γ σ)
+    ha
   rw [isSimpleModule_iff_isAtom]
   exact (e.isAtom_iff (representationInflatedSubmodule γ hγ σ S)).mp
     (by
@@ -75,48 +119,30 @@ noncomputable def representationInflatedSubmoduleEquiv
     (γ : D →* B) (hγ : Function.Surjective γ)
     (σ : Representation k B A)
     (S : Submodule k[B] σ.asModule) :
-    ((Subrepresentation.ofSubmodule' S).toRepresentation.comp γ).Equiv
+    Representation.Equiv
+      (inflatedRepresentation γ
+        (Subrepresentation.ofSubmodule' S).toRepresentation)
       (Subrepresentation.ofSubmodule'
         (representationInflatedSubmodule γ hγ σ S)).toRepresentation := by
+  have hmem (a : A) :
+      a ∈ representationInflatedSubmodule γ hγ σ S ↔ a ∈ S := by
+    unfold representationInflatedSubmodule
+    rfl
   let eLinear :
       (Subrepresentation.ofSubmodule' S).toSubmodule ≃ₗ[k]
         (Subrepresentation.ofSubmodule'
-          (representationInflatedSubmodule γ hγ σ S)).toSubmodule where
-    toFun := fun x ↦ ⟨x.1, x.2⟩
-    invFun := fun x ↦ ⟨x.1, x.2⟩
+          (representationInflatedSubmodule γ hγ σ S)).toSubmodule := {
+    toFun := fun x ↦ ⟨x.1, (hmem x.1).mpr x.2⟩
+    invFun := fun x ↦ ⟨x.1, (hmem x.1).mp x.2⟩
     left_inv x := Subtype.ext rfl
     right_inv x := Subtype.ext rfl
     map_add' _ _ := rfl
-    map_smul' _ _ := rfl
+    map_smul' _ _ := rfl }
   exact Representation.Equiv.mk eLinear (by
     intro d
     apply LinearMap.ext
     intro x
     exact Subtype.ext rfl)
-
-/-- Schur multiplicity is unchanged when both target and simple row are
-inflated along a surjective acting-group map. -/
-theorem schurSocleMultiplicity_comp_eq
-    [FiniteDimensional k A]
-    (γ : D →* B) (hγ : Function.Surjective γ)
-    (σ : Representation k B A)
-    (S : Submodule k[B] σ.asModule)
-    [FiniteDimensional k S] [IsSimpleModule k[B] S] :
-    schurSocleMultiplicity
-        (k := k) (R := k[D]) (A := (σ.comp γ).asModule)
-        (X := representationInflatedSubmodule γ hγ σ S) =
-      schurSocleMultiplicity
-        (k := k) (R := k[B]) (A := σ.asModule) (X := S) := by
-  let φ := MonoidAlgebra.mapDomainRingHom k γ
-  let hφ : Function.Surjective φ := Finsupp.mapDomain_surjective hγ
-  let ha := representation_comp_monoidAlgebra_smul γ σ
-  let S' := representationInflatedSubmodule γ hγ σ S
-  letI : IsSimpleModule k[D] S' :=
-    representationInflatedSubmodule_isSimple γ hγ σ S
-  have h := schurSocleMultiplicity_eq_of_surjective_action
-    φ hφ ha S'
-  simpa only [S', representationInflatedSubmodule, φ, hφ, ha,
-    OrderIso.apply_symm_apply] using h
 
 /-- Intertwining maps are unchanged when both representations are inflated
 along a surjective acting-group map. -/
@@ -124,7 +150,8 @@ noncomputable def representationIntertwiningCompEquiv
     (γ : D →* B) (hγ : Function.Surjective γ)
     (ρ : Representation k B V) (σ : Representation k B A) :
     ρ.IntertwiningMap σ ≃ₗ[k]
-      (ρ.comp γ).IntertwiningMap (σ.comp γ) where
+      (inflatedRepresentation γ ρ).IntertwiningMap
+        (inflatedRepresentation γ σ) where
   toFun f :=
     { toLinearMap := f.toLinearMap
       isIntertwining' d := f.isIntertwining' (γ d) }
@@ -144,10 +171,10 @@ a surjective acting-group map. -/
 theorem representation_comp_isSimpleModule
     (γ : D →* B) (hγ : Function.Surjective γ)
     (ρ : Representation k B V) [IsSimpleModule k[B] ρ.asModule] :
-    IsSimpleModule k[D] (ρ.comp γ).asModule := by
+    IsSimpleModule k[D] (inflatedRepresentation γ ρ).asModule := by
   let φ := MonoidAlgebra.mapDomainRingHom k γ
   letI : RingHomSurjective φ := ⟨Finsupp.mapDomain_surjective hγ⟩
-  let f : (ρ.comp γ).asModule →ₛₗ[φ] ρ.asModule :=
+  let f : (inflatedRepresentation γ ρ).asModule →ₛₗ[φ] ρ.asModule :=
     { toFun := fun x ↦ x
       map_add' := by intro x y; rfl
       map_smul' := by
@@ -162,10 +189,12 @@ theorem representationEnd_finrank_comp_eq
     [FiniteDimensional k V]
     (γ : D →* B) (hγ : Function.Surjective γ)
     (ρ : Representation k B V) :
-    Module.finrank k (Module.End k[D] (ρ.comp γ).asModule) =
+    Module.finrank k
+      (Module.End k[D] (inflatedRepresentation γ ρ).asModule) =
       Module.finrank k (Module.End k[B] ρ.asModule) := by
   rw [← (Representation.IntertwiningMap.equivLinearMapAsModule
-    (ρ.comp γ) (ρ.comp γ)).finrank_eq,
+    (inflatedRepresentation γ ρ)
+      (inflatedRepresentation γ ρ)).finrank_eq,
     ← (Representation.IntertwiningMap.equivLinearMapAsModule ρ ρ).finrank_eq]
   exact (representationIntertwiningCompEquiv γ hγ ρ ρ).finrank_eq.symm
 
@@ -175,17 +204,22 @@ theorem representationFinrankOverEnd_comp_eq
     [FiniteDimensional k V]
     (γ : D →* B) (hγ : Function.Surjective γ)
     (ρ : Representation k B V) [IsSimpleModule k[B] ρ.asModule] :
-    Module.finrank (Module.End k[D] (ρ.comp γ).asModule)
-        (ρ.comp γ).asModule =
+    Module.finrank (Module.End k[D]
+        (inflatedRepresentation γ ρ).asModule)
+        (inflatedRepresentation γ ρ).asModule =
       Module.finrank (Module.End k[B] ρ.asModule) ρ.asModule := by
-  letI : IsSimpleModule k[D] (ρ.comp γ).asModule :=
+  letI : IsSimpleModule k[D]
+      (inflatedRepresentation γ ρ).asModule :=
     representation_comp_isSimpleModule γ hγ ρ
   have hend := representationEnd_finrank_comp_eq γ hγ ρ
+  letI : Nontrivial ρ.asModule := IsSimpleModule.nontrivial k[B] ρ.asModule
   have hD := schur_simple_finrank_tower
-    (k := k) (R := k[D]) (X := (ρ.comp γ).asModule)
+    (k := k) (R := k[D])
+    (X := (inflatedRepresentation γ ρ).asModule)
   have hB := schur_simple_finrank_tower
     (k := k) (R := k[B]) (X := ρ.asModule)
-  have hdim : Module.finrank k (ρ.comp γ).asModule =
+  have hdim : Module.finrank k
+      (inflatedRepresentation γ ρ).asModule =
       Module.finrank k ρ.asModule := by rfl
   rw [hD, hB, hend] at hdim
   apply Nat.eq_of_mul_eq_mul_left
@@ -199,29 +233,37 @@ theorem schurSocleMultiplicity_comp_eq_representation
     [FiniteDimensional k V] [FiniteDimensional k A]
     (γ : D →* B) (hγ : Function.Surjective γ)
     (ρ : Representation k B V) (σ : Representation k B A)
-    [IsSimpleModule k[B] ρ.asModule] :
+    [IsSimpleModule k[B] ρ.asModule]
+    [IsSimpleModule k[D] (inflatedRepresentation γ ρ).asModule] :
     schurSocleMultiplicity
         (k := k) (R := k[D])
-        (A := (σ.comp γ).asModule) (X := (ρ.comp γ).asModule) =
+        (A := (inflatedRepresentation γ σ).asModule)
+        (X := (inflatedRepresentation γ ρ).asModule) =
       schurSocleMultiplicity
         (k := k) (R := k[B])
         (A := σ.asModule) (X := ρ.asModule) := by
-  letI : IsSimpleModule k[D] (ρ.comp γ).asModule :=
-    representation_comp_isSimpleModule γ hγ ρ
+  letI : Nontrivial ρ.asModule := IsSimpleModule.nontrivial k[B] ρ.asModule
   have hhom :=
     (representationIntertwiningCompEquiv γ hγ ρ σ).finrank_eq
   have hend :=
     (representationIntertwiningCompEquiv γ hγ ρ ρ).finrank_eq
-  have hleft : Module.finrank k ((ρ.comp γ).IntertwiningMap (σ.comp γ)) =
+  have hleft : Module.finrank k
+      ((inflatedRepresentation γ ρ).IntertwiningMap
+        (inflatedRepresentation γ σ)) =
       schurSocleMultiplicity
           (k := k) (R := k[D])
-          (A := (σ.comp γ).asModule) (X := (ρ.comp γ).asModule) *
-        Module.finrank k (Module.End k[D] (ρ.comp γ).asModule) := by
+          (A := (inflatedRepresentation γ σ).asModule)
+          (X := (inflatedRepresentation γ ρ).asModule) *
+        Module.finrank k
+          (Module.End k[D]
+            (inflatedRepresentation γ ρ).asModule) := by
     rw [(Representation.IntertwiningMap.equivLinearMapAsModule
-      (ρ.comp γ) (σ.comp γ)).finrank_eq]
+      (inflatedRepresentation γ ρ)
+      (inflatedRepresentation γ σ)).finrank_eq]
     exact schurHom_finrank_eq_multiplicity
       (k := k) (R := k[D])
-      (A := (σ.comp γ).asModule) (X := (ρ.comp γ).asModule)
+      (A := (inflatedRepresentation γ σ).asModule)
+      (X := (inflatedRepresentation γ ρ).asModule)
   have hright : Module.finrank k (ρ.IntertwiningMap σ) =
       schurSocleMultiplicity
           (k := k) (R := k[B])
@@ -230,10 +272,13 @@ theorem schurSocleMultiplicity_comp_eq_representation
     rw [(Representation.IntertwiningMap.equivLinearMapAsModule ρ σ).finrank_eq]
     exact schurHom_finrank_eq_multiplicity
       (k := k) (R := k[B]) (A := σ.asModule) (X := ρ.asModule)
-  have hend' : Module.finrank k (Module.End k[D] (ρ.comp γ).asModule) =
+  have hend' : Module.finrank k
+      (Module.End k[D]
+        (inflatedRepresentation γ ρ).asModule) =
       Module.finrank k (Module.End k[B] ρ.asModule) := by
     rw [← (Representation.IntertwiningMap.equivLinearMapAsModule
-      (ρ.comp γ) (ρ.comp γ)).finrank_eq,
+      (inflatedRepresentation γ ρ)
+      (inflatedRepresentation γ ρ)).finrank_eq,
       ← (Representation.IntertwiningMap.equivLinearMapAsModule ρ ρ).finrank_eq]
     exact hend.symm
   rw [hright, hleft, hend'] at hhom
@@ -270,10 +315,15 @@ theorem intertwiningMap_finrank_le_schur [FiniteDimensional k V] [FiniteDimensio
 /-- Original target capacity is unchanged by a surjective group action map. -/
 theorem representationSchurCapacity_comp [FiniteDimensional k A]
     (γ : D →* B) (hγ : Function.Surjective γ) (σ : Representation k B A) :
-    representationSchurCapacity (σ.comp γ) = representationSchurCapacity σ := by
-  letI : Module k[D] σ.asModule := Representation.instModuleMonoidAlgebraAsModule (σ.comp γ)
+    representationSchurCapacity (inflatedRepresentation γ σ) =
+      representationSchurCapacity σ := by
+  letI : Module k[D] σ.asModule :=
+    Representation.instModuleMonoidAlgebraAsModule
+      (inflatedRepresentation γ σ)
   letI : IsScalarTower k k[D] σ.asModule :=
-    inferInstanceAs (IsScalarTower k k[D] (Representation.asModule (σ.comp γ)))
+    inferInstanceAs
+      (IsScalarTower k k[D]
+        (Representation.asModule (inflatedRepresentation γ σ)))
   exact schurCapacity_eq_of_surjective_action
     (k := k) (A := σ.asModule) (MonoidAlgebra.mapDomainRingHom k γ)
     (Finsupp.mapDomain_surjective hγ)
@@ -285,21 +335,26 @@ theorem intertwiningMap_finrank_le_original_schur
     [FiniteDimensional k V] [FiniteDimensional k A]
     (γ : D →* B) (hγ : Function.Surjective γ)
     (ρ : Representation k D V) (σ : Representation k B A) :
-    (Module.finrank k (ρ.IntertwiningMap (σ.comp γ)) : ℝ) ≤
+    (Module.finrank k
+      (ρ.IntertwiningMap (inflatedRepresentation γ σ)) : ℝ) ≤
       representationSchurCapacity σ * Module.finrank k V := by
   simpa only [representationSchurCapacity_comp γ hγ σ] using
-    intertwiningMap_finrank_le_schur ρ (σ.comp γ)
+    intertwiningMap_finrank_le_schur ρ
+      (inflatedRepresentation γ σ)
 
 /-- The finite-field cardinal estimate for the same literal Hom space. -/
 theorem intertwiningMap_card_le_original_schur
     [Finite k] [FiniteDimensional k V] [FiniteDimensional k A]
     (γ : D →* B) (hγ : Function.Surjective γ)
     (ρ : Representation k D V) (σ : Representation k B A) :
-    (Nat.card (ρ.IntertwiningMap (σ.comp γ)) : ℝ) ≤
+    (Nat.card (ρ.IntertwiningMap
+      (inflatedRepresentation γ σ)) : ℝ) ≤
       (Nat.card k : ℝ) ^ (representationSchurCapacity σ * Module.finrank k V) := by
-  haveI : FiniteDimensional k (ρ.IntertwiningMap (σ.comp γ)) :=
+  haveI : FiniteDimensional k
+      (ρ.IntertwiningMap (inflatedRepresentation γ σ)) :=
     Module.Finite.equiv
-      (Representation.IntertwiningMap.equivLinearMapAsModule ρ (σ.comp γ)).symm
+      (Representation.IntertwiningMap.equivLinearMapAsModule ρ
+        (inflatedRepresentation γ σ)).symm
   rw [Module.natCard_eq_pow_finrank (K := k), Nat.cast_pow, ← Real.rpow_natCast]
   apply Real.rpow_le_rpow_of_exponent_le
   · exact_mod_cast Nat.card_pos (α := k)

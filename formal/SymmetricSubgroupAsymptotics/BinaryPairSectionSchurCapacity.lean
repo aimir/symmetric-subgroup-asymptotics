@@ -22,7 +22,7 @@ noncomputable section
 namespace SymmetricSubgroupAsymptotics
 namespace BinaryPairFrame
 
-variable {X I : Type*} {U : Subgroup (Equiv.Perm X)}
+variable {X I : Type} {U : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame U I)
 
 /-- A uniform generator theorem on the dual natural permutation module
@@ -36,7 +36,8 @@ theorem sectionRepresentation_schurCapacity_le_of_uniformDual
     representationSchurCapacity (F.sectionRepresentation N) ≤ H := by
   let rho := permutationFunctionRepresentation (ZMod 2) F.top.range I
   let sigma := F.kernelTopPermutationSubrepresentation.toRepresentation
-  let tau := F.sectionTopRepresentation N
+  let tau := inflatedRepresentation (F.sectionTopQuotient N)
+    (F.sectionRepresentation N)
   let inclusion : sigma.IntertwiningMap rho :=
     subrepresentationInclusion rho F.kernelTopPermutationSubrepresentation
   have hinclusion : Function.Injective inclusion :=
@@ -47,7 +48,7 @@ theorem sectionRepresentation_schurCapacity_le_of_uniformDual
         (F.normalSpace N).mkQ_surjective
   have hcapacity : representationSchurCapacity tau ≤ H :=
     representationSchurCapacity_le_of_dual_generated tau H hgenerated
-  simpa only [tau, sectionTopRepresentation,
+  simpa only [tau,
     representationSchurCapacity_comp (F.sectionTopQuotient N)
       (F.sectionTopQuotient_surjective N)] using hcapacity
 
@@ -58,10 +59,11 @@ surjective action map.  This avoids transporting generated tuples between
 two different group algebras. -/
 theorem sectionRepresentation_schurCapacity_le_of_uniformDualEquiv
     [Finite I]
-    {HGroup : Type*} [Group HGroup]
+    {HGroup : Type} [Group HGroup]
     (rho : Representation (ZMod 2) HGroup (I → ZMod 2))
     (e : HGroup ≃* F.top.range)
-    (he : ∀ g v, rho g v = F.coordinateTopAction (e g) v)
+    (he : ∀ g v, rho g v =
+      permutationFunctionRepresentation (ZMod 2) F.top.range I (e g) v)
     (H : ℕ)
     (huniform : UniformSubrepresentationGeneratorBound rho.dual H)
     (N : Subgroup U) [N.Normal] :
@@ -74,7 +76,9 @@ theorem sectionRepresentation_schurCapacity_le_of_uniformDualEquiv
         exact F.kernelTopPermutationSubrepresentation.apply_mem_toSubmodule
           (e g) hv }
   let sigma := sigmaSub.toRepresentation
-  let tau := (F.sectionTopRepresentation N).comp e.toMonoidHom
+  let tauTop := inflatedRepresentation (F.sectionTopQuotient N)
+    (F.sectionRepresentation N)
+  let tau := inflatedRepresentation e.toMonoidHom tauTop
   let inclusion : sigma.IntertwiningMap rho :=
     subrepresentationInclusion rho sigmaSub
   have hinclusion : Function.Injective inclusion :=
@@ -87,11 +91,9 @@ theorem sectionRepresentation_schurCapacity_le_of_uniformDualEquiv
         intro v
         change (F.sectionTopIntertwiner N)
             ⟨rho g v.1, sigmaSub.apply_mem_toSubmodule g v.2⟩ =
-          F.sectionTopRepresentation N (e g)
+          tauTop (e g)
             ((F.sectionTopIntertwiner N) v)
-        apply Subtype.ext
-        rw [he]
-        exact congrArg Subtype.val
+        simpa only [he] using
           (Representation.IntertwiningMap.isIntertwining
             _ _ (F.sectionTopIntertwiner N) (e g) v) }
   have hquotient : Function.Surjective quotient := by
@@ -104,11 +106,11 @@ theorem sectionRepresentation_schurCapacity_le_of_uniformDualEquiv
   have hcapacityPullback : representationSchurCapacity tau ≤ H :=
     representationSchurCapacity_le_of_dual_generated tau H hgenerated
   have hcapacityTop :
-      representationSchurCapacity (F.sectionTopRepresentation N) ≤ H := by
+      representationSchurCapacity tauTop ≤ H := by
     simpa only [tau,
       representationSchurCapacity_comp e.toMonoidHom e.surjective] using
         hcapacityPullback
-  simpa only [sectionTopRepresentation,
+  simpa only [tauTop,
     representationSchurCapacity_comp (F.sectionTopQuotient N)
       (F.sectionTopQuotient_surjective N)] using hcapacityTop
 
