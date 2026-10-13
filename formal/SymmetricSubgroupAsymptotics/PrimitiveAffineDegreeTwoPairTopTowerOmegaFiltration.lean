@@ -43,8 +43,9 @@ theorem rawKernelOmegaProjection_conjugate
       (R.rawKernelOmegaProjection N z :
         R.frame.top.range ⧸ R.outerTopNormal N.1) *
       (R.outerQuotientMap N q)⁻¹
-  rw [binaryKernelOmegaConjugate_val, map_mul, map_mul, map_inv]
-  rfl
+  simpa only [map_mul, map_inv] using
+    congrArg (R.outerQuotientMap N)
+      (binaryKernelOmegaConjugate_val (R.rawQuotientMap N) q z)
 
 /-- The projected omega coordinate map is equivariant for the original
 quotient, with the second section action pulled back along the direct map. -/
@@ -68,10 +69,11 @@ theorem rawKernelOmegaInnerSectionMap_equivariant
   apply Multiplicative.ofAdd.injective
   apply E.equiv.injective
   apply Subtype.ext
-  rw [E.equiv.apply_symm_apply]
   rw [E.conjugate]
-  exact congrArg Subtype.val
-    (R.rawKernelOmegaProjection_conjugate N q z)
+  change ↑(E.equiv (E.equiv.symm _)) =
+    R.outerQuotientMap N q * ↑(E.equiv (E.equiv.symm _)) * _
+  simp only [MulEquiv.apply_symm_apply]
+  exact congrArg Subtype.val (R.rawKernelOmegaProjection_conjugate N q z)
 
 /-- The concrete omega-to-inner-section map as an intertwiner of original
 quotient representations. -/
@@ -85,8 +87,7 @@ noncomputable def rawKernelOmegaInnerSectionIntertwiner
     intro q
     apply LinearMap.ext
     intro z
-    obtain ⟨z, rfl⟩ := Additive.toMul.surjective z
-    exact R.rawKernelOmegaInnerSectionMap_equivariant N q z
+    exact R.rawKernelOmegaInnerSectionMap_equivariant N q z.toMul
 
 /-- Corestrict the omega projection to its exact inner image. -/
 noncomputable def rawKernelOmegaInnerImageIntertwiner
@@ -125,7 +126,7 @@ noncomputable def rawKernelOmegaInnerKernelEquivProjectionKernel
     (R.rawKernelOmegaInnerImageIntertwiner N).ker.toSubmodule ≃ₗ[ZMod 2]
       Additive (R.rawKernelOmegaProjection N).ker := by
   let f : (R.rawKernelOmegaInnerImageIntertwiner N).ker.toSubmodule →ₗ[ZMod 2]
-      Additive (R.rawKernelOmegaProjection N).ker where
+      Additive (R.rawKernelOmegaProjection N).ker := {
     toFun := fun z ↦ Additive.ofMul ⟨z.1.toMul, by
       apply MonoidHom.mem_ker.mpr
       let E := R.innerSectionModuleChart N
@@ -134,10 +135,11 @@ noncomputable def rawKernelOmegaInnerKernelEquivProjectionKernel
       apply E.equiv.symm.injective
       change Multiplicative.ofAdd
           (R.rawKernelOmegaInnerSectionMap N z.1) = _
-      rw [hz]
+      rw [hz, map_one]
       rfl⟩
     map_add' _ _ := rfl
     map_smul' _ _ := rfl
+  }
   apply LinearEquiv.ofBijective f
   constructor
   · intro z w hzw
@@ -196,32 +198,31 @@ theorem rawKernelOmegaOuterCoordinateMap_equivariant
               (R.rawQuotientMap N) q z.1,
             by
               apply MonoidHom.mem_ker.mpr
+              rw [R.rawKernelOmegaProjection_conjugate N]
               apply Subtype.ext
               change R.outerQuotientMap N q *
                   (R.rawKernelOmegaProjection N z.1 :
                     R.frame.top.range ⧸ R.outerTopNormal N.1) *
                     (R.outerQuotientMap N q)⁻¹ = 1
               rw [MonoidHom.mem_ker.mp z.2]
-              group⟩) =
+              simp only [Subgroup.coe_one, mul_one, mul_inv_cancel]⟩) =
       (R.frame.zeroCutModule N.1).ρ (R.frame.zeroCutBase N.1 q)
         (R.rawKernelOmegaOuterCoordinateMap N (Additive.ofMul z)) := by
   apply Multiplicative.ofAdd.injective
   apply (R.frame.zeroCutModuleChart N.1).equiv.injective
   apply Subtype.ext
-  rw [(R.frame.zeroCutModuleChart N.1).conjugate]
-  rw [R.rawKernelOmegaOuterCoordinateMap_chart_val N]
-  rw [R.rawKernelOmegaOuterCoordinateMap_chart_val N]
-  change q *
-      ((binaryCentralOmegaEmbedding z.1 :
-        (R.rawQuotientMap N).ker) : preE7PairAction s p ⧸ N.1) * q⁻¹ = _
-  rw [binaryKernelOmegaConjugate_val]
+  exact (R.rawKernelOmegaOuterCoordinateMap_chart_val N _).trans
+    ((binaryKernelOmegaConjugate_val (R.rawQuotientMap N) q z.1).trans
+      ((congrArg (fun x : preE7PairAction s p ⧸ N.1 ↦ q * x * q⁻¹)
+        (R.rawKernelOmegaOuterCoordinateMap_chart_val N z).symm).trans
+          ((R.frame.zeroCutModuleChart N.1).conjugate q
+            (R.rawKernelOmegaOuterCoordinateMap N (Additive.ofMul z))).symm))
 
 /-- Concrete injection of the actual outer projection kernel into the first
 zero-cut representation. -/
 noncomputable def rawKernelOmegaOuterIntertwiner
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    (R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation.
-      IntertwiningMap
+    ((R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation).IntertwiningMap
       ((R.frame.zeroCutModule N.1).ρ.comp (R.frame.zeroCutBase N.1)) where
   toLinearMap := (R.rawKernelOmegaOuterCoordinateMap N).comp
     (R.rawKernelOmegaInnerKernelEquivProjectionKernel N).toLinearMap
@@ -249,14 +250,21 @@ theorem rawKernelOmega_invariants_finrank_le_kernel_add_inner
       Module.finrank (ZMod 2)
           (R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation.invariants +
         Module.finrank (ZMod 2)
-          ((R.innerOmegaSubrepresentation N).toRepresentation.comp
-            (R.rawQuotientMap N)).invariants := by
+          (Representation.invariants
+            ((R.innerOmegaSubrepresentation N).toRepresentation.comp
+              (R.rawQuotientMap N))) := by
+  letI : Finite (R.innerOmegaSubrepresentation N).toSubmodule :=
+    Finite.of_surjective _ (R.rawKernelOmegaInnerImageIntertwiner_surjective N)
+  letI : FiniteDimensional (ZMod 2)
+      (R.innerOmegaSubrepresentation N).toSubmodule :=
+    Module.Finite.of_finite
   let q := R.rawKernelOmegaInnerImageIntertwiner N
   let i : q.ker.toRepresentation.IntertwiningMap
       (binaryKernelOmegaConjugationRepresentation
-        (R.rawQuotientMap N)) where
+        (R.rawQuotientMap N)) := {
     toLinearMap := q.ker.toSubmodule.subtype
     isIntertwining' := by intro _; rfl
+  }
   have hi : Function.Injective i := Subtype.val_injective
   have hexact : i.toLinearMap.range = q.toLinearMap.ker := by
     ext z
