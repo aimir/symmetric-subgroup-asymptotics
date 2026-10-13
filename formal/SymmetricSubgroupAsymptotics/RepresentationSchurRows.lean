@@ -42,12 +42,13 @@ theorem representationInflatedSubmodule_fixed_iff
     let x' : representationInflatedSubmodule γ hγ σ S :=
       ⟨x.1, x.2⟩
     have hx := congrArg Subtype.val (hfixed d x')
-    simpa only [Representation.single_smul] using hx
+    apply Subtype.ext
+    simpa only [Submodule.coe_smul, Representation.single_smul, one_smul] using hx
   · intro hfixed d x
     apply Subtype.ext
     let x' : S := ⟨x.1, x.2⟩
     have hx := congrArg Subtype.val (hfixed (γ d) x')
-    simpa only [Representation.single_smul] using hx
+    simpa only [Submodule.coe_smul, Representation.single_smul, one_smul] using hx
 
 /-- Forget equivariance while retaining the proof that the image lies in
 the original invariant subspace. -/
