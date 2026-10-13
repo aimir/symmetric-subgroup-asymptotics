@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerCoupledH
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerNestedQuotient
 import SymmetricSubgroupAsymptotics.DualGeneratorSchurCapacity
 import SymmetricSubgroupAsymptotics.FiniteSelfDualNestedQuotientGenerator
+import SymmetricSubgroupAsymptotics.BinaryNestedQuotientNonfixedCertificate
 import SymmetricSubgroupAsymptotics.Non2SchurRowDegrees
 import SymmetricSubgroupAsymptotics.PermutationFunctionSelfDual
 
@@ -9,10 +10,10 @@ import SymmetricSubgroupAsymptotics.PermutationFunctionSelfDual
 # Finite nested-quotient generator declarations for pair tops
 
 The nonfixed part of a two-frame omega filtration uses only one finite fact
-about the literal natural module: every nested invariant quotient either has
-cyclic dual or has binary dimension at most two.  Both alternatives imply
-the same one-Schur-dimension bound after inflation along any surjective top
-map.
+about the literal natural module: every nested invariant quotient has a
+cyclic dual or binary dimension at most two after removing certified fixed
+upper layers. All these alternatives imply the same one-Schur-dimension
+bound after inflation along any surjective top map.
 -/
 
 -- Lean 4.30's suggestion-index exporter traverses the fully dependent
@@ -51,10 +52,8 @@ structure DegreeTwoPairTopNestedQuotientGeneratorData
     (A B : Subrepresentation
       (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)))
     (hAB : A ≤ B),
-    RepresentationGeneratedBy
-        (nestedQuotientRepresentation A B hAB).dual 1 ∨
-      Module.finrank (ZMod 2)
-        (nestedQuotientRepresentation A B hAB).asModule ≤ 2
+    BinaryNestedQuotientNonfixedCertificate
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) A B hAB
 
 /-- Build the pair-top declaration from a compact self-dual finite-state
 table exported beside the natural-module registry. -/
@@ -68,10 +67,11 @@ noncomputable def DegreeTwoPairTopNestedQuotientGeneratorData.ofFiniteTable
       (permutationFunctionRepresentationSelfDual
         (k := ZMod 2) (G := D.top) (X := Fin t))) :
     DegreeTwoPairTopNestedQuotientGeneratorData D where
-  certificate := table.subrepresentationQuotient_generated_or_finrank_le_two
-    registry
-    (permutationFunctionRepresentationSelfDual
-      (k := ZMod 2) (G := D.top) (X := Fin t))
+  certificate := fun A B hAB ↦
+    BinaryNestedQuotientNonfixedCertificate.of_generated_or_small A B hAB
+      (table.subrepresentationQuotient_generated_or_finrank_le_two registry
+        (permutationFunctionRepresentationSelfDual
+          (k := ZMod 2) (G := D.top) (X := Fin t)) A B hAB)
 
 namespace DegreeTwoPairTopNestedQuotientGeneratorData
 
@@ -98,37 +98,8 @@ theorem subrepresentationQuotient_comp_nonfixed_le_end_finrank
         (A := (inflatedRepresentation gamma (nestedQuotientRepresentation A B hAB)).asModule)
         (X := S) ≤
       Module.finrank (Module.End (ZMod 2)[H] S) S := by
-  letI : FiniteDimensional (ZMod 2) X :=
-    Module.Finite.of_finite
-  letI : FiniteDimensional (ZMod 2) S :=
-    Module.Finite.of_finite
-  have hcertificate := Q.certificate A B hAB
-  rcases hcertificate with hgen | hsmall
-  · let tau := nestedQuotientRepresentation A B hAB
-    have hgenComp : RepresentationGeneratedBy (inflatedRepresentation gamma tau.dual) 1 :=
-      RepresentationGeneratedBy.comp_of_surjective
-        tau.dual gamma hgamma hgen
-    let E := representationDualCompEquiv tau gamma
-    have hdual : RepresentationGeneratedBy (inflatedRepresentation gamma tau).dual 1 :=
-      representationGeneratedBy_of_surjective
-        (inflatedRepresentation gamma tau.dual) (inflatedRepresentation gamma tau).dual
-        E.symm.toIntertwiningMap E.symm.surjective hgenComp
-    have hschur := schurSocleMultiplicity_le_of_dual_generated
-      (inflatedRepresentation gamma tau) 1 hdual (X := S)
-    simpa only [tau, one_mul] using hschur
-  · have hone : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[H])
-        (A := (inflatedRepresentation gamma (nestedQuotientRepresentation A B hAB)).asModule)
-        (X := S) ≤ 1 :=
-      schurSocleMultiplicity_le_one_of_finrank_le_two_of_nonfixed
-        sigma S hnonfixed hsmall
-    have hpos : 0 < Module.finrank (Module.End (ZMod 2)[H] S) S := by
-      letI : Nontrivial S := IsSimpleModule.nontrivial (ZMod 2)[H] S
-      have hdim := Module.finrank_pos (R := ZMod 2) (M := S)
-      have htower := schur_simple_finrank_tower
-        (k := ZMod 2) (R := (ZMod 2)[H]) (X := S)
-      exact Nat.pos_of_mul_pos_left (htower ▸ hdim)
-    exact hone.trans hpos
+  exact (Q.certificate A B hAB).comp_nonfixed_le_end_finrank
+    gamma hgamma sigma S hnonfixed
 
 /-! ## Physical two-frame consequences -/
 
@@ -328,48 +299,101 @@ theorem innerOmega_nonfixed_schurSocleMultiplicity_le_end_finrank
         (A := (inflatedRepresentation (R.rawQuotientMap N) (R.innerOmegaSubrepresentation N).toRepresentation).asModule) (X := X) ≤
       Module.finrank
         (Module.End (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X) X := by
+  let GQ := preE7PairAction 16 p ⧸ N.1
+  let G := preE7PairAction 16 p
+  let gamma : G →* GQ := QuotientGroup.mk' N.1
+  have hgamma : Function.Surjective gamma := QuotientGroup.mk'_surjective _
+  let omega := Q.omegaSocleRepresentation R N
+  let outer := inflatedRepresentation (R.rawQuotientMap N)
+    (R.innerOmegaSubrepresentation N).toRepresentation
+  let rhoX := (Subrepresentation.ofSubmodule' X).toRepresentation
+  let sigmaG := inflatedRepresentation gamma omega
+  let XG := representationInflatedSubmodule gamma hgamma omega X
+  letI : FiniteDimensional (ZMod 2) X :=
+    Module.Finite.of_finite
+  letI : IsSimpleModule (ZMod 2)[GQ] rhoX.asModule :=
+    IsSimpleModule.congr (submoduleRepresentationModuleEquiv omega X).symm
+  letI : IsSimpleModule (ZMod 2)[G] (inflatedRepresentation gamma rhoX).asModule :=
+    representation_comp_isSimpleModule gamma hgamma rhoX
+  letI : IsSimpleModule (ZMod 2)[G] XG :=
+    representationInflatedSubmodule_isSimple gamma hgamma omega X
+  letI : FiniteDimensional (ZMod 2) XG :=
+    FiniteDimensional.of_injective
+      (XG.subtype.restrictScalars (ZMod 2)) XG.subtype_injective
+  have hnonfixedG : ¬ representationSubmoduleFixed sigmaG XG := by
+    intro hfixed
+    exact hnonfixed
+      ((representationInflatedSubmodule_fixed_iff
+        gamma hgamma omega X).1 hfixed)
+  let f := R.outerTopToLiteral.comp R.frame.top.rangeRestrict
+  have hf : Function.Surjective f :=
+    R.outerTopToLiteral_surjective.comp R.frame.top.rangeRestrict_surjective
   let A := R.moduleAxis N
   let B := R.innerOmegaNaturalAxis N
   let hAB := R.moduleAxis_le_innerOmegaNaturalAxis N
   let tau := nestedQuotientRepresentation A B hAB
-  let sigma := (R.innerOmegaSubrepresentation N).toRepresentation
-  let q := QuotientGroup.mk' (R.topNormal N.1)
-  let E : tau.Equiv (inflatedRepresentation q sigma) :=
-    R.innerNestedQuotientEquivInnerOmegaInflation N
-  letI : FiniteDimensional (ZMod 2) X :=
-    Module.Finite.of_finite
-  have hcertificate := Q.certificate A B hAB
-  rcases hcertificate with hgen | hsmall
-  · have hq : Function.Surjective q := QuotientGroup.mk'_surjective _
-    have hcapSigma : representationSchurCapacity sigma ≤ 1 := by
-      simpa only [Nat.cast_one] using
-        representationSchurCapacity_le_of_comp_equiv_dual_generated
-          tau sigma q hq E 1 hgen
-    have hcap : representationSchurCapacity
-        (inflatedRepresentation (R.rawQuotientMap N) sigma) ≤ 1 := by
-      exact (representationSchurCapacity_comp (R.rawQuotientMap N)
-        (R.rawQuotientMap_surjective N) sigma).trans_le hcapSigma
-    simpa only [sigma, one_mul] using
-      (schurSocleMultiplicity_le_nat_mul_end_finrank_of_capacity_le
-        (inflatedRepresentation (R.rawQuotientMap N) sigma) 1
-        (by simpa only [Nat.cast_one] using hcap) (X := X))
-  · have htarget : Module.finrank (ZMod 2)
-        ((inflatedRepresentation (R.rawQuotientMap N) sigma).asModule) ≤ 2 := by
-      have hE := E.toLinearEquiv.finrank_eq
-      have hsigma : Module.finrank (ZMod 2) sigma.asModule ≤ 2 := by
-        exact hE.symm.trans_le hsmall
-      simpa only [sigma] using hsigma
-    have hone := schurSocleMultiplicity_le_one_of_finrank_le_two_of_nonfixed
-      (Q.omegaSocleRepresentation R N) X hnonfixed htarget
-    have hpos : 0 < Module.finrank
-        (Module.End (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X) X := by
-      letI : Nontrivial X :=
-        IsSimpleModule.nontrivial (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X
-      have hdim := Module.finrank_pos (R := ZMod 2) (M := X)
-      have htower := schur_simple_finrank_tower
-        (k := ZMod 2) (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1]) (X := X)
-      exact Nat.pos_of_mul_pos_left (htower ▸ hdim)
-    exact hone.trans hpos
+  have hcoord := Q.subrepresentationQuotient_comp_nonfixed_le_end_finrank
+    f hf A B hAB sigmaG XG hnonfixedG
+  let E := R.innerNestedQuotientEquivInnerOmegaInflation N
+  let eInner : (inflatedRepresentation f tau).Equiv
+      (inflatedRepresentation gamma outer) :=
+    Representation.Equiv.mk E.toLinearEquiv (by
+      intro g
+      apply LinearMap.ext
+      intro v
+      exact Representation.IntertwiningMap.isIntertwining _ _ E.toIntertwiningMap (f g) v)
+  have htarget : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[G])
+        (A := (inflatedRepresentation gamma outer).asModule) (X := XG) =
+      schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[G])
+        (A := (inflatedRepresentation f tau).asModule) (X := XG) :=
+    schurSocleMultiplicity_eq_of_representationEquiv
+      (inflatedRepresentation gamma outer) (inflatedRepresentation f tau) eInner.symm
+  have hphysicalG : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[G])
+        (A := (inflatedRepresentation gamma outer).asModule) (X := XG) ≤
+      Module.finrank (Module.End (ZMod 2)[G] XG) XG := by
+    exact htarget.trans_le hcoord
+  let eXrep := representationInflatedSubmoduleEquiv
+    gamma hgamma omega X
+  let eXmodule : (inflatedRepresentation gamma rhoX).asModule ≃ₗ[(ZMod 2)[G]] XG :=
+    (representationEquivLinearEquivAsModule
+      (inflatedRepresentation gamma rhoX)
+      (Subrepresentation.ofSubmodule' XG).toRepresentation
+      eXrep).trans
+        (submoduleRepresentationModuleEquiv sigmaG XG).symm
+  have hsourceG : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[G])
+        (A := (inflatedRepresentation gamma outer).asModule)
+        (X := (inflatedRepresentation gamma rhoX).asModule) =
+      schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[G])
+        (A := (inflatedRepresentation gamma outer).asModule) (X := XG) :=
+    schurSocleMultiplicity_eq_of_source_linearEquiv eXmodule
+  have hinflate := schurSocleMultiplicity_comp_eq_representation
+    gamma hgamma rhoX outer
+  have hsourceQ : schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[GQ])
+        (A := outer.asModule) (X := rhoX.asModule) =
+      schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[GQ])
+        (A := outer.asModule) (X := X) :=
+    schurSocleMultiplicity_eq_of_source_linearEquiv
+      (submoduleRepresentationModuleEquiv omega X).symm
+  have hendG := moduleFinrankOverEnd_eq_of_linearEquiv (k := ZMod 2) eXmodule
+  have hendInflate := representationFinrankOverEnd_comp_eq
+    gamma hgamma rhoX
+  have hendQ := moduleFinrankOverEnd_eq_of_linearEquiv
+    (k := ZMod 2) (R := (ZMod 2)[GQ]) (X := rhoX.asModule) (V := X)
+    (submoduleRepresentationModuleEquiv omega X).symm
+  have hend : Module.finrank (Module.End (ZMod 2)[G] XG) XG =
+      Module.finrank (Module.End (ZMod 2)[GQ] X) X :=
+    hendG.symm.trans (hendInflate.trans hendQ)
+  have hleft := hsourceG.symm.trans
+    (hinflate.trans (hsourceQ))
+  have hright := hend
+  exact hleft.symm.trans_le (hphysicalG.trans_eq hright)
 
 set_option maxHeartbeats 800000 in
 /-- The physical outer projection kernel costs two nonfixed Schur
