@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoRelativeKernelAnchor
+import SymmetricSubgroupAsymptotics.NormalKernelCentralOmega
 import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicOrbitRegistry
 import SymmetricSubgroupAsymptotics.DualGeneratorSchurCapacity
 import SymmetricSubgroupAsymptotics.RepresentationDualSubquotientGenerators
@@ -35,7 +36,7 @@ namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
 
-variable {Q B : Type*} [Group Q] [Finite Q] [Group B]
+variable {Q B : Type} [Group Q] [Finite Q] [Group B]
 
 /-- Ambient conjugation preserves the intrinsic central involutions of a
 normal kernel.  We construct the result through the literal ambient omega
@@ -54,10 +55,11 @@ noncomputable def binaryKernelOmegaConjugate
     (pi : Q →* B) (q : Q) (z : binaryCentralOmega pi.ker) : pi.ker :=
   binaryCentralOmegaEmbedding (binaryKernelOmegaConjugateOmega pi q z)
 
+omit [Finite Q] in
 @[simp] theorem binaryKernelOmegaConjugate_val
     (pi : Q →* B) (q : Q) (z : binaryCentralOmega pi.ker) :
     (binaryKernelOmegaConjugate pi q z : Q) =
-      q * (binaryCentralOmegaEmbedding z : Q) * q⁻¹ :=
+      q * ((binaryCentralOmegaEmbedding z : pi.ker) : Q) * q⁻¹ :=
   by
     let e := binaryCentralOmegaEquivNormalKernel pi
     let z' : normalKernelCentralOmega pi := e z
@@ -69,14 +71,17 @@ noncomputable def binaryKernelOmegaConjugate
     simpa only [binaryKernelOmegaConjugate,
       binaryKernelOmegaConjugateOmega, e, z', y] using h
 
+omit [Finite Q] in
 @[simp] theorem binaryKernelOmegaConjugateOmega_one
     (pi : Q →* B) (z : binaryCentralOmega pi.ker) :
     binaryKernelOmegaConjugateOmega pi 1 z = z := by
   apply binaryCentralOmegaEmbedding_injective
   apply Subtype.ext
+  change (binaryKernelOmegaConjugate pi 1 z : Q) = _
   rw [binaryKernelOmegaConjugate_val]
   simp
 
+omit [Finite Q] in
 @[simp] theorem binaryKernelOmegaConjugateOmega_mul
     (pi : Q →* B) (q q' : Q) (z : binaryCentralOmega pi.ker) :
     binaryKernelOmegaConjugateOmega pi (q * q') z =
@@ -87,8 +92,9 @@ noncomputable def binaryKernelOmegaConjugate
   change (binaryKernelOmegaConjugate pi (q * q') z : Q) =
     (binaryKernelOmegaConjugate pi q
       (binaryKernelOmegaConjugateOmega pi q' z) : Q)
-  rw [binaryKernelOmegaConjugate_val, binaryKernelOmegaConjugate_val,
-    binaryKernelOmegaConjugate_val]
+  rw [binaryKernelOmegaConjugate_val, binaryKernelOmegaConjugate_val]
+  change _ = q * (binaryKernelOmegaConjugate pi q' z : Q) * q⁻¹
+  rw [binaryKernelOmegaConjugate_val]
   group
 
 /-- Ambient conjugation as an automorphic action on the intrinsic central
@@ -100,6 +106,7 @@ noncomputable def binaryKernelOmegaConjugationHom
   map_one' := by
     apply binaryCentralOmegaEmbedding_injective
     apply Subtype.ext
+    change (binaryKernelOmegaConjugate pi q 1 : Q) = _
     rw [binaryKernelOmegaConjugate_val]
     simp
   map_mul' z w := by
@@ -110,6 +117,7 @@ noncomputable def binaryKernelOmegaConjugationHom
         (binaryKernelOmegaConjugate pi q w : Q)
     rw [binaryKernelOmegaConjugate_val, binaryKernelOmegaConjugate_val,
       binaryKernelOmegaConjugate_val]
+    simp only [map_mul, Subgroup.coe_mul]
     group
 
 /-- The binary linear representation obtained from ambient conjugation on
@@ -140,7 +148,7 @@ noncomputable def binaryKernelOmegaConjugationRepresentation
 spanning family of their literal group orbits.  The forward direction is
 the one needed for central-omega dual characters. -/
 theorem orbit_span_eq_top_of_representationGeneratedBy
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V]
     (rho : Representation k G V) {r : ℕ}
     (hgen : RepresentationGeneratedBy rho r) :
@@ -165,7 +173,7 @@ theorem orbit_span_eq_top_of_representationGeneratedBy
               simp only [map_mul, Module.End.mul_apply]
             rw [heq]
             exact Submodule.subset_span ⟨(i, g * h), rfl⟩
-        | zero => simpa using W.zero_mem
+        | zero => simpa only [map_zero] using W.zero_mem
         | add x y _ _ hx hy => simpa only [map_add] using W.add_mem hx hy
         | smul a x _ hx => simpa only [map_smul] using W.smul_mem a hx }
   have hgenerator (i : Fin r) : code i ∈ S.asSubmodule := by
@@ -195,7 +203,7 @@ theorem orbit_span_eq_top_of_representationGeneratedBy
 /-- The module-theoretic socle of a representation: the sum of all simple
 submodules of its group-algebra module. -/
 noncomputable def representationSocleModule
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V]
     (rho : Representation k G V) : Submodule k[G] rho.asModule :=
   sSup {S : Submodule k[G] rho.asModule | IsSimpleModule k[G] S}
@@ -204,13 +212,13 @@ noncomputable def representationSocleModule
 representation.  This canonical detecting subrepresentation is the module
 socle used by the paired-eight argument. -/
 noncomputable def finiteRepresentationSocle
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [Finite V]
     (rho : Representation k G V) : Subrepresentation rho :=
   Subrepresentation.ofSubmodule' (representationSocleModule rho)
 
 theorem isAtom_le_finiteRepresentationSocle
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [Finite V]
     {rho : Representation k G V}
     (S : Subrepresentation rho) (hS : IsAtom S) :
@@ -221,12 +229,12 @@ theorem isAtom_le_finiteRepresentationSocle
   rw [isSimpleModule_iff_isAtom]
   exact
     ((Subrepresentation.subrepresentationSubmoduleOrderIso
-      (rho := rho)).isAtom_iff S).mpr hS
+      (ρ := rho)).isAtom_iff S).mpr hS
 
 /-- Every fixed vector spans either zero or a simple trivial
 subrepresentation, hence lies in the canonical representation socle. -/
 theorem invariants_le_finiteRepresentationSocle
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [Finite V]
     (rho : Representation k G V) :
     rho.invariants ≤ (finiteRepresentationSocle rho).toSubmodule := by
@@ -276,7 +284,7 @@ theorem invariants_le_finiteRepresentationSocle
 
 /-- Passing to the canonical socle loses no fixed vectors. -/
 theorem finiteRepresentationSocle_invariants_finrank_eq
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [Finite V]
     (rho : Representation k G V) :
     Module.finrank k
@@ -304,7 +312,7 @@ theorem finiteRepresentationSocle_invariants_finrank_eq
 /-- Every homomorphism from a simple module into a representation lands
 in its canonical socle. -/
 theorem schurHom_range_le_representationSocleModule
-    {k G V X : Type*} [Field k] [Group G]
+    {k G V X : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V]
     [AddCommGroup X] [Module k[G] X]
     [IsSimpleModule k[G] X]
@@ -323,7 +331,7 @@ theorem schurHom_range_le_representationSocleModule
 /-- Restricting the target of a simple-source homomorphism to the canonical
 socle loses no maps. -/
 noncomputable def schurHomFiniteRepresentationSocleEquiv
-    {k G V X : Type*} [Field k] [Group G]
+    {k G V X : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [Finite V]
     [AddCommGroup X] [Module k[G] X] [Module k X]
     [IsScalarTower k k[G] X] [IsSimpleModule k[G] X]
@@ -348,7 +356,7 @@ noncomputable def schurHomFiniteRepresentationSocleEquiv
 /-- Every simple type has the same Schur multiplicity in a finite
 representation and in that representation's canonical socle. -/
 theorem finiteRepresentationSocle_schurSocleMultiplicity_eq
-    {k G V X : Type*} [Field k] [Group G]
+    {k G V X : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [Finite V]
     [AddCommGroup X] [Module k[G] X] [Module k X]
     [IsScalarTower k k[G] X] [FiniteDimensional k X]
@@ -377,7 +385,7 @@ theorem finiteRepresentationSocle_schurSocleMultiplicity_eq
 /-- The module socle is semisimple by construction: it is generated by
 simple submodules of the ambient representation module. -/
 theorem representationSocleModule_isSemisimple
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V]
     (rho : Representation k G V) :
     IsSemisimpleModule k[G] (representationSocleModule rho) := by
@@ -391,7 +399,7 @@ theorem representationSocleModule_isSemisimple
 /-- The canonical socle subrepresentation carries the same semisimple
 group-algebra module structure. -/
 theorem finiteRepresentationSocle_isSemisimple
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [Finite V]
     (rho : Representation k G V) :
     IsSemisimpleModule k[G]
@@ -410,7 +418,7 @@ endpoint. -/
 /-- The annihilator of an invariant subspace is invariant under the
 contragredient representation. -/
 noncomputable def representationDualAnnihilator
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V]
     (rho : Representation k G V) (S : Subrepresentation rho) :
     Subrepresentation rho.dual where
@@ -424,7 +432,7 @@ noncomputable def representationDualAnnihilator
 /-- The coannihilator of a dual invariant subspace is invariant in the
 original representation. -/
 noncomputable def representationDualCoannihilator
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V]
     (rho : Representation k G V) (T : Subrepresentation rho.dual) :
     Subrepresentation rho where
@@ -439,7 +447,7 @@ noncomputable def representationDualCoannihilator
 
 /-- Finite-dimensional duality reverses the invariant-subspace lattice. -/
 noncomputable def subrepresentationDualOrderIso
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     (rho : Representation k G V) :
     Subrepresentation rho ≃o (Subrepresentation rho.dual)ᵒᵈ where
@@ -460,7 +468,7 @@ noncomputable def subrepresentationDualOrderIso
 /-- A finite-dimensional dual of a semisimple representation is
 semisimple, over an arbitrary field and with no Maschke hypothesis. -/
 theorem representationDual_isSemisimple
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     (rho : Representation k G V)
     [IsSemisimpleModule k[G] rho.asModule] :
@@ -485,7 +493,7 @@ theorem representationDual_isSemisimple
 /-- Evaluation is equivariant from a finite-dimensional representation to
 its double contragredient. -/
 noncomputable def representationDoubleDualEquiv
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     (rho : Representation k G V) : rho.Equiv rho.dual.dual :=
   Representation.Equiv.mk (Module.evalEquiv k V) (by
@@ -502,7 +510,7 @@ the original representation with the double dual, so a generated tuple
 for the original is exactly the dual-generated input for the
 contragredient capacity theorem. -/
 theorem representationDual_schurCapacity_le_of_semisimple
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     (rho : Representation k G V)
     [IsSemisimpleModule k[G] rho.asModule]
@@ -522,7 +530,7 @@ capacity.  The shared factor `finrank End(S) S` is essential: it is what
 lets repeated copies of one nontrivial simple type share generator
 positions. -/
 theorem representationSchurCapacity_le_of_fixed_nonfixed_multiplicity
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     (rho : Representation k G V) (cap : ℕ)
     (hfixed : Module.finrank k rho.invariants ≤ cap)
@@ -566,12 +574,13 @@ theorem representationSchurCapacity_le_of_fixed_nonfixed_multiplicity
 /-- Every nonzero cyclic orbit meets the finite representation socle.
 Equivalently, the socle is an essential subrepresentation. -/
 theorem finiteRepresentationSocle_essential
-    {k G V : Type*} [Field k] [Group G]
+    {k G V : Type} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [Finite V]
     (rho : Representation k G V) (x : V) (hx0 : x ≠ 0) :
     ∃ y : (finiteRepresentationSocle rho).toSubmodule, y ≠ 0 ∧
       (y : V) ∈ binaryOrbitSpan rho x := by
-  let W : Subrepresentation rho := orbitSubrepresentation rho x
+  let W : Subrepresentation rho :=
+    BinaryInvariantCyclicOrbitRegistry.orbitSubrepresentation rho x
   have hW : W ≠ ⊥ := by
     intro hbot
     have hx : x ∈ W.toSubmodule := binaryOrbitSpan_point rho x
@@ -631,17 +640,17 @@ multiplicative binary character.  Unlike `binaryOmegaCoordinate`, this
 does not require the functional to be one of the canonical dual-basis
 coordinates. -/
 def binaryOmegaLinearFunctional
-    {G : Type*} [Group G]
+    {G : Type} [Group G]
     (f : Module.Dual (ZMod 2) (Additive (binaryCentralOmega G))) :
     binaryCentralOmega G →* Multiplicative (ZMod 2) where
   toFun z := Multiplicative.ofAdd (f (Additive.ofMul z))
   map_one' := by simp
   map_mul' x y := by
     apply Multiplicative.toAdd.injective
-    simp only [toAdd_mul, toAdd_ofAdd, map_add]
+    exact f.map_add (Additive.ofMul x) (Additive.ofMul y)
 
 @[simp] theorem binaryOmegaLinearFunctional_apply
-    {G : Type*} [Group G]
+    {G : Type} [Group G]
     (f : Module.Dual (ZMod 2) (Additive (binaryCentralOmega G)))
     (z : binaryCentralOmega G) :
     (binaryOmegaLinearFunctional f z).toAdd = f (Additive.ofMul z) :=
@@ -650,7 +659,7 @@ def binaryOmegaLinearFunctional
 /-- The complex scalar character attached to an arbitrary binary linear
 functional on central omega. -/
 def binaryOmegaLinearScalarCharacter
-    {G : Type*} [Group G]
+    {G : Type} [Group G]
     (f : Module.Dual (ZMod 2) (Additive (binaryCentralOmega G))) :
     binaryOmegaSubgroup G →* ℂ :=
   binaryScalarSign.comp
@@ -699,8 +708,9 @@ noncomputable def ofDualGenerated
       (binaryKernelOmegaConjugationRepresentation pi).dual r) :
     BinaryKernelOmegaDualOrbitSpan pi r := by
   let rho := binaryKernelOmegaConjugationRepresentation pi
-  obtain ⟨representative, hspan⟩ :=
-    orbit_span_eq_top_of_representationGeneratedBy rho.dual hgen
+  let hexists := orbit_span_eq_top_of_representationGeneratedBy rho.dual hgen
+  let representative := Classical.choose hexists
+  have hspan := Classical.choose_spec hexists
   let orbit : Fin r × Q →
       Module.Dual (ZMod 2) (Additive (binaryCentralOmega pi.ker)) :=
     fun iq ↦ rho.dual iq.2⁻¹ (representative iq.1)
@@ -719,8 +729,7 @@ noncomputable def ofDualGenerated
         rw [← hspan]
         apply Submodule.span_mono
         rintro _ ⟨⟨i, q⟩, rfl⟩
-        apply Submodule.subset_span
-        exact ⟨(i, q⁻¹), by simp only [orbit, inv_inv]⟩ }
+        exact ⟨(i, q⁻¹), by simp only [orbit, inv_inv, representative]⟩ }
 
 /-- A spanning tuple of ambient dual orbits separates every omega
 element. -/
@@ -779,12 +788,13 @@ noncomputable def ofEssentialDualGenerated
     (hgen : RepresentationGeneratedBy S.toRepresentation.dual r) :
     BinaryKernelOmegaLinearOrbits pi r := by
   let rho := binaryKernelOmegaConjugationRepresentation pi
-  obtain ⟨representative, hspan⟩ :=
-    orbit_span_eq_top_of_representationGeneratedBy
-      S.toRepresentation.dual hgen
+  let hexists := orbit_span_eq_top_of_representationGeneratedBy
+    S.toRepresentation.dual hgen
+  let representative := Classical.choose hexists
+  have hspan := Classical.choose_spec hexists
   let functional : Fin r →
       Module.Dual (ZMod 2) (Additive (binaryCentralOmega pi.ker)) :=
-    fun i ↦ S.toSubmodule.dualLift (representative i)
+    fun i ↦ Subspace.dualLift S.toSubmodule (representative i)
   exact
     { functional := functional
       separates := by
@@ -820,11 +830,11 @@ noncomputable def ofEssentialDualGenerated
           have hyqOrbit :
               (yq : Additive (binaryCentralOmega pi.ker)) ∈
                 binaryOrbitSpan rho (Additive.ofMul z) := by
-            exact binaryOrbitSpan_apply_mem rho (Additive.ofMul z) q⁻¹
-              hyOrbit
+            exact (BinaryInvariantCyclicOrbitRegistry.orbitSubrepresentation
+              rho (Additive.ofMul z)).apply_mem_toSubmodule q⁻¹ hyOrbit
           have hv := hvanish i yq hyqOrbit
           change representative i yq = 0
-          simpa only [functional, Submodule.dualLift_of_subtype] using hv
+          simpa only [functional, Subspace.dualLift_of_subtype] using hv
         have hall : ∀ f : Module.Dual (ZMod 2) S.toSubmodule, f y = 0 := by
           intro f
           have hf := LinearMap.congr_fun hevaluation f
@@ -952,8 +962,8 @@ noncomputable def empty
     apply Subtype.ext
     have hz : ((binaryCentralOmegaEmbedding z : pi.ker) : Q) ∈ pi.ker :=
       (binaryCentralOmegaEmbedding z).property
-    rw [hker, Subgroup.mem_bot] at hz
-    exact hz
+    have hz1 := hker.le hz
+    simpa only [Subgroup.mem_bot, map_one, Subgroup.coe_one] using hz1
 
 /-- Turn the checked coordinate-orbit certificate into literal complex
 central characters. -/
@@ -981,6 +991,8 @@ variable {pi : Q →* B} {r : ℕ}
 overgroup lifting theorem. -/
 noncomputable def toOrbitIrreducibles :
     BinaryKernelOmegaOrbitIrreducibles pi r := by
+  letI : NeZero (Nat.card pi.ker : ℂ) :=
+    ⟨by exact_mod_cast (Nat.card_pos (α := pi.ker)).ne'⟩
   have hexists (i : Fin r) :=
     exists_bundled_central_character
       (binaryOmegaSubgroup pi.ker) binaryOmegaSubgroup_central
@@ -1045,10 +1057,11 @@ theorem relative_faithful_on_kernel
     intro i q
     let y := binaryKernelOmegaConjugate pi q z
     have hzq : (C.relative i).action (y : Q) = 1 := by
-      change (C.relative i).action
-        (q * (binaryCentralOmegaEmbedding z : Q) * q⁻¹) = 1
-      rw [map_mul, map_mul, map_inv, hz i]
-      simp
+      change (C.relative i).action (binaryKernelOmegaConjugate pi q z : Q) = 1
+      rw [binaryKernelOmegaConjugate_val]
+      have hzi : (C.relative i).action
+          ((binaryCentralOmegaEmbedding z : pi.ker) : Q) = 1 := hz i
+      rw [map_mul, map_mul, hzi, mul_one, ← map_mul, mul_inv_cancel, map_one]
     ext v
     apply (C.overgroup i).inclusion_injective
     have hintertwine :=
@@ -1058,10 +1071,10 @@ theorem relative_faithful_on_kernel
         (C.overgroup i).inclusion y v
     change (C.overgroup i).inclusion ((C.fibre i).action y v) =
       (C.overgroup i).inclusion v
-    rw [hintertwine]
-    change (C.relative i).action (y : Q) ((C.overgroup i).inclusion v) = _
-    rw [hzq]
-    rfl
+    exact hintertwine.trans (by
+      change (C.relative i).action (y : Q) ((C.overgroup i).inclusion v) = _
+      rw [hzq]
+      rfl)
   · exact hx
 
 end BinaryKernelOmegaOrbitIrreducibles
@@ -1100,13 +1113,13 @@ noncomputable def ofBinaryKernelOmegaOrbitIrreducibles
     intro q hbinary hlinear hord hrelative
     have hq : q ∈ pi.ker := by
       rw [kernel_eq]
-      exact ⟨⟨fun i ↦ MonoidHom.mem_ker.mpr (hbinary i),
-        fun i ↦ MonoidHom.mem_ker.mpr (hlinear i)⟩,
-        fun i ↦ MonoidHom.mem_ker.mpr (hord i)⟩
+      exact ⟨⟨Subgroup.mem_iInf.mpr (fun i ↦ MonoidHom.mem_ker.mpr (hbinary i)),
+        Subgroup.mem_iInf.mpr (fun i ↦ MonoidHom.mem_ker.mpr (hlinear i))⟩,
+        Subgroup.mem_iInf.mpr (fun i ↦ MonoidHom.mem_ker.mpr (hord i))⟩
     let x : pi.ker := ⟨q, hq⟩
     have hx : x = 1 := orbit.relative_faithful_on_kernel
       kernel_twoGroup x (fun i ↦ hrelative i)
-    simpa using congrArg Subtype.val hx
+    exact congrArg (fun a : pi.ker => (a : Q)) hx
 
 /-- Character-facing form of
 `ofBinaryKernelOmegaOrbitIrreducibles`.  A finite certificate may stay on
