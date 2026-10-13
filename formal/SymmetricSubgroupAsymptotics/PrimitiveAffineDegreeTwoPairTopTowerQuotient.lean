@@ -26,6 +26,8 @@ namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
 namespace DegreeTwoPairTopTowerRealization
 
+attribute [instance] outerTopNormal_normal topNormal_normal
+
 variable {s t : ℕ} {D : DegreeTwoPairTopFiniteInterface t}
   {p : PreE7PairActionClass s}
   (R : DegreeTwoPairTopTowerRealization D p)
@@ -33,17 +35,17 @@ variable {s t : ℕ} {D : DegreeTwoPairTopFiniteInterface t}
 /-- The first pair quotient, with the actual image of `N` as denominator. -/
 noncomputable def outerQuotientMap
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    (preE7PairAction s p ⫽ N.1) →*
-      (R.frame.top.range ⫽ R.outerTopNormal N.1) := by
+    (preE7PairAction s p ⧸ N.1) →*
+      (R.frame.top.range ⧸ R.outerTopNormal N.1) := by
   letI : N.1.Normal := N.2
   let f : preE7PairAction s p →*
-      (R.frame.top.range ⫽ R.outerTopNormal N.1) :=
+      (R.frame.top.range ⧸ R.outerTopNormal N.1) :=
     (QuotientGroup.mk' (R.outerTopNormal N.1)).comp
       R.frame.top.rangeRestrict
   apply QuotientGroup.lift N.1 f
   intro u hu
   apply MonoidHom.mem_ker.mpr
-  apply QuotientGroup.eq_one_iff.mpr
+  apply (QuotientGroup.eq_one_iff _).mpr
   exact ⟨u, hu, rfl⟩
 
 @[simp] theorem outerQuotientMap_apply
@@ -72,7 +74,10 @@ private theorem outerTop_mem_normal_iff
   constructor
   · rintro ⟨n, hn, hnu⟩
     have hk : n⁻¹ * u ∈ R.frame.top.ker := by
-      rw [MonoidHom.mem_ker, map_mul, map_inv, hnu, inv_mul]
+      have heq := congrArg (fun a : R.frame.top.range =>
+        (a : Equiv.Perm (Fin s))) hnu
+      change R.frame.top n = R.frame.top u at heq
+      rw [MonoidHom.mem_ker, map_mul, map_inv, heq, inv_mul_cancel]
     have hn' : n ∈ R.frame.top.ker ⊔ N.1 :=
       Subgroup.mem_sup_right hn
     have hk' : n⁻¹ * u ∈ R.frame.top.ker ⊔ N.1 :=
@@ -83,7 +88,9 @@ private theorem outerTop_mem_normal_iff
     obtain ⟨k, hk, n, hn, hkn⟩ :=
       Subgroup.mem_sup_of_normal_right.mp hu
     refine ⟨n, hn, ?_⟩
-    rw [← hkn, map_mul, MonoidHom.mem_ker.mp hk, one_mul]
+    have hk' : R.frame.top.rangeRestrict k = 1 :=
+      Subtype.ext (MonoidHom.mem_ker.mp hk)
+    rw [← hkn, map_mul, hk', one_mul]
 
 theorem outerQuotientMap_ker_eq_zeroCutBase_ker
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
@@ -92,7 +99,11 @@ theorem outerQuotientMap_ker_eq_zeroCutBase_ker
   ext q
   obtain ⟨u, rfl⟩ := QuotientGroup.mk'_surjective N.1 q
   simp only [MonoidHom.mem_ker, R.outerQuotientMap_apply,
-    R.frame.zeroCutBase_apply, QuotientGroup.eq_one_iff]
+    R.frame.zeroCutBase_apply]
+  change ((R.frame.top.rangeRestrict u :
+      R.frame.top.range ⧸ R.outerTopNormal N.1) = 1) ↔
+    ((u : preE7PairAction s p ⧸ (R.frame.top.ker ⊔ N.1)) = 1)
+  rw [QuotientGroup.eq_one_iff, QuotientGroup.eq_one_iff]
   exact R.outerTop_mem_normal_iff N u
 
 theorem outerQuotientMap_kernel_isPGroup
@@ -107,8 +118,8 @@ theorem outerQuotientMap_kernel_isPGroup
 /-- The second pair quotient, transported to the literal degree-`t` top. -/
 noncomputable def innerQuotientMap
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    (R.frame.top.range ⫽ R.outerTopNormal N.1) →*
-      (D.top ⫽ R.topNormal N.1) := by
+    (R.frame.top.range ⧸ R.outerTopNormal N.1) →*
+      (D.top ⧸ R.topNormal N.1) := by
   letI : N.1.Normal := N.2
   letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
   exact R.secondFrame.literalTopQuotientMap R.topEquiv
@@ -147,7 +158,7 @@ noncomputable def innerZeroCutKernelEquiv
 acting group. -/
 def innerZeroCutModule
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    Rep (ZMod 2) (D.top ⫽ R.topNormal N.1) := by
+    Rep (ZMod 2) (D.top ⧸ R.topNormal N.1) := by
   letI : N.1.Normal := N.2
   letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
   exact R.secondFrame.literalZeroCutModule R.topEquiv
@@ -166,7 +177,7 @@ noncomputable def innerZeroCutModuleChart
 /-- The direct second section module, before the harmless quotient by zero. -/
 def innerSectionModule
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    Rep (ZMod 2) (D.top ⫽ R.topNormal N.1) := by
+    Rep (ZMod 2) (D.top ⧸ R.topNormal N.1) := by
   letI : N.1.Normal := N.2
   letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
   exact R.secondFrame.literalSectionModule R.topEquiv
@@ -185,14 +196,14 @@ noncomputable def innerSectionModuleChart
 normal by its equal finite-registry state. -/
 noncomputable def rawQuotientMap
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    (preE7PairAction s p ⫽ N.1) →* (D.top ⫽ R.topNormal N.1) :=
+    (preE7PairAction s p ⧸ N.1) →* (D.top ⧸ R.topNormal N.1) :=
   (R.innerQuotientMap N).comp (R.outerQuotientMap N)
 
 /-- The direct-kernel central omega lifted to an actual normal subgroup of
 the original quotient. -/
 def rawKernelOmegaLift
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    Subgroup (preE7PairAction s p ⫽ N.1) :=
+    Subgroup (preE7PairAction s p ⧸ N.1) :=
   normalKernelCentralOmega (R.rawQuotientMap N)
 
 instance rawKernelOmegaLift_normal
@@ -229,7 +240,7 @@ theorem originalNormal_le_rawKernelOmegaOriginalPreimage
     N.1 ≤ R.rawKernelOmegaOriginalPreimage N := by
   intro u hu
   change QuotientGroup.mk' N.1 u ∈ R.rawKernelOmegaLift N
-  rw [QuotientGroup.eq_one_iff.mpr hu]
+  rw [QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff _).mpr hu]
   exact Subgroup.one_mem _
 
 /-- Two elements in the original pullback of direct-kernel omega commute
@@ -250,14 +261,16 @@ theorem rawKernelOmegaOriginalPreimage_commutator_mem
   have hcomm : Commute (q u) (q (k : preE7PairAction s p)) :=
     huOmega.2.1 ⟨q (k : preE7PairAction s p), hkOmega.1⟩
   apply (QuotientGroup.eq_one_iff _).mp
+  change q ((k : preE7PairAction s p)⁻¹ * u * k * u⁻¹) = 1
   simp only [map_mul, map_inv]
   calc
     (q (k : preE7PairAction s p))⁻¹ * q u *
           q (k : preE7PairAction s p) * (q u)⁻¹ =
         (q (k : preE7PairAction s p))⁻¹ *
           q (k : preE7PairAction s p) * q u * (q u)⁻¹ := by
-            rw [hcomm.eq]
-            group
+            simpa only [mul_assoc] using congrArg
+              (fun v => (q (k : preE7PairAction s p))⁻¹ * v * (q u)⁻¹)
+              hcomm.eq
     _ = 1 := by group
 
 /-- The intersection of lifted omega with the first pair kernel, in the
@@ -276,7 +289,7 @@ def outerOmegaAxis
 /-- Image of the lifted omega subgroup in the intermediate pair top. -/
 def rawKernelOmegaTopImage
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    Subgroup (R.frame.top.range ⫽ R.outerTopNormal N.1) :=
+    Subgroup (R.frame.top.range ⧸ R.outerTopNormal N.1) :=
   (R.rawKernelOmegaLift N).map (R.outerQuotientMap N)
 
 instance rawKernelOmegaTopImage_normal
@@ -326,11 +339,12 @@ theorem rawKernelOmegaIntermediatePreimage_eq_map
     obtain ⟨n, hn, hntop⟩ := hdiv
     have hnOmega : n ∈ R.rawKernelOmegaOriginalPreimage N :=
       R.originalNormal_le_rawKernelOmegaOriginalPreimage N hn
-    refine ⟨u * n⁻¹,
-      (R.rawKernelOmegaOriginalPreimage N).mul_mem hq
-        ((R.rawKernelOmegaOriginalPreimage N).inv_mem hnOmega), ?_⟩
+    refine ⟨n⁻¹ * u,
+      (R.rawKernelOmegaOriginalPreimage N).mul_mem
+        ((R.rawKernelOmegaOriginalPreimage N).inv_mem hnOmega) hq, ?_⟩
     rw [map_mul, map_inv, hntop]
-    group
+    simp only [div_eq_mul_inv, mul_inv_rev, inv_inv, mul_assoc,
+      inv_mul_cancel, mul_one]
   · rintro ⟨u, hu, rfl⟩
     change QuotientGroup.mk' (R.outerTopNormal N.1)
         (R.frame.top.rangeRestrict u) ∈
@@ -554,23 +568,25 @@ theorem rawKernelOmegaProjection_range_eq
   ext y
   constructor
   · rintro ⟨z, rfl⟩
-    change ((R.rawKernelOmegaProjection N z :
-      (R.innerQuotientMap N).ker) :
-        R.frame.top.range ⧸ R.outerTopNormal N.1) ∈
-      R.rawKernelOmegaTopImage N
-    refine ⟨R.rawKernelOmegaEquiv N z,
-      (R.rawKernelOmegaEquiv N z).property, ?_⟩
-    rw [rawKernelOmegaProjection, MonoidHom.comp_apply,
-      compositeKernelProjection_apply, R.rawKernelOmegaEquiv_val N z]
+    exact ⟨(R.rawKernelOmegaEquiv N z :
+        preE7PairAction s p ⧸ N.1),
+      (R.rawKernelOmegaEquiv N z).property, rfl⟩
   · intro hy
     change (y : R.frame.top.range ⧸ R.outerTopNormal N.1) ∈
       R.rawKernelOmegaTopImage N at hy
     obtain ⟨x, hx, hxy⟩ := hy
-    obtain ⟨z, rfl⟩ := (R.rawKernelOmegaEquiv N).surjective x
-    refine ⟨z, ?_⟩
-    apply Subtype.ext
-    rw [rawKernelOmegaProjection, MonoidHom.comp_apply,
-      compositeKernelProjection_apply, R.rawKernelOmegaEquiv_val N z]
+    let z := (R.rawKernelOmegaEquiv N).symm ⟨x, hx⟩
+    have he := congrArg
+      (fun a : R.rawKernelOmegaLift N =>
+        (a : preE7PairAction s p ⧸ N.1))
+      ((R.rawKernelOmegaEquiv N).apply_symm_apply ⟨x, hx⟩)
+    change ((binaryCentralOmegaEmbedding z : (R.rawQuotientMap N).ker) :
+      preE7PairAction s p ⧸ N.1) = x at he
+    refine ⟨z, Subtype.ext ?_⟩
+    change R.outerQuotientMap N
+      ((binaryCentralOmegaEmbedding z : (R.rawQuotientMap N).ker) :
+        preE7PairAction s p ⧸ N.1) = _
+    rw [he]
     exact hxy
 
 /-- Additive coordinates for the projected direct-kernel omega inside the
@@ -579,8 +595,9 @@ noncomputable def rawKernelOmegaInnerSectionMap
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     Additive (binaryCentralOmega (R.rawQuotientMap N).ker) →ₗ[ZMod 2]
       R.innerSectionModule N :=
-  (((R.innerSectionModuleChart N).equiv.symm.toMonoidHom.comp
-    (R.rawKernelOmegaProjection N)).toAdditive).toZModLinearMap 2
+  (AddMonoidHom.toMultiplicativeRight.symm
+    ((R.innerSectionModuleChart N).equiv.symm.toMonoidHom.comp
+      (R.rawKernelOmegaProjection N))).toZModLinearMap 2
 
 @[simp] theorem rawKernelOmegaInnerSectionMap_apply
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
@@ -601,6 +618,8 @@ theorem rawKernelOmegaInnerSectionMap_range_eq
   let E := R.innerSectionModuleChart N
   let L := (R.rawKernelOmegaTopImage N).subgroupOf
     (R.innerQuotientMap N).ker
+  have hL : (R.rawKernelOmegaProjection N).range = L :=
+    R.rawKernelOmegaProjection_range_eq N
   have hker : (E.kernelCoordinates
       (R.innerQuotientMap N) (R.innerSectionModule N)).ker ≤ L := by
     intro x hx
@@ -617,12 +636,12 @@ theorem rawKernelOmegaInnerSectionMap_range_eq
       (R.innerQuotientMap N) (R.innerSectionModule N)
       (R.rawKernelOmegaProjection N z.toMul)).toAdd) ∈
         E.normalSpace (R.innerQuotientMap N)
-          (R.innerSectionModule N) L
-    apply (sectionSubgroupImage_mem_iff
+          (R.innerSectionModule N) (R.rawKernelOmegaTopImage N)
+    apply (sectionSubgroupImage_mem_iff (p := 2)
       (E.kernelCoordinates (R.innerQuotientMap N)
         (R.innerSectionModule N)) L hker
       (R.rawKernelOmegaProjection N z.toMul)).2
-    rw [← R.rawKernelOmegaProjection_range_eq N]
+    rw [← hL]
     exact ⟨z.toMul, rfl⟩
   · intro hv
     let y : (R.innerQuotientMap N).ker :=
@@ -633,14 +652,14 @@ theorem rawKernelOmegaInnerSectionMap_range_eq
       rw [E.equiv.symm_apply_apply]
       rfl
     have hy : y ∈ L := by
-      apply (sectionSubgroupImage_mem_iff
+      apply (sectionSubgroupImage_mem_iff (p := 2)
         (E.kernelCoordinates (R.innerQuotientMap N)
           (R.innerSectionModule N)) L hker y).1
       change v ∈ E.normalSpace (R.innerQuotientMap N)
-        (R.innerSectionModule N) L at hv
+        (R.innerSectionModule N) (R.rawKernelOmegaTopImage N) at hv
       rwa [hcoord]
     have hyrange : y ∈ (R.rawKernelOmegaProjection N).range := by
-      rw [R.rawKernelOmegaProjection_range_eq N]
+      rw [hL]
       exact hy
     obtain ⟨z, hz⟩ := hyrange
     refine ⟨Additive.ofMul z, ?_⟩
@@ -681,16 +700,11 @@ noncomputable def outerZeroCutKernelEquivRawKernelProjectionKer
       (R.rawQuotientMap N).ker) :
         preE7PairAction s p ⧸ N.1) =
       QuotientGroup.mk' N.1 (l : preE7PairAction s p) := by
-  change (((R.outerKernelEquivRawKernelProjectionKer N)
-      ((MulEquiv.subgroupCongr
-        (R.outerQuotientMap_ker_eq_zeroCutBase_ker N).symm)
-          (R.frame.zeroCutKernelEquiv N.1
-            (R.frame.zeroCutMap N.1 l))) :
-        (R.rawKernelProjection N).ker) :
-          (R.rawQuotientMap N).ker) :
-            preE7PairAction s p ⧸ N.1) = _
-  rw [R.frame.zeroCutKernelEquiv_apply N.1 l]
-  rfl
+  change ((R.frame.zeroCutKernelEquiv N.1 (R.frame.zeroCutMap N.1 l)) :
+    preE7PairAction s p ⧸ N.1) = _
+  exact congrArg (fun y : (R.frame.zeroCutBase N.1).ker =>
+    (y : preE7PairAction s p ⧸ N.1))
+    (R.frame.zeroCutKernelEquiv_apply N.1 l)
 
 /-- Elements of direct-kernel omega killed by the second-kernel projection
 lie literally in the first kernel of the two-frame extension. -/
@@ -709,7 +723,19 @@ theorem rawKernelOmegaOuterInclusion_injective
   intro z w hzw
   apply Subtype.ext
   apply binaryCentralOmegaEmbedding_injective
-  exact congrArg Subtype.val hzw
+  exact congrArg (fun x : (R.rawKernelProjection N).ker =>
+    (x : (R.rawQuotientMap N).ker)) hzw
+
+/-- Every subgroup of central omega is an elementary binary module. -/
+instance rawKernelOmegaProjectionKernel_module
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module (ZMod 2) (Additive (R.rawKernelOmegaProjection N).ker) :=
+  AddCommGroup.zmodModule (n := 2) (fun z => by
+    apply Additive.toMul.injective
+    apply Subtype.ext
+    change (z.toMul.1) ^ 2 = 1
+    apply Subtype.ext
+    exact z.toMul.1.property)
 
 /-- Literal first zero-cut coordinates on the kernel of the omega
 projection. -/
@@ -717,8 +743,16 @@ noncomputable def rawKernelOmegaOuterCoordinateMap
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     Additive (R.rawKernelOmegaProjection N).ker →ₗ[ZMod 2]
       R.frame.zeroCutModule N.1 :=
-  ((((R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm.toMonoidHom.comp
-    (R.rawKernelOmegaOuterInclusion N)).toAdditive)).toZModLinearMap 2
+  (AddMonoidHom.toMultiplicativeRight.symm
+    ((R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm.toMonoidHom.comp
+      (R.rawKernelOmegaOuterInclusion N))).toZModLinearMap 2
+
+@[simp] theorem rawKernelOmegaOuterCoordinateMap_apply
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (z : Additive (R.rawKernelOmegaProjection N).ker) :
+    R.rawKernelOmegaOuterCoordinateMap N z =
+      ((R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm
+        (R.rawKernelOmegaOuterInclusion N z.toMul)).toAdd := rfl
 
 theorem rawKernelOmegaOuterCoordinateMap_injective
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
@@ -735,14 +769,47 @@ abbrev outerOmegaRetainedKernel
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
   (R.rawKernelOmegaOriginalPreimage N).subgroupOf R.frame.top.ker
 
+instance outerOmegaRetainedKernel_commGroup
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    CommGroup (R.outerOmegaRetainedKernel N) :=
+  { (inferInstance : Group (R.outerOmegaRetainedKernel N)) with
+    mul_comm := by
+      intro x y
+      apply Subtype.ext
+      apply R.frame.bitsHom_injective
+      change R.frame.bitsHom (x.1 * y.1) = R.frame.bitsHom (y.1 * x.1)
+      rw [map_mul, map_mul, mul_comm] }
+
+instance outerOmegaRetainedKernel_module
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module (ZMod 2) (Additive (R.outerOmegaRetainedKernel N)) :=
+  AddCommGroup.zmodModule (n := 2) (fun z => by
+    apply Additive.toMul.injective
+    apply Subtype.ext
+    apply R.frame.bitsHom_injective
+    change R.frame.bitsHom (z.toMul.1 ^ 2) = R.frame.bitsHom 1
+    rw [map_pow, map_one]
+    apply Multiplicative.toAdd.injective
+    change 2 • (R.frame.bitsHom z.toMul.1).toAdd = 0
+    simp only [two_nsmul]
+    funext i
+    exact CharTwo.add_self_eq_zero ((R.frame.bitsHom z.toMul.1).toAdd i))
+
 /-- Map the retained first-kernel omega intersection to the literal outer
 zero-cut section. -/
 noncomputable def outerOmegaZeroCutMap
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     Additive (R.outerOmegaRetainedKernel N) →ₗ[ZMod 2]
       R.frame.zeroCutModule N.1 :=
-  (((R.frame.zeroCutMap N.1).comp
-    (R.outerOmegaRetainedKernel N).subtype).toAdditive).toZModLinearMap 2
+  (AddMonoidHom.toMultiplicativeRight.symm
+    ((R.frame.zeroCutMap N.1).comp
+      (R.outerOmegaRetainedKernel N).subtype)).toZModLinearMap 2
+
+@[simp] theorem outerOmegaZeroCutMap_apply
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (l : Additive (R.outerOmegaRetainedKernel N)) :
+    R.outerOmegaZeroCutMap N l =
+      (R.frame.zeroCutMap N.1 l.toMul.1).toAdd := rfl
 
 /-- Faithful bit coordinates identify the retained first-kernel omega
 intersection with the actual outer omega axis used by the coupled table. -/
@@ -752,11 +819,10 @@ noncomputable def outerOmegaRetainedKernelEquivAxis
       (R.outerOmegaAxis N).toSubmodule := by
   let f : Additive (R.outerOmegaRetainedKernel N) →ₗ[ZMod 2]
       (R.outerOmegaAxis N).toSubmodule :=
-    ((((R.frame.bitsHom.comp
-      (R.outerOmegaRetainedKernel N).subtype).toAdditive).toZModLinearMap 2).
-        codRestrict (R.outerOmegaAxis N).toSubmodule (fun l ↦ by
+    ((AddMonoidHom.toMultiplicativeRight.symm
+      (R.frame.bitsHom.comp (R.outerOmegaRetainedKernel N).subtype)).toZModLinearMap 2).codRestrict (R.outerOmegaAxis N).toSubmodule (fun l ↦ by
           exact (R.frame.bits_mem_ambientAxis
-            (R.rawKernelOmegaOriginalPreimage N) l.toMul.1).2 l.toMul.2))
+            (R.rawKernelOmegaOriginalPreimage N) l.toMul.1).2 l.toMul.2)
   apply LinearEquiv.ofBijective f
   constructor
   · intro l m hlm
@@ -773,6 +839,7 @@ noncomputable def outerOmegaRetainedKernelEquivAxis
     apply Subtype.ext
     exact hlv
 
+set_option maxHeartbeats 1000000 in
 /-- The outer coordinates of the omega-filtration kernel are exactly the
 zero-cut image of the retained first-kernel intersection. -/
 theorem rawKernelOmegaOuterCoordinateMap_range_eq
@@ -782,11 +849,14 @@ theorem rawKernelOmegaOuterCoordinateMap_range_eq
   ext a
   constructor
   · rintro ⟨z, rfl⟩
-    obtain ⟨l, hl⟩ := R.frame.zeroCutMap_surjective N.1
-      (Multiplicative.ofAdd (R.rawKernelOmegaOuterCoordinateMap N z))
-    change R.frame.zeroCutMap N.1 l =
-      (R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm
-        (R.rawKernelOmegaOuterInclusion N z.toMul) at hl
+    let y : (R.rawKernelProjection N).ker :=
+      R.rawKernelOmegaOuterInclusion N z.toMul
+    let a0 : Multiplicative (R.frame.zeroCutModule N.1) :=
+      (R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm y
+    have hlift : ∃ l : R.frame.top.ker, R.frame.zeroCutMap N.1 l = a0 :=
+      R.frame.zeroCutMap_surjective N.1 a0
+    obtain ⟨l, hl⟩ := hlift
+    dsimp only [a0, y] at hl
     have hchart := congrArg
       (R.outerZeroCutKernelEquivRawKernelProjectionKer N) hl
     rw [(R.outerZeroCutKernelEquivRawKernelProjectionKer N).apply_symm_apply]
@@ -795,16 +865,20 @@ theorem rawKernelOmegaOuterCoordinateMap_range_eq
       (fun y : (R.rawKernelProjection N).ker ↦
         (((y : (R.rawQuotientMap N).ker) :
           preE7PairAction s p ⧸ N.1))) hchart
+    dsimp only at hval
     have hlOmega : (l : preE7PairAction s p) ∈
         R.rawKernelOmegaOriginalPreimage N := by
       change QuotientGroup.mk' N.1 (l : preE7PairAction s p) ∈
         R.rawKernelOmegaLift N
       rw [← R.outerZeroCutKernelEquivRawKernelProjectionKer_val N l,
         hval]
-      rw [← R.rawKernelOmegaEquiv_val N z.toMul]
-      exact (R.rawKernelOmegaEquiv N z.toMul).property
+      change ((binaryCentralOmegaEmbedding z.toMul.1 :
+        (R.rawQuotientMap N).ker) : preE7PairAction s p ⧸ N.1) ∈
+          R.rawKernelOmegaLift N
+      exact (R.rawKernelOmegaEquiv N z.toMul.1).property
     let lOmega : R.outerOmegaRetainedKernel N := ⟨l, hlOmega⟩
     refine ⟨Additive.ofMul lOmega, ?_⟩
+    rw [R.rawKernelOmegaOuterCoordinateMap_apply]
     exact congrArg Multiplicative.toAdd hl
   · rintro ⟨l, rfl⟩
     let q : preE7PairAction s p ⧸ N.1 :=
@@ -832,14 +906,23 @@ theorem rawKernelOmegaOuterCoordinateMap_range_eq
       rw [hzval]
       exact MonoidHom.mem_ker.mp hqOuter
     let zker : (R.rawKernelOmegaProjection N).ker := ⟨z, hzker⟩
+    have hchart : R.rawKernelOmegaOuterInclusion N zker =
+        R.outerZeroCutKernelEquivRawKernelProjectionKer N
+          (R.frame.zeroCutMap N.1 l.toMul.1) := by
+      apply Subtype.ext
+      apply Subtype.ext
+      exact hzval.trans
+        (R.outerZeroCutKernelEquivRawKernelProjectionKer_val
+          N l.toMul.1).symm
+    have hcoord :=
+      (congrArg (R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm
+        hchart).trans
+        ((R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm_apply_apply
+          (R.frame.zeroCutMap N.1 l.toMul.1))
     refine ⟨Additive.ofMul zker, ?_⟩
-    apply Multiplicative.ofAdd.injective
-    apply (R.outerZeroCutKernelEquivRawKernelProjectionKer N).injective
-    apply Subtype.ext
-    apply Subtype.ext
-    exact hzval.trans
-      (R.outerZeroCutKernelEquivRawKernelProjectionKer_val
-        N l.toMul.1).symm
+    exact (R.rawKernelOmegaOuterCoordinateMap_apply N (Additive.ofMul zker)).trans
+      ((congrArg Multiplicative.toAdd hcoord).trans
+        (R.outerOmegaZeroCutMap_apply N l).symm)
 
 theorem rawKernelProjection_ker_isPGroup
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
@@ -871,8 +954,8 @@ theorem rawQuotientMap_kernel_isPGroup
 /-- The catalogue-facing direct quotient map. -/
 noncomputable def quotientMap
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    (preE7PairAction s p ⫽ N.1) →*
-      (D.top ⫽ D.normalRegistry.state (R.topNormalState N)) :=
+    (preE7PairAction s p ⧸ N.1) →*
+      (D.top ⧸ D.normalRegistry.state (R.topNormalState N)) :=
   (QuotientGroup.quotientMulEquivOfEq
       (R.topNormalState_spec N).symm).toMonoidHom.comp
     (R.rawQuotientMap N)
@@ -888,8 +971,11 @@ theorem quotientMap_ker_eq_rawQuotientMap_ker
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     (R.quotientMap N).ker = (R.rawQuotientMap N).ker := by
   ext q
-  simp only [quotientMap, MonoidHom.mem_ker, MonoidHom.comp_apply,
-    map_eq_one_iff]
+  simp only [quotientMap, MonoidHom.mem_ker, MonoidHom.comp_apply]
+  change (QuotientGroup.quotientMulEquivOfEq (R.topNormalState_spec N).symm)
+      (R.rawQuotientMap N q) = 1 ↔ R.rawQuotientMap N q = 1
+  exact (QuotientGroup.quotientMulEquivOfEq
+    (R.topNormalState_spec N).symm).map_eq_one_iff
 
 /-- Both successive elementary pair kernels combine to the actual binary
 direct-quartet kernel of the selected literal-top quotient. -/
