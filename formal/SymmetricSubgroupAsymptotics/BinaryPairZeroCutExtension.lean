@@ -78,7 +78,7 @@ actions along the same homomorphism. -/
 noncomputable def zeroCutSectionCompEquiv
     {H : Type} [Group H]
     (q : H →* (U ⧸ (F.top.ker ⊔ N))) :
-    ((F.zeroCutModule N).ρ.comp q).Equiv
+    Representation.Equiv ((F.zeroCutModule N).ρ.comp q)
       ((F.sectionRepresentation N).comp q) :=
   Representation.Equiv.mk (F.zeroCutSectionEquiv N).toLinearEquiv
     (fun h ↦ (F.zeroCutSectionEquiv N).isIntertwining' (q h))

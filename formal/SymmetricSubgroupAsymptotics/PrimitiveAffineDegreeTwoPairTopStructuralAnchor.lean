@@ -30,6 +30,8 @@ open scoped Classical
 
 namespace SymmetricSubgroupAsymptotics
 
+attribute [instance] Non2UnipotentPrefixFiniteMenu.FiniteNormalStateRegistry.state_normal
+
 namespace BinaryPairFrame
 
 variable {X : Type} {s : ℕ} {U : Subgroup (Equiv.Perm X)}
@@ -67,7 +69,7 @@ theorem ambientAxis_top :
   intro v hv
   obtain ⟨k, rfl⟩ := hv
   exact (F.mem_ambientAxis ⊤ (F.bits k.toMul)).2
-    ⟨k.toMul, Subgroup.mem_top, rfl⟩
+    ⟨k.toMul, Subgroup.mem_top _, rfl⟩
 
 end BinaryPairFrame
 
@@ -84,17 +86,17 @@ variable {s : ℕ} {D : DegreeTwoPairTopFiniteInterface s}
 selected by its actual top-normal state. -/
 noncomputable def quotientMap
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    (preE7PairAction s p ⨸ N.1) →*
-      (D.top ⨸ D.normalRegistry.state (R.topNormalState N)) := by
+    (preE7PairAction s p ⧸ N.1) →*
+      (D.top ⧸ D.normalRegistry.state (R.topNormalState N)) := by
   letI : N.1.Normal := N.2
   let f : preE7PairAction s p →*
-      D.top ⨸ D.normalRegistry.state (R.topNormalState N) :=
+      D.top ⧸ D.normalRegistry.state (R.topNormalState N) :=
     (QuotientGroup.mk' (D.normalRegistry.state (R.topNormalState N))).comp
       (R.topEquiv.symm.toMonoidHom.comp R.frame.top.rangeRestrict)
   apply QuotientGroup.lift N.1 f
   intro u hu
   apply MonoidHom.mem_ker.mpr
-  apply QuotientGroup.eq_one_iff.mpr
+  apply (QuotientGroup.eq_one_iff _).mpr
   rw [R.topNormalState_spec N]
   change R.topEquiv (R.topEquiv.symm (R.frame.top.rangeRestrict u)) ∈
     N.1.map R.frame.top.rangeRestrict
@@ -135,7 +137,10 @@ private theorem catalogueTop_mem_state_iff
   constructor
   · rintro ⟨n, hn, hnu⟩
     have hk : n⁻¹ * u ∈ R.frame.top.ker := by
-      rw [MonoidHom.mem_ker, map_mul, map_inv, hnu, inv_mul]
+      have heq := congrArg (fun a : R.frame.top.range =>
+        (a : Equiv.Perm (Fin s))) hnu
+      change R.frame.top n = R.frame.top u at heq
+      rw [MonoidHom.mem_ker, map_mul, map_inv, heq, inv_mul_cancel]
     have hn' : n ∈ R.frame.top.ker ⊔ N.1 :=
       Subgroup.mem_sup_right hn
     have hk' : n⁻¹ * u ∈ R.frame.top.ker ⊔ N.1 :=
@@ -147,7 +152,9 @@ private theorem catalogueTop_mem_state_iff
     obtain ⟨k, hk, n, hn, hkn⟩ :=
       Subgroup.mem_sup_of_normal_right.mp hu
     refine ⟨n, hn, ?_⟩
-    rw [← hkn, map_mul, MonoidHom.mem_ker.mp hk, one_mul]
+    have hk' : R.frame.top.rangeRestrict k = 1 :=
+      Subtype.ext (MonoidHom.mem_ker.mp hk)
+    rw [← hkn, map_mul, hk', one_mul]
 
 /-- The catalogue-top quotient has exactly the same binary kernel as the
 intrinsic zero-cut quotient of the original pair frame. -/
@@ -158,7 +165,11 @@ theorem quotientMap_ker_eq_zeroCutBase_ker
   ext q
   obtain ⟨u, rfl⟩ := QuotientGroup.mk'_surjective N.1 q
   simp only [MonoidHom.mem_ker, R.quotientMap_apply,
-    BinaryPairFrame.zeroCutBase_apply, QuotientGroup.eq_one_iff]
+    BinaryPairFrame.zeroCutBase_apply]
+  change ((R.topEquiv.symm (R.frame.top.rangeRestrict u) :
+      D.top ⧸ D.normalRegistry.state (R.topNormalState N)) = 1) ↔
+    ((u : preE7PairAction s p ⧸ (R.frame.top.ker ⊔ N.1)) = 1)
+  rw [QuotientGroup.eq_one_iff, QuotientGroup.eq_one_iff]
   exact R.catalogueTop_mem_state_iff N u
 
 /-- The intrinsic acting quotient and the literal catalogue-top quotient
@@ -166,8 +177,8 @@ are canonically equivalent because the two onto maps from the original
 quotient have the same kernel. -/
 noncomputable def zeroCutBaseEquivCatalogueTop
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    (preE7PairAction s p ⨸ (R.frame.top.ker ⊔ N.1)) ≃*
-      (D.top ⨸ D.normalRegistry.state (R.topNormalState N)) := by
+    (preE7PairAction s p ⧸ (R.frame.top.ker ⊔ N.1)) ≃*
+      (D.top ⧸ D.normalRegistry.state (R.topNormalState N)) := by
   letI : N.1.Normal := N.2
   exact surjectiveTargetEquivOfKernelEq
     (R.frame.zeroCutBase N.1) (R.quotientMap N)
@@ -195,7 +206,8 @@ theorem quotientMap_kernel_rank_le_zeroCutModule
   letI : N.1.Normal := N.2
   have hcard : Nat.card (binaryCentralOmega (R.quotientMap N).ker) ≤
       Nat.card (R.quotientMap N).ker :=
-    Nat.card_le_card_of_injective Subtype.val Subtype.val_injective
+    Nat.card_le_card_of_injective binaryCentralOmegaEmbedding
+      binaryCentralOmegaEmbedding_injective
   have hkernelCard : Nat.card (R.quotientMap N).ker =
       2 ^ Module.finrank (ZMod 2) (R.frame.zeroCutModule N.1) := by
     rw [R.quotientMap_ker_eq_zeroCutBase_ker N]
@@ -219,12 +231,12 @@ constructor. -/
 theorem zeroCutModule_finrank_add_moduleState
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     Module.finrank (ZMod 2) (R.frame.zeroCutModule N.1) +
-        Module.finrank (ZMod 2) (D.moduleState (R.moduleState N)) =
+        Module.finrank (ZMod 2) (D.moduleState (R.moduleState N)).toSubmodule =
       Module.finrank (ZMod 2)
         (D.moduleState
           (R.moduleState
             (⟨⊤, inferInstance⟩ :
-              {M : Subgroup (preE7PairAction s p) // M.Normal}))) := by
+              {M : Subgroup (preE7PairAction s p) // M.Normal}))).toSubmodule := by
   letI : N.1.Normal := N.2
   let topAxis : {M : Subgroup (preE7PairAction s p) // M.Normal} :=
     ⟨⊤, inferInstance⟩
@@ -233,26 +245,27 @@ theorem zeroCutModule_finrank_add_moduleState
   have hstateN := congrArg
     (fun W : Subrepresentation
         (permutationFunctionRepresentation (ZMod 2) D.top (Fin s)) ↦
-      Module.finrank (ZMod 2) W)
+      Module.finrank (ZMod 2) W.toSubmodule)
     (R.moduleState_spec N)
   have hstateTop := congrArg
     (fun W : Subrepresentation
         (permutationFunctionRepresentation (ZMod 2) D.top (Fin s)) ↦
-      Module.finrank (ZMod 2) W)
+      Module.finrank (ZMod 2) W.toSubmodule)
     (R.moduleState_spec topAxis)
   change Module.finrank (ZMod 2)
-      (R.frame.kernelSpace ⨸ R.frame.normalSpace N.1) +
+      (R.frame.kernelSpace ⧸ R.frame.normalSpace N.1) +
       Module.finrank (ZMod 2) (R.frame.normalSpace N.1) =
         Module.finrank (ZMod 2) R.frame.kernelSpace at hquot
-  change Module.finrank (ZMod 2) (D.moduleState (R.moduleState N)) =
+  change Module.finrank (ZMod 2) (D.moduleState (R.moduleState N)).toSubmodule =
     Module.finrank (ZMod 2) (R.frame.ambientAxis N.1) at hstateN
-  change Module.finrank (ZMod 2) (D.moduleState (R.moduleState topAxis)) =
+  change Module.finrank (ZMod 2) (D.moduleState (R.moduleState topAxis)).toSubmodule =
     Module.finrank (ZMod 2) (R.frame.ambientAxis (⊤ :
       Subgroup (preE7PairAction s p))) at hstateTop
-  rw [BinaryPairFrame.zeroCutModule, hstateN, ← hnormal,
+  rw [hstateN, ← hnormal,
     show (⟨⊤, inferInstance⟩ :
       {M : Subgroup (preE7PairAction s p) // M.Normal}) = topAxis from rfl,
     hstateTop, R.frame.ambientAxis_top]
+  rw [(R.frame.zeroCutSectionEquiv N.1).toLinearEquiv.finrank_eq]
   exact hquot
 
 theorem moduleState_le_topModuleState
@@ -289,7 +302,7 @@ structure DegreeTwoPairTopStructuralAnchorData {s : ℕ}
   relativeCount : D.ModuleState → ℕ
   topSocleGenerator : ∀ i,
     SocleNormalGeneratorBound
-      (D.top ⨸ D.normalRegistry.state i) (ordinaryCount i)
+      (D.top ⧸ D.normalRegistry.state i) (ordinaryCount i)
   zeroCutRank_le : ∀ N,
     Module.finrank (ZMod 2) (R.frame.zeroCutModule N.1) ≤
       relativeCount (R.moduleState N)
@@ -308,7 +321,7 @@ fit the row's certified section cap. -/
 noncomputable def ofUniformCounts
     (ordinary relative : ℕ)
     (top : D.normalRegistry.QuotientSocleGeneratorFamily ordinary)
-    (zeroCutRank_le : ∀ N,
+    (zeroCutRank_le : ∀ (N : {N : Subgroup (preE7PairAction s p) // N.Normal}),
       Module.finrank (ZMod 2) (R.frame.zeroCutModule N.1) ≤ relative) :
     DegreeTwoPairTopStructuralAnchorData D p R where
   ordinaryCount := fun _ ↦ ordinary
@@ -333,8 +346,8 @@ noncomputable def ofFiniteStateBounds
             (D.moduleState
               (R.moduleState
                 (⟨⊤, inferInstance⟩ :
-                  {M : Subgroup (preE7PairAction s p) // M.Normal}))) ≤
-          Module.finrank (ZMod 2) (D.moduleState j) + relative) :
+                  {M : Subgroup (preE7PairAction s p) // M.Normal}))).toSubmodule ≤
+          Module.finrank (ZMod 2) (D.moduleState j).toSubmodule + relative) :
     DegreeTwoPairTopStructuralAnchorData D p R :=
   ofUniformCounts ordinary relative top (fun N ↦ by
     have hsum := R.zeroCutModule_finrank_add_moduleState N
@@ -359,7 +372,7 @@ noncomputable def anchor
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     DegreeTwoPairBinaryKernelAnchor
-      (preE7PairAction s p ⨸ N.1) (A.profile N) := by
+      (preE7PairAction s p ⧸ N.1) (A.profile N) := by
   letI : N.1.Normal := N.2
   exact DegreeTwoPairBinaryKernelAnchor.ofSurjectiveBinaryKernel
       hZmud (R.quotientMap N) (R.quotientMap_surjective N)
@@ -458,7 +471,7 @@ noncomputable def literalTopEnvelope
     (lit : PreE7CharacterLiterature)
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     DegreeTwoPairRelativeQuotientEnvelope
-      (D.top ⨸ D.normalRegistry.state (R.topNormalState N))
+      (D.top ⧸ D.normalRegistry.state (R.topNormalState N))
       (degreeTwoPairGeneralProfile A.ordinary) :=
   (DegreeTwoPairBinaryKernelAnchor.ofSocleGeneratorBound hZmud
     (A.top.data (R.topNormalState N)).quotientSocleGenerator).toQuotientEnvelope lit
@@ -472,7 +485,7 @@ noncomputable def envelope
     (lit : PreE7CharacterLiterature)
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     DegreeTwoPairRelativeQuotientEnvelope
-      (preE7PairAction s p ⨸ N.1) A.profile := by
+      (preE7PairAction s p ⧸ N.1) A.profile := by
   letI : N.1.Normal := N.2
   let top := (A.literalTopEnvelope hZmud lit N).ofTargetEquiv
     (R.zeroCutBaseEquivCatalogueTop N)
