@@ -64,6 +64,8 @@ variable {s t : ℕ} {D : DegreeTwoPairTopFiniteInterface t}
   {p : PreE7PairActionClass s} {cap : ℕ}
   (C : DegreeTwoPairTopCoupledRegistryData D cap)
 
+include C
+
 /-- Install a realization-free finite registry on any actual two-frame
 tower carrying the same literal top. -/
 noncomputable def towerData
@@ -85,6 +87,8 @@ variable {s t : ℕ} {D : DegreeTwoPairTopFiniteInterface t}
   {cap : ℕ}
   (C : DegreeTwoPairTopTowerCoupledHeadData R cap)
 
+include C
+
 /-- The literal three-layer demand attached to one original normal axis.
 The final term retains the product span in its denominator, rather than
 replacing it by an unrelated subspace. -/
@@ -95,7 +99,7 @@ def omegaHeadDemand
     Module.finrank (ZMod 2)
       (R.outerOmegaPairSumAxis N).toRepresentation.Coinvariants +
     Module.finrank (ZMod 2)
-      ((R.outerOmegaConstantAxis N).toSubmodule ⫽
+      ((R.outerOmegaConstantAxis N).toSubmodule ⧸
         binaryCoupledDenominator
           (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
           C.generators (R.outerOmegaConstantAxis N)
@@ -115,7 +119,7 @@ def fixedOmegaHeadDemand
     Module.finrank (ZMod 2)
       (R.fixedOmegaPairSumAxis N).toRepresentation.Coinvariants +
     Module.finrank (ZMod 2)
-      ((R.fixedOmegaConstantAxis N).toSubmodule ⫽
+      ((R.fixedOmegaConstantAxis N).toSubmodule ⧸
         binaryCoupledDenominator
           (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
           C.generators (R.fixedOmegaConstantAxis N)
@@ -159,9 +163,9 @@ theorem rawKernelOmega_invariants_finrank_le
 literal top, with the product commutator and all intrinsic displacements
 divided out. -/
 abbrev omegaIntrinsicCoupledQuotientRepresentation
+    (_C : DegreeTwoPairTopTowerCoupledHeadData R cap)
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
   binaryIntrinsicCoupledQuotientRepresentation
-    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
     (R.innerOmegaNaturalAxis N)
     (R.outerOmegaPairSumAxis N)
     (R.outerOmegaConstantAxis N)
@@ -174,7 +178,6 @@ abbrev omegaIntrinsicCoupledQuotientRepresentation
     (z : (C.omegaIntrinsicCoupledQuotientRepresentation N).asModule) :
     C.omegaIntrinsicCoupledQuotientRepresentation N g z = z :=
   binaryIntrinsicCoupledQuotientRepresentation_apply
-    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
     (R.innerOmegaNaturalAxis N)
     (R.outerOmegaPairSumAxis N)
     (R.outerOmegaConstantAxis N)
@@ -197,6 +200,7 @@ theorem omegaIntrinsicCoupledQuotientRepresentation_invariants_finrank_eq
         (C.omegaIntrinsicCoupledQuotientRepresentation N).asModule := by
   rw [C.omegaIntrinsicCoupledQuotientRepresentation_invariants_eq_top N,
     finrank_top]
+  rfl
 
 /-- The same residual row with the literal stored-generator denominator
 appearing in `omegaHeadDemand`. -/
@@ -204,7 +208,6 @@ abbrev omegaCoupledQuotientRepresentation
     (hgen : Subgroup.closure (Set.range C.generators) = ⊤)
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
   binaryCoupledQuotientRepresentation
-    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
     C.generators hgen
     (R.innerOmegaNaturalAxis N)
     (R.outerOmegaPairSumAxis N)
@@ -218,7 +221,6 @@ abbrev omegaCoupledQuotientRepresentation
     (z : (C.omegaCoupledQuotientRepresentation hgen N).asModule) :
     C.omegaCoupledQuotientRepresentation hgen N g z = z :=
   binaryCoupledQuotientRepresentation_apply
-    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
     C.generators hgen
     (R.innerOmegaNaturalAxis N)
     (R.outerOmegaPairSumAxis N)
@@ -239,7 +241,7 @@ theorem omegaCoupledQuotientRepresentation_invariants_finrank_eq
     Module.finrank (ZMod 2)
         (C.omegaCoupledQuotientRepresentation hgen N).invariants =
       Module.finrank (ZMod 2)
-        ((R.outerOmegaConstantAxis N).toSubmodule ⫽
+        ((R.outerOmegaConstantAxis N).toSubmodule ⧸
           binaryCoupledDenominator
             (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
             C.generators (R.outerOmegaConstantAxis N)
@@ -249,6 +251,7 @@ theorem omegaCoupledQuotientRepresentation_invariants_finrank_eq
             (R.omegaAxes_productSpan_le N)) := by
   rw [C.omegaCoupledQuotientRepresentation_invariants_eq_top hgen N,
     finrank_top]
+  rfl
 
 /-- Representation-level form of the complete finite-table demand: two
 intrinsic invariant-form heads and one actual fixed quotient row. -/
@@ -281,7 +284,7 @@ theorem omegaHeadDemand_eq_intrinsic
         Module.finrank (ZMod 2)
           (R.outerOmegaPairSumAxis N).toRepresentation.Coinvariants +
         Module.finrank (ZMod 2)
-          ((R.outerOmegaConstantAxis N).toSubmodule ⫽
+          ((R.outerOmegaConstantAxis N).toSubmodule ⧸
             ((binaryCoordinateProductSpan
                 (R.innerOmegaNaturalAxis N).toSubmodule
                 (R.outerOmegaPairSumAxis N).toSubmodule).comap
@@ -317,7 +320,7 @@ theorem omegaHeads_add_quotient_le
       Module.finrank (ZMod 2)
         (R.outerOmegaPairSumAxis N).toRepresentation.Coinvariants +
       Module.finrank (ZMod 2)
-        ((R.outerOmegaConstantAxis N).toSubmodule ⫽
+        ((R.outerOmegaConstantAxis N).toSubmodule ⧸
           binaryCoupledDenominator
             (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
             C.generators (R.outerOmegaConstantAxis N)
@@ -334,6 +337,8 @@ namespace DegreeTwoPairTopCoupledRegistryData
 variable {s t : ℕ} {D : DegreeTwoPairTopFiniteInterface t}
   {p : PreE7PairActionClass s} {cap : ℕ}
   (C : DegreeTwoPairTopCoupledRegistryData D cap)
+
+include C
 
 /-- Every tower realization of a finite coupled registry inherits its raw
 fixed-omega cap. -/
