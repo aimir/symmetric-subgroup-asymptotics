@@ -99,7 +99,7 @@ private def basis (j : Fin {d}) : ℕ := {basis_expr}
 private def dual (j : Fin {d}) : ℕ := {dual_expr}
 
 def {name} : BinaryCoordinateSpace {n} {d} :=
-  binaryCoordinateSpaceOfMasks {n} {d} basis dual (by native_decide)
+  binaryCoordinateSpaceOfMasks {n} {d} basis dual (by decide +kernel +revert)
 
 """
 
@@ -123,9 +123,11 @@ spaces, all {s * s} coordinatewise products, all
 -/
 
 set_option autoImplicit false
+set_option backward.isDefEq.respectTransparency false
 set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 set_option linter.unusedVariables false
+set_option linter.unnecessarySeqFocus false
 noncomputable section
 open scoped BigOperators Classical
 
@@ -148,7 +150,7 @@ abbrev charts := {natural_module}.charts
   rw [{natural_module}.states_space]
   apply displacementChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 """
         if d == 0:
@@ -190,7 +192,7 @@ noncomputable def certificate :
   termVector := termVector
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 """
         text += f"""theorem head_le :
@@ -199,7 +201,7 @@ noncomputable def certificate :
   apply representationCoinvariants_finrank_le_of_binaryCertificate
     representation topAmbient (states {i}) displacementChart certificate
   rw [{natural_module}.states_space, (charts {i}).2.finrank]
-  native_decide
+  decide +kernel +revert
 
 end D{i}
 
@@ -222,7 +224,7 @@ end D{i}
       (charts {i}).2 (charts {j}).2 (charts {p}).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := fun q ↦ Fin.elim0 q
   leftIndex := fun q ↦ Fin.elim0 q
   rightIndex := fun q ↦ Fin.elim0 q
@@ -249,13 +251,13 @@ noncomputable def certificate :
       (charts {i}).2 (charts {j}).2 (charts {p}).2 where
   products_mem := by
     intro a b
-    native_decide
+    decide +kernel +revert
   termCount := termCount
   leftIndex := leftIndex
   rightIndex := rightIndex
   basis_eq := by
     intro q
-    fin_cases q <;> native_decide
+    fin_cases q <;> decide +kernel +revert
 
 """
             text += f"""end {namespace}
@@ -297,19 +299,19 @@ theorem product_eq (i j : Fin {s}) :
         q = row["quotient_head"]
         namespace = f"Q{p}_{ell}"
         text += chart(namespace, "denominatorChart", n, row)
+        product_inclusion_proof = ("" if p == ell else
+            f"  apply (charts {p}).2.le_of_basis_mem\n"
+            "  intro j\n  decide +kernel +revert\n")
         text += f"""private theorem product_le_upper :
     (charts {p}).2.space ≤ (states {ell}).toSubmodule := by
   rw [{natural_module}.states_space]
-  apply (charts {p}).2.le_of_basis_mem
-  intro j
-  native_decide
-
+{product_inclusion_proof}
 private theorem space_le_state :
     denominatorChart.space ≤ (states {ell}).toSubmodule := by
   rw [{natural_module}.states_space]
   apply denominatorChart.le_of_basis_mem
   intro j
-  native_decide
+  decide +kernel +revert
 
 """
         if d == 0:
@@ -367,13 +369,13 @@ noncomputable def certificate :
   term := term
   basis_eq := by
     intro j
-    fin_cases j <;> native_decide
+    fin_cases j <;> decide +kernel +revert
 
 """
         text += f"""theorem quotient_le
     (h : (states {p}).toSubmodule ≤ (states {ell}).toSubmodule) :
     Module.finrank (ZMod 2)
-        ((states {ell}).toSubmodule ⫽
+        ((states {ell}).toSubmodule ⧸
           binaryCoupledDenominator representation topAmbient (states {ell})
             (states {p}).toSubmodule h) ≤ {q} := by
   simpa only [{natural_module}.states_space] using
@@ -381,7 +383,7 @@ noncomputable def certificate :
       representation topAmbient (states {ell}) (charts {p}).2
       product_le_upper denominatorChart certificate (by
         rw [{natural_module}.states_space, (charts {ell}).2.finrank]
-        native_decide))
+        decide +kernel +revert))
 
 end {namespace}
 
@@ -411,7 +413,7 @@ def quotientHead (p ell : Fin {s}) : ℕ :=
 theorem quotient_le (p ell : Fin {s})
     (h : (states p).toSubmodule ≤ (states ell).toSubmodule) :
     Module.finrank (ZMod 2)
-      ((states ell).toSubmodule ⫽
+      ((states ell).toSubmodule ⧸
         binaryCoupledDenominator representation topAmbient (states ell)
           (states p).toSubmodule h) ≤ quotientHead p ell := by
   rcases p with ⟨p, hp⟩
@@ -428,7 +430,7 @@ theorem quotient_le (p ell : Fin {s})
                 text += f"""  · exfalso
     rw [{natural_module}.states_space, {natural_module}.states_space] at h
     exact ((charts {p}).2.not_le_of_basis_not_mem
-      (charts {ell}).2.space {witness} (by native_decide)) h
+      (charts {ell}).2.space ⟨{witness}, by decide +kernel⟩ (by decide +kernel +revert)) h
 """
     text += f"""
 /-- Complete checked coupled-head registry for this literal paired-eight
@@ -443,7 +445,7 @@ noncomputable def registry :
   quotient_le := quotient_le
   coupled_le := by
     intro i j ell _h
-    fin_cases i <;> fin_cases j <;> fin_cases ell <;> native_decide
+    fin_cases i <;> fin_cases j <;> fin_cases ell <;> decide +kernel +revert
 
 /-- The finite coupled-head table together with the independently checked
 cyclic-orbit proof that its state list contains every invariant submodule. -/
