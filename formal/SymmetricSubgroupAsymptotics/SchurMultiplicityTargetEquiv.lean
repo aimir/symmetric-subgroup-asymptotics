@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.SchurMultiplicity
+import Mathlib.RepresentationTheory.Intertwining
 
 /-!
 # Schur multiplicity under a target-module equivalence
@@ -11,10 +12,13 @@ module structures only after supplying an actual linear equivalence.
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
 noncomputable section
+open scoped MonoidAlgebra
 
 namespace SymmetricSubgroupAsymptotics
 
-variable {k R A V X : Type} [Field k] [Ring R] [Algebra k R]
+universe u
+
+variable {k R A V X : Type u} [Field k] [Ring R] [Algebra k R]
   [AddCommGroup A] [Module R A] [Module k A] [IsScalarTower k R A]
   [AddCommGroup V] [Module R V] [Module k V] [IsScalarTower k R V]
   [AddCommGroup X] [Module R X] [Module k X] [IsScalarTower k R X]
@@ -40,7 +44,7 @@ theorem schurSocleMultiplicity_eq_of_target_linearEquiv
 /-- An explicit equivalence of simple source modules preserves their Schur
 multiplicity in every finite target. -/
 theorem schurSocleMultiplicity_eq_of_source_linearEquiv
-    {V : Type} [AddCommGroup V] [Module R V] [Module k V]
+    {V : Type u} [AddCommGroup V] [Module R V] [Module k V]
     [IsScalarTower k R V]
     [FiniteDimensional k A] [FiniteDimensional k X]
     [FiniteDimensional k V]
@@ -48,6 +52,7 @@ theorem schurSocleMultiplicity_eq_of_source_linearEquiv
     (e : X ≃ₗ[R] V) :
     schurSocleMultiplicity (k := k) (R := R) (A := A) (X := X) =
       schurSocleMultiplicity (k := k) (R := R) (A := A) (X := V) := by
+  letI : Nontrivial V := IsSimpleModule.nontrivial R V
   have hhom := (schurHomCongrSource (k := k) (A := A) e).finrank_eq
   have hend₁ := (schurHomCongrSource (k := k) (A := X) e).finrank_eq
   have hend₂ := (schurHomCongrTarget (k := k) (X := V) e).finrank_eq
@@ -64,7 +69,7 @@ theorem schurSocleMultiplicity_eq_of_source_linearEquiv
 /-- Equivalent finite modules have endomorphism rings of the same ground
 field dimension. -/
 theorem moduleEnd_finrank_eq_of_linearEquiv
-    {V : Type} [AddCommGroup V] [Module R V] [Module k V]
+    {V : Type u} [AddCommGroup V] [Module R V] [Module k V]
     [IsScalarTower k R V]
     [FiniteDimensional k X] [FiniteDimensional k V]
     (e : X ≃ₗ[R] V) :
@@ -76,15 +81,16 @@ theorem moduleEnd_finrank_eq_of_linearEquiv
 /-- Equivalent simple modules have the same dimension over their Schur
 endomorphism division rings. -/
 theorem moduleFinrankOverEnd_eq_of_linearEquiv
-    {V : Type} [AddCommGroup V] [Module R V] [Module k V]
+    {V : Type u} [AddCommGroup V] [Module R V] [Module k V]
     [IsScalarTower k R V]
     [FiniteDimensional k X] [FiniteDimensional k V]
     [IsSimpleModule R X] [IsSimpleModule R V]
     (e : X ≃ₗ[R] V) :
     Module.finrank (Module.End R X) X =
       Module.finrank (Module.End R V) V := by
+  letI : Nontrivial V := IsSimpleModule.nontrivial R V
   have hdim := (e.restrictScalars k).finrank_eq
-  have hend := moduleEnd_finrank_eq_of_linearEquiv e
+  have hend := moduleEnd_finrank_eq_of_linearEquiv (k := k) e
   have hX := schur_simple_finrank_tower (k := k) (R := R) (X := X)
   have hV := schur_simple_finrank_tower (k := k) (R := R) (X := V)
   rw [hX, hV, hend] at hdim
@@ -95,7 +101,7 @@ theorem moduleFinrankOverEnd_eq_of_linearEquiv
 /-- A representation equivalence is, in particular, an equivalence of the
 corresponding group-algebra modules. -/
 noncomputable def representationEquivLinearEquivAsModule
-    {G B C : Type} [Group G]
+    {G B C : Type u} [Group G]
     [AddCommGroup B] [Module k B]
     [AddCommGroup C] [Module k C]
     (rho : Representation k G B) (sigma : Representation k G C)
@@ -110,7 +116,7 @@ noncomputable def representationEquivLinearEquivAsModule
 /-- Representation-equivalent finite targets have equal multiplicity in
 every simple row. -/
 theorem schurSocleMultiplicity_eq_of_representationEquiv
-    {G B C : Type} [Group G]
+    {G B C : Type u} [Group G]
     [AddCommGroup B] [Module k B]
     [AddCommGroup C] [Module k C]
     [FiniteDimensional k B] [FiniteDimensional k C]

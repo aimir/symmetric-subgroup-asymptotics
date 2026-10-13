@@ -13,7 +13,9 @@ filtration.  No splitting of the original group extension is used.
 -/
 
 set_option autoImplicit false
+set_option backward.isDefEq.respectTransparency false
 noncomputable section
+open scoped MonoidAlgebra
 
 namespace SymmetricSubgroupAsymptotics
 
@@ -22,6 +24,11 @@ universe u
 variable {k R A X : Type u} [Field k] [Ring R] [Algebra k R]
   [AddCommGroup A] [Module R A] [Module k A] [IsScalarTower k R A]
   [AddCommGroup X] [Module R X] [Module k X] [IsScalarTower k R X]
+
+local instance finiteDimensionalSubmodule [FiniteDimensional k A]
+    (K : Submodule R A) : FiniteDimensional k K :=
+  FiniteDimensional.of_injective
+    (K.subtype.restrictScalars k) K.subtype_injective
 
 /-- Postcompose a simple-source map with the literal quotient by `K`. -/
 def schurHomTargetQuotient (K : Submodule R A) :
