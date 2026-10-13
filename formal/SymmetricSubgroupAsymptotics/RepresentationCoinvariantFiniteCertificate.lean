@@ -57,7 +57,7 @@ theorem representationCoinvariantsKer_apply_mem
       obtain ⟨⟨h, x⟩, rfl⟩ := hv
       apply Submodule.subset_span
       refine ⟨⟨g * h * g⁻¹, rho g x⟩, ?_⟩
-      simp only [map_sub, map_mul, map_inv, Module.End.mul_apply]
+      simp only [map_sub, map_mul, Module.End.mul_apply]
       rw [show rho g⁻¹ (rho g x) = x by
         change (rho g⁻¹ * rho g) x = x
         rw [← map_mul, inv_mul_cancel, map_one]
@@ -97,8 +97,7 @@ theorem representationGeneratorDisplacementSpan_eq_coinvariantsKer
                 (B.toRepresentation g (B.toRepresentation h v) -
                     B.toRepresentation h v) +
                   (B.toRepresentation h v - v) := by
-            rw [map_mul]
-            change _
+            rw [map_mul, Module.End.mul_apply]
             abel
           rw [heq]
           exact D.add_mem (hg (B.toRepresentation h v)) (hh v)

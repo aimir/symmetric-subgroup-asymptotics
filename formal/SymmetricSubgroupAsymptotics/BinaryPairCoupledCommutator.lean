@@ -19,7 +19,7 @@ noncomputable section
 namespace SymmetricSubgroupAsymptotics
 namespace BinaryPairFrame
 
-variable {X : Type*} {s t : ℕ}
+variable {X : Type} {s t : ℕ}
   {U : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame U (Fin s))
   (E : BinaryPairFrame F.top.range (Fin t))
@@ -60,6 +60,7 @@ theorem nestedPair_productSpan_le_constantPreimage
     permutationFunctionRepresentation (ZMod 2) F.top.range (Fin s)
         (a : F.top.range) (F.bits k) - F.bits k at hcommBits
   rw [hdisp] at hcommBits
+  change F.bits c = E.pairConstant (E.bits a * E.pairSum (F.bits k)) at hcommBits
   rw [← hcommBits]
   exact hcB
 
@@ -70,7 +71,7 @@ its constant coordinate lies in the `N`-axis itself.  The weaker theorem
 above only records containment in `D`, which is enough to locate the third
 state but loses the coupled quotient denominator. -/
 theorem nestedPair_productSpan_le_normalConstantPreimage
-    (N D : Subgroup U) (hND : N ≤ D)
+    (N D : Subgroup U) (_hND : N ≤ D)
     (hcomm : ∀ (u : U), u ∈ D → ∀ (k : F.top.ker), (k : U) ∈ D →
       ((k : U)⁻¹ * u * (k : U) * u⁻¹) ∈ N) :
     binaryCoordinateProductSpan
@@ -103,6 +104,7 @@ theorem nestedPair_productSpan_le_normalConstantPreimage
     permutationFunctionRepresentation (ZMod 2) F.top.range (Fin s)
         (a : F.top.range) (F.bits k) - F.bits k at hcommBits
   rw [hdisp] at hcommBits
+  change F.bits c = E.pairConstant (E.bits a * E.pairSum (F.bits k)) at hcommBits
   rw [← hcommBits]
   exact hcA
 

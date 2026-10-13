@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.BinaryCoordinateDisplacementCertificate
 import SymmetricSubgroupAsymptotics.BinaryCoordinateSpaces
+import SymmetricSubgroupAsymptotics.PermutationSubrepresentationHead
 
 /-!
 # Coupled heads in a binary permutation module
@@ -39,16 +40,19 @@ theorem product_mem (x : Fin w → ZMod 2) (hx : x ∈ K)
 under a permutation action. -/
 theorem apply_mem
     {G : Type*} [Group G] [MulAction G (Fin w)]
-    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
-    (A B : Subrepresentation rho) (g : G)
+    (A B : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) G (Fin w))) (g : G)
     (z : Fin w → ZMod 2)
     (hz : z ∈ binaryCoordinateProductSpan A.toSubmodule B.toSubmodule) :
-    rho g z ∈ binaryCoordinateProductSpan A.toSubmodule B.toSubmodule := by
+    permutationFunctionRepresentation (ZMod 2) G (Fin w) g z ∈
+      binaryCoordinateProductSpan A.toSubmodule B.toSubmodule := by
   induction hz using Submodule.span_induction with
   | mem z hz =>
       obtain ⟨x, hx, y, hy, rfl⟩ := hz
-      have hmul : rho g (x * y) = rho g x * rho g y := by
-        rfl
+      have hmul :
+          permutationFunctionRepresentation (ZMod 2) G (Fin w) g (x * y) =
+            permutationFunctionRepresentation (ZMod 2) G (Fin w) g x *
+              permutationFunctionRepresentation (ZMod 2) G (Fin w) g y := rfl
       rw [hmul]
       exact product_mem A.toSubmodule B.toSubmodule
         _ (A.apply_mem_toSubmodule g hx)
@@ -64,11 +68,12 @@ theorem apply_mem
 permutation module. -/
 def subrepresentation
     {G : Type*} [Group G] [MulAction G (Fin w)]
-    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
-    (A B : Subrepresentation rho) : Subrepresentation rho where
+    (A B : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) G (Fin w))) :
+    Subrepresentation (permutationFunctionRepresentation (ZMod 2) G (Fin w)) where
   toSubmodule := binaryCoordinateProductSpan A.toSubmodule B.toSubmodule
   apply_mem_toSubmodule g _ hz :=
-    apply_mem A.toSubmodule B.toSubmodule A B g _ hz
+    apply_mem A B g _ hz
 
 /-- Bilinearity reduces product-span containment to products of spanning
 families. -/
@@ -130,6 +135,8 @@ variable {w a b d : ℕ}
   {P : BinaryCoordinateSpace w d}
   (C : BinaryCoordinateProductCertificate K W P)
 
+include C
+
 theorem span_eq :
     binaryCoordinateProductSpan K.space W.space = P.space := by
   apply le_antisymm
@@ -139,10 +146,10 @@ theorem span_eq :
       (fun j ↦ W.inclusion (Pi.single j 1))
     · rw [K.space_eq_span_basis]
     · rw [W.space_eq_span_basis]
-    · exact C.products_mem
+    · exact BinaryCoordinateProductCertificate.products_mem C
   · apply P.le_of_basis_mem
     intro j
-    rw [C.basis_eq j]
+    rw [BinaryCoordinateProductCertificate.basis_eq C j]
     apply Submodule.sum_mem
     intro t _
     exact binaryCoordinateProductSpan.product_mem K.space W.space
@@ -151,7 +158,7 @@ theorem span_eq :
 
 end BinaryCoordinateProductCertificate
 
-universe uG uJ
+universe uG uJ uI
 
 variable {G : Type uG} {J : Type uJ} [Group G]
   {w : ℕ}
@@ -185,8 +192,8 @@ theorem binaryCoupledDenominator_eq_sup_coinvariantsKer
 denominator is an invariant subspace of the upper state. -/
 def binaryIntrinsicCoupledDenominatorSubrepresentation
     [MulAction G (Fin w)]
-    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
-    (K W L : Subrepresentation rho)
+    (K W L : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) G (Fin w)))
     (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
       L.toSubmodule) : Subrepresentation L.toRepresentation := by
   let P : Subrepresentation L.toRepresentation := {
@@ -195,10 +202,10 @@ def binaryIntrinsicCoupledDenominatorSubrepresentation
         L.toSubmodule.subtype
     apply_mem_toSubmodule := by
       intro g z hz
-      change rho g z.1 ∈ binaryCoordinateProductSpan
+      change permutationFunctionRepresentation (ZMod 2) G (Fin w) g z.1 ∈
+        binaryCoordinateProductSpan
         K.toSubmodule W.toSubmodule
-      apply binaryCoordinateProductSpan.apply_mem
-        K.toSubmodule W.toSubmodule K W g z.1
+      apply binaryCoordinateProductSpan.apply_mem K W g z.1
       exact hz }
   let C : Subrepresentation L.toRepresentation := {
     toSubmodule := Representation.Coinvariants.ker L.toRepresentation
@@ -210,12 +217,12 @@ def binaryIntrinsicCoupledDenominatorSubrepresentation
 
 @[simp] theorem binaryIntrinsicCoupledDenominatorSubrepresentation_toSubmodule
     [MulAction G (Fin w)]
-    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
-    (K W L : Subrepresentation rho)
+    (K W L : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) G (Fin w)))
     (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
       L.toSubmodule) :
     (binaryIntrinsicCoupledDenominatorSubrepresentation
-      rho K W L hproduct).toSubmodule =
+      K W L hproduct).toSubmodule =
       (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule).comap
           L.toSubmodule.subtype ⊔
         Representation.Coinvariants.ker L.toRepresentation :=
@@ -226,74 +233,75 @@ product-plus-recorded-displacement denominator is itself an invariant
 subrepresentation. -/
 def binaryCoupledDenominatorSubrepresentation
     [MulAction G (Fin w)]
-    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
     (generators : J → G)
     (hgen : Subgroup.closure (Set.range generators) = ⊤)
-    (K W L : Subrepresentation rho)
+    (K W L : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) G (Fin w)))
     (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
       L.toSubmodule) : Subrepresentation L.toRepresentation where
-  toSubmodule := binaryCoupledDenominator rho generators L
+  toSubmodule := binaryCoupledDenominator
+    (permutationFunctionRepresentation (ZMod 2) G (Fin w)) generators L
     (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule) hproduct
   apply_mem_toSubmodule g _ hz := by
     rw [binaryCoupledDenominator_eq_sup_coinvariantsKer
-      rho generators L hgen
+      (permutationFunctionRepresentation (ZMod 2) G (Fin w)) generators L hgen
       (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule) hproduct]
       at hz ⊢
     exact (binaryIntrinsicCoupledDenominatorSubrepresentation
-      rho K W L hproduct).apply_mem_toSubmodule g hz
+      K W L hproduct).apply_mem_toSubmodule g hz
 
 theorem binaryCoupledDenominatorSubrepresentation_eq_intrinsic
     [MulAction G (Fin w)]
-    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
     (generators : J → G)
     (hgen : Subgroup.closure (Set.range generators) = ⊤)
-    (K W L : Subrepresentation rho)
+    (K W L : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) G (Fin w)))
     (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
       L.toSubmodule) :
     binaryCoupledDenominatorSubrepresentation
-        rho generators hgen K W L hproduct =
+        generators hgen K W L hproduct =
       binaryIntrinsicCoupledDenominatorSubrepresentation
-        rho K W L hproduct := by
+        K W L hproduct := by
   apply Subrepresentation.toSubmodule_injective
   exact binaryCoupledDenominator_eq_sup_coinvariantsKer
-    rho generators L hgen
+    (permutationFunctionRepresentation (ZMod 2) G (Fin w)) generators L hgen
       (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule) hproduct
 
 /-- The quotient representation whose denominator is the literal finite
 table expression `KW +` recorded-generator displacements. -/
 def binaryCoupledQuotientRepresentation
     [MulAction G (Fin w)]
-    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
     (generators : J → G)
     (hgen : Subgroup.closure (Set.range generators) = ⊤)
-    (K W L : Subrepresentation rho)
+    (K W L : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) G (Fin w)))
     (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
       L.toSubmodule) :
     Representation (ZMod 2) G
-      (L.toSubmodule ⫽
+      (L.toSubmodule ⧸
         (binaryCoupledDenominatorSubrepresentation
-          rho generators hgen K W L hproduct).toSubmodule) :=
+          generators hgen K W L hproduct).toSubmodule) :=
   let D := binaryCoupledDenominatorSubrepresentation
-    rho generators hgen K W L hproduct
+    generators hgen K W L hproduct
   L.toRepresentation.quotient D.toSubmodule
     (fun g ↦ D.apply_mem_toSubmodule g)
 
 /-- The literal table quotient is pointwise fixed by the original action. -/
 @[simp] theorem binaryCoupledQuotientRepresentation_apply
     [MulAction G (Fin w)]
-    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
     (generators : J → G)
     (hgen : Subgroup.closure (Set.range generators) = ⊤)
-    (K W L : Subrepresentation rho)
+    (K W L : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) G (Fin w)))
     (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
       L.toSubmodule)
     (g : G)
     (z : (binaryCoupledQuotientRepresentation
-      rho generators hgen K W L hproduct).asModule) :
+      generators hgen K W L hproduct).asModule) :
     binaryCoupledQuotientRepresentation
-        rho generators hgen K W L hproduct g z = z := by
+        generators hgen K W L hproduct g z = z := by
   let D := binaryCoupledDenominatorSubrepresentation
-    rho generators hgen K W L hproduct
+    generators hgen K W L hproduct
   change (L.toRepresentation.quotient D.toSubmodule
       (fun h ↦ D.apply_mem_toSubmodule h)) g z = z
   refine Submodule.Quotient.induction_on D.toSubmodule z ?_
@@ -302,12 +310,13 @@ def binaryCoupledQuotientRepresentation
     D.toSubmodule.mkQ v
   apply (Submodule.Quotient.eq D.toSubmodule).mpr
   change L.toRepresentation g v - v ∈
-    binaryCoupledDenominator rho generators L
+    binaryCoupledDenominator
+      (permutationFunctionRepresentation (ZMod 2) G (Fin w)) generators L
       (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule) hproduct
   rw [binaryCoupledDenominator_eq_sup_coinvariantsKer
-    rho generators L hgen
+    (permutationFunctionRepresentation (ZMod 2) G (Fin w)) generators L hgen
     (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule) hproduct]
-  exact le_sup_right
+  exact Submodule.mem_sup_right
     (Representation.Coinvariants.sub_mem_ker
       (ρ := L.toRepresentation) g v)
 
@@ -315,16 +324,16 @@ def binaryCoupledQuotientRepresentation
 cross-layer product and every intrinsic coinvariant relation. -/
 def binaryIntrinsicCoupledQuotientRepresentation
     [MulAction G (Fin w)]
-    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
-    (K W L : Subrepresentation rho)
+    (K W L : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) G (Fin w)))
     (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
       L.toSubmodule) :
     Representation (ZMod 2) G
-      (L.toSubmodule ⫽
+      (L.toSubmodule ⧸
         (binaryIntrinsicCoupledDenominatorSubrepresentation
-          rho K W L hproduct).toSubmodule) :=
+          K W L hproduct).toSubmodule) :=
   let D := binaryIntrinsicCoupledDenominatorSubrepresentation
-    rho K W L hproduct
+    K W L hproduct
   L.toRepresentation.quotient D.toSubmodule
     (fun g ↦ D.apply_mem_toSubmodule g)
 
@@ -332,18 +341,18 @@ def binaryIntrinsicCoupledQuotientRepresentation
 denominator contains every displacement of the upper state. -/
 @[simp] theorem binaryIntrinsicCoupledQuotientRepresentation_apply
     [MulAction G (Fin w)]
-    (rho := permutationFunctionRepresentation (ZMod 2) G (Fin w))
-    (K W L : Subrepresentation rho)
+    (K W L : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) G (Fin w)))
     (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
       L.toSubmodule)
     (g : G)
-    (z : L.toSubmodule ⫽
+    (z : L.toSubmodule ⧸
       (binaryIntrinsicCoupledDenominatorSubrepresentation
-        rho K W L hproduct).toSubmodule) :
+        K W L hproduct).toSubmodule) :
     binaryIntrinsicCoupledQuotientRepresentation
-        rho K W L hproduct g z = z := by
+        K W L hproduct g z = z := by
   let D := binaryIntrinsicCoupledDenominatorSubrepresentation
-    rho K W L hproduct
+    K W L hproduct
   change (L.toRepresentation.quotient D.toSubmodule
       (fun h ↦ D.apply_mem_toSubmodule h)) g z = z
   refine Submodule.Quotient.induction_on D.toSubmodule z ?_
@@ -355,7 +364,7 @@ denominator contains every displacement of the upper state. -/
     (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule).comap
         L.toSubmodule.subtype ⊔
       Representation.Coinvariants.ker L.toRepresentation
-  exact le_sup_right
+  exact Submodule.mem_sup_right
     (Representation.Coinvariants.sub_mem_ker
       (ρ := L.toRepresentation) g v)
 
@@ -433,7 +442,7 @@ theorem binaryCoupledQuotient_finrank_le_of_coordinateSubspace
       binaryCoupledDenominator rho generators L P hPL)
     (hcodim : Module.finrank (ZMod 2) L.toSubmodule ≤ d + q) :
     Module.finrank (ZMod 2)
-        (L.toSubmodule ⟸ binaryCoupledDenominator rho generators L P hPL) ≤ q := by
+        (L.toSubmodule ⧸ binaryCoupledDenominator rho generators L P hPL) ≤ q := by
   let D := binaryCoupledDenominator rho generators L P hPL
   have hdimC : Module.finrank (ZMod 2)
       (C.submoduleOf L.toSubmodule hCL) = d :=
@@ -442,6 +451,7 @@ theorem binaryCoupledQuotient_finrank_le_of_coordinateSubspace
     rw [← hdimC]
     exact Submodule.finrank_mono hC
   have hquot := D.finrank_quotient_add_finrank
+  change Module.finrank (ZMod 2) (L.toSubmodule ⧸ D) ≤ q
   omega
 
 /-- A sparse displacement certificate gives the state-specific head bound
@@ -470,7 +480,7 @@ theorem binaryCoupledQuotient_finrank_le_of_binaryCertificate
       rho generators L P hPL D)
     (hcodim : Module.finrank (ZMod 2) L.toSubmodule ≤ d + q) :
     Module.finrank (ZMod 2)
-        (L.toSubmodule ⫽ binaryCoupledDenominator
+        (L.toSubmodule ⧸ binaryCoupledDenominator
           rho generators L P.space hPL) ≤ q :=
   binaryCoupledQuotient_finrank_le_of_coordinateSubspace
     rho generators L P.space hPL D C.space_le_state
@@ -479,9 +489,9 @@ theorem binaryCoupledQuotient_finrank_le_of_binaryCertificate
 /-- Complete finite coupled-head certificate on an invariant-state
 registry.  It is the semantic target of the paired-eight product table. -/
 structure BinaryInvariantCoupledHeadRegistry
-    {I : Type*}
+    {I : Type uI}
     (state : I → Subrepresentation rho)
-    (cap : ℕ) : Type 1 where
+    (cap : ℕ) : Type (max 1 uI) where
   head : I → ℕ
   head_le : ∀ i,
     Module.finrank (ZMod 2) (state i).toRepresentation.Coinvariants ≤ head i
@@ -493,7 +503,7 @@ structure BinaryInvariantCoupledHeadRegistry
   quotient_le : ∀ p ell
     (h : (state p).toSubmodule ≤ (state ell).toSubmodule),
     Module.finrank (ZMod 2)
-      ((state ell).toSubmodule ⟸
+      ((state ell).toSubmodule ⧸
         binaryCoupledDenominator rho generators (state ell)
           (state p).toSubmodule h) ≤ quotientHead p ell
   coupled_le : ∀ i j ell,
@@ -507,6 +517,8 @@ variable {rho : Representation (ZMod 2) G (Fin w → ZMod 2)}
   {state : I → Subrepresentation rho} {cap : ℕ}
   (C : BinaryInvariantCoupledHeadRegistry rho generators state cap)
 
+include C
+
 /-- A complete coupled registry proves the paper's three-head inequality
 for arbitrary actual invariant submodules, after the semantic objects have
 been located in the finite registry. -/
@@ -518,7 +530,7 @@ theorem finrank_add_finrank_add_quotient_le
     Module.finrank (ZMod 2) K.toRepresentation.Coinvariants +
         Module.finrank (ZMod 2) W.toRepresentation.Coinvariants +
         Module.finrank (ZMod 2)
-          (L.toSubmodule ⫽
+          (L.toSubmodule ⧸
             binaryCoupledDenominator rho generators L
               (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule)
               hproduct) ≤ cap := by
@@ -533,8 +545,15 @@ theorem finrank_add_finrank_add_quotient_le
   have hW := C.head_le j
   have hL := C.quotient_le p ell hP
   have hsum := C.coupled_le i j ell hP
-  rw [show binaryCoordinateProductSpan (state i).toSubmodule
-      (state j).toSubmodule = (state p).toSubmodule from C.product_eq i j]
+  have hdenom :
+      binaryCoupledDenominator rho generators (state ell)
+          (binaryCoordinateProductSpan (state i).toSubmodule
+            (state j).toSubmodule) hproduct =
+        binaryCoupledDenominator rho generators (state ell)
+          (state p).toSubmodule hP := by
+    simp only [binaryCoupledDenominator]
+    rw [C.product_eq i j]
+  rw [hdenom]
   exact (Nat.add_le_add (Nat.add_le_add hK hW) hL).trans hsum
 
 end BinaryInvariantCoupledHeadRegistry
@@ -542,9 +561,9 @@ end BinaryInvariantCoupledHeadRegistry
 /-- A coupled head table together with semantic completeness of its state
 registry. -/
 structure BinaryInvariantCompleteCoupledHeadRegistry
-    {I : Type*}
+    {I : Type uI}
     (state : I → Subrepresentation rho)
-    (cap : ℕ) : Type 1 where
+    (cap : ℕ) : Type (max 1 uI) where
   coupled : BinaryInvariantCoupledHeadRegistry rho generators state cap
   complete : ∀ W : Subrepresentation rho, ∃ i, state i = W
 
@@ -556,6 +575,8 @@ variable {rho : Representation (ZMod 2) G (Fin w → ZMod 2)}
   (C : BinaryInvariantCompleteCoupledHeadRegistry
     rho generators state cap)
 
+include C
+
 theorem finrank_add_finrank_add_quotient_le
     (K W L : Subrepresentation rho)
     (hproduct : binaryCoordinateProductSpan K.toSubmodule W.toSubmodule ≤
@@ -563,7 +584,7 @@ theorem finrank_add_finrank_add_quotient_le
     Module.finrank (ZMod 2) K.toRepresentation.Coinvariants +
         Module.finrank (ZMod 2) W.toRepresentation.Coinvariants +
         Module.finrank (ZMod 2)
-          (L.toSubmodule ⫽
+          (L.toSubmodule ⧸
             binaryCoupledDenominator rho generators L
               (binaryCoordinateProductSpan K.toSubmodule W.toSubmodule)
               hproduct) ≤ cap :=

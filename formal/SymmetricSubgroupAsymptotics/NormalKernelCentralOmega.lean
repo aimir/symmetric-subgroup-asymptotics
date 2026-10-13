@@ -60,7 +60,8 @@ instance normalKernelCentralOmega_normal (π : Q →* B) :
   · intro a
     let a' : π.ker :=
       ⟨q⁻¹ * a.1 * q,
-        Subgroup.Normal.conj_mem inferInstance a.1 a.2 q⁻¹⟩
+        by simpa only [inv_inv] using
+          Subgroup.Normal.conj_mem inferInstance a.1 a.2 q⁻¹⟩
     have hc := hx.2.1 a'
     change Commute x (q⁻¹ * a.1 * q) at hc
     change (q * x * q⁻¹) * a.1 = a.1 * (q * x * q⁻¹)
@@ -69,7 +70,8 @@ instance normalKernelCentralOmega_normal (π : Q →* B) :
       _ = q * ((q⁻¹ * a.1 * q) * x) * q⁻¹ := by rw [hc.eq]
       _ = a.1 * (q * x * q⁻¹) := by group
   · calc
-      (q * x * q⁻¹) ^ 2 = q * (x ^ 2) * q⁻¹ := by group
+      (q * x * q⁻¹) ^ 2 = q * (x ^ 2) * q⁻¹ := by
+        simp only [pow_two, mul_assoc, inv_mul_cancel_left]
       _ = 1 := by rw [hx.2.2]; simp
 
 /-- The ambient normal subgroup is exactly the intrinsic central omega of
@@ -78,20 +80,21 @@ noncomputable def binaryCentralOmegaEquivNormalKernel
     (π : Q →* B) :
     binaryCentralOmega π.ker ≃* normalKernelCentralOmega π := by
   let inclusion : binaryCentralOmega π.ker →*
-      normalKernelCentralOmega π where
+      normalKernelCentralOmega π := {
     toFun z := ⟨z.1.1.1, z.1.1.2, (by
       intro a
-      exact ((Subgroup.mem_center_iff.mp z.1.2 a).symm.map π.ker.subtype)),
+      exact congrArg (fun y : π.ker => (y : Q))
+        (Subgroup.mem_center_iff.mp z.1.2 a).symm),
       congrArg (fun y : Subgroup.center π.ker => ((y.1 : π.ker) : Q)) z.2⟩
     map_one' := rfl
-    map_mul' _ _ := rfl
+    map_mul' _ _ := rfl }
   apply MulEquiv.ofBijective inclusion
   constructor
   · intro x y hxy
     apply Subtype.ext
     apply Subtype.ext
     apply Subtype.ext
-    exact congrArg Subtype.val hxy
+    exact congrArg (fun y : normalKernelCentralOmega π => (y : Q)) hxy
   · intro x
     let k : π.ker := ⟨x.1, x.2.1⟩
     let z : Subgroup.center π.ker :=

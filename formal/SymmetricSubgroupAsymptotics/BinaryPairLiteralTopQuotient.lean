@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.BinaryPairZeroCutExtension
 import SymmetricSubgroupAsymptotics.BinaryPairLargeSectionCharacter
+import SymmetricSubgroupAsymptotics.BinaryPairResidualTop
 import SymmetricSubgroupAsymptotics.FiniteSurjectiveKernelTransport
 
 /-!
@@ -18,7 +19,7 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace BinaryPairFrame
 
-variable {X I G : Type*} [Group G]
+variable {X I G : Type} [Group G]
   {U : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame U I)
   (e : G ≃* F.top.range)
@@ -34,18 +35,20 @@ theorem literalTopNormal_normal (N : Subgroup U) [N.Normal] :
   exact Subgroup.Normal.map inferInstance _
     F.top.rangeRestrict_surjective
 
+attribute [instance] literalTopNormal_normal
+
 /-- The quotient of the original group maps onto the corresponding quotient
 of the literal top. -/
 noncomputable def literalTopQuotientMap
     (N : Subgroup U) [N.Normal] :
-    (U ⟸ N) →* (G ⟸ F.literalTopNormal e N) := by
-  let f : U →* (G ⟸ F.literalTopNormal e N) :=
+    (U ⧸ N) →* (G ⧸ F.literalTopNormal e N) := by
+  let f : U →* (G ⧸ F.literalTopNormal e N) :=
     (QuotientGroup.mk' (F.literalTopNormal e N)).comp
       (e.symm.toMonoidHom.comp F.top.rangeRestrict)
   apply QuotientGroup.lift N f
   intro u hu
   apply MonoidHom.mem_ker.mpr
-  apply QuotientGroup.eq_one_iff.mpr
+  apply (QuotientGroup.eq_one_iff _).mpr
   change e (e.symm (F.top.rangeRestrict u)) ∈
     N.map F.top.rangeRestrict
   rw [e.apply_symm_apply]
@@ -78,7 +81,9 @@ private theorem literalTop_mem_normal_iff
   constructor
   · rintro ⟨n, hn, hnu⟩
     have hk : n⁻¹ * u ∈ F.top.ker := by
-      rw [MonoidHom.mem_ker, map_mul, map_inv, hnu, inv_mul]
+      rw [MonoidHom.mem_ker, map_mul, map_inv]
+      have hnu' : F.top n = F.top u := congrArg Subtype.val hnu
+      simpa [hnu']
     have hn' : n ∈ F.top.ker ⊔ N := Subgroup.mem_sup_right hn
     have hk' : n⁻¹ * u ∈ F.top.ker ⊔ N :=
       Subgroup.mem_sup_left hk
@@ -88,6 +93,8 @@ private theorem literalTop_mem_normal_iff
     obtain ⟨k, hk, n, hn, hkn⟩ :=
       Subgroup.mem_sup_of_normal_right.mp hu
     refine ⟨n, hn, ?_⟩
+    apply Subtype.ext
+    change F.top n = F.top u
     rw [← hkn, map_mul, MonoidHom.mem_ker.mp hk, one_mul]
 
 theorem literalTopQuotientMap_ker_eq_zeroCutBase_ker
@@ -96,13 +103,17 @@ theorem literalTopQuotientMap_ker_eq_zeroCutBase_ker
   ext q
   obtain ⟨u, rfl⟩ := QuotientGroup.mk'_surjective N q
   simp only [MonoidHom.mem_ker, F.literalTopQuotientMap_apply e N,
-    F.zeroCutBase_apply, QuotientGroup.eq_one_iff]
+    F.zeroCutBase_apply]
+  change ((e.symm (F.top.rangeRestrict u) :
+      G ⧸ F.literalTopNormal e N) = 1) ↔
+    ((u : U ⧸ (F.top.ker ⊔ N)) = 1)
+  rw [QuotientGroup.eq_one_iff, QuotientGroup.eq_one_iff]
   exact F.literalTop_mem_normal_iff e N u
 
 /-- The kernel retained while passing to any literal model of the pair top
 is the actual elementary binary zero-cut kernel. -/
 theorem literalTopQuotientMap_kernel_isPGroup
-    (N : Subgroup U) [N.Normal] :
+    [Finite I] (N : Subgroup U) [N.Normal] :
     IsPGroup 2 (F.literalTopQuotientMap e N).ker := by
   rw [F.literalTopQuotientMap_ker_eq_zeroCutBase_ker e N]
   have hmodule : IsPGroup 2 (Multiplicative (F.zeroCutModule N)) :=
@@ -113,7 +124,7 @@ theorem literalTopQuotientMap_kernel_isPGroup
 quotient of the chosen literal top. -/
 noncomputable def zeroCutBaseEquivLiteralTop
     (N : Subgroup U) [N.Normal] :
-    (U ⟸ (F.top.ker ⊔ N)) ≃* (G ⟸ F.literalTopNormal e N) :=
+    (U ⧸ (F.top.ker ⊔ N)) ≃* (G ⧸ F.literalTopNormal e N) :=
   surjectiveTargetEquivOfKernelEq
     (F.zeroCutBase N) (F.literalTopQuotientMap e N)
     (F.zeroCutBase_surjective N) (F.literalTopQuotientMap_surjective e N)
@@ -147,7 +158,7 @@ quotient on every lifted top element. -/
 chosen literal top quotient. -/
 def literalZeroCutModule
     (N : Subgroup U) [N.Normal] :
-    Rep (ZMod 2) (G ⟸ F.literalTopNormal e N) :=
+    Rep (ZMod 2) (G ⧸ F.literalTopNormal e N) :=
   Rep.of ((F.zeroCutModule N).ρ.comp
     (F.zeroCutBaseEquivLiteralTop e N).symm.toMonoidHom)
 
@@ -161,8 +172,8 @@ noncomputable def literalZeroCutModuleChart
     (MulEquiv.subgroupCongr
       (F.literalTopQuotientMap_ker_eq_zeroCutBase_ker e N).symm)
   conjugate q a := by
-    have hcomp := congrArg (fun h : (U ⟸ N) →*
-        (G ⟸ F.literalTopNormal e N) => h q)
+    have hcomp := congrArg (fun h : (U ⧸ N) →*
+        (G ⧸ F.literalTopNormal e N) => h q)
       (surjectiveTargetEquivOfKernelEq_comp
         (F.zeroCutBase N) (F.literalTopQuotientMap e N)
         (F.zeroCutBase_surjective N)
@@ -171,15 +182,21 @@ noncomputable def literalZeroCutModuleChart
     have hbase :
         (F.zeroCutBaseEquivLiteralTop e N).symm
             (F.literalTopQuotientMap e N q) = F.zeroCutBase N q := by
-      rw [← hcomp]
-      exact (F.zeroCutBaseEquivLiteralTop e N).symm_apply_apply _
+      calc
+        (F.zeroCutBaseEquivLiteralTop e N).symm
+              (F.literalTopQuotientMap e N q) =
+            (F.zeroCutBaseEquivLiteralTop e N).symm
+              (F.zeroCutBaseEquivLiteralTop e N (F.zeroCutBase N q)) :=
+                congrArg (F.zeroCutBaseEquivLiteralTop e N).symm hcomp.symm
+        _ = F.zeroCutBase N q :=
+          (F.zeroCutBaseEquivLiteralTop e N).symm_apply_apply _
     change
       ((F.zeroCutKernelEquiv N)
           (Multiplicative.ofAdd
             ((F.zeroCutModule N).ρ
               ((F.zeroCutBaseEquivLiteralTop e N).symm
-                (F.literalTopQuotientMap e N q)) a)) : U ⟸ N) =
-        q * ((F.zeroCutKernelEquiv N) (Multiplicative.ofAdd a) : U ⟸ N) * q⁻¹
+                (F.literalTopQuotientMap e N q)) a)) : U ⧸ N) =
+        q * ((F.zeroCutKernelEquiv N) (Multiplicative.ofAdd a) : U ⧸ N) * q⁻¹
     rw [hbase]
     exact (F.zeroCutModuleChart N).conjugate q a
 
@@ -187,7 +204,7 @@ noncomputable def literalZeroCutModuleChart
 the chosen literal top quotient. -/
 def literalSectionModule
     (N : Subgroup U) [N.Normal] :
-    Rep (ZMod 2) (G ⟸ F.literalTopNormal e N) :=
+    Rep (ZMod 2) (G ⧸ F.literalTopNormal e N) :=
   Rep.of ((F.sectionRepresentation N).comp
     (F.zeroCutBaseEquivLiteralTop e N).symm.toMonoidHom)
 
@@ -196,7 +213,8 @@ section-top representation after transport along the chosen top
 equivalence. -/
 def sectionTopEquivLiteralSectionInflation
     (N : Subgroup U) [N.Normal] :
-    ((F.sectionTopRepresentation N).comp e.toMonoidHom).Equiv
+    Representation.Equiv
+      ((F.sectionTopRepresentation N).comp e.toMonoidHom)
       ((F.literalSectionModule e N).ρ.comp
         (QuotientGroup.mk' (F.literalTopNormal e N))) :=
   Representation.Equiv.mk
@@ -222,8 +240,8 @@ noncomputable def literalSectionModuleChart
     (MulEquiv.subgroupCongr
       (F.literalTopQuotientMap_ker_eq_zeroCutBase_ker e N).symm)
   conjugate q a := by
-    have hcomp := congrArg (fun h : (U ⟸ N) →*
-        (G ⟸ F.literalTopNormal e N) => h q)
+    have hcomp := congrArg (fun h : (U ⧸ N) →*
+        (G ⧸ F.literalTopNormal e N) => h q)
       (surjectiveTargetEquivOfKernelEq_comp
         (F.zeroCutBase N) (F.literalTopQuotientMap e N)
         (F.zeroCutBase_surjective N)
@@ -232,15 +250,21 @@ noncomputable def literalSectionModuleChart
     have hbase :
         (F.zeroCutBaseEquivLiteralTop e N).symm
             (F.literalTopQuotientMap e N q) = F.zeroCutBase N q := by
-      rw [← hcomp]
-      exact (F.zeroCutBaseEquivLiteralTop e N).symm_apply_apply _
+      calc
+        (F.zeroCutBaseEquivLiteralTop e N).symm
+              (F.literalTopQuotientMap e N q) =
+            (F.zeroCutBaseEquivLiteralTop e N).symm
+              (F.zeroCutBaseEquivLiteralTop e N (F.zeroCutBase N q)) :=
+                congrArg (F.zeroCutBaseEquivLiteralTop e N).symm hcomp.symm
+        _ = F.zeroCutBase N q :=
+          (F.zeroCutBaseEquivLiteralTop e N).symm_apply_apply _
     change
       ((F.sectionKernelEquiv N)
           (Multiplicative.ofAdd
             (F.sectionRepresentation N
               ((F.zeroCutBaseEquivLiteralTop e N).symm
-                (F.literalTopQuotientMap e N q)) a)) : U ⟸ N) =
-        q * ((F.sectionKernelEquiv N) (Multiplicative.ofAdd a) : U ⟸ N) * q⁻¹
+                (F.literalTopQuotientMap e N q)) a)) : U ⧸ N) =
+        q * ((F.sectionKernelEquiv N) (Multiplicative.ofAdd a) : U ⧸ N) * q⁻¹
     rw [hbase]
     exact (F.sectionModuleChart N).conjugate q a
 

@@ -107,7 +107,8 @@ theorem kernel_displacement_eq_pairConstant_product
   have hinv : F.bits k⁻¹ = F.bits k := by
     have h := congrArg Multiplicative.toAdd (F.bitsHom.map_inv k)
     change F.bits k⁻¹ = -F.bits k at h
-    simpa only [CharTwo.neg_eq] using h
+    funext i
+    simpa only [Pi.neg_apply, CharTwo.neg_eq] using congrFun h i
   funext x
   obtain ⟨⟨i, b⟩, rfl⟩ := F.frame.surjective x
   change f ((((k⁻¹ : F.top.ker) : U) : Equiv.Perm X)
@@ -115,10 +116,14 @@ theorem kernel_displacement_eq_pairConstant_product
   rw [F.kernel_action_frame, F.pairConstant_frame, hinv]
   change f (F.frame (i, b + F.bits k i)) - f (F.frame (i, b)) =
     F.bits k i * (f (F.frame (i, 0)) + f (F.frame (i, 1)))
+  have binary_cases (a : ZMod 2) : a = 0 ∨ a = 1 := by
+    fin_cases a
+    · exact Or.inl rfl
+    · exact Or.inr rfl
   generalize hbit : F.bits k i = a
-  fin_cases a <;> fin_cases b <;>
-    simp only [zero_add, add_zero, one_mul, zero_mul,
-      CharTwo.add_self_eq_zero, CharTwo.sub_eq_add, add_comm]
+  rcases binary_cases a with rfl | rfl <;>
+    rcases binary_cases b with rfl | rfl <;>
+    simp [CharTwo.sub_eq_add, CharTwo.add_self_eq_zero, add_comm]
 
 /-- If the supplied original kernel element flips every pair, the
 coordinate displacement is its literal original representation minus one. -/

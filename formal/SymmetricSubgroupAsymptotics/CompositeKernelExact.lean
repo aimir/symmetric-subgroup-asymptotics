@@ -60,7 +60,7 @@ theorem compositeKernelInclusion_injective
     (f : G →* H) (g : H →* K) :
     Function.Injective (compositeKernelInclusion f g) := by
   intro x y hxy
-  exact Subtype.ext (congrArg Subtype.val hxy)
+  exact Subtype.ext (congrArg (fun z : (g.comp f).ker => (z : G)) hxy)
 
 /-- The two canonical maps form an exact sequence on the literal kernel
 subgroups. -/
@@ -98,7 +98,7 @@ noncomputable def compositeKernelFiberEquiv
   · intro x y hxy
     exact Subtype.ext (congrArg (fun z => ((z.1 : (g.comp f).ker) : G)) hxy)
   · intro x
-    have hx : (compositeKernelInclusion f g).range x.1 := by
+    have hx : x.1 ∈ (compositeKernelInclusion f g).range := by
       rw [compositeKernelInclusion_range_eq_projection_ker]
       exact x.2
     obtain ⟨y, hy⟩ := hx

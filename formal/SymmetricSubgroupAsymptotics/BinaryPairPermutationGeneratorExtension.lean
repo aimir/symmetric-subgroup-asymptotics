@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryPairSectionSchurCapacity
+import SymmetricSubgroupAsymptotics.BinaryPairMaximalSection
 import SymmetricSubgroupAsymptotics.PermutationFunctionSelfDual
 import SymmetricSubgroupAsymptotics.RepresentationGeneratorExtension
 
@@ -24,14 +25,14 @@ open scoped Classical MonoidAlgebra
 namespace SymmetricSubgroupAsymptotics
 namespace BinaryPairFrame
 
-variable {X I : Type*} {U : Subgroup (Equiv.Perm X)}
+variable {X I : Type} {U : Subgroup (Equiv.Perm X)}
   (F : BinaryPairFrame U I)
 
 /-- The natural permutation representation on the pair set, pulled back to
 the original group through the literal top map. -/
 def pulledBackCoordinateTopAction :
     Representation (ZMod 2) U (I → ZMod 2) :=
-  F.coordinateTopAction.comp F.top.rangeRestrict
+  (permutationFunctionRepresentation (ZMod 2) F.top.range I).comp F.top.rangeRestrict
 
 /-- Pair-constant functions form an equivariant copy of the pulled-back
 pair permutation module. -/
@@ -42,8 +43,7 @@ def pairConstantIntertwiner :
   isIntertwining' u := by
     apply LinearMap.ext
     intro a
-    rw [F.pairConstant_action]
-    rfl
+    simpa only [LinearMap.comp_apply] using (F.pairConstant_action u a).symm
 
 theorem pairConstantIntertwiner_injective :
     Function.Injective F.pairConstantIntertwiner :=
@@ -69,10 +69,8 @@ def pairSumIntertwiner :
             f (F.frame (F.top u⁻¹ i, 1 + b)) =
           f (F.frame (F.top u⁻¹ i, 0)) +
             f (F.frame (F.top u⁻¹ i, 1)) := by
-      fin_cases b
-      · simp
-      · rw [zero_add, CharTwo.add_self_eq_zero, add_comm]
-    exact hsum (F.offset u⁻¹ i)
+      fin_cases b <;> simp [add_comm]
+    simpa only [map_inv] using hsum (F.offset u⁻¹ i)
 
 /-- A linear right inverse to pair-sum, obtained by putting the requested
 coordinate on the zero point of each pair. -/
@@ -89,15 +87,16 @@ def pairSumSection : (I → ZMod 2) →ₗ[ZMod 2] (X → ZMod 2) where
 @[simp] theorem pairSumSection_frame
     (a : I → ZMod 2) (i : I) (b : ZMod 2) :
     F.pairSumSection a (F.frame (i, b)) = if b = 0 then a i else 0 := by
-  simp only [pairSumSection, Equiv.symm_apply_apply]
+  change (if (F.frame.symm (F.frame (i, b))).2 = 0 then
+    a (F.frame.symm (F.frame (i, b))).1 else 0) = _
+  rw [Equiv.symm_apply_apply]
 
 @[simp] theorem pairSum_pairSumSection (a : I → ZMod 2) :
     F.pairSum (F.pairSumSection a) = a := by
   funext i
   change F.pairSumSection a (F.frame (i, 0)) +
       F.pairSumSection a (F.frame (i, 1)) = a i
-  simp only [F.pairSumSection_frame, if_pos rfl, if_neg one_ne_zero,
-    add_zero]
+  simp [F.pairSumSection_frame]
 
 theorem pairSumIntertwiner_surjective :
     Function.Surjective F.pairSumIntertwiner := by
@@ -108,7 +107,7 @@ theorem pairSumIntertwiner_surjective :
 group descends to the intrinsic top range because `rangeRestrict` is onto. -/
 def descendPulledBackSubrepresentation
     (M : Subrepresentation F.pulledBackCoordinateTopAction) :
-    Subrepresentation F.coordinateTopAction where
+    Subrepresentation (permutationFunctionRepresentation (ZMod 2) F.top.range I) where
   toSubmodule := M.toSubmodule
   apply_mem_toSubmodule t v hv := by
     obtain ⟨u, rfl⟩ := F.top.rangeRestrict_surjective t
@@ -177,12 +176,12 @@ in the exact sequence. -/
 theorem permutationFunctionRepresentation_uniform_of_coordinateTop
     (H : ℕ)
     (huniform : UniformSubrepresentationGeneratorBound
-      F.coordinateTopAction H) :
+      (permutationFunctionRepresentation (ZMod 2) F.top.range I) H) :
     UniformSubrepresentationGeneratorBound
       (permutationFunctionRepresentation (ZMod 2) U X) (H + H) :=
   F.permutationFunctionRepresentation_uniform_of_pairTop H
     (UniformSubrepresentationGeneratorBound.comp_of_surjective
-      F.coordinateTopAction F.top.rangeRestrict
+      (permutationFunctionRepresentation (ZMod 2) F.top.range I) F.top.rangeRestrict
       F.top.rangeRestrict_surjective huniform)
 
 /-- The dual full point module has the same doubled uniform bound. -/
@@ -201,7 +200,7 @@ theorem permutationFunctionRepresentation_dual_uniform_of_coordinateTop
     [Finite X]
     (H : ℕ)
     (huniform : UniformSubrepresentationGeneratorBound
-      F.coordinateTopAction H) :
+      (permutationFunctionRepresentation (ZMod 2) F.top.range I) H) :
     UniformSubrepresentationGeneratorBound
       (permutationFunctionRepresentation (ZMod 2) U X).dual (H + H) :=
   permutationFunctionRepresentation_dual_uniform
