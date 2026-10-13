@@ -223,7 +223,10 @@ noncomputable def outerPullbackNestedQuotientEquiv
     change R.secondFrame.pulledBackCoordinateTopAction g b.1 =
       permutationFunctionRepresentation (ZMod 2) D.top (Fin t)
         (R.outerTopToLiteral g) b.1
-    rw [R.module_action_eq, R.topEquiv.apply_symm_apply]
+    rw [R.module_action_eq]
+    change _ = R.secondFrame.coordinateTopAction
+      (R.topEquiv (R.topEquiv.symm (R.secondFrame.top.rangeRestrict g))) b.1
+    rw [R.topEquiv.apply_symm_apply]
     rfl)
 
 /-- The right endpoint of the outer exact sequence is the inflation of a
@@ -283,15 +286,12 @@ theorem rawKernelOmegaOuterZeroCutImage_toSubmodule
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
     (R.rawKernelOmegaOuterZeroCutImage N).toSubmodule =
       LinearMap.range (R.outerOmegaZeroCutMap N) := by
-  rw [← R.rawKernelOmegaOuterCoordinateMap_range_eq N]
-  ext v
-  constructor
-  · rintro ⟨z, rfl⟩
-    exact ⟨R.rawKernelOmegaInnerKernelEquivProjectionKernel N z, rfl⟩
-  · rintro ⟨z, rfl⟩
-    obtain ⟨w, rfl⟩ :=
-      (R.rawKernelOmegaInnerKernelEquivProjectionKernel N).surjective z
-    exact ⟨w, rfl⟩
+  change LinearMap.range
+    ((R.rawKernelOmegaOuterCoordinateMap N).comp
+      (R.rawKernelOmegaInnerKernelEquivProjectionKernel N).toLinearMap) = _
+  exact (LinearMap.range_comp_of_range_eq_top _
+    (R.rawKernelOmegaInnerKernelEquivProjectionKernel N).range).trans
+      (R.rawKernelOmegaOuterCoordinateMap_range_eq N)
 
 /-- The section-image form of the retained outer coordinate state. -/
 abbrev outerOmegaSectionImage
@@ -340,6 +340,8 @@ theorem outerOmegaZeroCutRange_map_eq_sectionImage
     let lOmega : R.outerOmegaRetainedKernel N := ⟨l, hl⟩
     refine ⟨R.outerOmegaZeroCutMap N (Additive.ofMul lOmega),
       ⟨Additive.ofMul lOmega, rfl⟩, ?_⟩
+    change R.frame.zeroCutSectionEquiv N.1
+      (R.outerOmegaZeroCutMap N (Additive.ofMul lOmega)) = _
     rw [R.zeroCutSectionEquiv_outerOmegaZeroCutMap N lOmega]
     apply congrArg (R.frame.normalSpace N.1).mkQ
     apply Subtype.ext
@@ -371,14 +373,15 @@ noncomputable def rawKernelOmegaOuterZeroCutImageEquivSectionImage
       (R.outerOmegaSectionImageOnOriginalQuotient N).toRepresentation := by
   let e := R.frame.zeroCutSectionCompEquiv N.1
     (R.frame.zeroCutBase N.1)
-  let f : (R.rawKernelOmegaOuterZeroCutImage N).toRepresentation.
-      IntertwiningMap
-      (R.outerOmegaSectionImageOnOriginalQuotient N).toRepresentation where
+  let f : ((R.rawKernelOmegaOuterZeroCutImage N).toRepresentation).IntertwiningMap
+      (R.outerOmegaSectionImageOnOriginalQuotient N).toRepresentation := {
     toLinearMap :=
       (e.toLinearEquiv.toLinearMap.comp
         (R.rawKernelOmegaOuterZeroCutImage N).toSubmodule.subtype).codRestrict
           (R.outerOmegaSectionImageOnOriginalQuotient N).toSubmodule
           (fun z ↦ by
+            change R.frame.zeroCutSectionEquiv N.1 z.1 ∈
+              (R.outerOmegaSectionImage N).toSubmodule
             rw [← R.outerOmegaZeroCutRange_map_eq_sectionImage N]
             exact ⟨z.1, by
               rw [← R.rawKernelOmegaOuterZeroCutImage_toSubmodule N]
@@ -389,12 +392,14 @@ noncomputable def rawKernelOmegaOuterZeroCutImageEquivSectionImage
       intro z
       apply Subtype.ext
       exact LinearMap.congr_fun (e.isIntertwining' q) z.1
+  }
   apply f.ofBijective
   constructor
   · intro x y hxy
     apply Subtype.ext
     exact e.injective (congrArg Subtype.val hxy)
   · rintro ⟨v, hv⟩
+    change v ∈ (R.outerOmegaSectionImage N).toSubmodule at hv
     rw [← R.outerOmegaZeroCutRange_map_eq_sectionImage N] at hv
     obtain ⟨a, ha, hav⟩ := hv
     have haImage : a ∈
@@ -417,8 +422,9 @@ noncomputable def rawKernelOmegaOuterEquivSectionImage
 with pulling the first-top section image back along the top map. -/
 noncomputable def outerSectionImageInflationEquiv
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    ((R.outerOmegaSectionImageOnOriginalQuotient N).toRepresentation.comp
-      (QuotientGroup.mk' N.1)).Equiv
+    Representation.Equiv
+      ((R.outerOmegaSectionImageOnOriginalQuotient N).toRepresentation.comp
+        (QuotientGroup.mk' N.1))
       ((R.outerOmegaSectionImage N).toRepresentation.comp
         R.frame.top.rangeRestrict) :=
   Representation.Equiv.mk (LinearEquiv.refl _ _) (by
@@ -426,17 +432,22 @@ noncomputable def outerSectionImageInflationEquiv
     apply LinearMap.ext
     intro v
     apply Subtype.ext
-    rfl)
+    change R.frame.sectionRepresentation N.1
+        (R.frame.zeroCutBase N.1 (QuotientGroup.mk' N.1 u)) v.1 =
+      R.frame.sectionRepresentation N.1
+        (R.frame.sectionTopQuotient N.1 (R.frame.top.rangeRestrict u)) v.1
+    rw [R.frame.zeroCutBase_apply, R.frame.sectionTopQuotient_apply])
 
 /-- Pulling the coordinate quotient/section-image equivalence back along
 the original top map preserves it verbatim. -/
 noncomputable def outerNestedQuotientSectionImageInflationEquiv
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    ((nestedQuotientRepresentation
-      (R.frame.normalTopPermutationSubrepresentation N.1)
-      (R.outerOmegaAxis N)
-      (R.outerNormalAxis_le_outerOmegaAxis N)).comp
-        R.frame.top.rangeRestrict).Equiv
+    Representation.Equiv
+      ((nestedQuotientRepresentation
+        (R.frame.normalTopPermutationSubrepresentation N.1)
+        (R.outerOmegaAxis N)
+        (R.outerNormalAxis_le_outerOmegaAxis N)).comp
+          R.frame.top.rangeRestrict)
       ((R.outerOmegaSectionImage N).toRepresentation.comp
         R.frame.top.rangeRestrict) :=
   Representation.Equiv.mk
@@ -451,8 +462,9 @@ action-level bridge from the physical kernel to the two endpoint quotients
 in the pair-sum exact sequence. -/
 noncomputable def rawKernelOmegaOuterInflationEquivNestedQuotient
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    ((R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation.comp
-      (QuotientGroup.mk' N.1)).Equiv
+    Representation.Equiv
+      ((R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation.comp
+        (QuotientGroup.mk' N.1))
       ((nestedQuotientRepresentation
         (R.frame.normalTopPermutationSubrepresentation N.1)
         (R.outerOmegaAxis N)
@@ -460,8 +472,9 @@ noncomputable def rawKernelOmegaOuterInflationEquivNestedQuotient
           R.frame.top.rangeRestrict) := by
   let e0 := R.rawKernelOmegaOuterEquivSectionImage N
   let e0comp :
-      ((R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation.comp
-        (QuotientGroup.mk' N.1)).Equiv
+      Representation.Equiv
+        ((R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation.comp
+          (QuotientGroup.mk' N.1))
       ((R.outerOmegaSectionImageOnOriginalQuotient N).toRepresentation.comp
         (QuotientGroup.mk' N.1)) :=
     Representation.Equiv.mk e0.toLinearEquiv
