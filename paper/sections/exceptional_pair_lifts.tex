@@ -163,6 +163,15 @@ the regular representation of its quotient is faithful and decomposes
 into irreducibles. Literal kernels, not quotient isomorphism types,
 are retained. Searching these kernel intersections proves the asserted
 covers for all quotients.
+These quotient checks share one finite-table proof. For each normal kernel
+$N$, the preimage of the quotient socle is the least normal subgroup $C$
+containing $N$ and every normal subgroup minimal strictly above $N$.
+A tuple $x_1,\ldots,x_t\in C$ normally generates $C/N$ in the ambient
+quotient precisely when every normal subgroup containing $N$ and all the
+$x_i$ also contains $C$.
+Completeness of the normal registry makes both assertions finite inclusion
+tests. The same argument then covers every quotient, with only the inclusion
+and tuple-membership tables varying between actions.
 There is a useful shortcut when the complete normal registry is a chain.
 Every quotient again has a chain of normal subgroups, hence at most one
 minimal nontrivial normal subgroup. If present, that subgroup is the socle
