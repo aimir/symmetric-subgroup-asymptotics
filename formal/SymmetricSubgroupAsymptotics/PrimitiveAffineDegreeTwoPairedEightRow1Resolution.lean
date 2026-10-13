@@ -10,133 +10,151 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenPairFiniteCat
 /-!
 # Relative-kernel resolution of paired-eight row 1
 
-The first paired-eight row already has two independent literal finite
-certificates.  Its top-normal registry supplies two ordinary prefix
-characters, and its coupled K/W/L table proves the exact four-position
-head inequality for every original normal subgroup.  This file attaches
-those certificates to the actual direct two-frame quotient and isolates
-the remaining representation-theoretic conclusion: four generators of
-the dual of that quotient kernel's canonical omega socle.
+The first paired-eight row supplies three literal finite certificates:
+a top-normal socle registry, a coupled K/W/L table, and a nested-quotient
+generator table. The shared paired-tower theorem turns these into the
+four-position omega-socle capacity bound for every original normal subgroup.
+The row-specific statements below are specializations of that shared proof.
 
-Once that conclusion is supplied, the orbit-character layer constructs
-the relative irreducibles and resolves the literal catalogue row.  No
-binary-kernel row, relative-character tuple, or resolved-row premise is
-accepted here.
+The orbit-character layer then constructs the relative irreducibles and
+resolves the literal catalogue row. The older conditional entry points remain
+available beside the unconditional capacity theorem.
 -/
 
+-- Avoid the suggestion-index exporter's expansion of dependent row signatures.
+-- This affects automatic premise suggestions only; kernel checking is unchanged.
+run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEntry env "PrimitiveAffineDegreeTwoPairedEightRow1Resolution"
+
 set_option autoImplicit false
+set_option backward.isDefEq.respectTransparency false
 noncomputable section
-open scoped Classical
+open scoped Classical MonoidAlgebra
 
 namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
 namespace PrimitiveAffineDegreeTwoPairedEightRow1Resolution
 
-namespace Shared := DegreeTwoPairedEightSharedTops
-namespace Catalogue := DegreeTwoSixteenPairFiniteCatalogue
-namespace Socles := DegreeTwoPairedEightRow1QuotientSocles
-namespace Natural := PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule
-namespace QuotientGenerators :=
-  PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators
-namespace Coupled :=
-  SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads
+
+local instance finiteAsModule {G V : Type} [Group G]
+    [AddCommGroup V] [Module (ZMod 2) V] [Finite V]
+    (rho : Representation (ZMod 2) G V) : Finite rho.asModule :=
+  Finite.of_equiv V rho.asModuleEquiv.symm.toEquiv
+
+local instance finiteDimensionalSubmodule {G V : Type} [Group G]
+    [AddCommGroup V] [Module (ZMod 2) V] [Module (ZMod 2)[G] V]
+    [IsScalarTower (ZMod 2) (ZMod 2)[G] V]
+    [FiniteDimensional (ZMod 2) V]
+    (X : Submodule (ZMod 2)[G] V) : FiniteDimensional (ZMod 2) X :=
+  FiniteDimensional.of_injective
+    (X.subtype.restrictScalars (ZMod 2)) X.subtype_injective
+
+local instance innerOmegaFinite
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
+    Finite (R.innerOmegaSubrepresentation N).toSubmodule :=
+  Finite.of_surjective _ (R.rawKernelOmegaInnerImageIntertwiner_surjective N)
+
+local instance innerOmegaFiniteDimensional
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
+    (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
+    FiniteDimensional (ZMod 2) (R.innerOmegaSubrepresentation N).toSubmodule :=
+  Module.Finite.of_finite
 
 /-- The checked coupled table applies to the three actual omega axes for
 every original normal subgroup of every realization of this row. -/
 theorem omegaHeadDemand_le_four
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
-    (Coupled.towerCoupledHeadData R).omegaHeadDemand N ≤ 4 :=
-  (Coupled.towerCoupledHeadData R).omegaHeadDemand_le N
+    (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaHeadDemand N ≤ 4 :=
+  (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaHeadDemand_le N
 
 /-- For row 1 the four stored permutations generate the literal top, so
 the checked demand is the intrinsic three-layer expression with the full
 commutator/coinvariant subspace in its final denominator. -/
 theorem omegaHeadDemand_eq_intrinsic
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
-    (Coupled.towerCoupledHeadData R).omegaHeadDemand N =
+    (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaHeadDemand N =
       Module.finrank (ZMod 2)
           (R.innerOmegaNaturalAxis N).toRepresentation.Coinvariants +
         Module.finrank (ZMod 2)
           (R.outerOmegaPairSumAxis N).toRepresentation.Coinvariants +
         Module.finrank (ZMod 2)
-          ((R.outerOmegaConstantAxis N).toSubmodule ⫽
+          ((R.outerOmegaConstantAxis N).toSubmodule ⧸
             ((binaryCoordinateProductSpan
                 (R.innerOmegaNaturalAxis N).toSubmodule
                 (R.outerOmegaPairSumAxis N).toSubmodule).comap
                   (R.outerOmegaConstantAxis N).toSubmodule.subtype ⊔
               Representation.Coinvariants.ker
                 (R.outerOmegaConstantAxis N).toRepresentation)) :=
-  (Coupled.towerCoupledHeadData R).omegaHeadDemand_eq_intrinsic
-    Natural.topAmbient_full N
+  (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaHeadDemand_eq_intrinsic
+    SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.topAmbient_full N
 
 /-- The row-1 table's third term as its concrete pointwise-fixed quotient
 of the actual constant omega axis. -/
 abbrev OmegaCoupledQuotientRepresentation
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :=
-  (Coupled.towerCoupledHeadData R).omegaCoupledQuotientRepresentation
-    Natural.topAmbient_full N
+  (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaCoupledQuotientRepresentation
+    SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.topAmbient_full N
 
 @[simp] theorem omegaCoupledQuotientRepresentation_apply
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
-    (g : Natural.Top)
+    (g : SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.Top)
     (z : (OmegaCoupledQuotientRepresentation R N).asModule) :
     OmegaCoupledQuotientRepresentation R N g z = z :=
-  (Coupled.towerCoupledHeadData R).
-    omegaCoupledQuotientRepresentation_apply
-      Natural.topAmbient_full N g z
+  (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaCoupledQuotientRepresentation_apply
+      SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.topAmbient_full N g z
 
 theorem omegaCoupledQuotient_invariants_finrank_eq_demandThird
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
     Module.finrank (ZMod 2)
         (OmegaCoupledQuotientRepresentation R N).invariants =
       Module.finrank (ZMod 2)
-        ((R.outerOmegaConstantAxis N).toSubmodule ⫽
+        ((R.outerOmegaConstantAxis N).toSubmodule ⧸
           binaryCoupledDenominator
-            (permutationFunctionRepresentation (ZMod 2) Natural.Top (Fin 8))
-            Natural.topAmbient (R.outerOmegaConstantAxis N)
+            (permutationFunctionRepresentation (ZMod 2) SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.Top (Fin 8))
+            SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.topAmbient (R.outerOmegaConstantAxis N)
             (binaryCoordinateProductSpan
               (R.innerOmegaNaturalAxis N).toSubmodule
               (R.outerOmegaPairSumAxis N).toSubmodule)
             (R.omegaAxes_productSpan_le N)) :=
-  (Coupled.towerCoupledHeadData R).
-    omegaCoupledQuotientRepresentation_invariants_finrank_eq
-      Natural.topAmbient_full N
+  (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaCoupledQuotientRepresentation_invariants_finrank_eq
+      SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.topAmbient_full N
 
 /-- The generated cap-four table now bounds three literal representation
 rows: the K and W invariant-form heads and the fixed residual L quotient. -/
 theorem omegaRepresentationRows_le_four
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
     Module.finrank (ZMod 2)
         ((R.innerOmegaNaturalAxis N).toRepresentation.IntertwiningMap
-          (Representation.trivial (ZMod 2) Natural.Top (ZMod 2))) +
+          (Representation.trivial (ZMod 2) SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.Top (ZMod 2))) +
       Module.finrank (ZMod 2)
         ((R.outerOmegaPairSumAxis N).toRepresentation.IntertwiningMap
-          (Representation.trivial (ZMod 2) Natural.Top (ZMod 2))) +
+          (Representation.trivial (ZMod 2) SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.Top (ZMod 2))) +
       Module.finrank (ZMod 2)
         (OmegaCoupledQuotientRepresentation R N).invariants ≤ 4 := by
-  rw [← (Coupled.towerCoupledHeadData R).
-    omegaHeadDemand_eq_head_add_head_add_fixed
-      Natural.topAmbient_full N]
-  exact omegaHeadDemand_le_four R N
+  exact ((SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaHeadDemand_eq_head_add_head_add_fixed
+      SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1NaturalModule.topAmbient_full N).symm.trans_le
+    (omegaHeadDemand_le_four R N)
 
 /-- The natural representation carried by the canonical socle of the
 central omega of one actual direct quotient kernel. -/
 abbrev OmegaSocleRepresentation
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :=
   (finiteRepresentationSocle
     (binaryKernelOmegaConjugationRepresentation
@@ -146,7 +164,7 @@ abbrev OmegaSocleRepresentation
 row is exactly the fixed row of the full raw omega representation. -/
 theorem omegaSocle_invariants_finrank_eq_rawOmega
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
     Module.finrank (ZMod 2)
         (OmegaSocleRepresentation R N).invariants =
@@ -158,23 +176,23 @@ theorem omegaSocle_invariants_finrank_eq_rawOmega
 
 theorem omegaSocle_invariants_le_of_rawOmega
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
     (hraw : Module.finrank (ZMod 2)
       (binaryKernelOmegaConjugationRepresentation
         (R.rawQuotientMap N)).invariants ≤
-          (Coupled.towerCoupledHeadData R).omegaHeadDemand N) :
+          (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaHeadDemand N) :
     Module.finrank (ZMod 2)
       (OmegaSocleRepresentation R N).invariants ≤
-        (Coupled.towerCoupledHeadData R).omegaHeadDemand N := by
-  rw [R.omegaSocle_invariants_finrank_eq_rawOmega N]
+        (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaHeadDemand N := by
+  rw [omegaSocle_invariants_finrank_eq_rawOmega R N]
   exact hraw
 
 /-- Nonfixed simple rows may likewise be computed in the full raw omega
 module: every simple-source map already lands in the canonical socle. -/
 theorem omegaSocle_schurSocleMultiplicity_eq_rawOmega
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
     (X : Submodule (ZMod 2)[preE7PairAction 16 p ⧸ N.1]
       (OmegaSocleRepresentation R N).asModule)
@@ -195,7 +213,7 @@ theorem omegaSocle_schurSocleMultiplicity_eq_rawOmega
 by the literal kernel and inner image of the omega projection. -/
 theorem omegaSocle_schurSocleMultiplicity_le_projectionKernel_add_inner
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
     (X : Submodule (ZMod 2)[preE7PairAction 16 p ⧸ N.1]
       (OmegaSocleRepresentation R N).asModule)
@@ -212,15 +230,9 @@ theorem omegaSocle_schurSocleMultiplicity_le_projectionKernel_add_inner
         schurSocleMultiplicity
           (k := ZMod 2)
           (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1])
-          (A := ((R.innerOmegaSubrepresentation N).toRepresentation.comp
-            (R.rawQuotientMap N)).asModule) (X := X) := by
-  rw [R.omegaSocle_schurSocleMultiplicity_eq_rawOmega N X]
-  exact representationSchurMultiplicity_le_kernel_add_target
-    (binaryKernelOmegaConjugationRepresentation (R.rawQuotientMap N))
-    ((R.innerOmegaSubrepresentation N).toRepresentation.comp
-      (R.rawQuotientMap N))
-    (R.rawKernelOmegaInnerImageIntertwiner N)
-    (R.rawKernelOmegaInnerImageIntertwiner_surjective N)
+          (A := (inflatedRepresentation (R.rawQuotientMap N)
+            (R.innerOmegaSubrepresentation N).toRepresentation).asModule) (X := X) := by
+  exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators.finiteGeneratorData.omegaSocle_schurSocleMultiplicity_le_projectionKernel_add_inner R N X
 
 /-- Over the actual first pair top, every nonfixed simple row in the retained
 outer quotient costs at most two Schur dimensions.  The exact pair-sum map
@@ -228,7 +240,7 @@ splits it into two nested quotients of paired-eight states, each covered by
 the uniform finite quotient theorem. -/
 theorem outerNestedQuotient_nonfixed_schurSocleMultiplicity_le_two_mul
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
     {A : Type} [AddCommGroup A] [Module (ZMod 2) A] [Finite A]
     (sigma : Representation (ZMod 2) R.frame.top.range A)
@@ -243,96 +255,15 @@ theorem outerNestedQuotient_nonfixed_schurSocleMultiplicity_le_two_mul
           (R.outerNormalAxis_le_outerOmegaAxis N)).asModule) (X := X) ≤
       2 * Module.finrank
         (Module.End (ZMod 2)[R.frame.top.range] X) X := by
-  let tau := nestedQuotientRepresentation
-    (R.frame.normalTopPermutationSubrepresentation N.1)
-    (R.outerOmegaAxis N)
-    (R.outerNormalAxis_le_outerOmegaAxis N)
-  let q := R.outerNestedQuotientPairSumMap N
-  let K := nestedQuotientRepresentation
-    (R.outerNormalConstantPullbackAxis N)
-    (R.outerOmegaConstantPullbackAxis N)
-    (R.outerNormalConstant_le_outerOmegaConstant N)
-  let T := nestedQuotientRepresentation
-    (R.outerNormalPairSumPullbackAxis N)
-    (R.outerOmegaPairSumPullbackAxis N)
-    (R.outerNormalPairSum_le_outerOmegaPairSum N)
-  letI : FiniteDimensional (ZMod 2) X :=
-    Module.Finite.of_finite (ZMod 2) X
-  have hKliteral :=
-    QuotientGenerators.subrepresentationQuotient_comp_nonfixed_le_end_finrank
-      R.outerTopToLiteral R.outerTopToLiteral_surjective
-      (R.outerNormalConstantAxis N) (R.outerOmegaConstantAxis N)
-      (R.outerNormalConstantAxis_le_outerOmegaConstantAxis N)
-      sigma X hnonfixed
-  have hTliteral :=
-    QuotientGenerators.subrepresentationQuotient_comp_nonfixed_le_end_finrank
-      R.outerTopToLiteral R.outerTopToLiteral_surjective
-      (R.outerNormalPairSumAxis N) (R.outerOmegaPairSumAxis N)
-      (R.outerNormalPairSumAxis_le_outerOmegaPairSumAxis N)
-      sigma X hnonfixed
-  have hKequiv : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
-        (A := K.asModule) (X := X) =
-      schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
-        (A := (q.ker.toRepresentation).asModule) (X := X) :=
-    schurSocleMultiplicity_eq_of_representationEquiv
-      K q.ker.toRepresentation
-      (R.outerNestedQuotientPairSumKernelEquiv N)
-  have hKsub : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
-        (A := q.ker.toRepresentation.asModule) (X := X) =
-      schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
-        (A := q.ker.asSubmodule) (X := X) :=
-    schurSocleMultiplicity_eq_of_target_linearEquiv
-      (submoduleRepresentationModuleEquiv tau q.ker.asSubmodule)
-  have hKtransport : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
-        (A := K.asModule) (X := X) =
-      schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
-        (A := ((nestedQuotientRepresentation
-          (R.outerNormalConstantAxis N)
-          (R.outerOmegaConstantAxis N)
-          (R.outerNormalConstantAxis_le_outerOmegaConstantAxis N)).comp
-            R.outerTopToLiteral).asModule) (X := X) :=
-    schurSocleMultiplicity_eq_of_representationEquiv
-      K _ (R.outerConstantQuotientEquiv N)
-  have hTtransport : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
-        (A := T.asModule) (X := X) =
-      schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
-        (A := ((nestedQuotientRepresentation
-          (R.outerNormalPairSumAxis N)
-          (R.outerOmegaPairSumAxis N)
-          (R.outerNormalPairSumAxis_le_outerOmegaPairSumAxis N)).comp
-            R.outerTopToLiteral).asModule) (X := X) :=
-    schurSocleMultiplicity_eq_of_representationEquiv
-      T _ (R.outerPairSumQuotientEquiv N)
-  have hK : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
-        (A := q.ker.asSubmodule) (X := X) ≤
-      Module.finrank (Module.End (ZMod 2)[R.frame.top.range] X) X := by
-    rw [← hKsub, ← hKequiv, hKtransport]
-    exact hKliteral
-  have hT : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[R.frame.top.range])
-        (A := T.asModule) (X := X) ≤
-      Module.finrank (Module.End (ZMod 2)[R.frame.top.range] X) X := by
-    rw [hTtransport]
-    exact hTliteral
-  have hsplit := representationSchurMultiplicity_le_kernel_add_target
-    tau T q (R.outerNestedQuotientPairSumMap_surjective N) (X := X)
-  exact hsplit.trans (by omega)
+  exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators.finiteGeneratorData.outerNestedQuotient_comp_nonfixed_le_two_mul
+    R N (MonoidHom.id R.frame.top.range) Function.surjective_id sigma X hnonfixed
 
 /-- The same two-layer estimate after pullback along any surjective action
 map onto the first pair top.  This is the form used after inflating the
 physical outer kernel back to the original action. -/
 theorem outerNestedQuotient_comp_nonfixed_le_two_mul
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
     {H A : Type} [Group H]
     (gamma : H →* R.frame.top.range)
@@ -344,106 +275,21 @@ theorem outerNestedQuotient_comp_nonfixed_le_two_mul
     (hnonfixed : ¬ representationSubmoduleFixed sigma X) :
     schurSocleMultiplicity
         (k := ZMod 2) (R := (ZMod 2)[H])
-        (A := ((nestedQuotientRepresentation
+        (A := (inflatedRepresentation gamma (nestedQuotientRepresentation
           (R.frame.normalTopPermutationSubrepresentation N.1)
           (R.outerOmegaAxis N)
-          (R.outerNormalAxis_le_outerOmegaAxis N)).comp gamma).asModule)
+          (R.outerNormalAxis_le_outerOmegaAxis N))).asModule)
         (X := X) ≤
       2 * Module.finrank (Module.End (ZMod 2)[H] X) X := by
-  let tau := nestedQuotientRepresentation
-    (R.frame.normalTopPermutationSubrepresentation N.1)
-    (R.outerOmegaAxis N)
-    (R.outerNormalAxis_le_outerOmegaAxis N)
-  let q0 := R.outerNestedQuotientPairSumMap N
-  let K := nestedQuotientRepresentation
-    (R.outerNormalConstantPullbackAxis N)
-    (R.outerOmegaConstantPullbackAxis N)
-    (R.outerNormalConstant_le_outerOmegaConstant N)
-  let T := nestedQuotientRepresentation
-    (R.outerNormalPairSumPullbackAxis N)
-    (R.outerOmegaPairSumPullbackAxis N)
-    (R.outerNormalPairSum_le_outerOmegaPairSum N)
-  let q : (tau.comp gamma).IntertwiningMap (T.comp gamma) :=
-    { toLinearMap := q0.toLinearMap
-      isIntertwining' h := q0.isIntertwining' (gamma h) }
-  let eK0 := R.outerNestedQuotientPairSumKernelEquiv N
-  let eK : (K.comp gamma).Equiv q.ker.toRepresentation :=
-    Representation.Equiv.mk eK0.toLinearEquiv (by
-      intro h
-      exact eK0.isIntertwining' (gamma h))
-  let eT0 := R.outerPairSumQuotientEquiv N
-  let eT : (T.comp gamma).Equiv
-      ((nestedQuotientRepresentation
-        (R.outerNormalPairSumAxis N)
-        (R.outerOmegaPairSumAxis N)
-        (R.outerNormalPairSumAxis_le_outerOmegaPairSumAxis N)).comp
-          (R.outerTopToLiteral.comp gamma)) :=
-    Representation.Equiv.mk eT0.toLinearEquiv (by
-      intro h
-      exact eT0.isIntertwining' (gamma h))
-  let eKlit0 := R.outerConstantQuotientEquiv N
-  let eKlit : (K.comp gamma).Equiv
-      ((nestedQuotientRepresentation
-        (R.outerNormalConstantAxis N)
-        (R.outerOmegaConstantAxis N)
-        (R.outerNormalConstantAxis_le_outerOmegaConstantAxis N)).comp
-          (R.outerTopToLiteral.comp gamma)) :=
-    Representation.Equiv.mk eKlit0.toLinearEquiv (by
-      intro h
-      exact eKlit0.isIntertwining' (gamma h))
-  letI : FiniteDimensional (ZMod 2) X :=
-    Module.Finite.of_finite (ZMod 2) X
-  have hfinal : Function.Surjective (R.outerTopToLiteral.comp gamma) :=
-    R.outerTopToLiteral_surjective.comp hgamma
-  have hKliteral :=
-    QuotientGenerators.subrepresentationQuotient_comp_nonfixed_le_end_finrank
-      (R.outerTopToLiteral.comp gamma) hfinal
-      (R.outerNormalConstantAxis N) (R.outerOmegaConstantAxis N)
-      (R.outerNormalConstantAxis_le_outerOmegaConstantAxis N)
-      sigma X hnonfixed
-  have hTliteral :=
-    QuotientGenerators.subrepresentationQuotient_comp_nonfixed_le_end_finrank
-      (R.outerTopToLiteral.comp gamma) hfinal
-      (R.outerNormalPairSumAxis N) (R.outerOmegaPairSumAxis N)
-      (R.outerNormalPairSumAxis_le_outerOmegaPairSumAxis N)
-      sigma X hnonfixed
-  have hKsub : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[H])
-        (A := q.ker.toRepresentation.asModule) (X := X) =
-      schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[H])
-        (A := q.ker.asSubmodule) (X := X) :=
-    schurSocleMultiplicity_eq_of_target_linearEquiv
-      (submoduleRepresentationModuleEquiv (tau.comp gamma) q.ker.asSubmodule)
-  have hK : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[H])
-        (A := q.ker.asSubmodule) (X := X) ≤
-      Module.finrank (Module.End (ZMod 2)[H] X) X := by
-    rw [← hKsub,
-      ← schurSocleMultiplicity_eq_of_representationEquiv
-        (K.comp gamma) q.ker.toRepresentation eK,
-      schurSocleMultiplicity_eq_of_representationEquiv
-        (K.comp gamma) _ eKlit]
-    exact hKliteral
-  have hT : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[H])
-        (A := (T.comp gamma).asModule) (X := X) ≤
-      Module.finrank (Module.End (ZMod 2)[H] X) X := by
-    rw [schurSocleMultiplicity_eq_of_representationEquiv
-      (T.comp gamma) _ eT]
-    exact hTliteral
-  have hq : Function.Surjective q :=
-    R.outerNestedQuotientPairSumMap_surjective N
-  have hsplit := representationSchurMultiplicity_le_kernel_add_target
-    (tau.comp gamma) (T.comp gamma) q hq (X := X)
-  exact hsplit.trans (by omega)
+  exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators.finiteGeneratorData.outerNestedQuotient_comp_nonfixed_le_two_mul
+    R N gamma hgamma sigma X hnonfixed
 
 /-- Every nonfixed simple row in the actual inner omega image costs one
-Schur dimension.  The ordinary state quotients use the cyclic-dual table;
-the unique exceptional quotient is a binary plane. -/
+Schur dimension. Ordinary state quotients use the cyclic-dual table;
+the three exceptions use a binary plane or certified fixed upper layers. -/
 theorem innerOmega_nonfixed_schurSocleMultiplicity_le_end_finrank
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
     (X : Submodule (ZMod 2)[preE7PairAction 16 p ⧸ N.1]
       (OmegaSocleRepresentation R N).asModule)
@@ -453,53 +299,11 @@ theorem innerOmega_nonfixed_schurSocleMultiplicity_le_end_finrank
     schurSocleMultiplicity
         (k := ZMod 2)
         (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1])
-        (A := ((R.innerOmegaSubrepresentation N).toRepresentation.comp
-          (R.rawQuotientMap N)).asModule) (X := X) ≤
+        (A := (inflatedRepresentation (R.rawQuotientMap N)
+          (R.innerOmegaSubrepresentation N).toRepresentation).asModule) (X := X) ≤
       Module.finrank
         (Module.End (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X) X := by
-  let A := R.moduleAxis N
-  let B := R.innerOmegaNaturalAxis N
-  let hAB := R.moduleAxis_le_innerOmegaNaturalAxis N
-  obtain ⟨i, hi⟩ := Natural.registry.complete A
-  obtain ⟨j, hj⟩ := Natural.registry.complete B
-  subst A
-  subst B
-  let tau := nestedQuotientRepresentation
-    (Natural.states i) (Natural.states j) hAB
-  let sigma := (R.innerOmegaSubrepresentation N).toRepresentation
-  let q := QuotientGroup.mk' (R.topNormal N.1)
-  let E : tau.Equiv (sigma.comp q) :=
-    R.innerNestedQuotientEquivInnerOmegaInflation N
-  letI : FiniteDimensional (ZMod 2) X :=
-    Module.Finite.of_finite (ZMod 2) X
-  by_cases hexception : i = 4 ∧ j = 8
-  · obtain ⟨rfl, rfl⟩ := hexception
-    have htau : Module.finrank (ZMod 2) tau.asModule ≤ 2 := by
-      simpa only [tau] using QuotientGenerators.exceptional_finrank_le_two hAB
-    have htarget : Module.finrank (ZMod 2)
-        ((sigma.comp (R.rawQuotientMap N)).asModule) ≤ 2 := by
-      have hE := E.toLinearEquiv.finrank_eq
-      have hsigma : Module.finrank (ZMod 2) sigma.asModule ≤ 2 := by
-        rw [← hE]
-        exact htau
-      simpa only [sigma] using hsigma
-    exact schurSocleMultiplicity_le_one_of_finrank_le_two_of_nonfixed
-      (OmegaSocleRepresentation R N) X hnonfixed htarget
-  · have hgen : RepresentationGeneratedBy tau.dual 1 := by
-      simpa only [tau] using
-        QuotientGenerators.nestedQuotient_dual_generated i j hAB hexception
-    have hq : Function.Surjective q := QuotientGroup.mk'_surjective _
-    have hcapSigma : representationSchurCapacity sigma ≤ 1 :=
-      representationSchurCapacity_le_of_comp_equiv_dual_generated
-        tau sigma q hq E 1 hgen
-    have hcap : representationSchurCapacity
-        (sigma.comp (R.rawQuotientMap N)) ≤ 1 := by
-      rw [representationSchurCapacity_comp (R.rawQuotientMap N)
-        (R.rawQuotientMap_surjective N)]
-      exact hcapSigma
-    simpa only [sigma, one_mul] using
-      (schurSocleMultiplicity_le_nat_mul_end_finrank_of_capacity_le
-        (sigma.comp (R.rawQuotientMap N)) 1 hcap (X := X))
+  exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators.finiteGeneratorData.innerOmega_nonfixed_schurSocleMultiplicity_le_end_finrank R N X hnonfixed
 
 /-- Every nonfixed simple row in the physical outer projection kernel costs
 two Schur dimensions.  The proof inflates the actual kernel and simple row
@@ -508,7 +312,7 @@ back to the original action, uses the action-level identification with
 multiplicity unchanged. -/
 theorem outerOmega_nonfixed_schurSocleMultiplicity_le_two_mul_end_finrank
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
     (X : Submodule (ZMod 2)[preE7PairAction 16 p ⧸ N.1]
       (OmegaSocleRepresentation R N).asModule)
@@ -522,108 +326,13 @@ theorem outerOmega_nonfixed_schurSocleMultiplicity_le_two_mul_end_finrank
         (X := X) ≤
       2 * Module.finrank
         (Module.End (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X) X := by
-  let Q := preE7PairAction 16 p ⧸ N.1
-  let G := preE7PairAction 16 p
-  let gamma : G →* Q := QuotientGroup.mk' N.1
-  have hgamma : Function.Surjective gamma := QuotientGroup.mk'_surjective _
-  let omega := OmegaSocleRepresentation R N
-  let outer := (R.rawKernelOmegaInnerImageIntertwiner N).ker.toRepresentation
-  let rhoX := (Subrepresentation.ofSubmodule' X).toRepresentation
-  let sigmaG := omega.comp gamma
-  let XG := representationInflatedSubmodule gamma hgamma omega X
-  letI : FiniteDimensional (ZMod 2) X :=
-    Module.Finite.of_finite (ZMod 2) X
-  letI : IsSimpleModule (ZMod 2)[Q] rhoX.asModule := by
-    exact IsSimpleModule.congr
-      (submoduleRepresentationModuleEquiv omega X)
-  letI : IsSimpleModule (ZMod 2)[G] (rhoX.comp gamma).asModule :=
-    representation_comp_isSimpleModule gamma hgamma rhoX
-  letI : IsSimpleModule (ZMod 2)[G] XG :=
-    representationInflatedSubmodule_isSimple gamma hgamma omega X
-  letI : FiniteDimensional (ZMod 2) XG :=
-    FiniteDimensional.of_injective
-      (XG.subtype.restrictScalars (ZMod 2)) XG.subtype_injective
-  have hnonfixedG : ¬ representationSubmoduleFixed sigmaG XG := by
-    intro hfixed
-    exact hnonfixed
-      ((representationInflatedSubmodule_fixed_iff
-        gamma hgamma omega X).1 hfixed)
-  have hcoord := outerNestedQuotient_comp_nonfixed_le_two_mul
-    R N R.frame.top.rangeRestrict R.frame.top.rangeRestrict_surjective
-    sigmaG XG hnonfixedG
-  let tau := nestedQuotientRepresentation
-    (R.frame.normalTopPermutationSubrepresentation N.1)
-    (R.outerOmegaAxis N)
-    (R.outerNormalAxis_le_outerOmegaAxis N)
-  let eOuter := R.rawKernelOmegaOuterInflationEquivNestedQuotient N
-  have htarget : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[G])
-        (A := (outer.comp gamma).asModule) (X := XG) =
-      schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[G])
-        (A := (tau.comp R.frame.top.rangeRestrict).asModule) (X := XG) :=
-    schurSocleMultiplicity_eq_of_representationEquiv
-      (outer.comp gamma) (tau.comp R.frame.top.rangeRestrict) eOuter
-  have hphysicalG : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[G])
-        (A := (outer.comp gamma).asModule) (X := XG) ≤
-      2 * Module.finrank (Module.End (ZMod 2)[G] XG) XG := by
-    rw [htarget]
-    exact hcoord
-  let eXrep := representationInflatedSubmoduleEquiv
-    gamma hgamma omega X
-  let eXmodule : (rhoX.comp gamma).asModule ≃ₗ[(ZMod 2)[G]] XG :=
-    (representationEquivLinearEquivAsModule
-      (rhoX.comp gamma)
-      (Subrepresentation.ofSubmodule' XG).toRepresentation
-      eXrep).trans
-        (submoduleRepresentationModuleEquiv sigmaG XG)
-  have hsourceG : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[G])
-        (A := (outer.comp gamma).asModule)
-        (X := (rhoX.comp gamma).asModule) =
-      schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[G])
-        (A := (outer.comp gamma).asModule) (X := XG) :=
-    schurSocleMultiplicity_eq_of_source_linearEquiv eXmodule
-  have hinflate := schurSocleMultiplicity_comp_eq_representation
-    gamma hgamma rhoX outer
-  have hsourceQ : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[Q])
-        (A := outer.asModule) (X := rhoX.asModule) =
-      schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[Q])
-        (A := outer.asModule) (X := X) :=
-    schurSocleMultiplicity_eq_of_source_linearEquiv
-      (submoduleRepresentationModuleEquiv omega X)
-  have htargetQ : schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[Q])
-        (A := outer.asModule) (X := X) =
-      schurSocleMultiplicity
-        (k := ZMod 2) (R := (ZMod 2)[Q])
-        (A := (R.rawKernelOmegaInnerImageIntertwiner N).ker.asSubmodule)
-        (X := X) :=
-    schurSocleMultiplicity_eq_of_target_linearEquiv
-      (submoduleRepresentationModuleEquiv
-        (binaryKernelOmegaConjugationRepresentation
-          (R.rawQuotientMap N))
-        (R.rawKernelOmegaInnerImageIntertwiner N).ker.asSubmodule)
-  have hendG := moduleFinrankOverEnd_eq_of_linearEquiv eXmodule
-  have hendInflate := representationFinrankOverEnd_comp_eq
-    gamma hgamma rhoX
-  have hendQ := moduleFinrankOverEnd_eq_of_linearEquiv
-    (submoduleRepresentationModuleEquiv omega X)
-  have hend : Module.finrank (Module.End (ZMod 2)[G] XG) XG =
-      Module.finrank (Module.End (ZMod 2)[Q] X) X :=
-    hendG.symm.trans (hendInflate.trans hendQ)
-  rw [← hsourceG, hinflate, hsourceQ, htargetQ, hend] at hphysicalG
-  simpa only [outer, Q] using hphysicalG
+  exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators.finiteGeneratorData.outerOmega_nonfixed_schurSocleMultiplicity_le_two_mul_end_finrank R N X hnonfixed
 
 /-- The physical outer and inner estimates close the complete nonfixed row
 of the omega socle with the required coefficient three. -/
 theorem omegaSocle_nonfixed_schurSocleMultiplicity_le_three_mul_end_finrank
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
     (X : Submodule (ZMod 2)[preE7PairAction 16 p ⧸ N.1]
       (OmegaSocleRepresentation R N).asModule)
@@ -636,15 +345,7 @@ theorem omegaSocle_nonfixed_schurSocleMultiplicity_le_three_mul_end_finrank
         (A := (OmegaSocleRepresentation R N).asModule) (X := X) ≤
       3 * Module.finrank
         (Module.End (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X) X := by
-  have hsplit :=
-    omegaSocle_schurSocleMultiplicity_le_projectionKernel_add_inner
-      R N X
-  have houter :=
-    outerOmega_nonfixed_schurSocleMultiplicity_le_two_mul_end_finrank
-      R N X hnonfixed
-  have hinner := innerOmega_nonfixed_schurSocleMultiplicity_le_end_finrank
-    R N X hnonfixed
-  exact hsplit.trans (by omega)
+  exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators.finiteGeneratorData.omegaSocle_nonfixed_schurSocleMultiplicity_le_three_mul_end_finrank R N X hnonfixed
 
 /-- The checked coupled head closes the fixed simple row; a three-layer
 same-simple-type multiplicity estimate closes every nonfixed row.  This
@@ -652,22 +353,22 @@ is the exact algebraic composition of those two inputs for one actual
 original normal subgroup. -/
 theorem omegaSocle_schurCapacity_le_four_of_coupled_nonfixed
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal})
     (hfixed : Module.finrank (ZMod 2)
       (OmegaSocleRepresentation R N).invariants ≤
-        (Coupled.towerCoupledHeadData R).omegaHeadDemand N)
+        (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaHeadDemand N)
     (hnonfixed : ∀ X : Submodule
-      (ZMod 2)[preE7PairAction 16 p ⨸ N.1]
+      (ZMod 2)[preE7PairAction 16 p ⧸ N.1]
         (OmegaSocleRepresentation R N).asModule,
-      [IsSimpleModule (ZMod 2)[preE7PairAction 16 p ⨸ N.1] X] →
+      [IsSimpleModule (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X] →
       ¬ representationSubmoduleFixed (OmegaSocleRepresentation R N) X →
       schurSocleMultiplicity
           (k := ZMod 2)
-          (R := (ZMod 2)[preE7PairAction 16 p ⨸ N.1])
+          (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1])
           (A := (OmegaSocleRepresentation R N).asModule) (X := X) ≤
         3 * Module.finrank
-          (Module.End (ZMod 2)[preE7PairAction 16 p ⨸ N.1] X) X) :
+          (Module.End (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X) X) :
     representationSchurCapacity (OmegaSocleRepresentation R N) ≤ 4 := by
   apply representationSchurCapacity_le_of_fixed_nonfixed_multiplicity
     (OmegaSocleRepresentation R N) 4
@@ -676,55 +377,53 @@ theorem omegaSocle_schurCapacity_le_four_of_coupled_nonfixed
     have hthree := hnonfixed X hXfixed
     exact hthree.trans (by omega)
 
-/-- Actual natural omega-socle capacity conclusion to be derived from the
-checked coupled head inequality and the three same-top permutation-module
-sections.  The type is tied to the direct quotient kernel for each original
-normal subgroup; biduality and orbit characters are now automatic. -/
+/-- The natural omega-socle capacity conclusion for every original normal
+subgroup. The theorem below supplies it from the coupled registry and the
+three same-top permutation-module sections. -/
 abbrev OmegaSocleSchurCapacityLeFour
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p) : Prop :=
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p) : Prop :=
   ∀ N, representationSchurCapacity
     (OmegaSocleRepresentation R N) ≤ 4
 
-/-- Assemble the all-normal capacity theorem directly from the two
-remaining representation inequalities.  This keeps the unresolved
-boundary on the raw omega filtration and on literal nonfixed simple rows,
-rather than on a project-defined capacity predicate. -/
+/-- Compatibility constructor from a raw fixed-row bound and nonfixed
+representation inequalities. Both inputs are supplied by the unconditional
+capacity theorem below. -/
 theorem omegaSocleSchurCapacityLeFour_of_rawCoupled_nonfixed
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (hraw : ∀ N,
       Module.finrank (ZMod 2)
           (binaryKernelOmegaConjugationRepresentation
             (R.rawQuotientMap N)).invariants ≤
-        (Coupled.towerCoupledHeadData R).omegaHeadDemand N)
+        (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaHeadDemand N)
     (hnonfixed : ∀ N
-      (X : Submodule (ZMod 2)[preE7PairAction 16 p ⫽ N.1]
+      (X : Submodule (ZMod 2)[preE7PairAction 16 p ⧸ N.1]
         (OmegaSocleRepresentation R N).asModule),
-      [IsSimpleModule (ZMod 2)[preE7PairAction 16 p ⫽ N.1] X] →
+      [IsSimpleModule (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X] →
       ¬ representationSubmoduleFixed (OmegaSocleRepresentation R N) X →
       schurSocleMultiplicity
           (k := ZMod 2)
-          (R := (ZMod 2)[preE7PairAction 16 p ⫽ N.1])
+          (R := (ZMod 2)[preE7PairAction 16 p ⧸ N.1])
           (A := (OmegaSocleRepresentation R N).asModule) (X := X) ≤
         3 * Module.finrank
-          (Module.End (ZMod 2)[preE7PairAction 16 p ⫽ N.1] X) X) :
+          (Module.End (ZMod 2)[preE7PairAction 16 p ⧸ N.1] X) X) :
     OmegaSocleSchurCapacityLeFour R := by
   intro N
   apply omegaSocle_schurCapacity_le_four_of_coupled_nonfixed R N
-  · exact R.omegaSocle_invariants_le_of_rawOmega N (hraw N)
+  · exact omegaSocle_invariants_le_of_rawOmega R N (hraw N)
   · exact hnonfixed N
 
-/-- After the physical outer and inner layer theorems, the coupled raw fixed
-inequality is the sole remaining input for the all-normal cap-four result. -/
+/-- Compatibility constructor from a raw fixed-row bound, using the proved
+physical outer and inner layer estimates for the nonfixed rows. -/
 theorem omegaSocleSchurCapacityLeFour_of_rawCoupled
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (hraw : ∀ N,
       Module.finrank (ZMod 2)
           (binaryKernelOmegaConjugationRepresentation
             (R.rawQuotientMap N)).invariants ≤
-        (Coupled.towerCoupledHeadData R).omegaHeadDemand N) :
+        (SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.towerCoupledHeadData R).omegaHeadDemand N) :
     OmegaSocleSchurCapacityLeFour R := by
   apply omegaSocleSchurCapacityLeFour_of_rawCoupled_nonfixed R hraw
   intro N X _hX hnonfixed
@@ -736,19 +435,11 @@ the fixed row, while the physical three-layer theorem closes every nonfixed
 row.  Thus paired8-1 needs no residual representation premise. -/
 theorem omegaSocleSchurCapacityLeFour
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p) :
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p) :
     OmegaSocleSchurCapacityLeFour R := by
   intro N
-  apply representationSchurCapacity_le_of_fixed_nonfixed_multiplicity
-    (OmegaSocleRepresentation R N) 4
-  · rw [R.omegaSocle_invariants_finrank_eq_rawOmega N]
-    exact (Coupled.towerCoupledHeadData R).
-      rawKernelOmega_invariants_finrank_le N
-  · intro X _hX hnonfixed
-    have hthree :=
-      omegaSocle_nonfixed_schurSocleMultiplicity_le_three_mul_end_finrank
-        R N X hnonfixed
-    exact hthree.trans (by omega)
+  exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators.finiteGeneratorData.omegaSocle_schurCapacity_le_four
+    SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.finiteCoupledHeadData R N
 
 /-- Concrete orbit-character row for paired8-1.  The two ordinary prefix
 positions come from the checked quotient-socle family; the four relative
@@ -757,16 +448,15 @@ whole-quotient representations by the universal orbit theorem. -/
 noncomputable def rowData
     (hZmud : ZmudFaithfulCharacterTupleInput)
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization Shared.top1 p)
+    (R : DegreeTwoPairTopTowerRealization SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 p)
     (socleCapacity : OmegaSocleSchurCapacityLeFour R) :
     DegreeTwoPairTopTowerRelativeKernelOrbitRowData
-      Shared.top1 degreeTwoSixteenPairProfiles p R :=
-  DegreeTwoPairTopTowerRelativeKernelOrbitRowData.
-    ofOrdinaryRelativeRawSocleSchurCapacity hZmud 2 4
-      (by native_decide)
+      SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top1 degreeTwoSixteenPairProfiles p R :=
+  DegreeTwoPairTopTowerRelativeKernelOrbitRowData.ofOrdinaryRelativeRawSocleSchurCapacity hZmud 2 4
+      (by decide +kernel)
       degreeTwoSixteenPairProfiles_capacity
       (fun N ↦
-        (Socles.family.data (R.topNormalState N)).quotientSocleGenerator)
+        (SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightRow1QuotientSocles.family.data (R.topNormalState N)).quotientSocleGenerator)
       socleCapacity
 
 /-- Catalogue-facing resolution of literal paired-eight index zero. -/
@@ -775,12 +465,25 @@ noncomputable def resolvedRow
     (lit : PreE7CharacterLiterature)
     {p : PreE7PairActionClass 16}
     (R : DegreeTwoPairTopTowerRealization
-      (Catalogue.catalogue.paired8 (0 : Fin 24)) p)
+      (SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoSixteenPairFiniteCatalogue.catalogue.paired8 (0 : Fin 24)) p)
     (socleCapacity : OmegaSocleSchurCapacityLeFour R) :
     DegreeTwoPairTopResolvedRow
-      (Catalogue.catalogue.paired8 (0 : Fin 24))
+      (SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoSixteenPairFiniteCatalogue.catalogue.paired8 (0 : Fin 24))
       degreeTwoSixteenPairProfiles p :=
   ((rowData hZmud R socleCapacity).sixteenResolvedData lit).toResolvedRow
+
+/-- The actual catalogue row, with its capacity supplied by the checked
+finite coupled and quotient-generator certificates. -/
+noncomputable def resolvedRowClosed
+    (hZmud : ZmudFaithfulCharacterTupleInput)
+    (lit : PreE7CharacterLiterature)
+    {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization
+      (SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoSixteenPairFiniteCatalogue.catalogue.paired8 (0 : Fin 24)) p) :
+    DegreeTwoPairTopResolvedRow
+      (SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoSixteenPairFiniteCatalogue.catalogue.paired8 (0 : Fin 24))
+      degreeTwoSixteenPairProfiles p :=
+  resolvedRow hZmud lit R (omegaSocleSchurCapacityLeFour R)
 
 end PrimitiveAffineDegreeTwoPairedEightRow1Resolution
 end PrimitiveAffineImprimitiveBlockTransfer
