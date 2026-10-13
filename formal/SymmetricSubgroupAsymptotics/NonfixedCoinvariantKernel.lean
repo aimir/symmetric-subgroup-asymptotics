@@ -24,11 +24,16 @@ open scoped MonoidAlgebra
 
 namespace SymmetricSubgroupAsymptotics
 
-universe u
-
-variable {k G V A : Type u} [Field k] [Group G]
+variable {k G V A : Type} [Field k] [Group G]
   [AddCommGroup V] [Module k V]
   [AddCommGroup A] [Module k A]
+
+local instance finiteDimensionalSubmodule {M : Type}
+    [AddCommGroup M] [Module k M] [Module k[G] M]
+    [IsScalarTower k k[G] M] [FiniteDimensional k M]
+    (S : Submodule k[G] M) : FiniteDimensional k S :=
+  FiniteDimensional.of_injective
+    (S.subtype.restrictScalars k) S.subtype_injective
 
 /-- The intrinsic displacement space, with the action inherited from the
 original representation. -/
@@ -142,8 +147,7 @@ theorem schurSocleMultiplicity_le_coinvariantsKernel_of_nonfixed
     FiniteDimensional.of_injective
       (K.asSubmodule.subtype.restrictScalars k) K.asSubmodule.subtype_injective
   have hhom :=
-    (schurHomCoinvariantsKernelCorestrict sigma S hnonfixed rho).
-      finrank_le_finrank_of_injective
+    (schurHomCoinvariantsKernelCorestrict sigma S hnonfixed rho).finrank_le_finrank_of_injective
         (schurHomCoinvariantsKernelCorestrict_injective
           sigma S hnonfixed rho)
   rw [schurHom_finrank_eq_multiplicity
@@ -157,11 +161,11 @@ theorem schurSocleMultiplicity_le_coinvariantsKernel_of_nonfixed
 /-- An injective target intertwiner can only increase every simple-source
 Schur multiplicity. -/
 theorem schurSocleMultiplicity_le_of_injective_intertwiner
-    {W : Type u} [AddCommGroup W] [Module k W]
+    {W : Type} [AddCommGroup W] [Module k W]
     [FiniteDimensional k V] [FiniteDimensional k W]
     (rho : Representation k G V) (tau : Representation k G W)
     (i : rho.IntertwiningMap tau) (hi : Function.Injective i)
-    {X : Type u} [AddCommGroup X] [Module k X]
+    {X : Type} [AddCommGroup X] [Module k X]
     [Module k[G] X] [IsScalarTower k k[G] X]
     [FiniteDimensional k X] [IsSimpleModule k[G] X] :
     schurSocleMultiplicity
@@ -171,10 +175,10 @@ theorem schurSocleMultiplicity_le_of_injective_intertwiner
   let iR : rho.asModule →ₗ[k[G]] tau.asModule :=
     Representation.IntertwiningMap.equivLinearMapAsModule rho tau i
   let post : (X →ₗ[k[G]] rho.asModule) →ₗ[k]
-      (X →ₗ[k[G]] tau.asModule) where
-    toFun f := iR.comp f
-    map_add' f g := by ext x; rfl
-    map_smul' c f := by ext x; rfl
+      (X →ₗ[k[G]] tau.asModule) :=
+    { toFun := fun f ↦ iR.comp f
+      map_add' := by intro f g; ext x; exact iR.map_add (f x) (g x)
+      map_smul' := by intro c f; ext x; exact (iR.restrictScalars k).map_smul c (f x) }
   have hpost : Function.Injective post := by
     intro f g hfg
     apply LinearMap.ext
@@ -200,11 +204,10 @@ theorem schurSocleMultiplicity_le_of_nonfixed_coinvariantsKernel_injection
     [IsSimpleModule k[G] S]
     (hnonfixed : ¬ representationSubmoduleFixed sigma S)
     (rho : Representation k G V)
-    {W : Type u} [AddCommGroup W] [Module k W]
+    {W : Type} [AddCommGroup W] [Module k W]
     [FiniteDimensional k W]
     (tau : Representation k G W)
-    (i : (representationCoinvariantsKernelSubrepresentation rho).
-      toRepresentation.IntertwiningMap tau)
+    (i : (representationCoinvariantsKernelSubrepresentation rho).toRepresentation.IntertwiningMap tau)
     (hi : Function.Injective i) :
     schurSocleMultiplicity
         (k := k) (R := k[G]) (A := rho.asModule) (X := S) ≤
@@ -226,13 +229,11 @@ displacements.  This is the representation-level map on the nonfixed
 part, before any quotient or finite-state identification is chosen. -/
 noncomputable def coinvariantsKernelIntertwiner
     (rho : Representation k G V)
-    {W : Type u} [AddCommGroup W] [Module k W]
+    {W : Type} [AddCommGroup W] [Module k W]
     (tau : Representation k G W)
     (q : rho.IntertwiningMap tau) :
-    (representationCoinvariantsKernelSubrepresentation rho).
-        toRepresentation.IntertwiningMap
-      (representationCoinvariantsKernelSubrepresentation tau).
-        toRepresentation where
+    (representationCoinvariantsKernelSubrepresentation rho).toRepresentation.IntertwiningMap
+      (representationCoinvariantsKernelSubrepresentation tau).toRepresentation where
   toLinearMap :=
     { toFun := fun x => ⟨q x.1, by
           change q x.1 ∈ Representation.Coinvariants.ker tau
@@ -255,36 +256,23 @@ proof works on the literal spanning displacements, so it does not assume a
 splitting of the quotient. -/
 theorem coinvariantsKernelIntertwiner_surjective
     (rho : Representation k G V)
-    {W : Type u} [AddCommGroup W] [Module k W]
+    {W : Type} [AddCommGroup W] [Module k W]
     (tau : Representation k G W)
     (q : rho.IntertwiningMap tau)
     (hq : Function.Surjective q) :
     Function.Surjective (coinvariantsKernelIntertwiner rho tau q) := by
+  let f : (Representation.Coinvariants.ker rho) →ₗ[k] W :=
+    q.toLinearMap.comp (Representation.Coinvariants.ker rho).subtype
+  have hrange : Representation.Coinvariants.ker tau ≤ LinearMap.range f := by
+    apply Submodule.span_le.mpr
+    rintro _ ⟨⟨g, w⟩, rfl⟩
+    obtain ⟨v, hv⟩ := hq w
+    refine ⟨⟨rho g v - v, Representation.Coinvariants.sub_mem_ker g v⟩, ?_⟩
+    change q (rho g v - v) = tau g w - w
+    rw [map_sub, Representation.IntertwiningMap.isIntertwining, hv]
   intro y
-  rcases y with ⟨y, hy⟩
-  change y ∈ Submodule.span k
-    (Set.range fun gx : G × W => tau gx.1 gx.2 - gx.2) at hy
-  induction hy using Submodule.span_induction with
-  | mem y hy =>
-      obtain ⟨⟨g, w⟩, rfl⟩ := hy
-      obtain ⟨v, rfl⟩ := hq w
-      let x :
-          (representationCoinvariantsKernelSubrepresentation rho).
-            toRepresentation.asModule :=
-        ⟨rho g v - v, Representation.Coinvariants.sub_mem_ker g v⟩
-      refine ⟨x, ?_⟩
-      apply Subtype.ext
-      change q (rho g v - v) = tau g (q v) - q v
-      rw [map_sub, Representation.IntertwiningMap.isIntertwining]
-  | zero =>
-      exact ⟨0, by simp⟩
-  | add x y _ _ hx hy =>
-      obtain ⟨x', rfl⟩ := hx
-      obtain ⟨y', rfl⟩ := hy
-      exact ⟨x' + y', by simp⟩
-  | smul c x _ hx =>
-      obtain ⟨x', rfl⟩ := hx
-      exact ⟨c • x', by simp⟩
+  obtain ⟨x, hx⟩ := hrange y.2
+  exact ⟨x, Subtype.ext hx⟩
 
 end SymmetricSubgroupAsymptotics
 
