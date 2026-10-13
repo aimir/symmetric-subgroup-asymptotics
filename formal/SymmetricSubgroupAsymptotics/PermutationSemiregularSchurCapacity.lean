@@ -132,7 +132,7 @@ theorem intertwiningMap_finrank_le_pSubgroup_invariants
     Module.finrank (ZMod p) (X₀ →ₗ[(ZMod p)[G₀]] sigma.asModule) ≤
       Module.finrank (ZMod p)
         (Representation.invariants (sigma.comp P.subtype)) := by
-  letI : FiniteDimensional (ZMod p) X₀ := Module.Finite.of_finite (ZMod p) X₀
+  letI : FiniteDimensional (ZMod p) X₀ := Module.Finite.of_finite
   haveI : Nontrivial X₀ := IsSimpleModule.nontrivial (ZMod p)[G₀] X₀
   let tau : Representation (ZMod p) P X₀ :=
     (Representation.ofModule' X₀).comp P.subtype
