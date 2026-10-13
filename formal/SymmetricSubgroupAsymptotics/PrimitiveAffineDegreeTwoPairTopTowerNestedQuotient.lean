@@ -42,10 +42,10 @@ theorem moduleAxis_le_innerOmegaNaturalAxis
 the identical quotient formed in physical second-frame coordinates. -/
 def innerNestedQuotientCoordinateEquiv
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    ((nestedQuotientRepresentation
+    Representation.Equiv ((nestedQuotientRepresentation
       (R.moduleAxis N) (R.innerOmegaNaturalAxis N)
       (R.moduleAxis_le_innerOmegaNaturalAxis N)).comp
-        R.topEquiv.symm.toMonoidHom).Equiv
+        R.topEquiv.symm.toMonoidHom)
       (nestedQuotientRepresentation
         (R.innerNormalCoordinateAxis N) (R.innerOmegaCoordinateAxis N)
         (R.innerNormalCoordinateAxis_le_innerOmegaCoordinateAxis N)) :=
@@ -56,23 +56,24 @@ def innerNestedQuotientCoordinateEquiv
     obtain ⟨b, rfl⟩ :=
       (nestedSubrepresentation
         (R.moduleAxis N) (R.innerOmegaNaturalAxis N)
-        (R.moduleAxis_le_innerOmegaNaturalAxis N)).toSubmodule.
-          mkQ_surjective x
+        (R.moduleAxis_le_innerOmegaNaturalAxis N)).toSubmodule.mkQ_surjective x
     apply congrArg
       (nestedSubrepresentation
         (R.innerNormalCoordinateAxis N) (R.innerOmegaCoordinateAxis N)
         (R.innerNormalCoordinateAxis_le_innerOmegaCoordinateAxis N)).toSubmodule.mkQ
     apply Subtype.ext
+    change permutationFunctionRepresentation (ZMod 2) D.top (Fin t)
+      (R.topEquiv.symm g) b.1 = R.secondFrame.coordinateTopAction g b.1
     rw [R.module_action_eq, R.topEquiv.apply_symm_apply])
 
 /-- The transported natural quotient is the exact image of the omega state
 under the actual second-frame section map. -/
 noncomputable def innerNestedQuotientSectionImageEquiv
     (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
-    ((nestedQuotientRepresentation
+    Representation.Equiv ((nestedQuotientRepresentation
       (R.moduleAxis N) (R.innerOmegaNaturalAxis N)
       (R.moduleAxis_le_innerOmegaNaturalAxis N)).comp
-        R.topEquiv.symm.toMonoidHom).Equiv
+        R.topEquiv.symm.toMonoidHom)
       (intertwinerImage
         R.secondFrame.kernelTopPermutationSubrepresentation.toRepresentation
         (R.secondFrame.sectionTopRepresentation (R.outerTopNormal N.1))
@@ -87,8 +88,19 @@ noncomputable def innerNestedQuotientSectionImageEquiv
   let eImage := R.secondFrame.sectionTopNestedQuotientImageEquiv
     (R.outerTopNormal N.1) (R.innerOmegaCoordinateAxis N) hAB
       (R.innerOmegaCoordinateAxis_le_kernelTop N)
-  rw [← R.innerNormalCoordinateAxis_eq_normalTopPermutation N] at eImage
-  exact (R.innerNestedQuotientCoordinateEquiv N).trans eImage
+  have transport (A A' B : Subrepresentation R.secondFrame.coordinateTopAction)
+      (hAB : A ≤ B) (hA'B : A' ≤ B) (h : A = A') :
+      Nonempty ((nestedQuotientRepresentation A B hAB).Equiv
+        (nestedQuotientRepresentation A' B hA'B)) := by
+    subst A'
+    exact ⟨Representation.Equiv.refl _⟩
+  let eDenominator := Classical.choice (transport
+    (R.innerNormalCoordinateAxis N)
+    (R.secondFrame.normalTopPermutationSubrepresentation (R.outerTopNormal N.1))
+    (R.innerOmegaCoordinateAxis N)
+    (R.innerNormalCoordinateAxis_le_innerOmegaCoordinateAxis N) hAB
+    (R.innerNormalCoordinateAxis_eq_normalTopPermutation N))
+  exact (R.innerNestedQuotientCoordinateEquiv N).trans (eDenominator.trans eImage)
 
 /-- The exact section-map image in the preceding equivalence is the inner
 omega subrepresentation already constructed from the physical subgroup
@@ -128,14 +140,18 @@ theorem innerSectionImage_toSubmodule_eq_innerOmega
       apply Subtype.ext
       exact hkb
     rw [← hbEq]
-    change ((E.kernelCoordinates
-      (R.innerQuotientMap N) (R.innerSectionModule N)
-      (E.equiv (Multiplicative.ofAdd
-        ((R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ
-          (R.secondFrame.kernelSpaceHom k).toAdd)))).toAdd) ∈
-      E.normalSpace (R.innerQuotientMap N)
-        (R.innerSectionModule N) L
-    apply (sectionSubgroupImage_mem_iff
+    let v := (R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ
+      (R.secondFrame.kernelSpaceHom k).toAdd
+    have hcoord : (E.kernelCoordinates
+        (R.innerQuotientMap N) (R.innerSectionModule N)
+        (E.equiv (Multiplicative.ofAdd v))).toAdd = v := by
+      change (E.equiv.symm (E.equiv (Multiplicative.ofAdd v))).toAdd = v
+      rw [E.equiv.symm_apply_apply]
+      rfl
+    change v ∈ E.normalSpace (R.innerQuotientMap N)
+      (R.innerSectionModule N) (R.rawKernelOmegaTopImage N)
+    rw [← hcoord]
+    apply (sectionSubgroupImage_mem_iff (p := 2)
       (E.kernelCoordinates (R.innerQuotientMap N)
         (R.innerSectionModule N)) L hker _).2
     change (E.equiv (Multiplicative.ofAdd
@@ -145,13 +161,19 @@ theorem innerSectionImage_toSubmodule_eq_innerOmega
       R.rawKernelOmegaTopImage N
     have he := R.secondFrame.literalSectionModuleChart_equiv_mk
       R.topEquiv (R.outerTopNormal N.1) k
-    rw [show E = R.secondFrame.literalSectionModuleChart
-      R.topEquiv (R.outerTopNormal N.1) from rfl]
-    rw [he]
-    exact hk
+    have he' : ((E.equiv (Multiplicative.ofAdd
+        ((R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ
+          (R.secondFrame.kernelSpaceHom k).toAdd)) :
+            (R.innerQuotientMap N).ker) :
+              R.frame.top.range ⧸ R.outerTopNormal N.1) =
+        QuotientGroup.mk' (R.outerTopNormal N.1) (k : R.frame.top.range) := by
+      simpa only [E, innerSectionModuleChart, innerSectionModule,
+        innerQuotientMap] using he
+    exact (congrArg (fun q : R.frame.top.range ⧸ R.outerTopNormal N.1 ↦
+      q ∈ R.rawKernelOmegaTopImage N) he').mpr hk
   · intro hv
     change v ∈ E.normalSpace (R.innerQuotientMap N)
-      (R.innerSectionModule N) L at hv
+      (R.innerSectionModule N) (R.rawKernelOmegaTopImage N) at hv
     let y : (R.innerQuotientMap N).ker :=
       E.equiv (Multiplicative.ofAdd v)
     have hcoord : (E.kernelCoordinates
@@ -160,7 +182,7 @@ theorem innerSectionImage_toSubmodule_eq_innerOmega
       rw [E.equiv.symm_apply_apply]
       rfl
     have hy : y ∈ L := by
-      apply (sectionSubgroupImage_mem_iff
+      apply (sectionSubgroupImage_mem_iff (p := 2)
         (E.kernelCoordinates (R.innerQuotientMap N)
           (R.innerSectionModule N)) L hker y).1
       rwa [hcoord]
@@ -182,7 +204,7 @@ theorem innerSectionImage_toSubmodule_eq_innerOmega
         R.topEquiv (R.outerTopNormal N.1) k
       simpa only [E, innerSectionModuleChart, innerSectionModule,
         innerQuotientMap] using he
-    have hkOmega : (k : R.frame.top.range) ∈
+    have hkFixed : (k : R.frame.top.range) ∈
         R.rawKernelOmegaIntermediatePreimage N := by
       change QuotientGroup.mk' (R.outerTopNormal N.1)
         (k : R.frame.top.range) ∈ R.rawKernelOmegaTopImage N
@@ -194,7 +216,7 @@ theorem innerSectionImage_toSubmodule_eq_innerOmega
       change R.secondFrame.bits k ∈
         R.secondFrame.ambientAxis
           (R.rawKernelOmegaIntermediatePreimage N)
-      exact (R.secondFrame.bits_mem_ambientAxis _ k).2 hkOmega
+      exact (R.secondFrame.bits_mem_ambientAxis _ k).2 hkFixed
     refine ⟨b, hb, ?_⟩
     change (R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ b = v
     rw [show (b : R.secondFrame.kernelSpace) = x from hxk, hx]
@@ -219,7 +241,7 @@ noncomputable def innerNestedQuotientEquivInnerOmegaInflation
     (nestedSubrepresentation (R.innerOmegaCoordinateAxis N)
       R.secondFrame.kernelTopPermutationSubrepresentation
       (R.innerOmegaCoordinateAxis_le_kernelTop N))
-  let e0 : tau.Equiv
+  let e0 : Representation.Equiv tau
       ((tau.comp R.topEquiv.symm.toMonoidHom).comp
         R.topEquiv.toMonoidHom) :=
     Representation.Equiv.mk (LinearEquiv.refl _ _) (by
@@ -229,8 +251,8 @@ noncomputable def innerNestedQuotientEquivInnerOmegaInflation
       change tau g v = tau (R.topEquiv.symm (R.topEquiv g)) v
       rw [R.topEquiv.symm_apply_apply])
   let e1base := R.innerNestedQuotientSectionImageEquiv N
-  let e1 : ((tau.comp R.topEquiv.symm.toMonoidHom).comp
-      R.topEquiv.toMonoidHom).Equiv
+  let e1 : Representation.Equiv ((tau.comp R.topEquiv.symm.toMonoidHom).comp
+      R.topEquiv.toMonoidHom)
       (I.toRepresentation.comp R.topEquiv.toMonoidHom) :=
     Representation.Equiv.mk e1base.toLinearEquiv
       (fun g ↦ e1base.isIntertwining' (R.topEquiv g))
@@ -238,16 +260,16 @@ noncomputable def innerNestedQuotientEquivInnerOmegaInflation
       (R.innerOmegaSubrepresentation N).toSubmodule :=
     R.innerSectionImage_toSubmodule_eq_innerOmega N
   let e2Linear : I.toSubmodule ≃ₗ[ZMod 2]
-      (R.innerOmegaSubrepresentation N).toSubmodule where
+      (R.innerOmegaSubrepresentation N).toSubmodule := {
     toFun := fun v ↦ ⟨v.1, hI ▸ v.2⟩
     invFun := fun v ↦ ⟨v.1, hI.symm ▸ v.2⟩
     left_inv v := Subtype.ext rfl
     right_inv v := Subtype.ext rfl
     map_add' _ _ := rfl
-    map_smul' _ _ := rfl
+    map_smul' _ _ := rfl }
   let eFull := R.secondFrame.sectionTopEquivLiteralSectionInflation
     R.topEquiv (R.outerTopNormal N.1)
-  let e2 : (I.toRepresentation.comp R.topEquiv.toMonoidHom).Equiv
+  let e2 : Representation.Equiv (I.toRepresentation.comp R.topEquiv.toMonoidHom)
       ((R.innerOmegaSubrepresentation N).toRepresentation.comp
         (QuotientGroup.mk' (R.topNormal N.1))) :=
     Representation.Equiv.mk e2Linear (by
