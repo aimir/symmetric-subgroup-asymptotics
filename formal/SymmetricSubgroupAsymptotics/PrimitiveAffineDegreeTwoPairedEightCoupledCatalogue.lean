@@ -17,6 +17,7 @@ twenty-three representation inequalities or resolved-row assumptions.
 -/
 
 set_option autoImplicit false
+set_option backward.isDefEq.respectTransparency false
 noncomputable section
 open scoped Classical
 
@@ -24,24 +25,18 @@ namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
 
-namespace Shared := DegreeTwoPairedEightSharedTops
-namespace Row1 :=
-  SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads
-namespace Row1Generators :=
-  SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators
-namespace Row1Socles := DegreeTwoPairedEightRow1QuotientSocles
 
 /-- Realization-free coupled registries for all paired-eight catalogue
 slots. -/
 structure DegreeTwoPairedEightCoupledCatalogueData : Type 1 where
   row : ∀ j : Fin 24,
-    DegreeTwoPairTopCoupledRegistryData (Shared.interface j) 4
+    DegreeTwoPairTopCoupledRegistryData (DegreeTwoPairedEightSharedTops.interface j) 4
 
 /-- The still-unemitted part of the paired-eight coupled catalogue.  Every
 field is a finite registry declaration on a literal top. -/
 structure RemainingDegreeTwoPairedEightCoupledRegistryData : Type 1 where
   row : ∀ (j : Fin 24), j ≠ (0 : Fin 24) →
-    DegreeTwoPairTopCoupledRegistryData (Shared.interface j) 4
+    DegreeTwoPairTopCoupledRegistryData (DegreeTwoPairedEightSharedTops.interface j) 4
 
 /-- The complete finite declaration consumed by one paired-eight row. -/
 structure DegreeTwoPairedEightFiniteRowData
@@ -74,9 +69,8 @@ noncomputable def rowData
     (R : DegreeTwoPairTopTowerRealization D p) :
     DegreeTwoPairTopTowerRelativeKernelOrbitRowData
       D degreeTwoSixteenPairProfiles p R :=
-  DegreeTwoPairTopTowerRelativeKernelOrbitRowData.
-    ofOrdinaryRelativeRawSocleSchurCapacity hZmud 2 4
-      (by native_decide)
+  DegreeTwoPairTopTowerRelativeKernelOrbitRowData.ofOrdinaryRelativeRawSocleSchurCapacity hZmud 2 4
+      (by decide +kernel)
       degreeTwoSixteenPairProfiles_capacity
       (fun N ↦
         (F.topSocle.data (R.topNormalState N)).quotientSocleGenerator)
@@ -121,9 +115,8 @@ noncomputable def rowData
     (R : DegreeTwoPairTopTowerRealization D p) :
     DegreeTwoPairTopTowerRelativeKernelOrbitRowData
       D degreeTwoSixteenPairProfiles p R :=
-  DegreeTwoPairTopTowerRelativeKernelOrbitRowData.
-    ofOrdinaryRelativeRawSocleSchurCapacity hZmud 2 4
-      (by native_decide)
+  DegreeTwoPairTopTowerRelativeKernelOrbitRowData.ofOrdinaryRelativeRawSocleSchurCapacity hZmud 2 4
+      (by decide +kernel)
       degreeTwoSixteenPairProfiles_capacity
       (fun N ↦ F.topSocle
         ⟨D.normalRegistry.state (R.topNormalState N),
@@ -136,21 +129,21 @@ end DegreeTwoPairedEightStructuralFiniteRowData
 
 /-- The already generated finite declaration for paired8-1. -/
 noncomputable def generatedPairedEightRow1FiniteData :
-    DegreeTwoPairedEightFiniteRowData Shared.top1 where
-  coupled := Row1.finiteCoupledHeadData
-  quotientGenerators := Row1Generators.finiteGeneratorData
-  topSocle := Row1Socles.family
+    DegreeTwoPairedEightFiniteRowData DegreeTwoPairedEightSharedTops.top1 where
+  coupled := SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.finiteCoupledHeadData
+  quotientGenerators := SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators.finiteGeneratorData
+  topSocle := DegreeTwoPairedEightRow1QuotientSocles.family
 
 /-- Finite row declarations for the twenty-three paired-eight slots after
 the generated first row. -/
 structure RemainingDegreeTwoPairedEightFiniteRowData : Type 1 where
   row : ∀ (j : Fin 24), j ≠ (0 : Fin 24) →
-    DegreeTwoPairedEightFiniteRowData (Shared.interface j)
+    DegreeTwoPairedEightFiniteRowData (DegreeTwoPairedEightSharedTops.interface j)
 
 /-- Complete finite declarations for all paired-eight slots. -/
 structure DegreeTwoPairedEightFiniteCatalogueData : Type 1 where
   row : ∀ j : Fin 24,
-    DegreeTwoPairedEightFiniteRowData (Shared.interface j)
+    DegreeTwoPairedEightFiniteRowData (DegreeTwoPairedEightSharedTops.interface j)
 
 namespace DegreeTwoPairedEightFiniteCatalogueData
 
@@ -173,9 +166,9 @@ slot-specific representation premise. -/
 noncomputable def rowData
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (j : Fin 24) {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization (Shared.interface j) p) :
+    (R : DegreeTwoPairTopTowerRealization (DegreeTwoPairedEightSharedTops.interface j) p) :
     DegreeTwoPairTopTowerRelativeKernelOrbitRowData
-      (Shared.interface j) degreeTwoSixteenPairProfiles p R :=
+      (DegreeTwoPairedEightSharedTops.interface j) degreeTwoSixteenPairProfiles p R :=
   (F.row j).rowData hZmud R
 
 end DegreeTwoPairedEightFiniteCatalogueData
@@ -190,7 +183,7 @@ noncomputable def ofGeneratedRow1
   row := fun j ↦ by
     by_cases hj : j = (0 : Fin 24)
     · subst j
-      exact Row1.finiteCoupledHeadData
+      exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads.finiteCoupledHeadData
     · exact C.row j hj
 
 variable (C : DegreeTwoPairedEightCoupledCatalogueData)
@@ -199,15 +192,16 @@ variable (C : DegreeTwoPairedEightCoupledCatalogueData)
 actual two-frame realization. -/
 noncomputable def towerData
     (j : Fin 24) {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization (Shared.interface j) p) :
+    (R : DegreeTwoPairTopTowerRealization (DegreeTwoPairedEightSharedTops.interface j) p) :
     DegreeTwoPairTopTowerCoupledHeadData R 4 :=
   (C.row j).towerData R
 
+include C in
 /-- Catalogue-wide fixed-row dispatch: the same structural bridge closes
 all twenty-four raw fixed-omega inequalities. -/
 theorem rawKernelOmega_invariants_finrank_le_four
     (j : Fin 24) {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization (Shared.interface j) p)
+    (R : DegreeTwoPairTopTowerRealization (DegreeTwoPairedEightSharedTops.interface j) p)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
     Module.finrank (ZMod 2)
         (binaryKernelOmegaConjugationRepresentation
