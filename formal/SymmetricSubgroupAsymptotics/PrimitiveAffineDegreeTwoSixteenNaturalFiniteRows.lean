@@ -24,6 +24,7 @@ theorem as the finite one-frame catalogue.
 -/
 
 set_option autoImplicit false
+set_option backward.isDefEq.respectTransparency false
 noncomputable section
 open scoped Classical
 
@@ -100,7 +101,7 @@ noncomputable def symmetricNormalChain :
     · exact Or.inl hbot
     · right
       letI : N.Normal := hN
-      haveI : Nontrivial N := Subgroup.nontrivial_iff_ne_bot.mpr hbot
+      haveI : Nontrivial N := (Subgroup.nontrivial_iff_ne_bot N).mpr hbot
       exact indexTwo_maximal (alternatingGroup (Fin 16))
         alternatingGroup.index_eq_two N
         (Equiv.Perm.alternatingGroup_le_of_normal
@@ -115,8 +116,7 @@ noncomputable def symmetricTopSocle :
         (naturalTopSubgroup .symmetric ⧸ N.1) 2 :=
   (symmetricNormalChain.mapEquiv
     (Subgroup.topEquiv :
-      (⊤ : Subgroup (Equiv.Perm (Fin 16))) ≃* Equiv.Perm (Fin 16)).symm).
-      quotientSocleGeneratorBound_two
+      (⊤ : Subgroup (Equiv.Perm (Fin 16))) ≃* Equiv.Perm (Fin 16)).symm).quotientSocleGeneratorBound_two
 
 /-- The two finite theorem families needed for one natural top.  Both
 fields are independent of the original pair action and of a chosen
@@ -126,7 +126,7 @@ structure DegreeTwoSixteenNaturalFiniteRowData
   topSocle : ∀ N :
       {N : Subgroup (naturalTopSubgroup kind) // N.Normal},
     SocleNormalGeneratorBound
-      (naturalTopSubgroup kind ⨸ N.1) 2
+      (naturalTopSubgroup kind ⧸ N.1) 2
   natural : UniformSubrepresentationGeneratorBound
     (permutationFunctionRepresentation
       (ZMod 2) (naturalTopSubgroup kind) (Fin 16)) 4
@@ -150,7 +150,7 @@ theorem module_action_eq (g : naturalTopSubgroup kind)
     (v : Fin 16 → ZMod 2) :
     permutationFunctionRepresentation
         (ZMod 2) (naturalTopSubgroup kind) (Fin 16) g v =
-      R.frame.coordinateTopAction (R.topEquiv g) v := by
+      R.frame.coordinateTopAction (DegreeTwoSixteenNaturalTopRealization.topEquiv R g) v := by
   funext i
   rfl
 
@@ -208,9 +208,9 @@ noncomputable def envelope
     (lit : PreE7CharacterLiterature)
     (N : {N : Subgroup (preE7PairAction 16 p) // N.Normal}) :
     DegreeTwoPairRelativeQuotientEnvelope
-      (preE7PairAction 16 p ⨸ N.1) naturalProfile := by
+      (preE7PairAction 16 p ⧸ N.1) naturalProfile := by
   letI : N.1.Normal := N.2
-  let e := R.topEquiv
+  let e := DegreeTwoSixteenNaturalTopRealization.topEquiv R
   let topNormal :
       {M : Subgroup (naturalTopSubgroup kind) // M.Normal} :=
     ⟨R.frame.literalTopNormal e N.1,
@@ -228,7 +228,7 @@ noncomputable def envelope
     (R.frame.sectionRepresentation_schurCapacity_le_of_uniformDualEquiv
       (permutationFunctionRepresentation
         (ZMod 2) (naturalTopSubgroup kind) (Fin 16))
-      e R.module_action_eq 4
+      e (DegreeTwoSixteenNaturalTopRealization.module_action_eq R) 4
       (permutationFunctionRepresentation_dual_uniform D.natural) N.1)
 
 /-- Universal lift data for every realization of this natural top. -/
@@ -238,7 +238,7 @@ noncomputable def liftData
     DegreeTwoPairRelativeLiftData 16 p where
   profile := fun _ ↦ naturalProfile
   capacity := fun _ ↦ degreeTwoSixteenPairProfiles_capacity naturalProfile
-    (by native_decide)
+    (by decide +kernel)
   envelope := D.envelope R hZmud lit
 
 /-- Final natural-branch source produced by the common structural
