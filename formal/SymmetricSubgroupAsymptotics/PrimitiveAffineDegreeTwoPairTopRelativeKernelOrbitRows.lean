@@ -17,12 +17,20 @@ finite orbit-separation statement on the displayed binary kernel.
 -/
 
 set_option autoImplicit false
+set_option backward.isDefEq.respectTransparency false
 noncomputable section
 open scoped Classical MonoidAlgebra
 
 namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
+
+private def quotientSocleBoundOfEq
+    {G : Type} [Group G] (M N : Subgroup G) [M.Normal] [N.Normal]
+    (h : M = N) (t : ℕ) (bound : SocleNormalGeneratorBound (G ⧸ M) t) :
+    SocleNormalGeneratorBound (G ⧸ N) t := by
+  subst N
+  exact bound
 
 /-- Literal prefix and central-orbit data on one quotient. -/
 structure DegreeTwoPairRelativeKernelOrbitInput
@@ -378,7 +386,7 @@ structure DegreeTwoPairTopRelativeKernelOrbitRowData {s : ℕ}
   stateProfile : DegreeTwoPairTopStateProfile D p realization
   profiles_eq : stateProfile.allowedProfiles = expectedProfiles
   input : ∀ N, DegreeTwoPairRelativeKernelOrbitInput
-    (preE7PairAction s p ⨸ N.1) (stateProfile.profile N)
+    (preE7PairAction s p ⧸ N.1) (stateProfile.profile N)
 
 namespace DegreeTwoPairTopRelativeKernelOrbitRowData
 
@@ -444,7 +452,7 @@ structure DegreeTwoPairTopTowerRelativeKernelOrbitRowData {s t : ℕ}
   stateProfile : DegreeTwoPairTopTowerStateProfile D p realization
   profiles_eq : stateProfile.allowedProfiles = expectedProfiles
   input : ∀ N, DegreeTwoPairRelativeKernelOrbitInput
-    (preE7PairAction s p ⨸ N.1) (stateProfile.profile N)
+    (preE7PairAction s p ⧸ N.1) (stateProfile.profile N)
 
 namespace DegreeTwoPairTopTowerRelativeKernelOrbitRowData
 
@@ -478,7 +486,7 @@ noncomputable def ofOrdinaryRelativeSocleDualGenerated
     (allowed_capacity : ∀ profile ∈ expectedProfiles,
       profile.slope ≤ preE7CharacterWindow (2 * s))
     (topSocle : ∀ N, SocleNormalGeneratorBound
-      (D.top ⨸ D.normalRegistry.state (realization.topNormalState N))
+      (D.top ⧸ D.normalRegistry.state (realization.topNormalState N))
       ordinary)
     (dualGenerated : ∀ N, RepresentationGeneratedBy
       (finiteRepresentationSocle
@@ -494,8 +502,7 @@ noncomputable def ofOrdinaryRelativeSocleDualGenerated
       profile_mem := fun _ ↦ profile_mem }
   profiles_eq := rfl
   input := fun N ↦
-    DegreeTwoPairRelativeKernelOrbitInput.
-      ofSurjectiveBinaryKernelSocleDualGenerated hZmud
+    DegreeTwoPairRelativeKernelOrbitInput.ofSurjectiveBinaryKernelSocleDualGenerated hZmud
         (realization.quotientMap N)
         (realization.quotientMap_surjective N)
         (topSocle N)
@@ -512,7 +519,7 @@ noncomputable def ofOrdinaryRelativeSocleSchurCapacity
     (allowed_capacity : ∀ profile ∈ expectedProfiles,
       profile.slope ≤ preE7CharacterWindow (2 * s))
     (topSocle : ∀ N, SocleNormalGeneratorBound
-      (D.top ⨸ D.normalRegistry.state (realization.topNormalState N))
+      (D.top ⧸ D.normalRegistry.state (realization.topNormalState N))
       ordinary)
     (socleCapacity : ∀ N, representationSchurCapacity
       (finiteRepresentationSocle
@@ -528,8 +535,7 @@ noncomputable def ofOrdinaryRelativeSocleSchurCapacity
       profile_mem := fun _ ↦ profile_mem }
   profiles_eq := rfl
   input := fun N ↦
-    DegreeTwoPairRelativeKernelOrbitInput.
-      ofSurjectiveBinaryKernelSocleSchurCapacity hZmud
+    DegreeTwoPairRelativeKernelOrbitInput.ofSurjectiveBinaryKernelSocleSchurCapacity hZmud
         (realization.quotientMap N)
         (realization.quotientMap_surjective N)
         (topSocle N)
@@ -565,12 +571,11 @@ noncomputable def ofOrdinaryRelativeRawSocleSchurCapacity
       profile_mem := fun _ ↦ profile_mem }
   profiles_eq := rfl
   input := fun N ↦
-    DegreeTwoPairRelativeKernelOrbitInput.
-      ofSurjectiveBinaryKernelSocleSchurCapacity hZmud
+    DegreeTwoPairRelativeKernelOrbitInput.ofSurjectiveBinaryKernelSocleSchurCapacity hZmud
         (realization.rawQuotientMap N)
         (realization.rawQuotientMap_surjective N)
-        (by
-          simpa only [realization.topNormalState_spec N] using topSocle N)
+        (quotientSocleBoundOfEq _ _
+          (realization.topNormalState_spec N) ordinary (topSocle N))
         (realization.rawQuotientMap_kernel_isPGroup N)
         (socleCapacity N)
 
