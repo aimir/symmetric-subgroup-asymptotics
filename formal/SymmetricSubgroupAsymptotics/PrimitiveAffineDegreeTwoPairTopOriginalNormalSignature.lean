@@ -216,7 +216,7 @@ supply an unverified lookup from original normals into the catalogue. -/
 noncomputable def relativeLiftConclusion
     (certificate : ∀ N,
       DegreeTwoPairRelativeLabelCertificate
-        (preE7PairAction s p ⨸ N.1) (P.profile N)) :
+        (preE7PairAction s p ⧸ N.1) (P.profile N)) :
     DegreeTwoPairTopRelativeLiftConclusion D p := by
   let lift : DegreeTwoPairRelativeLiftData s p :=
     DegreeTwoPairRelativeLiftData.ofLabelCertificates
@@ -240,7 +240,7 @@ noncomputable def relativeAnchorLiftConclusion
     (lit : PreE7CharacterLiterature)
     (data : ∀ N,
       DegreeTwoPairRelativeAnchorLabels
-        (preE7PairAction s p ⨸ N.1) (P.profile N)) :
+        (preE7PairAction s p ⧸ N.1) (P.profile N)) :
     DegreeTwoPairTopRelativeLiftConclusion D p := by
   let lift : DegreeTwoPairRelativeLiftData s p :=
     DegreeTwoPairRelativeLiftData.ofRelativeAnchorLabels
@@ -263,7 +263,7 @@ noncomputable def relativeKernelLiftConclusion
     (lit : PreE7CharacterLiterature)
     (data : ∀ N,
       DegreeTwoPairRelativeKernelAnchor
-        (preE7PairAction s p ⨸ N.1) (P.profile N)) :
+        (preE7PairAction s p ⧸ N.1) (P.profile N)) :
     DegreeTwoPairTopRelativeLiftConclusion D p := by
   let lift : DegreeTwoPairRelativeLiftData s p :=
     DegreeTwoPairRelativeLiftData.ofRelativeKernelAnchors
@@ -320,7 +320,7 @@ noncomputable def relativeAnchorLiftConclusion
     (lit : PreE7CharacterLiterature)
     (data : ∀ N,
       DegreeTwoPairRelativeAnchorLabels
-        (preE7PairAction s p ⨸ N.1) (P.profile N)) :
+        (preE7PairAction s p ⧸ N.1) (P.profile N)) :
     DegreeTwoPairTopRelativeLiftConclusion D p := by
   let lift : DegreeTwoPairRelativeLiftData s p :=
     DegreeTwoPairRelativeLiftData.ofRelativeAnchorLabels
@@ -340,7 +340,7 @@ noncomputable def relativeKernelLiftConclusion
     (lit : PreE7CharacterLiterature)
     (data : ∀ N,
       DegreeTwoPairRelativeKernelAnchor
-        (preE7PairAction s p ⨸ N.1) (P.profile N)) :
+        (preE7PairAction s p ⧸ N.1) (P.profile N)) :
     DegreeTwoPairTopRelativeLiftConclusion D p := by
   let lift : DegreeTwoPairRelativeLiftData s p :=
     DegreeTwoPairRelativeLiftData.ofRelativeKernelAnchors

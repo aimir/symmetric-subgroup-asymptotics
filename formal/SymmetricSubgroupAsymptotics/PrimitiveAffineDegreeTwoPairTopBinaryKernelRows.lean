@@ -30,7 +30,7 @@ structure DegreeTwoPairTopBinaryKernelRowData {s : ℕ}
   stateProfile : DegreeTwoPairTopStateProfile D p realization
   profiles_eq : stateProfile.allowedProfiles = expectedProfiles
   anchor : ∀ N, DegreeTwoPairBinaryKernelAnchor
-    (preE7PairAction s p ⨸ N.1) (stateProfile.profile N)
+    (preE7PairAction s p ⧸ N.1) (stateProfile.profile N)
 
 namespace DegreeTwoPairTopBinaryKernelRowData
 
@@ -74,7 +74,7 @@ noncomputable def ofProfileTable
       profileOfState (realization.topNormalState N)
         (realization.moduleState N) ∈ allowedProfiles)
     (anchor : ∀ N, DegreeTwoPairBinaryKernelAnchor
-      (preE7PairAction s p ⨸ N.1)
+      (preE7PairAction s p ⧸ N.1)
       (profileOfState (realization.topNormalState N)
         (realization.moduleState N))) :
     DegreeTwoPairTopBinaryKernelRowData D allowedProfiles p realization :=
@@ -98,7 +98,7 @@ noncomputable def twelveExceptionalOfProfileTable
         (realization.moduleState N) ∈
           degreeTwoTwelvePairExceptionalProfiles)
     (anchor : ∀ N, DegreeTwoPairBinaryKernelAnchor
-      (preE7PairAction 12 p ⨸ N.1)
+      (preE7PairAction 12 p ⧸ N.1)
       (profileOfState (realization.topNormalState N)
         (realization.moduleState N))) :
     DegreeTwoPairTopBinaryKernelRowData D
@@ -122,7 +122,7 @@ noncomputable def twelveJointOfProfileTable
         (realization.moduleState N) ∈
           degreeTwoTwelvePairJointProfiles kappa sectionCap)
     (anchor : ∀ N, DegreeTwoPairBinaryKernelAnchor
-      (preE7PairAction 12 p ⨸ N.1)
+      (preE7PairAction 12 p ⧸ N.1)
       (profileOfState (realization.topNormalState N)
         (realization.moduleState N))) :
     DegreeTwoPairTopBinaryKernelRowData D
@@ -142,7 +142,7 @@ noncomputable def sixteenOfProfileTable
       profileOfState (realization.topNormalState N)
         (realization.moduleState N) ∈ degreeTwoSixteenPairProfiles)
     (anchor : ∀ N, DegreeTwoPairBinaryKernelAnchor
-      (preE7PairAction 16 p ⨸ N.1)
+      (preE7PairAction 16 p ⧸ N.1)
       (profileOfState (realization.topNormalState N)
         (realization.moduleState N))) :
     DegreeTwoPairTopBinaryKernelRowData D
@@ -191,7 +191,7 @@ structure DegreeTwoPairTopTowerBinaryKernelRowData {s t : ℕ}
   stateProfile : DegreeTwoPairTopTowerStateProfile D p realization
   profiles_eq : stateProfile.allowedProfiles = expectedProfiles
   anchor : ∀ N, DegreeTwoPairBinaryKernelAnchor
-    (preE7PairAction s p ⨸ N.1) (stateProfile.profile N)
+    (preE7PairAction s p ⧸ N.1) (stateProfile.profile N)
 
 namespace DegreeTwoPairTopTowerBinaryKernelRowData
 
@@ -232,7 +232,7 @@ noncomputable def sixteenOfProfileTable
       profileOfState (realization.topNormalState N)
         (realization.moduleState N) ∈ degreeTwoSixteenPairProfiles)
     (anchor : ∀ N, DegreeTwoPairBinaryKernelAnchor
-      (preE7PairAction 16 p ⨸ N.1)
+      (preE7PairAction 16 p ⧸ N.1)
       (profileOfState (realization.topNormalState N)
         (realization.moduleState N))) :
     DegreeTwoPairTopTowerBinaryKernelRowData D

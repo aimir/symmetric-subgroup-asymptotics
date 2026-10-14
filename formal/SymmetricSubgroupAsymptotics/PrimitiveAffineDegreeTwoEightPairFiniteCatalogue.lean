@@ -89,7 +89,8 @@ noncomputable def degreeTwoEightPairRepresentativeSource_of_catalogue
     (published : PublishedDegreeTwoEightPairCatalogueLocator T) :
     DegreeTwoEightPairRepresentativeSource := by
   intro p
-  obtain ⟨j, hj⟩ := published p
+  let j : Fin 527 := Classical.choose (published p)
+  have hj := Classical.choose_spec (published p)
   rw [hj]
   exact (T.row j).source
 

@@ -78,6 +78,8 @@ private theorem logb_two_three_div_three_lt_eight_fifteenths :
     (by positivity : (0 : ℝ) < (3 : ℝ) ^ (5 : ℕ)) hp
   simp only [Real.logb_pow,
     Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2), mul_one] at hlog
+  rw [div_lt_iff₀ (by norm_num : (0 : ℝ) < 3)]
+  norm_num at hlog ⊢
   nlinarith
 
 private theorem logb_two_five_div_three_lt_seven_ninths :
@@ -87,6 +89,8 @@ private theorem logb_two_five_div_three_lt_seven_ninths :
     (by positivity : (0 : ℝ) < (5 : ℝ) ^ (3 : ℕ)) hp
   simp only [Real.logb_pow,
     Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2), mul_one] at hlog
+  rw [div_lt_iff₀ (by norm_num : (0 : ℝ) < 3)]
+  norm_num at hlog ⊢
   nlinarith
 
 private theorem logb_two_thirtyEightTwentyFive_lt_twentyThirtyThirds :
@@ -283,7 +287,9 @@ noncomputable def degreeTwoTwelvePairRepresentativeSource_of_catalogue
     (resolve : DegreeTwoTwelvePairTopCatalogueResolution T) :
     DegreeTwoTwelvePairRepresentativeSource := by
   intro p
-  obtain ⟨j, ⟨realization⟩⟩ := published p
+  let j : Fin 301 := Classical.choose (published p)
+  let realization : DegreeTwoPairTopRealization (T.row j).finite p :=
+    Classical.choice (Classical.choose_spec (published p))
   exact (resolve j p realization).source (by norm_num)
 
 /-- The same table supplies the block-facing count-twelve endpoint. -/
@@ -378,7 +384,8 @@ noncomputable def degreeTwoSixteenPairRepresentativeSource_of_catalogue
     (resolve : DegreeTwoSixteenPairTopCatalogueResolution T) :
     DegreeTwoSixteenPairRepresentativeSource := by
   intro p
-  obtain ⟨location⟩ := published p
+  let location : DegreeTwoSixteenPairTopLocation T p :=
+    Classical.choice (published p)
   cases location with
   | paired8 j realization =>
       exact (resolve.paired8 j p realization).source (by norm_num)

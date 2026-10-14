@@ -65,7 +65,7 @@ structure DegreeTwoPairTopAnchoredRowData {s : ℕ}
   profiles_eq : stateProfile.allowedProfiles = expectedProfiles
   anchorLabels : ∀ N,
     DegreeTwoPairRelativeAnchorLabels
-      (preE7PairAction s p ⨸ N.1) (stateProfile.profile N)
+      (preE7PairAction s p ⧸ N.1) (stateProfile.profile N)
 
 namespace DegreeTwoPairTopAnchoredRowData
 
@@ -100,7 +100,7 @@ noncomputable def twelveExceptionalOfProfileTable
           degreeTwoTwelvePairExceptionalProfiles)
     (anchorLabels : ∀ N,
       DegreeTwoPairRelativeAnchorLabels
-        (preE7PairAction 12 p ⨸ N.1)
+        (preE7PairAction 12 p ⧸ N.1)
         (profileOfState (realization.topNormalState N)
           (realization.moduleState N))) :
     DegreeTwoPairTopAnchoredRowData D
@@ -131,7 +131,7 @@ noncomputable def twelveJointOfProfileTable
           degreeTwoTwelvePairJointProfiles kappa sectionCap)
     (anchorLabels : ∀ N,
       DegreeTwoPairRelativeAnchorLabels
-        (preE7PairAction 12 p ⨸ N.1)
+        (preE7PairAction 12 p ⧸ N.1)
         (profileOfState (realization.topNormalState N)
           (realization.moduleState N))) :
     DegreeTwoPairTopAnchoredRowData D
@@ -159,7 +159,7 @@ noncomputable def sixteenOfProfileTable
         (realization.moduleState N) ∈ degreeTwoSixteenPairProfiles)
     (anchorLabels : ∀ N,
       DegreeTwoPairRelativeAnchorLabels
-        (preE7PairAction 16 p ⨸ N.1)
+        (preE7PairAction 16 p ⧸ N.1)
         (profileOfState (realization.topNormalState N)
           (realization.moduleState N))) :
     DegreeTwoPairTopAnchoredRowData D
@@ -184,7 +184,7 @@ structure DegreeTwoPairTopTowerAnchoredRowData {s t : ℕ}
   profiles_eq : stateProfile.allowedProfiles = expectedProfiles
   anchorLabels : ∀ N,
     DegreeTwoPairRelativeAnchorLabels
-      (preE7PairAction s p ⨸ N.1) (stateProfile.profile N)
+      (preE7PairAction s p ⧸ N.1) (stateProfile.profile N)
 
 namespace DegreeTwoPairTopTowerAnchoredRowData
 
@@ -218,7 +218,7 @@ noncomputable def sixteenOfProfileTable
         (realization.moduleState N) ∈ degreeTwoSixteenPairProfiles)
     (anchorLabels : ∀ N,
       DegreeTwoPairRelativeAnchorLabels
-        (preE7PairAction 16 p ⨸ N.1)
+        (preE7PairAction 16 p ⧸ N.1)
         (profileOfState (realization.topNormalState N)
           (realization.moduleState N))) :
     DegreeTwoPairTopTowerAnchoredRowData D
@@ -345,8 +345,9 @@ structure DegreeTwoSixteenNaturalCharacterData
     (kind : DegreeTwoSixteenNaturalTop)
     (p : PreE7PairActionClass 16)
     (realization : DegreeTwoSixteenNaturalTopRealization kind p) : Type 1 where
-  certificate : ∀ N,
-    CharacterQuotientCertificate (preE7PairAction 16 p ⨸ N.1)
+  certificate : ∀ N :
+    {N : Subgroup (preE7PairAction 16 p) // N.Normal},
+    CharacterQuotientCertificate (preE7PairAction 16 p ⧸ N.1)
   mixed : ∀ N, (certificate N).mode = .mixed
   shape : ∀ N, DegreeTwoSixteenNaturalCharacterShape (certificate N)
   capacity : ∀ N,
@@ -385,8 +386,9 @@ structure DegreeTwoSixteenNaturalSocleGeneratorData
     (kind : DegreeTwoSixteenNaturalTop)
     (p : PreE7PairActionClass 16)
     (realization : DegreeTwoSixteenNaturalTopRealization kind p) : Prop where
-  socleGenerators : ∀ N,
-    SocleNormalGeneratorBound (preE7PairAction 16 p ⨸ N.1) 2
+  socleGenerators : ∀ N :
+    {N : Subgroup (preE7PairAction 16 p) // N.Normal},
+    SocleNormalGeneratorBound (preE7PairAction 16 p ⧸ N.1) 2
 
 namespace DegreeTwoSixteenNaturalSocleGeneratorData
 
@@ -420,8 +422,9 @@ noncomputable def source
     (lit : PreE7CharacterLiterature) :
     PreE7RankTailSourceOrYonedaTopData 32
       (preE7SmallPairNonPairAction 16 (by norm_num) p) :=
-  let certificate : ∀ N,
-      CharacterQuotientCertificate (preE7PairAction 16 p ⨸ N.1) :=
+  let certificate : ∀ N :
+      {N : Subgroup (preE7PairAction 16 p) // N.Normal},
+      CharacterQuotientCertificate (preE7PairAction 16 p ⧸ N.1) :=
     fun N ↦ hZmud.generalCertificate (D.socleGenerators N)
   let lift := DegreeTwoPairRelativeLiftData.ofMixedCharacterCertificates
     lit certificate (fun _ ↦ rfl) (fun N ↦ by
