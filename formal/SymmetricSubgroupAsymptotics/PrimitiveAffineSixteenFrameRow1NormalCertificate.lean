@@ -70,9 +70,9 @@ private def negativeWords : Fin 4 → Fin 4 →
 
 def normality : FiniteNormalityWordCertificate topAmbient (stateGenerators 0) where
   positiveWords := positiveWords
-  positiveEquations := by native_decide
+  positiveEquations := by decide +kernel
   negativeWords := negativeWords
-  negativeEquations := by native_decide
+  negativeEquations := by decide +kernel
 
 namespace T0
 
@@ -91,11 +91,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 0 0)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T0
 
@@ -116,11 +116,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 0 1)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T1
 
@@ -141,11 +141,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 0 2)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T2
 
@@ -166,11 +166,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 0 3)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T3
 
@@ -191,11 +191,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 0 4)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T4
 
@@ -216,11 +216,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 0 5)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T5
 
@@ -241,11 +241,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 0 6)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T6
 
@@ -266,11 +266,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 0 7)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T7
 
@@ -294,9 +294,9 @@ private def negativeWords : Fin 4 → Fin 4 →
 
 def normality : FiniteNormalityWordCertificate topAmbient (stateGenerators 1) where
   positiveWords := positiveWords
-  positiveEquations := by native_decide
+  positiveEquations := by decide +kernel
   negativeWords := negativeWords
-  negativeEquations := by native_decide
+  negativeEquations := by decide +kernel
 
 namespace T0
 
@@ -315,11 +315,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 1 0)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T0
 
@@ -340,11 +340,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 1 1)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T1
 
@@ -365,11 +365,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 1 2)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T2
 
@@ -390,11 +390,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 1 3)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T3
 
@@ -415,11 +415,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 1 4)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T4
 
@@ -440,11 +440,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 1 5)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T5
 
@@ -465,11 +465,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 1 6)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T6
 
@@ -490,11 +490,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 1 7)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T7
 
@@ -518,9 +518,9 @@ private def negativeWords : Fin 4 → Fin 4 →
 
 def normality : FiniteNormalityWordCertificate topAmbient (stateGenerators 2) where
   positiveWords := positiveWords
-  positiveEquations := by native_decide
+  positiveEquations := by decide +kernel
   negativeWords := negativeWords
-  negativeEquations := by native_decide
+  negativeEquations := by decide +kernel
 
 namespace T0
 
@@ -539,11 +539,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 2 0)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T0
 
@@ -564,11 +564,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 2 1)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T1
 
@@ -589,11 +589,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 2 2)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T2
 
@@ -614,11 +614,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 2 3)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T3
 
@@ -639,11 +639,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 2 4)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T4
 
@@ -664,11 +664,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 2 5)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T5
 
@@ -689,11 +689,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 2 6)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T6
 
@@ -714,11 +714,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 2 7)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T7
 
@@ -742,9 +742,9 @@ private def negativeWords : Fin 4 → Fin 4 →
 
 def normality : FiniteNormalityWordCertificate topAmbient (stateGenerators 3) where
   positiveWords := positiveWords
-  positiveEquations := by native_decide
+  positiveEquations := by decide +kernel
   negativeWords := negativeWords
-  negativeEquations := by native_decide
+  negativeEquations := by decide +kernel
 
 namespace T0
 
@@ -763,11 +763,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 3 0)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T0
 
@@ -788,11 +788,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 3 1)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T1
 
@@ -813,11 +813,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 3 2)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T2
 
@@ -838,11 +838,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 3 3)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T3
 
@@ -863,11 +863,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 3 4)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T4
 
@@ -888,11 +888,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 3 5)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T5
 
@@ -913,11 +913,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 3 6)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T6
 
@@ -938,11 +938,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 3 7)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T7
 
@@ -966,9 +966,9 @@ private def negativeWords : Fin 4 → Fin 4 →
 
 def normality : FiniteNormalityWordCertificate topAmbient (stateGenerators 4) where
   positiveWords := positiveWords
-  positiveEquations := by native_decide
+  positiveEquations := by decide +kernel
   negativeWords := negativeWords
-  negativeEquations := by native_decide
+  negativeEquations := by decide +kernel
 
 namespace T0
 
@@ -987,11 +987,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 4 0)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T0
 
@@ -1012,11 +1012,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 4 1)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T1
 
@@ -1037,11 +1037,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 4 2)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T2
 
@@ -1062,11 +1062,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 4 3)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T3
 
@@ -1087,11 +1087,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 4 4)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T4
 
@@ -1112,11 +1112,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 4 5)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T5
 
@@ -1137,11 +1137,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 4 6)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T6
 
@@ -1162,11 +1162,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 4 7)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T7
 
@@ -1190,9 +1190,9 @@ private def negativeWords : Fin 4 → Fin 4 →
 
 def normality : FiniteNormalityWordCertificate topAmbient (stateGenerators 5) where
   positiveWords := positiveWords
-  positiveEquations := by native_decide
+  positiveEquations := by decide +kernel
   negativeWords := negativeWords
-  negativeEquations := by native_decide
+  negativeEquations := by decide +kernel
 
 namespace T0
 
@@ -1211,11 +1211,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 5 0)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T0
 
@@ -1236,11 +1236,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 5 1)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T1
 
@@ -1261,11 +1261,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 5 2)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T2
 
@@ -1286,11 +1286,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 5 3)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T3
 
@@ -1311,11 +1311,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 5 4)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T4
 
@@ -1336,11 +1336,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 5 5)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T5
 
@@ -1361,11 +1361,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 5 6)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T6
 
@@ -1386,11 +1386,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 5 7)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T7
 
@@ -1414,9 +1414,9 @@ private def negativeWords : Fin 4 → Fin 4 →
 
 def normality : FiniteNormalityWordCertificate topAmbient (stateGenerators 6) where
   positiveWords := positiveWords
-  positiveEquations := by native_decide
+  positiveEquations := by decide +kernel
   negativeWords := negativeWords
-  negativeEquations := by native_decide
+  negativeEquations := by decide +kernel
 
 namespace T0
 
@@ -1435,11 +1435,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 6 0)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T0
 
@@ -1460,11 +1460,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 6 1)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T1
 
@@ -1485,11 +1485,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 6 2)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T2
 
@@ -1510,11 +1510,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 6 3)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T3
 
@@ -1535,11 +1535,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 6 4)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T4
 
@@ -1560,11 +1560,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 6 5)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T5
 
@@ -1585,11 +1585,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 6 6)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T6
 
@@ -1610,11 +1610,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 6 7)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T7
 
@@ -1638,9 +1638,9 @@ private def negativeWords : Fin 4 → Fin 4 →
 
 def normality : FiniteNormalityWordCertificate topAmbient (stateGenerators 7) where
   positiveWords := positiveWords
-  positiveEquations := by native_decide
+  positiveEquations := by decide +kernel
   negativeWords := negativeWords
-  negativeEquations := by native_decide
+  negativeEquations := by decide +kernel
 
 namespace T0
 
@@ -1659,11 +1659,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 7 0)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T0
 
@@ -1684,11 +1684,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 7 1)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T1
 
@@ -1709,11 +1709,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 7 2)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T2
 
@@ -1734,11 +1734,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 7 3)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T3
 
@@ -1759,11 +1759,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 7 4)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T4
 
@@ -1784,11 +1784,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 7 5)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T5
 
@@ -1809,11 +1809,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 7 6)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T6
 
@@ -1834,11 +1834,11 @@ def certificate : FiniteNormalJoinTransitionCertificate
     (stateGenerators (child 7 7)) where
   parentToChild := {
     words := parentWords
-    equations := by native_decide }
+    equations := by decide +kernel }
   representativeWord := representativeWord
-  representativeEquation := by native_decide
+  representativeEquation := by decide +kernel
   childWords := childWords
-  childEquations := by native_decide
+  childEquations := by decide +kernel
 
 end T7
 
