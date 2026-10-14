@@ -508,6 +508,23 @@ $C$. Thus the same registry interface accepts either an explicit finite
 tuple certificate or a structural proof, without changing any quotient
 kernel or adding a counting assumption.
 
+
+There is also a common reduction for coprime affine subgroups. Let
+$T=V\rtimes H$, where $V$ is a vector space in characteristic $p$ and
+$p\nmid |H|$. If $K\leq T$ contains the displayed complement $H$, then
+$K=W\rtimes H$ for the actual invariant subspace $W=K\cap V$.
+Maschke's theorem gives an $H$-equivariant projection $P:V\to W$
+whose restriction to $W$ is the identity. Hence
+\[
+ V\rtimes H\longrightarrow K,\qquad (v,h)\longmapsto(P(v),h)
+\]
+is a retraction. Composing with any original quotient map of $K$
+shows that every such quotient is a quotient of the full affine model.
+Thus a bound valid for the socles of all quotients of that model transfers
+to $K$ without listing $W$ or its normal subgroups. The complement
+inclusion must be checked in the literal action; an abstract subgroup
+inclusion alone does not supply this retraction.
+
 Completeness of the degree-twelve and primitive action lists is the
 published classification input
 \cite{Hulpke2005,HoltRoyle2020,RoneyDougal2005Primitive,TransGrp365,PrimGrp344}.
