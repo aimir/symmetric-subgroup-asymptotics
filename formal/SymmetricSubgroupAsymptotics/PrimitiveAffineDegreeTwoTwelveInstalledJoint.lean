@@ -1,6 +1,8 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1Resolution
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveNaturalFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSharedNaturalWitnesses
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow131CyclicFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow72PolynomialFamily
 
 /-!
 # Install proved fields of the original joint twelve-point catalogue
@@ -25,7 +27,7 @@ open DegreeTwoTwelveJointFiniteRows
 
 def installedSocles : Finset (Fin 301) := {0, 299, 300}
 
-def installedNaturals : Finset (Fin 301) := {0, 10, 11, 13, 27, 28, 33, 44, 52, 57, 59, 82, 86, 88, 90, 104, 107, 108, 112, 201, 218, 284, 299, 300}
+def installedNaturals : Finset (Fin 301) := {0, 10, 11, 13, 27, 28, 33, 44, 52, 57, 59, 71, 82, 86, 88, 90, 104, 107, 108, 112, 115, 118, 119, 130, 155, 166, 168, 169, 174, 201, 208, 210, 212, 216, 218, 230, 244, 246, 247, 257, 262, 263, 266, 273, 280, 284, 288, 299, 300}
 
 structure RemainingData : Type 1 where
   socle : ∀ j : Fin 301, j ∉ installedSocles →
@@ -105,7 +107,57 @@ theorem naturalBound (D : RemainingData) (j : Fin 301)
   · subst j; exact DegreeTwoTwelveNaturalFinitePackages.row300.natural
   by_cases h300 : j = 300
   · subst j; exact DegreeTwoTwelveSharedNaturalWitnesses.row301Natural
-  exact D.natural j (by simp [installedNaturals, h0, h10, h11, h13, h27, h28, h33, h44, h52, h57, h59, h82, h86, h88, h90, h104, h107, h108, h112, h201, h218, h284, h299, h300]) hbranch
+  by_cases h130 : j = 130
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row131Natural
+  by_cases h166 : j = 166
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row167Natural
+  by_cases h168 : j = 168
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row169Natural
+  by_cases h169 : j = 169
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row170Natural
+  by_cases h208 : j = 208
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row209Natural
+  by_cases h210 : j = 210
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row211Natural
+  by_cases h216 : j = 216
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row217Natural
+  by_cases h230 : j = 230
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row231Natural
+  by_cases h244 : j = 244
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row245Natural
+  by_cases h246 : j = 246
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row247Natural
+  by_cases h247 : j = 247
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row248Natural
+  by_cases h257 : j = 257
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row258Natural
+  by_cases h262 : j = 262
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row263Natural
+  by_cases h263 : j = 263
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row264Natural
+  by_cases h266 : j = 266
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row267Natural
+  by_cases h273 : j = 273
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row274Natural
+  by_cases h280 : j = 280
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row281Natural
+  by_cases h288 : j = 288
+  · subst j; exact DegreeTwoTwelveRow131CyclicFamily.row289Natural
+  by_cases h71 : j = 71
+  · subst j; exact DegreeTwoTwelveRow72PolynomialFamily.row72Natural
+  by_cases h115 : j = 115
+  · subst j; exact DegreeTwoTwelveRow72PolynomialFamily.row116Natural
+  by_cases h118 : j = 118
+  · subst j; exact DegreeTwoTwelveRow72PolynomialFamily.row119Natural
+  by_cases h119 : j = 119
+  · subst j; exact DegreeTwoTwelveRow72PolynomialFamily.row120Natural
+  by_cases h155 : j = 155
+  · subst j; exact DegreeTwoTwelveRow72PolynomialFamily.row156Natural
+  by_cases h174 : j = 174
+  · subst j; exact DegreeTwoTwelveRow72PolynomialFamily.row175Natural
+  by_cases h212 : j = 212
+  · subst j; exact DegreeTwoTwelveRow72PolynomialFamily.row213Natural
+  exact D.natural j (by simp [installedNaturals, h0, h10, h11, h13, h27, h28, h33, h44, h52, h57, h59, h71, h82, h86, h88, h90, h104, h107, h108, h112, h115, h118, h119, h130, h155, h166, h168, h169, h174, h201, h208, h210, h212, h216, h218, h230, h244, h246, h247, h257, h262, h263, h266, h273, h280, h284, h288, h299, h300]) hbranch
 
 noncomputable def finiteCatalogue (D : RemainingData) :
     DegreeTwoTwelveJointFiniteCatalogueData catalogue where
