@@ -66,7 +66,9 @@ noncomputable def liftConclusion
   (F.schurData (R := R)).liftConclusion hZmud lit
     degreeTwoSixteenPairProfiles
     degreeTwoSixteenPairProfiles_capacity
-    (by native_decide)
+    (by
+      change degreeTwoPairOrdinaryRelativeProfile 2 4 ∈ degreeTwoSixteenPairProfiles
+      decide +kernel)
 
 /-- Catalogue-facing resolved row constructed from the finite package. -/
 noncomputable def resolvedRow
@@ -82,39 +84,37 @@ end DegreeTwoSixteenOneFrameFiniteRowData
 
 namespace Catalogue
 
-namespace Rows := DegreeTwoSixteenPairFiniteCatalogue
-
 /-- Complete finite packages for the 29 zero16, 15 twoAffine16, and 20
 primitive16 rows. -/
 structure DegreeTwoSixteenOneFrameFiniteCatalogueData : Type 1 where
   zero16 : ∀ j : Fin 29,
     DegreeTwoSixteenOneFrameFiniteRowData
-      (Rows.catalogue.zero16 j)
+      (DegreeTwoSixteenPairFiniteCatalogue.catalogue.zero16 j)
   twoAffine16 : ∀ j : Fin 15,
     DegreeTwoSixteenOneFrameFiniteRowData
-      (Rows.catalogue.twoAffine16 j)
+      (DegreeTwoSixteenPairFiniteCatalogue.catalogue.twoAffine16 j)
   primitive16 : ∀ j : Fin 20,
     DegreeTwoSixteenOneFrameFiniteRowData
-      (Rows.catalogue.primitive16 j)
+      (DegreeTwoSixteenPairFiniteCatalogue.catalogue.primitive16 j)
 
 /-- The unemitted packages after the generated third primitive row is
 removed from the declaration boundary. -/
 structure RemainingDegreeTwoSixteenOneFrameFiniteRowData : Type 1 where
   zero16 : ∀ j : Fin 29,
     DegreeTwoSixteenOneFrameFiniteRowData
-      (Rows.catalogue.zero16 j)
+      (DegreeTwoSixteenPairFiniteCatalogue.catalogue.zero16 j)
   twoAffine16 : ∀ j : Fin 15,
     DegreeTwoSixteenOneFrameFiniteRowData
-      (Rows.catalogue.twoAffine16 j)
+      (DegreeTwoSixteenPairFiniteCatalogue.catalogue.twoAffine16 j)
   primitive16 : ∀ (j : Fin 20), j ≠ (2 : Fin 20) →
     DegreeTwoSixteenOneFrameFiniteRowData
-      (Rows.catalogue.primitive16 j)
+      (DegreeTwoSixteenPairFiniteCatalogue.catalogue.primitive16 j)
 
 /-- Insert the generated primitive16-3 package into the complete one-frame
 catalogue. -/
 noncomputable def ofGeneratedPrimitiveRow3
     (row3 : DegreeTwoSixteenOneFrameFiniteRowData
-      (Rows.catalogue.primitive16 (2 : Fin 20)))
+      (DegreeTwoSixteenPairFiniteCatalogue.catalogue.primitive16 (2 : Fin 20)))
     (F : RemainingDegreeTwoSixteenOneFrameFiniteRowData) :
     DegreeTwoSixteenOneFrameFiniteCatalogueData where
   zero16 := F.zero16
@@ -135,8 +135,8 @@ noncomputable def zero16ResolvedRow
     (lit : PreE7CharacterLiterature)
     (j : Fin 29)
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopRealization (Rows.catalogue.zero16 j) p) :
-    DegreeTwoPairTopResolvedRow (Rows.catalogue.zero16 j)
+    (R : DegreeTwoPairTopRealization (DegreeTwoSixteenPairFiniteCatalogue.catalogue.zero16 j) p) :
+    DegreeTwoPairTopResolvedRow (DegreeTwoSixteenPairFiniteCatalogue.catalogue.zero16 j)
       degreeTwoSixteenPairProfiles p :=
   (F.zero16 j).resolvedRow hZmud lit R
 
@@ -146,8 +146,8 @@ noncomputable def twoAffine16ResolvedRow
     (lit : PreE7CharacterLiterature)
     (j : Fin 15)
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopRealization (Rows.catalogue.twoAffine16 j) p) :
-    DegreeTwoPairTopResolvedRow (Rows.catalogue.twoAffine16 j)
+    (R : DegreeTwoPairTopRealization (DegreeTwoSixteenPairFiniteCatalogue.catalogue.twoAffine16 j) p) :
+    DegreeTwoPairTopResolvedRow (DegreeTwoSixteenPairFiniteCatalogue.catalogue.twoAffine16 j)
       degreeTwoSixteenPairProfiles p :=
   (F.twoAffine16 j).resolvedRow hZmud lit R
 
@@ -157,8 +157,8 @@ noncomputable def primitive16ResolvedRow
     (lit : PreE7CharacterLiterature)
     (j : Fin 20)
     {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopRealization (Rows.catalogue.primitive16 j) p) :
-    DegreeTwoPairTopResolvedRow (Rows.catalogue.primitive16 j)
+    (R : DegreeTwoPairTopRealization (DegreeTwoSixteenPairFiniteCatalogue.catalogue.primitive16 j) p) :
+    DegreeTwoPairTopResolvedRow (DegreeTwoSixteenPairFiniteCatalogue.catalogue.primitive16 j)
       degreeTwoSixteenPairProfiles p :=
   (F.primitive16 j).resolvedRow hZmud lit R
 
