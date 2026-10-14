@@ -8,11 +8,17 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow6Quoti
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow14FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow15FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow18FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow19FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow1QuotientSocles
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow5FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow11QuotientSocles
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow1AffineSocles
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow2AffineSocles
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow9FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow7FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow6FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow4FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow3FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow5AffineSocles
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow8AffineSocles
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPrimitiveSixteenRow10AffineSocles
@@ -44,11 +50,11 @@ namespace DegreeTwoSixteenInstalledSocles
 
 open DegreeTwoSixteenPairFiniteCatalogue
 
-def installedZero : Finset (Fin 29) := {0, 1, 2, 3, 4, 5, 13, 14, 17}
+def installedZero : Finset (Fin 29) := {0, 1, 2, 3, 4, 5, 13, 14, 17, 18}
 
 def installedTwoAffine : Finset (Fin 15) := {0, 4, 10}
 
-def installedPrimitive : Finset (Fin 20) := {0, 1, 4, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18}
+def installedPrimitive : Finset (Fin 20) := {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18}
 
 structure RemainingData : Type 1 where
   zero16 : ∀ j : Fin 29, j ∉ installedZero →
@@ -80,7 +86,9 @@ noncomputable def zeroFamily (D : RemainingData) (j : Fin 29) :
   · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow15QuotientSocles.family
   by_cases h17 : j = 17
   · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow18QuotientSocles.family
-  exact D.zero16 j (by simp [installedZero, h0, h1, h2, h3, h4, h5, h13, h14, h17])
+  by_cases h18 : j = 18
+  · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow19QuotientSocles.family
+  exact D.zero16 j (by simp [installedZero, h0, h1, h2, h3, h4, h5, h13, h14, h17, h18])
 
 noncomputable def twoAffineFamily (D : RemainingData) (j : Fin 15) :
     (catalogue.twoAffine16 j).normalRegistry.QuotientSocleGeneratorFamily 2 := by
@@ -120,7 +128,17 @@ noncomputable def primitiveFamily (D : RemainingData) (j : Fin 20) :
   · subst j; exact PrimitiveAffineDegreeTwoPrimitiveSixteenRow18AffineSocles.family
   by_cases h18 : j = 18
   · subst j; exact PrimitiveAffineDegreeTwoPrimitiveSixteenRow19AffineSocles.family
-  exact D.primitive16 j (by simp [installedPrimitive, h0, h1, h4, h7, h9, h11, h12, h13, h14, h15, h16, h17, h18])
+  by_cases h2 : j = 2
+  · subst j; exact PrimitiveAffineDegreeTwoPrimitiveSixteenRow3AffineSocles.family
+  by_cases h3 : j = 3
+  · subst j; exact PrimitiveAffineDegreeTwoPrimitiveSixteenRow4AffineSocles.family
+  by_cases h5 : j = 5
+  · subst j; exact PrimitiveAffineDegreeTwoPrimitiveSixteenRow6AffineSocles.family
+  by_cases h6 : j = 6
+  · subst j; exact PrimitiveAffineDegreeTwoPrimitiveSixteenRow7AffineSocles.family
+  by_cases h8 : j = 8
+  · subst j; exact PrimitiveAffineDegreeTwoPrimitiveSixteenRow9AffineSocles.family
+  exact D.primitive16 j (by simp [installedPrimitive, h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h11, h12, h13, h14, h15, h16, h17, h18])
 
 /-- Assemble all original one-frame packages once precisely the remaining
 quotient-socle families are supplied. -/
