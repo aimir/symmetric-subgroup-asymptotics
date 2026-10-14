@@ -1,0 +1,137 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitCore
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality0
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality1
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality2
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality3
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality4
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality5
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality6
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality7
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality8
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality9
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality10
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality11
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality12
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality13
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality14
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality15
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality16
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality17
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality18
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality19
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitNormality20
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState0Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState1Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState2Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState3Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState4Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState5Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState6Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState7Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState8Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState9Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState10Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState11Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState12Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState13Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState14Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState15Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState16Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState17Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState18Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState19Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState20Transitions
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState0
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState1
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState2
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState3
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState4
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState5
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState6
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState7
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState8
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState9
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState10
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState11
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState12
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState13
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState14
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState15
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState16
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState17
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState18
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState19
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow29LocalSplitState20
+
+/-!
+# Degree-16 frame top 29: complete local table
+
+Generated by `emit_lean_frames16_grouped_stabilizer_normals_split.py`.
+-/
+
+set_option autoImplicit false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 0
+noncomputable section
+open scoped BigOperators Classical commutatorElement
+
+namespace SymmetricSubgroupAsymptotics
+namespace Non2UnipotentPrefixFiniteMenu
+namespace PrimitiveAffineImprimitiveBlockTransfer
+namespace PrimitiveAffineSixteenFrameRow29LocalSplitTable
+
+open PrimitiveAffineSixteenFrameRow29LocalSplitCore
+
+noncomputable def normality : ∀ i : Fin 21,
+    FiniteNormalityWordCertificate ambient (stateGenerators i) :=
+  (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality0.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality1.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality2.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality3.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality4.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality5.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality6.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality7.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality8.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality9.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality10.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality11.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality12.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality13.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality14.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality15.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality16.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality17.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality18.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality19.normality) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitNormality20.normality) (fun i => Fin.elim0 i))))))))))))))))))))))
+
+noncomputable def transition : ∀ i : Fin 21, ∀ j : Fin 28,
+    FiniteNormalJoinTransitionCertificate
+      (stateGenerators i) (representative j)
+      (stateGenerators (child i j)) :=
+  (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState0Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState1Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState2Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState3Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState4Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState5Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState6Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState7Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState8Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState9Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState10Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState11Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState12Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState13Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState14Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState15Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState16Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState17Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState18Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState19Transitions.transition) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState20Transitions.transition) (fun i => Fin.elim0 i))))))))))))))))))))))
+
+private theorem bottom_eq :
+    Subgroup.closure (Set.range (stateGenerators 0)) = ⊥ := by
+  apply le_antisymm
+  · apply (Subgroup.closure_le _).mpr
+    rintro _ ⟨j, rfl⟩
+    fin_cases j <;> rfl
+  · exact bot_le
+
+noncomputable def registry : FiniteNormalJoinWordRegistryData
+    conjugacy.toCardinalCover ambient stateGenerators where
+  ambient_full := ambient_full
+  normality := normality
+  bottom := 0
+  bottom_eq := bottom_eq
+  child := child
+  transition := transition
+
+private theorem classify : ∀ s : Fin 21,
+    (∃ r, Subgroup.closure (Set.range (stateGenerators s)) =
+      (rowData r).sourceLocalMap.ker) ∨
+    ((Subgroup.closure (Set.range (stateGenerators s))).index ≠ 3 ∧
+      (Subgroup.closure (Set.range (stateGenerators s))).index ≠ 6) ∨
+    ((Subgroup.closure (Set.range (stateGenerators s))).index = 6 ∧
+      ∃ _normal :
+        (Subgroup.closure (Set.range (stateGenerators s))).Normal,
+        IsMulCommutative
+          (PointStabilizer ⧸
+            Subgroup.closure (Set.range (stateGenerators s)))) :=
+  (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState0.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState1.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState2.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState3.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState4.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState5.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState6.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState7.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState8.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState9.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState10.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState11.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState12.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState13.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState14.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState15.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState16.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState17.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState18.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState19.classification) (Fin.cases (PrimitiveAffineSixteenFrameRow29LocalSplitState20.classification) (fun i => Fin.elim0 i))))))))))))))))))))))
+
+noncomputable def localNormalTable : GeneratedSixteenSourceLocalNormalTable Top :=
+  GeneratedSixteenSourceLocalNormalTable.ofWordRegistry Top
+    conjugacy.toCardinalCover ambient stateGenerators registry rowData classify
+
+noncomputable def table : GeneratedSixteenTopTable Top :=
+  localNormalTable.toTopTable
+
+end PrimitiveAffineSixteenFrameRow29LocalSplitTable
+end PrimitiveAffineImprimitiveBlockTransfer
+end Non2UnipotentPrefixFiniteMenu
+end SymmetricSubgroupAsymptotics
+
+end
