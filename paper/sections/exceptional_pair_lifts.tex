@@ -265,6 +265,34 @@ natural $A_{16}$ and $S_{16}$ rows need no invariant-vector census.
 
 \subsection{The twelve-pair actions}
 
+\begin{lemma}[A binary-primary prefix]\label{lem:binary-primary-prefix}
+Let $Q$ be finite and put $V=\Omega_1(Z(Q))_2$. If
+$\dim V\leq r+1$ and $\dim(V\cap Q')\leq r$, there is a linear
+character $\chi$ of binary-power order with
+$\dim(V\cap\ker\chi)\leq r$.
+If $\psi$ is a linear character of odd order with binary kernel,
+then $\chi\psi$ has binary kernel and the same residual central
+binary subspace as $\chi$.
+\end{lemma}
+\begin{proof}
+If $\dim V\leq r$, take the trivial character. Otherwise choose
+$z\in V\setminus Q'$. Characters of the finite abelianization
+separate points, so some linear character detects $z$. Raising
+that character to the odd part of $|Q|$ gives binary-power order
+and still detects $z$. Its kernel on $V$ therefore has codimension
+one. This uses full-order characters: a sign character need not
+detect the square of an element of order four.
+
+Binary-power and odd-order roots of unity cannot cancel, so
+$\ker(\chi\psi)=\ker\chi\cap\ker\psi$. Moreover $\psi$ is
+trivial on every involution. This proves both assertions about
+the twist. For either prefix, the ambient-fixed part of the
+kernel's central binary socle injects into the corresponding
+residual subspace of $V$. Thus the same bound applies to its
+trivial simple type; the nontrivial simple types must still be
+bounded on that actual kernel.
+\end{proof}
+
 \begin{lemma}[The binary-core twelve-point tops]\label{lem:twelve-core}
 Let $T$ be one of the eight binary-core actions in
 Lemma~\ref{lem:small-pair-data}(i). Put $P=O_2(T)$.
@@ -325,7 +353,9 @@ original $T$; same-type multiplicities add. The resulting central
 rank is at most $3+2=5$, the derived central rank at most $3+1=4$,
 and the nontrivial multiplicity at most $2+2=4$ or $1+3=4$.
 The odd socle is central of rank at most one and has zero intersection
-with $Q'$. There is no nonabelian socle. Theorem~\ref{thm:character-feasibility}
+with $Q'$. There is no nonabelian socle.
+Lemma~\ref{lem:binary-primary-prefix} gives residual central binary
+rank at most four, and Theorem~\ref{thm:character-feasibility}
 gives the simultaneous profile $(r,l,t)=(1,0,4)$.
 If $Q$ is nonbinary, multiply the designated binary-primary linear
 character by a faithful cubic character of $Q/O_2(Q)$. Its kernel
