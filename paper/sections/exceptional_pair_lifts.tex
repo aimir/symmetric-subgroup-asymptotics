@@ -105,6 +105,26 @@ for products of two finite groups with normal chains. These structural
 arguments replace normal-subgroup enumeration whenever the literal top
 has the displayed affine or product identification.
 
+\begin{lemma}[Centralizers in an abelian affine model]
+\label{lem:affine-translation-centralizer}
+Let $V$ be an abelian group and $\varphi:H\to\operatorname{Aut}(V)$.
+Projection onto $H$ induces an isomorphism
+\[
+ C_{V\rtimes_\varphi H}(V)/V\cong\ker\varphi.
+\]
+\end{lemma}
+\begin{proof}
+An element $(v,h)$ commutes with every translation $(w,1)$ exactly when
+$\varphi(h)w=w$ for every $w\in V$. The projection of the centralizer
+is therefore $\ker\varphi$, and its kernel is $V$.
+\end{proof}
+
+For a literal affine identification, this reduces the centralizer-quotient
+certificate to the action kernel in the complement. The complement action
+on $V$ may have a nontrivial kernel; the permutation action on the original
+points is retained separately. In the four-ternary models the complement
+has order at most $64$, even when the full top has order $5184$.
+
 \begin{lemma}[Two elementary module bounds]\label{lem:small-monomial}
 A transitive monomial module of dimension $r>1$ over a field has no
 homogeneous section $X^m$ with $m>\lfloor r/2\rfloor$.
