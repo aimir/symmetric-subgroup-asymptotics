@@ -1,4 +1,4 @@
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightSharedTops
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop2
 
 /-!
 # Literal producer interface for paired-eight row 2

@@ -1,10 +1,10 @@
 import SymmetricSubgroupAsymptotics.AlternatingGeneratorBridge
 import Mathlib.GroupTheory.Perm.Fin
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopCatalogues
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow0NormalCertificate
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow1NormalCertificate
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow2NormalCertificate
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow3NormalCertificate
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop1
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop2
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop3
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop4
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow4NormalCertificate
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow8NormalCertificate
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow9NormalCertificate
@@ -53,54 +53,6 @@ private noncomputable def generatedInterface
   DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
     T.conjugacyCover T.ambient T.stateGenerators T.topRegistry.data
     T.literalAction T.actionModelEquiv.symm
-
-noncomputable def top1 : DegreeTwoPairTopFiniteInterface 8 := by
-  letI : Group PrimitiveAffineEightFrameRow0TopCertificate.Source :=
-    PrimitiveAffineEightFrameRow0TopCertificate.group
-  exact DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
-    PrimitiveAffineEightFrameRow0NormalCertificate.topConjugacy.toCardinalCover
-    PrimitiveAffineEightFrameRow0NormalCertificate.topAmbient
-    PrimitiveAffineEightFrameRow0NormalCertificate.stateGenerators
-    PrimitiveAffineEightFrameRow0NormalCertificate.data
-    (Subgroup.closure
-      (Set.range PrimitiveAffineEightFrameRow0TopCertificate.generators))
-    PrimitiveAffineEightFrameRow0TopCertificate.originalEquiv
-
-noncomputable def top2 : DegreeTwoPairTopFiniteInterface 8 := by
-  letI : Group PrimitiveAffineEightFrameRow1TopCertificate.Source :=
-    PrimitiveAffineEightFrameRow1TopCertificate.group
-  exact DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
-    PrimitiveAffineEightFrameRow1NormalCertificate.topConjugacy.toCardinalCover
-    PrimitiveAffineEightFrameRow1NormalCertificate.topAmbient
-    PrimitiveAffineEightFrameRow1NormalCertificate.stateGenerators
-    PrimitiveAffineEightFrameRow1NormalCertificate.data
-    (Subgroup.closure
-      (Set.range PrimitiveAffineEightFrameRow1TopCertificate.generators))
-    PrimitiveAffineEightFrameRow1TopCertificate.originalEquiv
-
-noncomputable def top3 : DegreeTwoPairTopFiniteInterface 8 := by
-  letI : Group PrimitiveAffineEightFrameRow2TopCertificate.Source :=
-    PrimitiveAffineEightFrameRow2TopCertificate.group
-  exact DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
-    PrimitiveAffineEightFrameRow2NormalCertificate.topConjugacy.toCardinalCover
-    PrimitiveAffineEightFrameRow2NormalCertificate.topAmbient
-    PrimitiveAffineEightFrameRow2NormalCertificate.stateGenerators
-    PrimitiveAffineEightFrameRow2NormalCertificate.data
-    (Subgroup.closure
-      (Set.range PrimitiveAffineEightFrameRow2TopCertificate.generators))
-    PrimitiveAffineEightFrameRow2TopCertificate.originalEquiv
-
-noncomputable def top4 : DegreeTwoPairTopFiniteInterface 8 := by
-  letI : Group PrimitiveAffineEightFrameRow3TopCertificate.Source :=
-    PrimitiveAffineEightFrameRow3TopCertificate.group
-  exact DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
-    PrimitiveAffineEightFrameRow3NormalCertificate.topConjugacy.toCardinalCover
-    PrimitiveAffineEightFrameRow3NormalCertificate.topAmbient
-    PrimitiveAffineEightFrameRow3NormalCertificate.stateGenerators
-    PrimitiveAffineEightFrameRow3NormalCertificate.data
-    (Subgroup.closure
-      (Set.range PrimitiveAffineEightFrameRow3TopCertificate.generators))
-    PrimitiveAffineEightFrameRow3TopCertificate.originalEquiv
 
 noncomputable def top5 : DegreeTwoPairTopFiniteInterface 8 := by
   letI : Group PrimitiveAffineEightFrameRow4TopCertificate.Source :=

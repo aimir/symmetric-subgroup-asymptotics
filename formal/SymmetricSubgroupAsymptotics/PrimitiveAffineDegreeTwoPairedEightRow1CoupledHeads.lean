@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledTable
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightSharedTops
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop1
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerCoupledHeads
 
 /-! Catalogue adapter for the independently checked row-one coupled table.

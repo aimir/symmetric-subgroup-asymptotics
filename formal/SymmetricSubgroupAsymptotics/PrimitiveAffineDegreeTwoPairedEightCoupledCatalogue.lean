@@ -1,7 +1,8 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightSharedTops
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1CoupledHeads
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientGenerators
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow1QuotientSocles
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopRelativeKernelOrbitRows
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightFiniteRowData
 
 /-!
 # Coupled-head registries for the paired-eight catalogue
@@ -37,95 +38,6 @@ field is a finite registry declaration on a literal top. -/
 structure RemainingDegreeTwoPairedEightCoupledRegistryData : Type 1 where
   row : ∀ (j : Fin 24), j ≠ (0 : Fin 24) →
     DegreeTwoPairTopCoupledRegistryData (DegreeTwoPairedEightSharedTops.interface j) 4
-
-/-- The complete finite declaration consumed by one paired-eight row. -/
-structure DegreeTwoPairedEightFiniteRowData
-    (D : DegreeTwoPairTopFiniteInterface 8) : Type 1 where
-  coupled : DegreeTwoPairTopCoupledRegistryData D 4
-  quotientGenerators : DegreeTwoPairTopNestedQuotientGeneratorData D
-  topSocle : D.normalRegistry.QuotientSocleGeneratorFamily 2
-
-namespace DegreeTwoPairedEightFiniteRowData
-
-variable {D : DegreeTwoPairTopFiniteInterface 8}
-  (F : DegreeTwoPairedEightFiniteRowData D)
-
-/-- Constructor used by one-row generated package files.  Keeping this
-boundary named makes the emitted assembly file independently checkable. -/
-noncomputable def ofCertificates
-    (coupled : DegreeTwoPairTopCoupledRegistryData D 4)
-    (quotientGenerators : DegreeTwoPairTopNestedQuotientGeneratorData D)
-    (topSocle : D.normalRegistry.QuotientSocleGeneratorFamily 2) :
-    DegreeTwoPairedEightFiniteRowData D where
-  coupled := coupled
-  quotientGenerators := quotientGenerators
-  topSocle := topSocle
-
-/-- Finite top, quotient-generator, and coupled-head declarations construct
-the entire paired-eight orbit row for every tower realization. -/
-noncomputable def rowData
-    (hZmud : ZmudFaithfulCharacterTupleInput)
-    {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization D p) :
-    DegreeTwoPairTopTowerRelativeKernelOrbitRowData
-      D degreeTwoSixteenPairProfiles p R :=
-  DegreeTwoPairTopTowerRelativeKernelOrbitRowData.ofOrdinaryRelativeRawSocleSchurCapacity hZmud 2 4
-      (by decide +kernel)
-      degreeTwoSixteenPairProfiles_capacity
-      (fun N ↦
-        (F.topSocle.data (R.topNormalState N)).quotientSocleGenerator)
-      (fun N ↦
-        F.quotientGenerators.omegaSocle_schurCapacity_le_four
-          F.coupled R N)
-
-end DegreeTwoPairedEightFiniteRowData
-
-/-- Variant of the finite paired-eight package for named large tops whose
-normal lattice is known structurally.  Its module and coupled fields are
-still independently generated from the retained literal tuple, while the
-socle input ranges directly over all normal subgroups. -/
-structure DegreeTwoPairedEightStructuralFiniteRowData
-    (D : DegreeTwoPairTopFiniteInterface 8) : Type 1 where
-  coupled : DegreeTwoPairTopCoupledRegistryData D 4
-  quotientGenerators : DegreeTwoPairTopNestedQuotientGeneratorData D
-  topSocle : ∀ N : {N : Subgroup D.top // N.Normal},
-    SocleNormalGeneratorBound (D.top ⧸ N.1) 2
-
-namespace DegreeTwoPairedEightStructuralFiniteRowData
-
-variable {D : DegreeTwoPairTopFiniteInterface 8}
-  (F : DegreeTwoPairedEightStructuralFiniteRowData D)
-
-/-- Named assembly boundary for one structural paired-eight package. -/
-noncomputable def ofCertificates
-    (coupled : DegreeTwoPairTopCoupledRegistryData D 4)
-    (quotientGenerators : DegreeTwoPairTopNestedQuotientGeneratorData D)
-    (topSocle : ∀ N : {N : Subgroup D.top // N.Normal},
-      SocleNormalGeneratorBound (D.top ⧸ N.1) 2) :
-    DegreeTwoPairedEightStructuralFiniteRowData D where
-  coupled := coupled
-  quotientGenerators := quotientGenerators
-  topSocle := topSocle
-
-/-- The structural all-normal socle theorem feeds the same universal
-paired-tower converter as a generated normal-state family. -/
-noncomputable def rowData
-    (hZmud : ZmudFaithfulCharacterTupleInput)
-    {p : PreE7PairActionClass 16}
-    (R : DegreeTwoPairTopTowerRealization D p) :
-    DegreeTwoPairTopTowerRelativeKernelOrbitRowData
-      D degreeTwoSixteenPairProfiles p R :=
-  DegreeTwoPairTopTowerRelativeKernelOrbitRowData.ofOrdinaryRelativeRawSocleSchurCapacity hZmud 2 4
-      (by decide +kernel)
-      degreeTwoSixteenPairProfiles_capacity
-      (fun N ↦ F.topSocle
-        ⟨D.normalRegistry.state (R.topNormalState N),
-          D.normalRegistry.state_normal (R.topNormalState N)⟩)
-      (fun N ↦
-        F.quotientGenerators.omegaSocle_schurCapacity_le_four
-          F.coupled R N)
-
-end DegreeTwoPairedEightStructuralFiniteRowData
 
 /-- The already generated finite declaration for paired8-1. -/
 noncomputable def generatedPairedEightRow1FiniteData :

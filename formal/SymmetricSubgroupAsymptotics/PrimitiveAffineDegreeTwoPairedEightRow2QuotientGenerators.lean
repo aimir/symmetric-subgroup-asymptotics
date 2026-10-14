@@ -5,7 +5,7 @@ import SymmetricSubgroupAsymptotics.RepresentationSelfDualNestedQuotient
 import SymmetricSubgroupAsymptotics.DualGeneratorSchurCapacity
 import SymmetricSubgroupAsymptotics.Non2SchurRowDegrees
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopQuotientGeneratorData
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow2ProducerInterface
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop2
 
 /-! Generated finite table for paired8-2. Kernel reduction checks
 orthogonals, basis displacements and every nested-pair step; the generic
@@ -122,7 +122,7 @@ noncomputable def finiteTable :
 induction, including every fixed-layer descent. -/
 noncomputable def finiteGeneratorData :
     Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairTopNestedQuotientGeneratorData
-        Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.PrimitiveAffineDegreeTwoPairedEightRow2ProducerInterface.interface where
+        Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoPairedEightSharedTops.top2 where
   certificate := finiteTable.subrepresentation_certificate _ _
 
 end PrimitiveAffineDegreeTwoPairedEightRow2QuotientGenerators
