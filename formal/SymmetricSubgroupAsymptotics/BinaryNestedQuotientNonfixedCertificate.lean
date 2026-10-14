@@ -1,15 +1,14 @@
-import SymmetricSubgroupAsymptotics.RepresentationNestedQuotientFixedExtension
+import SymmetricSubgroupAsymptotics.RepresentationNestedQuotientFixedLower
 import SymmetricSubgroupAsymptotics.DualGeneratorSchurCapacity
 import SymmetricSubgroupAsymptotics.Non2SchurRowDegrees
 
 /-!
-# Finite certificates after removing fixed upper layers
+# Finite certificates after removing fixed layers
 
 A cyclic dual or a quotient of binary dimension at most two bounds each
 nonfixed Schur row by one Schur dimension. The same bound survives adding
-any number of pointwise fixed upper layers. This inductive certificate
-records those layers instead of incorrectly requiring the whole dual to be
-cyclic.
+any number of pointwise fixed upper or lower layers. This inductive
+certificate records those layers without requiring the whole dual to be cyclic.
 -/
 
 set_option autoImplicit false
@@ -34,6 +33,10 @@ inductive BinaryNestedQuotientNonfixedCertificate :
   | fixedExtension (A C B) (hAC : A ≤ C) (hCB : C ≤ B)
       (hdisplacements : ∀ g v, v ∈ B → rho g v - v ∈ C)
       (previous : BinaryNestedQuotientNonfixedCertificate A C hAC) :
+      BinaryNestedQuotientNonfixedCertificate A B (hAC.trans hCB)
+  | fixedLowerExtension (A C B) (hAC : A ≤ C) (hCB : C ≤ B)
+      (hdisplacements : ∀ g v, v ∈ C → rho g v - v ∈ A)
+      (previous : BinaryNestedQuotientNonfixedCertificate C B hCB) :
       BinaryNestedQuotientNonfixedCertificate A B (hAC.trans hCB)
 
 namespace BinaryNestedQuotientNonfixedCertificate
@@ -65,7 +68,7 @@ theorem comp_nonfixed_le_end_finrank
   letI : FiniteDimensional (ZMod 2) X := Module.Finite.of_finite
   letI : FiniteDimensional (ZMod 2) S := Module.Finite.of_finite
   induction C with
-  | cyclic B hAB hgen =>
+  | cyclic A B hAB hgen =>
       let tau := nestedQuotientRepresentation A B hAB
       have hgenComp : RepresentationGeneratedBy (inflatedRepresentation gamma tau.dual) 1 :=
         RepresentationGeneratedBy.comp_of_surjective tau.dual gamma hgamma hgen
@@ -77,7 +80,7 @@ theorem comp_nonfixed_le_end_finrank
       simpa only [tau, one_mul] using
         schurSocleMultiplicity_le_of_dual_generated
           (inflatedRepresentation gamma tau) 1 hdual (X := S)
-  | small B hAB hsmall =>
+  | small A B hAB hsmall =>
       have hone : schurSocleMultiplicity
           (k := ZMod 2) (R := (ZMod 2)[H])
           (A := (inflatedRepresentation gamma (nestedQuotientRepresentation A B hAB)).asModule)
@@ -91,8 +94,11 @@ theorem comp_nonfixed_le_end_finrank
           (k := ZMod 2) (R := (ZMod 2)[H]) (X := S)
         exact Nat.pos_of_mul_pos_left (htower ▸ hdim)
       exact hone.trans hpos
-  | fixedExtension C B hAC hCB hd _ ih =>
+  | fixedExtension A C B hAC hCB hd _ ih =>
       exact (nestedQuotient_comp_nonfixed_le_of_displacements gamma A C B hAC hCB
+        hd sigma S hnonfixed).trans ih
+  | fixedLowerExtension A C B hAC hCB hd _ ih =>
+      exact (nestedQuotient_comp_nonfixed_le_of_lower_displacements gamma A C B hAC hCB
         hd sigma S hnonfixed).trans ih
 
 end BinaryNestedQuotientNonfixedCertificate

@@ -108,10 +108,33 @@ end S{i}
         parts.append(f'''def normalMask (i : Fin {count}) (x : Fin {order}) : Bool :=
   (({arr(masks)} : Array ℕ)[i.val]!).testBit x.val
 ''')
-        for i in range(count):
-            parts.append(f'''private theorem mask_checked{i} (x : Fin {order}) :
+        for i, (rows, _, _, _) in enumerate(tables):
+            n = len(rows)
+            # The table is a partial inverse on mask members; index zero is a
+            # harmless default outside the mask.  Checking it avoids searching
+            # the entire row list separately for every ambient element.
+            preimages = [0] * order
+            for j, x in enumerate(rows):
+                preimages[x] = j
+            parts.append(f'''private def maskPreimage{i} (x : Fin {order}) : Fin {n} :=
+  ({arr(preimages)} : Array (Fin {n}))[x.val]!
+
+private theorem mask_rows_checked{i} :
+    ∀ j : Fin {n}, normalMask {i} (S{i}.certificate.rows j) = true := by
+  decide +kernel
+
+private theorem mask_preimage_checked{i} :
+    ∀ x : Fin {order}, normalMask {i} x = true →
+      S{i}.certificate.rows (maskPreimage{i} x) = x := by
+  decide +kernel
+
+private theorem mask_checked{i} (x : Fin {order}) :
     normalMask {i} x = true ↔ ∃ j, S{i}.certificate.rows j = x := by
-  decide +kernel +revert
+  constructor
+  · intro hx
+    exact ⟨maskPreimage{i} x, mask_preimage_checked{i} x hx⟩
+  · rintro ⟨j, rfl⟩
+    exact mask_rows_checked{i} j
 ''')
         parts.append(f'''theorem normalMask_mem (i : Fin {count}) (x : Source) :
     normalMask i x.index = true ↔ x ∈ state i := by

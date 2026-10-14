@@ -146,17 +146,24 @@ module $X$ into $B/A$ therefore lands in $C/A$, so
 \[
  \operatorname{Hom}_S(X,B/A)=\operatorname{Hom}_S(X,C/A)
 \]
-under the natural inclusion. Repeatedly remove such fixed upper layers.
+under the natural inclusion. One can also remove a fixed lower layer:
+if $[C,S]\leq A$, the projection $B/A\to B/C$ has fixed kernel $C/A$.
+Postcomposition induces an injection
+\[
+ \operatorname{Hom}_S(X,B/A)\hookrightarrow\operatorname{Hom}_S(X,B/C).
+\]
+Indeed, a nonzero map from the nontrivial simple module $X$ is injective,
+so its image cannot lie in a pointwise fixed kernel. Thus removing either
+kind of fixed layer does not decrease the bound on the nontrivial socle.
 A remaining quotient with cyclic dual has Schur demand at most one;
 the same holds for a binary quotient of dimension at most two when $X$
 is nontrivial. These steps commute with surjective pullback of the acting
 group. This certificate allows several trivial generators in the whole
 dual while retaining the required nontrivial bound.
 In the finite registry, it suffices to record for every nested pair a
-reversed cyclic edge, a dimension jump at most two, or a strictly smaller
-intermediate state containing all upper-state displacements. Induction on
-the upper-state dimension verifies every such descent with one uniform
-argument.
+reversed cyclic edge, a dimension jump at most two, or an intermediate
+state removing a nonzero fixed upper or lower layer. Induction on
+$\dim B-\dim A$ verifies every such descent with one uniform argument.
 Vector-orbit completeness can be checked without enumerating the acting
 group. For chosen representatives $v_i$, record for every vector $v$ an
 index $i$ and a word $g$ in the retained generators such that $gv_i=v$.

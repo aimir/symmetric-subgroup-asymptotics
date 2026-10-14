@@ -474,3 +474,9 @@ literal, and each generated file must pass `scripts/check_lean.py`.
 The coupled-head producer checks the bound four directly on every admissible
 triple. The stored composition-multiplicity bound is a separate quantity and
 is not used as the coupled-head bound.
+
+The normal-state socle renderer checks membership using a partial inverse
+table: each listed normal-state row has its mask bit set, and every set mask
+bit maps back to a literal row. These two kernel-checked identities replace
+repeated searches for existential membership witnesses while preserving the
+same normal-registry and quotient-socle interfaces.
