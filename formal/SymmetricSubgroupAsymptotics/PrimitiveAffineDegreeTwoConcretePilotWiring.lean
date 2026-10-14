@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoConcreteResidualAssembly
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1Resolution
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveInstalledJoint
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveInstalledCores
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairedSixOriginalQuotients
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenInstalledSocles
@@ -38,15 +38,15 @@ and completed paired-eight, natural-module or natural-top bounds are not
 requested again. -/
 structure RemainingPairTopSemanticData : Type 1 where
   twelveJoint :
-    DegreeTwoTwelveJointFiniteRows.LiteralCatalogue.RemainingDegreeTwoTwelveJointFiniteRowData
+    DegreeTwoTwelveInstalledJoint.RemainingData
   sixteenOneFrame :
     DegreeTwoSixteenInstalledSocles.RemainingData
 
 namespace RemainingPairTopSemanticData
 
 /-- Count-twelve resolution with all 283 joint rows supplied by the generic
-finite Schur package.  The generated row-one package is inserted before
-catalogue dispatch. -/
+finite Schur package.  The completed whole packages and natural-module fields are inserted
+before catalogue dispatch. -/
 noncomputable def twelveResolution
     (D : RemainingPairTopSemanticData)
     (hZmud : ZmudFaithfulCharacterTupleInput)
@@ -55,7 +55,7 @@ noncomputable def twelveResolution
   let jointFinite :
       DegreeTwoTwelveJointFiniteRows.DegreeTwoTwelveJointFiniteCatalogueData
         TwelveCatalogue :=
-    DegreeTwoTwelveJointFiniteRows.LiteralCatalogue.ofGeneratedRow1 PrimitiveAffineDegreeTwoTwelveRow1Resolution.finiteData D.twelveJoint
+    D.twelveJoint.finiteCatalogue
   intro j p realization
   cases hbranch : (TwelveCatalogue.row j).branch with
   | joint =>
