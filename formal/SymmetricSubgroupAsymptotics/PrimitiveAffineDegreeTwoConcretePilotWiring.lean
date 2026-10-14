@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoConcreteResidualAssembly
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1Resolution
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveInstalledCores
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairedSixOriginalQuotients
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenInstalledSocles
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenNaturalSymbolicCatalogue
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightCompleteCatalogue
@@ -11,7 +12,8 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightCompleteC
 The paired-eight catalogue and the natural `A_16`/`S_16` alternatives are
 supplied by their proved packages. All sixty-four one-frame natural-module
 bounds and the installed original quotient-socle families are also supplied
-internally. The remaining fields request only genuinely unfinished data.
+internally, as are all eight core and both paired-six original-quotient
+certificates. The remaining fields request only genuinely unfinished data.
 
 The exceptional twelve-point branch retains a certificate on each actual
 original quotient. It no longer requests the obsolete scalar top-socle
@@ -37,8 +39,6 @@ requested again. -/
 structure RemainingPairTopSemanticData : Type 1 where
   twelveJoint :
     DegreeTwoTwelveJointFiniteRows.LiteralCatalogue.RemainingDegreeTwoTwelveJointFiniteRowData
-  twelvePaired :
-    DegreeTwoTwelveInstalledCores.RemainingPairedData
   sixteenOneFrame :
     DegreeTwoSixteenInstalledSocles.RemainingData
 
@@ -63,14 +63,14 @@ noncomputable def twelveResolution
       (fun i hi ↦ DegreeTwoTwelvePairFiniteCatalogue.joint_parameters i hi)
       j realization hbranch
   | core =>
-    exact D.twelvePaired.catalogueData.coreResolvedRow
+    exact DegreeTwoTwelvePairedSixOriginalQuotients.exceptionalCatalogueData.coreResolvedRow
       hZmud lit j realization hbranch
   | ternary =>
     exact (degreeTwoFourTernaryCatalogueCompression
       PrimitiveAffineDegreeTwoFourTernaryAffineWitnesses.compressionPackages
       j p realization hbranch).resolvedRow hZmud lit
   | paired =>
-    exact D.twelvePaired.catalogueData.pairedResolvedRow
+    exact DegreeTwoTwelvePairedSixOriginalQuotients.exceptionalCatalogueData.pairedResolvedRow
       hZmud lit j realization hbranch
 
 /-- Supply the proved natural-module and installed quotient-socle bounds. -/
