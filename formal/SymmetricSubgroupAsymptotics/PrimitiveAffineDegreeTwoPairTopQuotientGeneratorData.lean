@@ -12,7 +12,7 @@ import SymmetricSubgroupAsymptotics.PermutationFunctionSelfDual
 The nonfixed part of a two-frame omega filtration uses only one finite fact
 about the literal natural module: every nested invariant quotient has a
 cyclic dual or binary dimension at most two after removing certified fixed
-upper layers. All these alternatives imply the same one-Schur-dimension
+upper or lower layers. All these alternatives imply the same one-Schur-dimension
 bound after inflation along any surjective top map.
 -/
 

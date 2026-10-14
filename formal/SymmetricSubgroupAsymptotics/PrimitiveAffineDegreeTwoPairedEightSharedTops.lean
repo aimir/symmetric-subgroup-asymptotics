@@ -1,3 +1,4 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightAffineLiteralTops
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightNaturalTops
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopCatalogues
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop1
@@ -8,17 +9,17 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop5
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop6
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop7
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop11
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow21NormalCertificate
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow23NormalCertificate
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow27NormalCertificate
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow28NormalCertificate
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop12
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop14
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop19
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop21
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow29NormalCertificate
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameTop8GeneratedData
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameTop9GeneratedData
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameTop10GeneratedData
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameTop13GeneratedData
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameTop15GeneratedData
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameTop16GeneratedData
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop13
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop15
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop16
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameTop17GeneratedData
 
 /-!
@@ -29,7 +30,7 @@ degree eight.  Twenty of these tops already occur in the degree-four
 shared-top proof.  This file reuses their checked Cayley/normal-word data
 directly and installs the actual natural eight-coordinate permutation
 module.  The four tops excluded by the older local-quotient eligibility
-condition are supplied semantically: the two solvable literal actions are
+condition are supplied semantically: the two affine literal actions are
 given by their pinned generators, and the final two are natural `A_8` and
 `S_8`.
 
@@ -62,101 +63,8 @@ noncomputable def top9 : DegreeTwoPairTopFiniteInterface 8 :=
 noncomputable def top10 : DegreeTwoPairTopFiniteInterface 8 :=
   generatedInterface PrimitiveAffineEightFrameTop10GeneratedData.topData
 
-noncomputable def top12 : DegreeTwoPairTopFiniteInterface 8 := by
-  letI : Group PrimitiveAffineEightFrameRow21TopCertificate.Source :=
-    PrimitiveAffineEightFrameRow21TopCertificate.group
-  exact DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
-    PrimitiveAffineEightFrameRow21NormalCertificate.topConjugacy.toCardinalCover
-    PrimitiveAffineEightFrameRow21NormalCertificate.topAmbient
-    PrimitiveAffineEightFrameRow21NormalCertificate.stateGenerators
-    PrimitiveAffineEightFrameRow21NormalCertificate.data
-    (Subgroup.closure
-      (Set.range PrimitiveAffineEightFrameRow21TopCertificate.generators))
-    PrimitiveAffineEightFrameRow21TopCertificate.originalEquiv
-
-noncomputable def top13 : DegreeTwoPairTopFiniteInterface 8 :=
-  generatedInterface PrimitiveAffineEightFrameTop13GeneratedData.topData
-
-noncomputable def top14 : DegreeTwoPairTopFiniteInterface 8 := by
-  letI : Group PrimitiveAffineEightFrameRow23TopCertificate.Source :=
-    PrimitiveAffineEightFrameRow23TopCertificate.group
-  exact DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
-    PrimitiveAffineEightFrameRow23NormalCertificate.topConjugacy.toCardinalCover
-    PrimitiveAffineEightFrameRow23NormalCertificate.topAmbient
-    PrimitiveAffineEightFrameRow23NormalCertificate.stateGenerators
-    PrimitiveAffineEightFrameRow23NormalCertificate.data
-    (Subgroup.closure
-      (Set.range PrimitiveAffineEightFrameRow23TopCertificate.generators))
-    PrimitiveAffineEightFrameRow23TopCertificate.originalEquiv
-
-noncomputable def top15 : DegreeTwoPairTopFiniteInterface 8 :=
-  generatedInterface PrimitiveAffineEightFrameTop15GeneratedData.topData
-
-noncomputable def top16 : DegreeTwoPairTopFiniteInterface 8 :=
-  generatedInterface PrimitiveAffineEightFrameTop16GeneratedData.topData
-
 noncomputable def top17 : DegreeTwoPairTopFiniteInterface 8 :=
   generatedInterface PrimitiveAffineEightFrameTop17GeneratedData.topData
-
-private def top18Generator0 : Equiv.Perm (Fin 8) where
-  toFun x := (#[0, 6, 1, 7, 2, 4, 3, 5] : Array (Fin 8))[x.val]!
-  invFun x := (#[0, 2, 4, 6, 5, 7, 1, 3] : Array (Fin 8))[x.val]!
-  left_inv := by decide +kernel
-  right_inv := by decide +kernel
-
-private def sharedInvolution : Equiv.Perm (Fin 8) where
-  toFun x := (#[1, 0, 3, 2, 5, 4, 7, 6] : Array (Fin 8))[x.val]!
-  invFun x := (#[1, 0, 3, 2, 5, 4, 7, 6] : Array (Fin 8))[x.val]!
-  left_inv := by decide +kernel
-  right_inv := by decide +kernel
-
-def top18Generators : Fin 2 → Equiv.Perm (Fin 8) :=
-  ![top18Generator0, sharedInvolution]
-
-abbrev Top18 : Subgroup (Equiv.Perm (Fin 8)) :=
-  Subgroup.closure (Set.range top18Generators)
-
-noncomputable def top18 : DegreeTwoPairTopFiniteInterface 8 :=
-  DegreeTwoPairTopFiniteInterface.withCanonicalRegistries Top18
-
-noncomputable def top19 : DegreeTwoPairTopFiniteInterface 8 := by
-  letI : Group PrimitiveAffineEightFrameRow27TopCertificate.Source :=
-    PrimitiveAffineEightFrameRow27TopCertificate.group
-  exact DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
-    PrimitiveAffineEightFrameRow27NormalCertificate.topConjugacy.toCardinalCover
-    PrimitiveAffineEightFrameRow27NormalCertificate.topAmbient
-    PrimitiveAffineEightFrameRow27NormalCertificate.stateGenerators
-    PrimitiveAffineEightFrameRow27NormalCertificate.data
-    (Subgroup.closure
-      (Set.range PrimitiveAffineEightFrameRow27TopCertificate.generators))
-    PrimitiveAffineEightFrameRow27TopCertificate.originalEquiv
-
-private def top20Generator1 : Equiv.Perm (Fin 8) where
-  toFun x := (#[0, 2, 1, 3, 4, 6, 5, 7] : Array (Fin 8))[x.val]!
-  invFun x := (#[0, 2, 1, 3, 4, 6, 5, 7] : Array (Fin 8))[x.val]!
-  left_inv := by decide +kernel
-  right_inv := by decide +kernel
-
-def top20Generators : Fin 3 → Equiv.Perm (Fin 8) :=
-  ![top18Generator0, top20Generator1, sharedInvolution]
-
-abbrev Top20 : Subgroup (Equiv.Perm (Fin 8)) :=
-  Subgroup.closure (Set.range top20Generators)
-
-noncomputable def top20 : DegreeTwoPairTopFiniteInterface 8 :=
-  DegreeTwoPairTopFiniteInterface.withCanonicalRegistries Top20
-
-noncomputable def top21 : DegreeTwoPairTopFiniteInterface 8 := by
-  letI : Group PrimitiveAffineEightFrameRow28TopCertificate.Source :=
-    PrimitiveAffineEightFrameRow28TopCertificate.group
-  exact DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
-    PrimitiveAffineEightFrameRow28NormalCertificate.topConjugacy.toCardinalCover
-    PrimitiveAffineEightFrameRow28NormalCertificate.topAmbient
-    PrimitiveAffineEightFrameRow28NormalCertificate.stateGenerators
-    PrimitiveAffineEightFrameRow28NormalCertificate.data
-    (Subgroup.closure
-      (Set.range PrimitiveAffineEightFrameRow28TopCertificate.generators))
-    PrimitiveAffineEightFrameRow28TopCertificate.originalEquiv
 
 noncomputable def top22 : DegreeTwoPairTopFiniteInterface 8 := by
   letI : Group PrimitiveAffineEightFrameRow29TopCertificate.Source :=
