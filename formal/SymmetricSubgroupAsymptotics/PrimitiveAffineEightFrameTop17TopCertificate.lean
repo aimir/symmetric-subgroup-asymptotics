@@ -16,7 +16,7 @@ class-size exhaustion are all rechecked by Lean.
 
 set_option autoImplicit false
 set_option maxRecDepth 100000
-set_option maxHeartbeats 800000
+set_option maxHeartbeats 0
 noncomputable section
 open scoped BigOperators Classical
 
@@ -101,7 +101,7 @@ def certificate : EncodedCayleyCertificate
   parent_next := parent_next_checked
 
 theorem rows_injective : Function.Injective certificate.rows :=
-  by native_decide
+  by decide +kernel
 
 theorem previous_checked : ∀ i j,
     certificate.next (previousRow i j) j = i :=
@@ -148,7 +148,7 @@ private def classCode (x : Source) : Fin 20 := classCodeRows x.index
 def classInvariant : FiniteConjugacyGeneratorInvariant ambient representative where
   Code := Fin 20
   code := classCode
-  generator_invariant := by native_decide +revert
+  generator_invariant := by decide +kernel +revert
   representative_injective := by decide +kernel
 
 private def centralizerCard (i : Fin 20) : ℕ :=
@@ -164,7 +164,7 @@ private theorem centralizer_card : ∀ i : Fin 20,
       Subgroup.mem_centralizer_singleton_iff.symm
   fin_cases i <;>
     rw [Nat.card_eq_fintype_card, Fintype.card_subtype] <;>
-    native_decide
+    decide +kernel
 
 private theorem class_card_sum :
     (∑ i : Fin 20, Nat.card Source / centralizerCard i) =
