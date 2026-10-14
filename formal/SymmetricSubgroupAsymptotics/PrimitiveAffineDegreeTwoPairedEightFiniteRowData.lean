@@ -107,6 +107,47 @@ noncomputable def rowData
 
 end DegreeTwoPairedEightStructuralFiniteRowData
 
+/-- A partial catalogue records exactly which literal entries have checked
+finite packages. This allows independent entries to be installed in any order. -/
+structure DegreeTwoPairedEightPartialCatalogueData {n : ℕ}
+    (D : Fin n → DegreeTwoPairTopFiniteInterface 8) : Type 1 where
+  covered : Finset (Fin n)
+  row : ∀ j, j ∈ covered → DegreeTwoPairedEightStructuralFiniteRowData (D j)
+
+namespace DegreeTwoPairedEightPartialCatalogueData
+
+variable {n : ℕ} {D : Fin n → DegreeTwoPairTopFiniteInterface 8}
+
+/-- Install one complete literal package without changing any uncovered obligation. -/
+noncomputable def add (F : DegreeTwoPairedEightPartialCatalogueData D)
+    (j₀ : Fin n) (r : DegreeTwoPairedEightStructuralFiniteRowData (D j₀)) :
+    DegreeTwoPairedEightPartialCatalogueData D where
+  covered := insert j₀ F.covered
+  row j hj := by
+    by_cases h : j = j₀
+    · subst j
+      exact r
+    · exact F.row j ((Finset.mem_insert.mp hj).resolve_left h)
+
+/-- Every entry outside the installed set remains an explicit obligation. -/
+structure Remaining (F : DegreeTwoPairedEightPartialCatalogueData D) : Type 1 where
+  row : ∀ j, j ∉ F.covered → DegreeTwoPairedEightStructuralFiniteRowData (D j)
+
+noncomputable def complete (F : DegreeTwoPairedEightPartialCatalogueData D)
+    (R : F.Remaining) (j : Fin n) : DegreeTwoPairedEightStructuralFiniteRowData (D j) :=
+  if hj : j ∈ F.covered then F.row j hj else R.row j hj
+
+/-- Assemble every actual tower from the disjoint installed/remaining cover. -/
+noncomputable def resolvedRow (F : DegreeTwoPairedEightPartialCatalogueData D)
+    (rest : F.Remaining)
+    (hZmud : ZmudFaithfulCharacterTupleInput) (lit : PreE7CharacterLiterature)
+    (j : Fin n) {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization (D j) p) :
+    DegreeTwoPairTopResolvedRow (D j) degreeTwoSixteenPairProfiles p :=
+  (((F.complete rest j).rowData hZmud R).sixteenResolvedData lit).toResolvedRow
+
+end DegreeTwoPairedEightPartialCatalogueData
+
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
 end SymmetricSubgroupAsymptotics
