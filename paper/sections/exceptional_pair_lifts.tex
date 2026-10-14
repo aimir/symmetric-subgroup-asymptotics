@@ -112,6 +112,39 @@ for products of two finite groups with normal chains. These structural
 arguments replace normal-subgroup enumeration whenever the literal top
 has the displayed affine or product identification.
 
+\begin{lemma}[Diagonal binary block pairs]
+\label{lem:diagonal-binary-block-pairs}
+Let $V\ne0$ be a finite binary vector space and let
+$R\leq\operatorname{GL}(V)$ act irreducibly. Let
+$W=(V\oplus V)\rtimes(R\times C_2)$, where $R$ acts diagonally
+and $C_2$ interchanges the two summands. If every normal subgroup of
+$V\rtimes R$ has at most $t$ ambient normal generators, then every
+normal subgroup of $W$, and every quotient socle of $W$, has at most
+$t+1$ ambient normal generators. In particular the bound is two when
+the normal subgroups of $V\rtimes R$ form a chain.
+\end{lemma}
+\begin{proof}
+Write $T=V\oplus V$ and $D=\{(v,v):v\in V\}$. The map
+\[
+ ((v,w),(r,e))\longmapsto((v+w,r),e)
+\]
+is a surjection $W\twoheadrightarrow(V\rtimes R)\times C_2$
+with kernel $D$. Every nontrivial normal subgroup $N$ of $W$ contains
+$D$. Indeed, $C_W(T)=T$ by faithfulness, so $N\cap T=0$ would give
+$[N,T]=1$ and hence $N=1$. Choose a nonzero $(v,w)\in N\cap T$.
+If $v=w$ it already lies in $D$; otherwise its sum with its swapped
+vector is the nonzero vector $(v+w,v+w)\in N\cap D$.
+Irreducibility now gives $D\leq N$.
+
+The product bound in Lemma~\ref{lem:product-affine-normal-generators}
+supplies $t+1$ normal generators for each normal subgroup of
+$(V\rtimes R)\times C_2$. If $N=D$, one nonzero diagonal vector
+normally generates $N$. Otherwise lift normal generators of its
+nontrivial image. Their normal closure is nontrivial, contains $D$,
+and has the same image as $N$, so it equals $N$. The quotient-socle
+claim follows by taking preimages and descending the generators.
+\end{proof}
+
 \begin{lemma}[Centralizers in an abelian affine model]
 \label{lem:affine-translation-centralizer}
 Let $V$ be an abelian group and $\varphi:H\to\operatorname{Aut}(V)$.
