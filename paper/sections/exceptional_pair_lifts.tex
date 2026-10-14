@@ -157,6 +157,13 @@ reversed cyclic edge, a dimension jump at most two, or a strictly smaller
 intermediate state containing all upper-state displacements. Induction on
 the upper-state dimension verifies every such descent with one uniform
 argument.
+Vector-orbit completeness can be checked without enumerating the acting
+group. For chosen representatives $v_i$, record for every vector $v$ an
+index $i$ and a word $g$ in the retained generators such that $gv_i=v$.
+An invariant submodule containing $v$ also contains $v_i=g^{-1}v$,
+so the cyclic-span and join tables recover every invariant submodule.
+For $M_8$ this uses only $256$ vector witnesses, including for the natural
+$A_8$ and $S_8$ actions.
 For normal subgroups start with kernels of all irreducible characters
 and close under intersections. Every normal subgroup occurs, since
 the regular representation of its quotient is faithful and decomposes

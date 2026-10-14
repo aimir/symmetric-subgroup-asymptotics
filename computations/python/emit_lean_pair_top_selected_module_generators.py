@@ -9,6 +9,16 @@ module must expose the standard generated-top API: ``Source``, ``group``,
 degree-six Cayley certificates, and is the target API for the count-12/16
 normal-word importer.
 
+With the explicit ``--word-orbit-cover`` option, degree-six/eight rows use
+retained-generator words on at most 256 vectors instead of enumerating
+``Source`` for stabilizers and orbit minima. This mode does not require
+``source_card``; its other top and output interfaces are unchanged. Larger
+vector spaces require a separate resource pilot before enabling this mode.
+
+``--top-namespace`` optionally supplies the dotted namespace of the top API;
+``--top-module`` still selects the imported module. Without this option the
+API namespace remains the top module name, preserving the default output.
+
 The generated Lean file checks coordinate charts, vector-orbit coverage,
 cyclic span rebasing, every child join, and every padded generator path.  It
 exports a concrete uniform generator theorem for the natural permutation
@@ -27,7 +37,9 @@ import tempfile
 SCHEMA = "pair-top-selected-module-generators-v1"
 INPUT_LIMIT = 16 * 1024 * 1024
 OUTPUT_LIMIT = 8 * 1024 * 1024
+WORD_ORBIT_VECTOR_LIMIT = 256
 MODULE_RE = re.compile(r"[A-Z][A-Za-z0-9_]*\Z")
+NAMESPACE_COMPONENT_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\Z")
 
 
 class Refused(ValueError):
@@ -150,14 +162,106 @@ def read_input(path: Path) -> dict:
             "canonical_words": canonical_words, "relations": relations}
 
 
-def emit(module_name: str, top_module: str, data: dict, input_name: str) -> str:
+def word_orbit_cover_source(data: dict) -> str:
+    """Render a complete vector-word cover without enumerating the top group."""
+    from prepare_pair_top_selected_module_generators import (
+        orbit_with_words,
+        permutation_tables,
+    )
+
+    n = data["degree"]
+    require(type(n) is int and n in (6, 8),
+            "word orbit covers are piloted only in degrees six and eight")
+    vector_count = 1 << n
+    require(vector_count <= WORD_ORBIT_VECTOR_LIMIT,
+            "word orbit vector ceiling reached")
+    g = data["generator_count"]
+    representatives = data["orbit_representatives"]
+    o = data["orbit_count"]
+    generators = data.get("generators")
+    cardinalities = data.get("orbit_cardinalities")
+    require(type(g) is int and 1 <= g <= 16 and
+            isinstance(generators, list) and len(generators) == g,
+            "invalid word-cover generator list")
+    require(isinstance(representatives, list) and len(representatives) == o and
+            all(type(seed) is int and 0 <= seed < vector_count
+                for seed in representatives) and
+            representatives == sorted(set(representatives)),
+            "invalid word-cover orbit representatives")
+    require(isinstance(cardinalities, list) and len(cardinalities) == o and
+            all(type(size) is int and 1 <= size <= vector_count
+                for size in cardinalities),
+            "invalid word-cover orbit cardinalities")
+    try:
+        tables = permutation_tables(generators, n)
+    except ValueError as error:
+        raise Refused(str(error)) from error
+
+    orbit_index = [-1] * vector_count
+    cover_words: list[list[int] | None] = [None] * vector_count
+    for index, seed in enumerate(representatives):
+        orbit, words = orbit_with_words(seed, tables)
+        require(len(orbit) == cardinalities[index],
+                "word-cover orbit size differs from the selected payload")
+        for vector, word in zip(orbit, words, strict=True):
+            require(orbit_index[vector] == -1,
+                    "word-cover vector orbits overlap")
+            orbit_index[vector] = index
+            cover_words[vector] = word
+    require(all(index >= 0 for index in orbit_index) and
+            all(word is not None for word in cover_words),
+            "generator words do not cover every binary vector")
+    words = [word for word in cover_words if word is not None]
+    orbit_array = lean_nat_array(orbit_index)
+    word_array = "#[" + ",".join(
+        "[" + ",".join(map(str, word)) + "]" for word in words) + "]"
+    return f'''/-- One retained-generator word for every binary vector. -/
+private def coverOrbit (m : Fin {vector_count}) : Fin {o} :=
+  ({orbit_array} : Array (Fin {o}))[m.val]!
+
+private def coverWord (m : Fin {vector_count}) : List (Fin {g}) :=
+  ({word_array} : Array (List (Fin {g})))[m.val]!
+
+private theorem vectorMask_lt :
+    ∀ v : ModelModule, binaryVectorMask v < {vector_count} := by
+  decide +kernel +revert
+
+private theorem vectorMask_roundtrip :
+    ∀ v : ModelModule, binaryVectorOfMask {n} (binaryVectorMask v) = v := by
+  decide +kernel +revert
+
+/-- This check ranges only over binary vectors and the displayed words;
+it does not enumerate elements or stabilizers of the acting group. -/
+private theorem cover_checked : ∀ m : Fin {vector_count},
+    representation (topWord (coverWord m))
+      (orbitRepresentative (coverOrbit m)) = binaryVectorOfMask {n} m.val :=
+  {finite_checks(vector_count)}
+
+private theorem orbitRepresentative_complete (v : ModelModule) :
+    ∃ i q, representation q (orbitRepresentative i) = v := by
+  let m : Fin {vector_count} := ⟨binaryVectorMask v, vectorMask_lt v⟩
+  refine ⟨coverOrbit m, topWord (coverWord m), ?_⟩
+  exact (cover_checked m).trans (vectorMask_roundtrip v)
+
+'''
+
+
+def emit(module_name: str, top_module: str, data: dict, input_name: str,
+         *, word_orbit_cover: bool = False,
+         top_namespace: str | None = None) -> str:
+    require(top_namespace is None or
+            (isinstance(top_namespace, str) and
+             all(NAMESPACE_COMPONENT_RE.fullmatch(component) is not None
+                 for component in top_namespace.split("."))),
+            "invalid Lean top namespace")
     n = data["degree"]
     s = data["state_count"]
     c = data["cyclic_count"]
     o = data["orbit_count"]
     h = data["section_cap"]
     g = data["generator_count"]
-    top = top_module
+    top = top_module if top_namespace is None else top_namespace
+    word_cover_text = word_orbit_cover_source(data) if word_orbit_cover else ""
     text = f"""import SymmetricSubgroupAsymptotics.{top_module}
 import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicGeneratorBound
 import SymmetricSubgroupAsymptotics.BinaryCoordinateOrbitSpanCertificate
@@ -554,6 +658,22 @@ end SymmetricSubgroupAsymptotics.{module_name}
 
 end
 """
+    if word_orbit_cover:
+        # Leave the established default text untouched. The opt-in path
+        # replaces exactly the block between these stable declarations.
+        start = f"def stabilizerCard (i : Fin {o}) : ℕ :="
+        finish = f"def orbitCyclic (i : Fin {o}) :"
+        require(text.count(start) == 1 and text.count(finish) == 1,
+                "ordinary renderer orbit-cover boundary changed")
+        left, rest = text.split(start, 1)
+        _old_cover, right = rest.split(finish, 1)
+        text = left + word_cover_text + finish + right
+        text = text.replace(
+            "import SymmetricSubgroupAsymptotics.FiniteLinearOrbitMinimalStabilizerCover\n",
+            "")
+        require("source_card" not in text and "sourceOrbitCover" not in text and
+                "stabilizer_card" not in text,
+                "group-enumerating orbit-cover residue")
     return text
 
 
@@ -579,12 +699,20 @@ def main() -> int:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--module", required=True)
     parser.add_argument("--top-module", required=True)
+    parser.add_argument("--top-namespace",
+                        help="dotted namespace containing the top API; "
+                             "defaults to --top-module")
+    parser.add_argument("--word-orbit-cover", action="store_true",
+                        help="use generator words on at most 256 vectors; "
+                             "do not enumerate Source for orbit coverage")
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     for name in (args.module, args.top_module):
         require(MODULE_RE.fullmatch(name) is not None, "invalid Lean module")
     data = read_input(args.input)
-    payload = emit(args.module, args.top_module, data, args.input.name).encode()
+    payload = emit(args.module, args.top_module, data, args.input.name,
+                   word_orbit_cover=args.word_orbit_cover,
+                   top_namespace=args.top_namespace).encode()
     write_atomic(args.output, payload, args.force)
     print(args.output, len(payload), "bytes", data["source_id"])
     return 0

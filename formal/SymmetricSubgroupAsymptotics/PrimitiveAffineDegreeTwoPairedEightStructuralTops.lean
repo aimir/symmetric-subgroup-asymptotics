@@ -1,5 +1,5 @@
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightCoupledCatalogue
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightProducerInterfaces
+import SymmetricSubgroupAsymptotics.FiniteThreeNormalChainSocleGenerators
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightNaturalTops
 import SymmetricSubgroupAsymptotics.SimpleChiefFamilies
 import SymmetricSubgroupAsymptotics.SocleNormalGeneratorNumber
 import Mathlib.GroupTheory.Perm.Fin
@@ -15,6 +15,7 @@ group is needed.
 -/
 
 set_option autoImplicit false
+set_option backward.isDefEq.respectTransparency false
 noncomputable section
 open scoped Classical
 
@@ -23,18 +24,15 @@ namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
 namespace PrimitiveAffineDegreeTwoPairedEightStructuralTops
 
-namespace Shared := DegreeTwoPairedEightSharedTops
-namespace Producers := PrimitiveAffineDegreeTwoPairedEightProducerInterfaces
-
 /-! ## Stable selected-top APIs -/
 
 namespace Row23
 
-abbrev Source := Shared.Top23
+abbrev Source := DegreeTwoPairedEightSharedTops.Top23
 
-def group : Group Source := inferInstance
+abbrev group : Group Source := inferInstance
 
-def generators := Producers.Row23.generators
+def generators := DegreeTwoPairedEightSharedTops.top23Generators
 
 abbrev Top : Subgroup (Equiv.Perm (Fin 8)) :=
   Subgroup.closure (Set.range generators)
@@ -46,8 +44,10 @@ def ambient (i : Fin 2) : Source :=
 
 theorem ambient_full : Subgroup.closure (Set.range ambient) = ⊤ := by
   apply top_unique
-  intro x _hx
-  induction x.property using Subgroup.closure_induction with
+  rintro ⟨x, hx⟩ htop
+  clear htop
+  change (⟨x, hx⟩ : Source) ∈ Subgroup.closure (Set.range ambient)
+  induction hx using Subgroup.closure_induction with
   | mem y hy =>
       obtain ⟨i, rfl⟩ := hy
       exact Subgroup.subset_closure ⟨i, rfl⟩
@@ -59,11 +59,11 @@ end Row23
 
 namespace Row24
 
-abbrev Source := Shared.Top24
+abbrev Source := DegreeTwoPairedEightSharedTops.Top24
 
-def group : Group Source := inferInstance
+abbrev group : Group Source := inferInstance
 
-def generators := Producers.Row24.generators
+def generators := DegreeTwoPairedEightSharedTops.top24Generators
 
 abbrev Top : Subgroup (Equiv.Perm (Fin 8)) :=
   Subgroup.closure (Set.range generators)
@@ -75,8 +75,10 @@ def ambient (i : Fin 2) : Source :=
 
 theorem ambient_full : Subgroup.closure (Set.range ambient) = ⊤ := by
   apply top_unique
-  intro x _hx
-  induction x.property using Subgroup.closure_induction with
+  rintro ⟨x, hx⟩ htop
+  clear htop
+  change (⟨x, hx⟩ : Source) ∈ Subgroup.closure (Set.range ambient)
+  induction hx using Subgroup.closure_induction with
   | mem y hy =>
       obtain ⟨i, rfl⟩ := hy
       exact Subgroup.subset_closure ⟨i, rfl⟩
@@ -95,6 +97,7 @@ private noncomputable def simpleTopSocle
     ∀ N : {N : Subgroup G // N.Normal},
       SocleNormalGeneratorBound (G ⧸ N.1) 2 := by
   intro N
+  letI : N.1.Normal := N.2
   rcases N.2.eq_bot_or_eq_top with hbot | htop
   · let e : G ⧸ N.1 ≃* G :=
       (QuotientGroup.quotientMulEquivOfEq hbot).trans
@@ -111,21 +114,21 @@ private noncomputable def simpleTopSocle
 
 /-- Structural quotient-socle theorem for the natural `A_8` row. -/
 noncomputable def row23TopSocle :
-    ∀ N : {N : Subgroup Shared.Top23 // N.Normal},
-      SocleNormalGeneratorBound (Shared.Top23 ⧸ N.1) 2 := by
+    ∀ N : {N : Subgroup DegreeTwoPairedEightSharedTops.Top23 // N.Normal},
+      SocleNormalGeneratorBound (DegreeTwoPairedEightSharedTops.Top23 ⧸ N.1) 2 := by
   letI : IsSimpleGroup (alternatingGroup (Fin 8)) :=
-    alternatingGroup.isSimpleGroup (by norm_num)
-  let e : Shared.Top23 ≃* alternatingGroup (Fin 8) :=
-    MulEquiv.subgroupCongr Shared.top23_eq_alternating
-  letI : IsSimpleGroup Shared.Top23 := e.isSimpleGroup
-  exact simpleTopSocle Shared.Top23
+    alternatingGroup.isSimpleGroup (α := Fin 8) (by norm_num)
+  let e : DegreeTwoPairedEightSharedTops.Top23 ≃* alternatingGroup (Fin 8) :=
+    MulEquiv.subgroupCongr DegreeTwoPairedEightSharedTops.top23_eq_alternating
+  letI : IsSimpleGroup DegreeTwoPairedEightSharedTops.Top23 := e.isSimpleGroup
+  exact simpleTopSocle DegreeTwoPairedEightSharedTops.Top23
 
 /-- The literal chain `1 < A_8 < S_8`, used after transporting the retained
 row-24 subgroup to the full symmetric group. -/
 private noncomputable def symmetricPermNormalChain :
     FiniteThreeNormalChainData (Equiv.Perm (Fin 8)) := by
   letI : IsSimpleGroup (alternatingGroup (Fin 8)) :=
-    alternatingGroup.isSimpleGroup (by norm_num)
+    alternatingGroup.isSimpleGroup (α := Fin 8) (by norm_num)
   let cycle : Equiv.Perm (Fin 8) := Fin.cycleRange 2
   have hcycle : Equiv.Perm.IsThreeCycle cycle :=
     Fin.isThreeCycle_cycleRange_two
@@ -150,7 +153,7 @@ private noncomputable def symmetricPermNormalChain :
     · exact Or.inl hbot
     · right
       letI : N.Normal := hN
-      haveI : Nontrivial N := Subgroup.nontrivial_iff_ne_bot.mpr hbot
+      haveI : Nontrivial N := (Subgroup.nontrivial_iff_ne_bot N).mpr hbot
       exact indexTwo_maximal (alternatingGroup (Fin 8))
         alternatingGroup.index_eq_two N
         (Equiv.Perm.alternatingGroup_le_of_normal
@@ -158,12 +161,12 @@ private noncomputable def symmetricPermNormalChain :
 
 /-- Structural quotient-socle theorem for the natural `S_8` row. -/
 noncomputable def row24TopSocle :
-    ∀ N : {N : Subgroup Shared.Top24 // N.Normal},
-      SocleNormalGeneratorBound (Shared.Top24 ⧸ N.1) 2 :=
-  let e : Shared.Top24 ≃* Equiv.Perm (Fin 8) :=
-    (MulEquiv.subgroupCongr Shared.top24_eq_top).trans Subgroup.topEquiv
-  (symmetricPermNormalChain.mapEquiv e.symm).
-    quotientSocleGeneratorBound_two
+    ∀ N : {N : Subgroup DegreeTwoPairedEightSharedTops.Top24 // N.Normal},
+      SocleNormalGeneratorBound (DegreeTwoPairedEightSharedTops.Top24 ⧸ N.1) 2 :=
+  let e : DegreeTwoPairedEightSharedTops.Top24 ≃* Equiv.Perm (Fin 8) :=
+    (MulEquiv.subgroupCongr DegreeTwoPairedEightSharedTops.top24_eq_top).trans
+      Subgroup.topEquiv
+  (symmetricPermNormalChain.mapEquiv e.symm).quotientSocleGeneratorBound_two
 
 end PrimitiveAffineDegreeTwoPairedEightStructuralTops
 end PrimitiveAffineImprimitiveBlockTransfer

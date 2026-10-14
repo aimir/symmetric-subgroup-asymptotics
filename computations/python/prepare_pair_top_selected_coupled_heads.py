@@ -157,8 +157,10 @@ def selected_certificate(selected: dict, selected_sha256: str,
                 "quotient_head": quotient,
             })
 
-    cap = stored.get("composition_cap")
-    require(cap == 4, "paired-eight coupled cap changed")
+    # The stored composition multiplicity is not the coupled-head bound.
+    # Natural A8/S8 has composition cap two, but can have head sum three.
+    # Reconstruct and check the required bound four directly on every triple.
+    cap = 4
     triple_count = 0
     for left in range(len(states)):
         for right in range(len(states)):

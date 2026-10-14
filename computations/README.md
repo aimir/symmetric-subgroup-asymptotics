@@ -454,3 +454,23 @@ then installs the finite base into the block induction, proving
 `card(ConjClasses G)^7 ≤ 5^(2*card X)` for every finite faithful binary
 permutation action. Catalogue labels and producer success are not proof
 assumptions, and this theorem does not claim the separate 38/25 rate.
+
+## Selected pair-top module certificates
+
+`python/emit_lean_pair_top_selected_module_generators.py` accepts
+`--word-orbit-cover` for degree-six/eight modules. This replaces enumeration
+of the acting group's stabilizers with an explicit generator word for each
+binary vector, at most 256 witnesses. Lean checks that each word sends its
+selected orbit representative to the stated vector; the cyclic-span and
+join certificates then recover every invariant submodule. The natural
+`A_8` and `S_8` paired-eight packages use this route.
+
+When a top API lives inside a namespace, `--top-module` names the imported
+module and `--top-namespace` names its `Source`, `group`, `generators`,
+`originalEquiv`, `ambient`, and `ambient_full` declarations. The word-cover
+mode does not require `source_card`. All source groups and actions remain
+literal, and each generated file must pass `scripts/check_lean.py`.
+
+The coupled-head producer checks the bound four directly on every admissible
+triple. The stored composition-multiplicity bound is a separate quantity and
+is not used as the coupled-head bound.

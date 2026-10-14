@@ -5,13 +5,15 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow4Finit
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow5FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow6FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow7FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow23FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow24FinitePackage
 
 /-!
-# Install the first seven complete paired-eight rows
+# Install nine complete paired-eight rows
 
 Finite quotient-socle tuples and the normal-chain theorem feed the same
-all-normal package. The remaining boundary has seventeen entries: the
-first seven rows are supplied here, rather than requested again as inputs.
+all-normal package. The first seven rows and the natural alternating and
+symmetric tops are supplied here. The remaining boundary has fifteen entries.
 -/
 
 -- Keep concrete catalogue signatures out of the optional suggestion index.
@@ -194,27 +196,31 @@ noncomputable def generatedPairedEightFirstFiveCatalogue :
   covered := Finset.univ.filter (fun j : Fin 24 ↦ j.val < 5)
   row j hj := generatedPairedEightFirstFive j (Finset.mem_filter.mp hj).2
 
-/-- Install the next two complete packages through the shared extension operation. -/
+/-- Install the remaining checked packages through the shared extension operation. -/
 noncomputable def installedPairedEightCatalogue :
     DegreeTwoPairedEightPartialCatalogueData DegreeTwoPairedEightSharedTops.interface :=
-  (generatedPairedEightFirstFiveCatalogue.add 5
+  (((generatedPairedEightFirstFiveCatalogue.add 5
     PrimitiveAffineDegreeTwoPairedEightRow6FinitePackage.finiteData).add 6
-    PrimitiveAffineDegreeTwoPairedEightRow7FinitePackage.finiteData
+    PrimitiveAffineDegreeTwoPairedEightRow7FinitePackage.finiteData).add 22
+    PrimitiveAffineDegreeTwoPairedEightRow23FinitePackage.finiteData).add 23
+    PrimitiveAffineDegreeTwoPairedEightRow24FinitePackage.finiteData
 
 theorem installedPairedEightCatalogue_mem_covered_iff (j : Fin 24) :
-    j ∈ installedPairedEightCatalogue.covered ↔ j.val < 7 := by
-  change (j ∈ insert (6 : Fin 24) (insert (5 : Fin 24)
-    (Finset.univ.filter (fun j : Fin 24 ↦ j.val < 5)))) ↔ _
+    j ∈ installedPairedEightCatalogue.covered ↔ j.val < 7 ∨ 22 ≤ j.val := by
+  change (j ∈ insert (23 : Fin 24) (insert (22 : Fin 24)
+    (insert (6 : Fin 24) (insert (5 : Fin 24)
+      (Finset.univ.filter (fun j : Fin 24 ↦ j.val < 5)))))) ↔ _
   simp only [Finset.mem_insert, Finset.mem_filter, Finset.mem_univ, true_and]
   omega
 
 theorem installedPairedEightCatalogue_covered_card :
-    installedPairedEightCatalogue.covered.card = 7 := by
-  change (insert (6 : Fin 24) (insert (5 : Fin 24)
-    (Finset.univ.filter (fun j : Fin 24 ↦ j.val < 5)))).card = 7
+    installedPairedEightCatalogue.covered.card = 9 := by
+  change (insert (23 : Fin 24) (insert (22 : Fin 24)
+    (insert (6 : Fin 24) (insert (5 : Fin 24)
+      (Finset.univ.filter (fun j : Fin 24 ↦ j.val < 5)))))).card = 9
   decide +kernel
 
-/-- The remaining boundary excludes exactly the installed seven packages. -/
+/-- The remaining boundary excludes exactly the installed nine packages. -/
 abbrev RemainingInstalledPairedEightData := installedPairedEightCatalogue.Remaining
 
 noncomputable def RemainingInstalledPairedEightData.resolvedRow
