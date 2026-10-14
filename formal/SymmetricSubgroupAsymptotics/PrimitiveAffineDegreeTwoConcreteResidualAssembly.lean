@@ -1,7 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCatalogue
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoSixteenPairFiniteCatalogue
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopBinaryKernelRows
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoFourTernaryFiniteChecks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoFourTernaryAffineWitnesses
 
 /-!
 # Concrete degree-two pair-top assembly
@@ -103,7 +103,7 @@ noncomputable def twelveResolution
     hZmud lit
     (fun j p realization h ↦
       (D.twelveRelative j p realization h).twelveResolvedData lit)
-    degreeTwoFourTernaryCompressionPackages
+    PrimitiveAffineDegreeTwoFourTernaryAffineWitnesses.compressionPackages
 
 /-- Resolve the complete concrete count-sixteen table, including the
 twenty-four paired-eight rows and all 64 literal degree-sixteen rows. -/

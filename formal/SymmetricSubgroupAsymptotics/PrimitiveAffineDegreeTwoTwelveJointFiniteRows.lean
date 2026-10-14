@@ -162,22 +162,20 @@ end DegreeTwoTwelveJointFiniteCatalogueData
 
 namespace LiteralCatalogue
 
-namespace Catalogue := DegreeTwoTwelvePairFiniteCatalogue
-
 /-- The still-unemitted joint rows of the literal count-twelve catalogue.
 The first row is excluded because its two certificates are already checked. -/
 structure RemainingDegreeTwoTwelveJointFiniteRowData : Type 1 where
   row : ∀ (j : Fin 301), j ≠ (0 : Fin 301) →
-    (Catalogue.catalogue.row j).branch = .joint →
-    DegreeTwoTwelveJointFiniteRowPackage (Catalogue.catalogue.row j)
+    (DegreeTwoTwelvePairFiniteCatalogue.catalogue.row j).branch = .joint →
+    DegreeTwoTwelveJointFiniteRowPackage (DegreeTwoTwelvePairFiniteCatalogue.catalogue.row j)
 
 /-- Combine the generated first package with finite declarations for every
 remaining joint row. -/
 noncomputable def ofGeneratedRow1
     (row1 : DegreeTwoTwelveJointFiniteRowPackage
-      (Catalogue.catalogue.row (0 : Fin 301)))
+      (DegreeTwoTwelvePairFiniteCatalogue.catalogue.row (0 : Fin 301)))
     (F : RemainingDegreeTwoTwelveJointFiniteRowData) :
-    DegreeTwoTwelveJointFiniteCatalogueData Catalogue.catalogue where
+    DegreeTwoTwelveJointFiniteCatalogueData DegreeTwoTwelvePairFiniteCatalogue.catalogue where
   row := fun j hbranch ↦ by
     by_cases hj : j = (0 : Fin 301)
     · subst j

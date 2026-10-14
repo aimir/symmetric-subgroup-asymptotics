@@ -1,5 +1,4 @@
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1CayleySocles
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1NaturalModule
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1Symbolic
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveJointFiniteRows
 
 /-!
@@ -21,28 +20,19 @@ namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
 namespace PrimitiveAffineDegreeTwoTwelveRow1Resolution
 
-namespace Catalogue := DegreeTwoTwelvePairFiniteCatalogue
-namespace Socles :=
-  SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1CayleySocles
-namespace Natural :=
-  SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1NaturalModule
-namespace JointFinite := DegreeTwoTwelveJointFiniteRows
-
-/-- The two generated row-1 certificates in the common finite package used
+/-- The two structural row-1 certificates in the common finite package used
 by every joint count-twelve row. -/
 noncomputable def finiteData :
-    JointFinite.DegreeTwoTwelveJointFiniteRowData
-      Catalogue.row1Interface 1 1 where
-  topSocle := Socles.family
-  natural := by
-    change UniformSubrepresentationGeneratorBound Natural.representation 1
-    exact Natural.uniform
+    DegreeTwoTwelveJointFiniteRows.DegreeTwoTwelveJointFiniteRowData
+      DegreeTwoTwelvePairFiniteCatalogue.row1Interface 1 1 where
+  topSocle := SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1Symbolic.family
+  natural := SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow1Symbolic.natural
 
-/-- The literal row-1 finite certificates in the reusable Schur-lift form. -/
+/-- The literal row-1 structural certificates in the reusable Schur-lift form. -/
 noncomputable def schurData
     {p : PreE7PairActionClass 12}
-    {R : DegreeTwoPairTopRealization Catalogue.row1Interface p} :
-    DegreeTwoPairTopSchurData Catalogue.row1Interface p R :=
+    {R : DegreeTwoPairTopRealization DegreeTwoTwelvePairFiniteCatalogue.row1Interface p} :
+    DegreeTwoPairTopSchurData DegreeTwoTwelvePairFiniteCatalogue.row1Interface p R :=
   finiteData.schurData
 
 /-- All-original-normal lift for the first joint count-twelve row. -/
@@ -50,12 +40,9 @@ noncomputable def liftConclusion
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
     {p : PreE7PairActionClass 12}
-    (R : DegreeTwoPairTopRealization Catalogue.row1Interface p) :
-    DegreeTwoPairTopRelativeLiftConclusion Catalogue.row1Interface p :=
-  (schurData (R := R)).liftConclusion hZmud lit
-    (degreeTwoTwelvePairJointProfiles 1 1)
-    (degreeTwoTwelvePairJointProfiles_capacity 1 1 (by native_decide))
-    (by native_decide)
+    (R : DegreeTwoPairTopRealization DegreeTwoTwelvePairFiniteCatalogue.row1Interface p) :
+    DegreeTwoPairTopRelativeLiftConclusion DegreeTwoTwelvePairFiniteCatalogue.row1Interface p :=
+  finiteData.liftConclusion hZmud lit (by decide +kernel) R
 
 /-- Catalogue-facing resolved row.  This is a concrete endpoint rather than
 an interface or a parameterized representative premise. -/
@@ -64,10 +51,10 @@ noncomputable def resolvedRow
     (lit : PreE7CharacterLiterature)
     {p : PreE7PairActionClass 12}
     (R : DegreeTwoPairTopRealization
-      (Catalogue.catalogue.row (0 : Fin 301)).finite p) :
+      (DegreeTwoTwelvePairFiniteCatalogue.catalogue.row (0 : Fin 301)).finite p) :
     DegreeTwoPairTopResolvedRow
-      (Catalogue.catalogue.row (0 : Fin 301)).finite
-      (Catalogue.catalogue.row (0 : Fin 301)).expectedProfiles p := by
+      (DegreeTwoTwelvePairFiniteCatalogue.catalogue.row (0 : Fin 301)).finite
+      (DegreeTwoTwelvePairFiniteCatalogue.catalogue.row (0 : Fin 301)).expectedProfiles p := by
   let lift := liftConclusion hZmud lit R
   exact .relative lift rfl (degreeTwoTwelvePairRelativeNumerics lift.lift)
 
