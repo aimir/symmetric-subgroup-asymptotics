@@ -5,7 +5,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop1
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop2
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop3
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop4
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow4NormalCertificate
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop5
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow8NormalCertificate
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow9NormalCertificate
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow20NormalCertificate
@@ -53,18 +53,6 @@ private noncomputable def generatedInterface
   DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
     T.conjugacyCover T.ambient T.stateGenerators T.topRegistry.data
     T.literalAction T.actionModelEquiv.symm
-
-noncomputable def top5 : DegreeTwoPairTopFiniteInterface 8 := by
-  letI : Group PrimitiveAffineEightFrameRow4TopCertificate.Source :=
-    PrimitiveAffineEightFrameRow4TopCertificate.group
-  exact DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
-    PrimitiveAffineEightFrameRow4NormalCertificate.topConjugacy.toCardinalCover
-    PrimitiveAffineEightFrameRow4NormalCertificate.topAmbient
-    PrimitiveAffineEightFrameRow4NormalCertificate.stateGenerators
-    PrimitiveAffineEightFrameRow4NormalCertificate.data
-    (Subgroup.closure
-      (Set.range PrimitiveAffineEightFrameRow4TopCertificate.generators))
-    PrimitiveAffineEightFrameRow4TopCertificate.originalEquiv
 
 noncomputable def top6 : DegreeTwoPairTopFiniteInterface 8 := by
   letI : Group PrimitiveAffineEightFrameRow8TopCertificate.Source :=

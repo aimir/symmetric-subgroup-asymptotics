@@ -2,7 +2,7 @@
 """Emit one bounded normal-state or quotient-socle certificate from an existing top.
 
 Reuses the selected encoded top and normal-word registry. It does not build
-another ambient action table. The initial pilot ceiling is 256 elements,
+another ambient action table. The selected top ceiling is 288 elements,
 32 normal states and 16 generators. Run through bounded_python_stage.py.
 """
 from pathlib import Path
@@ -32,7 +32,7 @@ def main():
     top, normal = (p.read_text() for p in inputs)
     m = re.search(r'private def codes \(i : Fin (\d+)\) : Fin \(8\^8\) :=\n([^\n]+)', top)
     assert m, 'expected an existing encoded eight-point top'
-    order = int(m[1]); assert 1 < order <= 256
+    order = int(m[1]); assert 1 < order <= 288
     codes = list(map(int, re.findall(r'\b(?:then|else) (\d+)', m[2])))
     assert len(codes) == len(set(codes)) == order
     perms = [tuple(c // 8**i % 8 for i in range(8)) for c in codes]

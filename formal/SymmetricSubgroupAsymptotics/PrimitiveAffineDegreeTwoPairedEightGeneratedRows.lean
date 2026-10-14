@@ -2,13 +2,14 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightCoupledCa
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow2FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow3FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow4FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow5FinitePackage
 
 /-!
-# Install the first four complete paired-eight rows
+# Install the first five complete paired-eight rows
 
 Finite quotient-socle tuples and the normal-chain theorem feed the same
-all-normal package. The remaining boundary has twenty entries: the
-first four rows are supplied here, rather than requested again as inputs.
+all-normal package. The remaining boundary has nineteen entries: the
+first five rows are supplied here, rather than requested again as inputs.
 -/
 
 -- Keep concrete catalogue signatures out of the optional suggestion index.
@@ -19,6 +20,9 @@ run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEnt
 run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEntry env "generatedPairedEightFirstFour"
 run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEntry env "RemainingDegreeTwoPairedEightAfterData"
 run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEntry env "RemainingDegreeTwoPairedEightAfterFourData"
+
+run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEntry env "generatedPairedEightFirstFive"
+run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEntry env "RemainingDegreeTwoPairedEightAfterFiveData"
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -156,6 +160,27 @@ noncomputable def RemainingDegreeTwoPairedEightAfterFourData.resolvedRow
     DegreeTwoPairTopResolvedRow (DegreeTwoPairedEightSharedTops.interface j)
       degreeTwoSixteenPairProfiles p :=
   F.resolvedWith generatedPairedEightFirstFour hZmud lit j R
+
+noncomputable def generatedPairedEightFirstFive
+    (j : Fin 24) (hj : j.val < 5) :
+    DegreeTwoPairedEightStructuralFiniteRowData (DegreeTwoPairedEightSharedTops.interface j) := by
+  by_cases hfour : j.val < 4
+  · exact generatedPairedEightFirstFour j hfour
+  · have hfive : j = 4 := by omega
+    subst j
+    exact PrimitiveAffineDegreeTwoPairedEightRow5FinitePackage.finiteData
+
+/-- Nineteen finite packages remain after the five installed rows. -/
+abbrev RemainingDegreeTwoPairedEightAfterFiveData := RemainingDegreeTwoPairedEightAfterData 5
+
+noncomputable def RemainingDegreeTwoPairedEightAfterFiveData.resolvedRow
+    (F : RemainingDegreeTwoPairedEightAfterFiveData)
+    (hZmud : ZmudFaithfulCharacterTupleInput) (lit : PreE7CharacterLiterature)
+    (j : Fin 24) {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization (DegreeTwoPairedEightSharedTops.interface j) p) :
+    DegreeTwoPairTopResolvedRow (DegreeTwoPairedEightSharedTops.interface j)
+      degreeTwoSixteenPairProfiles p :=
+  F.resolvedWith generatedPairedEightFirstFive hZmud lit j R
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
