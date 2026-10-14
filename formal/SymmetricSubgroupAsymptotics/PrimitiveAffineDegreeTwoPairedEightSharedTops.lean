@@ -13,14 +13,14 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop12
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop14
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop19
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop21
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameRow29NormalCertificate
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameTop8GeneratedData
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameTop9GeneratedData
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameTop10GeneratedData
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop22
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop8
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop9
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop10
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop13
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop15
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop16
-import SymmetricSubgroupAsymptotics.PrimitiveAffineEightFrameTop17GeneratedData
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightTop17
 
 /-!
 # Reuse of the twenty-four degree-eight pair tops
@@ -47,36 +47,6 @@ namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
 namespace DegreeTwoPairedEightSharedTops
-
-private noncomputable def generatedInterface
-    (T : GeneratedTopData) : DegreeTwoPairTopFiniteInterface 8 :=
-  DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
-    T.conjugacyCover T.ambient T.stateGenerators T.topRegistry.data
-    T.literalAction T.actionModelEquiv.symm
-
-noncomputable def top8 : DegreeTwoPairTopFiniteInterface 8 :=
-  generatedInterface PrimitiveAffineEightFrameTop8GeneratedData.topData
-
-noncomputable def top9 : DegreeTwoPairTopFiniteInterface 8 :=
-  generatedInterface PrimitiveAffineEightFrameTop9GeneratedData.topData
-
-noncomputable def top10 : DegreeTwoPairTopFiniteInterface 8 :=
-  generatedInterface PrimitiveAffineEightFrameTop10GeneratedData.topData
-
-noncomputable def top17 : DegreeTwoPairTopFiniteInterface 8 :=
-  generatedInterface PrimitiveAffineEightFrameTop17GeneratedData.topData
-
-noncomputable def top22 : DegreeTwoPairTopFiniteInterface 8 := by
-  letI : Group PrimitiveAffineEightFrameRow29TopCertificate.Source :=
-    PrimitiveAffineEightFrameRow29TopCertificate.group
-  exact DegreeTwoPairTopFiniteInterface.ofWordRegistryEquiv
-    PrimitiveAffineEightFrameRow29NormalCertificate.topConjugacy.toCardinalCover
-    PrimitiveAffineEightFrameRow29NormalCertificate.topAmbient
-    PrimitiveAffineEightFrameRow29NormalCertificate.stateGenerators
-    PrimitiveAffineEightFrameRow29NormalCertificate.data
-    (Subgroup.closure
-      (Set.range PrimitiveAffineEightFrameRow29TopCertificate.generators))
-    PrimitiveAffineEightFrameRow29TopCertificate.originalEquiv
 
 /-- The complete ordered family `paired8-1` through `paired8-24`. -/
 noncomputable def interface : Fin 24 → DegreeTwoPairTopFiniteInterface 8 :=
