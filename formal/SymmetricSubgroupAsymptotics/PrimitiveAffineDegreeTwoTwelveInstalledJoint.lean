@@ -1,3 +1,4 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveMetacyclicFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow19CyclicFamily
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow72FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow131FinitePackage
@@ -28,7 +29,7 @@ namespace DegreeTwoTwelveInstalledJoint
 open DegreeTwoTwelvePairFiniteCatalogue
 open DegreeTwoTwelveJointFiniteRows
 
-def installedSocles : Finset (Fin 301) := {0, 16, 18, 71, 130, 299, 300}
+def installedSocles : Finset (Fin 301) := {0, 16, 18, 37, 38, 41, 71, 130, 299, 300}
 
 def installedNaturals : Finset (Fin 301) := {0, 10, 11, 13, 18, 27, 28, 33, 37, 38, 41, 44, 52, 57, 59, 71, 78, 80, 82, 86, 88, 90, 104, 107, 108, 112, 115, 118, 119, 124, 130, 155, 166, 168, 169, 174, 201, 208, 210, 212, 216, 218, 230, 244, 246, 247, 257, 262, 263, 266, 273, 280, 284, 288, 299, 300}
 
@@ -63,7 +64,13 @@ noncomputable def socleFamily (D : RemainingData) (j : Fin 301)
   · subst j; exact DegreeTwoTwelveRow72FinitePackage.finiteData.topSocle
   by_cases h130 : j = 130
   · subst j; exact DegreeTwoTwelveRow131FinitePackage.finiteData.topSocle
-  exact D.socle j (by simp [installedSocles, h0, h16, h18, h71, h130, h299, h300]) hbranch
+  by_cases h37 : j = 37
+  · subst j; exact DegreeTwoTwelveMetacyclicFinitePackages.row38.topSocle
+  by_cases h38 : j = 38
+  · subst j; exact DegreeTwoTwelveMetacyclicFinitePackages.row39.topSocle
+  by_cases h41 : j = 41
+  · subst j; exact DegreeTwoTwelveMetacyclicFinitePackages.row42.topSocle
+  exact D.socle j (by simp [installedSocles, h0, h16, h18, h37, h38, h41, h71, h130, h299, h300]) hbranch
 
 theorem naturalBound (D : RemainingData) (j : Fin 301)
     (hbranch : (catalogue.row j).branch = .joint) :
