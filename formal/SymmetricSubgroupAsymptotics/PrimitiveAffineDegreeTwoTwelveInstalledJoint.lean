@@ -1,3 +1,5 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveThreeBlockNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow94NaturalFamily
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow17NaturalFamily
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveParitySignFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow17FinitePackage
@@ -34,7 +36,7 @@ open DegreeTwoTwelveJointFiniteRows
 
 def installedSocles : Finset (Fin 301) := {0, 16, 18, 37, 38, 41, 71, 78, 80, 124, 130, 299, 300}
 
-def installedNaturals : Finset (Fin 301) := {0, 10, 11, 13, 16, 18, 27, 28, 33, 34, 35, 37, 38, 41, 44, 52, 57, 59, 71, 72, 78, 80, 82, 86, 88, 90, 104, 107, 108, 112, 115, 117, 118, 119, 120, 124, 130, 155, 166, 168, 169, 174, 176, 177, 199, 201, 208, 210, 212, 216, 218, 230, 232, 244, 246, 247, 257, 262, 263, 266, 273, 280, 284, 288, 299, 300}
+def installedNaturals : Finset (Fin 301) := {0, 10, 11, 13, 16, 18, 20, 27, 28, 33, 34, 35, 37, 38, 41, 44, 52, 54, 55, 56, 57, 59, 71, 72, 78, 80, 82, 86, 88, 89, 90, 93, 94, 95, 96, 99, 100, 104, 105, 107, 108, 112, 115, 117, 118, 119, 120, 124, 130, 140, 143, 149, 150, 155, 166, 168, 169, 174, 176, 177, 183, 184, 186, 188, 189, 190, 199, 201, 208, 210, 212, 216, 218, 220, 221, 224, 225, 230, 232, 244, 246, 247, 249, 257, 262, 263, 266, 273, 280, 284, 288, 291, 293, 299, 300}
 
 structure RemainingData : Type 1 where
   socle : ∀ j : Fin 301, j ∉ installedSocles →
@@ -218,7 +220,65 @@ theorem naturalBound (D : RemainingData) (j : Fin 301)
   · subst j; exact DegreeTwoTwelveRow17NaturalFamily.row200Natural
   by_cases h232 : j = 232
   · subst j; exact DegreeTwoTwelveRow17NaturalFamily.row233Natural
-  exact D.natural j (by simp [installedNaturals, h34, h35, h72, h117, h120, h176, h177, h199, h232, h16, h18, h37, h38, h41, h78, h80, h124, h0, h10, h11, h13, h27, h28, h33, h44, h52, h57, h59, h71, h82, h86, h88, h90, h104, h107, h108, h112, h115, h118, h119, h130, h155, h166, h168, h169, h174, h201, h208, h210, h212, h216, h218, h230, h244, h246, h247, h257, h262, h263, h266, h273, h280, h284, h288, h299, h300]) hbranch
+  by_cases h93 : j = 93
+  · subst j; exact DegreeTwoTwelveRow94NaturalFamily.row94Natural
+  by_cases h140 : j = 140
+  · subst j; exact DegreeTwoTwelveRow94NaturalFamily.row141Natural
+  by_cases h149 : j = 149
+  · subst j; exact DegreeTwoTwelveRow94NaturalFamily.row150Natural
+  by_cases h150 : j = 150
+  · subst j; exact DegreeTwoTwelveRow94NaturalFamily.row151Natural
+  by_cases h184 : j = 184
+  · subst j; exact DegreeTwoTwelveRow94NaturalFamily.row185Natural
+  by_cases h188 : j = 188
+  · subst j; exact DegreeTwoTwelveRow94NaturalFamily.row189Natural
+  by_cases h220 : j = 220
+  · subst j; exact DegreeTwoTwelveRow94NaturalFamily.row221Natural
+  by_cases h221 : j = 221
+  · subst j; exact DegreeTwoTwelveRow94NaturalFamily.row222Natural
+  by_cases h224 : j = 224
+  · subst j; exact DegreeTwoTwelveRow94NaturalFamily.row225Natural
+  by_cases h249 : j = 249
+  · subst j; exact DegreeTwoTwelveRow94NaturalFamily.row250Natural
+  by_cases h291 : j = 291
+  · subst j; exact DegreeTwoTwelveRow94NaturalFamily.row292Natural
+  by_cases h293 : j = 293
+  · subst j; exact DegreeTwoTwelveRow94NaturalFamily.row294Natural
+  by_cases h20 : j = 20
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row21Natural
+  by_cases h54 : j = 54
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row55Natural
+  by_cases h55 : j = 55
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row56Natural
+  by_cases h56 : j = 56
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row57Natural
+  by_cases h89 : j = 89
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row90Natural
+  by_cases h94 : j = 94
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row95Natural
+  by_cases h95 : j = 95
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row96Natural
+  by_cases h96 : j = 96
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row97Natural
+  by_cases h99 : j = 99
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row100Natural
+  by_cases h100 : j = 100
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row101Natural
+  by_cases h105 : j = 105
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row106Natural
+  by_cases h143 : j = 143
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row144Natural
+  by_cases h183 : j = 183
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row184Natural
+  by_cases h186 : j = 186
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row187Natural
+  by_cases h189 : j = 189
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row190Natural
+  by_cases h190 : j = 190
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row191Natural
+  by_cases h225 : j = 225
+  · subst j; exact DegreeTwoTwelveThreeBlockNaturalFamily.row226Natural
+  exact D.natural j (by simp only [installedNaturals, Finset.mem_insert, Finset.mem_singleton, false_or, not_false_eq_true, h93, h140, h149, h150, h184, h188, h220, h221, h224, h249, h291, h293, h20, h54, h55, h56, h89, h94, h95, h96, h99, h100, h105, h143, h183, h186, h189, h190, h225, h34, h35, h72, h117, h120, h176, h177, h199, h232, h16, h18, h37, h38, h41, h78, h80, h124, h0, h10, h11, h13, h27, h28, h33, h44, h52, h57, h59, h71, h82, h86, h88, h90, h104, h107, h108, h112, h115, h118, h119, h130, h155, h166, h168, h169, h174, h201, h208, h210, h212, h216, h218, h230, h244, h246, h247, h257, h262, h263, h266, h273, h280, h284, h288, h299, h300]) hbranch
 
 noncomputable def finiteCatalogue (D : RemainingData) :
     DegreeTwoTwelveJointFiniteCatalogueData catalogue where
