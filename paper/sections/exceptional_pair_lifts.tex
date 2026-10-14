@@ -293,6 +293,23 @@ trivial simple type; the nontrivial simple types must still be
 bounded on that actual kernel.
 \end{proof}
 
+\begin{lemma}[An anchor when the odd part is three]\label{lem:ternary-odd-part-anchor}
+Let $|Q|=2^a3$. Every jointly faithful tuple of irreducible characters
+of $Q$ contains a character with binary kernel. Thus a faithful tuple
+of $r+1$ characters supplies one ordinary prefix and $r$ relative
+positions on its binary kernel, using the same whole-group characters.
+\end{lemma}
+\begin{proof}
+A nonbinary normal subgroup contains a Sylow three subgroup of $Q$,
+and normality makes it contain every conjugate. If every character
+kernel were nonbinary, their intersection would therefore contain a
+fixed nontrivial Sylow three subgroup, contradicting faithfulness.
+Choose a binary-kernel member as the prefix and retain the other
+$r$ characters as the tail. For each tail character, Maschke supplies
+an irreducible constituent on the actual prefix kernel; the normal
+restriction argument in Lemma~\ref{lem:pair-relative} applies.
+\end{proof}
+
 \begin{lemma}[The binary-core twelve-point tops]\label{lem:twelve-core}
 Let $T$ be one of the eight binary-core actions in
 Lemma~\ref{lem:small-pair-data}(i). Put $P=O_2(T)$.
@@ -397,9 +414,8 @@ improve the pair bound to two in this same case. The whole central
 rank is at most four, and the whole natural Schur demand is at most
 $\lceil(3+3)/2\rceil=3$. The odd socle rank is at most one.
 Theorem~\ref{thm:character-feasibility} gives four general positions.
-One has binary kernel: otherwise all four normal kernels contain a
-Sylow three subgroup, hence all its conjugates, contradicting their
-trivial intersection.
+Lemma~\ref{lem:ternary-odd-part-anchor} selects a binary-kernel member
+of this same faithful tuple.
 
 It remains to handle binary $Q$ in the $S_3$ case, for which the last
 argument about the top quotient was not asserted. An actual Sylow
