@@ -3,13 +3,15 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow2Finit
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow3FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow4FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow5FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow6FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairedEightRow7FinitePackage
 
 /-!
-# Install the first five complete paired-eight rows
+# Install the first seven complete paired-eight rows
 
 Finite quotient-socle tuples and the normal-chain theorem feed the same
-all-normal package. The remaining boundary has nineteen entries: the
-first five rows are supplied here, rather than requested again as inputs.
+all-normal package. The remaining boundary has seventeen entries: the
+first seven rows are supplied here, rather than requested again as inputs.
 -/
 
 -- Keep concrete catalogue signatures out of the optional suggestion index.
@@ -23,6 +25,10 @@ run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEnt
 
 run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEntry env "generatedPairedEightFirstFive"
 run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEntry env "RemainingDegreeTwoPairedEightAfterFiveData"
+
+run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEntry env "generatedPairedEightFirstFiveCatalogue"
+run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEntry env "installedPairedEightCatalogue"
+run_cmd Lean.modifyEnv fun env => Lean.LibrarySuggestions.nameDenyListExt.addEntry env "RemainingInstalledPairedEightData"
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -181,6 +187,44 @@ noncomputable def RemainingDegreeTwoPairedEightAfterFiveData.resolvedRow
     DegreeTwoPairTopResolvedRow (DegreeTwoPairedEightSharedTops.interface j)
       degreeTwoSixteenPairProfiles p :=
   F.resolvedWith generatedPairedEightFirstFive hZmud lit j R
+
+/-- The existing prefix is one input to the generic partial-catalogue dispatcher. -/
+noncomputable def generatedPairedEightFirstFiveCatalogue :
+    DegreeTwoPairedEightPartialCatalogueData DegreeTwoPairedEightSharedTops.interface where
+  covered := Finset.univ.filter (fun j : Fin 24 ↦ j.val < 5)
+  row j hj := generatedPairedEightFirstFive j (Finset.mem_filter.mp hj).2
+
+/-- Install the next two complete packages through the shared extension operation. -/
+noncomputable def installedPairedEightCatalogue :
+    DegreeTwoPairedEightPartialCatalogueData DegreeTwoPairedEightSharedTops.interface :=
+  (generatedPairedEightFirstFiveCatalogue.add 5
+    PrimitiveAffineDegreeTwoPairedEightRow6FinitePackage.finiteData).add 6
+    PrimitiveAffineDegreeTwoPairedEightRow7FinitePackage.finiteData
+
+theorem installedPairedEightCatalogue_mem_covered_iff (j : Fin 24) :
+    j ∈ installedPairedEightCatalogue.covered ↔ j.val < 7 := by
+  change (j ∈ insert (6 : Fin 24) (insert (5 : Fin 24)
+    (Finset.univ.filter (fun j : Fin 24 ↦ j.val < 5)))) ↔ _
+  simp only [Finset.mem_insert, Finset.mem_filter, Finset.mem_univ, true_and]
+  omega
+
+theorem installedPairedEightCatalogue_covered_card :
+    installedPairedEightCatalogue.covered.card = 7 := by
+  change (insert (6 : Fin 24) (insert (5 : Fin 24)
+    (Finset.univ.filter (fun j : Fin 24 ↦ j.val < 5)))).card = 7
+  decide +kernel
+
+/-- The remaining boundary excludes exactly the installed seven packages. -/
+abbrev RemainingInstalledPairedEightData := installedPairedEightCatalogue.Remaining
+
+noncomputable def RemainingInstalledPairedEightData.resolvedRow
+    (F : RemainingInstalledPairedEightData)
+    (hZmud : ZmudFaithfulCharacterTupleInput) (lit : PreE7CharacterLiterature)
+    (j : Fin 24) {p : PreE7PairActionClass 16}
+    (R : DegreeTwoPairTopTowerRealization (DegreeTwoPairedEightSharedTops.interface j) p) :
+    DegreeTwoPairTopResolvedRow (DegreeTwoPairedEightSharedTops.interface j)
+      degreeTwoSixteenPairProfiles p :=
+  installedPairedEightCatalogue.resolvedRow F hZmud lit j R
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu
