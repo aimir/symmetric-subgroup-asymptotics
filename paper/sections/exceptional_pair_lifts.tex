@@ -145,6 +145,36 @@ and has the same image as $N$, so it equals $N$. The quotient-socle
 claim follows by taking preimages and descending the generators.
 \end{proof}
 
+\begin{lemma}[Coprime cyclic quotients]
+\label{lem:coprime-cyclic-quotient-socles}
+Let $E\lhd G$ be a normal $p$-subgroup of a finite group, with
+$G/E$ cyclic of order prime to $p$. Suppose $t\geq1$ and every
+$G$-normal subgroup contained in $E$ has at most $t$ ambient normal
+generators. Then the socle of every quotient of $G$ has at most $t$
+ambient normal generators.
+If $E$ is elementary abelian, it suffices that its actual conjugation
+module over $\mathbb F_p[G/E]$ has at most $t$ generators.
+\end{lemma}
+\begin{proof}
+The $p$-primary part of $\operatorname{Soc}(G)$ lies in $E$, since
+its image in $G/E$ is trivial. It therefore has at most $t$ normal
+generators. The complementary part of the socle intersects $E$
+trivially and embeds in the cyclic quotient, so it is cyclic. These
+two parts commute and have coprime orders. Their generators can be
+combined in $t$ positions, recovering the two components by taking
+powers of coprime orders. This proves the bound for $G$.
+
+For a surjection $\pi:G\twoheadrightarrow Q$, retain the actual image
+$\pi(E)$. It is a normal $p$-subgroup, and $Q/\pi(E)$ is a cyclic
+quotient of $G/E$. If $H\lhd Q$ lies in $\pi(E)$, then
+$E\cap\pi^{-1}(H)$ is normal in $G$ and maps onto $H$; its normal
+generators descend. The same argument thus applies to every $Q$.
+Finally, in the elementary abelian case Maschke's theorem makes every
+invariant subspace a direct summand. Projecting $t$ module generators
+onto that summand gives $t$ ambient normal generators for the
+corresponding subgroup of $E$.
+\end{proof}
+
 \begin{lemma}[Centralizers in an abelian affine model]
 \label{lem:affine-translation-centralizer}
 Let $V$ be an abelian group and $\varphi:H\to\operatorname{Aut}(V)$.
