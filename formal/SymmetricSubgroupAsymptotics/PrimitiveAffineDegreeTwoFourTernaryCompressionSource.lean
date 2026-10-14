@@ -25,6 +25,8 @@ namespace SymmetricSubgroupAsymptotics
 namespace Non2UnipotentPrefixFiniteMenu
 namespace PrimitiveAffineImprimitiveBlockTransfer
 
+private theorem twelve_lt_twentyFour : 12 < 24 := by decide
+
 /-- The exact output needed from the four-ternary-orbit structural theorem.
 The interval belongs to the actual degree-twenty-four action.  Its quotient
 acts faithfully on twenty points and every retained quotient has a
@@ -33,7 +35,7 @@ structure DegreeTwoFourTernaryCompressionData
     (p : PreE7PairActionClass 12) : Type 1 where
   interval : SocleGeneratorCharacterIntervalData
     (preE7NonPairAction 24
-      (preE7SmallPairNonPairAction 12 (by norm_num) p))
+      (preE7SmallPairNonPairAction 12 twelve_lt_twentyFour p))
   quotientDegree_eq : interval.quotientDegree = 20
   slots_eq_three : interval.slots = 3
 
@@ -49,21 +51,21 @@ structure DegreeTwoFourTernaryCompressionCertificate
     (p : PreE7PairActionClass 12) : Type 1 where
   E : Subgroup
     (preE7NonPairAction 24
-      (preE7SmallPairNonPairAction 12 (by norm_num) p))
+      (preE7SmallPairNonPairAction 12 twelve_lt_twentyFour p))
   [E_normal : E.Normal]
   compressedAction :
     preE7NonPairAction 24
-      (preE7SmallPairNonPairAction 12 (by norm_num) p) →*
+      (preE7SmallPairNonPairAction 12 twelve_lt_twentyFour p) →*
         Equiv.Perm (Fin 20)
   compressedAction_ker : compressedAction.ker = E
   quotientSocleGenerators :
     ∀ N : {N : Subgroup
         (preE7NonPairAction 24
-          (preE7SmallPairNonPairAction 12 (by norm_num) p)) // N.Normal},
+          (preE7SmallPairNonPairAction 12 twelve_lt_twentyFour p)) // N.Normal},
       ¬ E ≤ N.1 →
         SocleNormalGeneratorBound
           (preE7NonPairAction 24
-            (preE7SmallPairNonPairAction 12 (by norm_num) p) ⧸ N.1) 3
+            (preE7SmallPairNonPairAction 12 twelve_lt_twentyFour p) ⧸ N.1) 3
 
 attribute [instance]
   DegreeTwoFourTernaryCompressionCertificate.E_normal
@@ -76,9 +78,9 @@ variable {p : PreE7PairActionClass 12}
 /-- The descended degree-twenty action of the exact averaging quotient. -/
 def quotientAction :
     (preE7NonPairAction 24
-      (preE7SmallPairNonPairAction 12 (by norm_num) p) ⧸ C.E) →*
+      (preE7SmallPairNonPairAction 12 twelve_lt_twentyFour p) ⧸ C.E) →*
         Equiv.Perm (Fin 20) :=
-  QuotientGroup.lift C.E C.compressedAction C.compressedAction_ker.le
+  QuotientGroup.lift C.E C.compressedAction C.compressedAction_ker.ge
 
 /-- Equality of kernels, rather than a separate quotient calculation,
 proves faithfulness of the descended action. -/
@@ -114,7 +116,7 @@ noncomputable def completeInterval
     (hZmud : ZmudFaithfulCharacterTupleInput) :
     CompleteCharacterIntervalData
       (preE7NonPairAction 24
-        (preE7SmallPairNonPairAction 12 (by norm_num) p)) :=
+        (preE7SmallPairNonPairAction 12 twelve_lt_twentyFour p)) :=
   M.interval.toCompleteCharacterIntervalData hZmud
 
 private theorem logb_two_five_lt_seven_thirds :
@@ -135,7 +137,7 @@ noncomputable def source
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature) :
     PreE7RankTailSourceOrYonedaTopData 24
-      (preE7SmallPairNonPairAction 12 (by norm_num) p) := by
+      (preE7SmallPairNonPairAction 12 twelve_lt_twentyFour p) := by
   let D := M.completeInterval hZmud
   apply boundedCompleteCharacterSource D lit .qchar
   · change preE7CharacterRho * (24 : ℕ) ≤
@@ -161,7 +163,7 @@ noncomputable def resolvedRow
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature) :
     DegreeTwoPairTopResolvedRow D expectedProfiles p :=
-  .comparator (by norm_num) (M.source hZmud lit)
+  .comparator twelve_lt_twentyFour (M.source hZmud lit)
 
 end DegreeTwoFourTernaryCompressionData
 

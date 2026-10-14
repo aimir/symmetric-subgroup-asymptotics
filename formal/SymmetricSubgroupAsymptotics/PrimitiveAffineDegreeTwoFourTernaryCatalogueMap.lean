@@ -85,13 +85,42 @@ theorem degreeTwoFourTernaryCatalogueIndex_branch
     branch (degreeTwoFourTernaryCatalogueIndex r) = .ternary := by
   fin_cases r <;> rfl
 
+/-- The eight displayed ternary indices are distinct.  Keeping this as a
+small structural certificate avoids asking `native_decide` to recompile the
+complete 301-row catalogue when proving exhaustion below. -/
+theorem degreeTwoFourTernaryCatalogueIndex_injective :
+    Function.Injective degreeTwoFourTernaryCatalogueIndex := by
+  intro r s hrs
+  fin_cases r <;> fin_cases s <;>
+    simp_all [degreeTwoFourTernaryCatalogueIndex]
+
 /-- The displayed eight indices exhaust the ternary branch of the literal
 301-row catalogue. -/
 theorem degreeTwoFourTernaryCatalogueIndex_complete
     (j : Fin 301) (h : branch j = .ternary) :
     ∃ r : Fin 8, degreeTwoFourTernaryCatalogueIndex r = j := by
-  revert h
-  native_decide +revert
+  let selected : Finset (Fin 301) :=
+    Finset.univ.image degreeTwoFourTernaryCatalogueIndex
+  have hselected_card : selected.card = 8 := by
+    dsimp [selected]
+    rw [Finset.card_image_of_injective _
+      degreeTwoFourTernaryCatalogueIndex_injective]
+    simp
+  have hselected_subset :
+      selected ⊆ Finset.univ.filter (fun k => branch k = .ternary) := by
+    intro k hk
+    rcases Finset.mem_image.mp hk with ⟨r, -, rfl⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact degreeTwoFourTernaryCatalogueIndex_branch r
+  have hselected_eq :
+      selected = Finset.univ.filter (fun k => branch k = .ternary) := by
+    apply Finset.eq_of_subset_of_card_le hselected_subset
+    rw [ternary_count_certified, hselected_card]
+  have hj : j ∈ selected := by
+    rw [hselected_eq]
+    simpa using h
+  rcases Finset.mem_image.mp hj with ⟨r, -, hr⟩
+  exact ⟨r, hr⟩
 
 /-- The exact top/core orders have the advertised binary quotient. -/
 theorem degreeTwoFourTernary_order_factorization
@@ -99,41 +128,55 @@ theorem degreeTwoFourTernary_order_factorization
     degreeTwoFourTernaryTopOrder r =
       degreeTwoFourTernaryCoreOrder r *
         degreeTwoFourTernaryBinaryQuotientOrder r := by
-  fin_cases r <;> norm_num
+  fin_cases r <;> norm_num [degreeTwoFourTernaryTopOrder,
+    degreeTwoFourTernaryCoreOrder,
+    degreeTwoFourTernaryBinaryQuotientOrder]
 
 theorem degreeTwoFourTernary_coreOrder_lower
     (r : Fin 8) : 9 ≤ degreeTwoFourTernaryCoreOrder r := by
-  fin_cases r <;> norm_num
+  fin_cases r <;> norm_num [degreeTwoFourTernaryCoreOrder]
 
 theorem degreeTwoFourTernary_coreOrder_is_three_power
     (r : Fin 8) : ∃ a : ℕ,
       degreeTwoFourTernaryCoreOrder r = 3 ^ a := by
   fin_cases r
-  all_goals first | exact ⟨2, by norm_num⟩ | exact ⟨3, by norm_num⟩ |
-    exact ⟨4, by norm_num⟩
+  · exact ⟨2, by norm_num [degreeTwoFourTernaryCoreOrder]⟩
+  · exact ⟨2, by norm_num [degreeTwoFourTernaryCoreOrder]⟩
+  · exact ⟨3, by norm_num [degreeTwoFourTernaryCoreOrder]⟩
+  · exact ⟨4, by norm_num [degreeTwoFourTernaryCoreOrder]⟩
+  · exact ⟨4, by norm_num [degreeTwoFourTernaryCoreOrder]⟩
+  · exact ⟨4, by norm_num [degreeTwoFourTernaryCoreOrder]⟩
+  · exact ⟨4, by norm_num [degreeTwoFourTernaryCoreOrder]⟩
+  · exact ⟨4, by norm_num [degreeTwoFourTernaryCoreOrder]⟩
 
 theorem degreeTwoFourTernary_quotientOrder_is_two_power
     (r : Fin 8) : ∃ a : ℕ,
       degreeTwoFourTernaryBinaryQuotientOrder r = 2 ^ a := by
   fin_cases r
-  all_goals first | exact ⟨3, by norm_num⟩ | exact ⟨4, by norm_num⟩ |
-    exact ⟨5, by norm_num⟩ | exact ⟨6, by norm_num⟩
+  · exact ⟨3, by norm_num [degreeTwoFourTernaryBinaryQuotientOrder]⟩
+  · exact ⟨4, by norm_num [degreeTwoFourTernaryBinaryQuotientOrder]⟩
+  · exact ⟨3, by norm_num [degreeTwoFourTernaryBinaryQuotientOrder]⟩
+  · exact ⟨3, by norm_num [degreeTwoFourTernaryBinaryQuotientOrder]⟩
+  · exact ⟨4, by norm_num [degreeTwoFourTernaryBinaryQuotientOrder]⟩
+  · exact ⟨4, by norm_num [degreeTwoFourTernaryBinaryQuotientOrder]⟩
+  · exact ⟨5, by norm_num [degreeTwoFourTernaryBinaryQuotientOrder]⟩
+  · exact ⟨6, by norm_num [degreeTwoFourTernaryBinaryQuotientOrder]⟩
 
 theorem degreeTwoFourTernary_disjointBinaryBound_le_two
     (r : Fin 8) :
     degreeTwoFourTernaryDisjointBinaryBound r ≤ 2 := by
-  fin_cases r <;> norm_num
+  fin_cases r <;> norm_num [degreeTwoFourTernaryDisjointBinaryBound]
 
 /-- One literal row witness adds only its checked exact orders to the
 uniform structural hypotheses. -/
 structure DegreeTwoFourTernaryLiteralWitness (r : Fin 8) : Type 1 where
-  structure : DegreeTwoFourTernaryTopStructure
+  topStructure : DegreeTwoFourTernaryTopStructure
     (degreeTwoFourTernaryInterface r)
   top_card_eq :
     Nat.card (degreeTwoFourTernaryInterface r).top =
       degreeTwoFourTernaryTopOrder r
   core_card_eq :
-    Nat.card structure.core = degreeTwoFourTernaryCoreOrder r
+    Nat.card topStructure.core = degreeTwoFourTernaryCoreOrder r
 
 /-- The complete finite obligation: eight small top witnesses, with no
 original-lift or original-normal census. -/
@@ -177,15 +220,16 @@ theorem into all eight per-row packages. -/
 noncomputable def DegreeTwoFourTernaryCatalogueWitnesses.packages
     (W : DegreeTwoFourTernaryCatalogueWitnesses)
     (compression : ∀ r : Fin 8,
-      (W.witness r).structure.CertificateTheorem) :
+      (W.witness r).topStructure.CertificateTheorem) :
     ∀ r : Fin 8,
       DegreeTwoTwelveFourTernaryCompressionPackage
         (degreeTwoFourTernaryInterface r) := by
   intro r
   refine { compression := ?_ }
   intro p R
-  exact ((W.witness r).structure.compressionTheorem_of_certificate
-    (compression r)) p R
+  exact Classical.choice
+    (((W.witness r).topStructure.compressionTheorem_of_certificate
+      (compression r)) p R)
 
 end PrimitiveAffineImprimitiveBlockTransfer
 end Non2UnipotentPrefixFiniteMenu

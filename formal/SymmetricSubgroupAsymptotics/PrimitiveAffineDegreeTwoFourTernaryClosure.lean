@@ -31,6 +31,7 @@ noncomputable def compressionCertificate_of_retainedSocle
     (R : DegreeTwoPairTopRealization D p) :
     DegreeTwoFourTernaryCompressionCertificate p where
   E := S.averagingSubgroup R
+  E_normal := S.averagingSubgroup_normal R
   compressedAction := S.compressedAction R
   compressedAction_ker := S.compressedAction_ker R
   quotientSocleGenerators := fun N hN => hsocle p R N hN
@@ -67,7 +68,7 @@ theorem certificateTheorem_of_active
       (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal}),
       ¬ S.averagingSubgroup R ≤ N.1 →
         MarkedC4.normalGen
-          (nontrivialActionSoclePart (preE7PairAction 12 p ⨸ N.1)
+          (nontrivialActionSoclePart (preE7PairAction 12 p ⧸ N.1)
             (S.retainedTernaryImage R N)) ≤ 2) :
     S.CertificateTheorem :=
   S.certificateTheorem_of_parts
@@ -102,15 +103,15 @@ noncomputable def DegreeTwoFourTernaryCatalogueWitnesses.packagesOfActive
       (R : DegreeTwoPairTopRealization
         (degreeTwoFourTernaryInterface r) p)
       (N : {N : Subgroup (preE7PairAction 12 p) // N.Normal}),
-      ¬ (W.witness r).structure.averagingSubgroup R ≤ N.1 →
+      ¬ (W.witness r).topStructure.averagingSubgroup R ≤ N.1 →
         MarkedC4.normalGen
-          (nontrivialActionSoclePart (preE7PairAction 12 p ⨸ N.1)
-            ((W.witness r).structure.retainedTernaryImage R N)) ≤ 2) :
+          (nontrivialActionSoclePart (preE7PairAction 12 p ⧸ N.1)
+            ((W.witness r).topStructure.retainedTernaryImage R N)) ≤ 2) :
     ∀ r : Fin 8,
       DegreeTwoTwelveFourTernaryCompressionPackage
         (degreeTwoFourTernaryInterface r) :=
   W.packages (fun r ↦
-    (W.witness r).structure.certificateTheorem_of_active
+    (W.witness r).topStructure.certificateTheorem_of_active
       (hactive r))
 
 /-- All eight compression packages from the checked literal witnesses and
@@ -120,7 +121,7 @@ noncomputable def DegreeTwoFourTernaryCatalogueWitnesses.compressionPackages
     ∀ r : Fin 8,
       DegreeTwoTwelveFourTernaryCompressionPackage
         (degreeTwoFourTernaryInterface r) :=
-  W.packages (fun r ↦ (W.witness r).structure.certificateTheorem)
+  W.packages (fun r ↦ (W.witness r).topStructure.certificateTheorem)
 
 /-- Dispatch the eight packages along the exact ternary-row locator in the
 literal 301-row catalogue. -/
@@ -133,10 +134,14 @@ noncomputable def degreeTwoFourTernaryCatalogueCompression
     (h : (catalogue.row j).branch = .ternary) :
     DegreeTwoFourTernaryCompressionData p := by
   change branch j = .ternary at h
-  obtain ⟨r, rfl⟩ := degreeTwoFourTernaryCatalogueIndex_complete j h
+  let r : Fin 8 := Classical.choose
+    (degreeTwoFourTernaryCatalogueIndex_complete j h)
+  have hr : degreeTwoFourTernaryCatalogueIndex r = j :=
+    Classical.choose_spec (degreeTwoFourTernaryCatalogueIndex_complete j h)
   let R' : DegreeTwoPairTopRealization
       (degreeTwoFourTernaryInterface r) p := by
     rw [degreeTwoFourTernaryInterface_eq_catalogue]
+    rw [hr]
     exact R
   exact (P r).compression p R'
 

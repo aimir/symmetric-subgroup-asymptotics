@@ -189,7 +189,7 @@ noncomputable def topStructure (r : Fin 8) :
 noncomputable def catalogueWitnesses :
     DegreeTwoFourTernaryCatalogueWitnesses where
   witness r :=
-    { structure := F.topStructure r
+    { topStructure := F.topStructure r
       top_card_eq := F.top_card r
       core_card_eq := F.core_card r }
 
