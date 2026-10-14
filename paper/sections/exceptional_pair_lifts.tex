@@ -248,6 +248,56 @@ give surjectivity. The two distinct cubic Singer actions give the
 projection polynomial above. Thus the same argument treats the three
 literal complements together.
 
+\begin{lemma}[Matrix units and uniform cyclicity]
+\label{lem:matrix-unit-uniform-cyclicity}
+Let $k$ be a field and $R$ a $k$-algebra acting on a module identified
+$k$-linearly with $k^{n\times m}$, where $1\leq n$ and $m\leq n$.
+Suppose that, for every $i,j$, an element of $R$ acts by putting row $j$
+in row $i$ and zeroing all other rows. Then every $R$-submodule is cyclic.
+\end{lemma}
+\begin{proof}
+Fix an $R$-submodule $W$. Let $U\leq k^m$ be its first-row image.
+The matrix units show that every row of a member of $W$ lies in $U$,
+and that every vector of $U$ can be placed alone in any row of a member
+of $W$. Choose a basis $u_1,\ldots,u_d$ of $U$, where $d\leq m\leq n$,
+and form $w\in W$ by putting $u_j$ in row $j$ for $1\leq j\leq d$.
+The matrix units recover each $u_j$ in each row from $w$.
+These vectors span $W$ over $k$, so $Rw=W$. The argument also covers
+$W=0$, with the empty basis. No semisimplicity assumption is needed.
+\end{proof}
+
+\begin{lemma}[Normal covers in a two-block wreath product]
+\label{lem:wreath-normal-cover}
+Let $A$ be a nontrivial centerless group, and let $D\leq A$ be contained
+in every nontrivial normal subgroup of $A$. Then $D\times D$ is contained
+in every nontrivial normal subgroup of $A\wr C_2$.
+Consequently, if $\pi:A\twoheadrightarrow Q$ has nontrivial kernel $D$
+and every normal subgroup of $Q\wr C_2$ has at most $t\geq1$ ambient
+normal generators, the same bound holds for every normal subgroup and
+every quotient socle of $A\wr C_2$.
+If $A$ is centerless and simple, these bounds are one.
+\end{lemma}
+\begin{proof}
+The centralizer of $A\times A$ in $A\wr C_2$ is trivial: a base element
+centralizing both factors has both coordinates in $Z(A)$, whereas an
+element exchanging the factors cannot centralize the first factor.
+Thus a nontrivial normal subgroup $N$ meets the base nontrivially.
+After interchanging factors, choose $(a,b)\in N$ with $a\ne1$.
+Since $A$ is centerless, some commutator of this element with $(x,1)$
+is nontrivial. Hence $N\cap(A\times1)$ is a nontrivial normal subgroup
+of the first factor and contains $D\times1$. The block swap also gives
+$1\times D\leq N$.
+
+The induced epimorphism $A\wr C_2\twoheadrightarrow Q\wr C_2$ has
+kernel exactly $D\times D$. Lift generators of a nontrivial normal
+image. Their normal closure contains this kernel by the first assertion,
+and therefore equals the original normal subgroup. The kernel itself
+is normally cyclic, since any of its nonidentity elements has a
+nontrivial normal closure contained in the kernel. This proves the
+positive bound $t$; taking preimages gives the quotient-socle assertion.
+For simple $A$, take $D=A$ and the block quotient $C_2$.
+\end{proof}
+
 \begin{lemma}[Centralizers in an abelian affine model]
 \label{lem:affine-translation-centralizer}
 Let $V$ be an abelian group and $\varphi:H\to\operatorname{Aut}(V)$.
