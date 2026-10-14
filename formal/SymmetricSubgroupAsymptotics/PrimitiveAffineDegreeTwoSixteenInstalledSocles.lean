@@ -1,3 +1,6 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow14FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow7FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow3FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow13FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow6FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow17FinitePackage
@@ -59,7 +62,7 @@ open DegreeTwoSixteenPairFiniteCatalogue
 
 def installedZero : Finset (Fin 29) := {0, 1, 2, 3, 4, 5, 13, 14, 15, 16, 17, 18}
 
-def installedTwoAffine : Finset (Fin 15) := {0, 1, 4, 5, 10, 12}
+def installedTwoAffine : Finset (Fin 15) := {0, 1, 2, 4, 5, 6, 10, 12, 13}
 
 def installedPrimitive : Finset (Fin 20) := Finset.univ
 
@@ -113,7 +116,13 @@ noncomputable def twoAffineFamily (D : RemainingData) (j : Fin 15) :
   · subst j; exact PrimitiveAffineDegreeTwoTwoAffineSixteenRow6QuotientSocles.family
   by_cases h12 : j = 12
   · subst j; exact PrimitiveAffineDegreeTwoTwoAffineSixteenRow13QuotientSocles.family
-  exact D.twoAffine16 j (by simp [installedTwoAffine, h0, h1, h4, h5, h10, h12])
+  by_cases h2 : j = 2
+  · subst j; exact PrimitiveAffineDegreeTwoTwoAffineSixteenRow3QuotientSocles.family
+  by_cases h6 : j = 6
+  · subst j; exact PrimitiveAffineDegreeTwoTwoAffineSixteenRow7QuotientSocles.family
+  by_cases h13 : j = 13
+  · subst j; exact PrimitiveAffineDegreeTwoTwoAffineSixteenRow14QuotientSocles.family
+  exact D.twoAffine16 j (by simp [installedTwoAffine, h0, h1, h2, h4, h5, h6, h10, h12, h13])
 
 noncomputable def primitiveFamily (j : Fin 20) :
     (catalogue.primitive16 j).normalRegistry.QuotientSocleGeneratorFamily 2 := by

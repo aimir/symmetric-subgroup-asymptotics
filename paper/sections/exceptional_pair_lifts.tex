@@ -207,6 +207,47 @@ applies to $Q$. The elementary abelian assertion again follows by
 Maschke's theorem.
 \end{proof}
 
+\begin{lemma}[Paired forms and a block swap]
+\label{lem:paired-form-swap-generators}
+Let $R\leq\operatorname{GL}(V)$ act irreducibly on a nonzero finite
+binary vector space, and suppose every normal subgroup of $R$ has
+at most one ambient normal generator. Let $K\leq R\times R$ be
+stable under interchanging its factors, with first projection
+$K\to R$ an isomorphism. Let $H=K\rtimes C_2$ act on $V\oplus V$
+by the two coordinates and their swap. Suppose some $s\in H$ satisfies
+\[
+ s^4(v,w)+s^2(v,w)+s(v,w)=(0,w)
+ \qquad(v,w\in V).
+\]
+Then every normal subgroup of $(V\oplus V)\rtimes H$, and every
+quotient socle of this group, has at most two ambient normal generators.
+\end{lemma}
+\begin{proof}
+The kernel $K\cong R$ and quotient $C_2$ each have uniform normal
+generator bound one. For a normal subgroup of $H$, first generate
+its intersection with $K$, then lift generators of its image in $C_2$.
+This gives the bound two in $H$.
+
+The displayed polynomial preserves every invariant subspace and
+projects onto the second block. Together with the swap and the
+surjective local action, it shows that the $H$-module $V\oplus V$
+is irreducible. The action is faithful. Consequently every nontrivial
+normal subgroup of the affine group contains its translation group:
+its intersection with the translations is nontrivial, since otherwise
+it centralizes them, and irreducibility gives the whole translation
+group. Lift generators of the normal image in $H$. When that image
+is nontrivial their normal closure already contains the translations;
+when it is trivial, one nonzero translation suffices. Finally descend
+the uniform bound through each original normal quotient.
+\end{proof}
+
+In the twisted two-block models, $K$ is the group preserving the
+specified nondegenerate pairing between the blocks. The pairing gives
+injectivity of the first projection; the displayed generator partners
+give surjectivity. The two distinct cubic Singer actions give the
+projection polynomial above. Thus the same argument treats the three
+literal complements together.
+
 \begin{lemma}[Centralizers in an abelian affine model]
 \label{lem:affine-translation-centralizer}
 Let $V$ be an abelian group and $\varphi:H\to\operatorname{Aut}(V)$.
