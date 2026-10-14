@@ -175,6 +175,38 @@ onto that summand gives $t$ ambient normal generators for the
 corresponding subgroup of $E$.
 \end{proof}
 
+\begin{lemma}[Coprime quotient transfer]
+\label{lem:coprime-quotient-socles}
+Let $E\lhd G$ be a normal $p$-subgroup of a finite group, with
+$|G/E|$ prime to $p$. Suppose every $G$-normal subgroup contained in
+$E$ has at most $t$ ambient normal generators, and every normal
+subgroup of $G/E$ has at most $a$ ambient normal generators.
+Then the socle of every quotient of $G$ has at most $\max(t,a)$
+ambient normal generators. In particular, for an elementary abelian
+kernel, the first hypothesis follows from a $t$-generator actual
+conjugation module. Neither cyclicity nor solubility of $G/E$ is needed.
+\end{lemma}
+\begin{proof}
+Each minimal normal factor which is not a $p$-group intersects $E$
+trivially, hence embeds in $G/E$ and has order prime to $p$. Their
+join also has order prime to $p$: on adjoining a minimal normal
+factor to a normal join, the factor is either already contained in
+the join or has trivial intersection with it, in which case the
+orders multiply. Thus the entire non-$p$ socle part is disjoint from
+$E$. It embeds as a normal subgroup of $G/E$, so its ambient normal
+generators lift to at most $a$ generators in $G$. The $p$-primary
+socle part lies in $E$ and uses at most $t$ generators. Coprime
+orders let the two lists share $\max(t,a)$ positions.
+
+For each surjection $\pi:G\twoheadrightarrow Q$, use the actual
+kernel image $\pi(E)$. The kernel-contained bound descends as in
+Lemma~\ref{lem:coprime-cyclic-quotient-socles}. The uniform normal
+bound on $G/E$ descends to its quotient $Q/\pi(E)$ by taking
+preimages and mapping normal generators. The argument therefore
+applies to $Q$. The elementary abelian assertion again follows by
+Maschke's theorem.
+\end{proof}
+
 \begin{lemma}[Centralizers in an abelian affine model]
 \label{lem:affine-translation-centralizer}
 Let $V$ be an abelian group and $\varphi:H\to\operatorname{Aut}(V)$.
