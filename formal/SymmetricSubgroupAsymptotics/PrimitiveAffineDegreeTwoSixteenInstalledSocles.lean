@@ -1,3 +1,5 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow9FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow11FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow14FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow7FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow3FinitePackage
@@ -60,7 +62,7 @@ namespace DegreeTwoSixteenInstalledSocles
 
 open DegreeTwoSixteenPairFiniteCatalogue
 
-def installedZero : Finset (Fin 29) := {0, 1, 2, 3, 4, 5, 13, 14, 15, 16, 17, 18}
+def installedZero : Finset (Fin 29) := {0, 1, 2, 3, 4, 5, 8, 10, 13, 14, 15, 16, 17, 18}
 
 def installedTwoAffine : Finset (Fin 15) := {0, 1, 2, 4, 5, 6, 10, 12, 13}
 
@@ -88,6 +90,10 @@ noncomputable def zeroFamily (D : RemainingData) (j : Fin 29) :
   · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow5QuotientSocles.family
   by_cases h5 : j = 5
   · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow6QuotientSocles.family
+  by_cases h8 : j = 8
+  · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRows9And11AugmentationSocles.row9Socle
+  by_cases h10 : j = 10
+  · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRows9And11AugmentationSocles.row11Socle
   by_cases h13 : j = 13
   · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow14QuotientSocles.family
   by_cases h14 : j = 14
@@ -100,7 +106,7 @@ noncomputable def zeroFamily (D : RemainingData) (j : Fin 29) :
   · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow16QuotientSocles.family
   by_cases h16 : j = 16
   · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow17QuotientSocles.family
-  exact D.zero16 j (by simp [installedZero, h0, h1, h2, h3, h4, h5, h13, h14, h15, h16, h17, h18])
+  exact D.zero16 j (by simp [installedZero, h0, h1, h2, h3, h4, h5, h8, h10, h13, h14, h15, h16, h17, h18])
 
 noncomputable def twoAffineFamily (D : RemainingData) (j : Fin 15) :
     (catalogue.twoAffine16 j).normalRegistry.QuotientSocleGeneratorFamily 2 := by
