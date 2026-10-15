@@ -1,3 +1,4 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveDiagonalTernaryFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRows234And258FinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveTernaryKleinNaturalFamily
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveTernaryAlternatingNaturalFamily
@@ -55,7 +56,7 @@ namespace DegreeTwoTwelveInstalledJoint
 open DegreeTwoTwelvePairFiniteCatalogue
 open DegreeTwoTwelveJointFiniteRows
 
-def installedSocles : Finset (Fin 301) := {0, 1, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 27, 28, 30, 37, 38, 41, 54, 69, 70, 71, 72, 78, 80, 93, 115, 117, 118, 119, 120, 124, 129, 130, 132, 155, 166, 168, 169, 174, 175, 177, 193, 216, 230, 232, 233, 257, 299, 300}
+def installedSocles : Finset (Fin 301) := {0, 1, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 27, 28, 30, 37, 38, 41, 42, 43, 44, 54, 69, 70, 71, 72, 78, 80, 82, 93, 115, 117, 118, 119, 120, 124, 129, 130, 132, 155, 166, 168, 169, 174, 175, 177, 193, 216, 230, 232, 233, 257, 299, 300}
 
 def installedNaturals : Finset (Fin 301) := {0, 1, 2, 4, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 27, 28, 30, 32, 33, 34, 35, 37, 38, 41, 42, 43, 44, 45, 46, 52, 54, 55, 56, 57, 59, 61, 62, 69, 70, 71, 72, 73, 74, 75, 78, 80, 82, 83, 86, 88, 89, 90, 91, 92, 93, 94, 95, 96, 99, 100, 104, 105, 107, 108, 112, 115, 117, 118, 119, 120, 121, 122, 124, 129, 130, 131, 132, 140, 143, 149, 150, 155, 156, 163, 165, 166, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 179, 181, 182, 183, 184, 186, 187, 188, 189, 190, 193, 199, 201, 203, 204, 205, 206, 208, 210, 211, 212, 214, 215, 216, 218, 219, 220, 221, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 238, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 256, 257, 258, 261, 262, 263, 264, 265, 266, 267, 268, 270, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 287, 288, 289, 290, 291, 293, 295, 296, 297, 298, 299, 300}
 
@@ -176,7 +177,17 @@ noncomputable def socleFamily (D : RemainingData) (j : Fin 301)
   · subst j; exact DegreeTwoTwelveRows234And258FinitePackages.row234.topSocle
   by_cases h257 : j = 257
   · subst j; exact DegreeTwoTwelveRows234And258FinitePackages.row258.topSocle
-  exact D.socle j (by simp [installedSocles, h233, h257, h232, h193, h230, h175, h132, h174, h177, h28, h30, h54, h93, h1, h4, h12, h14, h15, h17, h27, h69, h70, h72, h117, h120, h129, h155, h216, h10, h11, h13, h115, h118, h119, h166, h168, h169, h0, h16, h18, h37, h38, h41, h71, h78, h80, h124, h130, h299, h300]) hbranch
+  by_cases h19 : j = 19
+  · subst j; exact DegreeTwoTwelveDiagonalTernaryFinitePackages.row20.topSocle
+  by_cases h42 : j = 42
+  · subst j; exact DegreeTwoTwelveDiagonalTernaryFinitePackages.row43.topSocle
+  by_cases h43 : j = 43
+  · subst j; exact DegreeTwoTwelveDiagonalTernaryFinitePackages.row44.topSocle
+  by_cases h44 : j = 44
+  · subst j; exact DegreeTwoTwelveDiagonalTernaryFinitePackages.row45.topSocle
+  by_cases h82 : j = 82
+  · subst j; exact DegreeTwoTwelveDiagonalTernaryFinitePackages.row83.topSocle
+  exact D.socle j (by simp [installedSocles, h19, h42, h43, h44, h82, h233, h257, h232, h193, h230, h175, h132, h174, h177, h28, h30, h54, h93, h1, h4, h12, h14, h15, h17, h27, h69, h70, h72, h117, h120, h129, h155, h216, h10, h11, h13, h115, h118, h119, h166, h168, h169, h0, h16, h18, h37, h38, h41, h71, h78, h80, h124, h130, h299, h300]) hbranch
 
 set_option maxRecDepth 2048 in
 theorem naturalBound (D : RemainingData) (j : Fin 301)
