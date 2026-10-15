@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.BinaryNormalGeneratorChecks
 import SymmetricSubgroupAsymptotics.FiniteConjugacyGeneratorInvariant
 import SymmetricSubgroupAsymptotics.FiniteConjugacyCentralizerCardinalCover
 import SymmetricSubgroupAsymptotics.FinitePermutationEncoding
+import SymmetricSubgroupAsymptotics.EncodedPermutationRowChecks
 import Mathlib.Order.Fin.Basic
 import Mathlib.Tactic.FinCases
 
@@ -92,12 +93,90 @@ def previousRow (i : Fin 768) (j : Fin 5) : Fin 768 :=
   (previousTable[i.val]!)[j.val]!
 
 private theorem parent_lt_checked : ∀ i : Fin 768,
-    i ≠ 0 → ranks (parents i) < ranks i :=
-  by native_decide
+    i ≠ 0 → ranks (parents i) < ranks i := by
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
 
 private theorem parent_next_checked : ∀ i : Fin 768,
-    i ≠ 0 → nextRow (parents i) (letters i) = i :=
-  by native_decide
+    i ≠ 0 → nextRow (parents i) (letters i) = i := by
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
+
+/-- The literal generator-step checks have independent kernel budgets. -/
+private theorem next_eq_generator0 : ∀ i : Fin 768,
+    codes (nextRow i 0) =
+      (permutationGeneratorEncoding generators).step (codes i) (0 : Fin 5) := by
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
+
+private theorem next_eq_generator1 : ∀ i : Fin 768,
+    codes (nextRow i 1) =
+      (permutationGeneratorEncoding generators).step (codes i) (1 : Fin 5) := by
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
+
+private theorem next_eq_generator2 : ∀ i : Fin 768,
+    codes (nextRow i 2) =
+      (permutationGeneratorEncoding generators).step (codes i) (2 : Fin 5) := by
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
+
+private theorem next_eq_generator3 : ∀ i : Fin 768,
+    codes (nextRow i 3) =
+      (permutationGeneratorEncoding generators).step (codes i) (3 : Fin 5) := by
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
+
+private theorem next_eq_generator4 : ∀ i : Fin 768,
+    codes (nextRow i 4) =
+      (permutationGeneratorEncoding generators).step (codes i) (4 : Fin 5) := by
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
+
+private theorem next_eq_checked : ∀ (i : Fin 768) (j : Fin 5),
+    codes (nextRow i j) = (permutationGeneratorEncoding generators).step (codes i) j := by
+  intro i j
+  fin_cases j
+  · exact next_eq_generator0 i
+  · exact next_eq_generator1 i
+  · exact next_eq_generator2 i
+  · exact next_eq_generator3 i
+  · exact next_eq_generator4 i
 
 def certificate : EncodedCayleyCertificate
     (permutationGeneratorEncoding generators) 768 where
@@ -105,19 +184,90 @@ def certificate : EncodedCayleyCertificate
   identity := 0
   identity_eq := by decide +kernel
   next := nextRow
-  next_eq := by native_decide
+  next_eq := next_eq_checked
   rank := ranks
   parent i _ := parents i
   letter i _ := letters i
   parent_lt := parent_lt_checked
   parent_next := parent_next_checked
 
+/-- A balanced lookup recovers the original index of each retained literal code. -/
+private def decodeCode (code : Fin (16 ^ 16)) : Fin 768 :=
+  (if code.val < 9920099947160482050 then (if code.val < 5001118312997793810 then (if code.val < 2311269535231638765 then (if code.val < 1162851566971959450 then (if code.val < 157985963896463055 then (if code.val < 86242895502216105 then (if code.val < 82112258201572980 then (if code.val < 82079144256365895 then (if code.val < 82062715505108295 then 182 else (if code.val < 82079144003728470 then 57 else 142)) else (if code.val < 82095829450315380 then 64 else (if code.val < 82095829702952805 then 698 else 485))) else (if code.val < 86209781809658010 then (if code.val < 82112258454210405 then 647 else (if code.val < 86209781304371595 then 605 else 222)) else (if code.val < 86226209303603595 then 73 else (if code.val < 86226209808890010 then 437 else 190)))) else (if code.val < 149708388888634740 then (if code.val < 86259324006734520 then (if code.val < 86242896007502520 then 510 else (if code.val < 86259323501448105 then 596 else 756)) else (if code.val < 149691831789712485 then 733 else (if code.val < 149691832294987335 then 278 else 97))) else (if code.val < 149724689045476935 then (if code.val < 149708389393909590 then 581 else (if code.val < 149724688540202085 then 325 else 251)) else (if code.val < 149741245639124340 then 101 else (if code.val < 149741246144399190 then 674 else 559))))) else (if code.val < 221500999729658025 then (if code.val < 158035376993849310 then (if code.val < 158002521248034300 then (if code.val < 157985964149112045 then 146 else (if code.val < 158002520995385310 then 58 else 382)) else (if code.val < 158018819894927055 then 578 else (if code.val < 158018820147576045 then 346 else 279))) else (if code.val < 221467886037076890 then (if code.val < 158035377246498300 then 731 else (if code.val < 221467885531802040 then 763 else 196)) else (if code.val < 221484313531034040 then 62 else (if code.val < 221484314036308890 then 369 else 141)))) else (if code.val < 225631573109112030 then (if code.val < 221517428234164875 then (if code.val < 221501000234932875 then 281 else (if code.val < 221517427728890025 then 201 else 709)) else (if code.val < 225615016010178300 then 507 else (if code.val < 225615016262815725 then 285 else 99))) else (if code.val < 225647872261279725 then (if code.val < 225631573361749455 then 192 else (if code.val < 225647872008642300 then 156 else 501)) else (if code.val < 225664429107576030 then 250 else (if code.val < 225664429360213455 then 628 else 376)))))) else (if code.val < 1310701051229760975 then (if code.val < 1167181865171240805 then (if code.val < 1162901109670386360 then (if code.val < 1162867995977820555 then (if code.val < 1162851567477238155 then 651 else (if code.val < 1162867995472541850 then 529 else 743)) else (if code.val < 1162884681169803960 then 714 else (if code.val < 1162884681675082665 then 543 else 358))) else (if code.val < 1167148751226041430 then (if code.val < 1162901110175665065 then 373 else (if code.val < 1167148750973396295 then 448 else 694)) else (if code.val < 1167165178721953095 then 536 else (if code.val < 1167165178974598230 then 614 else 740)))) else (if code.val < 1298126099699972265 then (if code.val < 1167198293172442740 then (if code.val < 1167181865423885940 then 214 else (if code.val < 1167198292919797605 then 268 else 175)) else (if code.val < 1298109671199389865 then 416 else (if code.val < 1298109671704664715 then 467 else 679))) else (if code.val < 1298142785902513050 then (if code.val < 1298126100205247115 then 213 else (if code.val < 1298142785397238200 then 87 else 415)) else (if code.val < 1298159213897820600 then 554 else (if code.val < 1298159214403095450 then 128 else 345))))) else (if code.val < 1369918712330216820 then (if code.val < 1310750464327143405 then (if code.val < 1310717608581324540 then (if code.val < 1310701051482406110 then 541 else (if code.val < 1310717608328679405 then 287 else 594)) else (if code.val < 1310733907228224975 then 338 else (if code.val < 1310733907480870110 then 216 else 84))) else (if code.val < 1369885856586352470 then (if code.val < 1310750464579788540 then 173 else (if code.val < 1369885856081077620 then 422 else 704)) else (if code.val < 1369902413180007525 then 649 else (if code.val < 1369902413685282375 then 85 else 249)))) else (if code.val < 1378196545036090605 then (if code.val < 1369935269934421575 then (if code.val < 1369918712835491670 then 405 else (if code.val < 1369935269429146725 then 622 else 348)) else (if code.val < 1378179987937160700 then 130 else (if code.val < 1378179988189794270 then 380 else 233))) else (if code.val < 1378212844188258270 then (if code.val < 1378196545288724175 then 631 else (if code.val < 1378212843935624700 then 747 else 127)) else (if code.val < 1378229401034554605 then 343 else (if code.val < 1378229401287188175 then 624 else 371))))))) else (if code.val < 3463984622564921325 then (if code.val < 2391639955970955915 then (if code.val < 2319896758728676935 then (if code.val < 2311318949331725820 then (if code.val < 2311286092583194590 then (if code.val < 2311269535484272335 then 570 else (if code.val < 2311286092330561020 then 401 else 450)) else (if code.val < 2311302392232803565 then 361 else (if code.val < 2311302392485437135 then 750 else 635))) else (if code.val < 2319863902984828005 then (if code.val < 2311318949584359390 then 505 else (if code.val < 2319863902479537735 then 542 else 575)) else (if code.val < 2319880459578459990 then 417 else (if code.val < 2319880460083750260 then 294 else 163)))) else (if code.val < 2378915144444272380 then (if code.val < 2319913316332889460 then (if code.val < 2319896759233967205 then 646 else (if code.val < 2319913315827599190 then 760 else 186)) else (if code.val < 2378898587345353950 then 433 else (if code.val < 2378898587597991375 then 549 else 643))) else (if code.val < 2378931444599156175 then (if code.val < 2378915144696909805 then 535 else (if code.val < 2378931444346518750 then 682 else 144)) else (if code.val < 2378948001445437180 then 45 else (if code.val < 2378948001698074605 then 241 else 426))))) else (if code.val < 2522483878033060950 then (if code.val < 2391689498168036250 then (if code.val < 2391656384475478185 then (if code.val < 2391639956476246185 then 442 else (if code.val < 2391656383970187915 then 199 else 138)) else (if code.val < 2391673070168804250 then 42 else (if code.val < 2391673070674094520 then 659 else 444))) else (if code.val < 2522450764087838565 then (if code.val < 2391689498673326520 then 184 else (if code.val < 2522450763835201140 then 431 else 610)) else (if code.val < 2522467191583757940 then 587 else (if code.val < 2522467191836395365 then 532 else 707)))) else (if code.val < 2526614257384987320 then (if code.val < 2522500306034255175 then (if code.val < 2522483878285698375 then 43 else (if code.val < 2522500305781617750 then 140 else 427)) else (if code.val < 2526597829385755320 then 242 else (if code.val < 2526597829891034025 then 323 else 117))) else (if code.val < 2526630944088893835 then (if code.val < 2526614257890266025 then 240 else (if code.val < 2526630943583615130 then 438 else 711)) else (if code.val < 2526647371582847130 then 742 else (if code.val < 2526647372088125835 then 611 else 503)))))) else (if code.val < 3540057926269552470 then (if code.val < 3468314855836392075 then (if code.val < 3464034036665019855 then (if code.val < 3464001179916500190 then (if code.val < 3463984622817566460 then 300 else (if code.val < 3464001179663855055 then 160 else 273)) else (if code.val < 3464017479566086125 then 465 else (if code.val < 3464017479818731260 then 544 else 634))) else (if code.val < 3468281742143826360 then (if code.val < 3464034036917664990 then 521 else (if code.val < 3468281741638536090 then 692 else 224)) else (if code.val < 3468298170139118490 then 266 else (if code.val < 3468298170644408760 then 452 else 665)))) else (if code.val < 3531480116371250895 then (if code.val < 3468331284842264745 then (if code.val < 3468314856341682345 then 169 else (if code.val < 3468331284336974475 then 414 else 393)) else (if code.val < 3531463559272320990 then 572 else (if code.val < 3531463559524969980 then 759 else 645))) else (if code.val < 3531496416526134780 then (if code.val < 3531480116623899885 then 476 else (if code.val < 3531496416273485790 then 548 else 314)) else (if code.val < 3531512973372415695 then 392 else (if code.val < 3531512973625064685 then 56 else 16))))) else (if code.val < 3603272729251195275 then (if code.val < 3540107340118971975 then (if code.val < 3540074483873772645 then (if code.val < 3540057926774842740 then 96 else (if code.val < 3540074483368482375 then 28 else 701)) else (if code.val < 3540090783020042070 then 582 else (if code.val < 3540090783525332340 then 363 else 302))) else (if code.val < 3603239615558621880 then (if code.val < 3540107340624262245 then 395 else (if code.val < 3603239615053335465 then 311 else 761)) else (if code.val < 3603256043553917865 then 721 else (if code.val < 3603256044059204280 then 477 else 520)))) else (if code.val < 3607553227304683365 then (if code.val < 3603289158257064090 then (if code.val < 3603272729756481690 then 312 else (if code.val < 3603289157751777675 then 463 else 60)) else (if code.val < 3607536798553425765 then 18 else (if code.val < 3607536798806070900 then 54 else 15))) else (if code.val < 3607569913003930710 then (if code.val < 3607553227557328500 then 453 else (if code.val < 3607569912751285575 then 226 else 600)) else (if code.val < 3607586341502543175 then 648 else (if code.val < 3607586341755188310 then 523 else 475)))))))) else (if code.val < 7230251169362861295 then (if code.val < 6081833201087457435 then (if code.val < 5076967598027693295 then (if code.val < 5005224529617722280 then (if code.val < 5001170045878866480 then (if code.val < 5001136932249219090 then (if code.val < 5001118313818628355 then 435 else (if code.val < 5001136931933659395 then 187 else 32)) else (if code.val < 5001151427448275745 then 109 else (if code.val < 5001151427763835440 then 561 else 632))) else (if code.val < 5005191415988074890 then (if code.val < 5001170046699701025 then 490 else (if code.val < 5005191415419873435 then 699 else 75)) else (if code.val < 5005207843419109770 then 22 else (if code.val < 5005207843987302555 then 428 else 362)))) else (if code.val < 5068762891718107440 then (if code.val < 5005240958185151400 then (if code.val < 5005224530185915065 then 571 else (if code.val < 5005240957616949945 then 319 else 744)) else (if code.val < 5068746334335086625 then 621 else (if code.val < 5068746335124460035 then 413 else 176))) else (if code.val < 5068783572206817795 then (if code.val < 5068762891939283730 then 712 else (if code.val < 5068783571985641505 then 613 else 72)) else (if code.val < 5068800128800465200 then 21 else (if code.val < 5068800129589838610 then 334 else 585))))) else (if code.val < 5140559753164073145 then (if code.val < 5077017011125079550 then (if code.val < 5076984155410714110 then (if code.val < 5076967598311800525 then 111 else (if code.val < 5076984155126624220 then 33 else 629)) else (if code.val < 5077000454026165965 then 481 else (if code.val < 5077000454310255855 then 321 else 454))) else (if code.val < 5140522516302891675 then (if code.val < 5077017011409186780 then 745 else (if code.val < 5140522515797621160 then 706 else 421)) else (if code.val < 5140538943796848825 then 296 else (if code.val < 5140538944302128010 then 687 else 534)))) else (if code.val < 5144689295751372030 then (if code.val < 5140576181668579995 then (if code.val < 5140559753669352330 then 206 else (if code.val < 5140576181163309480 then 185 else 586)) else (if code.val < 5144670677068152540 then 335 else (if code.val < 5144670677320781295 then 430 else 217))) else (if code.val < 5144703533319253965 then (if code.val < 5144689296004018125 then 290 else (if code.val < 5144703533066607870 then 174 else 560)) else (if code.val < 5144722151749844700 then 412 else (if code.val < 5144722152002473455 then 677 else 461)))))) else (if code.val < 6229756712287727565 then (if code.val < 6086237462415213345 then (if code.val < 6081882743785884345 then (if code.val < 6081849630156236955 then (if code.val < 6081833201655658890 then 551 else (if code.val < 6081849629588044170 then 436 else 762)) else (if code.val < 6081866315285306280 then 656 else (if code.val < 6081866315853499065 then 344 else 451))) else (if code.val < 6086204348785565955 then (if code.val < 6081882744354085800 then 231 else (if code.val < 6086204348470013970 then 440 else 568)) else (if code.val < 6086222966900596995 then 317 else (if code.val < 6086222967721439250 then 388 else 151)))) else (if code.val < 6217180729965787560 then (if code.val < 6086256081666638625 then (if code.val < 6086237463236055600 then 126 else (if code.val < 6086256081351086640 then 38 else 257)) else (if code.val < 6217164301465200825 then 100 else (if code.val < 6217164301970480010 then 256 else 512))) else (if code.val < 6217201539336931995 then (if code.val < 6217180730471058075 then 292 else (if code.val < 6217201538831661480 then 168 else 339)) else (if code.val < 6217217967332239545 then 597 else (if code.val < 6217217967837518730 then 247 else 223))))) else (if code.val < 6288977595742232880 then (if code.val < 6229808186969419725 then (if code.val < 6229775331223600860 then (if code.val < 6229756712540364030 then 668 else (if code.val < 6229775330970947055 then 455 else 394)) else (if code.val < 6229789568286182895 then 153 else (if code.val < 6229789568538836700 then 129 else 39))) else (if code.val < 6288940358881051410 then (if code.val < 6229808187222056190 then 98 else (if code.val < 6288940358659875120 then 282 else 229)) else (if code.val < 6288956915474706465 then 474 else (if code.val < 6288956916264079875 then 166 else 291)))) else (if code.val < 6297178179167321805 then (if code.val < 6288994153346437635 then (if code.val < 6288977596531606290 then 727 else (if code.val < 6288994153125261345 then 545 else 225)) else (if code.val < 6297161622068383230 then 456 else (if code.val < 6297161622352490460 then 318 else 407))) else (if code.val < 6297194478350945790 then (if code.val < 6297178179451411695 then 746 else (if code.val < 6297194478066855900 then 737 else 496)) else (if code.val < 6297211035165777135 then 246 else (if code.val < 6297211035449884365 then 469 else 499))))))) else (if code.val < 8383040283622886895 then (if code.val < 7310694586236771210 then (if code.val < 7238955642140692995 then (if code.val < 7230300583462948350 then (if code.val < 7230267726745882110 then (if code.val < 7230251169646968525 then 598 else (if code.val < 7230267726461792220 then 538 else 341)) else (if code.val < 7230284026364034765 then 331 else (if code.val < 7230284026648124655 then 741 else 724))) else (if code.val < 7238918405279526945 then (if code.val < 7230300583747055580 then 115 else (if code.val < 7238918405058335235 then 316 else 479)) else (if code.val < 7238934961873158930 then 691 else (if code.val < 7238934962662547760 then 202 else 80)))) else (if code.val < 7297972867086548700 then (if code.val < 7238972199744905520 then (if code.val < 7238955642930081825 then 516 else (if code.val < 7238972199523713810 then 258 else 63)) else (if code.val < 7297954248403311870 then 150 else (if code.val < 7297954248655957965 then 149 else 384))) else (if code.val < 7297987105657114095 then (if code.val < 7297972867339177455 then 458 else (if code.val < 7297987105404485340 then 673 else 210)) else (if code.val < 7298005724087704830 then 272 else (if code.val < 7298005724340350925 then 137 else 299))))) else (if code.val < 7441539475277033490 then (if code.val < 7310748251602459530 then (if code.val < 7310711014741293480 then (if code.val < 7310694586742057145 then 617 else (if code.val < 7310711014235998875 then 356 else 200)) else (if code.val < 7310731823603223195 then 81 else (if code.val < 7310731824108517800 then 522 else 260))) else (if code.val < 7441506361647370800 then (if code.val < 7310748252107745465 then 61 else (if code.val < 7441506361331811105 then 193 else 310)) else (if code.val < 7441524979762401840 then 113 else (if code.val < 7441524980583236385 then 672 else 457)))) else (if code.val < 7445595891500489640 then (if code.val < 7441558094528458770 then (if code.val < 7441539476097868035 then 270 else (if code.val < 7441558094212899075 then 209 else 357)) else (if code.val < 7445579463501253305 then 301 else (if code.val < 7445579464069454760 then 480 else 533))) else (if code.val < 7445612578267310235 then (if code.val < 7445595892068682425 then 360 else (if code.val < 7445612577699117450 then 136 else 729)) else (if code.val < 7445629005698345115 then 764 else (if code.val < 7445629006266546570 then 305 else 367)))))) else (if code.val < 8459112428814926610 then (if code.val < 8387373609270811530 then (if code.val < 8383091759307279855 then (if code.val < 8383058902558760190 then (if code.val < 8383040283875540700 then 46 else (if code.val < 8383058902306123725 then 148 else 234)) else (if code.val < 8383073140624060365 then 77 else (if code.val < 8383073140876696830 then 539 else 723))) else (if code.val < 8387336372409645480 then (if code.val < 8383091759559933660 then 157 else (if code.val < 8387336371904350875 then 403 else 88)) else (if code.val < 8387352800404937610 then 255 else (if code.val < 8387352800910223545 then 439 else 654)))) else (if code.val < 8450461750502489805 then (if code.val < 8387390038276684200 then (if code.val < 8387373609776097465 then 118 else (if code.val < 8387390037771389595 then 35 else 263)) else (if code.val < 8450445193403551230 then 530 else (if code.val < 8450445193687658460 then 718 else 749))) else (if code.val < 8450478050688814590 then (if code.val < 8450461750786579695 then 375 else (if code.val < 8450478050404724700 then 143 else 592)) else (if code.val < 8450494607503645935 then 518 else (if code.val < 8450494607787753165 then 31 else 8))))) else (if code.val < 8522254363366701450 then (if code.val < 8459166223280312835 then (if code.val < 8459128986419146785 then (if code.val < 8459112429604315440 then 447 else (if code.val < 8459128986197955075 then 204 else 609)) else (if code.val < 8459149666465481490 then 351 else (if code.val < 8459149666686673200 then 14 else 2))) else (if code.val < 8522221249737038760 then (if code.val < 8459166224069701665 then 662 else (if code.val < 8522221249168837305 then 693 else 640)) else (if code.val < 8522237677669424040 then 757 else (if code.val < 8522237678237616825 then 623 else 390)))) else (if code.val < 8526611015234622000 then (if code.val < 8522270792435480970 then (if code.val < 8522254363934894235 then 353 else (if code.val < 8522270791867279515 then 252 else 20)) else (if code.val < 8526592396298748705 then 4 else (if code.val < 8526592397119590960 then 377 else 288))) else (if code.val < 8526625511064805635 then (if code.val < 8526611015550173985 then 6 else (if code.val < 8526625510749253650 then 27 else 494)) else (if code.val < 8526644129179836675 then 703 else (if code.val < 8526644130000678930 then 644 else 573))))))))) else (if code.val < 14839230665905877520 then (if code.val < 12149306830420828140 then (if code.val < 11000888799384270150 then (if code.val < 9996023259085660140 then (if code.val < 9924280127663855460 then (if code.val < 9920151680041550385 then (if code.val < 9920118566348988435 then (if code.val < 9920099947949858835 then 443 else (if code.val < 9920118566127808770 then 434 else 660)) else (if code.val < 9920133061642420785 then 565 else (if code.val < 9920133061863609120 then 383 else 307))) else (if code.val < 9924247013248754775 then (if code.val < 9920151680830935840 then 147 else (if code.val < 9924247012964660550 then 350 else 284)) else (if code.val < 9924265632149234775 then 179 else (if code.val < 9924265632433337670 then 527 else 275)))) else (if code.val < 9987822675944681760 then (if code.val < 9924298746129831780 then (if code.val < 9924280127947949685 then 588 else (if code.val < 9924298745845728885 then 336 else 162)) else (if code.val < 9987804056977355040 then 50 else (if code.val < 9987804057766724115 then 719 else 526))) else (if code.val < 9987837171680482050 then (if code.val < 9987822676165853715 then 228 else (if code.val < 9987837171459301425 then 470 else 487)) else (if code.val < 9987855789858431025 then 508 else (if code.val < 9987855790647808770 then 408 else 245))))) else (if code.val < 10059613160526210165 then (if code.val < 9996074733767347965 then (if code.val < 9996041878052994510 then (if code.val < 9996023259369754365 then 181 else (if code.val < 9996041877768891615 then 283 else 686)) else (if code.val < 9996056115084131790 then 540 else (if code.val < 9996056115368226015 then 584 else 599))) else (if code.val < 10059580304531670615 then (if code.val < 9996074734051450860 then 167 else (if code.val < 10059580303742301540 then 52 else 639)) else (if code.val < 10059598922425525365 then 755 else (if code.val < 10059598923214903110 then 349 else 230)))) else (if code.val < 10063670929882606845 then (if code.val < 10059631779430614615 then (if code.val < 10059613160747390790 then 342 else (if code.val < 10059631779209442660 then 488 else 389)) else (if code.val < 10063652311199383020 then 574 else (if code.val < 10063652311483469535 then 432 else 276))) else (if code.val < 10063685167481941245 then (if code.val < 10063670930166702030 then 566 else (if code.val < 10063685167197839310 then 667 else 381)) else (if code.val < 10063703785881063135 then 308 else (if code.val < 10063703786165173740 then 145 else 378)))))) else (if code.val < 11148738346418954190 then (if code.val < 11005219096577905440 then (if code.val < 11000940532265338485 then (if code.val < 11000907417850246470 then (if code.val < 11000888799668364375 then 122 else (if code.val < 11000907417566143575 then 198 else 636)) else (if code.val < 11000921913080764260 then 593 else (if code.val < 11000921913364858485 then 681 else 502))) else (if code.val < 11005185982885343490 then (if code.val < 11000940532549441380 then 248 else (if code.val < 11005185982664155155 then 466 else 105)) else (if code.val < 11005204601063284755 then 197 else (if code.val < 11005204601852670210 then 155 else 48)))) else (if code.val < 11136240708627887460 then (if code.val < 11005237715766411825 then (if code.val < 11005219097367282225 then 460 else (if code.val < 11005237715545232160 then 219 else 23)) else (if code.val < 11136222089944654965 then 79 else (if code.val < 11136222090165835590 then 489 else 364))) else (if code.val < 11136254946949744215 then (if code.val < 11136240708849059415 then 404 else (if code.val < 11136254946160375140 then 396 else 758)) else (if code.val < 11136273564843598965 then 642 else (if code.val < 11136273565632976710 then 235 else 411))))) else (if code.val < 11208031195215900960 then (if code.val < 11148789821100649725 then (if code.val < 11148756965386288620 then (if code.val < 11148738346703056125 then 107 else (if code.val < 11148756965102178015 then 295 else 372)) else (if code.val < 11148771202417425900 then 386 else (if code.val < 11148771202701512415 then 670 else 666))) else (if code.val < 11207998081523323650 then (if code.val < 11148789821384744910 then 86 else (if code.val < 11207998081302143025 then 25 else 332)) else (if code.val < 11208016699701272625 then 121 else (if code.val < 11208016700490650370 then 626 else 374)))) else (if code.val < 11216235901809577725 then (if code.val < 11208049814404399635 then (if code.val < 11208031196005270035 then 680 else (if code.val < 11208049814183227680 then 765 else 705)) else (if code.val < 11216217283126361550 then 695 else (if code.val < 11216217283410455775 then 158 else 49))) else (if code.val < 11216250139408912125 then (if code.val < 11216235902093680620 then 690 else (if code.val < 11216250139124817900 then 591 else 683)) else (if code.val < 11216268757808049375 then 473 else (if code.val < 11216268758092152270 then 220 else 462))))))) else (if code.val < 13302021917754129900 then (if code.val < 12229752374181451590 then (if code.val < 12158009241614357250 then (if code.val < 12149358306105216765 then (if code.val < 12149325449388162510 then (if code.val < 12149306830704922365 then 697 else (if code.val < 12149325449104059615 then 498 else 71)) else (if code.val < 12149339687422000590 then 218 else (if code.val < 12149339687706094815 then 47 else 13))) else (if code.val < 12157976127921795360 then (if code.val < 12149358306389319660 then 726 else (if code.val < 12157976127700599315 then 608 else 116)) else (if code.val < 12157994746099728915 then 34 else (if code.val < 12157994746889122080 then 289 else 104)))) else (if code.val < 12216954501217767135 then (if code.val < 12158027860802871345 then (if code.val < 12158009242403741745 then 710 else (if code.val < 12158027860581683970 then 708 else 767)) else (if code.val < 12216935882534543310 then 730 else (if code.val < 12216935882818645245 then 315 else 562))) else (if code.val < 12216968739819802335 then (if code.val < 12216954501501877740 then 103 else (if code.val < 12216968739535715820 then 124 else 274)) else (if code.val < 12216987358218939645 then 95 else (if code.val < 12216987358503034830 then 722 else 569))))) else (if code.val < 12360521109439721730 then (if code.val < 12229803849648592710 then (if code.val < 12229770993654068580 then (if code.val < 12229752374970836085 then 550 else (if code.val < 12229770992864675415 then 304 else 131)) else (if code.val < 12229785230965360215 then 178 else (if code.val < 12229785231186556260 then 355 else 265))) else (if code.val < 12360487995747144480 then (if code.val < 12229803849869780085 then 732 else (if code.val < 12360487995525956145 then 766 else 633)) else (if code.val < 12360506613925085745 then 385 else (if code.val < 12360506614714471200 then 41 else 11)))) else (if code.val < 12364653680230614645 then (if code.val < 12360539728628228115 then (if code.val < 12360521110229098515 then 212 else (if code.val < 12360539728407048450 then 69 else 684)) else (if code.val < 12364635061046040420 then 669 else (if code.val < 12364635061330134645 then 500 else 696))) else (if code.val < 12364668176029344855 then (if code.val < 12364653680514717540 then 207 else (if code.val < 12364668175745250630 then 93 else 36)) else (if code.val < 12364686793927124055 then 120 else (if code.val < 12364686794211226950 then 347 else 603)))))) else (if code.val < 13378170151457198850 then (if code.val < 13306427016599525190 then (if code.val < 13302073393438510815 then (if code.val < 13302040536721448910 then (if code.val < 13302021918038216415 then 563 else (if code.val < 13302040536437353725 then 676 else 30)) else (if code.val < 13302054774755286990 then 102 else (if code.val < 13302054775039388925 then 303 else 110))) else (if code.val < 13306394160605001060 then (if code.val < 13302073393722621420 then 400 else (if code.val < 13306394160383805015 then 557 else 483)) else (if code.val < 13306412779067037510 then 352 else (if code.val < 13306412779288224885 then 753 else 637)))) else (if code.val < 13369519473144745725 then (if code.val < 13306445636072142180 then (if code.val < 13306427017388909685 then 324 else (if code.val < 13306445635282749015 then 418 else 17)) else (if code.val < 13369500854461529550 then 3 else (if code.val < 13369500854745623775 then 725 else 627))) else (if code.val < 13369533711746780925 then (if code.val < 13369519473428848620 then 55 else (if code.val < 13369533711462686700 then 177 else 239)) else (if code.val < 13369552330145918175 then 183 else (if code.val < 13369552330430021070 then 515 else 482))))) else (if code.val < 13441309961162159430 then (if code.val < 13378221884338274835 then (if code.val < 13378188770645712945 then (if code.val < 13378170152246583345 then 519 else (if code.val < 13378188770424525570 then 259 else 589)) else (if code.val < 13378203265939145235 then 738 else (if code.val < 13378203266160341280 then 326 else 564))) else (if code.val < 13441276847749744245 then (if code.val < 13378221885127668000 then 9 else (if code.val < 13441276847465650020 then 1 else 409)) else (if code.val < 13441295465647523445 then 590 else (if code.val < 13441295465931626340 then 420 else 293)))) else (if code.val < 13445592649428767520 then (if code.val < 13441328580630836550 then (if code.val < 13441309961446253655 then 244 else (if code.val < 13441328580346733655 then 82 else 261)) else (if code.val < 13445574030461440800 then 525 else (if code.val < 13445574031250817585 then 238 else 491))) else (if code.val < 13445607145164583170 then (if code.val < 13445592649649947185 then 424 else (if code.val < 13445607144943394835 then 280 else 164)) else (if code.val < 13445625763342524435 then 410 else (if code.val < 13445625764131909890 then 402 else 638)))))))) else (if code.val < 17068362365154326085 then (if code.val < 15919944523203390360 then (if code.val < 14915078793067132485 then (if code.val < 14843339974902257835 then (if code.val < 14839284460371251250 then (if code.val < 14839247223572992050 then (if code.val < 14839230666726703395 then 641 else (if code.val < 14839247223257441025 then 398 else 379)) else (if code.val < 14839267903524962595 then 329 else (if code.val < 14839267903840530960 then 306 else 112))) else (if code.val < 14843302738103994810 then (if code.val < 14839284461192094465 then 354 else (if code.val < 14843302737535806360 then 133 else 277)) else (if code.val < 14843319165535042185 then 194 else (if code.val < 14843319166103230635 then 678 else 652)))) else (if code.val < 14906726159964840720 then (if code.val < 14843356403469691800 then (if code.val < 14843339975470463625 then 558 else (if code.val < 14843356402901486010 then 441 else 271)) else (if code.val < 14906709602613277185 then 94 else (if code.val < 14906709603434106915 then 340 else 423))) else (if code.val < 14906746840547930625 then (if code.val < 14906726160280387890 then 471 else (if code.val < 14906746840232366115 then 511 else 689)) else (if code.val < 14906763397078647090 then 602 else (if code.val < 14906763397899494160 then 254 else 445))))) else (if code.val < 14978523021426530490 then (if code.val < 14915132587532502390 then (if code.val < 14915095350984918390 then (if code.val < 14915078793635320935 then 195 else (if code.val < 14915095350416729940 then 134 else 650)) else (if code.val < 14915116030684255335 then 425 else (if code.val < 14915116031252461125 then 399 else 171))) else (if code.val < 14978485784628267435 then (if code.val < 14915132588100708180 then 267 else (if code.val < 14978485784060082840 then 92 else 419)) else (if code.val < 14978502212059310985 then 172 else (if code.val < 14978502212627503290 then 509 else 472)))) else (if code.val < 14982799395810076485 then (if code.val < 14978539449993968280 then (if code.val < 14978523021994732425 then 612 else (if code.val < 14978539449425758635 then 616 else 253)) else (if code.val < 14982782967307531860 then 446 else (if code.val < 14982782968128357735 then 717 else 751))) else (if code.val < 14982820205494822725 then (if code.val < 14982799396125627510 then 330 else (if code.val < 14982820204673979510 then 492 else 313)) else (if code.val < 14982836633176524135 then 114 else (if code.val < 14982836633492092500 then 601 else 517)))))) else (if code.val < 16067869002527106885 then (if code.val < 15924353938491900195 then (if code.val < 15919998189070420410 then (if code.val < 15919960952272165035 then (if code.val < 15919944523771578810 then 580 else (if code.val < 15919960951703976585 then 366 else 89)) else (if code.val < 15919981760569841835 then 26 else (if code.val < 15919981761138047625 then 108 else 135))) else (if code.val < 15924316701693640995 then (if code.val < 15919998189638626200 then 664 else (if code.val < 15924316701378097680 then 576 else 76)) else (if code.val < 15924333258224378625 then 232 else (if code.val < 15924333259045212210 then 630 else 625)))) else (if code.val < 16055143998228249240 then (if code.val < 15924370496159032065 then (if code.val < 15924353939312751120 then 205 else (if code.val < 15924370495843471410 then 67 else 735)) else (if code.val < 16055127569727662985 then 748 else (if code.val < 16055127570295855290 then 478 else 688))) else (if code.val < 16055164807662320280 then (if code.val < 16055143998796433835 then 170 else (if code.val < 16055164807094110635 then 53 else 66)) else (if code.val < 16055181235594696890 then 203 else (if code.val < 16055181236162898825 then 653 else 607))))) else (if code.val < 16126940864020414770 then (if code.val < 16067922668396106870 then (if code.val < 16067885431345202535 then (if code.val < 16067869003347940470 then 604 else (if code.val < 16067885431029659220 then 468 else 159)) else (if code.val < 16067906239893554535 then 406 else (if code.val < 16067906240714405460 then 243 else 189))) else (if code.val < 16126903627222155570 then (if code.val < 16067922668711667525 then 736 else (if code.val < 16126903626906608400 then 752 else 513)) else (if code.val < 16126920183752897025 then 713 else (if code.val < 16126920184573726755 then 161 else 106)))) else (if code.val < 16135289374457427525 then (if code.val < 16126957421687550465 then (if code.val < 16126940864841261840 then 83 else (if code.val < 16126957421371985955 then 24 else 618)) else (if code.val < 16135272817107822420 then 556 else (if code.val < 16135272817676010870 then 368 else 579))) else (if code.val < 16135310055293151060 then (if code.val < 16135289375025615975 then 78 else (if code.val < 16135310054724945270 then 180 else 165)) else (if code.val < 16135326611573199975 then 51 else (if code.val < 16135326612141405765 then 493 else 702))))))) else (if code.val < 18221152574616270420 then (if code.val < 17148657854499236745 then (if code.val < 17076918910418882595 then (if code.val < 17068416159619695990 then (if code.val < 17068378922570761590 then (if code.val < 17068362365722514535 then 237 else (if code.val < 17068378922002573140 then 286 else 553)) else (if code.val < 17068399602270098535 then 370 else (if code.val < 17068399602838304325 then 715 else 658))) else (if code.val < 17076881673620623395 then (if code.val < 17068416160187901780 then 139 else (if code.val < 17076881673305076225 then 365 else 208)) else (if code.val < 17076898230151357200 then 68 else (if code.val < 17076898230972186930 then 546 else 297)))) else (if code.val < 17136082967393957460 then (if code.val < 17076935468086010640 then (if code.val < 17076918911239729665 then 262 else (if code.val < 17076935467770446130 then 90 else 37)) else (if code.val < 17136066539396687685 then 10 else (if code.val < 17136066539712238710 then 497 else 333))) else (if code.val < 17136103777078703700 then (if code.val < 17136082968214783335 then 734 else (if code.val < 17136103776763135335 then 720 else 524)) else (if code.val < 17136120204760405110 then 531 else (if code.val < 17136120205581248325 then 119 else 327))))) else (if code.val < 17279655951353712690 then (if code.val < 17148711519864920250 then (if code.val < 17148674283066657195 then (if code.val < 17148657855067429050 then 70 else (if code.val < 17148674282498472600 then 215 else 595)) else (if code.val < 17148695091865684395 then 619 else (if code.val < 17148695092433894040 then 504 else 514))) else (if code.val < 17279618714555453490 then (if code.val < 17148711520433122185 then 44 else (if code.val < 17279618714239902465 then 12 else 236)) else (if code.val < 17279635271086191120 then 359 else (if code.val < 17279635271907016995 then 552 else 728)))) else (if code.val < 17283707213616425880 then (if code.val < 17279672509020844560 then (if code.val < 17279655952174555905 then 615 else (if code.val < 17279672508705276195 then 506 else 577)) else (if code.val < 17283690785617197705 then 620 else (if code.val < 17283690786185386155 then 264 else 91))) else (if code.val < 17283728023551847320 then (if code.val < 17283707214184614330 then 555 else (if code.val < 17283728022983641530 then 309 else 567)) else (if code.val < 17283744450982877355 then 657 else (if code.val < 17283744451551083145 then 298 else 547)))))) else (if code.val < 18297075697093124880 then (if code.val < 18225336877533272250 then (if code.val < 18221206239979980135 then (if code.val < 18221169003434366070 then (if code.val < 18221152574931813735 then 495 else (if code.val < 18221169002613532485 then 322 else 484)) else (if code.val < 18221189811982718070 then 537 else (if code.val < 18221189812298278725 then 716 else 739))) else (if code.val < 18225299640735009195 then (if code.val < 18221206240800831060 then 29 else (if code.val < 18225299640166824600 then 7 else 655)) else (if code.val < 18225316068667403145 then 583 else (if code.val < 18225316069235595450 then 227 else 74)))) else (if code.val < 18288572946043270725 then (if code.val < 18225353306602060440 then (if code.val < 18225336878101474185 then 19 else (if code.val < 18225353306033850795 then 65 else 528)) else (if code.val < 18288556389195016020 then 685 else (if code.val < 18288556389763204470 then 459 else 675))) else (if code.val < 18288593626878994260 then (if code.val < 18288572946611459175 then 132 else (if code.val < 18288593626310788470 then 40 else 429)) else (if code.val < 18288610183660393575 then 211 else (if code.val < 18288610184228599365 then 154 else 397))))) else (if code.val < 18360369808651225530 then (if code.val < 18297129491558502435 then (if code.val < 18297092254760243235 then (if code.val < 18297075697913954610 then 123 else (if code.val < 18297092254444696065 then 337 else 464)) else (if code.val < 18297112934712213810 then 269 else (if code.val < 18297112935027778320 then 191 else 328))) else (if code.val < 18360332571852970155 then (if code.val < 18297129492379349505 then 449 else (if code.val < 18360332571284781705 then 663 else 661)) else (if code.val < 18360348999785360280 then 671 else (if code.val < 18360349000353548730 then 125 else 221)))) else (if code.val < 18364721306558411280 then (if code.val < 18360386237720017545 then (if code.val < 18360369809219431320 then 59 else (if code.val < 18360386237151811755 then 188 else 387)) else (if code.val < 18364704749206840065 then 320 else (if code.val < 18364704750027673650 then 391 else 152))) else (if code.val < 18364741987141493505 then (if code.val < 18364721306873954595 then 606 else (if code.val < 18364741986825932850 then 486 else 754)) else (if code.val < 18364758543672213795 then 700 else (if code.val < 18364758544493064720 then 5 else 0))))))))))
+
+private theorem decodeCode_leftInverse : Function.LeftInverse decodeCode certificate.rows := by
+  change ∀ i : Fin 768, decodeCode (certificate.rows i) = i
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
+
 theorem rows_injective : Function.Injective certificate.rows :=
-  by native_decide
+  decodeCode_leftInverse.injective
+
+/-- Inverse-transition checks are independent for each original generator. -/
+private theorem previous_generator0 : ∀ i : Fin 768,
+    nextRow (previousRow i 0) 0 = i := by
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
+
+private theorem previous_generator1 : ∀ i : Fin 768,
+    nextRow (previousRow i 1) 1 = i := by
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
+
+private theorem previous_generator2 : ∀ i : Fin 768,
+    nextRow (previousRow i 2) 2 = i := by
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
+
+private theorem previous_generator3 : ∀ i : Fin 768,
+    nextRow (previousRow i 3) 3 = i := by
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
+
+private theorem previous_generator4 : ∀ i : Fin 768,
+    nextRow (previousRow i 4) 4 = i := by
+  refine Fin.addCases (m := 384) (n := 384) ?_ ?_ <;>
+    refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+      refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+        refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+          refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+            refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+              decide +kernel
 
 theorem previous_checked : ∀ i j,
-    certificate.next (previousRow i j) j = i :=
-  by native_decide
+    certificate.next (previousRow i j) j = i := by
+  intro i j
+  fin_cases j
+  · exact previous_generator0 i
+  · exact previous_generator1 i
+  · exact previous_generator2 i
+  · exact previous_generator3 i
+  · exact previous_generator4 i
 
 
 /-- Row indices used by the sparse normal-state and transition certificate. -/
@@ -171,26 +321,325 @@ private def classCodeRows (i : Fin 768) : Fin 24 :=
 
 private def classCode (x : Source) : Fin 24 := classCodeRows x.index
 
+/-- The computational predicate contains only original literal codes. -/
+private def generatorInvariantCheck (j : Fin 5) (i : Fin 768) : Prop :=
+  classCodeRows (decodeCode (permutationCodeMul
+    (permutationCodeMul (permutationCode (generators j)) (codes i))
+    (permutationCode ((generators j)⁻¹)))) = classCodeRows i
+
+private instance generatorInvariantCheck_decidable (j : Fin 5) (i : Fin 768) :
+    Decidable (generatorInvariantCheck j i) := by
+  unfold generatorInvariantCheck
+  infer_instance
+
+/-- Each half-table has its own kernel-reduction budget. -/
+private theorem invariant_generator0_left : ∀ i : Fin 384,
+    generatorInvariantCheck 0 (i.castAdd 384) := by
+  refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+    refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+      refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+        refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+          refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+            decide +kernel
+
+private theorem invariant_generator0_right : ∀ i : Fin 384,
+    generatorInvariantCheck 0 (i.natAdd 384) := by
+  refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+    refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+      refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+        refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+          refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+            decide +kernel
+
+private theorem invariant_generator0 : ∀ i : Fin 768,
+    generatorInvariantCheck 0 i :=
+  Fin.addCases (m := 384) (n := 384)
+    invariant_generator0_left invariant_generator0_right
+
+private theorem invariant_generator1_left : ∀ i : Fin 384,
+    generatorInvariantCheck 1 (i.castAdd 384) := by
+  refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+    refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+      refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+        refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+          refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+            decide +kernel
+
+private theorem invariant_generator1_right : ∀ i : Fin 384,
+    generatorInvariantCheck 1 (i.natAdd 384) := by
+  refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+    refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+      refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+        refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+          refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+            decide +kernel
+
+private theorem invariant_generator1 : ∀ i : Fin 768,
+    generatorInvariantCheck 1 i :=
+  Fin.addCases (m := 384) (n := 384)
+    invariant_generator1_left invariant_generator1_right
+
+private theorem invariant_generator2_left : ∀ i : Fin 384,
+    generatorInvariantCheck 2 (i.castAdd 384) := by
+  refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+    refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+      refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+        refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+          refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+            decide +kernel
+
+private theorem invariant_generator2_right : ∀ i : Fin 384,
+    generatorInvariantCheck 2 (i.natAdd 384) := by
+  refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+    refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+      refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+        refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+          refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+            decide +kernel
+
+private theorem invariant_generator2 : ∀ i : Fin 768,
+    generatorInvariantCheck 2 i :=
+  Fin.addCases (m := 384) (n := 384)
+    invariant_generator2_left invariant_generator2_right
+
+private theorem invariant_generator3_left : ∀ i : Fin 384,
+    generatorInvariantCheck 3 (i.castAdd 384) := by
+  refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+    refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+      refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+        refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+          refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+            decide +kernel
+
+private theorem invariant_generator3_right : ∀ i : Fin 384,
+    generatorInvariantCheck 3 (i.natAdd 384) := by
+  refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+    refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+      refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+        refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+          refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+            decide +kernel
+
+private theorem invariant_generator3 : ∀ i : Fin 768,
+    generatorInvariantCheck 3 i :=
+  Fin.addCases (m := 384) (n := 384)
+    invariant_generator3_left invariant_generator3_right
+
+private theorem invariant_generator4_left : ∀ i : Fin 384,
+    generatorInvariantCheck 4 (i.castAdd 384) := by
+  refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+    refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+      refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+        refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+          refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+            decide +kernel
+
+private theorem invariant_generator4_right : ∀ i : Fin 384,
+    generatorInvariantCheck 4 (i.natAdd 384) := by
+  refine Fin.addCases (m := 192) (n := 192) ?_ ?_ <;>
+    refine Fin.addCases (m := 96) (n := 96) ?_ ?_ <;>
+      refine Fin.addCases (m := 48) (n := 48) ?_ ?_ <;>
+        refine Fin.addCases (m := 24) (n := 24) ?_ ?_ <;>
+          refine Fin.addCases (m := 12) (n := 12) ?_ ?_ <;>
+            decide +kernel
+
+private theorem invariant_generator4 : ∀ i : Fin 768,
+    generatorInvariantCheck 4 i :=
+  Fin.addCases (m := 384) (n := 384)
+    invariant_generator4_left invariant_generator4_right
+
+private theorem generator_invariant_checked : ∀ (j : Fin 5) (i : Fin 768),
+    generatorInvariantCheck j i := by
+  intro j
+  fin_cases j
+  · exact invariant_generator0
+  · exact invariant_generator1
+  · exact invariant_generator2
+  · exact invariant_generator3
+  · exact invariant_generator4
+
 def classInvariant : FiniteConjugacyGeneratorInvariant ambient representative where
   Code := Fin 24
   code := classCode
-  generator_invariant := by native_decide +revert
+  generator_invariant := by
+    exact certificate.row_generator_invariant_of_permutationCodes
+      rows_injective previousRow previous_checked classCodeRows
+      decodeCode decodeCode_leftInverse generator_invariant_checked
   representative_injective := by decide +kernel
 
 private def centralizerCard (i : Fin 24) : ℕ :=
   (if i.val < 12 then (if i.val < 6 then (if i.val < 3 then (if i.val < 1 then 768 else (if i.val < 2 then 64 else 256)) else (if i.val < 4 then 32 else (if i.val < 5 then 64 else 64))) else (if i.val < 9 then (if i.val < 7 then 6 else (if i.val < 8 then 32 else 16)) else (if i.val < 10 then 32 else (if i.val < 11 then 16 else 16)))) else (if i.val < 18 then (if i.val < 15 then (if i.val < 13 then 128 else (if i.val < 14 then 192 else 128)) else (if i.val < 16 then 64 else (if i.val < 17 then 32 else 64))) else (if i.val < 21 then (if i.val < 19 then 6 else (if i.val < 20 then 32 else 16)) else (if i.val < 22 then 32 else (if i.val < 23 then 16 else 16)))))
 
+/-- Pointwise equality short-circuits at a differing coordinate instead of
+constructing both complete product codes for a noncommuting pair. -/
+private theorem codeMul_commute_iff_pointwise (a b : Fin (16 ^ 16)) :
+    permutationCodeMul a b = permutationCodeMul b a ↔
+      ∀ x : Fin 16,
+        finFunctionFinEquiv.symm a (finFunctionFinEquiv.symm b x) =
+          finFunctionFinEquiv.symm b (finFunctionFinEquiv.symm a x) := by
+  unfold permutationCodeMul
+  constructor
+  · intro h
+    exact congrFun (finFunctionFinEquiv.injective h)
+  · intro h
+    exact congrArg finFunctionFinEquiv (funext h)
+
+private def centralizerPointCount (j : Fin 24) : ℕ :=
+  (Finset.univ.filter (fun i : Fin 768 => ∀ x : Fin 16,
+    finFunctionFinEquiv.symm (codes i)
+        (finFunctionFinEquiv.symm (codes (representativeRows j)) x) =
+      finFunctionFinEquiv.symm (codes (representativeRows j))
+        (finFunctionFinEquiv.symm (codes i) x))).card
+
+private theorem centralizer_card_eq_point_count (j : Fin 24) :
+    Nat.card (Subgroup.centralizer ({representative j} : Set Source)) =
+      centralizerPointCount j := by
+  change Nat.card (Subgroup.centralizer
+    ({(⟨representativeRows j⟩ : Source)} : Set Source)) = centralizerPointCount j
+  rw [certificate.row_centralizer_card_permutationCodeMul
+    rows_injective previousRow previous_checked]
+  change (Finset.univ.filter (fun i : Fin 768 =>
+    permutationCodeMul (codes i) (codes (representativeRows j)) =
+      permutationCodeMul (codes (representativeRows j)) (codes i))).card =
+    (Finset.univ.filter (fun i : Fin 768 => ∀ x : Fin 16,
+      finFunctionFinEquiv.symm (codes i)
+          (finFunctionFinEquiv.symm (codes (representativeRows j)) x) =
+        finFunctionFinEquiv.symm (codes (representativeRows j))
+          (finFunctionFinEquiv.symm (codes i) x))).card
+  exact congrArg Finset.card (Finset.filter_congr (fun i _ =>
+    codeMul_commute_iff_pointwise (codes i) (codes (representativeRows j))))
+
+/-- Each selected representative is counted by an independent kernel proof. -/
+private theorem centralizer_point_count0 :
+    centralizerPointCount 0 = centralizerCard 0 := by
+  decide +kernel
+
+private theorem centralizer_point_count1 :
+    centralizerPointCount 1 = centralizerCard 1 := by
+  decide +kernel
+
+private theorem centralizer_point_count2 :
+    centralizerPointCount 2 = centralizerCard 2 := by
+  decide +kernel
+
+private theorem centralizer_point_count3 :
+    centralizerPointCount 3 = centralizerCard 3 := by
+  decide +kernel
+
+private theorem centralizer_point_count4 :
+    centralizerPointCount 4 = centralizerCard 4 := by
+  decide +kernel
+
+private theorem centralizer_point_count5 :
+    centralizerPointCount 5 = centralizerCard 5 := by
+  decide +kernel
+
+private theorem centralizer_point_count6 :
+    centralizerPointCount 6 = centralizerCard 6 := by
+  decide +kernel
+
+private theorem centralizer_point_count7 :
+    centralizerPointCount 7 = centralizerCard 7 := by
+  decide +kernel
+
+private theorem centralizer_point_count8 :
+    centralizerPointCount 8 = centralizerCard 8 := by
+  decide +kernel
+
+private theorem centralizer_point_count9 :
+    centralizerPointCount 9 = centralizerCard 9 := by
+  decide +kernel
+
+private theorem centralizer_point_count10 :
+    centralizerPointCount 10 = centralizerCard 10 := by
+  decide +kernel
+
+private theorem centralizer_point_count11 :
+    centralizerPointCount 11 = centralizerCard 11 := by
+  decide +kernel
+
+private theorem centralizer_point_count12 :
+    centralizerPointCount 12 = centralizerCard 12 := by
+  decide +kernel
+
+private theorem centralizer_point_count13 :
+    centralizerPointCount 13 = centralizerCard 13 := by
+  decide +kernel
+
+private theorem centralizer_point_count14 :
+    centralizerPointCount 14 = centralizerCard 14 := by
+  decide +kernel
+
+private theorem centralizer_point_count15 :
+    centralizerPointCount 15 = centralizerCard 15 := by
+  decide +kernel
+
+private theorem centralizer_point_count16 :
+    centralizerPointCount 16 = centralizerCard 16 := by
+  decide +kernel
+
+private theorem centralizer_point_count17 :
+    centralizerPointCount 17 = centralizerCard 17 := by
+  decide +kernel
+
+private theorem centralizer_point_count18 :
+    centralizerPointCount 18 = centralizerCard 18 := by
+  decide +kernel
+
+private theorem centralizer_point_count19 :
+    centralizerPointCount 19 = centralizerCard 19 := by
+  decide +kernel
+
+private theorem centralizer_point_count20 :
+    centralizerPointCount 20 = centralizerCard 20 := by
+  decide +kernel
+
+private theorem centralizer_point_count21 :
+    centralizerPointCount 21 = centralizerCard 21 := by
+  decide +kernel
+
+private theorem centralizer_point_count22 :
+    centralizerPointCount 22 = centralizerCard 22 := by
+  decide +kernel
+
+private theorem centralizer_point_count23 :
+    centralizerPointCount 23 = centralizerCard 23 := by
+  decide +kernel
+
+private theorem centralizer_point_count_checked : ∀ j : Fin 24,
+    centralizerPointCount j = centralizerCard j := by
+  intro j
+  fin_cases j
+  · exact centralizer_point_count0
+  · exact centralizer_point_count1
+  · exact centralizer_point_count2
+  · exact centralizer_point_count3
+  · exact centralizer_point_count4
+  · exact centralizer_point_count5
+  · exact centralizer_point_count6
+  · exact centralizer_point_count7
+  · exact centralizer_point_count8
+  · exact centralizer_point_count9
+  · exact centralizer_point_count10
+  · exact centralizer_point_count11
+  · exact centralizer_point_count12
+  · exact centralizer_point_count13
+  · exact centralizer_point_count14
+  · exact centralizer_point_count15
+  · exact centralizer_point_count16
+  · exact centralizer_point_count17
+  · exact centralizer_point_count18
+  · exact centralizer_point_count19
+  · exact centralizer_point_count20
+  · exact centralizer_point_count21
+  · exact centralizer_point_count22
+  · exact centralizer_point_count23
+
 private theorem centralizer_card : ∀ i : Fin 24,
     Nat.card (Subgroup.centralizer ({representative i} : Set Source)) =
       centralizerCard i := by
   intro i
-  letI : DecidablePred (fun x : Source =>
-      x ∈ Subgroup.centralizer ({representative i} : Set Source)) :=
-    fun x => decidable_of_iff (x * representative i = representative i * x)
-      Subgroup.mem_centralizer_singleton_iff.symm
-  fin_cases i <;>
-    rw [Nat.card_eq_fintype_card, Fintype.card_subtype] <;>
-    native_decide
+  exact (centralizer_card_eq_point_count i).trans (centralizer_point_count_checked i)
 
 private theorem class_card_sum :
     (∑ i : Fin 24, Nat.card Source / centralizerCard i) =
