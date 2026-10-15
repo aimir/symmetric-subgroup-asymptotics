@@ -19,6 +19,7 @@ import re
 import selectors
 import signal
 import subprocess
+import sys
 import tempfile
 import time
 
@@ -67,11 +68,21 @@ class Cancellation:
 
 
 def group_rss_kib(pgid):
-    # A full process snapshot can take more than two seconds under load.
-    # Keep the probe bounded and still fail the check if it times out.
-    result = subprocess.run(
-        ["ps", "-axo", "pgid=,rss="], check=True, capture_output=True, text=True, timeout=10
-    )
+    # macOS can stall while reading unrelated processes in a full snapshot.
+    # Select the entire monitored group directly there; retain the same
+    # bounded probe and fail closed on timeout or a genuine ps error.
+    grouped = sys.platform == "darwin"
+    command = (["ps", "-g", str(pgid), "-o", "pgid=,rss="] if grouped else
+               ["ps", "-axo", "pgid=,rss="])
+    try:
+        result = subprocess.run(
+            command, check=True, capture_output=True, text=True, timeout=10
+        )
+    except subprocess.CalledProcessError as exc:
+        # BSD ps returns 1 with no output when the selected group has exited.
+        if grouped and exc.returncode == 1 and not exc.stdout and not exc.stderr:
+            return 0
+        raise
     return sum(int(rss) for group, rss in
                (line.split() for line in result.stdout.splitlines())
                if int(group) == pgid)
