@@ -543,6 +543,11 @@ orders $7$ and $168$, without enumerating the full affine groups.
 The same argument works whenever the normal subgroups of $R$ form a
 chain: every nontrivial normal subgroup of the faithful irreducible affine
 group contains $V$, and the subgroups above $V$ correspond to those of $R$.
+In fact, the chain hypothesis can be removed if every quotient socle of
+$R$ already has a $t$-position normal-generating tuple. Every quotient
+socle of $V\rtimes R$ then has a $\max\{1,t\}$-position tuple: the quotient
+by the trivial kernel has socle $V$, while every nontrivial kernel contains
+$V$ and hence gives an actual quotient of $R$.
 For the ternary augmentation module on four labels, the Klein four group
 splits the module into its three distinct nontrivial character spaces.
 The alternating group permutes these spaces transitively, so the module
@@ -553,6 +558,16 @@ affine models have one-position quotient-socle bounds. Literal generator
 identities identify the original twelve-point actions with the full
 images of these models, so the bounds apply to their original normal
 quotients.
+This also handles the scalar extension with complement $A_4\times C_2$,
+whose central involution negates the augmentation coordinates. Every normal
+subgroup of this complement either lies in the central $C_2$ or contains
+the Klein four kernel of its cyclic quotient $C_3\times C_2$. In the latter
+case, choose a lift of a generator of the normal subgroup's image and,
+if necessary, multiply it by a kernel element to leave the central axis.
+Its normal closure then contains the kernel and has the required image,
+so it is the whole normal subgroup. Thus every normal subgroup is normally
+cyclic, every quotient socle has a one-position tuple, and the affine
+transfer applies without asserting a normal chain for $A_4\times C_2$.
 More generally, a cover of the normal registry by $t$ chains gives a
 $t$-position tuple for every quotient. The quotient correspondence
 restricts the original cover to the normal subgroups above the quotient
