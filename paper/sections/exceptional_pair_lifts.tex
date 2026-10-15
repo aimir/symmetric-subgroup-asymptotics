@@ -503,6 +503,22 @@ quotient socle and map the tuple into the quotient. Such a uniform bound
 can be checked by reaching every normal-registry state from the identity
 in at most $t$ steps, each adjoining the normal closure of one class
 representative.
+
+For this route, completeness requires only a conjugacy cover inside the
+original group. Let $g_i$ list every element of $G$, let $r_j$ be selected
+representatives, and supply original elements $h_i$ and labels $\ell(i)$
+with
+\[
+ h_i g_i=r_{\ell(i)}h_i.
+\]
+Suppose the normal-state table contains $1$ and records every join
+$N\langle r_j^G\rangle$. It then contains every normal subgroup $K$:
+start at $1$ and adjoin representatives conjugate to successive elements
+of $K$. Each join stays inside $K$, and after all its elements have been
+included the resulting state is $K$. Neither distinct conjugacy classes
+nor exact centralizer orders are needed. The displayed equations can be
+checked pointwise in a faithful permutation action, while every
+representative and conjugator remains an element of the original group.
 A cyclic top needs no normal registry: each of its quotient socles is
 cyclic. If its point action is regular, the polynomial-module argument
 above also gives one generator for every invariant submodule over any
