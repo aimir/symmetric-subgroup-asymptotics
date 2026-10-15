@@ -1,3 +1,8 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow7FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow8FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow20FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow21FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow22FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow8FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwoAffineSixteenRow9FinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoZeroSixteenRow13FinitePackage
@@ -71,7 +76,7 @@ namespace DegreeTwoSixteenInstalledSocles
 
 open DegreeTwoSixteenPairFiniteCatalogue
 
-def installedZero : Finset (Fin 29) := {0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}
+def installedZero : Finset (Fin 29) := {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21}
 
 def installedTwoAffine : Finset (Fin 15) := Finset.univ
 
@@ -119,7 +124,17 @@ noncomputable def zeroFamily (D : RemainingData) (j : Fin 29) :
   · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRows10And12NonsplitSocles.row12Socle
   by_cases h12 : j = 12
   · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow13FullBlockSocles.family
-  exact D.zero16 j (by simp [installedZero, h12, h9, h11, h0, h1, h2, h3, h4, h5, h8, h10, h13, h14, h15, h16, h17, h18])
+  by_cases h6 : j = 6
+  · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow7QuotientSocles.family
+  by_cases h7 : j = 7
+  · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow8QuotientSocles.family
+  by_cases h19 : j = 19
+  · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow20QuotientSocles.family
+  by_cases h20 : j = 20
+  · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow21QuotientSocles.family
+  by_cases h21 : j = 21
+  · subst j; exact PrimitiveAffineDegreeTwoZeroSixteenRow22QuotientSocles.family
+  exact D.zero16 j (by simp [installedZero, h6, h7, h19, h20, h21, h12, h9, h11, h0, h1, h2, h3, h4, h5, h8, h10, h13, h14, h15, h16, h17, h18])
 
 noncomputable def twoAffineFamily (j : Fin 15) :
     (catalogue.twoAffine16 j).normalRegistry.QuotientSocleGeneratorFamily 2 := by
