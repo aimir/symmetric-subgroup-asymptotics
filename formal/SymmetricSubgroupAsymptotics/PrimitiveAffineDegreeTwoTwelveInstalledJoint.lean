@@ -1,3 +1,4 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSecondPairChartFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairImageFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveAlternatingSignFinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSignedSubgroupFinitePackages
@@ -82,7 +83,7 @@ namespace DegreeTwoTwelveInstalledJoint
 open DegreeTwoTwelvePairFiniteCatalogue
 open DegreeTwoTwelveJointFiniteRows
 
-def installedSocles : Finset (Fin 301) := {0, 1, 2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 27, 28, 30, 37, 38, 40, 41, 42, 43, 44, 54, 69, 70, 71, 72, 77, 78, 80, 82, 86, 88, 90, 93, 105, 115, 117, 118, 119, 120, 124, 129, 130, 131, 132, 133, 134, 142, 155, 166, 168, 169, 174, 175, 176, 177, 192, 193, 210, 214, 216, 218, 230, 232, 233, 234, 242, 243, 244, 247, 257, 263, 265, 266, 270, 273, 288, 292, 299, 300}
+def installedSocles : Finset (Fin 301) := {0, 1, 2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 27, 28, 30, 37, 38, 40, 41, 42, 43, 44, 50, 54, 69, 70, 71, 72, 77, 78, 80, 82, 85, 86, 88, 90, 93, 105, 115, 117, 118, 119, 120, 124, 129, 130, 131, 132, 133, 134, 140, 141, 142, 155, 166, 168, 169, 174, 175, 176, 177, 184, 185, 188, 192, 193, 210, 214, 216, 218, 221, 230, 232, 233, 234, 242, 243, 244, 247, 249, 257, 263, 265, 266, 270, 273, 288, 292, 299, 300}
 
 set_option maxRecDepth 2048 in
 def installedNaturals : Finset (Fin 301) := {0, 1, 2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 27, 28, 29, 30, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 49, 50, 51, 52, 54, 55, 56, 57, 59, 61, 62, 64, 67, 68, 69, 70, 71, 72, 73, 74, 75, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 102, 103, 104, 105, 106, 107, 108, 111, 112, 115, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 140, 141, 142, 143, 144, 147, 149, 150, 151, 152, 155, 156, 157, 158, 160, 161, 162, 163, 164, 165, 166, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 195, 196, 197, 198, 199, 201, 202, 203, 204, 205, 206, 207, 208, 210, 211, 212, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 238, 239, 240, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 295, 296, 297, 298, 299, 300}
@@ -272,10 +273,28 @@ noncomputable def socleFamily (D : RemainingData) (j : Fin 301)
   · subst j; exact DegreeTwoTwelvePairImageFinitePackages.row193.topSocle
   by_cases hpair234 : j = 234
   · subst j; exact DegreeTwoTwelvePairImageFinitePackages.row235.topSocle
+  by_cases hchart50 : j = 50
+  · subst j; exact DegreeTwoTwelveSecondPairChartFinitePackages.row51.topSocle
+  by_cases hchart85 : j = 85
+  · subst j; exact DegreeTwoTwelveSecondPairChartFinitePackages.row86.topSocle
+  by_cases hchart140 : j = 140
+  · subst j; exact DegreeTwoTwelveSecondPairChartFinitePackages.row141.topSocle
+  by_cases hchart141 : j = 141
+  · subst j; exact DegreeTwoTwelveSecondPairChartFinitePackages.row142.topSocle
+  by_cases hchart184 : j = 184
+  · subst j; exact DegreeTwoTwelveSecondPairChartFinitePackages.row185.topSocle
+  by_cases hchart185 : j = 185
+  · subst j; exact DegreeTwoTwelveSecondPairChartFinitePackages.row186.topSocle
+  by_cases hchart188 : j = 188
+  · subst j; exact DegreeTwoTwelveSecondPairChartFinitePackages.row189.topSocle
+  by_cases hchart221 : j = 221
+  · subst j; exact DegreeTwoTwelveSecondPairChartFinitePackages.row222.topSocle
+  by_cases hchart249 : j = 249
+  · subst j; exact DegreeTwoTwelveSecondPairChartFinitePackages.row250.topSocle
   apply D.socle j ?_ hbranch
   simpa only [installedSocles, Finset.mem_insert, Finset.mem_singleton, not_or] using
-    (show j ≠ 0 ∧ j ≠ 1 ∧ j ≠ 2 ∧ j ≠ 3 ∧ j ≠ 4 ∧ j ≠ 10 ∧ j ≠ 11 ∧ j ≠ 12 ∧ j ≠ 13 ∧ j ≠ 14 ∧ j ≠ 15 ∧ j ≠ 16 ∧ j ≠ 17 ∧ j ≠ 18 ∧ j ≠ 19 ∧ j ≠ 27 ∧ j ≠ 28 ∧ j ≠ 30 ∧ j ≠ 37 ∧ j ≠ 38 ∧ j ≠ 40 ∧ j ≠ 41 ∧ j ≠ 42 ∧ j ≠ 43 ∧ j ≠ 44 ∧ j ≠ 54 ∧ j ≠ 69 ∧ j ≠ 70 ∧ j ≠ 71 ∧ j ≠ 72 ∧ j ≠ 77 ∧ j ≠ 78 ∧ j ≠ 80 ∧ j ≠ 82 ∧ j ≠ 86 ∧ j ≠ 88 ∧ j ≠ 90 ∧ j ≠ 93 ∧ j ≠ 105 ∧ j ≠ 115 ∧ j ≠ 117 ∧ j ≠ 118 ∧ j ≠ 119 ∧ j ≠ 120 ∧ j ≠ 124 ∧ j ≠ 129 ∧ j ≠ 130 ∧ j ≠ 131 ∧ j ≠ 132 ∧ j ≠ 133 ∧ j ≠ 134 ∧ j ≠ 142 ∧ j ≠ 155 ∧ j ≠ 166 ∧ j ≠ 168 ∧ j ≠ 169 ∧ j ≠ 174 ∧ j ≠ 175 ∧ j ≠ 176 ∧ j ≠ 177 ∧ j ≠ 192 ∧ j ≠ 193 ∧ j ≠ 210 ∧ j ≠ 214 ∧ j ≠ 216 ∧ j ≠ 218 ∧ j ≠ 230 ∧ j ≠ 232 ∧ j ≠ 233 ∧ j ≠ 234 ∧ j ≠ 242 ∧ j ≠ 243 ∧ j ≠ 244 ∧ j ≠ 247 ∧ j ≠ 257 ∧ j ≠ 263 ∧ j ≠ 265 ∧ j ≠ 266 ∧ j ≠ 270 ∧ j ≠ 273 ∧ j ≠ 288 ∧ j ≠ 292 ∧ j ≠ 299 ∧ j ≠ 300 from
-      ⟨h0, h1, hpair2, h3, h4, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h27, h28, h30, h37, h38, hsub40, h41, h42, h43, h44, h54, h69, h70, h71, h72, hsub77, h78, h80, h82, hsub86, hpair88, hpair90, h93, hpair105, h115, h117, h118, h119, h120, h124, h129, h130, h131, h132, hsub133, hpair134, hpair142, h155, h166, h168, h169, h174, h175, h176, h177, hpair192, h193, hsign210, hsub214, h216, hsub218, h230, h232, h233, hpair234, hsub242, hsub243, hsign244, hsign247, h257, hsign263, hsub265, hsign266, hsub270, hsign273, hsign288, hsub292, h299, h300⟩)
+    (show j ≠ 0 ∧ j ≠ 1 ∧ j ≠ 2 ∧ j ≠ 3 ∧ j ≠ 4 ∧ j ≠ 10 ∧ j ≠ 11 ∧ j ≠ 12 ∧ j ≠ 13 ∧ j ≠ 14 ∧ j ≠ 15 ∧ j ≠ 16 ∧ j ≠ 17 ∧ j ≠ 18 ∧ j ≠ 19 ∧ j ≠ 27 ∧ j ≠ 28 ∧ j ≠ 30 ∧ j ≠ 37 ∧ j ≠ 38 ∧ j ≠ 40 ∧ j ≠ 41 ∧ j ≠ 42 ∧ j ≠ 43 ∧ j ≠ 44 ∧ j ≠ 50 ∧ j ≠ 54 ∧ j ≠ 69 ∧ j ≠ 70 ∧ j ≠ 71 ∧ j ≠ 72 ∧ j ≠ 77 ∧ j ≠ 78 ∧ j ≠ 80 ∧ j ≠ 82 ∧ j ≠ 85 ∧ j ≠ 86 ∧ j ≠ 88 ∧ j ≠ 90 ∧ j ≠ 93 ∧ j ≠ 105 ∧ j ≠ 115 ∧ j ≠ 117 ∧ j ≠ 118 ∧ j ≠ 119 ∧ j ≠ 120 ∧ j ≠ 124 ∧ j ≠ 129 ∧ j ≠ 130 ∧ j ≠ 131 ∧ j ≠ 132 ∧ j ≠ 133 ∧ j ≠ 134 ∧ j ≠ 140 ∧ j ≠ 141 ∧ j ≠ 142 ∧ j ≠ 155 ∧ j ≠ 166 ∧ j ≠ 168 ∧ j ≠ 169 ∧ j ≠ 174 ∧ j ≠ 175 ∧ j ≠ 176 ∧ j ≠ 177 ∧ j ≠ 184 ∧ j ≠ 185 ∧ j ≠ 188 ∧ j ≠ 192 ∧ j ≠ 193 ∧ j ≠ 210 ∧ j ≠ 214 ∧ j ≠ 216 ∧ j ≠ 218 ∧ j ≠ 221 ∧ j ≠ 230 ∧ j ≠ 232 ∧ j ≠ 233 ∧ j ≠ 234 ∧ j ≠ 242 ∧ j ≠ 243 ∧ j ≠ 244 ∧ j ≠ 247 ∧ j ≠ 249 ∧ j ≠ 257 ∧ j ≠ 263 ∧ j ≠ 265 ∧ j ≠ 266 ∧ j ≠ 270 ∧ j ≠ 273 ∧ j ≠ 288 ∧ j ≠ 292 ∧ j ≠ 299 ∧ j ≠ 300 from
+      ⟨h0, h1, hpair2, h3, h4, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h27, h28, h30, h37, h38, hsub40, h41, h42, h43, h44, hchart50, h54, h69, h70, h71, h72, hsub77, h78, h80, h82, hchart85, hsub86, hpair88, hpair90, h93, hpair105, h115, h117, h118, h119, h120, h124, h129, h130, h131, h132, hsub133, hpair134, hchart140, hchart141, hpair142, h155, h166, h168, h169, h174, h175, h176, h177, hchart184, hchart185, hchart188, hpair192, h193, hsign210, hsub214, h216, hsub218, hchart221, h230, h232, h233, hpair234, hsub242, hsub243, hsign244, hsign247, hchart249, h257, hsign263, hsub265, hsign266, hsub270, hsign273, hsign288, hsub292, h299, h300⟩)
 
 set_option maxRecDepth 2048 in
 theorem naturalBound (D : RemainingData) (j : Fin 301)

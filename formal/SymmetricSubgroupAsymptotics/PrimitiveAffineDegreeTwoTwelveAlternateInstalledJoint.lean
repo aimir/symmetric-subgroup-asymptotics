@@ -1,3 +1,4 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSecondPairChartFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairImageFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveParityCoupledSignAlternate
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoFlexibleResidualAssembly
@@ -5,7 +6,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSignedAlternat
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSixPairAlternateProfiles
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveLargeSignAlternateProfiles
 
-/-! Install twenty-four admissible alternate profiles on their original
+/-! Install thirty-two admissible alternate profiles on their original
 catalogue actions. No historical capacity is asserted for these rows.
 The remaining finite obligations and the published classification inputs
 stay explicit; this file does not assert completion of the catalogue. -/
@@ -20,11 +21,11 @@ namespace DegreeTwoTwelveAlternateInstalledJoint
 
 open DegreeTwoTwelvePairFiniteCatalogue DegreeTwoTwelveFlexibleProfiles
 
-/-- Zero-based indices of the twenty-four original actions resolved here. -/
+/-- Zero-based indices of the thirty-two original actions resolved here. -/
 def alternateIndices : Finset (Fin 301) :=
-  {34, 35, 45, 57, 79, 81, 83, 104, 172, 208, 211, 215, 246, 248, 261, 262, 279, 280, 284, 59, 68, 106, 144, 281}
+  {34, 35, 45, 57, 79, 81, 83, 104, 172, 208, 211, 215, 246, 248, 261, 262, 279, 280, 284, 59, 68, 106, 144, 281, 51, 52, 147, 149, 150, 220, 222, 224}
 
-theorem alternateIndices_card : alternateIndices.card = 24 := by decide +kernel
+theorem alternateIndices_card : alternateIndices.card = 32 := by decide +kernel
 
 theorem alternateIndices_disjoint_exact :
     Disjoint alternateIndices DegreeTwoTwelveFlexibleInstalledJoint.exactIndices := by
@@ -34,7 +35,7 @@ noncomputable def alternatePackage (j : Fin 301) (hj : j ∈ alternateIndices) :
     Data (catalogue.row j).finite := by
   apply Classical.choice
   simp only [alternateIndices, Finset.mem_insert, Finset.mem_singleton] at hj
-  rcases hj with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  rcases hj with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
   · refine ⟨?_⟩
     exact DegreeTwoTwelveSignedAlternateProfiles.row35AtThree
   · refine ⟨?_⟩
@@ -85,6 +86,23 @@ noncomputable def alternatePackage (j : Fin 301) (hj : j ∈ alternateIndices) :
   · refine ⟨?_⟩
     exact PrimitiveAffineDegreeTwoTwelveParityCoupledSignAlternate.row282AtTwo
 
+  · refine ⟨?_⟩
+    exact DegreeTwoTwelveSecondPairChartFinitePackages.row52At3Data
+  · refine ⟨?_⟩
+    exact DegreeTwoTwelveSecondPairChartFinitePackages.row53At3Data
+  · refine ⟨?_⟩
+    exact DegreeTwoTwelveSecondPairChartFinitePackages.row148At3Data
+  · refine ⟨?_⟩
+    exact DegreeTwoTwelveSecondPairChartFinitePackages.row150At3Data
+  · refine ⟨?_⟩
+    exact DegreeTwoTwelveSecondPairChartFinitePackages.row151At3Data
+  · refine ⟨?_⟩
+    exact DegreeTwoTwelveSecondPairChartFinitePackages.row221At3Data
+  · refine ⟨?_⟩
+    exact DegreeTwoTwelveSecondPairChartFinitePackages.row223At3Data
+  · refine ⟨?_⟩
+    exact DegreeTwoTwelveSecondPairChartFinitePackages.row225At3Data
+
 /-- Every selected alternate package lies in the actual joint branch. -/
 theorem alternate_branch (j : Fin 301) (hj : j ∈ alternateIndices) :
     (catalogue.row j).branch = .joint := by
@@ -95,10 +113,10 @@ theorem alternate_branch (j : Fin 301) (hj : j ∈ alternateIndices) :
 def installedIndices : Finset (Fin 301) :=
   DegreeTwoTwelveFlexibleInstalledJoint.exactIndices ∪ alternateIndices
 
-theorem installedIndices_card : installedIndices.card = 108 := by decide +kernel
+theorem installedIndices_card : installedIndices.card = 125 := by decide +kernel
 
 /-- Bounds are requested only for original joint actions outside both
-the exact packages and the twenty-four alternate packages. -/
+the exact packages and the thirty-two alternate packages. -/
 structure RemainingData : Type 1 where
   row : ∀ j : Fin 301, j ∉ installedIndices →
     (catalogue.row j).branch = .joint → Data (catalogue.row j).finite
