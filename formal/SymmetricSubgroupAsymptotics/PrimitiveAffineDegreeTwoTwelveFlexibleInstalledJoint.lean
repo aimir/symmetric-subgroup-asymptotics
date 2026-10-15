@@ -20,14 +20,14 @@ open DegreeTwoTwelvePairFiniteCatalogue
 open DegreeTwoTwelveFlexibleProfiles
 
 /-- Original entries with complete exact packages reused below. -/
-def exactIndices : Finset (Fin 301) := {0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 27, 28, 30, 37, 38, 41, 42, 43, 44, 54, 69, 70, 71, 72, 78, 80, 82, 93, 115, 117, 118, 119, 120, 124, 129, 130, 131, 132, 155, 166, 168, 169, 174, 175, 176, 177, 193, 216, 230, 232, 233, 257, 299, 300}
+def exactIndices : Finset (Fin 301) := {0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 27, 28, 30, 37, 38, 41, 42, 43, 44, 54, 69, 70, 71, 72, 78, 80, 82, 93, 115, 117, 118, 119, 120, 124, 129, 130, 131, 132, 155, 166, 168, 169, 174, 175, 176, 177, 193, 216, 230, 232, 233, 257, 299, 300, 210, 244, 247, 263, 266, 273, 288}
 
 /-- Each selected package retains both original stored capacities. -/
 noncomputable def exactPackage (j : Fin 301) (hj : j ∈ exactIndices) :
     Data (catalogue.row j).finite := by
   apply Classical.choice
   simp only [exactIndices, Finset.mem_insert, Finset.mem_singleton] at hj
-  rcases hj with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  rcases hj with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
   · refine ⟨?_⟩
     exact Data.ofExact (D := (catalogue.row (0 : Fin 301)).finite)
       (kappa := (catalogue.row (0 : Fin 301)).kappa)
@@ -376,6 +376,28 @@ noncomputable def exactPackage (j : Fin 301) (hj : j ∈ exactIndices) :
       (sectionCap := (catalogue.row (300 : Fin 301)).sectionCap)
       { topSocle := DegreeTwoTwelveNaturalFinitePackages.row301.topSocle
         natural := DegreeTwoTwelveSharedNaturalWitnesses.row301Natural } (by decide +kernel)
+
+  · refine ⟨?_⟩
+    exact Data.ofExact (D := (catalogue.row (210 : Fin 301)).finite)
+      DegreeTwoTwelveFullParitySignFinitePackages.row211 (by decide +kernel)
+  · refine ⟨?_⟩
+    exact Data.ofExact (D := (catalogue.row (244 : Fin 301)).finite)
+      DegreeTwoTwelveBinarySignFinitePackages.row245 (by decide +kernel)
+  · refine ⟨?_⟩
+    exact Data.ofExact (D := (catalogue.row (247 : Fin 301)).finite)
+      DegreeTwoTwelveFullParitySignFinitePackages.row248 (by decide +kernel)
+  · refine ⟨?_⟩
+    exact Data.ofExact (D := (catalogue.row (263 : Fin 301)).finite)
+      DegreeTwoTwelveBinarySignFinitePackages.row264 (by decide +kernel)
+  · refine ⟨?_⟩
+    exact Data.ofExact (D := (catalogue.row (266 : Fin 301)).finite)
+      DegreeTwoTwelveBinarySignFinitePackages.row267 (by decide +kernel)
+  · refine ⟨?_⟩
+    exact Data.ofExact (D := (catalogue.row (273 : Fin 301)).finite)
+      DegreeTwoTwelveBinarySignFinitePackages.row274 (by decide +kernel)
+  · refine ⟨?_⟩
+    exact Data.ofExact (D := (catalogue.row (288 : Fin 301)).finite)
+      DegreeTwoTwelveBinarySignFinitePackages.row289 (by decide +kernel)
 
 structure RemainingData : Type 1 where
   row : ∀ j : Fin 301, j ∉ exactIndices →
