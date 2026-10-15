@@ -1,3 +1,5 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow94FinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuaternaryImageFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveCoprimeSplitFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSplitMetacyclicFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow20NaturalFamily
@@ -38,7 +40,7 @@ namespace DegreeTwoTwelveInstalledJoint
 open DegreeTwoTwelvePairFiniteCatalogue
 open DegreeTwoTwelveJointFiniteRows
 
-def installedSocles : Finset (Fin 301) := {0, 1, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 27, 37, 38, 41, 69, 70, 71, 72, 78, 80, 115, 117, 118, 119, 120, 124, 129, 130, 155, 166, 168, 169, 216, 299, 300}
+def installedSocles : Finset (Fin 301) := {0, 1, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 27, 28, 30, 37, 38, 41, 54, 69, 70, 71, 72, 78, 80, 93, 115, 117, 118, 119, 120, 124, 129, 130, 155, 166, 168, 169, 216, 299, 300}
 
 def installedNaturals : Finset (Fin 301) := {0, 1, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 27, 28, 33, 34, 35, 37, 38, 41, 42, 43, 44, 52, 54, 55, 56, 57, 59, 69, 70, 71, 72, 78, 80, 82, 86, 88, 89, 90, 93, 94, 95, 96, 99, 100, 104, 105, 107, 108, 112, 115, 117, 118, 119, 120, 124, 129, 130, 140, 143, 149, 150, 155, 163, 166, 168, 169, 174, 176, 177, 183, 184, 186, 188, 189, 190, 199, 201, 203, 204, 205, 208, 210, 212, 216, 218, 220, 221, 224, 225, 230, 232, 238, 244, 246, 247, 249, 257, 262, 263, 264, 266, 272, 273, 274, 275, 280, 282, 283, 284, 288, 289, 290, 291, 293, 299, 300}
 
@@ -133,7 +135,15 @@ noncomputable def socleFamily (D : RemainingData) (j : Fin 301)
   · subst j; exact DegreeTwoTwelveCoprimeSplitFinitePackages.row156.topSocle
   by_cases h216 : j = 216
   · subst j; exact DegreeTwoTwelveCoprimeSplitFinitePackages.row217.topSocle
-  exact D.socle j (by simp [installedSocles, h1, h4, h12, h14, h15, h17, h27, h69, h70, h72, h117, h120, h129, h155, h216, h10, h11, h13, h115, h118, h119, h166, h168, h169, h0, h16, h18, h37, h38, h41, h71, h78, h80, h124, h130, h299, h300]) hbranch
+  by_cases h28 : j = 28
+  · subst j; exact DegreeTwoTwelveQuaternaryImageFinitePackages.row29.topSocle
+  by_cases h30 : j = 30
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveQuaternaryImageSocles.row31TopSocle
+  by_cases h54 : j = 54
+  · subst j; exact DegreeTwoTwelveQuaternaryImageFinitePackages.row55.topSocle
+  by_cases h93 : j = 93
+  · subst j; exact DegreeTwoTwelveRow94FinitePackage.finiteData.topSocle
+  exact D.socle j (by simp [installedSocles, h28, h30, h54, h93, h1, h4, h12, h14, h15, h17, h27, h69, h70, h72, h117, h120, h129, h155, h216, h10, h11, h13, h115, h118, h119, h166, h168, h169, h0, h16, h18, h37, h38, h41, h71, h78, h80, h124, h130, h299, h300]) hbranch
 
 theorem naturalBound (D : RemainingData) (j : Fin 301)
     (hbranch : (catalogue.row j).branch = .joint) :
