@@ -1,3 +1,19 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveCentralInvolutionNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveElevenCycleNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFiveCyclePairNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFiveCycleWordNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFlipNormNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFullKernelCyclicPairNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveJoinedHalfCycleNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveOddPairCycleWordNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveOppositePairNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairedFiveCycleCentralFlipNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairedTernaryCentralFlipNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairedTernaryFlipWordNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetEvenKleinNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetWordNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRootInheritanceNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSymmetricPairNaturalFamily
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveCocycleFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveEvenTwoTernaryPairNaturalFamily
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveTwoTernaryPairNaturalFamily
@@ -62,7 +78,8 @@ open DegreeTwoTwelveJointFiniteRows
 
 def installedSocles : Finset (Fin 301) := {0, 1, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 27, 28, 30, 37, 38, 41, 42, 43, 44, 54, 69, 70, 71, 72, 78, 80, 82, 93, 115, 117, 118, 119, 120, 124, 129, 130, 131, 132, 155, 166, 168, 169, 174, 175, 176, 177, 193, 216, 230, 232, 233, 257, 299, 300}
 
-def installedNaturals : Finset (Fin 301) := {0, 1, 2, 3, 4, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 27, 28, 30, 32, 33, 34, 35, 37, 38, 39, 41, 42, 43, 44, 45, 46, 52, 54, 55, 56, 57, 59, 61, 62, 69, 70, 71, 72, 73, 74, 75, 78, 80, 82, 83, 86, 88, 89, 90, 91, 92, 93, 94, 95, 96, 99, 100, 104, 105, 107, 108, 112, 115, 117, 118, 119, 120, 121, 122, 124, 129, 130, 131, 132, 133, 140, 143, 144, 149, 150, 155, 156, 157, 158, 161, 162, 163, 165, 166, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 179, 181, 182, 183, 184, 186, 187, 188, 189, 190, 192, 193, 195, 196, 197, 198, 199, 201, 203, 204, 205, 206, 208, 210, 211, 212, 214, 215, 216, 218, 219, 220, 221, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 238, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 256, 257, 258, 261, 262, 263, 264, 265, 266, 267, 268, 270, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 287, 288, 289, 290, 291, 292, 293, 295, 296, 297, 298, 299, 300}
+set_option maxRecDepth 2048 in
+def installedNaturals : Finset (Fin 301) := {0, 1, 2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 27, 28, 29, 30, 32, 33, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 49, 50, 51, 52, 54, 55, 56, 57, 59, 61, 62, 64, 67, 68, 69, 70, 71, 72, 73, 74, 75, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 102, 103, 104, 105, 106, 107, 108, 111, 112, 115, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 140, 141, 142, 143, 144, 147, 149, 150, 151, 152, 155, 156, 157, 158, 160, 161, 162, 163, 164, 165, 166, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 195, 196, 197, 198, 199, 201, 202, 203, 204, 205, 206, 207, 208, 210, 211, 212, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 238, 239, 240, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 295, 296, 297, 298, 299, 300}
 
 structure RemainingData : Type 1 where
   socle : ∀ j : Fin 301, j ∉ installedSocles →
@@ -205,6 +222,110 @@ theorem naturalBound (D : RemainingData) (j : Fin 301)
     UniformSubrepresentationGeneratorBound
       (permutationFunctionRepresentation (ZMod 2) (catalogue.row j).finite.top (Fin 12))
       (catalogue.row j).sectionCap := by
+  by_cases hnew5 : j = 5
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveCentralInvolutionNaturalFamily.row6Natural
+  by_cases hnew8 : j = 8
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveOppositePairNaturalFamily.row9Natural
+  by_cases hnew25 : j = 25
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveCentralInvolutionNaturalFamily.row26Natural
+  by_cases hnew29 : j = 29
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRootInheritanceNaturalFamily.row30Natural
+  by_cases hnew40 : j = 40
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairedTernaryCentralFlipNaturalFamily.row41Natural
+  by_cases hnew49 : j = 49
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetWordNaturalFamily.row50Natural
+  by_cases hnew50 : j = 50
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetWordNaturalFamily.row51Natural
+  by_cases hnew51 : j = 51
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetWordNaturalFamily.row52Natural
+  by_cases hnew64 : j = 64
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSymmetricPairNaturalFamily.row65Natural
+  by_cases hnew67 : j = 67
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSymmetricPairNaturalFamily.row68Natural
+  by_cases hnew68 : j = 68
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSymmetricPairNaturalFamily.row69Natural
+  by_cases hnew77 : j = 77
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairedTernaryCentralFlipNaturalFamily.row78Natural
+  by_cases hnew79 : j = 79
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairedTernaryFlipWordNaturalFamily.row80Natural
+  by_cases hnew81 : j = 81
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairedTernaryFlipWordNaturalFamily.row82Natural
+  by_cases hnew84 : j = 84
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetEvenKleinNaturalFamily.row85Natural
+  by_cases hnew85 : j = 85
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetWordNaturalFamily.row86Natural
+  by_cases hnew87 : j = 87
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFlipNormNaturalFamily.row88Natural
+  by_cases hnew97 : j = 97
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRootInheritanceNaturalFamily.row98Natural
+  by_cases hnew98 : j = 98
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveOddPairCycleWordNaturalFamily.row99Natural
+  by_cases hnew102 : j = 102
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveOppositePairNaturalFamily.row103Natural
+  by_cases hnew103 : j = 103
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveOddPairCycleWordNaturalFamily.row104Natural
+  by_cases hnew106 : j = 106
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSymmetricPairNaturalFamily.row107Natural
+  by_cases hnew111 : j = 111
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSymmetricPairNaturalFamily.row112Natural
+  by_cases hnew123 : j = 123
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairedFiveCycleCentralFlipNaturalFamily.row124Natural
+  by_cases hnew125 : j = 125
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRootInheritanceNaturalFamily.row126Natural
+  by_cases hnew126 : j = 126
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetEvenKleinNaturalFamily.row127Natural
+  by_cases hnew127 : j = 127
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetEvenKleinNaturalFamily.row128Natural
+  by_cases hnew128 : j = 128
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetEvenKleinNaturalFamily.row129Natural
+  by_cases hnew134 : j = 134
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFullKernelCyclicPairNaturalFamily.row135Natural
+  by_cases hnew141 : j = 141
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetWordNaturalFamily.row142Natural
+  by_cases hnew142 : j = 142
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveOddPairCycleWordNaturalFamily.row143Natural
+  by_cases hnew147 : j = 147
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetWordNaturalFamily.row148Natural
+  by_cases hnew151 : j = 151
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveOddPairCycleWordNaturalFamily.row152Natural
+  by_cases hnew152 : j = 152
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveOddPairCycleWordNaturalFamily.row153Natural
+  by_cases hnew160 : j = 160
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRootInheritanceNaturalFamily.row161Natural
+  by_cases hnew164 : j = 164
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetEvenKleinNaturalFamily.row165Natural
+  by_cases hnew178 : j = 178
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveElevenCycleNaturalFamily.row179Natural
+  by_cases hnew185 : j = 185
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetWordNaturalFamily.row186Natural
+  by_cases hnew191 : j = 191
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSymmetricPairNaturalFamily.row192Natural
+  by_cases hnew202 : j = 202
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRootInheritanceNaturalFamily.row203Natural
+  by_cases hnew207 : j = 207
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveJoinedHalfCycleNaturalFamily.row208Natural
+  by_cases hnew217 : j = 217
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveElevenCycleNaturalFamily.row218Natural
+  by_cases hnew222 : j = 222
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveQuartetWordNaturalFamily.row223Natural
+  by_cases hnew223 : j = 223
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFullKernelCyclicPairNaturalFamily.row224Natural
+  by_cases hnew239 : j = 239
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFullKernelCyclicPairNaturalFamily.row240Natural
+  by_cases hnew240 : j = 240
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFullKernelCyclicPairNaturalFamily.row241Natural
+  by_cases hnew254 : j = 254
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFiveCyclePairNaturalFamily.row255Natural
+  by_cases hnew255 : j = 255
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFiveCyclePairNaturalFamily.row256Natural
+  by_cases hnew259 : j = 259
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveJoinedHalfCycleNaturalFamily.row260Natural
+  by_cases hnew269 : j = 269
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFiveCyclePairNaturalFamily.row270Natural
+  by_cases hnew285 : j = 285
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFiveCycleWordNaturalFamily.row286Natural
+  by_cases hnew286 : j = 286
+  · subst j; exact SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFiveCyclePairNaturalFamily.row287Natural
   by_cases h3 : j = 3
   · subst j; exact DegreeTwoTwelveCocycleFinitePackages.row4.natural
   by_cases h133 : j = 133
@@ -613,7 +734,7 @@ theorem naturalBound (D : RemainingData) (j : Fin 301)
   · subst j; exact PrimitiveAffineDegreeTwoTwelveTernaryKleinNaturalFamily.row174Natural
   by_cases h245 : j = 245
   · subst j; exact PrimitiveAffineDegreeTwoTwelveTernaryKleinNaturalFamily.row246Natural
-  exact D.natural j (by simp only [installedNaturals, h3, h133, h144, h192, h195, h234, h292, h39, h157, h161, h162, h198, h158, h196, h197, h46, h170, h171, h173, h245, h45, h83, h156, h172, h211, h214, h215, h242, h243, h248, h261, h265, h121, h131, h231, h258, h61, h62, h91, h92, h187, h219, h226, h270, h279, h281, h2, h6, h22, h23, h24, h32, h73, h74, h75, h122, h182, h229, h256, h276, h179, h181, h268, h277, h278, h287, h295, h296, h297, h298, h165, h206, h227, h253, h132, h175, h193, h233, h228, h250, h251, h252, h267, h30, h1, h4, h12, h14, h15, h17, h69, h70, h129, h19, h42, h43, h163, h203, h204, h205, h238, Finset.mem_insert, Finset.mem_singleton, false_or, not_false_eq_true, h264, h272, h274, h275, h282, h283, h289, h290, h93, h140, h149, h150, h184, h188, h220, h221, h224, h249, h291, h293, h20, h54, h55, h56, h89, h94, h95, h96, h99, h100, h105, h143, h183, h186, h189, h190, h225, h34, h35, h72, h117, h120, h176, h177, h199, h232, h16, h18, h37, h38, h41, h78, h80, h124, h0, h10, h11, h13, h27, h28, h33, h44, h52, h57, h59, h71, h82, h86, h88, h90, h104, h107, h108, h112, h115, h118, h119, h130, h155, h166, h168, h169, h174, h201, h208, h210, h212, h216, h218, h230, h244, h246, h247, h257, h262, h263, h266, h273, h280, h284, h288, h299, h300]) hbranch
+  exact D.natural j (by simp only [installedNaturals, hnew5, hnew8, hnew25, hnew29, hnew40, hnew49, hnew50, hnew51, hnew64, hnew67, hnew68, hnew77, hnew79, hnew81, hnew84, hnew85, hnew87, hnew97, hnew98, hnew102, hnew103, hnew106, hnew111, hnew123, hnew125, hnew126, hnew127, hnew128, hnew134, hnew141, hnew142, hnew147, hnew151, hnew152, hnew160, hnew164, hnew178, hnew185, hnew191, hnew202, hnew207, hnew217, hnew222, hnew223, hnew239, hnew240, hnew254, hnew255, hnew259, hnew269, hnew285, hnew286, h3, h133, h144, h192, h195, h234, h292, h39, h157, h161, h162, h198, h158, h196, h197, h46, h170, h171, h173, h245, h45, h83, h156, h172, h211, h214, h215, h242, h243, h248, h261, h265, h121, h131, h231, h258, h61, h62, h91, h92, h187, h219, h226, h270, h279, h281, h2, h6, h22, h23, h24, h32, h73, h74, h75, h122, h182, h229, h256, h276, h179, h181, h268, h277, h278, h287, h295, h296, h297, h298, h165, h206, h227, h253, h132, h175, h193, h233, h228, h250, h251, h252, h267, h30, h1, h4, h12, h14, h15, h17, h69, h70, h129, h19, h42, h43, h163, h203, h204, h205, h238, Finset.mem_insert, Finset.mem_singleton, false_or, not_false_eq_true, h264, h272, h274, h275, h282, h283, h289, h290, h93, h140, h149, h150, h184, h188, h220, h221, h224, h249, h291, h293, h20, h54, h55, h56, h89, h94, h95, h96, h99, h100, h105, h143, h183, h186, h189, h190, h225, h34, h35, h72, h117, h120, h176, h177, h199, h232, h16, h18, h37, h38, h41, h78, h80, h124, h0, h10, h11, h13, h27, h28, h33, h44, h52, h57, h59, h71, h82, h86, h88, h90, h104, h107, h108, h112, h115, h118, h119, h130, h155, h166, h168, h169, h174, h201, h208, h210, h212, h216, h218, h230, h244, h246, h247, h257, h262, h263, h266, h273, h280, h284, h288, h299, h300]) hbranch
 
 noncomputable def finiteCatalogue (D : RemainingData) :
     DegreeTwoTwelveJointFiniteCatalogueData catalogue where
