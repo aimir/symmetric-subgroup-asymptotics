@@ -1,0 +1,53 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSignedCyclicSocles
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSignedDihedralSocles
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveDihedralProductSocles
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow17NaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSharedNaturalWitnesses
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow72PolynomialFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow131CyclicFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveJointFiniteRows
+
+/-! Complete literal joint packages obtained from the signed coprime
+retraction families. The natural fields use already proved subaction
+embeddings; the socle fields cover every original normal quotient. -/
+
+set_option autoImplicit false
+noncomputable section
+
+namespace SymmetricSubgroupAsymptotics
+namespace Non2UnipotentPrefixFiniteMenu
+namespace PrimitiveAffineImprimitiveBlockTransfer
+namespace DegreeTwoTwelveSignedSplitFinitePackages
+
+open DegreeTwoTwelvePairFiniteCatalogue DegreeTwoTwelveJointFiniteRows
+
+def row28 : DegreeTwoTwelveJointFiniteRowData row28Interface 3 1 where
+  topSocle := PrimitiveAffineDegreeTwoTwelveDihedralProductSocles.row28TopSocle
+  natural := DegreeTwoTwelveSharedNaturalWitnesses.row28Natural
+
+def row73 : DegreeTwoTwelveJointFiniteRowData row73Interface 1 1 where
+  topSocle := PrimitiveAffineDegreeTwoTwelveSignedCyclicSocles.row73TopSocle
+  natural := DegreeTwoTwelveRow17NaturalFamily.row73Natural
+
+def row118 : DegreeTwoTwelveJointFiniteRowData row118Interface 2 1 where
+  topSocle := PrimitiveAffineDegreeTwoTwelveSignedDihedralSocles.row118TopSocle
+  natural := DegreeTwoTwelveRow17NaturalFamily.row118Natural
+
+def row121 : DegreeTwoTwelveJointFiniteRowData row121Interface 2 1 where
+  topSocle := PrimitiveAffineDegreeTwoTwelveSignedDihedralSocles.row121TopSocle
+  natural := DegreeTwoTwelveRow17NaturalFamily.row121Natural
+
+def row156 : DegreeTwoTwelveJointFiniteRowData row156Interface 3 1 where
+  topSocle := PrimitiveAffineDegreeTwoTwelveDihedralProductSocles.row156TopSocle
+  natural := DegreeTwoTwelveRow72PolynomialFamily.row156Natural
+
+def row217 : DegreeTwoTwelveJointFiniteRowData row217Interface 3 1 where
+  topSocle := PrimitiveAffineDegreeTwoTwelveDihedralProductSocles.row217TopSocle
+  natural := DegreeTwoTwelveRow131CyclicFamily.row217Natural
+
+end DegreeTwoTwelveSignedSplitFinitePackages
+end PrimitiveAffineImprimitiveBlockTransfer
+end Non2UnipotentPrefixFiniteMenu
+end SymmetricSubgroupAsymptotics
+
+end
