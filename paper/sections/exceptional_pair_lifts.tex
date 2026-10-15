@@ -71,6 +71,27 @@ These identities prove generation directly and require no invariant-subspace
 list. For the first zero-core sixteen-point action, one such group-algebra
 operator gives the required four-generator bound.
 
+\begin{lemma}[Sharing generators across a full pair kernel]
+\label{lem:full-pair-kernel-sharing}
+Suppose a group acts transitively on a set of pairs and contains every
+individual pair flip. If every invariant subspace of the binary module
+on the pairs has at most $c$ module generators, the same bound holds for
+every invariant subspace of the binary module on the points.
+\end{lemma}
+\begin{proof}
+Let $q$ sum the coordinates in each pair. Its kernel $K$ consists of
+the pair-constant vectors and is isomorphic to the module on the pairs.
+If an invariant subspace $W$ is not contained in $K$, some $v\in W$
+has unequal coordinates in a pair. Subtracting its image under that
+pair flip gives the constant vector supported on the pair. Transitivity
+then gives all of $K$, so $K\leq W$.
+When $W\leq K$ the asserted bound is immediate. Otherwise lift at most
+$c$ generators of $q(W)$ to $W$ and let $S$ be their generated submodule.
+Since $q(W)\ne0$, also $S\not\leq K$; the same argument gives $K\leq S$.
+The equality $q(S)=q(W)$ now implies $S=W$. No splitting of the
+characteristic-two extension is required.
+\end{proof}
+
 \begin{lemma}[Normal generators for product and affine tops]
 \label{lem:product-affine-normal-generators}
 Suppose every normal subgroup of finite groups $G$ and $H$ is normally
@@ -587,6 +608,17 @@ four and rotation kernels leaves the cyclic quotient $C_2\times C_3$,
 with the same central-axis argument at each step. This proves bounds
 two and one for the two full four-coordinate models and all their
 original normal quotients, without enumerating their normal subgroups.
+
+If the block action also has a common scalar character with values in
+$\{1,-1\}$, projection from the full four-coordinate module onto its
+augmentation module is still equivariant. The induced map of semidirect
+products is onto and has cyclic kernel, the constant translations;
+that kernel need not be central. Whenever the augmentation semidirect
+product has a normal chain, the cyclic-kernel argument above therefore
+gives two normal generators for every normal subgroup of the full model,
+and hence a two-position bound for every original quotient socle.
+In particular, this applies to the sign-twisted $S_4$ model already
+identified above, with its actual scalar action retained.
 
 More generally, a cover of the normal registry by $t$ chains gives a
 $t$-position tuple for every quotient. The quotient correspondence
