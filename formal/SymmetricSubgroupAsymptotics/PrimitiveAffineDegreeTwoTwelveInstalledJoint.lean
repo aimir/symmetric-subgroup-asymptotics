@@ -1,3 +1,6 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveEvenTwoTernaryPairNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveTwoTernaryPairNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveEvenPairCycleNaturalFamily
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveDiagonalTernaryFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRows234And258FinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveTernaryKleinNaturalFamily
@@ -58,7 +61,7 @@ open DegreeTwoTwelveJointFiniteRows
 
 def installedSocles : Finset (Fin 301) := {0, 1, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 27, 28, 30, 37, 38, 41, 42, 43, 44, 54, 69, 70, 71, 72, 78, 80, 82, 93, 115, 117, 118, 119, 120, 124, 129, 130, 132, 155, 166, 168, 169, 174, 175, 177, 193, 216, 230, 232, 233, 257, 299, 300}
 
-def installedNaturals : Finset (Fin 301) := {0, 1, 2, 4, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 27, 28, 30, 32, 33, 34, 35, 37, 38, 41, 42, 43, 44, 45, 46, 52, 54, 55, 56, 57, 59, 61, 62, 69, 70, 71, 72, 73, 74, 75, 78, 80, 82, 83, 86, 88, 89, 90, 91, 92, 93, 94, 95, 96, 99, 100, 104, 105, 107, 108, 112, 115, 117, 118, 119, 120, 121, 122, 124, 129, 130, 131, 132, 140, 143, 149, 150, 155, 156, 163, 165, 166, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 179, 181, 182, 183, 184, 186, 187, 188, 189, 190, 193, 199, 201, 203, 204, 205, 206, 208, 210, 211, 212, 214, 215, 216, 218, 219, 220, 221, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 238, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 256, 257, 258, 261, 262, 263, 264, 265, 266, 267, 268, 270, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 287, 288, 289, 290, 291, 293, 295, 296, 297, 298, 299, 300}
+def installedNaturals : Finset (Fin 301) := {0, 1, 2, 4, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 27, 28, 30, 32, 33, 34, 35, 37, 38, 39, 41, 42, 43, 44, 45, 46, 52, 54, 55, 56, 57, 59, 61, 62, 69, 70, 71, 72, 73, 74, 75, 78, 80, 82, 83, 86, 88, 89, 90, 91, 92, 93, 94, 95, 96, 99, 100, 104, 105, 107, 108, 112, 115, 117, 118, 119, 120, 121, 122, 124, 129, 130, 131, 132, 133, 140, 143, 144, 149, 150, 155, 156, 157, 158, 161, 162, 163, 165, 166, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 179, 181, 182, 183, 184, 186, 187, 188, 189, 190, 192, 193, 195, 196, 197, 198, 199, 201, 203, 204, 205, 206, 208, 210, 211, 212, 214, 215, 216, 218, 219, 220, 221, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 238, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 256, 257, 258, 261, 262, 263, 264, 265, 266, 267, 268, 270, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 287, 288, 289, 290, 291, 292, 293, 295, 296, 297, 298, 299, 300}
 
 structure RemainingData : Type 1 where
   socle : ∀ j : Fin 301, j ∉ installedSocles →
@@ -195,6 +198,34 @@ theorem naturalBound (D : RemainingData) (j : Fin 301)
     UniformSubrepresentationGeneratorBound
       (permutationFunctionRepresentation (ZMod 2) (catalogue.row j).finite.top (Fin 12))
       (catalogue.row j).sectionCap := by
+  by_cases h133 : j = 133
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveEvenPairCycleNaturalFamily.row134Natural
+  by_cases h144 : j = 144
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveEvenPairCycleNaturalFamily.row145Natural
+  by_cases h192 : j = 192
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveEvenPairCycleNaturalFamily.row193Natural
+  by_cases h195 : j = 195
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveEvenPairCycleNaturalFamily.row196Natural
+  by_cases h234 : j = 234
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveEvenPairCycleNaturalFamily.row235Natural
+  by_cases h292 : j = 292
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveEvenPairCycleNaturalFamily.row293Natural
+  by_cases h39 : j = 39
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveTwoTernaryPairNaturalFamily.row40Natural
+  by_cases h157 : j = 157
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveTwoTernaryPairNaturalFamily.row158Natural
+  by_cases h161 : j = 161
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveTwoTernaryPairNaturalFamily.row162Natural
+  by_cases h162 : j = 162
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveTwoTernaryPairNaturalFamily.row163Natural
+  by_cases h198 : j = 198
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveTwoTernaryPairNaturalFamily.row199Natural
+  by_cases h158 : j = 158
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveEvenTwoTernaryPairNaturalFamily.row159Natural
+  by_cases h196 : j = 196
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveEvenTwoTernaryPairNaturalFamily.row197Natural
+  by_cases h197 : j = 197
+  · subst j; exact PrimitiveAffineDegreeTwoTwelveEvenTwoTernaryPairNaturalFamily.row198Natural
   by_cases h0 : j = 0
   · subst j; exact PrimitiveAffineDegreeTwoTwelveRow1Resolution.finiteData.natural
   by_cases h10 : j = 10
@@ -573,7 +604,7 @@ theorem naturalBound (D : RemainingData) (j : Fin 301)
   · subst j; exact PrimitiveAffineDegreeTwoTwelveTernaryKleinNaturalFamily.row174Natural
   by_cases h245 : j = 245
   · subst j; exact PrimitiveAffineDegreeTwoTwelveTernaryKleinNaturalFamily.row246Natural
-  exact D.natural j (by simp only [installedNaturals, h46, h170, h171, h173, h245, h45, h83, h156, h172, h211, h214, h215, h242, h243, h248, h261, h265, h121, h131, h231, h258, h61, h62, h91, h92, h187, h219, h226, h270, h279, h281, h2, h6, h22, h23, h24, h32, h73, h74, h75, h122, h182, h229, h256, h276, h179, h181, h268, h277, h278, h287, h295, h296, h297, h298, h165, h206, h227, h253, h132, h175, h193, h233, h228, h250, h251, h252, h267, h30, h1, h4, h12, h14, h15, h17, h69, h70, h129, h19, h42, h43, h163, h203, h204, h205, h238, Finset.mem_insert, Finset.mem_singleton, false_or, not_false_eq_true, h264, h272, h274, h275, h282, h283, h289, h290, h93, h140, h149, h150, h184, h188, h220, h221, h224, h249, h291, h293, h20, h54, h55, h56, h89, h94, h95, h96, h99, h100, h105, h143, h183, h186, h189, h190, h225, h34, h35, h72, h117, h120, h176, h177, h199, h232, h16, h18, h37, h38, h41, h78, h80, h124, h0, h10, h11, h13, h27, h28, h33, h44, h52, h57, h59, h71, h82, h86, h88, h90, h104, h107, h108, h112, h115, h118, h119, h130, h155, h166, h168, h169, h174, h201, h208, h210, h212, h216, h218, h230, h244, h246, h247, h257, h262, h263, h266, h273, h280, h284, h288, h299, h300]) hbranch
+  exact D.natural j (by simp only [installedNaturals, h133, h144, h192, h195, h234, h292, h39, h157, h161, h162, h198, h158, h196, h197, h46, h170, h171, h173, h245, h45, h83, h156, h172, h211, h214, h215, h242, h243, h248, h261, h265, h121, h131, h231, h258, h61, h62, h91, h92, h187, h219, h226, h270, h279, h281, h2, h6, h22, h23, h24, h32, h73, h74, h75, h122, h182, h229, h256, h276, h179, h181, h268, h277, h278, h287, h295, h296, h297, h298, h165, h206, h227, h253, h132, h175, h193, h233, h228, h250, h251, h252, h267, h30, h1, h4, h12, h14, h15, h17, h69, h70, h129, h19, h42, h43, h163, h203, h204, h205, h238, Finset.mem_insert, Finset.mem_singleton, false_or, not_false_eq_true, h264, h272, h274, h275, h282, h283, h289, h290, h93, h140, h149, h150, h184, h188, h220, h221, h224, h249, h291, h293, h20, h54, h55, h56, h89, h94, h95, h96, h99, h100, h105, h143, h183, h186, h189, h190, h225, h34, h35, h72, h117, h120, h176, h177, h199, h232, h16, h18, h37, h38, h41, h78, h80, h124, h0, h10, h11, h13, h27, h28, h33, h44, h52, h57, h59, h71, h82, h86, h88, h90, h104, h107, h108, h112, h115, h118, h119, h130, h155, h166, h168, h169, h174, h201, h208, h210, h212, h216, h218, h230, h244, h246, h247, h257, h262, h263, h266, h273, h280, h284, h288, h299, h300]) hbranch
 
 noncomputable def finiteCatalogue (D : RemainingData) :
     DegreeTwoTwelveJointFiniteCatalogueData catalogue where

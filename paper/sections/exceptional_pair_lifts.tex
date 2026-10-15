@@ -92,6 +92,23 @@ The equality $q(S)=q(W)$ now implies $S=W$. No splitting of the
 characteristic-two extension is required.
 \end{proof}
 
+The full pair kernel can be weakened to the even pair flips, provided
+the group contains an element with odd total pair offset. Here an element
+sends $(i,b)$ to $(\pi(i),b+\epsilon_i)$, and its total offset is
+$\sum_i\epsilon_i\in\F_2$. To prove the same conclusion, choose
+$v\in W$ with $q(v)\ne0$. If $q(v)$ is nonconstant, flipping one pair
+where its value is one and one where its value is zero gives an individual
+pair constant. Otherwise $q(v)$ is the all-one vector, and the double
+flips give every even pair-constant vector. For an element of odd total
+offset, its displacement of $v$ is pair-constant with coordinates
+\[
+ a_i=v(\pi(i),0)+\epsilon_i-v(i,0),\qquad \sum_i a_i=1.
+\]
+This supplies the missing odd direction, hence all of $K$. The lifting
+argument in Lemma~\ref{lem:full-pair-kernel-sharing} again shares the
+same $c$ generators across the kernel and quotient. This criterion uses
+only original group elements and avoids listing invariant subspaces.
+
 \begin{lemma}[Normal generators for product and affine tops]
 \label{lem:product-affine-normal-generators}
 Suppose every normal subgroup of finite groups $G$ and $H$ is normally
