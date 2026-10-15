@@ -596,6 +596,23 @@ affine models have one-position quotient-socle bounds. Literal generator
 identities identify the original twelve-point actions with the full
 images of these models, so the bounds apply to their original normal
 quotients.
+
+The complement generators in a literal action may carry translation
+offsets. These offsets must be retained. If $s:R\to\F_3^\times$ is the
+scalar character and $d:R\to\F_3$ satisfies
+$d(gh)=d(g)+s(g)d(h)$, the map
+\[
+ (v,r)\longmapsto (v+d(r)\mathbf{1},r)
+\]
+embeds the augmentation affine model into the full four-coordinate model.
+The cocycle identity verifies multiplication. To prove that the displayed
+lifts generate the full image, it suffices that their projections generate
+$R$ and that they contain a nonzero augmentation translation. Indeed, the
+intersection with the translations is a nonzero $R$-invariant subspace,
+hence the whole augmentation module. Before applying the embedding,
+the augmentation component of each lift can therefore be cancelled
+inside the group. This establishes the required full-image equality
+while retaining the cocycle offsets of the displayed generators.
 This also handles the scalar extension with complement $A_4\times C_2$,
 whose central involution negates the augmentation coordinates. Every normal
 subgroup of this complement either lies in the central $C_2$ or contains
