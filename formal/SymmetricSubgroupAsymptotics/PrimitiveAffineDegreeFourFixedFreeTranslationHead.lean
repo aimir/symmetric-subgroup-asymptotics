@@ -14,8 +14,8 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w} {basePoint : Fin w}
     (P : PrimitiveAffineProfile block.Component block.Fibre)
     [Nontrivial block.Fibre]
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
-local instance : Fact (Nat.Prime 2) := ⟨by decide⟩
+local instance fixedFreeTranslationHead_profilePrimeFact : Fact P.p.Prime := (chart block P).primeFact
+local instance fixedFreeTranslationHead_binaryPrimeFact : Fact (Nat.Prime 2) := ⟨by decide⟩
 
 /-- A fixed-free order-three action on the actual translation module
 annihilates the relative binary head of every literal intersection E∩N. -/

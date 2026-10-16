@@ -55,7 +55,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w} {basePoint : Fin w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
+local instance degreeFourPairFrameSource_profilePrimeFact : Fact P.p.Prime := (chart block P).primeFact
 
 /-- The actual local target has no nontrivial normal binary subgroup. -/
 theorem degreeFourLocalTarget_eligible (hr : Nat.card block.Fibre = 4) :
