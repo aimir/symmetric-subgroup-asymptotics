@@ -1,9 +1,11 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeFourSixteenStructuralReduction
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeFourSixteenPrimitiveSource
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeFourEightCompleteHeadSource
 
 /-! Close the primitive constructor of the actual sixteen-point
-structural dispatcher. The remaining geometric constructors retain only
-the eligible eight-point pair frame and zero-ternary four-by-four action. -/
+structural dispatcher, together with its eight-point pair constructor.
+The only remaining geometric constructor is the zero-ternary four-by-four
+original action. -/
 
 set_option autoImplicit false
 noncomputable section
@@ -18,10 +20,6 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w} {basePoint : Fin w}
 
 inductive DegreeFourSixteenPrimitiveClosedReduction : Type 1 where
   | bounded (bound : DegreeFourZeroCoreFiniteFrameBounds block P 10)
-  | pair (frame : BinaryPairFrame block.Top (Fin 8))
-      (nontrivialKernel : frame.top.ker ≠ ⊥)
-      (literal : DegreeEightCanonicalCatalogue.TransitiveLiteralMatch frame.top.range)
-      (eligible : ¬ DegreeFourEightTopEligibility.Excluded literal.index)
   | zero (chart : SixteenPointNonPairOriginalChart block.Top) (b : Fin 16)
       (inner : OriginalMinimalBlock (A := preE7NonPairAction 16 chart.index) b)
       [Nontrivial inner.Fibre]
@@ -30,13 +28,16 @@ inductive DegreeFourSixteenPrimitiveClosedReduction : Type 1 where
       (zeroCore : degreeFourTernaryCore inner profile = ⊥)
 
 def DegreeFourSixteenFrameReduction.closePrimitive
+    (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
     (published : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
     (hr : Nat.card block.Fibre = 4) (hD : degreeFourTernaryCore block P = ⊥)
     (R : DegreeFourSixteenFrameReduction block P) :
     DegreeFourSixteenPrimitiveClosedReduction block P := by
   cases R with
   | bounded bound => exact .bounded bound
-  | pair frame hker literal eligible => exact .pair frame hker literal eligible
+  | pair frame hker _literal _eligible =>
+      exact .bounded (degreeFourZeroCoreSixteenPairKernelNontrivialBounds_of_canonical block P
+        published8 hr hD frame hker (by simp))
   | primitive chart hprimitive =>
       exact .bounded (degreeFourZeroCoreSixteenPrimitiveBounds block P
         published hr hD chart hprimitive)
@@ -57,7 +58,7 @@ def degreeFourSixteenPrimitiveClosedReduction
     (hr : Nat.card block.Fibre = 4) (hD : degreeFourTernaryCore block P = ⊥)
     (hs : Nat.card block.Points = 16) :
     DegreeFourSixteenPrimitiveClosedReduction block P :=
-  DegreeFourSixteenFrameReduction.closePrimitive block P published16 hr hD
+  DegreeFourSixteenFrameReduction.closePrimitive block P published8 published16 hr hD
     (degreeFourSixteenFrameReduction block P published8 socle
       hTracey hMN hClifford hTraceyPerm hr hD hs)
 
