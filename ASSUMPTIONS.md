@@ -52,11 +52,17 @@ irreducible kernels. The primitive/rank checker and the affine-nine constructor'
 groups instead use GAP's normal-subgroup algorithm for those lists. Constructive block
 coverage and catalogue-based coverage are kept distinct. Exact cyclotomic
 characters, conjugacy, presentations and normalizers remain GAP computations.
-The zero-ternary frames use complete GAP normal menus for their top groups and
-stabilizers, an independent binary cyclic-sum closure for the eight-block
-module lattices, and explicit odd-subgroup and normalizer witnesses in the
-sixteen-block cases. The primitive frame domains use PrimGrp completeness;
-the 29 imprimitive tops have a separate constructive coverage proof.
+The original zero-ternary frame bounds now have structural Lean proofs.
+The eligible eight-point actions use actual Sylow-normalizer point witnesses,
+valid for every local epimorphism and twist. The four-by-four branch uses a
+common envelope for the whole original quotient socle and the actual Sylow
+centralizer dichotomy; it requires no four-by-four top or module-lattice
+census. Primitive frame coverage retains the explicit published classification
+input and checked point-conjugacy bindings. These frame results and the complete
+degree-four residual constructor are distinct from the still-unfinished
+degree-two joint and semantic catalogues. The historical computational menus
+are evidence for their own supplied witnesses, not extra hypotheses of these
+structural frame theorems.
 
 For the four exceptional charts, the data retain maps alpha:U->Q and beta:P->Q
 onto the same specified quotient, with exact kernels and unchanged physical

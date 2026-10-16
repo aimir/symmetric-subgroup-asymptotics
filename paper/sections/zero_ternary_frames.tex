@@ -87,20 +87,20 @@ rank over the normal quotients is exactly $z_2(U)$ by
 Lemma~\ref{lem:frame-rank}. Apply the whole-socle criterion.
 \end{proof}
 
-The following finite inputs concern tops and induced linear frames,
-and do not enumerate all extensions $U$ above a frame. They are
-supplied with literal permutation, module and kernel witnesses.
-\begin{lemma}[Finite frame inputs]\label{lem:finite-zero-frames}
-The zero-ternary frame certificates have the following properties.
+The following bounds concern tops and induced linear frames,
+and do not enumerate all extensions $U$ above a frame. The
+four-by-four case has a structural proof; the remaining finite
+inputs have literal permutation and module witnesses.
+\begin{lemma}[Small frame bounds]\label{lem:finite-zero-frames}
+The zero-ternary frames have the following properties.
 \begin{enumerate}[label=(\roman*)]
 \item Every nonbinary transitive top $T$ of degree eight satisfies
 $z_2(T)\leq2$. Every frame induced from an onto map of a point
 stabilizer to $C_3$ or $S_3$ satisfies $\mu_T(M)\leq2$.
 \item For each degree-sixteen top having four four-point blocks,
 exact local $A_4$ or $S_4$, and zero internal ternary kernel,
-every induced $C_3/S_3$ frame admits a Sylow $3$-subgroup $P$
-and a $2$-element $g\in N_T(P)$ with
-$z_2(T)+\dim(M^P)^g\leq10$.
+every frame $M$ induced from an onto point-stabilizer map to
+$C_3$ or $S_3$ satisfies $z_2(T)+\mu_T(M)\leq10$.
 \item Every primitive degree-sixteen top satisfies $z_2(T)\leq2$
 and has an odd subgroup $A$ with at most four point orbits.
 Consequently every frame induced from a two-dimensional binary local
@@ -147,11 +147,81 @@ $g$ give
 This proves the complete local-frame bound without an invariant-submodule
 list or a classification of the point-stabilizer kernels.
 
-For (ii), the complete induced-frame, kernel and complement construction
-gives twenty-nine four-by-four top actions, including their nonsplit
-lifts. Each has exactly one eligible stabilizer kernel. The supplied
-$P,g$ witnesses give the inequality directly; no invariant-submodule
-enumeration in dimension 32 is required.
+For (ii), write $E$ for the actual binary translation kernel and
+$J=T/E\in\{A_4,S_4\}$ for the faithful four-point top. We first
+bound the whole binary socle of every original quotient $T/N$ by
+two ambient generators, including its central trivial constituents.
+Here is the common-envelope calculation used for this step.
+Put $k=\F_2$, and let $W$ be the irreducible binary plane for $C_3$.
+The two envelopes are
+\[
+ M_6=k^2\oplus W_m\oplus W_t,\qquad
+ M_7=(P_2\oplus k)\oplus W_m\oplus W_t.
+\]
+The $A_4$ action on $M_6$ factors through $C_3$; the $S_4$ action
+on $M_7$ factors through $S_3$. Here $P_2$ is the two-point
+permutation module for the reflection, while $W_m,W_t$ are
+isomorphic natural binary $S_3$-planes. The reflection on $P_2$
+is retained. Every submodule of either envelope is two-generated:
+the trace $1+c+c^2$ for a cubic generator projects onto the fixed
+part and its complement projects onto $W_m\oplus W_t$. The latter
+needs at most two generators under $C_3$. A submodule of $k^2$
+needs at most two; a submodule of $P_2\oplus k$ either lies in its
+two-dimensional fixed space, or contains the two-dimensional cyclic
+span of a moved vector and needs at most one more generator.
+Adding the two pairs of generators componentwise and applying the
+trace projections gives two generators for their common submodule.
+
+To apply this to the actual binary socle $A$ of $T/N$, put
+$A_0=A\cap EN/N$. The binary preimage of the Klein group acts
+trivially on $A$. The four-point translation coordinates lie in
+$k[V_4]\otimes W$, of dimension eight. Filtering the regular factor
+by its bottom and augmentation layers gives a source
+$L\twoheadrightarrow A_0$ and an injection $L\hookrightarrow M_j$.
+This uses the bottom map when the source lies in the bottom layer,
+the whole-source map for the whole translation module, and the
+induced middle-section map for a proper intermediate source. In coordinates
+$(a_0,a_1,a_2;w_m,w_t)$, the resulting source has
+$a_2=w_t=0$, whereas the injection of $A/A_0$ into the same envelope
+has $a_0=a_1=w_m=0$. In the alternating case its remaining scalar
+$a_2$ also vanishes, giving $M_6$. These coordinate maps use the
+original $N$ throughout; no containment of a bottom layer in $N$
+or splitting of the group extension is required.
+Their images are disjoint. Since $A$ is semisimple, $L\oplus A/A_0$
+surjects onto $A$ and embeds into this one envelope. Thus $A$ is
+two-generated. The other prime-primary socle parts have bound two
+and combine by a maximum, so every original quotient has whole-socle
+bound two. Lemma~\ref{lem:frame-rank} gives $z_2(T)\leq2$.
+
+Choose an actual Sylow three subgroup $S=\langle s\rangle$.
+Its point action has one fixed point and five moving triples.
+Every fibre at an $S$-fixed point contributes zero to $M^S$:
+the original local epimorphism maps $S$ onto the local $C_3$.
+If $C_E(S)\ne1$, choose a nonidentity centralizing translation $e$.
+It is trivial on the fixed four-point block and nonzero on the
+three moving blocks. It pairs their four moving $S$-orbits, so
+there are at most three active $\langle S,e\rangle$-orbits in all.
+Twisted-fibre evaluation bounds the head of every invariant
+submodule by six. Hence $z_2(T)+\mu_T(M)\leq2+6$.
+
+If $C_E(S)=1$ and $J=A_4$, odd-order averaging shows that every
+$S$-stable section of $E$ has zero trivial head. The remaining
+relative binary head comes from a normal subgroup of $A_4$ and
+is also zero. Thus $z_2(T)=0$, and the five moving triples give
+$\mu_T(M)\leq10$.
+If instead $J=S_4$, Sylow conjugacy in its preimage lifts a
+reflection through $N_T(S)$.
+Its square belongs to $E\cap N_T(S)=C_E(S)$, so the actual lift
+is an involution. On a moving block which it stabilizes, the actual
+block stabilizer $S_3$ maps isomorphically onto its local linear
+quotient, so its local action is nontrivial modulo translations.
+A fixed-point-free
+involution on four points is a translation, so this local
+involution has a fixed point. The reflection therefore has at
+most three orbits on the four cross-block $S$-orbits. Including
+the triple in the fixed block leaves at most four active orbits,
+giving $\mu_T(M)\leq8$ and $z_2(T)+\mu_T(M)\leq2+8$.
+This proves (ii) for every original local map and twist.
 
 For (iii), the quotient-socle certificates give $z_2(T)\leq2$
 for each of the twenty affine primitive tops. The displayed cyclic
@@ -166,12 +236,13 @@ fifteen-cycle has just two point orbits. Thus the same argument
 covers all twenty-two tops and every two-dimensional local frame;
 no classification of point-stabilizer kernels is needed here.
 The primitive completeness premise is
-\cite{RoneyDougal2005Primitive,PrimGrp344}; parts (i), (ii) use the
-separate constructive completeness arguments just described. The
-normal orders and actual Sylow orbits in (iv) are direct checks on
-the same seven primitive representatives. Thus these are finite
-mathematical premises with independently checkable completeness
-certificates, rather than an inference from their cardinalities.
+\cite{RoneyDougal2005Primitive,PrimGrp344}; part (i) uses the
+separate constructive eight-point completeness argument above,
+whereas part (ii) requires no four-by-four catalogue. The normal
+orders and actual Sylow orbits in (iv) are direct checks on the
+same seven primitive representatives. The finite completeness
+certificates identify actual actions, rather than inferring
+coverage from their cardinalities.
 \end{proof}
 
 \begin{theorem}[Complete zero-ternary eight and sixteen frames]
@@ -238,7 +309,7 @@ local $d$-space has a series of trivial factors. Induction gives
 $d$ copies of the four-point permutation module in a filtration
 of $M^P$. Their scalar capacity is two, giving
 $\mu_T(M)\leq2d\leq4$. If instead the internal $D=1$, use
-Lemma~\ref{lem:finite-zero-frames}(ii) and the normalizer tool.
+the joint bound in Lemma~\ref{lem:finite-zero-frames}(ii).
 
 For a minimal block of size eight, the two components are conjugate
 primitive actions. The fixed degree-eight catalogue leaves the seven
