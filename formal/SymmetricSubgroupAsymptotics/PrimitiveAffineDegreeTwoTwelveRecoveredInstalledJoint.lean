@@ -1,3 +1,5 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveNestedOriginalNaturalFinitePackages
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveGlobalTernaryMatrixFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveAlternateInstalledJoint
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveTwoTernaryMatrixFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveThreeQuartetAlternateFinitePackages
@@ -22,7 +24,7 @@ structure Entry : Type 1 where
   package : Data (catalogue.row index).finite
   branch : (catalogue.row index).branch = .joint
 
-def entry : Fin 13 → Entry :=
+def entry : Fin 23 → Entry :=
   ![⟨200, DegreeTwoTwelveTwoTernaryMatrixFinitePackages.row201At3Data, by decide +kernel⟩,
     ⟨236, DegreeTwoTwelveTwoTernaryMatrixFinitePackages.row237At3Data, by decide +kernel⟩,
     ⟨237, DegreeTwoTwelveTwoTernaryMatrixFinitePackages.row238At3Data, by decide +kernel⟩,
@@ -35,12 +37,22 @@ def entry : Fin 13 → Entry :=
     ⟨289, PrimitiveAffineDegreeTwoTwelveThreeQuartetAlternateFinitePackages.row290AtThree, by decide +kernel⟩,
     ⟨290, PrimitiveAffineDegreeTwoTwelveThreeQuartetAlternateFinitePackages.row291AtThree, by decide +kernel⟩,
     ⟨291, PrimitiveAffineDegreeTwoTwelveThreeQuartetAlternatePilot.row292AtThree, by decide +kernel⟩,
-    ⟨293, PrimitiveAffineDegreeTwoTwelveThreeQuartetAlternateFinitePackages.row294AtThree, by decide +kernel⟩]
+    ⟨293, PrimitiveAffineDegreeTwoTwelveThreeQuartetAlternateFinitePackages.row294AtThree, by decide +kernel⟩,
+    ⟨29, DegreeTwoTwelveNestedOriginalNaturalFinitePackages.row30At3Data, by decide +kernel⟩,
+    ⟨49, DegreeTwoTwelveNestedOriginalNaturalFinitePackages.row50At3Data, by decide +kernel⟩,
+    ⟨97, DegreeTwoTwelveNestedOriginalNaturalFinitePackages.row98At3Data, by decide +kernel⟩,
+    ⟨98, DegreeTwoTwelveNestedOriginalNaturalFinitePackages.row99At3Data, by decide +kernel⟩,
+    ⟨103, DegreeTwoTwelveNestedOriginalNaturalFinitePackages.row104At3Data, by decide +kernel⟩,
+    ⟨151, DegreeTwoTwelveNestedOriginalNaturalFinitePackages.row152At3Data, by decide +kernel⟩,
+    ⟨152, DegreeTwoTwelveNestedOriginalNaturalFinitePackages.row153At3Data, by decide +kernel⟩,
+    ⟨191, DegreeTwoTwelveNestedOriginalNaturalFinitePackages.row192At3Data, by decide +kernel⟩,
+    ⟨223, DegreeTwoTwelveNestedOriginalNaturalFinitePackages.row224At3Data, by decide +kernel⟩,
+    ⟨53, DegreeTwoTwelveGlobalTernaryMatrixFinitePackages.row54At3Data, by decide +kernel⟩]
 
 def additionalIndices : Finset (Fin 301) :=
-  Finset.univ.image fun k : Fin 13 ↦ (entry k).index
+  Finset.univ.image fun k : Fin 23 ↦ (entry k).index
 
-theorem additionalIndices_card : additionalIndices.card = 13 := by decide +kernel
+theorem additionalIndices_card : additionalIndices.card = 23 := by decide +kernel
 
 theorem additionalIndices_disjoint_previous :
     Disjoint additionalIndices DegreeTwoTwelveAlternateInstalledJoint.installedIndices := by
@@ -60,7 +72,7 @@ theorem additional_branch (j : Fin 301) (hj : j ∈ additionalIndices) :
 def installedIndices : Finset (Fin 301) :=
   DegreeTwoTwelveAlternateInstalledJoint.installedIndices ∪ additionalIndices
 
-theorem installedIndices_card : installedIndices.card = 138 := by decide +kernel
+theorem installedIndices_card : installedIndices.card = 148 := by decide +kernel
 
 /-- The remaining project-owned original-action obligations. -/
 structure RemainingData : Type 1 where
