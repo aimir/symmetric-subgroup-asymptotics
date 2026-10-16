@@ -7,6 +7,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveTernaryAxesFin
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePrimitiveFinalPublishedFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveCubicQuartetFinitePackages
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow166OddSocles
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveCubicSquareSocles
 
 /-! Shared original-action structural packages. The primitive-six entries
 use exactly the socle and bounded primitive catalogue inputs already present
@@ -29,7 +30,7 @@ structure Entry : Type 1 where
     PublishedBoundedPrimitiveCatalogueCorrespondence → Data (catalogue.row index).finite
   branch : (catalogue.row index).branch = .joint
 
-def entry : Fin 40 → Entry :=
+def entry : Fin 42 → Entry :=
   ![⟨126, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveDiagonalSingerFinitePackages.row127AtThree, by decide +kernel⟩,
     ⟨127, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveDiagonalSingerFinitePackages.row128AtThree, by decide +kernel⟩,
     ⟨128, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveDiagonalSingerFinitePackages.row129AtThree, by decide +kernel⟩,
@@ -69,12 +70,14 @@ def entry : Fin 40 → Entry :=
     ⟨25, fun _ _ ↦ DegreeTwoTwelveCubicQuartetFinitePackages.row26AtTwoData, by decide +kernel⟩,
     ⟨55, fun _ _ ↦ DegreeTwoTwelveCubicQuartetFinitePackages.row56AtTwoData, by decide +kernel⟩,
     ⟨89, fun _ _ ↦ DegreeTwoTwelveCubicQuartetFinitePackages.row90AtTwoData, by decide +kernel⟩,
-    ⟨165, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveRow166OddSocles.data, by decide +kernel⟩]
+    ⟨165, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveRow166OddSocles.data, by decide +kernel⟩,
+    ⟨84, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveCubicSquareSocles.Row85.data, by decide +kernel⟩,
+    ⟨163, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveCubicSquareSocles.Row164.data, by decide +kernel⟩]
 
 def additionalIndices : Finset (Fin 301) :=
-  Finset.univ.image fun k : Fin 40 ↦ (entry k).index
+  Finset.univ.image fun k : Fin 42 ↦ (entry k).index
 
-theorem additionalIndices_card : additionalIndices.card = 40 := by decide +kernel
+theorem additionalIndices_card : additionalIndices.card = 42 := by decide +kernel
 
 theorem additionalIndices_disjoint_previous :
     Disjoint additionalIndices DegreeTwoTwelveRecoveredInstalledJoint.installedIndices := by
@@ -96,7 +99,7 @@ theorem additional_branch (j : Fin 301) (hj : j ∈ additionalIndices) :
 def installedIndices : Finset (Fin 301) :=
   DegreeTwoTwelveRecoveredInstalledJoint.installedIndices ∪ additionalIndices
 
-theorem installedIndices_card : installedIndices.card = 188 := by decide +kernel
+theorem installedIndices_card : installedIndices.card = 190 := by decide +kernel
 
 /-- Only original joint actions outside the proved union remain project work. -/
 structure RemainingData : Type 1 where
