@@ -40,7 +40,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w} {basePoint : Fin w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
+local instance degreeFourPairTrivialKernelSource_profilePrimeFact : Fact P.p.Prime := (chart block P).primeFact
 local instance : MulAction.IsPretransitive block.Top block.Points := block.top_pretransitive
 
 /-- The actual trivial-pair-kernel structural branch, with the original
