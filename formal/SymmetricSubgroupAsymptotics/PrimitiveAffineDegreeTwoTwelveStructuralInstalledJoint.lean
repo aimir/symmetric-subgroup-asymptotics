@@ -10,6 +10,8 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow166OddSocle
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveCubicSquareSocles
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSymmetricEdgeSignSocles
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSymmetricOrderedPairSocles
+import SymmetricSubgroupAsymptotics.TwelvePointRemainingStructuralSignedS4JointClients
+import SymmetricSubgroupAsymptotics.TwelvePointRemainingStructuralRow34TernaryPilot
 
 /-! Shared original-action structural packages. The primitive-six entries
 use exactly the socle and bounded primitive catalogue inputs already present
@@ -32,7 +34,7 @@ structure Entry : Type 1 where
     PublishedBoundedPrimitiveCatalogueCorrespondence → Data (catalogue.row index).finite
   branch : (catalogue.row index).branch = .joint
 
-def entry : Fin 44 → Entry :=
+def entry : Fin 66 → Entry :=
   ![⟨126, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveDiagonalSingerFinitePackages.row127AtThree, by decide +kernel⟩,
     ⟨127, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveDiagonalSingerFinitePackages.row128AtThree, by decide +kernel⟩,
     ⟨128, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveDiagonalSingerFinitePackages.row129AtThree, by decide +kernel⟩,
@@ -76,12 +78,34 @@ def entry : Fin 44 → Entry :=
     ⟨84, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveCubicSquareSocles.Row85.data, by decide +kernel⟩,
     ⟨163, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveCubicSquareSocles.Row164.data, by decide +kernel⟩,
     ⟨8, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveSymmetricEdgeSignSocles.data, by decide +kernel⟩,
-    ⟨7, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveSymmetricOrderedPairSocles.data, by decide +kernel⟩]
+    ⟨7, fun _ _ ↦ PrimitiveAffineDegreeTwoTwelveSymmetricOrderedPairSocles.data, by decide +kernel⟩,
+    ⟨22, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row23.dataAtTwo, by decide +kernel⟩,
+    ⟨23, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row24.dataAtTwo, by decide +kernel⟩,
+    ⟨62, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row63.dataAtTwo, by decide +kernel⟩,
+    ⟨63, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row64.dataAtTwo, by decide +kernel⟩,
+    ⟨64, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row65.dataAtTwo, by decide +kernel⟩,
+    ⟨65, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row66.dataAtTwo, by decide +kernel⟩,
+    ⟨67, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row68.dataAtTwo, by decide +kernel⟩,
+    ⟨95, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row96.dataAtTwo, by decide +kernel⟩,
+    ⟨96, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row97.dataAtTwo, by decide +kernel⟩,
+    ⟨99, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row100.dataAtTwo, by decide +kernel⟩,
+    ⟨101, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row102.dataAtTwo, by decide +kernel⟩,
+    ⟨109, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row110.dataAtTwo, by decide +kernel⟩,
+    ⟨110, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row111.dataAtTwo, by decide +kernel⟩,
+    ⟨113, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row114.dataAtTwo, by decide +kernel⟩,
+    ⟨114, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row115.dataAtTwo, by decide +kernel⟩,
+    ⟨145, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row146.dataAtTwo, by decide +kernel⟩,
+    ⟨148, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row149.dataAtTwo, by decide +kernel⟩,
+    ⟨183, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row184.dataAtTwo, by decide +kernel⟩,
+    ⟨189, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row190.dataAtTwo, by decide +kernel⟩,
+    ⟨190, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row191.dataAtTwo, by decide +kernel⟩,
+    ⟨226, fun _ _ ↦ TwelvePointRemainingStructuralSignedS4JointClients.Row227.dataAtTwo, by decide +kernel⟩,
+    ⟨33, fun _ _ ↦ TwelvePointRemainingStructuralRow34TernaryPilot.dataAtTwo, by decide +kernel⟩]
 
 def additionalIndices : Finset (Fin 301) :=
-  Finset.univ.image fun k : Fin 44 ↦ (entry k).index
+  Finset.univ.image fun k : Fin 66 ↦ (entry k).index
 
-theorem additionalIndices_card : additionalIndices.card = 44 := by decide +kernel
+theorem additionalIndices_card : additionalIndices.card = 66 := by decide +kernel
 
 theorem additionalIndices_disjoint_previous :
     Disjoint additionalIndices DegreeTwoTwelveRecoveredInstalledJoint.installedIndices := by
@@ -103,7 +127,13 @@ theorem additional_branch (j : Fin 301) (hj : j ∈ additionalIndices) :
 def installedIndices : Finset (Fin 301) :=
   DegreeTwoTwelveRecoveredInstalledJoint.installedIndices ∪ additionalIndices
 
-theorem installedIndices_card : installedIndices.card = 192 := by decide +kernel
+theorem installedIndices_card : installedIndices.card = 214 := by decide +kernel
+
+/-- Exact literal joint entries still needing a complete original-action package. -/
+def remainingIndices : Finset (Fin 301) :=
+  Finset.univ.filter fun j => (catalogue.row j).branch = .joint ∧ j ∉ installedIndices
+
+theorem remainingIndices_card : remainingIndices.card = 69 := by decide +kernel
 
 /-- Only original joint actions outside the proved union remain project work. -/
 structure RemainingData : Type 1 where
