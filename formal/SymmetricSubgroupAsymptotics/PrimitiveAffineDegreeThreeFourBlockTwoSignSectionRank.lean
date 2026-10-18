@@ -30,7 +30,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
 
 private abbrev G := preE7NonPairAction w U
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
+local instance primitiveAffineDegreeThreeFourBlockTwoSignSectionRank_localInstance1 : Fact P.p.Prime := (chart block P).primeFact
 
 instance degreeThreeFourBlockTwoSignSectionRank_axisNormal
     (N : TwoSignProperAxis (E block P)) :

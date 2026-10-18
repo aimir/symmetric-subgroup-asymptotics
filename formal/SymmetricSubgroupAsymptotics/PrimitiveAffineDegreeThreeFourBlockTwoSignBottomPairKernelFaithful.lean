@@ -29,7 +29,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
+local instance primitiveAffineDegreeThreeFourBlockTwoSignBottomPairKernelFaithful_localInstance1 : Fact P.p.Prime := (chart block P).primeFact
 
 /-- Restriction of the full quotient representation to the literal
 `C₂²` pair kernel. -/

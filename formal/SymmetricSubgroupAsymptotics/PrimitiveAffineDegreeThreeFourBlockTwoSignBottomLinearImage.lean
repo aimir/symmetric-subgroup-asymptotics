@@ -31,7 +31,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
 
 private abbrev G := preE7NonPairAction w U
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
+local instance primitiveAffineDegreeThreeFourBlockTwoSignBottomLinearImage_localInstance1 : Fact P.p.Prime := (chart block P).primeFact
 
 /-- The literal signed action relabelled back onto the actual quotient. -/
 def degreeThreeFourBlockTwoSignBottomSignedTopHom

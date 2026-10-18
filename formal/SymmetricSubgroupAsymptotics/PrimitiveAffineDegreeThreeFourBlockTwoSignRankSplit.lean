@@ -31,7 +31,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
+local instance primitiveAffineDegreeThreeFourBlockTwoSignRankSplit_localInstance1 : Fact P.p.Prime := (chart block P).primeFact
 
 /-- Reindexing identifies the actual correlated translation module with
 its literal image in four coordinates. -/

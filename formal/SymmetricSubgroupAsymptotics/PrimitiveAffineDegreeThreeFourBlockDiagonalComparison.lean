@@ -176,8 +176,8 @@ variable (hr : Nat.card block.Fibre = 3)
     block P hr hs hcomponent).isotypeCount = 1)
   (M : {M : Subgroup (preE7NonPairAction w U ⧸ E block P) // M.Normal})
 
-local instance : M.1.Normal := M.2
-local instance :
+local instance primitiveAffineDegreeThreeFourBlockDiagonalComparison_localInstance1 : M.1.Normal := M.2
+local instance primitiveAffineDegreeThreeFourBlockDiagonalComparison_localInstance2 :
     (ProjectiveCentralQuotient.normalImage
       (diagonalProjectiveMap block P hr hs hcomponent)
       (diagonalProjectiveMap_surjective block P hr hs hcomponent) M).1.Normal :=
