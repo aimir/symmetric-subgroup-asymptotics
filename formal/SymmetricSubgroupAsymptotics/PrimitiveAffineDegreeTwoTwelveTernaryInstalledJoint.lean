@@ -1,8 +1,13 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveStructuralInstalledJoint
 import SymmetricSubgroupAsymptotics.TwelvePointRemainingStructuralRow40TernaryPilot
+import SymmetricSubgroupAsymptotics.TwelvePointRemainingStructuralRow47TernaryPilot
+import SymmetricSubgroupAsymptotics.TwelvePointRemainingStructuralRow171TernaryPilot
+import SymmetricSubgroupAsymptotics.TwelvePointRemainingStructuralRow172TernaryPilot
+import SymmetricSubgroupAsymptotics.TwelvePointRemainingStructuralRow174TernaryPilot
 
-/-! One complete original joint package from an actual signed ternary lift.
-The pure C4 × C2 complement is proved with actual words and a point gauge.
+/-! Five complete original joint packages from actual signed ternary lifts.
+The pure C4 × C2, quaternion and dihedral complements are proved with actual
+words and a point gauge.
 The existing numerical menu admits the proved capacities (2,2); historical
 profiles and all original normal denominators remain unchanged. -/
 set_option autoImplicit false
@@ -12,14 +17,22 @@ namespace Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer
 namespace DegreeTwoTwelveTernaryInstalledJoint
 open DegreeTwoTwelvePairFiniteCatalogue DegreeTwoTwelveFlexibleProfiles
 
-def entry : Fin 1 → DegreeTwoTwelveStructuralInstalledJoint.Entry :=
+def entry : Fin 5 → DegreeTwoTwelveStructuralInstalledJoint.Entry :=
   ![⟨39, fun _ _ => TwelvePointRemainingStructuralRow40TernaryPilot.dataAtTwo,
+    by decide +kernel⟩,
+    ⟨46, fun _ _ => TwelvePointRemainingStructuralRow47TernaryPilot.dataAtTwo,
+    by decide +kernel⟩,
+    ⟨170, fun _ _ => TwelvePointRemainingStructuralRow171TernaryPilot.dataAtTwo,
+    by decide +kernel⟩,
+    ⟨171, fun _ _ => TwelvePointRemainingStructuralRow172TernaryPilot.dataAtTwo,
+    by decide +kernel⟩,
+    ⟨173, fun _ _ => TwelvePointRemainingStructuralRow174TernaryPilot.dataAtTwo,
     by decide +kernel⟩]
 
 def additionalIndices : Finset (Fin 301) :=
-  Finset.univ.image fun k : Fin 1 => (entry k).index
+  Finset.univ.image fun k : Fin 5 => (entry k).index
 
-theorem additionalIndices_card : additionalIndices.card = 1 := by decide +kernel
+theorem additionalIndices_card : additionalIndices.card = 5 := by decide +kernel
 
 theorem additionalIndices_disjoint_previous :
     Disjoint additionalIndices DegreeTwoTwelveStructuralInstalledJoint.installedIndices := by
@@ -41,12 +54,12 @@ theorem additional_branch (j : Fin 301) (hj : j ∈ additionalIndices) :
 def installedIndices : Finset (Fin 301) :=
   DegreeTwoTwelveStructuralInstalledJoint.installedIndices ∪ additionalIndices
 
-theorem installedIndices_card : installedIndices.card = 215 := by decide +kernel
+theorem installedIndices_card : installedIndices.card = 219 := by decide +kernel
 
 def remainingIndices : Finset (Fin 301) :=
   Finset.univ.filter fun j => (catalogue.row j).branch = .joint ∧ j ∉ installedIndices
 
-theorem remainingIndices_card : remainingIndices.card = 68 := by decide +kernel
+theorem remainingIndices_card : remainingIndices.card = 64 := by decide +kernel
 
 structure RemainingData : Type 1 where
   row : ∀ j : Fin 301, j ∉ installedIndices →
