@@ -125,6 +125,16 @@ must inspect both the full theorem types and their transitive axiom
 dependencies; an unproved theorem passed as an argument can be absent from an
 axiom report while remaining a mathematical assumption.
 
+The current conditional assembly still exposes certificate-valued boundaries
+beyond degree-two action coverage. `PublishedDegreeTwoFourPairClassification`
+includes original-normal character intervals and source certificates.
+`RDTMarkedC4ReductionInput` includes the actual subgroup encodings, coherent
+count families and reduction parameters for the marked moment. Existing
+transport and assembly lemmas consume these data; they do not construct them.
+Neither interface is accepted as a published assumption merely because a
+name or docstring attributes it to a source. Its exact published scope or its
+project construction must be established before the relative milestone.
+
 Standard classical logical foundations are permitted. Unproved project
 lemmas, proof placeholders and hidden certificate-acceptance assumptions are
 excluded from either substantive verification milestone. The c=1 application,

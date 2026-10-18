@@ -112,6 +112,17 @@ original degree-two one-frame callbacks are also assembled. T1 remains open:
 the separate degree-two joint twelve-point, six-pair B6 and sixteen-point
 semantic coverage obligations are not implied by this degree-four result.
 
+Two other interfaces in the current conditional T1 assembly require explicit
+construction: [`PublishedDegreeTwoFourPairClassification`](SymmetricSubgroupAsymptotics/PrimitiveAffineDegreeTwoFourPairsClassification.lean)
+contains original-normal character intervals and source certificates, and
+[`RDTMarkedC4ReductionInput`](SymmetricSubgroupAsymptotics/MarkedC4RDTAssembly.lean)
+contains the subgroup encodings and count-family data used by the marked
+reduction. Their names do not establish that these data have been constructed
+or that their full quantified statements are published results. Catalogue
+completeness and the generic marked transport theorems do not supply these
+constructors. Both remain explicit boundaries until the constructions or
+exact published reductions are checked.
+
 ## Proof modules
 
 | Module | Mathematical content |
