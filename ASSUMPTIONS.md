@@ -131,6 +131,10 @@ includes original-normal character intervals and source certificates.
 `RDTMarkedC4ReductionInput` includes the actual subgroup encodings, coherent
 count families and reduction parameters for the marked moment. Existing
 transport and assembly lemmas consume these data; they do not construct them.
+The one-generator field is now constructed from the ordinary published
+Aschbacher–Guralnick soluble-generation theorem. Literal relative-generator
+and nilpotent-row encoders are also proved; assembling the remaining RDT
+fields on coherent actual count families is still required.
 Neither interface is accepted as a published assumption merely because a
 name or docstring attributes it to a source. Its exact published scope or its
 project construction must be established before the relative milestone.
