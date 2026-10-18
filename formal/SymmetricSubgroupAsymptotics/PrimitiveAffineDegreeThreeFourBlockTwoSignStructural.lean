@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeThreeFourBlockTwoSignSource
-import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeSixS3WreathSource
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeSixS3WreathGroup
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoQuotientEnvelopeTransport
+import SymmetricSubgroupAsymptotics.FiniteGroupPaddedGenerators
 
 /-!
 # Structural ingredients for the two-sign four-block source
@@ -20,6 +21,7 @@ literal and uses no normal-subgroup census.
 -/
 
 set_option autoImplicit false
+set_option maxHeartbeats 800000
 noncomputable section
 open scoped BigOperators Classical
 
@@ -145,6 +147,72 @@ theorem completeQuotientWeight_le_twoSign_strata
               (twoSignProperAxis N) J) :=
       add_le_add habove hbelow
     _ = _ := by ring
+
+/-- The literal proper axes form a subtype of the full normal menu.  For a
+group of order at most `2^12`, their number is therefore at most `2^144`.
+This avoids enumerating the proper ternary sections. -/
+theorem twoSignProperAxis_card_le_two_pow_144
+    {G : Type*} [Group G] [Finite G]
+    (E : Subgroup G) (hG : Nat.card G ≤ 2 ^ 12) :
+    Nat.card (TwoSignProperAxis E) ≤ 2 ^ 144 := by
+  have hinjective : Function.Injective
+      (fun N : TwoSignProperAxis E ↦ (N.1.1 : NormalAxis G)) := by
+    intro N M h
+    apply Subtype.ext
+    apply Subtype.ext
+    exact h
+  calc
+    Nat.card (TwoSignProperAxis E) ≤ Nat.card (NormalAxis G) :=
+      Nat.card_le_card_of_injective _ hinjective
+    _ ≤ 2 ^ (12 * 12) := normalSubgroup_card_le_two_pow_sq 12 hG
+    _ = 2 ^ 144 := by norm_num
+
+/-- Uniform numerical budget for the whole two-sign source.  A possible
+rank-two bottom, the signed top, and every proper ternary section all fit
+simultaneously under the historical `2^384` coefficient. -/
+theorem twoSign_uniform_mainCoefficient_le
+    {G : Type*} [Group G] [Finite G]
+    (E : Subgroup G) (hG : Nat.card G ≤ 2 ^ 12) :
+    (2 : ℝ) ^ (200 : ℕ) + (2 : ℝ) ^ (128 : ℕ) +
+        ∑ _N : TwoSignProperAxis E, (2 : ℝ) ^ (200 : ℕ) ≤
+      (2 : ℝ) ^ (384 : ℝ) := by
+  have hcard := twoSignProperAxis_card_le_two_pow_144 E hG
+  have hcardReal : (Nat.card (TwoSignProperAxis E) : ℝ) ≤
+      (2 : ℝ) ^ (144 : ℕ) := by
+    exact_mod_cast hcard
+  have hsections :
+      (∑ _N : TwoSignProperAxis E, (2 : ℝ) ^ (200 : ℕ)) ≤
+        (2 : ℝ) ^ (344 : ℕ) := by
+    calc
+      (∑ _N : TwoSignProperAxis E, (2 : ℝ) ^ (200 : ℕ)) =
+          (Nat.card (TwoSignProperAxis E) : ℝ) *
+            (2 : ℝ) ^ (200 : ℕ) := by
+        rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ,
+          Fintype.card_eq_nat_card]
+      _ ≤ (2 : ℝ) ^ (144 : ℕ) * (2 : ℝ) ^ (200 : ℕ) := by
+        exact mul_le_mul_of_nonneg_right hcardReal (by positivity)
+      _ = (2 : ℝ) ^ (344 : ℕ) := by rw [← pow_add]
+  have h200 : (2 : ℝ) ^ (200 : ℕ) ≤ (2 : ℝ) ^ (344 : ℕ) :=
+    pow_le_pow_right₀ (by norm_num) (by norm_num)
+  have h128 : (2 : ℝ) ^ (128 : ℕ) ≤ (2 : ℝ) ^ (344 : ℕ) :=
+    pow_le_pow_right₀ (by norm_num) (by norm_num)
+  calc
+    (2 : ℝ) ^ (200 : ℕ) + (2 : ℝ) ^ (128 : ℕ) +
+        ∑ _N : TwoSignProperAxis E, (2 : ℝ) ^ (200 : ℕ) ≤
+      (2 : ℝ) ^ (200 : ℕ) + (2 : ℝ) ^ (128 : ℕ) +
+        (2 : ℝ) ^ (344 : ℕ) :=
+      add_le_add (le_refl _) hsections
+    _ ≤ (2 : ℝ) ^ (344 : ℕ) + (2 : ℝ) ^ (344 : ℕ) +
+        (2 : ℝ) ^ (344 : ℕ) :=
+      add_le_add (add_le_add h200 h128) (le_refl _)
+    _ = 3 * (2 : ℝ) ^ (344 : ℕ) := by ring
+    _ ≤ 4 * (2 : ℝ) ^ (344 : ℕ) := by
+      exact mul_le_mul_of_nonneg_right (by norm_num) (by positivity)
+    _ = (2 : ℝ) ^ (346 : ℕ) := by
+      rw [show (4 : ℝ) = 2 ^ (2 : ℕ) by norm_num, ← pow_add]
+    _ ≤ (2 : ℝ) ^ (384 : ℕ) :=
+      pow_le_pow_right₀ (by norm_num) (by norm_num)
+    _ = (2 : ℝ) ^ (384 : ℝ) := (Real.rpow_natCast 2 384).symm
 
 /-- Pull a normal axis back along a surjective group map. -/
 private def normalAxisComap
@@ -365,9 +433,11 @@ The normal stratification is a theorem, rather than a field of the supplied
 data.  Thus a caller cannot omit a normal stratum: the section type is
 definitionally the full finite type of nonbottom axes not containing E. -/
 noncomputable def degreeThreeFourBlockTwoSignComparison_of_literalBounds
+    (bottomCoefficient : ℝ)
     (topCoefficient : ℝ)
     (sectionCoefficient : TwoSignProperAxis (E block P) → ℝ)
     (tailCoefficient : ℝ)
+    (bottomCoefficient_nonneg : 0 ≤ bottomCoefficient)
     (topCoefficient_nonneg : 0 ≤ topCoefficient)
     (sectionCoefficient_nonneg :
       ∀ i, 0 ≤ sectionCoefficient i)
@@ -385,14 +455,17 @@ noncomputable def degreeThreeFourBlockTwoSignComparison_of_literalBounds
         sectionCoefficient i *
           completeQuotientWeight
             (R := DegreeThreeFourBlockTwoSignComparator.QStar) J)
-    (tail_bound : ∀ {b : ℕ}
+    (bottom_bound : ∀ {b : ℕ}
       (J : Subgroup (Equiv.Perm (Fin b))),
       (Nat.card
           (GroupEpimorphism J (preE7NonPairAction w U)) : ℝ) ≤
-        tailCoefficient *
-          (2 : ℝ) ^ ((Real.logb 2 3 / 3) * b))
+        bottomCoefficient *
+            completeQuotientWeight
+              (R := DegreeThreeFourBlockTwoSignComparator.QStar) J +
+          tailCoefficient *
+            (2 : ℝ) ^ ((Real.logb 2 3 / 3) * b))
     (mainCoefficient_le :
-      topCoefficient +
+      bottomCoefficient + topCoefficient +
           ∑ i : TwoSignProperAxis (E block P), sectionCoefficient i ≤
         (2 : ℝ) ^ (384 : ℝ))
     (tailCoefficient_le :
@@ -401,9 +474,11 @@ noncomputable def degreeThreeFourBlockTwoSignComparison_of_literalBounds
   Section := TwoSignProperAxis (E block P)
   sectionAxis := twoSignProperAxis
   Q := DegreeThreeFourBlockTwoSignComparator.QStar
+  bottomCoefficient := bottomCoefficient
   topCoefficient := topCoefficient
   sectionCoefficient := sectionCoefficient
   tailCoefficient := tailCoefficient
+  bottomCoefficient_nonneg := bottomCoefficient_nonneg
   topCoefficient_nonneg := topCoefficient_nonneg
   sectionCoefficient_nonneg := sectionCoefficient_nonneg
   tailCoefficient_nonneg := tailCoefficient_nonneg
@@ -412,7 +487,7 @@ noncomputable def degreeThreeFourBlockTwoSignComparison_of_literalBounds
     exact completeQuotientWeight_le_twoSign_strata (E block P) J
   top_bound := top_bound
   section_bound := section_bound
-  tail_bound := tail_bound
+  bottom_bound := bottom_bound
   mainCoefficient_le := mainCoefficient_le
   tailCoefficient_le := tailCoefficient_le
 

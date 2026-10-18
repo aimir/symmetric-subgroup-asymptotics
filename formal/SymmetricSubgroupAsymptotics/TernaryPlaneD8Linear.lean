@@ -1,0 +1,178 @@
+import SymmetricSubgroupAsymptotics.Non2PreE7LinearThreeGroup
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeSixS3WreathSemidirect
+
+/-!
+# The standard dihedral action on the ternary plane
+
+The fixed degree-six comparator is
+
+`C₃² ⋊ (C₂ ≀ C₂)`.
+
+This file records the linear part of that displayed semidirect product as
+an actual subgroup of `GL₂(3)`.  Keeping the same coordinate formula as
+`DegreeSixS3Wreath.monomialAction` lets later section-recognition results
+transport both the top group and its action, rather than using an abstract
+order-eight group isomorphism.
+-/
+
+set_option autoImplicit false
+noncomputable section
+open scoped Classical
+
+namespace SymmetricSubgroupAsymptotics
+namespace DegreeSixS3Wreath
+
+private abbrev V4 := C2 × C2
+
+/-- The standard monomial `D8` representation on the additive ternary
+plane.  This is the linear form of `monomialAction`. -/
+def monomialRepresentation :
+    Representation (ZMod 3) D8 TernaryPlane where
+  toFun d :=
+    { toFun := fun v i =>
+        let j : Fin 2 :=
+          if d.right = 1 then i else ⟨1 - i.val, by omega⟩
+        OddMarkerTernaryChart.signScalar
+          (if i = 0 then d.left.1 else d.left.2) * v j
+      map_add' := by
+        intro v w
+        funext i
+        exact mul_add _ _ _
+      map_smul' := by
+        intro c v
+        funext i
+        change _ * (c * _) = c * (_ * _)
+        exact mul_left_comm _ _ _ }
+  map_one' := by
+    apply LinearMap.ext
+    intro v
+    funext i
+    exact congrArg
+      (fun f : MulAut TernaryKernel => (f (Multiplicative.ofAdd v)).toAdd i)
+      monomialAction.map_one
+  map_mul' d e := by
+    apply LinearMap.ext
+    intro v
+    funext i
+    exact congrArg
+      (fun f : MulAut TernaryKernel => (f (Multiplicative.ofAdd v)).toAdd i)
+      (monomialAction.map_mul d e)
+
+@[simp] theorem monomialRepresentation_apply
+    (d : D8) (v : TernaryPlane) (i : Fin 2) :
+    monomialRepresentation d v i =
+      let j : Fin 2 :=
+        if d.right = 1 then i else ⟨1 - i.val, by omega⟩
+      OddMarkerTernaryChart.signScalar
+        (if i = 0 then d.left.1 else d.left.2) * v j := rfl
+
+/-- The multiplicative and linear versions of the standard action have
+the same underlying coordinate function. -/
+theorem monomialAction_toAdd
+    (d : D8) (v : TernaryKernel) :
+    (monomialAction d v).toAdd = monomialRepresentation d v.toAdd := rfl
+
+/-- The standard monomial representation remembers every element of
+`D8`. -/
+theorem monomialRepresentation_asGroupHom_injective :
+    Function.Injective
+      (Representation.asGroupHom monomialRepresentation) := by
+  intro d e h
+  apply (show ∀ d e : D8,
+      (∀ j i : Fin 2,
+        monomialRepresentation d (Pi.single j (1 : ZMod 3)) i =
+          monomialRepresentation e (Pi.single j (1 : ZMod 3)) i) →
+          d = e by decide +kernel) d e
+  intro j i
+  exact congrArg
+    (fun u : (Module.End (ZMod 3) TernaryPlane)ˣ =>
+      ((u : Module.End (ZMod 3) TernaryPlane)
+        (Pi.single j (1 : ZMod 3))) i) h
+
+/-- Matrix form of the standard `D8` action, in the coordinate basis of
+`Fin 2 → ZMod 3`. -/
+def standardD8LinearMap : D8 →* LinearThree.GL3 :=
+  (Matrix.GeneralLinearGroup.toLin'
+      (Pi.basisFun (ZMod 3) (Fin 2))).symm.toMonoidHom.comp
+    (Representation.asGroupHom monomialRepresentation)
+
+theorem standardD8LinearMap_injective :
+    Function.Injective standardD8LinearMap :=
+  (Matrix.GeneralLinearGroup.toLin'
+      (Pi.basisFun (ZMod 3) (Fin 2))).symm.injective.comp
+    monomialRepresentation_asGroupHom_injective
+
+/-- Reading the standard matrix back as a linear operator recovers the
+displayed monomial representation. -/
+@[simp] theorem standardD8LinearMap_toLin_apply
+    (d : D8) (v : TernaryPlane) :
+    (Matrix.GeneralLinearGroup.toLin'
+      (Pi.basisFun (ZMod 3) (Fin 2))
+        (standardD8LinearMap d)).toLinearEquiv v =
+      monomialRepresentation d v := by
+  change
+    (Matrix.GeneralLinearGroup.toLin'
+      (Pi.basisFun (ZMod 3) (Fin 2))
+        ((Matrix.GeneralLinearGroup.toLin'
+          (Pi.basisFun (ZMod 3) (Fin 2))).symm
+            (Representation.asGroupHom monomialRepresentation d))).toLinearEquiv v = _
+  rw [MulEquiv.apply_symm_apply]
+  rfl
+
+/-- The two base signs included in the standard dihedral top. -/
+def d8BaseBits : V4 →* D8 := SemidirectProduct.inl
+
+theorem d8BaseBits_injective : Function.Injective d8BaseBits := by
+  intro x y h
+  exact congrArg SemidirectProduct.left h
+
+/-- The standard diagonal Klein four in `GL₂(3)`. -/
+def standardKleinLinearMap : V4 →* LinearThree.GL3 :=
+  standardD8LinearMap.comp d8BaseBits
+
+theorem standardKleinLinearMap_injective :
+    Function.Injective standardKleinLinearMap :=
+  standardD8LinearMap_injective.comp d8BaseBits_injective
+
+/-- Conjugation by the standard dihedral top preserves its base-sign
+Klein four.  The finite check here has only eight top elements and four
+base elements; equality with the full normalizer is recovered downstream
+from the explicit normalizer-card certificate. -/
+private theorem d8BaseBits_conjugate
+    (d : D8) (v : V4) :
+    ∃ w : V4,
+      d * d8BaseBits v * d⁻¹ = d8BaseBits w := by
+  revert d v
+  decide +kernel
+
+theorem standardD8LinearRange_le_normalizer :
+    standardD8LinearMap.range ≤
+      Subgroup.normalizer (standardKleinLinearMap.range : Set LinearThree.GL3) := by
+  have hforward (d : D8) (x : LinearThree.GL3)
+      (hx : x ∈ standardKleinLinearMap.range) :
+      standardD8LinearMap d * x * (standardD8LinearMap d)⁻¹ ∈
+        standardKleinLinearMap.range := by
+    obtain ⟨v, rfl⟩ := hx
+    obtain ⟨w, hw⟩ := d8BaseBits_conjugate d v
+    refine ⟨w, ?_⟩
+    change standardD8LinearMap (d8BaseBits w) =
+      standardD8LinearMap d *
+        standardD8LinearMap (d8BaseBits v) *
+          (standardD8LinearMap d)⁻¹
+    simpa only [map_mul, map_inv] using
+      congrArg standardD8LinearMap hw.symm
+  rintro _ ⟨d, rfl⟩
+  apply Subgroup.mem_normalizer_iff.mpr
+  intro x
+  constructor
+  · exact hforward d x
+  · intro hx
+    have hback := hforward d⁻¹
+      (standardD8LinearMap d * x * (standardD8LinearMap d)⁻¹) hx
+    simpa only [map_inv, inv_inv, mul_assoc, inv_mul_cancel_left,
+      mul_inv_cancel_right, inv_mul_cancel, mul_one] using hback
+
+end DegreeSixS3Wreath
+end SymmetricSubgroupAsymptotics
+
+end

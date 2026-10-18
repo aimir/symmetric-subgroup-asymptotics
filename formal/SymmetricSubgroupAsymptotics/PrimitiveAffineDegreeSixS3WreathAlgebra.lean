@@ -24,8 +24,6 @@ namespace DegreeSixS3Wreath
 
 open Equiv C2Wreath SemidirectProduct
 
-private abbrev S3 := Equiv.Perm (Fin 3)
-private abbrev C2 := Multiplicative (ZMod 2)
 private abbrev C3 := Multiplicative (ZMod 3)
 
 /-- A fixed ternary rotation in the first natural `S₃`. -/
@@ -50,36 +48,59 @@ private def diagonalFlip : G := inl (transposition, transposition)
 /-- The block exchange. -/
 private def blockSwap : G := inr C2Wreath.gen
 
+/-- Raw pointwise equality avoids the dependent DecidableEq transport of
+SemidirectProduct. All finite reflected checks use these literal coordinates. -/
+private abbrev coordinateEq (x y : G) : Prop :=
+  x.right = y.right ∧
+    (∀ i : Fin 3, x.left.1 i = y.left.1 i) ∧
+    (∀ i : Fin 3, x.left.2 i = y.left.2 i)
+
+private theorem eq_of_coordinateEq {x y : G} (h : coordinateEq x y) : x = y := by
+  apply SemidirectProduct.ext
+  · exact Prod.ext (Equiv.ext h.2.1) (Equiv.ext h.2.2)
+  · exact h.1
+
+private theorem coordinateEq_of_eq {x y : G} (h : x = y) : coordinateEq x y := by
+  subst y
+  exact ⟨rfl, fun _ => rfl, fun _ => rfl⟩
+
 /-- Concrete membership in the kernel of coordinatewise sign. -/
 private theorem mem_projection_ker_iff (x : G) :
     x ∈ projection.ker ↔
       x.right = 1 ∧ oddMarkerSign x.left.1 = 1 ∧
         oddMarkerSign x.left.2 = 1 := by
   revert x
-  native_decide
+  decide +kernel
 
 private theorem firstRotation_mem : firstRotation ∈ projection.ker := by
   rw [mem_projection_ker_iff]
-  native_decide
+  decide +kernel
 
 private theorem secondRotation_mem : secondRotation ∈ projection.ker := by
   rw [mem_projection_ker_iff]
-  native_decide
+  decide +kernel
 
 /-- Every element of the sign kernel has literal two-coordinate ternary
 normal form. -/
 private theorem kernel_normal_form : ∀ x : G, x ∈ projection.ker →
     ∃ i j : Fin 3,
       x = firstRotation ^ (i : ℕ) * secondRotation ^ (j : ℕ) := by
-  native_decide
+  have h : ∀ x : G, x ∈ projection.ker → ∃ i j : Fin 3,
+      coordinateEq x (firstRotation ^ (i : ℕ) * secondRotation ^ (j : ℕ)) := by
+    decide +kernel
+  intro x hx
+  obtain ⟨i, j, hij⟩ := h x hx
+  exact ⟨i, j, eq_of_coordinateEq hij⟩
 
 /-- The displayed sign kernel is abelian. -/
 private theorem kernel_elements_commute : ∀ x y : G,
     x ∈ projection.ker → y ∈ projection.ker → x * y = y * x := by
   intro x y hx hy
-  rw [mem_projection_ker_iff] at hx hy
-  revert x y
-  native_decide
+  obtain ⟨i, j, rfl⟩ := kernel_normal_form x hx
+  obtain ⟨k, l, rfl⟩ := kernel_normal_form y hy
+  clear hx hy
+  revert i j k l
+  decide +kernel
 
 /-- Commuting with the two displayed rotations forces membership in the
 sign kernel. -/
@@ -87,10 +108,14 @@ private theorem centralizer_test : ∀ x : G,
     x * firstRotation = firstRotation * x →
     x * secondRotation = secondRotation * x →
     x ∈ projection.ker := by
+  have h : ∀ x : G,
+      coordinateEq (x * firstRotation) (firstRotation * x) →
+      coordinateEq (x * secondRotation) (secondRotation * x) →
+      x.right = 1 ∧ oddMarkerSign x.left.1 = 1 ∧ oddMarkerSign x.left.2 = 1 := by
+    decide +kernel
   intro x hx hy
-  rw [mem_projection_ker_iff]
-  revert x
-  native_decide
+  exact (mem_projection_ker_iff x).2
+    (h x (coordinateEq_of_eq hx) (coordinateEq_of_eq hy))
 
 theorem projection_ker_selfCentralizing
     (x : G) (hx : ∀ v ∈ projection.ker, x * v = v * x) :
@@ -114,7 +139,7 @@ private theorem mem_derivedSeries_one (x y : G) :
 /-- The diagonal transposition is a literal first-derived word. -/
 private theorem diagonalFlip_eq_commutator :
     diagonalFlip = ⁅firstFlip, blockSwap⁆ := by
-  native_decide
+  decide +kernel
 
 private theorem diagonalFlip_mem_one :
     diagonalFlip ∈ derivedSeries G 1 := by
@@ -125,7 +150,13 @@ private theorem diagonalFlip_mem_one :
 ternary sign kernel. -/
 private theorem diagonal_commutator : ∀ x : G, x ∈ projection.ker →
     ⁅diagonalFlip, x⁆ = x := by
-  native_decide
+  have h : ∀ i j : Fin 3,
+      coordinateEq ⁅diagonalFlip, firstRotation ^ (i : ℕ) * secondRotation ^ (j : ℕ)⁆
+        (firstRotation ^ (i : ℕ) * secondRotation ^ (j : ℕ)) := by
+    decide +kernel
+  intro x hx
+  obtain ⟨i, j, rfl⟩ := kernel_normal_form x hx
+  exact eq_of_coordinateEq (h i j)
 
 private theorem projection_ker_le_one :
     projection.ker ≤ derivedSeries G 1 := by
@@ -143,7 +174,13 @@ private theorem projection_ker_le_two :
 /-- Commutators of two base elements have even coordinates. -/
 private theorem right_one_commutator_mem : ∀ x y : G,
     x.right = 1 → y.right = 1 → ⁅x, y⁆ ∈ projection.ker := by
-  native_decide
+  rintro ⟨⟨a, b⟩, r⟩ ⟨⟨c, d⟩, t⟩ hr ht
+  change r = 1 at hr
+  change t = 1 at ht
+  subst r
+  subst t
+  revert a b c d
+  decide +kernel
 
 /-- The literal second derived subgroup is exactly `A₃²`. -/
 theorem derivedSeries_two_eq_projection_ker :
@@ -167,7 +204,14 @@ theorem derivedSeries_two_eq_projection_ker :
 private theorem diagonal_fixedPointFree : ∀ x : G,
     x ∈ projection.ker →
     diagonalFlip * x * diagonalFlip⁻¹ = x → x = 1 := by
-  native_decide
+  have h : ∀ i j : Fin 3,
+      coordinateEq (diagonalFlip * (firstRotation ^ (i : ℕ) * secondRotation ^ (j : ℕ)) *
+        diagonalFlip⁻¹) (firstRotation ^ (i : ℕ) * secondRotation ^ (j : ℕ)) →
+      coordinateEq (firstRotation ^ (i : ℕ) * secondRotation ^ (j : ℕ)) 1 := by
+    decide +kernel
+  intro x hx hfix
+  obtain ⟨i, j, rfl⟩ := kernel_normal_form x hx
+  exact eq_of_coordinateEq (h i j (coordinateEq_of_eq hfix))
 
 theorem projection_ker_absorbing
     (W : Subgroup G) (hW : W.Normal) (hWV : W ≤ projection.ker) :
@@ -194,10 +238,17 @@ private theorem isolate_first_rotation : ∀ x : G,
     x ∈ projection.ker → x.left.1 ≠ 1 →
     ⁅firstFlip, x⁆ = firstRotation ∨
       ⁅firstFlip, x⁆ ^ 2 = firstRotation := by
+  have h : ∀ i j : Fin 3,
+      (¬ ∀ t : Fin 3, (firstRotation ^ (i : ℕ) * secondRotation ^ (j : ℕ)).left.1 t = t) →
+      coordinateEq ⁅firstFlip, firstRotation ^ (i : ℕ) * secondRotation ^ (j : ℕ)⁆ firstRotation ∨
+      coordinateEq (⁅firstFlip, firstRotation ^ (i : ℕ) * secondRotation ^ (j : ℕ)⁆ ^ 2) firstRotation := by
+    decide +kernel
   intro x hx hne
-  rw [mem_projection_ker_iff] at hx
-  revert x
-  native_decide
+  have hn : ¬ ∀ t : Fin 3, x.left.1 t = t := by
+    intro he
+    exact hne (Equiv.ext he)
+  obtain ⟨i, j, rfl⟩ := kernel_normal_form x hx
+  exact (h i j hn).imp eq_of_coordinateEq eq_of_coordinateEq
 
 private theorem firstRotation_mem_of_first_ne
     (W : Subgroup G) (hW : W.Normal) {x : G}
@@ -213,15 +264,19 @@ private theorem firstRotation_mem_of_first_ne
 private theorem swap_conjugate_first (x : G) :
     (blockSwap * x * blockSwap⁻¹).left.1 = x.left.2 := by
   revert x
-  native_decide
+  decide +kernel
 
 private theorem swap_firstRotation :
     blockSwap * firstRotation * blockSwap⁻¹ = secondRotation := by
-  native_decide
+  decide +kernel
 
 private theorem second_ne_of_first_eq_one : ∀ x : G,
     x ∈ projection.ker → x ≠ 1 → x.left.1 = 1 → x.left.2 ≠ 1 := by
-  native_decide
+  intro x hx
+  obtain ⟨i, j, rfl⟩ := kernel_normal_form x hx
+  clear hx
+  revert i j
+  decide +kernel
 
 /-- `A₃²` is a minimal normal subgroup of the literal wreath product. -/
 theorem projection_ker_minimal
@@ -273,7 +328,7 @@ private theorem eq_one_of_even_ternaryCoordinate_one (g : S3)
     (hcoord : Multiplicative.ofAdd (ternaryCoordinate g) = (1 : C3)) :
     g = 1 := by
   revert g
-  native_decide
+  decide +kernel
 
 private theorem ternaryCoordinate_mul_of_even (g h : S3)
     (hg : oddMarkerSign g = 1) (hh : oddMarkerSign h = 1) :
@@ -281,12 +336,12 @@ private theorem ternaryCoordinate_mul_of_even (g h : S3)
       Multiplicative.ofAdd (ternaryCoordinate g) *
         Multiplicative.ofAdd (ternaryCoordinate h) := by
   revert g h
-  native_decide
+  decide +kernel
 
 /-- The first ternary coordinate of `A₃²`. -/
 def kernelCharacter : projection.ker →* C3 where
   toFun x := Multiplicative.ofAdd (ternaryCoordinate x.1.left.1)
-  map_one' := by native_decide
+  map_one' := by decide +kernel
   map_mul' := by
     rintro ⟨x, hx⟩ ⟨y, hy⟩
     rw [mem_projection_ker_iff] at hx hy

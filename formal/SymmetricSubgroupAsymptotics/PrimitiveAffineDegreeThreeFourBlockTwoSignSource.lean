@@ -53,9 +53,11 @@ structure DegreeThreeFourBlockTwoSignComparison : Type 2 where
   [fintypeSection : Fintype Section]
   sectionAxis : Section → NormalAxis (preE7NonPairAction w U)
   Q : Subgroup (Equiv.Perm (Fin 10))
+  bottomCoefficient : ℝ
   topCoefficient : ℝ
   sectionCoefficient : Section → ℝ
   tailCoefficient : ℝ
+  bottomCoefficient_nonneg : 0 ≤ bottomCoefficient
   topCoefficient_nonneg : 0 ≤ topCoefficient
   sectionCoefficient_nonneg : ∀ i, 0 ≤ sectionCoefficient i
   tailCoefficient_nonneg : 0 ≤ tailCoefficient
@@ -74,12 +76,13 @@ structure DegreeThreeFourBlockTwoSignComparison : Type 2 where
       (J : Subgroup (Equiv.Perm (Fin b))),
     bundledNormalQuotientWeight (sectionAxis i) J ≤
       sectionCoefficient i * completeQuotientWeight (R := Q) J
-  tail_bound : ∀ {b : ℕ} (J : Subgroup (Equiv.Perm (Fin b))),
+  bottom_bound : ∀ {b : ℕ} (J : Subgroup (Equiv.Perm (Fin b))),
     (Nat.card (GroupEpimorphism J (preE7NonPairAction w U)) : ℝ) ≤
-      tailCoefficient *
-        (2 : ℝ) ^ ((Real.logb 2 3 / 3) * b)
+      bottomCoefficient * completeQuotientWeight (R := Q) J +
+        tailCoefficient * (2 : ℝ) ^ ((Real.logb 2 3 / 3) * b)
   mainCoefficient_le :
-    topCoefficient + ∑ i : Section, sectionCoefficient i ≤
+    bottomCoefficient + topCoefficient +
+        ∑ i : Section, sectionCoefficient i ≤
       (2 : ℝ) ^ (384 : ℝ)
   tailCoefficient_le : tailCoefficient ≤ (2 : ℝ) ^ (384 : ℝ)
 
@@ -93,11 +96,13 @@ variable (D : DegreeThreeFourBlockTwoSignComparison block P)
 /-- The one combined comparator coefficient, after the actual section list
 has been summed. -/
 noncomputable def mainCoefficient : ℝ :=
-  D.topCoefficient + ∑ i : D.Section, D.sectionCoefficient i
+  D.bottomCoefficient + D.topCoefficient +
+    ∑ i : D.Section, D.sectionCoefficient i
 
 omit [Nontrivial block.Fibre] in
 theorem mainCoefficient_nonneg : 0 ≤ D.mainCoefficient := by
-  apply add_nonneg D.topCoefficient_nonneg
+  apply add_nonneg
+  · exact add_nonneg D.bottomCoefficient_nonneg D.topCoefficient_nonneg
   exact Finset.sum_nonneg (fun i _ ↦ D.sectionCoefficient_nonneg i)
 
 omit [Nontrivial block.Fibre] in
@@ -133,13 +138,15 @@ theorem complete_bound {b : ℕ}
           ∑ i : D.Section,
             bundledNormalQuotientWeight (D.sectionAxis i) J :=
       D.stratified_bound J
-    _ ≤ (D.tailCoefficient *
+    _ ≤ (D.bottomCoefficient *
+            completeQuotientWeight (R := D.Q) J +
+          D.tailCoefficient *
             (2 : ℝ) ^ ((Real.logb 2 3 / 3) * b)) +
           (D.topCoefficient *
             completeQuotientWeight (R := D.Q) J) +
           ((∑ i : D.Section, D.sectionCoefficient i) *
             completeQuotientWeight (R := D.Q) J) :=
-      add_le_add (add_le_add (D.tail_bound J) (D.top_bound J)) hsections
+      add_le_add (add_le_add (D.bottom_bound J) (D.top_bound J)) hsections
     _ = D.mainCoefficient * completeQuotientWeight (R := D.Q) J +
           D.tailCoefficient *
             (2 : ℝ) ^ ((Real.logb 2 3 / 3) * b) := by

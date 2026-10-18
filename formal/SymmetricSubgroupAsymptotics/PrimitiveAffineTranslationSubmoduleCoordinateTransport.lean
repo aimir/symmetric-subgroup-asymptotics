@@ -75,6 +75,21 @@ theorem translationSubmodule_quotientRepresentation_coordinate_transport
               ((ambientEmbedding block a).right • i)))
           (v.1 i) := by rw [hvi]
 
+/-- Quotient-level form of the coordinate transport identity.  This avoids
+choosing an ambient lift in every later signed-module comparison. -/
+theorem translationSubmodule_quotientRepresentation_coordinate_transport_quotient
+    (q : preE7NonPairAction w U ⧸ E block P)
+    (v : TranslationSubmodule block P) (i : block.Points) :
+    (((elementaryChart block P).quotientRepresentation.ρ q v).1
+        ((quotientEmbedding block P q).right • i)) =
+      (binaryAffineLocalLinearRepresentation block P).ρ
+        ((quotientEmbedding block P q).left
+          ((quotientEmbedding block P q).right • i))
+        (v.1 i) := by
+  obtain ⟨a, rfl⟩ := QuotientGroup.mk'_surjective (E block P) q
+  exact translationSubmodule_quotientRepresentation_coordinate_transport
+    block P a v i
+
 /-- Nonzero coordinate values remain nonzero after literal block transport.
 This is the only consequence of the local factor needed for irreducibility. -/
 theorem translationSubmodule_coordinate_ne_zero_of_transport
