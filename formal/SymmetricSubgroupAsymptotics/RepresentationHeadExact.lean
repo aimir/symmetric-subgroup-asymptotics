@@ -13,7 +13,9 @@ noncomputable section
 
 namespace SymmetricSubgroupAsymptotics.RepresentationHeadExact
 
-variable {k G V W Z : Type} [Field k] [Group G]
+universe u
+
+variable {k G V W Z : Type u} [Field k] [Group G]
     [AddCommGroup V] [Module k V] [AddCommGroup W] [Module k W]
     [AddCommGroup Z] [Module k Z]
     {ρ : Representation k G V} {σ : Representation k G W}

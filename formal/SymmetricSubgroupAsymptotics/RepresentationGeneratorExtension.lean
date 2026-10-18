@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.BinaryInvariantCyclicGeneratorBound
 import SymmetricSubgroupAsymptotics.RepresentationDualSubquotientGenerators
+import SymmetricSubgroupAsymptotics.SurjectiveRepresentationGeneratorTransport
 
 /-!
 # Generators across a short exact sequence of representations
@@ -63,9 +64,14 @@ theorem comp_of_surjective
   change W = ⊤
   apply SetLike.ext
   intro x
-  have hx : x ∈ MG.toSubmodule ↔ x ∈ (⊤ : Submodule k B) := by
+  let xG : rho.asModule := rho.asModuleEquiv.symm (rhoH.asModuleEquiv x)
+  have hx : xG ∈ MG.asSubmodule := by
     rw [hMG]
-  simpa only [Submodule.mem_top] using hx
+    exact Submodule.mem_top
+  have hxW : x ∈ W := by
+    change x ∈ W at hx
+    exact hx
+  exact ⟨fun _ => Submodule.mem_top, fun _ => hxW⟩
 
 /-- Generators of the two ends of a short exact sequence, lifted arbitrarily
 at the right end, together generate the middle representation. -/
@@ -168,30 +174,17 @@ def intertwinerImage
 
 namespace UniformSubrepresentationGeneratorBound
 
-/-- A uniform generator theorem pulls back along a surjective group map. -/
-theorem comp_of_surjective
-    {H : Type*} [Group H]
-    (rho : Representation k G B)
-    (f : H →* G) (hf : Function.Surjective f)
-    {n : ℕ}
-    (hgen : UniformSubrepresentationGeneratorBound rho n) :
-    UniformSubrepresentationGeneratorBound (rho.comp f) n := by
-  intro M
-  let MG : Subrepresentation rho :=
-    { toSubmodule := M.toSubmodule
-      apply_mem_toSubmodule := by
-        intro g x hx
-        obtain ⟨h, rfl⟩ := hf g
-        exact M.apply_mem_toSubmodule h hx }
-  have h := RepresentationGeneratedBy.comp_of_surjective
-    MG.toRepresentation f hf (hgen MG)
-  simpa only [MG, Subrepresentation.toRepresentation] using h
+universe u
 
 /-- Uniform generator bounds add across a short exact sequence.  For an
 invariant subrepresentation of the middle term, intersect with the left
 term and take its image in the right term, then apply
 `RepresentationGeneratedBy.of_exact` to that induced exact sequence. -/
 theorem of_exact
+    {k G A B C : Type u} [Field k] [Group G]
+    [AddCommGroup A] [Module k A]
+    [AddCommGroup B] [Module k B]
+    [AddCommGroup C] [Module k C]
     (sigma : Representation k G A)
     (rho : Representation k G B)
     (tau : Representation k G C)
@@ -214,8 +207,14 @@ theorem of_exact
   let left : L.toRepresentation.IntertwiningMap M.toRepresentation :=
     { toLinearMap :=
         { toFun := fun x ↦ ⟨i x.1, x.2⟩
-          map_add' := fun _ _ ↦ rfl
-          map_smul' := fun _ _ ↦ rfl }
+          map_add' := by
+            intro x y
+            apply Subtype.ext
+            exact map_add i x.1 y.1
+          map_smul' := by
+            intro a x
+            apply Subtype.ext
+            exact i.toLinearMap.map_smul a x.1 }
       isIntertwining' g := by
         apply LinearMap.ext
         intro x
@@ -224,8 +223,14 @@ theorem of_exact
   let right : M.toRepresentation.IntertwiningMap R.toRepresentation :=
     { toLinearMap :=
         { toFun := fun x ↦ ⟨q x.1, ⟨x.1, x.2, rfl⟩⟩
-          map_add' := fun _ _ ↦ rfl
-          map_smul' := fun _ _ ↦ rfl }
+          map_add' := by
+            intro x y
+            apply Subtype.ext
+            exact map_add q x.1 y.1
+          map_smul' := by
+            intro a x
+            apply Subtype.ext
+            exact q.toLinearMap.map_smul a x.1 }
       isIntertwining' g := by
         apply LinearMap.ext
         intro x
@@ -250,6 +255,8 @@ theorem of_exact
     ext x
     constructor
     · rintro ⟨z, rfl⟩
+      rw [LinearMap.mem_ker]
+      apply Subtype.ext
       change q (i z.1) = 0
       have hiRange : i z.1 ∈ LinearMap.range
           (Representation.IntertwiningMap.equivLinearMapAsModule sigma rho i) :=
@@ -262,11 +269,12 @@ theorem of_exact
         exact congrArg Subtype.val hx
       rw [← hexact] at hxKer
       obtain ⟨z, hz⟩ := hxKer
+      have hz' : i z = x.1 := hz
       have hzL : z ∈ L := by
         change i z ∈ M
-        rw [hz]
+        rw [hz']
         exact x.2
-      exact ⟨⟨z, hzL⟩, Subtype.ext hz⟩
+      exact ⟨⟨z, hzL⟩, Subtype.ext hz'⟩
   exact RepresentationGeneratedBy.of_exact
     L.toRepresentation M.toRepresentation R.toRepresentation
     left right hleft hright hinducedExact (hsigma L) (htau R)

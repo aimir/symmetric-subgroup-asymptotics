@@ -17,7 +17,9 @@ open scoped Classical MonoidAlgebra
 
 namespace SymmetricSubgroupAsymptotics
 
-variable {k G V W Z : Type} [Field k] [Group G]
+universe u
+
+variable {k G V W Z : Type u} [Field k] [Group G]
   [AddCommGroup V] [Module k V] [AddCommGroup W] [Module k W]
 
 private def dualSubquotientInclusion
