@@ -155,8 +155,10 @@ tops use the existing source, and the actual three-pair/two-triple top
 geometries have nonbinary quotient socle capacity one. The universal natural
 module has capacity two; binary original quotients have order at most 32.
 All original axes and hot fibres are summed inside the unchanged width-12
-menu. The remaining joint-catalogue entry, actual sixteen-pair source
-coverage and final degree-two composition must still be completed before
+menu. Actual sixteen-pair source coverage is now proved by
+`DegreeSixteenCompleteGeometricSource.residualSource`, using actual minimal
+blocks and complete original quartet sources. The remaining joint-catalogue
+entry and final degree-two composition must still be completed before
 claiming T1 with only published assumptions.
 
 Standard classical logical foundations are permitted. Unproved project
@@ -172,7 +174,9 @@ with nonzero ternary local action, such as `A4 ≀ C4`. The existing 64 finite
 row proofs remain valid within their hypotheses; they do not prove this
 coverage proposition. The active replacement retains the actual minimal
 block system. The pair, primitive and two-primitive-eight-block branches
-now have complete checked width-32 sources; the geometric assembler leaves
-the four-quartet source constructor explicit. The new composition frontier will
-retain the actual `DegreeTwoSixteenPairResidualSource` argument until those
-constructions are proved, rather than assume the old locator.
+now have complete checked width-32 sources, and the four-quartet constructor
+is proved for both zero and nonzero odd local kernels. Their assembly
+constructs `DegreeTwoSixteenPairResidualSource` from the bare published
+degree-eight and primitive-degree-sixteen classifications, the published
+socle and McIver--Neumann inputs, Zhmud and character literature. No
+project-owned sixteen-point coverage proposition is assumed.

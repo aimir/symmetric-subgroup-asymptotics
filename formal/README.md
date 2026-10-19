@@ -109,8 +109,9 @@ its input definitions; the [literature register](../provenance/LITERATURE.md)
 records the external sources. Fourteen final degree-four and complete
 one-frame-catalogue exports have standard-only axiom audits. All sixty-four
 original degree-two one-frame callbacks are also assembled. T1 remains open:
-the final degree-two joint twelve-point entry, actual sixteen-pair source
-coverage, and top-level composition remain. The required six-pair B6 and eight-pair source endpoints are now
+the final degree-two joint twelve-point entry and top-level composition
+remain. Actual sixteen-pair source coverage is now proved by the complete
+geometric constructor below. The required six-pair B6 and eight-pair source endpoints are now
 proved by the uniform constructions described below.
 
 **Degree-sixteen coverage audit.** The 64 checked one-frame models and the
@@ -119,14 +120,16 @@ imprimitive, pair-free sixteen-point tops. In particular, `A4 ≀ C4` has four
 quartets with nonzero local ternary action and is outside the old zero-odd
 and two-affine lists. The old
 `PublishedDegreeTwoSixteenPairTopCatalogueLocator` is therefore not accepted
-as a published input for the final theorem. Its missing coverage is project
-work. The replacement uses the proved actual minimal-block geometry:
+as a published input for the final theorem. The replacement proves coverage
+using the actual minimal-block geometry:
 primitive tops, eight pairs, four quartets, or two primitive eight-point
 blocks. The actual pair and primitive branches, and the complete original
 width-32 source above two primitive eight-point blocks, are now checked.
-The geometric assembler reduces the remaining coverage to one source
-constructor for four quartets. No complete T1 theorem with only published
-assumptions is claimed.
+Both odd-local-kernel cases for four quartets are also checked, retaining
+the actual paired alternative before invoking the zero-odd no-pair theorem.
+`DegreeSixteenCompleteGeometricSource.residualSource` assembles all four
+branches without a finite sixteen-point locator premise. Final T1
+composition still awaits the remaining twelve-point joint entry.
 
 The certificate-valued four-pair classification is now constructed by
 [`FourPairCanonicalClassification.classification`](SymmetricSubgroupAsymptotics/FourPairCanonicalClassification.lean).
@@ -2034,3 +2037,4 @@ and both independent analytic benchmark estimates are proved.
 
 | [WidthThirtyTwoOriginalPairSource](SymmetricSubgroupAsymptotics/WidthThirtyTwoOriginalPairSource.lean), [ProductBlockFrameOrderBound](SymmetricSubgroupAsymptotics/ProductBlockFrameOrderBound.lean) | Reusable width-32 source aggregation is proved for actual imprimitive sixteen-point tops. Top order at most `2^32` gives original pair-action order at most `2^48`; all original normal axes and lift fibres give cold coefficient `2^4864` and a complete binary rank tail. The unchanged menu envelope pays up to `2^5000` using its natural logarithm. Both all-quotient socle and nonbinary-socle/binary-target split constructors are checked. Five modules and six audited exports use standard axioms. Structural geometric callers still have to supply their actual module/socle or binary-order bounds; this is not full degree-sixteen coverage. |
 | [DegreeSixteenActualPairPrimitiveSources](SymmetricSubgroupAsymptotics/DegreeSixteenActualPairPrimitiveSources.lean), [WidthThirtyTwoTwoPrimitiveEightSource](SymmetricSubgroupAsymptotics/WidthThirtyTwoTwoPrimitiveEightSource.lean), [DegreeSixteenGeometricSourceAssembly](SymmetricSubgroupAsymptotics/DegreeSixteenGeometricSourceAssembly.lean) | Three branches of the actual sixteen-point minimal-block geometry have complete original width-32 sources: primitive tops, eight pairs, and two primitive eight-point blocks. The last branch covers all seven primitive local types, including the four nonaffine types: every original top quotient has socle capacity three, and an actual Sylow-seven subgroup gives natural-module capacity four. The geometric assembler leaves only the explicit four-quartet constructor. Nine modules pass; ten exports have standard-only axiom audits. The old incomplete sixteen-point locator is not used. |
+| [WidthThirtyTwoCompleteQuartetSource](SymmetricSubgroupAsymptotics/WidthThirtyTwoCompleteQuartetSource.lean), [DegreeSixteenCompleteGeometricSource](SymmetricSubgroupAsymptotics/DegreeSixteenCompleteGeometricSource.lean) | The complete actual sixteen-pair source is proved. Four-quartet tops have natural capacity eight. For a nonzero odd local kernel, nonbinary top quotients have socle capacity two and binary original quotients have order at most `2^15`. With zero odd local kernel, a nonbinary top forces the actual coarse group to contain `A4`; the honest no-pair branch has the same nonbinary capacity and binary original order at most `2^11`. All normal axes are retained and summed at slope `39/10`, then the complete geometric cover assembles the source. Forty-one supporting modules pass and twelve exports have standard-only axiom audits. Neither the old sixteen-point locator nor 527-action coverage is assumed or needed. |
