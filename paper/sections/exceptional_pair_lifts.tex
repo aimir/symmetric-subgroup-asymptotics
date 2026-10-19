@@ -917,6 +917,117 @@ normal and commute the finite sums. The original pointing gives the
 same quadratic decay.
 \end{proof}
 
+\begin{samepage}
+\begin{proposition}[A central cyclic-four kernel]
+\label{prop:central-c4-complete-source}
+Let the top in Proposition~\ref{prop:cubic-central-source} or
+Corollary~\ref{cor:symmetric-central-source} be $T=C_3$ or $S_3$.
+Replace the embedding $Z\hookrightarrow C_2^c$ by
+$Z\hookrightarrow C_4^c$, keeping $c,d\leq3$ and the actual cubic
+action. The group $K$ may be nonabelian. Put $t_b=\lceil b/200\rceil$.
+Then
+\begin{align*}
+ \sum_{J\leq S_b}\mathcal Z_U(J)
+ &\leq 2^{512}2^{381b/192}s(b)\\
+ &\quad+2^{256}(b!)^7 2^{-51br_b/200}s(b+2r_b)\\
+ &\quad+2^{256}(b!)^{22}2^{-51bt_b/200}M_4(b,t_b).
+\end{align*}
+For a width-sixteen action, the two exceptional terms together are
+$O(2^{-b^2/100000})$ after the original pointing and normalizer divisor.
+\end{proposition}
+\end{samepage}
+\begin{proof}
+For one retained top map $\theta:J\twoheadrightarrow T$, set
+$F=\ker\theta$ and retain the images of actual coset representatives.
+The remaining restrictions map $F$ to $K$. Projecting to the active
+coordinates gives cubic-twisted characters $F\to\F_4$. Inside each
+literal projection fibre, two restrictions differ by invariant central
+characters $F\to Z$, since $Z$ is central. This argument works for
+nonabelian $K$ and does not split the extension.
+
+One invariant $C_4$ character and one twisted $\F_4$ character together
+inject into $\Hom(F,C_4)$. To see this, embed the first binary coordinate
+of $\F_4$ in the subgroup of order two of $C_4$ and multiply the two
+characters. The product of its three successive cubic translates is
+the cube of the invariant character. Cubing is invertible on $C_4$;
+after recovering that character, its twisted partner is recovered from
+two successive binary coordinates. Consequently the restriction count
+is at most $|\Hom(F,C_4)|^{\max(c,d)}$. The complete fixed-top fibre
+has the additional factor $|U|^{|T|}$.
+
+Cut off the \emph{literal} count $|\Hom(F,C_4)|$ at $2^{51b/200}$,
+for every onto top map. The cold slope is again at most
+$153/200+(\log_2 5)/3<381/192$. Hot kernels are counted by the full
+moment $M_4(b,t_b)$ and at most six original coset representatives;
+the target epimorphism count costs $(b!)^{16}$. This gives the last
+displayed term and keeps all top maps.
+
+Every original normal quotient either retains descended central and
+active coordinates or kills the selected cubic. In the retained case,
+the central image still embeds in at most $c$ copies of $C_4$.
+Indeed, a quotient of an abelian exponent-four group with at most $c$
+generators again has that property, so its decomposition has at most
+$c$ cyclic factors of orders two or four. In the killed case, the
+image of $K$ is the image of $Z$ and has index at most two; hence the
+whole target is a binary group of order at most $2^{2c+1}\leq128$.
+It need not have exponent four. The direct binary-rank cutoff on $J$
+gives cold slope at most $357/200$ and the second displayed term.
+Since $|U|\leq6\cdot4^{c+d}\leq2^{16}$, summing every original normal
+subgroup costs at most $2^{256}$; the fixed cold coefficients are
+absorbed in $2^{512}$. Finally Theorem~\ref{thm:C4-moment}, the binary
+marker bound, and the two respective square completions give the
+normalized deficits $b^2/100000$ and $b^2/50000$.
+\end{proof}
+
+\begin{proposition}[Three full pair kernels]
+\label{prop:three-full-pair-kernels-source}
+Let $U$ be a transitive action on three four-point blocks, each equipped
+with two retained pairs. Suppose its kernel on the three blocks is the
+full product $D_8^3$ of the pair-preserving local groups. Then
+\[
+ \sum_{J\leq S_b}\mathcal Z_U(J)
+ \leq 2^{289}2^{43b/30}s(b)
+       +2^{81}(b!)^{15}2^{-51br_b/200}s(b+2r_b).
+\]
+This hypothesis can equivalently be certified by order $512$ of the
+actual block kernel, using its faithful local-coordinate embedding.
+It does not assert coverage of proper or correlated block kernels.
+\end{proposition}
+\begin{proof}
+Let $K=D_8^3$ and $Z=Z(K)=C_2^3$. For every original normal subgroup
+$N$ of $U$, either $N\leq Z$ or $Z\leq N$. Indeed, if $N\cap K$
+contains a noncentral local coordinate, its commutator with that local
+$D_8$ contains the corresponding central involution. Transitivity on
+the three blocks then gives $Z\leq N$. Otherwise $N\cap K\leq Z$.
+Commuting $N$ with $K$ shows that its induced top centralizes the
+faithful action on $K/Z$, hence is trivial; thus $N\leq K$, and then
+$N\leq Z$.
+
+If $N\leq Z$ but $Z\not\leq N$, the socle of $U/N$ lies in the
+image of $Z$. A minimal normal subgroup centralizes the normal
+class-two subgroup $K/N$, and the actual local-coordinate centralizer
+calculation leaves precisely that central image. The module $Z$ is
+the three-coordinate binary permutation module; a cubic cycle makes
+every invariant subquotient cyclic by the polynomial-module argument.
+Thus the socle of $U/N$ has one ambient normal generator. The bound
+$|U|\leq3072\leq2^{12}$ and the one-position character count give
+$2^{144}2^{43b/30}$ per quotient. There are at most $2^{144}$ original
+normal subgroups, giving the first contribution $2^{288}2^{43b/30}$.
+
+For $Z\leq N$, the literal quotient correspondence injects these
+axes into the normal axes of $U/Z$, with identical epimorphism counts;
+there is no further normal-menu factor. Here $U/Z$ embeds in
+$(C_2^2)^3\rtimes S_3$. Its two constant coordinates are central,
+and each augmentation coordinate is the natural binary plane for
+the selected cubic. The rank-two versions of the complete cubic and
+symmetric source bounds therefore give cold coefficient $2^{256}$,
+slope $43/30$, and the displayed hot term. Their normal-menu factor
+is $2^{81}$ because $|U/Z|\leq384\leq2^9$.
+Adding the proper-central contribution uses
+$2^{288}+2^{256}\leq2^{289}$. Every normal axis and every source
+epimorphism has thus been retained.
+\end{proof}
+
 \subsection{The twelve-pair actions}
 
 \begin{lemma}[A binary-primary prefix]\label{lem:binary-primary-prefix}
