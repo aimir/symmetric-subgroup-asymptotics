@@ -203,11 +203,23 @@ subgroup and chief-order arguments. It also constructs the actual scalar
 neither a representative receipt nor an affine-capacity bound is assumed
 at the updated geometric target facade.
 
-The remaining audited mathematical boundary is
-`PublishedPrimitiveSocleDichotomyInput`: its current formulation supplies a
-quantitative nonaffine quotient-action profile in addition to ordinary
-socle structure. The raw O'Nan–Scott and simple-index deductions are being
-separated and checked. The updated conditional T1 and AllTargets exports
-compile and have standard-only axiom audits, but this input reduction and
-the full transitive source/object release audit must pass before claiming
-completion from published inputs alone.
+The quantitative `PublishedPrimitiveSocleDichotomyInput` is now constructed
+by `PrimitiveSocleRawStructure.PublishedONanScottStructure.toSocleDichotomy`.
+Its inputs are ordinary O'Nan–Scott full-socle/degree structure and the two
+published simple-index inequalities of Ballester-Bolinches,
+Esteban-Romero and Jiménez-Seral. Least-index selection, the lower bound
+five, the faithful outer-wreath action, all numerical degree/logarithm
+deductions, and the exact original one-factor quotient are proved
+internally. The rounded all-subgroup generator bound is likewise derived
+from the retained McIver–Neumann theorem.
+
+The final T1 and AllTargets exports compile with these raw inputs; eleven
+target/helper declarations have standard-only axiom audits. The complete
+50-parameter mathematical boundary, with formulations and source locators,
+is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
+No project capacity, source, marked-moment, affine-consumer or quantitative
+socle-profile premise remains in those signatures. Ordinary published
+counting theorems and explicitly described finite structural catalogue
+correspondences remain assumptions. The full transitive source/object
+release audit is still in progress; the input audit and a successful direct
+check are not substitutes for it.
