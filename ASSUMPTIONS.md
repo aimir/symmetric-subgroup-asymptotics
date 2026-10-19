@@ -188,12 +188,13 @@ Tracey `5/16` head bound is now proved by
 Corollary 3.12 orbit data. The actual-wreath Clifford faithfulness conclusion
 is now constructed by `CliffordRawRestriction.Input.toHomogeneousRestriction`
 from the raw normal-restriction theorem. Both constructors have checked
-sources and standard-only axiom audits. The small affine
-`representativeFacts` receipt also remains unconstructed. Its former
-unique nonabelian minimal-normal condition was invalid with central
-abelian factors and has been removed. The corrected interface uses actual
-simple-normal or monolithic-quotient data; its reusable order-saving theorem
-and catalogue bridge are checked. The concrete 34-row receipt still has to
-be assembled, so it cannot be retained as a literature assumption. Therefore the
-current geometric target facade is a composition frontier, not completion
-with only published inputs.
+sources and standard-only axiom audits. The corrected small-affine
+representative receipt is now constructed for all 34 fixed rows by
+`SmallAffineCanonicalRepresentatives.receipt`. It takes bare published
+catalogue coverage, classical `PSL₃(2)`/`PSL₃(3)` simplicity and Burnside's
+`p^a q^b` theorem, with no representative-facts or composition bound input.
+Its structural alternatives permit central abelian factors; the former
+invalid uniqueness condition has been removed. Final threading and the
+degree-twenty-five projective-to-composition deduction remain in progress.
+The geometric target facade is still a composition frontier, not a claim
+of completion from published inputs alone.

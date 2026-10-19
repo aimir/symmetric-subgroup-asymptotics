@@ -148,14 +148,31 @@ retaining the original normal denominator and constituent. The six Tracey
 and nine Clifford modules pass current source/direct-dependency checks;
 their exported constructors have standard-only axiom audits.
 
-`PublishedPrimitiveAffineSmallCatalogueData.representativeFacts`
-still imports a 34-row representative receipt. Its former unique-core
-condition was false for representatives with central abelian factors.
-The corrected interface now retains a simple normal core or a monolithic
-quotient and an order budget. The reusable order-saving proofs and the
-catalogue bridge are checked. Constructing that finite
-receipt and integrating the raw-input constructors remain project work;
-no published-only T1 claim is made here.
+The former 34-row `representativeFacts` boundary is now constructed by
+[`SmallAffineCanonicalRepresentatives.receipt`](SymmetricSubgroupAsymptotics/SmallAffineCanonicalReceipt.lean).
+All **34/34** fixed representatives have exact orders, solubility flags and
+corrected structural chief certificates. Twenty-one small right-generator
+and word receipts prove the soluble orders; the three semilinear exceptions
+have direct metacyclic proofs. Ten nonsoluble degree-sixteen rows use their
+literal alternating/symmetric maps and scalar projective kernels; the
+remaining three use the standard `GL₃(2)`, `SL₃(3)`, and `GL₃(3)` models.
+The complete receipt and fourteen supporting exports have standard-only
+axiom audits.
+
+Its explicit external inputs are bare isomorphism coverage of the fixed
+published catalogue, classical simplicity of `PSL₃(2)` and `PSL₃(3)`, and
+Burnside's group-uniform `p^a q^b` solvability theorem. They contain no
+representative receipt or chief bound. The former unique-core requirement
+was false with central abelian factors and has been replaced by a simple
+normal core or an actual monolithic quotient with an order budget.
+The single-row exporter is
+[`export_lean_small_affine_soluble_order.py`](../computations/python/export_lean_small_affine_soluble_order.py).
+
+Final integration remains pending. In the same affine package, the
+project-owned degree-twenty-five composition consequence is being reduced
+to the actual faithful linear embedding, the standard `PGL₂(5) ≅ S₅`
+isomorphism, and the checked subgroup and order-saving theorems. No
+published-only T1 claim is made here.
 
 The certificate-valued four-pair classification is now constructed by
 [`FourPairCanonicalClassification.classification`](SymmetricSubgroupAsymptotics/FourPairCanonicalClassification.lean).

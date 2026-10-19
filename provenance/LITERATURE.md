@@ -575,3 +575,25 @@ Tracey theorem remains part of that theorem's provenance.
 
 The mathematical assumption boundary is described in
 [ASSUMPTIONS](../ASSUMPTIONS.md).
+
+
+**LIT-BURNSIDE-TWO-PRIMES — classical published theorem.** W. Burnside,
+*On Groups of Order p^α q^β*, Proc. London Math. Soc. s2-1 (1904), 388–392,
+[DOI](https://doi.org/10.1112/plms/s2-1.1.388). Every finite group of order
+`p^a*q^b`, for primes `p,q` and nonnegative `a,b`, is soluble. The Lean
+surface is `PublishedBurnsideTwoPrimeSolvabilityInput` in
+`PublishedBurnsideTwoPrimeSolvability.lean`. It is group-uniform and has no
+catalogue or capacity parameter. Actual cardinalities are proved before
+applying it. `S5SubgroupProjectiveClassification.lean` derives the needed
+subgroup classification internally from this theorem and the checked
+alternating-group and coset-action facts.
+
+**LIT-CLASSICAL-PSL3 — classical projective-linear simplicity.** The two
+instances `PSL(3,F₂)` and `PSL(3,F₃)` are simple. The general Jordan–Dickson
+simplicity theorem is proved in Keith Conrad, *Simplicity of PSL_n(F)*,
+[Section 4](https://kconrad.math.uconn.edu/blurbs/grouptheory/PSLnsimple.pdf),
+using Theorem 2.10 and Theorems 4.1–4.5. The exact Lean input is
+`StandardThreeDimensionalLinearGroups.PublishedSimplicity`. Triviality of
+the two special-linear centers, all exact orders, the determinant split
+`GL₃(3) ≅ SL₃(3) × C₂`, and the chief-order certificates are proved
+internally. No affine-specific composition bound is imported.
