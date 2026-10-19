@@ -432,6 +432,22 @@ not imply coverage of the nonbinary actions. The
 includes its catalogue manual. Classification completeness and exhaustive
 normal-subgroup enumeration are distinct claims.
 
+For the smaller final inputs, the
+[maintainer's manual](https://github.com/hulpke/transgrp/blob/master/doc/transgrp.tex),
+chapter *The Library of Transitive Groups*, opening paragraphs, attributes
+degrees at most eleven to Gregory Butler and John McKay, *The transitive
+groups of degree up to eleven*, Communications in Algebra 11(8) (1983),
+863–911, [DOI](https://doi.org/10.1080/00927878308822884). This supplies
+degree-six and degree-eight completeness. Degree twelve is Gordon F.
+Royle, *The transitive groups of degree twelve*, Journal of Symbolic
+Computation 4(2) (1987), 255–268,
+[DOI](https://doi.org/10.1016/S0747-7171(87)80068-8), with 301 conjugacy
+classes. The manual's `NrTransitiveGroups` section separately describes
+the naming and generator correspondence. The exact pinned release remains
+TransGrp 3.6.5; the live maintainer manual is a provenance locator, not a
+replacement for that pinned archive. The project proves the local module,
+normal-axis, and source estimates on those representatives.
+
 **LIT-PRIMITIVE-CATALOGUES.**
 The finite primitive endpoints use the following slices:
 
