@@ -39,6 +39,17 @@ this version, not an unspecified later revision.
   This is an epimorphism count under these hypotheses, not an unrestricted
   conditional lifting theorem for any fixed quotient map.
 
+  **LIT-RDTTheorem4.6 (arbitrary-normal-subgroup interface).** The marked
+  excessive-factor application retains the theorem's arbitrary normal
+  subgroup F of Q. Its two invariants are |C_Q(F)| and |[F,Q]|; they are
+  not replaced by |Z(Q)| and |Q'| when Theorem 5.7 selects a proper F.
+  `MarkedC4RDTNormalFInterface.RDTTheorem46BinaryInput` records the binary,
+  nontrivial-target restriction of the unmarked "In particular" statement,
+  with literal R-subdirect and P-direct bounded factors, the actual full
+  projection onto P, and every source-normal U<=G' intersect ker(projection).
+  Constants depend only on the fixed prime 2 and k. This is a named
+  literature hypothesis, not a marked subgroup-count or encoding premise.
+
 Applications: CNT-LIFT, CNT-GRAPH, CNT-FUSION, BIN-LARGE, BIN-MIX and the
 macro-A4/terminal estimates in ASM-OLD. The faithful degree is that of the
 actual source permutation group.
