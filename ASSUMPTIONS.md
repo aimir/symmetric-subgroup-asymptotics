@@ -157,9 +157,10 @@ module has capacity two; binary original quotients have order at most 32.
 All original axes and hot fibres are summed inside the unchanged width-12
 menu. Actual sixteen-pair source coverage is now proved by
 `DegreeSixteenCompleteGeometricSource.residualSource`, using actual minimal
-blocks and complete original quartet sources. The remaining joint-catalogue
-entry and final degree-two composition must still be completed before
-claiming T1 with only published assumptions.
+blocks and complete original quartet sources. All 283 joint-catalogue entries
+and the degree-two composition are also checked. The separate input-boundary
+obligations below must be completed before claiming T1 with only published
+assumptions.
 
 Standard classical logical foundations are permitted. Unproved project
 lemmas, proof placeholders and hidden certificate-acceptance assumptions are
@@ -180,3 +181,15 @@ constructs `DegreeTwoSixteenPairResidualSource` from the bare published
 degree-eight and primitive-degree-sixteen classifications, the published
 socle and McIver--Neumann inputs, Zhmud and character literature. No
 project-owned sixteen-point coverage proposition is assumed.
+
+The final input audit has separately reopened three older boundaries.
+The exceptional Tracey `5/16` head bound and the actual-wreath Clifford
+faithfulness conclusion are project deductions and need checked
+constructors from the raw published statements. The small affine
+`representativeFacts` receipt also remains unconstructed. In particular its
+unique nonabelian minimal-normal core condition is invalid in the presence
+of nontrivial central abelian direct factors; this cannot be retained as a
+literature assumption. The replacement must use valid simple-normal or
+simple-quotient structure and prove the composition charge. Therefore the
+current geometric target facade is a composition frontier, not completion
+with only published inputs.
