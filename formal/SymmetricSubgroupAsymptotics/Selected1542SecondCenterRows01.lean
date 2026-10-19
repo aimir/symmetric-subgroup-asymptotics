@@ -1,0 +1,10 @@
+import SymmetricSubgroupAsymptotics.Selected1542SecondCenterRowPredicate
+set_option autoImplicit false
+noncomputable section
+namespace SymmetricSubgroupAsymptotics.Selected1542QuotientStructure
+set_option maxHeartbeats 1000000 in
+theorem secondCenterRows01 : ∀ r : Fin 128,
+  secondCenterRow (finProdFinEquiv ((1 : Fin 8),r)) := by
+  unfold secondCenterRow
+  decide +kernel
+end SymmetricSubgroupAsymptotics.Selected1542QuotientStructure
