@@ -414,6 +414,36 @@ the entire $I$. The whole ring has cyclic head. This proves the
 claim and its equality assertion over any field of characteristic two.
 \end{proof}
 
+\begin{samepage}
+\begin{lemma}[An alternating four-point cyclic operator]
+\label{lem:alternating-four-cyclic}
+Let $k$ have characteristic two. Every invariant subquotient of the
+natural permutation module $k^4$ for a group containing $A_4$ is cyclic.
+The conclusion is preserved by any simultaneous change of coordinates
+intertwining the actual operators used below.
+\end{lemma}
+\begin{proof}
+Index the coordinates by $0,1,2,3$, and put
+$a=(1\,2\,3)$, $t=(0\,3)(1\,2)$ and $E=1+a+a^2$.
+The group-algebra operator $M=EtE+1+a^2$ has matrix
+\[
+ M=\begin{pmatrix}
+ 0&1&1&1\\ 1&1&1&0\\ 1&0&1&1\\ 1&1&0&1
+ \end{pmatrix}.
+\]
+The vectors
+\[
+ e_3,\quad Me_3=(1,0,1,1),\quad
+ M^2e_3=e_2,\quad M^3e_3=(1,1,1,0)
+\]
+form a basis. Thus $k^4$ is cyclic as a $k[M]$-module. A submodule
+of a cyclic module over the principal ideal domain $k[x]$ is cyclic,
+as is every quotient of that submodule. Each group-invariant
+subquotient is $M$-invariant, and an $M$-cyclic generator is also a
+group-cyclic generator because $M\in kA_4$.
+\end{proof}
+\end{samepage}
+
 \subsection{The finite inputs and what they certify}
 \label{subsec:pair-finite-input}
 We use the following finite input on \emph{top actions}, separately
