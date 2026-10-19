@@ -182,10 +182,13 @@ degree-eight and primitive-degree-sixteen classifications, the published
 socle and McIver--Neumann inputs, Zhmud and character literature. No
 project-owned sixteen-point coverage proposition is assumed.
 
-The final input audit has separately reopened three older boundaries.
-The exceptional Tracey `5/16` head bound and the actual-wreath Clifford
-faithfulness conclusion are project deductions and need checked
-constructors from the raw published statements. The small affine
+The final input audit exposed three older boundaries. The exceptional
+Tracey `5/16` head bound is now proved by
+`traceyBinaryExceptionalThree_of_raw` from the raw soluble formula and
+Corollary 3.12 orbit data. The actual-wreath Clifford faithfulness conclusion
+is now constructed by `CliffordRawRestriction.Input.toHomogeneousRestriction`
+from the raw normal-restriction theorem. Both constructors have checked
+sources and standard-only axiom audits. The small affine
 `representativeFacts` receipt also remains unconstructed. In particular its
 unique nonabelian minimal-normal core condition is invalid in the presence
 of nontrivial central abelian direct factors; this cannot be retained as a

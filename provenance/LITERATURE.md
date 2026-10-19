@@ -285,6 +285,29 @@ retain their visible literature hypothesis. The numerical inequalities
 5s/16, 3s/8 and the coupled annihilator/socle bound are new project deductions,
 not imported theorems.
 
+The exceptional odd-part-three `5s/16` deduction is now checked in
+`TraceyExceptionalThreeFromRaw.lean`. Its raw boundary is Definition 1.5
+and Theorem 1.6 (printed pp.2–3), specialized to the trivial one-dimensional
+stabilizer module, together with Corollary 3.12 (printed p.17). The latter
+records an actual soluble subgroup with its complete binomial orbit
+partition. The Mersenne exponent is at least three because the preceding
+Theorem 1.8/Corollary 3.11 construction uses nonabelian simple `PSL(2,p)`;
+`PSL(2,3)` is soluble. These inputs contain no `5/16` estimate. The Lean
+proof restricts the invariant head to this subgroup, pays the actual orbit
+heads with the soluble formula, and proves the remaining numerical bound.
+[Author manuscript](https://pure-oai.bham.ac.uk/ws/files/147250737/transgens1.pdf).
+
+The actual-wreath Clifford corollary is separately proved in
+`CliffordActualRetainedConstituent.lean` from
+`CliffordRawRestriction.Input`. The raw input is modular Clifford
+semisimplicity on a normal subgroup and conjugacy of constituent types.
+Tracey's 2017 thesis states these at printed p.14, Theorem 2.3.1(i),(ii)
+and Remark 2.3.4, citing Curtis–Reiner, *Representation Theory of Finite
+Groups and Associative Algebras*, Theorem 49.7. The project constructs the
+faithfulness of the actual retained section internally; that conclusion is
+not a literature hypothesis.
+[Thesis](https://wrap.warwick.ac.uk/id/eprint/97251/1/WRAP_Theses_Tracey_2017.pdf).
+
 **LIT-TRACEY-SHARP — public preprint.** Gareth Tracey,
 *Sharp upper bounds on the minimal number of elements required to generate
 a transitive permutation group*,

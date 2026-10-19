@@ -111,7 +111,7 @@ one-frame-catalogue exports have standard-only axiom audits. All sixty-four
 original degree-two one-frame callbacks are also assembled. All 283 joint
 twelve-point entries are now checked and their remainder is empty. Degree-two
 source assembly and target composition pass with the current explicit inputs;
-the three input-boundary obligations below still prevent completion.
+the remaining finite-affine input boundary below still prevents completion.
 Actual sixteen-pair source coverage is now proved by the complete
 geometric constructor below. The required six-pair B6 and eight-pair source endpoints are now
 proved by the uniform constructions described below.
@@ -134,19 +134,27 @@ branches without a finite sixteen-point locator premise. The joint catalogue
 and the conditional target composition are also checked; the input audit
 below remains the final mathematical boundary.
 
-**Current input-boundary audit.** Checking the final composition has exposed
+**Current input-boundary audit.** Checking the final composition exposed
 three older obligations that a standard-axiom audit alone does not settle.
-`TraceyBinaryExceptionalThreeInput` contains the project's numerical
-`5/16` deduction, rather than the raw published orbit theorem; its reduction
-to the exact soluble formula and Corollary 3.12 is being checked.
-`CliffordHomogeneousRestriction.Input` is an actual-wreath corollary; it
-must be constructed from raw modular Clifford restriction.
-Finally, `PublishedPrimitiveAffineSmallCatalogueData.representativeFacts`
+Two now have checked constructors.
+[`traceyBinaryExceptionalThree_of_raw`](SymmetricSubgroupAsymptotics/TraceyExceptionalThreeFromRaw.lean)
+proves the project's numerical `5/16` deduction from the exact soluble
+module-generator formula and Corollary 3.12 orbit geometry. Its two inputs,
+`TraceySolublePermutationFormulaRawInput` and
+`TraceyCorollaryThreeTwelveRawInput`, contain no fractional head bound.
+[`CliffordRawRestriction.Input.toHomogeneousRestriction`](SymmetricSubgroupAsymptotics/CliffordActualRetainedConstituent.lean)
+constructs the actual-wreath corollary from raw modular Clifford restriction,
+retaining the original normal denominator and constituent. The six Tracey
+and nine Clifford modules pass current source/direct-dependency checks;
+their exported constructors have standard-only axiom audits.
+
+`PublishedPrimitiveAffineSmallCatalogueData.representativeFacts`
 still imports a 34-row representative receipt. Its unique-nonabelian-core
 condition is too strong for representatives with central abelian factors
 and is not an admissible published input. A correct normal-simple or
-simple-quotient order-saving template is required. These input reductions
-remain project work; no published-only T1 claim is made here.
+simple-quotient order-saving template is required. Constructing that finite
+receipt and integrating the raw-input constructors remain project work;
+no published-only T1 claim is made here.
 
 The certificate-valued four-pair classification is now constructed by
 [`FourPairCanonicalClassification.classification`](SymmetricSubgroupAsymptotics/FourPairCanonicalClassification.lean).
