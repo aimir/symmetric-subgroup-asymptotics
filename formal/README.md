@@ -149,10 +149,11 @@ and nine Clifford modules pass current source/direct-dependency checks;
 their exported constructors have standard-only axiom audits.
 
 `PublishedPrimitiveAffineSmallCatalogueData.representativeFacts`
-still imports a 34-row representative receipt. Its unique-nonabelian-core
-condition is too strong for representatives with central abelian factors
-and is not an admissible published input. A correct normal-simple or
-simple-quotient order-saving template is required. Constructing that finite
+still imports a 34-row representative receipt. Its former unique-core
+condition was false for representatives with central abelian factors.
+The corrected interface now retains a simple normal core or a monolithic
+quotient and an order budget. The reusable order-saving proofs and the
+catalogue bridge are checked. Constructing that finite
 receipt and integrating the raw-input constructors remain project work;
 no published-only T1 claim is made here.
 

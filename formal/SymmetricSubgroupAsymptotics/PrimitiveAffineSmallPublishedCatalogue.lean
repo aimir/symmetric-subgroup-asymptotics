@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineNonsolubleSmallSource
 import SymmetricSubgroupAsymptotics.ChiefAbelianSeriesTransport
 import SymmetricSubgroupAsymptotics.PrimitiveStrictHeadReceipt
+import SymmetricSubgroupAsymptotics.SmallAffineChiefOrderSavingCertificate
 
 /-!
 # The published small affine catalogue, separated from its checked receipts
@@ -86,8 +87,8 @@ def nonsolubleAbelianCap : SmallAffineCatalogueRow → ℕ
   | .degreeTwentySeven i =>
       ![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] i
 
-/-- Orders of the quotient by the distinguished nonabelian unique minimal
-normal subgroup on a nonsoluble row.  Values on soluble rows are unused and
+/-- Orders of the quotient by the distinguished nonabelian simple normal
+subgroup on a nonsoluble row.  Values on soluble rows are unused and
 set to one. -/
 def nonsolubleCoreQuotientOrder : SmallAffineCatalogueRow → ℕ
   | .degreeEight _ => 1
@@ -166,7 +167,7 @@ theorem degreeTwentySeven_cap_le
 
 /-- The exact quotient orders have at most the advertised number of prime
 factors, counted with multiplicity.  This is the sole numerical input needed
-by the generic unique-minimal-normal theorem. -/
+by the generic simple-normal order-saving theorem. -/
 theorem nonsolubleCoreQuotient_cardFactors_le
     (r : SmallAffineCatalogueRow) (hn : r.nonsoluble = true) :
     ArithmeticFunction.cardFactors r.nonsolubleCoreQuotientOrder ≤
@@ -185,21 +186,6 @@ structure SmallAffineCatalogueRepresentative where
 attribute [instance]
   SmallAffineCatalogueRepresentative.groupCarrier
   SmallAffineCatalogueRepresentative.finiteCarrier
-
-/-- The explicit group-theoretic certificate behind one nonsoluble row.
-It identifies a nonabelian normal subgroup contained in every nontrivial
-normal subgroup and records the order of its quotient.  The generic
-unique-minimal-normal theorem then bounds every chosen chief series; no
-chief-series invariance is assumed in this finite receipt. -/
-structure SmallAffineUniqueNonabelianCoreCertificate
-    (G : Type) [Group G] [Finite G] (quotientOrder : ℕ) where
-  core : Subgroup G
-  [normal : core.Normal]
-  ne_bot : core ≠ ⊥
-  noncommutative : ¬ IsMulCommutative core
-  le_every_nontrivial_normal : ∀ N : Subgroup G,
-    N.Normal → N ≠ ⊥ → core ≤ N
-  quotient_card_eq : Nat.card (G ⧸ core) = quotientOrder
 
 /-- **Published Roney--Dougal--Unger catalogue locator.**
 
@@ -225,8 +211,8 @@ structure PublishedSmallAffineCatalogueLocator where
 /-- The exact finite-group facts for one selected published representative.
 This is intentionally separate from the catalogue-completeness locator.
 
-The nonsoluble field is the concrete unique-minimal-normal certificate used
-by the generic trace theorem. -/
+The nonsoluble field carries a concrete simple-normal core or monolithic
+quotient with its exact order budget. It allows central abelian factors. -/
 structure SmallAffineCatalogueRepresentativeCertificate
     (L : PublishedSmallAffineCatalogueLocator)
     (r : SmallAffineCatalogueRow) where
@@ -234,12 +220,13 @@ structure SmallAffineCatalogueRepresentativeCertificate
   solvable_iff :
     IsSolvable (L.representative r).Carrier ↔ r.nonsoluble = false
   nonsolubleCore : r.nonsoluble = true →
-    SmallAffineUniqueNonabelianCoreCertificate
-      (L.representative r).Carrier r.nonsolubleCoreQuotientOrder
+    SmallAffineChiefOrderSavingCertificate
+      (L.representative r).Carrier r.nonsolubleAbelianCap
 
 /-- The complete published representative-fact receipt: 34 small affine
-rows, of which thirteen nonsoluble rows carry their standard named
-unique-minimal-normal subgroup. -/
+rows, of which thirteen nonsoluble rows carry structural order-saving
+certificates. These certificates are project obligations, not inputs
+justified by a published label alone. -/
 abbrev SmallAffineCatalogueReceipt
     (L : PublishedSmallAffineCatalogueLocator) :=
   ∀ r : SmallAffineCatalogueRow,

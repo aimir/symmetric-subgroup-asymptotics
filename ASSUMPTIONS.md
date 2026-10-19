@@ -189,10 +189,11 @@ Corollary 3.12 orbit data. The actual-wreath Clifford faithfulness conclusion
 is now constructed by `CliffordRawRestriction.Input.toHomogeneousRestriction`
 from the raw normal-restriction theorem. Both constructors have checked
 sources and standard-only axiom audits. The small affine
-`representativeFacts` receipt also remains unconstructed. In particular its
-unique nonabelian minimal-normal core condition is invalid in the presence
-of nontrivial central abelian direct factors; this cannot be retained as a
-literature assumption. The replacement must use valid simple-normal or
-simple-quotient structure and prove the composition charge. Therefore the
+`representativeFacts` receipt also remains unconstructed. Its former
+unique nonabelian minimal-normal condition was invalid with central
+abelian factors and has been removed. The corrected interface uses actual
+simple-normal or monolithic-quotient data; its reusable order-saving theorem
+and catalogue bridge are checked. The concrete 34-row receipt still has to
+be assembled, so it cannot be retained as a literature assumption. Therefore the
 current geometric target facade is a composition frontier, not completion
 with only published inputs.
