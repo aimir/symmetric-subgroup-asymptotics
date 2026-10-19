@@ -194,7 +194,20 @@ representative receipt is now constructed for all 34 fixed rows by
 catalogue coverage, classical `PSL₃(2)`/`PSL₃(3)` simplicity and Burnside's
 `p^a q^b` theorem, with no representative-facts or composition bound input.
 Its structural alternatives permit central abelian factors; the former
-invalid uniqueness condition has been removed. Final threading and the
-degree-twenty-five projective-to-composition deduction remain in progress.
-The geometric target facade is still a composition frontier, not a claim
-of completion from published inputs alone.
+invalid uniqueness condition has been removed. The degree-twenty-five
+projective-to-composition deduction is now proved from the actual
+`GL₂(5)` embedding, `PGL₂(5) ≅ S₅`, Burnside's theorem, and internal
+subgroup and chief-order arguments. It also constructs the actual scalar
+`C₄` datum. The complete finite affine package is built by
+`PublishedPrimitiveAffineFiniteLiterature.ofCanonicalClassifications`;
+neither a representative receipt nor an affine-capacity bound is assumed
+at the updated geometric target facade.
+
+The remaining audited mathematical boundary is
+`PublishedPrimitiveSocleDichotomyInput`: its current formulation supplies a
+quantitative nonaffine quotient-action profile in addition to ordinary
+socle structure. The raw O'Nan–Scott and simple-index deductions are being
+separated and checked. The updated conditional T1 and AllTargets exports
+compile and have standard-only axiom audits, but this input reduction and
+the full transitive source/object release audit must pass before claiming
+completion from published inputs alone.

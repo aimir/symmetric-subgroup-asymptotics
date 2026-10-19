@@ -89,6 +89,21 @@ parity and residue class. `Targets.lean` proves equivalence with the single
 common threshold in Section 5 of the specification. `AllTargets` requires the
 definition obligations as conclusions, not hypotheses.
 
+## Folder structure
+
+| Path | Contents |
+|---|---|
+| `SymmetricSubgroupAsymptotics/` | Definitions, analytic estimates, group-theoretic proofs, finite certificates, and theorem assemblers. |
+| `SymmetricSubgroupAsymptotics.lean` | Root import module. Individual theorem modules can be checked separately. |
+| `lean-toolchain`, `lakefile.lean`, `lake-manifest.json` | Pinned compiler, package configuration, and exact dependencies. |
+| `../scripts/check_lean.py` | Serialized compiler runner with memory, RSS, and wall-time limits. |
+| `../computations/python/` | Reproducible producers for the retained finite certificates. |
+
+Build logs, receipts, scratch proofs, and research status records are kept
+outside the publication repository.
+
+## Explicit input boundary
+
 The complete original degree-four affine residual source is now proved by
 [`degreeFourResidualSource_of_publishedFrames`](SymmetricSubgroupAsymptotics/PrimitiveAffineDegreeFourPublishedResidueSource.lean).
 Its frame, whole-socle and original-normal-axis estimates are constructed
@@ -111,7 +126,7 @@ one-frame-catalogue exports have standard-only axiom audits. All sixty-four
 original degree-two one-frame callbacks are also assembled. All 283 joint
 twelve-point entries are now checked and their remainder is empty. Degree-two
 source assembly and target composition pass with the current explicit inputs;
-the remaining finite-affine input boundary below still prevents completion.
+the remaining nonaffine socle boundary below still prevents completion.
 Actual sixteen-pair source coverage is now proved by the complete
 geometric constructor below. The required six-pair B6 and eight-pair source endpoints are now
 proved by the uniform constructions described below.
@@ -168,11 +183,31 @@ normal core or an actual monolithic quotient with an order budget.
 The single-row exporter is
 [`export_lean_small_affine_soluble_order.py`](../computations/python/export_lean_small_affine_soluble_order.py).
 
-Final integration remains pending. In the same affine package, the
-project-owned degree-twenty-five composition consequence is being reduced
-to the actual faithful linear embedding, the standard `PGL₂(5) ≅ S₅`
-isomorphism, and the checked subgroup and order-saving theorems. No
-published-only T1 claim is made here.
+The degree-twenty-five consequence is also constructed internally by
+[`publishedDegreeTwentyFiveLinearData`](SymmetricSubgroupAsymptotics/DegreeTwentyFiveActualProjectiveData.lean).
+The actual affine complement embeds in `GL₂(5)`, whose order is proved to be
+480. The standard `PGL₂(5) ≅ S₅` isomorphism gives the actual scalar kernel
+and its faithful `C₄` character. The soluble projective image has order at
+most 24. In the nonsoluble case, the image contains `A₅`, and the proved
+chief-order saving bounds the abelian factors in every original chief
+series by three, including nonsplit scalar covers. No composition bound or
+affine-capacity conclusion is an input to this deduction.
+
+[`PublishedPrimitiveAffineFiniteLiterature.ofCanonicalClassifications`](SymmetricSubgroupAsymptotics/PrimitiveAffineCanonicalFiniteLiterature.lean)
+assembles the complete finite affine package from the bare small-affine
+catalogue, the two `PSL₃` simplicity instances, Burnside's theorem, the
+`PGL₂(5)` isomorphism, the Halasi–Maróti soluble-complement bound, and the
+degree-five affine classification. The updated
+[`T1_of_published_inputs`](SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
+and `allTargets_of_published_inputs` compile, with standard-only axiom audits.
+
+**Remaining boundary.** Their `PublishedPrimitiveSocleDichotomyInput`
+argument still packages a faithful quotient action and quantitative degree
+profile beyond bare O'Nan–Scott. A raw structural constructor is being
+checked separately. The finite catalogues are closed, but this input audit
+and the full transitive source/object release audit remain open. A compiled
+conditional theorem and a standard-axiom audit alone do not establish
+published-only completion.
 
 The certificate-valued four-pair classification is now constructed by
 [`FourPairCanonicalClassification.classification`](SymmetricSubgroupAsymptotics/FourPairCanonicalClassification.lean).

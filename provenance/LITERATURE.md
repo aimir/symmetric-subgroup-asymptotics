@@ -597,3 +597,14 @@ using Theorem 2.10 and Theorems 4.1–4.5. The exact Lean input is
 the two special-linear centers, all exact orders, the determinant split
 `GL₃(3) ≅ SL₃(3) × C₂`, and the chief-order certificates are proved
 internally. No affine-specific composition bound is imported.
+
+**LIT-PGL2FIVE — classical exceptional projective isomorphism.** Allan Adler,
+*Characterization of modular correspondences by geometric properties*,
+Pacific Journal of Mathematics 155(1) (1992), Lemma 13, printed p.17,
+[primary PDF](https://msp.org/pjm/1992/155-1/pjm-v155-n1-p01-s.pdf).
+The lemma states `PGL₂(F₅) ≅ S₅`. The exact Lean input is
+`StandardGLTwoFiveProjective.PublishedProjectiveIsomorphism`.
+The actual `GL₂(5)` order 480, scalar kernel and faithful `C₄` character,
+the actual affine-complement embedding, and all soluble-projective and
+original-chief consequences are proved in the project. The isomorphism
+input contains no affine capacity or composition estimate.
