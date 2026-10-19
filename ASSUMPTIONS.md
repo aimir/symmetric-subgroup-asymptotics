@@ -154,8 +154,8 @@ tops use the existing source, and the actual three-pair/two-triple top
 geometries have nonbinary quotient socle capacity one. The universal natural
 module has capacity two; binary original quotients have order at most 32.
 All original axes and hot fibres are summed inside the unchanged width-12
-menu. The remaining joint-catalogue entry and final
-coverage and final degree-two composition must still be completed before
+menu. The remaining joint-catalogue entry and final degree-two
+composition must still be completed before
 claiming T1 with only published assumptions.
 
 Standard classical logical foundations are permitted. Unproved project

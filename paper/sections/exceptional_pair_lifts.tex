@@ -823,11 +823,109 @@ the constant and augmentation generators in one position. Literal
 embeddings transfer this bound to the larger signed dihedral actions;
 no list of invariant subspaces is required.
 
-\subsection{A uniform source for eight-pair actions}
+\subsection{A uniform source for six-pair actions}
 
 Write $s(b)=|\Sub(S_b)|$, $r_b=\lceil b/100\rceil$, and
 $\mathcal Z_U(J)=\sum_{N\lhd U}|\Epi(J,U/N)|$.
-The next estimate treats all original normal denominators at once.
+The next estimates treat all original normal denominators at once.
+
+\begin{lemma}\label{lem:six-point-nonbinary-socles}
+Let $T\leq S_6$ be transitive and imprimitive. Every nonbinary
+quotient of $T$ has a socle with one ambient normal generator.
+Moreover, for every transitive $T\leq S_6$, every invariant subspace
+of its binary natural permutation module has two module generators.
+\end{lemma}
+\begin{proof}
+A minimal block system gives either three pairs or two triples.
+In the three-pair case the actual block kernel is a submodule of
+$\F_2^3$, and the transitive three-point top is $C_3$ or $S_3$.
+Restriction to the actual cubic rotation is semisimple; its three-point
+permutation module is cyclic, so every kernel submodule is cyclic.
+For the $C_3$ top, the coprime cyclic quotient argument applies to every
+original normal denominator. For the $S_3$ top, a nonbinary quotient
+must retain the whole top: otherwise both its surviving kernel and its
+top are binary. Its binary socle lies in the cyclic kernel section,
+since $S_3$ has no nontrivial normal binary subgroup. Its odd socle
+uses one position, since the whole group has order $2^a3$.
+The two prime parts share that position.
+
+In the two-triple case retain the actual ternary kernel inside
+$\F_3^2$ and its actual binary signed-permutation top.
+The latter exchanges the two coordinates. Its order is prime to three,
+and the monomial two-coordinate module, and every invariant section,
+is cyclic. In a nonbinary original quotient the retained ternary
+section is nonzero. The kernel of the actual binary top's action on
+this section injects into the permutation group of the two coordinates:
+a nontrivial diagonal sign cannot act trivially on such a section,
+by semisimplicity and coordinate transitivity. Its order is therefore
+at most two. The binary socle lies in this action kernel, while the
+ternary socle uses one module generator. Coprime sharing again gives
+one position for the whole socle.
+
+For the natural binary module, an actual Sylow-three subgroup has at
+most two point orbits. Indeed each orbit has size divisible by three,
+by the transitive stabilizer-index formula. Its order is invertible in
+$\F_2$, so every invariant subspace is a direct summand on restriction.
+The permutation module on the two or fewer orbits has two generators;
+project them onto that summand. They also generate under $T$.
+\end{proof}
+
+\begin{proposition}\label{prop:uniform-six-pair-source}
+Let $U\leq S_{12}$ be transitive with a specified system of six pairs,
+and suppose its actual six-point top is imprimitive. Then
+\begin{align*}
+ \sum_{J\leq S_b}\mathcal Z_U(J)
+ &\leq 2^{490}2^{43b/30}s(b)\\
+ &\quad+2^{256}(b!)^{736}2^{-51br_b/200}s(b+2r_b).
+\end{align*}
+No quotient map or original normal denominator is omitted.
+\end{proposition}
+\begin{proof}
+Let $K$ be the actual binary pair kernel and $T=U/K$.
+For each original $N\lhd U$ put $Q=U/N$, $V=KN/N$ and $R=U/KN$.
+A binary $Q$ has order at most $32$. To see this, an actual Sylow-three
+subgroup lies in $N$, so odd averaging bounds the dimension of $V$
+by its at most two point orbits, giving $|V|\leq4$.
+A binary quotient of a transitive six-point group has order at most
+eight. The only larger possibility allowed by $|T|\mid6!$ would have
+order sixteen and an odd normal kernel; that kernel has two three-point
+orbits, embedding $T$ in $S_3\wr S_2$, of order $72$, a contradiction.
+Thus $|Q|\leq4\cdot8$. The binary-target character-rank bound gives
+cold slope $5\cdot51/200<43/30$ and the usual binary rank tail.
+
+If $Q$ is nonbinary, so is its exact residual top $R$.
+Lemma~\ref{lem:six-point-nonbinary-socles} gives socle capacity one for
+$R$ and dual-module capacity two for $V$; the latter follows by
+self-duality and passage to the actual invariant subquotient.
+For each top epimorphism $\theta:J\twoheadrightarrow R$, with kernel
+$F$, the full lift fibre has at most
+\[
+ |Q|^{\lfloor\log_2|R|\rfloor}2^{2d_2(F)}
+ \leq2^{144}2^{2d_2(F)}
+\]
+elements: $|Q|\leq2^{16}$, $|R|\leq720$ and
+$\lfloor\log_2|R|\rfloor\leq9$.
+On cold sources $d_2(F)\leq51b/200$ for every top map.
+The ordinary one-character bound contributes $\frac13\log_2 5$,
+and $\frac13\log_2 5+51/100<43/30$.
+The actual automorphism factor is at most $2^{90}$, giving coefficient
+$2^{234}$ per original axis.
+
+On hot sources retain all target maps and all coset representatives
+of $F$ in $J$. Their factorial cost is at most
+$(b!)^{16+|R|}\leq(b!)^{736}$, and the rank-tail moment gives
+$2^{-51br_b/200}s(b+2r_b)$.
+Finally $|U|\leq2^{16}$ bounds the number of original normal subgroups
+by $2^{256}$. Summing all axes gives the stated coefficients.
+\end{proof}
+
+The cold coefficient fits the original width-twelve menu, and the hot
+term is paid by the proved rank-tail deficit. The primitive six-point
+top uses the earlier primitive source. Together these give the complete
+six-pair source for every actual representative, without a separate
+182-action source table or a normal-subgroup census.
+
+\subsection{A uniform source for eight-pair actions}
 
 \begin{proposition}\label{prop:uniform-eight-pair-source}
 Let $U\leq S_{16}$ be transitive and nonbinary, with a specified system
