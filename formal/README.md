@@ -139,6 +139,15 @@ project obligation. T1 still requires the separate degree-two source covers;
 in particular, the semantic eight-pair outcome is not resolved merely by
 recognizing another pair frame.
 
+The checked composition endpoint
+[`T1_of_published_inputs_and_degreeTwoAffineSource`](SymmetricSubgroupAsymptotics/MarkedC4PublishedDegreeTwoT1.lean)
+also constructs the primitive three-tenths weight, strict ternary head,
+degree-eighteen head and certificate-valued four-pair classification from
+their ordinary published inputs. It derives the global marked moment
+internally. The **actual degree-two residual source** is still an explicit
+project-owned premise; this endpoint is not a completed proof of T1.
+Four composition exports have standard-only axiom audits.
+
 In the following table all groups are finite, logarithms are base two, and
 `d_G(N)` denotes normal-generator number. The linked definitions retain the
 full quantifiers, transitivity, surjectivity, normality and bounded-factor
