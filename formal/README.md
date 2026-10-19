@@ -109,9 +109,9 @@ its input definitions; the [literature register](../provenance/LITERATURE.md)
 records the external sources. Fourteen final degree-four and complete
 one-frame-catalogue exports have standard-only axiom audits. All sixty-four
 original degree-two one-frame callbacks are also assembled. T1 remains open:
-the separate degree-two joint twelve-point and complete six-pair B6 source
-coverage obligations remain. The required eight-pair source endpoint is now
-proved by the uniform construction described below.
+the final degree-two joint twelve-point entry and top-level composition
+remain. The required six-pair B6 and eight-pair source endpoints are now
+proved by the uniform constructions described below.
 
 The certificate-valued four-pair classification is now constructed by
 [`FourPairCanonicalClassification.classification`](SymmetricSubgroupAsymptotics/FourPairCanonicalClassification.lean).
@@ -136,9 +136,9 @@ and [`ActualEarlierNumerical`](SymmetricSubgroupAsymptotics/MarkedC4ActualEarlie
 thread the result into the F20 and earlier-owner numerical consumers.
 The twenty new modules pass current source/direct-dependency checks; nine
 final exports have standard-only axiom audits. This closes the marked-moment
-project obligation. T1 still requires the separate degree-two source covers;
-the eight-pair source is now closed by the separate joint top/module count
-and exact all-original-normal quotient construction described below.
+project obligation. The six-pair and eight-pair source covers are now
+closed by the joint top/module counts and exact all-original-normal
+quotient constructions described below. T1 still awaits final composition.
 
 The checked composition endpoint
 [`T1_of_published_inputs_and_degreeTwoAffineSource`](SymmetricSubgroupAsymptotics/MarkedC4PublishedDegreeTwoT1.lean)
@@ -2012,3 +2012,5 @@ asymptotics T2 and T3 therefore remain open, while both implications from T1
 and both independent analytic benchmark estimates are proved.
 
 | [Row27OriginalJointData](SymmetricSubgroupAsymptotics/Row27OriginalJointData.lean), [PrimitiveAffineDegreeTwoTwelveRow27QuartetInstalledJoint](SymmetricSubgroupAsymptotics/PrimitiveAffineDegreeTwoTwelveRow27QuartetInstalledJoint.lean) | Actual entry27 uses its original three-quartet frame and correlated binary kernel. Fixed Schreier relations embed that kernel in the three-block sign/shear module, proving all-original-quotient socle capacity2; the actual natural module has capacity2. The checked installer reaches **282/283 joint entries**, leaving entry67. Twelve new modules pass; four exported results have standard-only axiom audits. No normal-subgroup census is assumed. |
+
+| [TransitiveSixBinaryNaturalUniform](SymmetricSubgroupAsymptotics/TransitiveSixBinaryNaturalUniform.lean), [SixPairActualCompleteRepresentativeSource](SymmetricSubgroupAsymptotics/SixPairActualCompleteRepresentativeSource.lean) | **The complete B6/six-pair source endpoint is closed for every actual representative.** The actual Sylow-three orbit count proves uniform natural binary capacity2. Every binary original quotient has order at most32. Every nonbinary quotient of an imprimitive six-point top has socle capacity1: three-pair tops use the actual cyclic/S3 kernel, and two-triple tops use the retained ternary section and its action-kernel injection into `S2`. Generator-aware lift counting gives per-axis coefficient `2^234`; summing all original normal axes gives cold coefficient `2^490`, slope `43/30`, and the full binary-rank tail with coefficient `2^256` and factorial power736. The primitive top uses the existing proved source. Twenty new modules and twelve audited exports pass with standard axioms. No 182-action source table, B6 census or new published capacity hypothesis remains. |

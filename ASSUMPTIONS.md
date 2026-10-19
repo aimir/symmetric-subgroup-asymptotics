@@ -60,7 +60,8 @@ centralizer dichotomy; it requires no four-by-four top or module-lattice
 census. Primitive frame coverage retains the explicit published classification
 input and checked point-conjugacy bindings. These frame results and the complete
 degree-four residual constructor are distinct from the still-unfinished
-degree-two joint catalogue and complete six-pair B6 source coverage. The
+degree-two joint catalogue and final composition. The complete six-pair
+B6 source is now constructed uniformly from actual top geometry. The
 required eight-pair source endpoint is now proved uniformly from the existing
 published degree-eight action classification; it does not require the
 alternative 527-entry ambient source table. The historical computational menus
@@ -147,7 +148,13 @@ using only the existing published degree-eight classification, Zmud and
 character-literature inputs. It retains the literal pair action, every
 original normal denominator and all top-map fibres. The 527-entry source
 table is an alternative construction of this endpoint, not an additional
-T1 obligation. The remaining joint-catalogue entries, full six-pair source
+T1 obligation. The full six-pair source is also proved by
+`SixPairActualCompleteRepresentativeSource.representativeSource`: primitive
+tops use the existing source, and the actual three-pair/two-triple top
+geometries have nonbinary quotient socle capacity one. The universal natural
+module has capacity two; binary original quotients have order at most 32.
+All original axes and hot fibres are summed inside the unchanged width-12
+menu. The remaining joint-catalogue entry and final
 coverage and final degree-two composition must still be completed before
 claiming T1 with only published assumptions.
 
