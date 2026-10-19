@@ -2010,3 +2010,5 @@ distinguishes conditional assembly, proofs relative to named published inputs,
 and closed theorems. T1 remains unproved in Lean. The unconditional subgroup
 asymptotics T2 and T3 therefore remain open, while both implications from T1
 and both independent analytic benchmark estimates are proved.
+
+| [Row27OriginalJointData](SymmetricSubgroupAsymptotics/Row27OriginalJointData.lean), [PrimitiveAffineDegreeTwoTwelveRow27QuartetInstalledJoint](SymmetricSubgroupAsymptotics/PrimitiveAffineDegreeTwoTwelveRow27QuartetInstalledJoint.lean) | Actual entry27 uses its original three-quartet frame and correlated binary kernel. Fixed Schreier relations embed that kernel in the three-block sign/shear module, proving all-original-quotient socle capacity2; the actual natural module has capacity2. The checked installer reaches **282/283 joint entries**, leaving entry67. Twelve new modules pass; four exported results have standard-only axiom audits. No normal-subgroup census is assumed. |
