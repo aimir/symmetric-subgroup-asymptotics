@@ -1,0 +1,18 @@
+import SymmetricSubgroupAsymptotics.FullTernaryWreathPairFrameOriginalJointData
+import SymmetricSubgroupAsymptotics.Row202OriginalPairFrame
+import SymmetricSubgroupAsymptotics.Row202OriginalAbelianAxes
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveSharedNaturalWitnesses
+set_option autoImplicit false
+set_option backward.isDefEq.respectTransparency false
+noncomputable section
+namespace SymmetricSubgroupAsymptotics.Row202FullWreathOriginalJointData
+open Non2UnipotentPrefixFiniteMenu
+open Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer
+open DegreeTwoTwelvePairFiniteCatalogue
+
+def flexibleData : DegreeTwoTwelveFlexibleProfiles.Data row202Interface :=
+  .ofExact (FullTernaryWreathPairFrameOriginalJointData.jointData row202Interface
+    Row202OriginalPairFrame.frame Row202OriginalPairFrame.image Row202OriginalAbelianAxes.cover
+    Row202OriginalAbelianAxes.cover_surjective Row202OriginalAbelianAxes.noTernary
+    DegreeTwoTwelveSharedNaturalWitnesses.row202Natural) (by decide +kernel)
+end SymmetricSubgroupAsymptotics.Row202FullWreathOriginalJointData
