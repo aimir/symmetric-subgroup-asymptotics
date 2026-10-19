@@ -63,6 +63,19 @@ inequality. See `MarkedC4ConstructedLargeOrbitCutoff.marked_bound`.
   Constants depend only on the fixed prime 2 and k. This is a named
   literature hypothesis, not a marked subgroup-count or encoding premise.
 
+The ordinary interfaces in `MarkedC4RDTOriginalWordStructure` and
+`MarkedC4RDTExcessStructure` retain Theorem 5.5(ii), p.17, and Theorem 5.7,
+p.18, respectively. The former bounds original-word normal generation by
+3/8, 5/16 or 1/4 times the dependent original degree plus half the maximal
+fully projecting tail degree, under the exact excess exclusions. The latter
+retains arbitrary normal F in a nonabelian original normal quotient,
+`log2|[F,Q]| + e*log2|C_Q(F)| <= n/2` and `log2|C_Q(F)| <= n/4`, with
+e=3,1,5/4 in the exact exceptional/excess-one/excess-two branches and the
+required excess-one equality d(Q)=d(G). Neither input assumes a marked
+source, encoding, recovery theorem or marked count. Those are constructed
+in `MarkedC4ActualMarkedRDTSource`, `MarkedC4ActualMarkedCaseIIFibre`,
+`MarkedC4ActualQuotientMarkedNormalBudget` and the associated modules.
+
 Applications: CNT-LIFT, CNT-GRAPH, CNT-FUSION, BIN-LARGE, BIN-MIX and the
 macro-A4/terminal estimates in ASM-OLD. The faithful degree is that of the
 actual source permutation group.
