@@ -109,9 +109,21 @@ its input definitions; the [literature register](../provenance/LITERATURE.md)
 records the external sources. Fourteen final degree-four and complete
 one-frame-catalogue exports have standard-only axiom audits. All sixty-four
 original degree-two one-frame callbacks are also assembled. T1 remains open:
-the final degree-two joint twelve-point entry and top-level composition
-remain. The required six-pair B6 and eight-pair source endpoints are now
+the final degree-two joint twelve-point entry, actual sixteen-pair source
+coverage, and top-level composition remain. The required six-pair B6 and eight-pair source endpoints are now
 proved by the uniform constructions described below.
+
+**Degree-sixteen coverage audit.** The 64 checked one-frame models and the
+two natural models certify their stated branches. They do not exhaust all
+imprimitive, pair-free sixteen-point tops. In particular, `A4 ≀ C4` has four
+quartets with nonzero local ternary action and is outside the old zero-odd
+and two-affine lists. The old
+`PublishedDegreeTwoSixteenPairTopCatalogueLocator` is therefore not accepted
+as a published input for the final theorem. Its missing coverage is project
+work. The replacement uses the proved actual minimal-block geometry:
+primitive tops, eight pairs, four quartets, or two primitive eight-point
+blocks. The last two original width-32 source constructions remain in
+progress. No complete T1 theorem with only published assumptions is claimed.
 
 The certificate-valued four-pair classification is now constructed by
 [`FourPairCanonicalClassification.classification`](SymmetricSubgroupAsymptotics/FourPairCanonicalClassification.lean).

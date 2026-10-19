@@ -60,7 +60,8 @@ centralizer dichotomy; it requires no four-by-four top or module-lattice
 census. Primitive frame coverage retains the explicit published classification
 input and checked point-conjugacy bindings. These frame results and the complete
 degree-four residual constructor are distinct from the still-unfinished
-degree-two joint catalogue and final composition. The complete six-pair
+degree-two joint catalogue, complete sixteen-pair source coverage and final
+composition. The complete six-pair
 B6 source is now constructed uniformly from actual top geometry. The
 required eight-pair source endpoint is now proved uniformly from the existing
 published degree-eight action classification; it does not require the
@@ -154,8 +155,8 @@ tops use the existing source, and the actual three-pair/two-triple top
 geometries have nonbinary quotient socle capacity one. The universal natural
 module has capacity two; binary original quotients have order at most 32.
 All original axes and hot fibres are summed inside the unchanged width-12
-menu. The remaining joint-catalogue entry and final degree-two
-composition must still be completed before
+menu. The remaining joint-catalogue entry, actual sixteen-pair source
+coverage and final degree-two composition must still be completed before
 claiming T1 with only published assumptions.
 
 Standard classical logical foundations are permitted. Unproved project
@@ -164,3 +165,13 @@ excluded from either substantive verification milestone. The c=1 application,
 shared-C3 moment and inverse-complement compatibility remain required checked
 applications of the reusable results. Source verification, computational
 replay, manuscript review and formal proof are reported separately.
+
+The degree-sixteen locator is not an admissible literature assumption as
+currently typed. Its four listed classes omit imprimitive, pair-free tops
+with nonzero ternary local action, such as `A4 ≀ C4`. The existing 64 finite
+row proofs remain valid within their hypotheses; they do not prove this
+coverage proposition. The active replacement retains the actual minimal
+block system and constructs the missing width-32 sources for four quartets
+and two primitive eight-point blocks. The new composition frontier will
+retain the actual `DegreeTwoSixteenPairResidualSource` argument until those
+constructions are proved, rather than assume the old locator.
