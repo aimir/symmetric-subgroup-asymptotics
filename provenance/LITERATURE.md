@@ -39,7 +39,20 @@ this version, not an unspecified later revision.
   This is an epimorphism count under these hypotheses, not an unrestricted
   conditional lifting theorem for any fixed quotient map.
 
-  **LIT-RDTTheorem4.6 (arbitrary-normal-subgroup interface).** The marked
+  
+The constructed large-orbit proof uses three explicit ordinary specializations:
+`LargeOrbitOrdinaryGeneration.PublishedProposition62` is Proposition 6.2's
+small-generator consequence for every positive rate;
+`SolubleContainerCount.PublishedTheorem86Representatives` is Theorem 8.6(i)'s
+`2^(13*n)` class bound, stated as a finite conjugacy-representative menu for
+maximal transitive soluble subgroups; and
+`SolubleContainerOrder.PublishedDixonOrder` is Theorem 8.6(ii)'s
+`|H| <= 24^(n/3)` bound. The empty action is included by its unique subgroup.
+The proof constructs the actual original-point container cover; none of
+these hypotheses contains that cover, an encoding, characters or a marked
+inequality. See `MarkedC4ConstructedLargeOrbitCutoff.marked_bound`.
+
+**LIT-RDTTheorem4.6 (arbitrary-normal-subgroup interface).** The marked
   excessive-factor application retains the theorem's arbitrary normal
   subgroup F of Q. Its two invariants are |C_Q(F)| and |[F,Q]|; they are
   not replaced by |Z(Q)| and |Q'| when Theorem 5.7 selects a proper F.
