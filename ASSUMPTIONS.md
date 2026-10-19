@@ -171,7 +171,8 @@ currently typed. Its four listed classes omit imprimitive, pair-free tops
 with nonzero ternary local action, such as `A4 ≀ C4`. The existing 64 finite
 row proofs remain valid within their hypotheses; they do not prove this
 coverage proposition. The active replacement retains the actual minimal
-block system and constructs the missing width-32 sources for four quartets
-and two primitive eight-point blocks. The new composition frontier will
+block system. The pair, primitive and two-primitive-eight-block branches
+now have complete checked width-32 sources; the geometric assembler leaves
+the four-quartet source constructor explicit. The new composition frontier will
 retain the actual `DegreeTwoSixteenPairResidualSource` argument until those
 constructions are proved, rather than assume the old locator.

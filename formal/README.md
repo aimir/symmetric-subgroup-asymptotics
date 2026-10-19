@@ -122,8 +122,11 @@ and two-affine lists. The old
 as a published input for the final theorem. Its missing coverage is project
 work. The replacement uses the proved actual minimal-block geometry:
 primitive tops, eight pairs, four quartets, or two primitive eight-point
-blocks. The last two original width-32 source constructions remain in
-progress. No complete T1 theorem with only published assumptions is claimed.
+blocks. The actual pair and primitive branches, and the complete original
+width-32 source above two primitive eight-point blocks, are now checked.
+The geometric assembler reduces the remaining coverage to one source
+constructor for four quartets. No complete T1 theorem with only published
+assumptions is claimed.
 
 The certificate-valued four-pair classification is now constructed by
 [`FourPairCanonicalClassification.classification`](SymmetricSubgroupAsymptotics/FourPairCanonicalClassification.lean).
@@ -2030,3 +2033,4 @@ and both independent analytic benchmark estimates are proved.
 | [DegreeTwelveCanonicalCatalogueLocator](SymmetricSubgroupAsymptotics/DegreeTwelveCanonicalCatalogueLocator.lean), [PublishedSubgroupCoarseEstimate](SymmetricSubgroupAsymptotics/PublishedSubgroupCoarseEstimate.lean) | Bare published transitive degree-twelve point conjugacy into the fixed301 groups constructs the original pair frame, actual top equivalence and natural-module binding; no realization-valued literature callback is needed. The coarse subgroup estimate is derived from the already retained quantitative Roney-Dougal–Tracey upper bound. Both modules and three audited exports pass with standard axioms. These results do not discharge the separate degree-sixteen source coverage gap. |
 
 | [WidthThirtyTwoOriginalPairSource](SymmetricSubgroupAsymptotics/WidthThirtyTwoOriginalPairSource.lean), [ProductBlockFrameOrderBound](SymmetricSubgroupAsymptotics/ProductBlockFrameOrderBound.lean) | Reusable width-32 source aggregation is proved for actual imprimitive sixteen-point tops. Top order at most `2^32` gives original pair-action order at most `2^48`; all original normal axes and lift fibres give cold coefficient `2^4864` and a complete binary rank tail. The unchanged menu envelope pays up to `2^5000` using its natural logarithm. Both all-quotient socle and nonbinary-socle/binary-target split constructors are checked. Five modules and six audited exports use standard axioms. Structural geometric callers still have to supply their actual module/socle or binary-order bounds; this is not full degree-sixteen coverage. |
+| [DegreeSixteenActualPairPrimitiveSources](SymmetricSubgroupAsymptotics/DegreeSixteenActualPairPrimitiveSources.lean), [WidthThirtyTwoTwoPrimitiveEightSource](SymmetricSubgroupAsymptotics/WidthThirtyTwoTwoPrimitiveEightSource.lean), [DegreeSixteenGeometricSourceAssembly](SymmetricSubgroupAsymptotics/DegreeSixteenGeometricSourceAssembly.lean) | Three branches of the actual sixteen-point minimal-block geometry have complete original width-32 sources: primitive tops, eight pairs, and two primitive eight-point blocks. The last branch covers all seven primitive local types, including the four nonaffine types: every original top quotient has socle capacity three, and an actual Sylow-seven subgroup gives natural-module capacity four. The geometric assembler leaves only the explicit four-quartet constructor. Nine modules pass; ten exports have standard-only axiom audits. The old incomplete sixteen-point locator is not used. |
