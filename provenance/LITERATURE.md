@@ -39,7 +39,7 @@ this version, not an unspecified later revision.
   This is an epimorphism count under these hypotheses, not an unrestricted
   conditional lifting theorem for any fixed quotient map.
 
-  
+
 The constructed large-orbit proof uses three explicit ordinary specializations:
 `LargeOrbitOrdinaryGeneration.PublishedProposition62` is Proposition 6.2's
 small-generator consequence for every positive rate;
