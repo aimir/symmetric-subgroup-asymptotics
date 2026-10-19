@@ -890,6 +890,33 @@ rank-tail square completion and the ordinary coarse subgroup bound
 give the stated decay after the original width-sixteen pointing.
 \end{proof}
 
+\begin{corollary}[A symmetric top]\label{cor:symmetric-central-source}
+Proposition~\ref{prop:cubic-central-source} also holds with top $S_3$
+and the stated scalar action of a selected element of order three,
+provided $(b!)^{19}$ is replaced by $(b!)^{22}$.
+\end{corollary}
+\begin{proof}
+Every nontrivial normal subgroup of $S_3$ contains its cubic subgroup.
+Thus an original quotient either retains the actual $S_3$ top, with
+smaller central and active ranks, or kills a cubic lift. In the latter
+case the image of $K$ is again the image of the original $Z$, and its
+index is at most two. The quotient is a binary group of order at most
+$2^{c+1}\leq16$; it need not be elementary abelian and may contain $C_4$.
+
+For each such binary target $H$, retain all its epimorphisms and apply
+the cutoff $d_2(J)\leq51b/200$ directly to the same source $J$.
+The binary target-order bound
+$|\Hom(J,H)|\leq2^{(\log_2|H|)d_2(J)}$ gives cold slope at most
+$51/50$. Its complementary source sum costs at most $(b!)^4$ times
+the same binary marker tail. For retained tops, the original kernel
+and six coset representatives cost $(b!)^6$, so the full target
+factor is $(b!)^{22}$. The fixed cold coefficient per normal quotient
+is at most $2^{128}$, still absorbed by $2^{512}$ after summing all
+original normals. Apply the split separately for each original
+normal and commute the finite sums. The original pointing gives the
+same quadratic decay.
+\end{proof}
+
 \subsection{The twelve-pair actions}
 
 \begin{lemma}[A binary-primary prefix]\label{lem:binary-primary-prefix}
