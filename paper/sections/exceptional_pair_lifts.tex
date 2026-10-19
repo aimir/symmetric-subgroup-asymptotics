@@ -823,6 +823,73 @@ the constant and augmentation generators in one position. Literal
 embeddings transfer this bound to the larger signed dihedral actions;
 no list of invariant subspaces is required.
 
+\subsection{A source-summed cubic central extension}
+
+The following bound treats a central extension before choosing any
+complete source. It applies to nonsplit extensions and retains every
+normal subgroup of the original target.
+\begin{proposition}\label{prop:cubic-central-source}
+Suppose that a finite group $U$ maps onto $C_3$ with kernel $K$, and
+there is a homomorphism $a:K\to(\F_4,+)^d$ whose kernel $Z$ is central
+in $U$ and embeds in $C_2^c$. Assume $c,d\leq3$, and conjugation by
+a lift of a fixed generator of $C_3$ acts on $a(K)$ as multiplication
+by a primitive cube root in $\F_4$. Put
+\[
+ r_b=\lceil b/100\rceil,\qquad
+ \mathcal Z_U(J)=\sum_{N\lhd U}|\Epi(J,U/N)|.
+\]
+Then, writing $s(b)=|\Sub(S_b)|$,
+\begin{align*}
+ \sum_{J\leq S_b}\mathcal Z_U(J)
+ &\leq 2^{512}2^{381b/192}s(b)\\
+ &\quad+2^{256}(b!)^{19}2^{-51br_b/200}s(b+2r_b).
+\end{align*}
+For an original action of width sixteen, the second term, with its
+original pointing and normalizer divisor, is
+$O(2^{-b^2/50000})$.
+\end{proposition}
+\begin{proof}
+Fix one original $N\lhd U$ and write $Q=U/N$. If $N\leq K$, the
+quotient retains its $C_3$ top. The image of $a(N)$ is an $\F_4$
+subspace, since it is invariant under the actual cubic scalar.
+Taking its quotient gives an active rank at most $d$. The kernel
+of this descended active map is exactly the image of the original
+$Z$, so its binary rank is at most $c$; this statement does not
+require the extension to split.
+
+If $N\not\leq K$, it contains an element whose image generates
+$C_3$. Killing that element identifies every element of $K$ with
+an element of the original $Z$: on the active image the difference
+of the second and first cubic conjugates is the identity operator,
+because $\omega^2-\omega=1$ in $\F_4$. The same commutator difference
+has trivial image in $Q$. The whole $Q$ is therefore a quotient of
+$Z$, with binary rank at most $c$.
+
+For a retained top map $\theta:J\twoheadrightarrow C_3$, keep its
+actual kernel $F$. Invariant central restrictions and scalar-twisted
+active restrictions share their maximum, rather than their sum,
+against $|\Hom(F,C_2)|$. This bounds each fixed-top fibre, including
+nonsplit lift choices, by a fixed target coefficient times
+$2^{\max(c,d)d_2(F)}$. Count all top maps. On the cold sources
+$d_2(F)\leq51b/200$ for every such $\theta$, the resulting slope is
+at most $153/200+(\log_2 5)/3<381/192$. The killed-top quotients
+have the unconditional slope $3/2$, which satisfies the same bound.
+
+On a hot source, retain every target epimorphism. Its original
+kernel $F\leq S_b$ and three actual coset representatives recover
+$J$, so the finite-index multiplicity is at most $(b!)^3$.
+The binary marker moment at $r_b$ bounds the number of hot kernels
+by $2^{-51br_b/200}s(b+2r_b)$. Since
+$|U|\leq3\cdot2^c4^d\leq2^{16}$, all epimorphisms to one target
+cost at most $(b!)^{16}$. There are at most $2^{256}$ original
+normal subgroups. The fixed cold coefficient per quotient is at
+most $2^{64}$, so summing the retained and killed alternatives is
+bounded by the displayed $2^{512}$. This proves the complete raw
+sum, without division by target automorphisms. Finally the binary
+rank-tail square completion and the ordinary coarse subgroup bound
+give the stated decay after the original width-sixteen pointing.
+\end{proof}
+
 \subsection{The twelve-pair actions}
 
 \begin{lemma}[A binary-primary prefix]\label{lem:binary-primary-prefix}
