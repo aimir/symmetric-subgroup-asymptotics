@@ -1031,34 +1031,69 @@ epimorphism has thus been retained.
 \begin{proposition}[A small three-block kernel]
 \label{prop:small-three-block-kernel-source}
 In the same physical three-block setting, suppose instead that the
-actual block kernel has order at most four. Then
+actual block kernel has order at most eight. Then
 \[
  \sum_{J\leq S_b}\mathcal Z_U(J)
- \leq 2^{89}2^{43b/30}s(b)
-       +2^{25}(b!)^{11}2^{-51br_b/200}s(b+2r_b).
+ \leq 2^{100}2^{43b/30}s(b)
+       +2^{36}(b!)^{12}2^{-51br_b/200}s(b+2r_b).
 \]
 The kernel need not be elementary abelian, and the extension need not split.
 \end{proposition}
 \begin{proof}
-The actual top $T$ is $C_3$ or $S_3$, so $|U|\leq24\leq2^5$
-and there are at most $2^{25}$ original normal subgroups. If
+The actual top $T$ is $C_3$ or $S_3$, so $|U|\leq48\leq2^6$
+and there are at most $2^{36}$ original normal subgroups. If
 $N\leq K$, the quotient has the same top and its kernel is a quotient
-of the original $K$, of binary order at most four. For each onto top
+of the original $K$, of binary order at most eight. For each onto top
 map $\theta:J\twoheadrightarrow T$, retain $F=\ker\theta$ and all
 coset representatives. Maps in that fibre are determined by their
 restrictions $F\to K/(K\cap N)$ and these representatives. Their
-number is at most $|U/N|^{|T|}2^{2d_2(F)}$. The cold rank cutoff
-therefore gives slope at most $102/200+(\log_2 5)/3<43/30$.
-The hot sum costs at most $(b!)^{5+|T|}\leq(b!)^{11}$ times the
+number is at most $|U/N|^{|T|}2^{3d_2(F)}$. The number of onto top
+maps is at most a fixed constant times $3^{b/3}$. For $C_3$ this
+follows from the abelianization bound. For $S_3$, the derived cyclic
+dual restricts each onto map to a separating character on $J'$;
+the same abelianization bound applies to its faithful degree-$b$
+action, with the fixed automorphism factor of $S_3$.
+The cold rank cutoff therefore gives slope at most
+$153/200+(\log_2 3)/3<43/30$.
+The hot sum costs at most $(b!)^{6+|T|}\leq(b!)^{12}$ times the
 binary kernel-marker tail.
 
 If $N\not\leq K$, its nontrivial normal top image contains the
 cubic subgroup. The residual top has order at most two. The same
-original quotient $U/N$ is therefore binary of order at most eight.
-Its direct binary-rank cutoff has cold slope at most $153/200$ and
-hot factorial power at most three. Uniformly, the cold coefficient
+original quotient $U/N$ is therefore binary of order at most sixteen.
+Its direct binary-rank cutoff has cold slope at most $204/200$ and
+hot factorial power at most four. Uniformly, the cold coefficient
 per quotient is at most $2^{64}$. Summing over all original normals
-gives the displayed coefficients $2^{89}$ and $2^{25}$.
+gives the displayed coefficients $2^{100}$ and $2^{36}$.
+\end{proof}
+
+\begin{samepage}
+\begin{proposition}[Monolithic quotient reduction]
+\label{prop:monolithic-quotient-reduction}
+Let $Z\lhd G$ be contained in every nontrivial normal subgroup of the
+finite group $G$. For every finite source $J$,
+\[
+ \mathcal Z_G(J)\leq |\operatorname{Epi}(J,G)|+
+                         \mathcal Z_{G/Z}(J).
+\]
+If $M\lhd G/Z$ is likewise contained in every nontrivial normal
+subgroup of $G/Z$, this gives
+\[
+ \mathcal Z_G(J)\leq |\operatorname{Epi}(J,G)|+
+ |\operatorname{Epi}(J,G/Z)|+\mathcal Z_{(G/Z)/M}(J).
+\]
+In particular, no multiplicative normal-menu factor is needed at either step.
+\end{proposition}
+\end{samepage}
+\begin{proof}
+Separate the original zero normal subgroup, whose contribution is
+$|\operatorname{Epi}(J,G)|$. Every remaining original normal contains
+$Z$. The quotient correspondence injects those axes into the normal
+subgroups of $G/Z$, preserving each actual quotient and its raw
+epimorphism count. Their sum is therefore at most
+$\mathcal Z_{G/Z}(J)$. Apply the same argument to $G/Z$ for the
+second inequality. This reduction requires the stated normal-subgroup
+containments; it does not infer them from a numerical quotient profile.
 \end{proof}
 
 \subsection{The twelve-pair actions}
@@ -1108,6 +1143,7 @@ an irreducible constituent on the actual prefix kernel; the normal
 restriction argument in Lemma~\ref{lem:pair-relative} applies.
 \end{proof}
 
+\begin{samepage}
 \begin{lemma}[The binary-core twelve-point tops]\label{lem:twelve-core}
 Let $T$ be one of the eight binary-core actions in
 Lemma~\ref{lem:small-pair-data}(i). Put $P=O_2(T)$.
@@ -1118,6 +1154,7 @@ binary kernel. Thus it has one ordinary anchor and three relative
 general positions. Every binary $Q$ admits one binary-primary linear
 and four relative general positions.
 \end{lemma}
+\end{samepage}
 \begin{proof}
 In all eight actions the original group $U\leq S_{24}$ has order
 $2^a3$, is solvable, and has only semiregular nonidentity elements
