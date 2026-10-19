@@ -285,8 +285,9 @@ is $V_4$. Semisimplicity under this $H$ now forces $E_0=V_4^4$.
 \begin{lemma}[The two primitive eight-point blocks]
 \label{lem:two-eight-blocks}
 If the sixteen-point top $T$ has two minimal eight-point blocks,
-every original pair lift has a general prefix of at most two and
-relative tail of at most four.
+the socle of every quotient of $T$ has at most three normal
+generators. Every invariant subquotient of its natural binary
+permutation module has at most four module generators.
 \end{lemma}
 \begin{proof}
 The primitive degree-eight list is
@@ -295,37 +296,25 @@ The primitive degree-eight list is
  \operatorname{PSL}_2(7),\quad\operatorname{PGL}_2(7),\quad A_8,\quad S_8.
 \]
 This is the actual action list supplied by the primitive classification
-cited in Lemma~\ref{lem:small-pair-data}. The first three local cases
-are covered by the complete fifteen-action graph-and-swap construction
-there, whose uniform module-generator and quotient-socle bounds
-give relative demand at most four and top quotient cover at most two.
+cited in Lemma~\ref{lem:small-pair-data}. In each local group every normal
+subgroup has one normal generator. The two-block normal-generation
+argument uses one position for each coordinate kernel section and one
+for the image in the cyclic block top. It therefore gives three
+normal generators for every normal subgroup of $T$. This bound passes
+to every quotient, in particular to its socle.
 
-For the other four put $S=\Soc(L)$ for the local group. Then $S$ is
-simple, $L'=S$, and $L/S$ has order at most two. The block kernel
-projects onto $L$ on both blocks. Its derived group projects onto
-$S$ on both, so $P=T\cap S^2$ is, by Goursat's lemma, either $S^2$
-or the graph of an automorphism of $S$. It is perfect, centerless,
-and normal in $T$, with $T/P$ embedded in $D_8$. In any quotient
-of $T$, the image of $P$ is a product of nonabelian simple groups.
-The abelian socle meets it trivially and injects into a quotient
-of a subgroup of $D_8$, whose elementary ranks are at most two.
-The simultaneous criterion gives top cover at most two.
-
-For $S=A_8$, the natural binary module has two trivial composition
-factors and one simple factor of dimension six. For
-$S=\operatorname{PSL}_2(7)$, Lemma~\ref{lem:small-pair-data}(iv)
-gives two trivial and two inequivalent simple three-dimensional
-factors, each once. Thus the two-block module restricted to $P$
-has at most four trivial factors and at most two copies of any
-nontrivial simple type, whether $P$ is a product or a twisted graph.
-A simple $T$-module restricts semisimply to $P$: its $P$-socle is
-nonzero and $T$-invariant, and hence is the whole module. Its
-constituents form one orbit. A type with trivial $P$ action factors
-through the binary $T/P$ and is therefore trivial; every other type
-has multiplicity at most two by selecting any one of its nontrivial
-$P$-constituents. The original module composition multiplicities are
-therefore at most four, hence so are the Schur demands of all its
-homogeneous sections. Apply Lemma~\ref{lem:pair-relative}.
+For the module assertion, let $P$ be an actual Sylow-seven subgroup
+of $T$. It fixes the two block labels. Its local image in each
+primitive component is a Sylow-seven subgroup: the block stabilizer
+maps onto that component, and its index in $T$ is two. Seven divides
+each of the seven listed component orders exactly once. A faithful
+group of order seven on eight points has a seven-point orbit and one
+fixed point. Hence $P$ has at most four orbits on the original sixteen
+points. Restriction to this odd group is semisimple, and one orbit
+seed per orbit generates the permutation module. Submodules and
+quotients inherit the same four-generator bound by semisimplicity;
+enlarging the acting group to $T$ preserves it. This argument covers
+all seven local types and keeps correlated local Sylow images.
 \end{proof}
 
 \begin{lemma}[Natural alternating and symmetric tops]
@@ -354,65 +343,138 @@ This is abelian binary and needs at most two full-order linear
 characters. The original extension was never assumed split.
 \end{proof}
 
+\begin{lemma}[The actual quartet source]\label{lem:actual-quartet-source}
+Let $T\leq S_{16}$ be nonbinary and transitive, preserving four specified
+quartets. Either $T$ has an actual system of eight pairs, or every
+nonbinary quotient of $T$ has socle normal-generator bound two.
+The natural binary module has uniform generator bound eight.
+In the unpaired alternative, for any original pair lift
+$U\twoheadrightarrow T$, every binary quotient of $U$ has order at most
+$2^{15}$; in the zero-odd no-pair case the
+stronger bound $2^{11}$ holds.
+\end{lemma}
+\begin{proof}
+Take the paired alternative first. Otherwise identify each quartet with
+$V=\F_2^2$ using the actual point chart. The original group embeds in
+\[
+ V^4\rtimes\bigl(\mathrm{GL}_2(2)\wr S_4\bigr).
+\]
+Write $A=T\cap V^4$, let $C=T/A$ be its actual linear image, and
+let $B\leq S_4$ be its actual coarse image. Put
+$O=\ker(C\to C_2\wr S_4)$, an elementary ternary group. No independence
+of the local coordinates and no splitting of $T$ is asserted.
+For each original $N\lhd T$ retain
+\[
+ K_N=AN/N\cong A/(A\cap N),\qquad B_N=T/(AN).
+\]
+
+Suppose first $O\ne1$. Each local projection of $O$ is nontrivial by
+transitivity, so $V^4$ and all its retained sections are fixed-free
+under the whole $O$. For cyclic coarse top the orbit argument gives
+translation-module bound two. For a regular Klein top, kernel-averaging
+projectors separate the local cubic types into classes of size at most
+two; the repeated-kernel case is the rank-one cubic chart. A dihedral
+top restricts to its regular Klein subgroup. For $A_4$ or $S_4$, the
+local-kernel partition is constant or discrete and the same projectors
+give the stronger bound one. The corresponding actual linear quotients
+have socle bound two whenever needed on a nonbinary axis. These are the
+cyclic, Klein, dihedral and alternating cases of the retained ternary
+kernel argument in Lemma~\ref{lem:four-ternary-top}; binary quotients
+are not included in the Klein and dihedral assertion.
+
+Let $D$ be the image of the preimage of $O$ in $T/N$. Its moving socle
+row lies in $K_N$ and costs two positions by the translation bound.
+The fixed row meets $K_N$ trivially and injects into the socle of $B_N$,
+so also costs two. These rows have no common nontrivial normal quotient:
+$D$ acts by full commutator on the moving row and trivially on the fixed
+row. The subdirect-product criterion therefore shares their two positions
+by a maximum, rather than adding them. This proves the asserted whole
+socle bound. The possible coarse orders $4,8,12,24$ exhaust the actual
+transitive four-point action, so this dispatch needs no sixteen-point
+catalogue.
+
+If $O=1$, a binary $B$ would make $C$ binary by its injective sign
+map, and then make $T$ binary, a contradiction. Hence $A_4\leq B$.
+Either $C\to B$ is injective or its binary kernel supplies an invariant
+nonzero line in each actual quartet. Translation along those four lines
+is an equivariant fixed-point-free involution, yielding the excluded pair
+system. Thus $C\cong A_4$ or $S_4$. The actual regular Klein lift and a
+cubic lift give the twisted quartet chart. On the same $K_N$, put
+$e=1+a+a^2$ and $f=a+a^2$ for its cubic operator. If the socle lies in
+$K_N$, the uniform two-generator chart suffices. Otherwise the actual
+Klein subgroup acts trivially on $K_N$; its nontrivial normal image is
+forced into the centralizer by a socle constituent outside $K_N$.
+The twisted chart then gives $\dim eK_N\leq2$ and $\dim fK_N\leq2$.
+The binary socle image in $B_N$ adds zero fixed dimension and at most
+two active dimensions. Over $\F_2[C_3]\cong\F_2\times\F_4$ the whole
+binary socle consequently needs at most two generators. The odd-primary
+socle needs one and shares positions with the binary part, again giving
+two. The no-pair hypothesis also excludes the untwisted local cubic
+chart; otherwise its invariant line gives the original pair system.
+
+For the natural-module bound, choose a derangement of the actual coarse
+top and lift it to $T$. It has at most two block orbits. Four seeds above
+each orbit give a polynomial-module cover with eight generators, so
+Lemma~\ref{lem:point-orbit-generators} applies to all invariant sections.
+For binary quotients use odd averaging on the original pair kernel.
+If $O\ne1$, an actual ternary preimage subgroup has at most two orbits
+per quartet, hence eight orbits on the sixteen pair labels. The binary
+image of $T$ has order at most $2^7$, through its actual sign action;
+the binary quotient of $U$ therefore has order at most $2^{8+7}$.
+If $O=1$, a cubic coarse lift has at most eight label orbits and every
+binary quotient of the actual $T$ has order at most eight by the same
+fixed projector. This gives $2^{8+3}$. In both calculations the retained
+top quotient and kernel section use the same original normal denominator.
+\end{proof}
+
 \begin{theorem}[Complete sixteen-pair estimate]\label{thm:sixteen-pairs}
 All actual pair actions with sixteen pairs and nonbinary top have a
-complete exponentially small forward row, with their original action
-weights and zero additional scalar.
+complete exponentially small forward row and a quadratic-exponentially
+small scalar, with their original action weights.
 \end{theorem}
 \begin{proof}
-First choose any pair system for $T$, if one exists, and apply
-Lemma~\ref{lem:paired-eight}. Otherwise a minimal proper block of
-$T$ has size four or eight. Its local action is primitive, since an
-internal nontrivial block system would give a smaller block of $T$.
-The size-eight case is Lemma~\ref{lem:two-eight-blocks}. The size-four
-case has exact local $A_4$ or $S_4$, and gives the actual transported
-wreath embedding in Lemma~\ref{lem:four-point-relative}. If $H=1$,
-Lemma~\ref{lem:small-pair-data}(iv) and Lemma~\ref{lem:pair-relative}
-give prefix two and tail four. If $H\ne1$ and the local action is
-$A_4$, Lemmas~\ref{lem:four-ternary-top} and
-\ref{lem:four-point-relative} give the same profile.
+The actual minimal-block geometry of $T$ is exhaustive: $T$ is primitive,
+has eight pairs, has four quartets, or has two primitive eight-point
+blocks. The paired case is Lemma~\ref{lem:paired-eight}; the primitive
+case uses the twenty affine rows of Lemma~\ref{lem:small-pair-data}(iv)
+and natural $A_{16},S_{16}$ from Lemma~\ref{lem:natural-pair-top}.
+These statements are used only within their displayed geometric scopes.
+The remaining two branches use Lemmas~\ref{lem:two-eight-blocks}
+and~\ref{lem:actual-quartet-source}.
 
-For local $S_4$, put $A=M_0N/N$ for each original $N$ and
-$V=Q/A$. If $V$ retains $H$, its prefix has size two by
-Lemma~\ref{lem:four-ternary-top}. If it kills $H$ and is nonbinary
-or nonabelian, use its actual degree-eight sign action and
-Lemma~\ref{lem:eight-quotient-cover}. These give general prefix two
-and tail four; a binary $Q$ can count all six positions cheaply.
-If $V$ is abelian binary of rank at most three, use three
-binary-primary linear prefix positions and four relative positions.
-If its rank is four, Lemma~\ref{lem:four-sign-boundary} forces the
-full original translation base, and
-Lemma~\ref{lem:four-point-relative} improves the relative demand
-to two. Use four binary-primary linears and two relative positions.
-Both last cases have binary $Q$, since both $A$ and $V$ are binary.
-
-If $T$ is primitive, the classified list consists of the twenty
-affine degree-sixteen actions and natural $A_{16},S_{16}$.
-The former use the uniform natural-module and original quotient-socle
-bounds in Lemma~\ref{lem:small-pair-data}(iv); the latter use
-Lemma~\ref{lem:natural-pair-top}. This exhausts the actual top, and
-all arguments apply to every original $N$ in its pair lift.
-
-At original width $32$ the possible slopes are
+Here is their uniform counting step. Set $a=51/200$, $r=\lceil b/100\rceil$
+and $\theta=39/10$. A quotient of a two-eight-block top has socle bound
+three and its original binary kernel section has dual generator bound
+four. A nonbinary quotient of a quartet top has the respective bounds
+two and eight. Their cold slopes satisfy
 \[
- 2\gamma_5+4\beta,\quad6\beta,\quad\tfrac32+4\beta,
- \quad2+2\beta,\quad\gamma_5,\quad\tfrac23\log_2 3.
+ 3\gamma_5+4a<\theta,\qquad
+ 2\gamma_5+8a<\theta,\qquad 15a<\theta<4-32/32768.
 \]
-Each is less than $4-1/64$. Exact integer versions, with common
-right-hand binary exponent $765$, are
-\begin{align*}
-5^{128}38^{768}&<2^{765}25^{768},&
-38^{1152}&<2^{765}25^{1152},\\
-2^{288}38^{768}&<2^{765}25^{768},&
-2^{384}38^{384}&<2^{765}25^{384},\\
-5^{64}&<2^{765},&3^{128}&<2^{765}.
-\end{align*}
-Proposition~\ref{prop:anchor-count} and
-Corollary~\ref{cor:character-forward} now sum all original normals
-and all actual width-thirty-two actions. Their constants are finite;
-every character tuple is fixed in its target before the same complete
-source $J$ is chosen. Coordinate transports preserve
-$a(U)=|N_{S_{32}}(U)|$ and the original pointing weight. In particular
-no width-sixty-four estimate, quotient permutation degree, or
-six-ordinary-character estimate is used here.
+The last left inequality pays all binary original targets separately;
+no two-generator claim for their socles is used.
+
+Fix an original normal denominator and the actual residual top map.
+The dual-kernel lift count charges its top generators before the remaining
+binary kernel maps. Sources with any retained finite-index kernel of
+binary rank exceeding $ab$ are charged by the complete binary rank-tail
+moment. Keeping those hot sources through the sum, all original normals
+in either branch satisfy, for fixed constants $C,k$,
+\[
+ \sum_{J\leq S_b} Z_J(U)
+ \leq C\,2^{\theta b}s_b+
+ C(b!)^k2^{-arb}s_{b+2r}.
+\]
+One may take the cold constant $2^{4864}$, hot constant $2^{2304}$ and
+$k=2^{32}+48$: the actual top order is at most $2^{32}$, the original
+pair-action order at most $2^{48}$, and there are at most $2^{2304}$
+normal axes. The unchanged menu envelope pays the cold constant since
+$16\cdot32\log^2(34+b)\geq5000$. The rank-tail square completion and
+the published coarse subgroup estimate absorb every fixed factorial
+power, leaving a quadratic deficit on the hot sum. Thus the same original
+width-thirty-two normalization gives the stated row and scalar.
+The finitely many paired and primitive branches are combined with these
+two uniform sources. Point transports retain
+$a(U)=|N_{S_{32}}(U)|$ and every original pointing weight. The cover uses
+the actual block geometry and the bare primitive classifications.
 \end{proof}
