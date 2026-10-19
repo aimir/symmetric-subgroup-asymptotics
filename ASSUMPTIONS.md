@@ -141,9 +141,11 @@ constructs the full marked moment from its fifteen explicit ordinary
 published inputs. Neither certificate-valued interface remains a project
 hypothesis of the current published-input T1 facade.
 
-That [facade](formal/SymmetricSubgroupAsymptotics/MarkedC4PublishedDegreeTwoT1.lean)
-still takes the project-owned degree-two source. Its eight-pair endpoint is
-now supplied by
+The earlier
+[conditional adapter](formal/SymmetricSubgroupAsymptotics/MarkedC4PublishedDegreeTwoT1.lean)
+accepts degree-two source data. The current
+[final facade](formal/SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
+constructs those data internally. Its eight-pair endpoint is supplied by
 [`PairedEightActualRepresentativeSource`](formal/SymmetricSubgroupAsymptotics/PairedEightActualRepresentativeSource.lean),
 using only the existing published degree-eight classification, Zmud and
 character-literature inputs. It retains the literal pair action, every
@@ -158,9 +160,8 @@ All original axes and hot fibres are summed inside the unchanged width-12
 menu. Actual sixteen-pair source coverage is now proved by
 `DegreeSixteenCompleteGeometricSource.residualSource`, using actual minimal
 blocks and complete original quartet sources. All 283 joint-catalogue entries
-and the degree-two composition are also checked. The separate input-boundary
-obligations below must be completed before claiming T1 with only published
-assumptions.
+and the degree-two composition are also checked. The input reductions below
+are now constructed; the separate recursive release audit is in progress.
 
 Standard classical logical foundations are permitted. Unproved project
 lemmas, proof placeholders and hidden certificate-acceptance assumptions are

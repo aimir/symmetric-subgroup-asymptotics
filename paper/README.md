@@ -24,11 +24,12 @@ finite certificates. The [reading guide](../docs/blueprint/MANUSCRIPT_ROUTE.md)
 describes how the parts fit together. The manuscript is a mathematical proof
 draft; the computational checks are not formal verification.
 
-The [formal theorem boundary](../ASSUMPTIONS.md#formal-theorem-boundary)
-remains conditional. In addition to degree-two action coverage, the four-pair
-character/source constructor and the marked-C4 subgroup encodings still need
-checked construction. Generic transport theorems and the cited unmarked
-counting results do not by themselves instantiate those data.
+The [final formal exports](../formal/README.md) now construct degree-two
+coverage, the four-pair source, marked-C₄ encodings, affine consumers, and
+quantitative socle profiles internally. Their explicit remaining mathematical
+inputs are the published theorems and structural classifications listed in
+that README. The recursive source/object release audit is in progress;
+successful direct checks and standard-only axiom reports do not replace it.
 
 The exact target and normalization are also recorded in [SPEC.md](../SPEC.md).
 Preparation notes and the manuscript reconstruction record are maintained
