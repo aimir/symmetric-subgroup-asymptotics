@@ -1096,6 +1096,59 @@ second inequality. This reduction requires the stated normal-subgroup
 containments; it does not infer them from a numerical quotient profile.
 \end{proof}
 
+\begin{samepage}
+\begin{corollary}[The literal correlated cubic carrier]
+\label{cor:literal-1542-source}
+For the literal degree-sixteen action $G=16T1542$, every original normal
+axis is included in the bound
+\[
+ \sum_{J\leq S_b}\mathcal Z_G(J)
+ \leq 2^{322}2^{381b/192}s(b)
+       +2^{256}(b!)^{19}2^{-51br_b/200}s(b+2r_b).
+\]
+No normal-subgroup census is required for this estimate.
+\end{corollary}
+\end{samepage}
+\begin{proof}
+The original word certificates give a binary kernel $K\lhd G$ of
+index three, a central subgroup $Z$ of order two, and an original
+normal subgroup $N$ of order eight containing $Z$. They prove
+\[
+ |G|=3072,\qquad C_G(K)=Z,\qquad
+ Z(K/Z)=N/Z\cong C_2^2,
+\]
+and the actual cubic acts transitively on the three nonidentity
+elements of $N/Z$. The centralizer certificate tests the sixteen
+possible images of one point, using actual transitive words in $K$.
+For the second center, the checked quotient graph and the original
+kernel of order $64$ cover $K$ by a fixed coset grid; each element
+outside $N$ has an explicit commutation witness modulo $Z$.
+These certificates establish containments for every actual group
+element, rather than presupposing a complete list of normal subgroups.
+
+Every nontrivial normal subgroup of $G$ contains $Z$. Indeed, a
+nontrivial intersection with the binary group $K$ meets its center,
+while a trivial intersection would force that normal subgroup into
+$C_G(K)=Z$. In $G/Z$, the plane $N/Z$ is minimal normal. The center
+of its binary kernel lies in this plane, and an element outside that
+kernel cannot centralize it: its nontrivial cubic image would force
+the whole group to centralize the plane. The same binary-center
+intersection argument therefore puts $N/Z$ inside every nontrivial
+normal subgroup of $G/Z$. Both groups have socle capacity one.
+
+Proposition~\ref{prop:monolithic-quotient-reduction} now reduces the
+complete weight to the two faithful targets and the same original
+quotient $G/N$. The latter has actual central binary rank three and
+two synchronized $\mathbb F_4$ coordinates over $C_3$. Retaining
+the constant before the final enlargement in the cubic complete-source
+bound gives cold coefficient $2^{321}$ and hot coefficient $2^{256}$,
+with factorial power $19$. Each faithful target has order at most
+$2^{12}$; the one-position character estimate bounds their combined
+contribution by $2^{145}2^{43b/30}s(b)$. Since
+$43/30<381/192$ and $2^{145}+2^{321}\leq2^{322}$,
+the asserted complete bound follows.
+\end{proof}
+
 \subsection{The twelve-pair actions}
 
 \begin{lemma}[A binary-primary prefix]\label{lem:binary-primary-prefix}
