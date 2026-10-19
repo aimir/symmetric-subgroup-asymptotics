@@ -60,7 +60,10 @@ centralizer dichotomy; it requires no four-by-four top or module-lattice
 census. Primitive frame coverage retains the explicit published classification
 input and checked point-conjugacy bindings. These frame results and the complete
 degree-four residual constructor are distinct from the still-unfinished
-degree-two joint and semantic catalogues. The historical computational menus
+degree-two joint catalogue and complete six-pair B6 source coverage. The
+required eight-pair source endpoint is now proved uniformly from the existing
+published degree-eight action classification; it does not require the
+alternative 527-entry ambient source table. The historical computational menus
 are evidence for their own supplied witnesses, not extra hypotheses of these
 structural frame theorems.
 
@@ -125,19 +128,28 @@ must inspect both the full theorem types and their transitive axiom
 dependencies; an unproved theorem passed as an argument can be absent from an
 axiom report while remaining a mathematical assumption.
 
-The current conditional assembly still exposes certificate-valued boundaries
-beyond degree-two action coverage. `PublishedDegreeTwoFourPairClassification`
-includes original-normal character intervals and source certificates.
-`RDTMarkedC4ReductionInput` includes the actual subgroup encodings, coherent
-count families and reduction parameters for the marked moment. Existing
-transport and assembly lemmas consume these data; they do not construct them.
-The one-generator field is now constructed from the ordinary published
-Aschbacher–Guralnick soluble-generation theorem. Literal relative-generator
-and nilpotent-row encoders are also proved; assembling the remaining RDT
-fields on coherent actual count families is still required.
-Neither interface is accepted as a published assumption merely because a
-name or docstring attributes it to a source. Its exact published scope or its
-project construction must be established before the relative milestone.
+The legacy `PublishedDegreeTwoFourPairClassification` and
+`RDTMarkedC4ReductionInput` are certificate-valued interfaces, not accepted
+literature assumptions. Their active constructions are now checked:
+[`FourPairCanonicalClassification.classification`](formal/SymmetricSubgroupAsymptotics/FourPairCanonicalClassification.lean)
+builds the four-pair certificates from the published action classification,
+and
+[`ActualGlobalMarkedMoment.marked_bound`](formal/SymmetricSubgroupAsymptotics/MarkedC4ActualGlobalMarkedMoment.lean)
+constructs the full marked moment from its fifteen explicit ordinary
+published inputs. Neither certificate-valued interface remains a project
+hypothesis of the current published-input T1 facade.
+
+That [facade](formal/SymmetricSubgroupAsymptotics/MarkedC4PublishedDegreeTwoT1.lean)
+still takes the project-owned degree-two source. Its eight-pair endpoint is
+now supplied by
+[`PairedEightActualRepresentativeSource`](formal/SymmetricSubgroupAsymptotics/PairedEightActualRepresentativeSource.lean),
+using only the existing published degree-eight classification, Zmud and
+character-literature inputs. It retains the literal pair action, every
+original normal denominator and all top-map fibres. The 527-entry source
+table is an alternative construction of this endpoint, not an additional
+T1 obligation. The remaining joint-catalogue entries, full six-pair source
+coverage and final degree-two composition must still be completed before
+claiming T1 with only published assumptions.
 
 Standard classical logical foundations are permitted. Unproved project
 lemmas, proof placeholders and hidden certificate-acceptance assumptions are

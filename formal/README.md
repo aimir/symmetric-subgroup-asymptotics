@@ -109,8 +109,9 @@ its input definitions; the [literature register](../provenance/LITERATURE.md)
 records the external sources. Fourteen final degree-four and complete
 one-frame-catalogue exports have standard-only axiom audits. All sixty-four
 original degree-two one-frame callbacks are also assembled. T1 remains open:
-the separate degree-two joint twelve-point, six-pair B6 and sixteen-point
-semantic coverage obligations are not implied by this degree-four result.
+the separate degree-two joint twelve-point and complete six-pair B6 source
+coverage obligations remain. The required eight-pair source endpoint is now
+proved by the uniform construction described below.
 
 The certificate-valued four-pair classification is now constructed by
 [`FourPairCanonicalClassification.classification`](SymmetricSubgroupAsymptotics/FourPairCanonicalClassification.lean).
@@ -136,8 +137,8 @@ thread the result into the F20 and earlier-owner numerical consumers.
 The twenty new modules pass current source/direct-dependency checks; nine
 final exports have standard-only axiom audits. This closes the marked-moment
 project obligation. T1 still requires the separate degree-two source covers;
-in particular, the semantic eight-pair outcome is not resolved merely by
-recognizing another pair frame.
+the eight-pair source is now closed by the separate joint top/module count
+and exact all-original-normal quotient construction described below.
 
 The checked composition endpoint
 [`T1_of_published_inputs_and_degreeTwoAffineSource`](SymmetricSubgroupAsymptotics/MarkedC4PublishedDegreeTwoT1.lean)

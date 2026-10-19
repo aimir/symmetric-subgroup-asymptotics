@@ -823,6 +823,84 @@ the constant and augmentation generators in one position. Literal
 embeddings transfer this bound to the larger signed dihedral actions;
 no list of invariant subspaces is required.
 
+\subsection{A uniform source for eight-pair actions}
+
+Write $s(b)=|\Sub(S_b)|$, $r_b=\lceil b/100\rceil$, and
+$\mathcal Z_U(J)=\sum_{N\lhd U}|\Epi(J,U/N)|$.
+The next estimate treats all original normal denominators at once.
+
+\begin{proposition}\label{prop:uniform-eight-pair-source}
+Let $U\leq S_{16}$ be transitive and nonbinary, with a specified system
+of eight two-point blocks. Then
+\begin{align*}
+ \sum_{J\leq S_b}\mathcal Z_U(J)
+ &\leq 2^{1216}2^{31b/16}s(b)\\
+ &\quad+2^{576}(b!)^{65560}2^{-51br_b/200}s(b+2r_b).
+\end{align*}
+The estimate retains every epimorphism to every original normal quotient.
+\end{proposition}
+\begin{proof}
+Let $K\lhd U$ be the actual binary block kernel and $T=U/K\leq S_8$.
+This top is transitive and nonbinary. The published degree-eight
+classification, together with the checked point conjugacies, identifies
+its actual permutation action with one of the twenty-four retained tops.
+The checked natural dual-module bound is $H=1$ for eighteen of them and
+$H=2$ for the other six. The latter six have orders
+$24,24,48,24,96,192$, respectively, so their odd part is exactly three.
+For every original $N\lhd U$, put
+\[
+ Q=U/N,\qquad V=KN/N,\qquad R=U/(KN).
+\]
+The exact $R$-module $V$ is a subquotient of the original binary
+permutation module. Its dual therefore has at most $H$ generators.
+No condition $N\leq K$ is imposed.
+
+Fix an onto top map $\theta:J\twoheadrightarrow R$, with kernel $F$.
+A lift to $Q$ is determined by its restriction to $F$ and by its values
+on lifts of a generating set of $R$. Evaluation on the $H$ dual
+generators bounds the equivariant restrictions by $2^{H d_2(F)}$.
+Thus the complete fibre has at most
+\[
+ |Q|^{\lfloor\log_2|R|\rfloor}\,2^{H d_2(F)}
+ \leq 2^{384}2^{H d_2(F)}
+\]
+elements. This uses $|Q|\leq2^{24}$ and $|R|\leq2^{16}$.
+On cold sources every such $F$ has $d_2(F)\leq51b/200$.
+
+Every quotient of every retained top has socle capacity at most two.
+Put $\gamma=\frac13\log_2 5$ and $\beta=\log_2(38/25)$.
+For binary $R$, the known-binary-source character certificate costs
+$2\beta b$. For nonbinary $R$ among the six $H=2$ tops, its odd
+part is three, so two faithful positions give one ordinary anchor
+with binary kernel and one relative position, costing
+$(\gamma+\beta)b$. The other eighteen tops use two ordinary positions.
+The three combined cold slopes are therefore
+\[
+ 2\beta+\frac{51}{100},\qquad
+ \gamma+\beta+\frac{51}{100},\qquad
+ 2\gamma+\frac{51}{200}.
+\]
+Each is at most $31/16$: it suffices to use
+$\gamma\leq7/9$ and $\beta\leq5/8$.
+The actual automorphism factor is at most $2^{256}$, giving cold
+coefficient $2^{640}$ on each original axis. There are at most
+$2^{576}$ original normal axes, since $|U|\leq2^{24}$.
+
+On a hot source retain a top map whose kernel $F$ has
+$d_2(F)>51b/200$. All its original coset representatives are counted.
+They cost at most $(b!)^{|R|}$, while the unrestricted target fibre
+costs at most $(b!)^{24}$. The binary rank-tail moment bounds the hot
+kernels by $2^{-51br_b/200}s(b+2r_b)$. Since $|R|\leq2^{16}$,
+the factorial power is at most $65560$. Summing the original axes
+gives the displayed hot coefficient and completes the estimate.
+\end{proof}
+
+The width-sixteen numerical consumer pays the cold coefficient inside
+the original menu envelope and the hot term through the proved rank-tail
+deficit, with the original pointing and normalizer divisor. This supplies
+the complete eight-pair source endpoint uniformly. A separate enumeration
+of degree-sixteen source certificates is unnecessary for this endpoint.
+
 \subsection{A source-summed cubic central extension}
 
 The following bound treats a central extension before choosing any
@@ -833,12 +911,7 @@ Suppose that a finite group $U$ maps onto $C_3$ with kernel $K$, and
 there is a homomorphism $a:K\to(\F_4,+)^d$ whose kernel $Z$ is central
 in $U$ and embeds in $C_2^c$. Assume $c,d\leq3$, and conjugation by
 a lift of a fixed generator of $C_3$ acts on $a(K)$ as multiplication
-by a primitive cube root in $\F_4$. Put
-\[
- r_b=\lceil b/100\rceil,\qquad
- \mathcal Z_U(J)=\sum_{N\lhd U}|\Epi(J,U/N)|.
-\]
-Then, writing $s(b)=|\Sub(S_b)|$,
+by a primitive cube root in $\F_4$. With the notation above,
 \begin{align*}
  \sum_{J\leq S_b}\mathcal Z_U(J)
  &\leq 2^{512}2^{381b/192}s(b)\\
