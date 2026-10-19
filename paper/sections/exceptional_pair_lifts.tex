@@ -1028,6 +1028,39 @@ $2^{288}+2^{256}\leq2^{289}$. Every normal axis and every source
 epimorphism has thus been retained.
 \end{proof}
 
+\begin{proposition}[A small three-block kernel]
+\label{prop:small-three-block-kernel-source}
+In the same physical three-block setting, suppose instead that the
+actual block kernel has order at most four. Then
+\[
+ \sum_{J\leq S_b}\mathcal Z_U(J)
+ \leq 2^{89}2^{43b/30}s(b)
+       +2^{25}(b!)^{11}2^{-51br_b/200}s(b+2r_b).
+\]
+The kernel need not be elementary abelian, and the extension need not split.
+\end{proposition}
+\begin{proof}
+The actual top $T$ is $C_3$ or $S_3$, so $|U|\leq24\leq2^5$
+and there are at most $2^{25}$ original normal subgroups. If
+$N\leq K$, the quotient has the same top and its kernel is a quotient
+of the original $K$, of binary order at most four. For each onto top
+map $\theta:J\twoheadrightarrow T$, retain $F=\ker\theta$ and all
+coset representatives. Maps in that fibre are determined by their
+restrictions $F\to K/(K\cap N)$ and these representatives. Their
+number is at most $|U/N|^{|T|}2^{2d_2(F)}$. The cold rank cutoff
+therefore gives slope at most $102/200+(\log_2 5)/3<43/30$.
+The hot sum costs at most $(b!)^{5+|T|}\leq(b!)^{11}$ times the
+binary kernel-marker tail.
+
+If $N\not\leq K$, its nontrivial normal top image contains the
+cubic subgroup. The residual top has order at most two. The same
+original quotient $U/N$ is therefore binary of order at most eight.
+Its direct binary-rank cutoff has cold slope at most $153/200$ and
+hot factorial power at most three. Uniformly, the cold coefficient
+per quotient is at most $2^{64}$. Summing over all original normals
+gives the displayed coefficients $2^{89}$ and $2^{25}$.
+\end{proof}
+
 \subsection{The twelve-pair actions}
 
 \begin{lemma}[A binary-primary prefix]\label{lem:binary-primary-prefix}
