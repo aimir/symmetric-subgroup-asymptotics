@@ -18,7 +18,12 @@ this version, not an unspecified later revision.
 * Theorem 1, p.1: an absolute B satisfies
   s_n <= 2^(n^2/16+B n^(3/2)) for n>1. This is the independent coarse bound
   used in hot moments and small-support estimates; it does not assume the new
-  sharp asymptotic.
+  sharp asymptotic. The exact quantitative Lean input for the completed
+  marked odd convolution is `OrdinarySubgroupUpper.PublishedTheoremOneUpper`
+  in `MarkedC4OrdinarySubgroupUpper.lean`; the nonnegative constant and
+  the zero/one point cases are proved internally. Its register alias is
+  **LIT-RDT-Theorem1-upper**. The weaker `FusionCoarseEstimate` is not used
+  to infer an unproved quantitative error term.
 * Theorem 2.8, p.6: for nonperfect G<=S_n, there exists a prime p dividing
   |G/G'| such that |G/G'|<=p^(n/p). In particular an actual permutation
   p-group P satisfies dim(P/Phi(P))<=floor(n/p). The general statement is
@@ -127,7 +132,13 @@ soluble encoding statements:
 
 In the marked C4 application the maps and marks must be counted through these
 encodings on the same source group. The unmarked reduction alone is not a
-marked-moment theorem.
+marked-moment theorem. The project-owned marked part is now constructed in
+`MarkedC4ActualGlobalMarkedMoment.marked_bound`: it takes fifteen named
+ordinary inputs, enumerates the actual original normal histories and word
+skeletons, and retains one global Hall polynomial. Its F20 and earlier-owner
+adapters no longer require `RDTMarkedC4ReductionInput`. The complete
+fifteen-input list, formulations and linked definitions are in the formal
+README. Degree-two catalogue/source coverage remains a separate obligation.
 
 **LIT-ORDER-COUNT — journal article.** Marco Fusari and Pablo Spiga,
 *On the maximum number of subgroups of a finite group*, J. Algebra 635 (2023),
