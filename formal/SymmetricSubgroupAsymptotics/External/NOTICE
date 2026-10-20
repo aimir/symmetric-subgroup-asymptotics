@@ -1,0 +1,20 @@
+Selected external Lean proofs
+
+Burnside port:
+  Ian Klatzco and Rado Kirov, odd-order-lean.
+  https://github.com/ianklatzco/odd-order-lean
+  Source revision: 22f7b889b7919c0487057b928079b79baf4f2e00
+  Selected public benchmark modules: ClassFunction, ClassSum, CharacterArith,
+  SchurZassenhaus, Burnside.
+  Copyright notices in each source are preserved.
+  License: Apache License 2.0; see LICENSE-APACHE-2.0.txt.
+  Changes: local import paths and compatibility repairs for pinned Lean 4.30.
+
+Clifford port:
+  Qiuzhen-CFSG/CFSG contributors, FormaTheoria finite-group development.
+  https://github.com/Qiuzhen-CFSG/CFSG
+  Source revision: 96b2a02085dc678f3e0a97b334c31ada599c55fd
+  Selected Theory/Representation modules: RepMap, RepEquiv,
+  SubrepresentationLattice, Isotypic, ConjugateRep, Clifford.
+  License: Apache License 2.0; see LICENSE-APACHE-2.0.txt.
+  Changes: local imports and pinned Lean 4.30 compatibility repairs.
