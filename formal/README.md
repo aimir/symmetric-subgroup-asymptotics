@@ -132,13 +132,13 @@ outside the publication repository.
 
 The final exports are
 [T1_of_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
-and `allTargets_of_published_inputs`. Their **27 named inputs** are listed
+and `allTargets_of_published_inputs`. Their **25 named inputs** are listed
 below. The character bundle has one published general class-number field. Both
 abelian-quotient statements are now supplied by checked proofs. These are explicit theorem parameters,
 not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
-Fifteen formerly external facts are now supplied by checked proofs on the
+Seventeen formerly external facts are now supplied by checked proofs on the
 same pinned toolchain:
 
 | Proved result | Export and proof source |
@@ -158,6 +158,8 @@ same pinned toolchain:
 | t ambient normal generators of the actual socle yield t jointly faithful finite irreducible complex representations. | [`zmudFaithfulCharacterTupleInput_proved`](SymmetricSubgroupAsymptotics/ZmudFaithfulCharacterProof.lean), through primary semisimple duality, coinduction and injected irreducible constituents. The empty tuple and arbitrary nonsoluble groups are included. |
 | The bounded-factor ordinary epimorphism estimate retains every actual normal target F and the original derived-normal projection kernel. | [`rdtTheorem46BinaryInput_proved`](SymmetricSubgroupAsymptotics/RDTBoundedFactorEpimorphismProof.lean), from short adapted tuples and joint kernel incidence; its constants depend only on the factor-order bound. |
 | A nilpotent permutation group of faithful degree-n has at most (38/25)^n conjugacy classes. | [`nilpotentConjugacyClassInput`](SymmetricSubgroupAsymptotics/NilpotentConjugacyClassProof.lean), using proved binary, ternary and large-prime fourth-power bounds and actual disjoint coprime supports. All sharp character consumers are unchanged. |
+| If N is normal in a transitive binary permutation group and N≤G′, its ambient normal-generator number is at most floor(n/4). | [`publishedDerivedNormalQuarterBinary_proved`](SymmetricSubgroupAsymptotics/BinaryDerivedNormalQuarterProof.lean), by original-degree induction through actual central-pair kernels and faithful top images. The nonelementary top has a proved quarter-module bound; an elementary top kills the derived image. No excess classification is assumed. |
+| O'Nan–Scott structure: a finite faithful primitive action is affine, or its full socle is T^k with the exact degree alternatives and a faithful original quotient embedding into Out(T) ≀ S_k. | [`publishedONanScottStructure`](SymmetricSubgroupAsymptotics/PrimitiveSocleRawONanScottProof.lean), from actual minimal normals, the proved Scott subdirect theorem, point-stabilizer maximality, coordinate automorphisms and the exact inner kernel. Both minimal normals are retained in the two-regular case. No simple-group classification is assumed for this structural theorem. |
 
 These proved results, both final exports, the T1-to-T2/T3 transfers and the
 definition checks have standard-only axiom audits. Historical lower-level
@@ -196,13 +198,13 @@ Kovács–Praeger parameter is now filled by the proved full abelianization
 theorem.
 
 The separate Dixon order input is also removed. [`dixonOrder_of_primitive_inputs`](SymmetricSubgroupAsymptotics/SolublePermutationOrderBound.lean)
-derives `|G| ≤ 24^(n/3)` from the retained `compositionCatalogue`,
-`hONanScott`, and `hSolubleBase`. The primitive step proves the stronger
+derives `|G| ≤ 24^(n/3)` from the retained `compositionCatalogue` and
+`hSolubleBase`, together with the now-proved O'Nan–Scott structure. The primitive step proves the stronger
 integer inequality `|G|³ ≤ 24^(n−1)`: bounded rows are checked numerically,
 while large soluble affine actions have `|G| ≤ n⁴`. Actual minimal-block
 wreath embeddings and orbit images complete the induction. This is a
-proved dependency reduction; the three broader published inputs remain
-explicit. It does not claim a formal proof of Halasi–Maróti or O'Nan–Scott.
+proved dependency reduction; the two broader published inputs remain
+explicit. It does not claim a formal proof of Halasi–Maróti.
 
 Two further input reductions use weaker or already retained results.
 [`publishedProposition62_of_retained_inputs`](SymmetricSubgroupAsymptotics/LargeOrbitGeneratorConsequencesFinal.lean)
@@ -252,7 +254,6 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [h55 : PublishedTheorem55Binary](SymmetricSubgroupAsymptotics/MarkedC4RDTOriginalWordStructure.lean) | Actual bounded binary subdirect word, dependent/tail degrees: normal-generation bounds3x/8+y/2,5x/16+y/2,x/4+y/2 with exact excess exclusions. | RDT Thm5.5(ii) p17. |
 | [h53 : ActualCaseIITargetStructure.PublishedProposition53Binary](SymmetricSubgroupAsymptotics/MarkedC4ActualCaseIITargetStructure.lean) | Binary excess classification: excess1/2, degree≤32; exact excess2 degrees and excess1 normal restrictions. | RDT Prop5.3(i) p16. |
 | [h57 : RDTExcessStructure.PublishedTheorem57Binary](SymmetricSubgroupAsymptotics/MarkedC4RDTExcessStructure.lean) | Actual nonabelian normal quotient admits normal F with logcard([F,Q])+e logcard(C_Q(F))≤n/2 and centralizer log≤n/4, exact branch e and generator equality. | RDT Thm5.7 pp18–19. |
-| [hderived : RDTDerivedNormalQuarter.PublishedDerivedNormalQuarterBinary](SymmetricSubgroupAsymptotics/MarkedC4RDTDerivedNormalQuarter.lean) | Nonabelian transitive binary G, degree n>2, normal N≤G′: d_G(N)≤n/4. | RDT Prop5.3(i), used in Thm5.5(iii) proofp17. |
 | [hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper](SymmetricSubgroupAsymptotics/MarkedC4OrdinarySubgroupUpper.lean) | ∃β, s_n≤2^(n²/16+βn√n), n>1. | RDT Thm1 p1. Strong quantitative coarse bound, not merely an asymptotic main term. |
 | [hAG : PublishedAschbacherGuralnickSolubleGeneration](SymmetricSubgroupAsymptotics/MarkedC4AschbacherGuralnickSolubleGeneration.lean) | Every finite group generated by a soluble subgroup and one element. | Aschbacher–Guralnick, J.Algebra77 (1982),189–201; RDT Thm8.4 p32. Ambient-recovery field internal. |
 | [hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput](SymmetricSubgroupAsymptotics/TraceyCorollaryThreeTwelveRaw.lean) | Exceptional degree3·2^m action has actual soluble subgroup and full binomial orbit partition, Mersenne exponent≥3. | TR Cor3.12 p17 PLUS preceding nonabelian PSL₂(p) construction Thm1.8/Cor3.11 excluding p=3. Cor3.12 alone is insufficient for exponent≥3. |
@@ -265,7 +266,6 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [hSimpleGen : FiniteSimpleTwoGeneratorBound](SymmetricSubgroupAsymptotics/ActualWreathSemisimpleCoefficient.lean) | Every finite centerless simple group has≤2 generators. | Guralnick–Kantor, Journal of Algebra 234 (2000), Theorem I, p.744 and Corollary p.745; LIT-SIMPLE-2GEN. |
 | [smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification](SymmetricSubgroupAsymptotics/SmallAffineCatalogueDegreeEightConsequences.lean) | Actual affine complement in degree16/27 is isomorphic to one of the fixed31 named carriers. Degree8 is proved internally from complete GL(3,2) subgroup coverage. | Roney-Dougal–Unger2003 plus pinned PrimGrp3.4.4. Solvability/chief-saving and exact maxima are constructed, not supplied. |
 | [hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound](SymmetricSubgroupAsymptotics/PrimitiveAffinePublishedSmallStructuralInput.lean) | Faithful irreducible soluble linear G on V over prime field has card(G)≤card(V)³. | corollary; Halasi–Maróti, ProcAMS144 (2016),3231–3242, Thm1.1 authorp2 strong-base≤3. LIT-AFFINE-BASE. |
-| [hONanScott : PrimitiveSocleRawStructure.PublishedONanScottStructure](SymmetricSubgroupAsymptotics/PrimitiveSocleRawONanScott.lean) | An actual finite faithful primitive action has either a regular normal prime-power subgroup (elementary abelian by primitive affine structure), or its full socle is T^k with an actual quotient embedding into Out(T) ≀ S_k and the exact proper-index/order degree alternatives. No numerical compression bound. | Liebeck–Praeger–Saxl 1988, §1 pp.390–392 and theorem p.392; LIT-ONAN-SCOTT. Includes both minimal normals in the two-regular-socle cases. |
 | [hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds](SymmetricSubgroupAsymptotics/PrimitiveSocleRawSimpleIndex.lean) | For the actual least proper subgroup index ℓ of a finite nonabelian simple T: ℓ² < card(T) and card(Out(T)) ≤ 3 log₂ ℓ. | Ballester-Bolinches–Esteban-Romero–Jiménez-Seral, Theorem A(4), p.4 of arXiv:2203.16976v2; LIT-SIMPLE-INDEX. The bound ℓ ≥ 5 and all profile deductions are internal. |
 | [catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence](SymmetricSubgroupAsymptotics/PrimitiveCatalogueClassificationPublished.lean) | Bare faithful primitive degree5–29 correspondence, actual group/socle exact orders and one-factor structural match. | PRIM degree5–29 pinned116 retained rows; inequality2outer≤degree kernel-checked internally. |
 | [hTraceySoluble : TraceySolubleOrbitInducedModuleInput](SymmetricSubgroupAsymptotics/TraceySolubleOrbitInducedInput.lean) | Actual soluble subgroup, actual2-complement, local dual nonzero-orbit count and all actual N-orbit E_sol bounds give induced submodule generators. | specialization; TR Thm4.24(ii)(b), Cor4.25(ii)(b), H₁=H,F₂. Keep both exact locators; this is not merely Thm1.6 coarse formula. |
@@ -282,8 +282,9 @@ The small-affine parameter therefore retains only degrees16 and27; it has
 31 remaining rows. This is a scope reduction, not a claim that the full
 eight-point transitive-action classification is proved.
 
-The quantitative `PublishedPrimitiveSocleDichotomyInput` is constructed by
-`PublishedONanScottStructure.toSocleDichotomy`; it is not an additional
+The quantitative `PublishedPrimitiveSocleDichotomyInput` is constructed from
+the proved `publishedONanScottStructure` and the retained `hSimpleIndex`;
+neither raw O'Nan–Scott structure nor the quantitative profile is an additional
 parameter here. Likewise the complete small-affine receipt, degree-25
 scalar datum and chief bound, exceptional Tracey `5/16` deduction, actual
 Clifford restriction and faithfulness, Burnside solvability, the binary normal-subgroup bound, projective-three simplicity and the projective-five isomorphism, the degree-five affine classification, all low-degree source data, marked-C₄ moment, and

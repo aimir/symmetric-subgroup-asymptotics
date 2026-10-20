@@ -109,6 +109,10 @@ from the same version. These are separate from the coarse subgroup count.
   proposition gives the normal-pair exceptions, and also the odd-prime
   n/(2p) and 2n/p^2 alternatives. These classification conclusions, not
   merely sample computations, enter the rank endpoints and marked C4 case.
+  The separate derived-normal quarter consequence is now proved in
+  `BinaryDerivedNormalQuarterProof.lean` by induction through actual
+  central-pair kernels and faithful top images, without assuming the
+  excess classification. Its original interface is filled internally in T1.
 * **Dependent factors:** Theorem 5.5, pp.17–18. For a full subdirect word
   with a maximal fully independent tail, let x and y be the degrees before
   and in that tail. For normal N the binary bounds are
@@ -619,13 +623,19 @@ primitive permutation groups*, Journal of the Australian Mathematical
 Society, Series A 44(3) (1988), 389–396,
 [DOI](https://doi.org/10.1017/S144678870003216X).
 The classification in §1, pp.390–392, and theorem on p.392 give the full
-socle and its action types. The exact Lean boundary is
+socle and its action types. The exact Lean interface is
 `PrimitiveSocleRawStructure.PublishedONanScottStructure` in
 `PrimitiveSocleRawONanScott.lean`: the actual full socle is a homogeneous
 simple power, the actual quotient embeds in the outer-automorphism wreath
 product, and the action degree has the stated proper-index or order-power
 form. Both minimal normals are retained in the two-regular cases. No
-logarithmic compression or capacity is supplied by this input. The faithful
+logarithmic compression or capacity is supplied by this interface. It is now
+proved by `PrimitiveSocleRawStructure.publishedONanScottStructure` in
+`PrimitiveSocleRawONanScottProof.lean`, using actual minimal normals, the
+proved Scott subdirect theorem, primitive point stabilizers, and the exact
+inner kernel of the simple-power automorphism action. It is supplied
+internally to T1; this reference records its mathematical provenance.
+The faithful
 permutation compression, one-factor exact quotient order, and all numerical
 consequences are proved in `PrimitiveSocleRawProfile.lean` and assembled by
 `PrimitiveSocleRawDichotomy.lean`.
@@ -799,11 +809,11 @@ for these two slices; the larger catalogue inputs remain explicit.
 **Dixon input derived from retained primitive inputs.**
 `SolublePermutationOrderProof.dixonOrder_of_primitive_inputs` proves the
 ordinary order inequality from the retained bounded composition catalogue,
-raw O'Nan–Scott structure and Halasi–Maróti soluble linear cube bound.
+the proved raw O'Nan–Scott structure and retained Halasi–Maróti soluble linear cube bound.
 These are not assumed order estimates on an arbitrary soluble permutation
 group. The proof checks bounded primitive orders, gives the large affine
 bound `|G| ≤ n⁴`, and then uses actual minimal-block wreath embeddings and
-actual orbit images. Only those three broader published premises remain;
+actual orbit images. Only the catalogue and soluble linear cube premises remain;
 no separate Dixon assumption is requested by the final facade.
 
 
