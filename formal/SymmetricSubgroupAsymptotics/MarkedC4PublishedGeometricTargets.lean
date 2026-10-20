@@ -17,14 +17,15 @@ import SymmetricSubgroupAsymptotics.PrimitiveDegreeNineFromCompositionCatalogue
 import SymmetricSubgroupAsymptotics.PrimitiveDegreeSixCatalogueClassification
 import SymmetricSubgroupAsymptotics.TraceyPermutationFormulaConsequences
 import SymmetricSubgroupAsymptotics.TraceySolublePermutationConsequences
-import SymmetricSubgroupAsymptotics.SolublePermutationOrderBound
+import SymmetricSubgroupAsymptotics.ElementaryDixonOrderBound
 import SymmetricSubgroupAsymptotics.SolubleSubdirectSocleHeight
 import SymmetricSubgroupAsymptotics.DegreeSixThreePairClassificationProof
 import SymmetricSubgroupAsymptotics.DegreeSixThreeByTwoClassificationProof
 import SymmetricSubgroupAsymptotics.CharacterLiteratureProvedBinary
 import SymmetricSubgroupAsymptotics.RDTDegreeEightExceptionalProof
 import SymmetricSubgroupAsymptotics.BoundedCoreSubquadraticContainersGlobal
-import SymmetricSubgroupAsymptotics.T1CatalogueFromMarkedMoment
+import SymmetricSubgroupAsymptotics.T1CatalogueFromFinitePackage
+import SymmetricSubgroupAsymptotics.PrimitiveAffineEightyOneFromComposition
 import SymmetricSubgroupAsymptotics.LargeOrbitGeneratorConsequencesFinal
 import SymmetricSubgroupAsymptotics.ZmudFaithfulCharacterProof
 import SymmetricSubgroupAsymptotics.RDTBoundedFactorEpimorphismProof
@@ -51,7 +52,7 @@ bound is proved through prime-group fourth-power estimates and actual coprime
 support compression.
 Soluble subdirect socle height and both degree-six block classifiers are
 proved internally. Dixon's order estimate is derived from the retained
-bounded catalogue and soluble linear cube bound, using the proved raw
+bounded catalogue and elementary affine counting, using the proved raw
 O'Nan--Scott structure of the actual full socle.
 The binary abelian-quotient theorem and the degree-eight binary exception
 are proved internally. The container menu uses the retained subquadratic
@@ -66,6 +67,8 @@ The original-word theorem follows internally from the retained exact excess
 classification and the proved proper-normal ceiling.
 The bounded-orbit nilpotent-core construction supplies the marked moment
 without the sharper unrestricted Theorem Seven input.
+The degree-81 finite complement budget follows from the retained composition
+length theorem; elementary affine counting supplies Dixon without a linear-base input.
 See formal/README.md. -/
 set_option autoImplicit false
 noncomputable section
@@ -91,7 +94,6 @@ theorem T1_of_published_inputs
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification)
-    (hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound)
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
     (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
     (hTraceySoluble : TraceySolubleOrbitInducedModuleInput)
@@ -109,22 +111,29 @@ theorem T1_of_published_inputs
   have publishedSix :=
     DegreeSixThreeByTwoClassificationProof.publishedDegreeSixThreeByTwoAffineClassification
   have publishedThree := DegreeSixThreePairClassificationProof.representativeClassification
-  have hDixon := SolublePermutationOrderProof.dixonOrder_of_primitive_inputs
-    compositionCatalogue hONanScott hSolubleBase
+  have hDixon := ElementaryDixonOrderProof.dixonOrder_of_primitive_inputs
+    compositionCatalogue hONanScott
+  let smallClassification : SmallAffineCanonicalRepresentatives.PublishedClassification :=
+    SmallAffineCatalogueDegreeEightConsequences.published_of_remaining smallAffineCatalogue
+  let publishedSmall : PublishedPrimitiveAffineSmallCatalogueData := {
+    locator := SmallAffineCanonicalRepresentatives.locator smallClassification
+    representativeFacts := SmallAffineCanonicalRepresentatives.receipt
+      smallClassification ProjectiveThreeSimplicity.proved burnsideTwoPrimeSolvability }
+  let publishedFinite := publishedPrimitiveAffineFiniteInput_of_structural publishedSmall
+    (DegreeTwentyFiveActualProjectiveData.publishedDegreeTwentyFiveLinearData
+      burnsideTwoPrimeSolvability PGLTwoFiveIsomorphism.publishedProjectiveIsomorphism)
+    (primitiveAffineEightyOne_complement_le_cube hcomp)
+    (degreeFiveSource_of_publishedClassification DegreeFiveAffineClassification.classification)
   have h8 := RDTDegreeEightExceptionalProof.publishedDegreeEightExceptional
   have h62 := LargeOrbitGeneratorConsequences.publishedProposition62_of_retained_inputs
     hPrimitiveGen hTraceyRefined hcomp
   have hM4 := BoundedCoreSubquadraticContainersGlobal.marked_bound
     fullLit.kovacsPraeger fullLit.kovacsPraegerBinary h55 h53 h57 h8 hderived
     rdt46 hodd h62 hLMM hDixon hAG
-  exact T1_of_globalMarkedMoment_and_catalogues fullLit hM4 hZmud hcomp hodd
+  exact T1_of_globalMarkedMoment_and_finitePackage fullLit hM4 hZmud hcomp hodd
     hExceptionalOrbits compositionCatalogue hPrimitiveGen strictCatalogue hLMM
     hTraceyRefined hTraceyPerm hSimpleGen
-    (PublishedPrimitiveAffineFiniteLiterature.ofCanonicalClassifications
-      (SmallAffineCatalogueDegreeEightConsequences.published_of_remaining smallAffineCatalogue)
-      ProjectiveThreeSimplicity.proved burnsideTwoPrimeSolvability
-      PGLTwoFiveIsomorphism.publishedProjectiveIsomorphism hSolubleBase
-      DegreeFiveAffineClassification.classification)
+    publishedSmall publishedFinite
     (hONanScott.toSocleDichotomy hSimpleIndex) catalogue hTraceySoluble hMN
     publishedSix published8 published16 publishedThree publishedTwelve
 
@@ -145,7 +154,6 @@ theorem allTargets_of_published_inputs
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification)
-    (hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound)
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
     (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
     (hTraceySoluble : TraceySolubleOrbitInducedModuleInput)
@@ -159,7 +167,7 @@ theorem allTargets_of_published_inputs
     hodd hAG hExceptionalOrbits compositionCatalogue
     hPrimitiveGen strictCatalogue hLMM
     hTraceyRefined hTraceyPerm
-    hSimpleGen smallAffineCatalogue hSolubleBase
+    hSimpleGen smallAffineCatalogue
     hSimpleIndex catalogue hTraceySoluble hMN
     published8 published16 publishedTwelve)
 

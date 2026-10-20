@@ -260,10 +260,13 @@ socle quotients. Both degree-six block classifications are also proved
 unconditionally through explicit faithful wreath charts: the three-pair
 and two-triple interfaces no longer require published catalogue inputs.
 Their original source predicates and retained action data are unchanged.
-The standalone Dixon order bound is derived from the already retained
-primitive catalogue and soluble irreducible linear cube bound, together with
-the proved O'Nan–Scott structure, followed by actual block and orbit induction.
-Those two premises remain explicit; this is a dependency reduction for Dixon's bound.
+The standalone Dixon order bound is derived from the retained primitive
+catalogue and the proved O'Nan–Scott structure. Its large affine step now
+uses elementary linear-map counting, followed by actual block and orbit
+induction. The soluble irreducible linear cube premise is also removed:
+the degree-81 complement bound follows from the retained primitive
+composition theorem, the exact GL₄(F₃) order and a checked prime-factor
+budget. Neither consumer uses the general Halasi–Maróti theorem.
 
 The full order bound for abelian p-quotients is now proved from faithful
 p-group actions and actual Sylow restriction. It includes higher prime-power
@@ -324,13 +327,13 @@ The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-23-parameter mathematical boundary, with formulations and source locators,
+22-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
 correspondences remain assumptions. On 20 October 2026 the recursive
-source/object audit passed for all 6,136 project modules in the public
+source/object audit passed for all 6,141 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.

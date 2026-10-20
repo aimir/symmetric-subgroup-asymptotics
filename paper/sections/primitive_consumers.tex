@@ -158,16 +158,24 @@ Clifford-theoretic assertion is used.
 Hence $Z_J(R)\leq D_R2^{(\log78)b/2}$, with
 $(\log78)/2<26/8$.
 
-In every other odd prime-power degree, the base-size theorem
-\cite[Theorem 1.1]{HalasiMaroti2016} gives
-$|R|\leq w^2$ for $p\geq5$ and $|R|\leq w^3$ for $p=3$.
-Its complete-reducibility and $p$-solubility hypotheses follow
-from irreducibility and solubility here. The remaining ranges
-start at $w=49$ and $81$. The inequalities
-$49^8<2^{48}$ and $81^{12}<2^{80}$, and monotonicity of
-$w-1-8\log w$ and $w-1-12\log w$, give
-$\log|R|/2<(w-1)/8$ in both ranges. The fixed-target ordinary
-generator envelope applies as before.
+For the remaining odd prime-power degrees, elementary linear-map
+counting gives $|R|\leq p^{d^2}$ when $w=p^d$. At $w=49$, this is
+$|R|\leq49^2$. At $w=81$, apply the primitive composition-length theorem
+\cite[Theorem 1.3]{GlasbyPraegerRosaVerret2018} to $G=V\rtimes R$. Solubility makes every
+composition factor cyclic of prime order, and
+\[
+ c(G)\leq (8/3)\log81-4/3<16.
+\]
+Thus $\Omega(|R|)\leq11$, where $\Omega$ counts prime factors with
+multiplicity. The actual complement embeds into $\GL_4(3)$, whose order is
+$24261120=2^9 3^6\cdot5\cdot13$. Checking its divisors with at most eleven
+prime factors gives $|R|\leq81^3$. These are finite integer inequalities,
+not a soluble linear base-size assumption. The inequalities
+$49^8<2^{48}$ and $81^{12}<2^{80}$ give the required strict physical gaps.
+For all other remaining pairs $(p,d)$ below the large-degree cutoff,
+the elementary bound $p^{d^2}$ gives the gap directly; the previously
+proved large-degree capacity estimates handle the infinite range.
+The fixed-target ordinary generator envelope applies as before.
 
 These cases exhaust the finite set of action classes. Every
 pointwise exponent has a strict physical gap; every comparator
