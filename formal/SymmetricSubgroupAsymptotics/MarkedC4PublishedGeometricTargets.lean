@@ -29,6 +29,8 @@ import SymmetricSubgroupAsymptotics.LargeOrbitGeneratorConsequencesFinal
 import SymmetricSubgroupAsymptotics.ZmudFaithfulCharacterProof
 import SymmetricSubgroupAsymptotics.RDTBoundedFactorEpimorphismProof
 import SymmetricSubgroupAsymptotics.SmallAffineCatalogueDegreeEightConsequences
+import SymmetricSubgroupAsymptotics.BinaryDerivedNormalQuarterProof
+import SymmetricSubgroupAsymptotics.PrimitiveSocleRawONanScottProof
 
 /-! Target composition from the explicit current mathematical inputs.
 The degree-eight small-affine complement classification is proved from
@@ -48,7 +50,8 @@ bound is proved through prime-group fourth-power estimates and actual coprime
 support compression.
 Soluble subdirect socle height and both degree-six block classifiers are
 proved internally. Dixon's order estimate is derived from the retained
-primitive structure, bounded catalogue, and soluble linear cube bound.
+bounded catalogue and soluble linear cube bound, using the proved raw
+O'Nan--Scott structure of the actual full socle.
 The binary abelian-quotient theorem and the degree-eight binary exception
 are proved internally. The container menu uses the retained subquadratic
 transitive count; the stronger Pyber representative estimate is unnecessary.
@@ -56,6 +59,8 @@ The large-orbit soluble generator theorem is derived from the retained
 primitive normal-generator, composition-length and refined Tracey inputs.
 The arbitrary-normal-target bounded-factor epimorphism theorem is proved
 from joint kernel incidence and short adapted original generating tuples.
+The derived-normal quarter bound is proved by original pair-kernel degree
+induction, independently of the excess classification.
 See formal/README.md. -/
 set_option autoImplicit false
 noncomputable section
@@ -72,7 +77,6 @@ theorem T1_of_published_inputs
     (h55 : PublishedTheorem55Binary)
     (h53 : ActualCaseIITargetStructure.PublishedProposition53Binary)
     (h57 : RDTExcessStructure.PublishedTheorem57Binary)
-    (hderived : RDTDerivedNormalQuarter.PublishedDerivedNormalQuarterBinary)
     (hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper)
     (hAG : PublishedAschbacherGuralnickSolubleGeneration)
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
@@ -85,7 +89,6 @@ theorem T1_of_published_inputs
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification)
     (hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound)
-    (hONanScott : PrimitiveSocleRawStructure.PublishedONanScottStructure)
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
     (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
     (hTraceySoluble : TraceySolubleOrbitInducedModuleInput)
@@ -97,6 +100,8 @@ theorem T1_of_published_inputs
   let fullLit := lit.toLiterature
   have hZmud := zmudFaithfulCharacterTupleInput_proved
   have rdt46 := RDTBoundedFactorEpimorphismProof.rdtTheorem46BinaryInput_proved
+  have hderived := publishedDerivedNormalQuarterBinary_proved
+  have hONanScott := PrimitiveSocleRawStructure.publishedONanScottStructure
   have hsub := publishedSolubleSubdirectHeight
   have publishedSix :=
     DegreeSixThreeByTwoClassificationProof.publishedDegreeSixThreeByTwoAffineClassification
@@ -128,7 +133,6 @@ theorem allTargets_of_published_inputs
     (h55 : PublishedTheorem55Binary)
     (h53 : ActualCaseIITargetStructure.PublishedProposition53Binary)
     (h57 : RDTExcessStructure.PublishedTheorem57Binary)
-    (hderived : RDTDerivedNormalQuarter.PublishedDerivedNormalQuarterBinary)
     (hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper)
     (hAG : PublishedAschbacherGuralnickSolubleGeneration)
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
@@ -141,7 +145,6 @@ theorem allTargets_of_published_inputs
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification)
     (hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound)
-    (hONanScott : PrimitiveSocleRawStructure.PublishedONanScottStructure)
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
     (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
     (hTraceySoluble : TraceySolubleOrbitInducedModuleInput)
@@ -151,12 +154,12 @@ theorem allTargets_of_published_inputs
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     : AllTargets := by
   exact allTargets_iff_T1.mpr (T1_of_published_inputs
-    lit hcomp hseven h55 h53 h57 hderived
+    lit hcomp hseven h55 h53 h57
     hodd hAG hExceptionalOrbits compositionCatalogue
     hPrimitiveGen strictCatalogue hLMM
     hTraceyRefined hTraceyPerm
     hSimpleGen smallAffineCatalogue hSolubleBase
-    hONanScott hSimpleIndex catalogue hTraceySoluble hMN
+    hSimpleIndex catalogue hTraceySoluble hMN
     published8 published16 publishedTwelve)
 
 

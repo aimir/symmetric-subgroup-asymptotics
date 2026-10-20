@@ -210,8 +210,8 @@ at the updated geometric target facade.
 
 The quantitative `PublishedPrimitiveSocleDichotomyInput` is now constructed
 by `PrimitiveSocleRawStructure.PublishedONanScottStructure.toSocleDichotomy`.
-Its inputs are ordinary O'Nan–Scott full-socle/degree structure and the two
-published simple-index inequalities of Ballester-Bolinches,
+The ordinary O'Nan–Scott full-socle/degree structure is now proved internally;
+the remaining inputs are the two published simple-index inequalities of Ballester-Bolinches,
 Esteban-Romero and Jiménez-Seral. Least-index selection, the lower bound
 five, the faithful outer-wreath action, all numerical degree/logarithm
 deductions, and the exact original one-factor quotient are proved
@@ -261,9 +261,9 @@ unconditionally through explicit faithful wreath charts: the three-pair
 and two-triple interfaces no longer require published catalogue inputs.
 Their original source predicates and retained action data are unchanged.
 The standalone Dixon order bound is derived from the already retained
-primitive catalogue, O'Nan–Scott structure and soluble irreducible linear
-cube bound, followed by actual block and orbit induction. These last three
-premises remain explicit; this is a dependency reduction for Dixon's bound.
+primitive catalogue and soluble irreducible linear cube bound, together with
+the proved O'Nan–Scott structure, followed by actual block and orbit induction.
+Those two premises remain explicit; this is a dependency reduction for Dixon's bound.
 
 The full order bound for abelian p-quotients is now proved from faithful
 p-group actions and actual Sylow restriction. It includes higher prime-power
@@ -277,6 +277,16 @@ epimorphism theorem are also proved internally; neither is a T1 assumption.
 The degree-eight affine-complement locator is proved from complete checked
 coverage of the15 actual GL(3,2) subgroup classes. Its remaining catalogue
 parameter requests only the31 fixed complement rows in degrees16 and27.
+
+The derived-normal quarter bound is proved by original-degree induction
+through the actual central-pair kernel and faithful top image. Its kernel
+quarter estimate for a nonelementary top is proved uniformly; an elementary
+top kills the derived image. This does not assume binary excess classification.
+The raw O'Nan–Scott theorem is proved from actual minimal normals, faithful
+primitive point stabilizers, the proved Scott subdirect theorem, and the
+exact automorphism/inner-kernel structure of simple powers. It retains the
+full socle and the original quotient embedding. Neither theorem remains a
+parameter of the final exports.
 
 The degree-eight binary excess-two implication is proved by complete checked
 coverage of all 26 binary actions. The other 25 actions have at most three
@@ -300,13 +310,13 @@ The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-27-parameter mathematical boundary, with formulations and source locators,
+25-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
 correspondences remain assumptions. On 20 October 2026 the recursive
-source/object audit passed for all 6,066 project modules in the public
+source/object audit passed for all 6,090 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.
