@@ -7,6 +7,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleRawDichotomy
 import SymmetricSubgroupAsymptotics.PermutationGeneratorBoundFromMcIverNeumann
 import SymmetricSubgroupAsymptotics.BurnsideTwoPrimeSolvability
 import SymmetricSubgroupAsymptotics.CliffordRestriction
+import SymmetricSubgroupAsymptotics.BinaryNormalSubgroupBound
 
 /-! Target composition from the explicit current mathematical inputs.
 Every low-degree source and the degree-sixteen geometric cover is assembled
@@ -71,7 +72,7 @@ theorem T1_of_published_inputs
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
     (publishedThree : PublishedDegreeTwoThreePairRepresentativeClassification)
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
-    (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 := by
+    : T1 := by
   let socle := hONanScott.toSocleDichotomy hSimpleIndex
   have hgen := permutationSubgroupGeneratorBound_of_mcIverNeumann hMN
   exact T1_of_published_inputs_and_sixteenPairSource
@@ -86,7 +87,7 @@ theorem T1_of_published_inputs
     socle catalogue hTraceySoluble hMN
     publishedSix published8 published16 publishedThree publishedTwelve
     (DegreeSixteenCompleteGeometricSource.residualSource
-      published8 published16 socle hMN hZmud lit) hFS
+      published8 published16 socle hMN hZmud lit) fusariSpigaBinaryNormalSubgroup
 
 /-- The same published inputs imply all three approved asymptotic targets. -/
 theorem allTargets_of_published_inputs
@@ -135,7 +136,7 @@ theorem allTargets_of_published_inputs
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
     (publishedThree : PublishedDegreeTwoThreePairRepresentativeClassification)
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
-    (hFS : FusariSpigaBinaryNormalSubgroupInput) : AllTargets := by
+    : AllTargets := by
   exact allTargets_iff_T1.mpr (T1_of_published_inputs
     lit hZmud hcomp hsub hseven h55 h53 h57 h8 hderived
     rdt46 hodd h62 h86 hDixon hAG hTracey hSolubleFormula hExceptionalOrbits compositionCatalogue
@@ -143,7 +144,7 @@ theorem allTargets_of_published_inputs
     hHoltRoneyDougal hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
     hSimpleGen smallAffineCatalogue hPSLThree hProjectiveFive hSolubleBase hAffineFive
     hONanScott hSimpleIndex catalogue hTraceySoluble hMN
-    publishedSix published8 published16 publishedThree publishedTwelve hFS)
+    publishedSix published8 published16 publishedThree publishedTwelve)
 
 
 end SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu

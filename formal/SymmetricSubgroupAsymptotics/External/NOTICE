@@ -18,3 +18,11 @@ Clifford port:
   SubrepresentationLattice, Isotypic, ConjugateRep, Clifford.
   License: Apache License 2.0; see LICENSE-APACHE-2.0.txt.
   Changes: local imports and pinned Lean 4.30 compatibility repairs.
+
+Sharp subgroup interval bound port:
+  Sébastien Palcoux and Pablo Spiga, sharp-intermediate-subgroup-bounds.
+  https://github.com/sebastienpalcoux/sharp-intermediate-subgroup-bounds
+  Source revision: 522d6dfcb5d25d47455375e3df0f8a561b7b780b
+  Selected modules: Basic, Tree, Escape, Packing, Theta, Decimal, GroupMain.
+  License: Apache License 2.0; see LICENSE-APACHE-2.0.txt.
+  Changes: local imports and pinned Lean 4.30 compatibility repairs.
