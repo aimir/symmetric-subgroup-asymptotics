@@ -42,7 +42,7 @@ theorem preE7NoPairNoC3Local_terminal_implies_comparator_terminal
       preE7NoPairNoC3CertifiedFirstOwnerPredicate
         preE7NoPairNoC3EarlierFamilyAction w
         (Fin.last preE7NoPairNoC3EarlierOwnerCount, U) b H := by
-  rintro ⟨⟨howner, hnoC3⟩, _hselected⟩
+  rintro ⟨⟨howner, hnoC3⟩, hselected⟩
   rcases howner with ⟨hordinary, hfirst⟩
   let K : Subgroup (Equiv.Perm (Fin (w + b))) :=
     relabelSubgroup finSumFinEquiv
@@ -68,9 +68,10 @@ theorem preE7NoPairNoC3Local_terminal_implies_comparator_terminal
     (firstOwned_ownerOrResidual_last_iff
       (preE7NoPairNoC3EarlierFamilyPredicate
         preE7NoPairNoC3EarlierFamilyAction) K).mpr hunownedComparator
-  refine ⟨⟨⟨hordinary, ?_⟩, hnoC3⟩,
-    preE7NoPairNoC3SelectedActionEligible_last _ U⟩
-  simpa only [K] using hfirstComparator
+  refine ⟨⟨⟨hordinary, ?_⟩, hnoC3⟩, ?_⟩
+  · simpa only [K] using hfirstComparator
+  · exact (preE7NoPairNoC3SelectedActionEligible_last _ U).2
+      ((preE7NoPairNoC3SelectedActionEligible_last _ U).1 hselected)
 
 /-- Existing joint top/Yoneda terminal data gives the terminal local row for
 the enlarged ordinary/source-summed catalogue by restriction. -/
