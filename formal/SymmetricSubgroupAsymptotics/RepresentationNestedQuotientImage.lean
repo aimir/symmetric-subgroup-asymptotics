@@ -82,7 +82,7 @@ theorem nestedQuotientImageIntertwiner_injective
     (nestedSubrepresentation q.ker M hker).toSubmodule.mkQ_surjective x
   obtain ⟨b, rfl⟩ :=
     (nestedSubrepresentation q.ker M hker).toSubmodule.mkQ_surjective y
-  apply Submodule.Quotient.eq.mpr
+  apply (Submodule.Quotient.eq (nestedSubrepresentation q.ker M hker).toSubmodule).mpr
   change q (a.1 - b.1) = 0
   rw [map_sub, sub_eq_zero]
   exact congrArg Subtype.val hxy
