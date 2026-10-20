@@ -142,7 +142,7 @@ noncomputable def PreE7CompleteSourceNumericalData.toPackage
   package := D.certificate.localPackage
   parameters := D.parameters
   main_total_growth := .inl D.main_total_bound
-  tail_total_bound := D.tail_total_bound
+  tail_total_growth := .inl D.tail_total_bound
 
 /-! ## Semisimple outer-fibre constructor -/
 
