@@ -132,13 +132,13 @@ outside the publication repository.
 
 The final exports are
 [T1_of_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
-and `allTargets_of_published_inputs`. Their **36 named inputs** are listed
+and `allTargets_of_published_inputs`. Their **32 named inputs** are listed
 below. The character bundle has four fields; its abelianization field also
 supplies the former standalone `hKP` parameter. These are explicit theorem parameters,
 not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
-Six former literature parameters are now supplied by checked proofs on the
+Nine former literature parameters are now supplied by checked proofs on the
 same pinned toolchain:
 
 | Proved result | Export and proof source |
@@ -149,6 +149,9 @@ same pinned toolchain:
 | `PSL(3,F)` is simple for every field `F`, hence for `F₂` and `F₃`. | [`ProjectiveThreeSimplicity.simple`](SymmetricSubgroupAsymptotics/ProjectiveThreeSimplicity.lean), using new [elementary generation and perfectness proofs](SymmetricSubgroupAsymptotics/SLThreeElementaryGeneration.lean), mathlib's Iwasawa criterion and Apache-licensed projective-action backports. No ATLAS code is included. |
 | `PGL₂(F₅) ≃ S₅`, using the actual quotient of `GL₂(F₅)` by its center. | [`PGLTwoFiveIsomorphism.publishedProjectiveIsomorphism`](SymmetricSubgroupAsymptotics/PGLTwoFiveIsomorphism.lean), through its faithful six-point projective action and a proved order-120 subgroup recognition theorem in `S₆`. No external classification or ATLAS source is used. |
 | A faithful degree-five affine action is `C₅`, `D₁₀` or natural `F₂₀`, retaining literal point relabelling in the last case. | [`DegreeFiveAffineClassification.classification`](SymmetricSubgroupAsymptotics/DegreeFiveAffineClassificationComplete.lean), from actual regular-translation coordinates, a faithful embedding into `F₂₀`, and the unique order-ten subgroup. |
+| Soluble subdirect socle length is at most the maximum factor socle length. | [`publishedSolubleSubdirectHeight`](SymmetricSubgroupAsymptotics/SolubleSubdirectSocleHeight.lean), from semisimple integral conjugation modules, the exact joint socle intersection, and quotient induction. This is the literal upper socle series. |
+| Every actual degree-six action with three physical pairs has one of the seven required abstract group models. | [`DegreeSixThreePairClassificationProof.representativeClassification`](SymmetricSubgroupAsymptotics/DegreeSixThreePairClassificationProof.lean), from `C₂ ≀ S₃ ≃ S₄ × C₂`, the central projection dichotomy, and internal four-point subgroup recognition. Both actual `S₄` actions are retained by the original source interface. |
+| Every degree-six two-triple affine cell with nontrivial kernel signs has one of the four required models. | [`publishedDegreeSixThreeByTwoAffineClassification`](SymmetricSubgroupAsymptotics/DegreeSixThreeByTwoClassificationProof.lean), through actual block coordinates, axes/product recognition, an irreducible `C₄` chart, and the full-wreath branch. No finite action classification premise is used. |
 
 These proved results, both final exports, the T1-to-T2/T3 transfers and the
 definition checks have standard-only axiom audits. Historical lower-level
@@ -185,6 +188,15 @@ proves the module transport used by both Tracey specializations, including
 the empty and singleton point-set endpoints. The repeated standalone
 Kovács–Praeger parameter is removed by projecting `lit.kovacsPraeger`.
 
+The separate Dixon order input is also removed. [`dixonOrder_of_primitive_inputs`](SymmetricSubgroupAsymptotics/SolublePermutationOrderBound.lean)
+derives `|G| ≤ 24^(n/3)` from the retained `compositionCatalogue`,
+`hONanScott`, and `hSolubleBase`. The primitive step proves the stronger
+integer inequality `|G|³ ≤ 24^(n−1)`: bounded rows are checked numerically,
+while large soluble affine actions have `|G| ≤ n⁴`. Actual minimal-block
+wreath embeddings and orbit images complete the induction. This is a
+proved dependency reduction; the three broader published inputs remain
+explicit. It does not claim a formal proof of Halasi–Maróti or O'Nan–Scott.
+
 RDT means Roney-Dougal–Tracey, arXiv:2503.05416v1. TR means Tracey's
 2018 transitive-generation paper, with page locators referring to its linked
 author manuscript. HRD means Holt–Roney-Dougal (2013); GPRV means
@@ -206,7 +218,6 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [lit : PreE7CharacterLiterature](SymmetricSubgroupAsymptotics/Non2PreE7CharacterCertificateTemplate.lean) | Four fields: permutation class number ≤5^((b−1)/3) for b≥4; abelianization ≤3^(b/3); every abelian binary quotient ≤2^(b/2); nilpotent permutation class number ≤(38/25)^b. | CLASS and KP. Small b and uniform weakenings internal. |
 | [hZmud : ZmudFaithfulCharacterTupleInput](SymmetricSubgroupAsymptotics/ZmudFaithfulCharacterInput.lean) | t normal generators of the actual socle give t jointly faithful finite irreducible complex representations of any finite G. | Steinberg, arXiv:2201.09129v1, Corollary 2.25 (Zmud′), printed p.19; relative Theorem 2.24, p.18. Specialize to complex characteristic zero; the trivial-group/empty-tuple seam is elementary. |
 | [hcomp : PrimitiveCompositionLengthInput](SymmetricSubgroupAsymptotics/PrimitiveCompositionLengthInput.lean) | Every actual composition series of primitive degree r≥2 has length ≤(8/3)log₂r−4/3. | GPRV Thm1.3. |
-| [hsub : PublishedSolubleSubdirectHeight](SymmetricSubgroupAsymptotics/MarkedC4PublishedOrdinaryNilpotentGeneration.lean) | Soluble subdirect product socle length ≤maximum factor socle length. | RDT Lemma8.5 p33. |
 | [hseven : PublishedTheoremSeven](SymmetricSubgroupAsymptotics/MarkedC4PublishedOrdinaryNilpotentGeneration.lean) | Soluble G with socle length ≤L and abelian-section prime-factor length ≤M is generated by a nilpotent subgroup plus ≤4L√M elements. | RDT Thm7 p3, proofpp32–33. |
 | [h55 : PublishedTheorem55Binary](SymmetricSubgroupAsymptotics/MarkedC4RDTOriginalWordStructure.lean) | Actual bounded binary subdirect word, dependent/tail degrees: normal-generation bounds3x/8+y/2,5x/16+y/2,x/4+y/2 with exact excess exclusions. | RDT Thm5.5(ii) p17. |
 | [h53 : ActualCaseIITargetStructure.PublishedProposition53Binary](SymmetricSubgroupAsymptotics/MarkedC4ActualCaseIITargetStructure.lean) | Binary excess classification: excess1/2, degree≤32; exact excess2 degrees and excess1 normal restrictions. | RDT Prop5.3(i) p16. |
@@ -217,7 +228,6 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper](SymmetricSubgroupAsymptotics/MarkedC4OrdinarySubgroupUpper.lean) | ∃β, s_n≤2^(n²/16+βn√n), n>1. | RDT Thm1 p1. Strong quantitative coarse bound, not merely an asymptotic main term. |
 | [h62 : PublishedProposition62](SymmetricSubgroupAsymptotics/MarkedC4LargeOrbitOrdinaryGeneration.lean) | For any positive rate, sufficiently large nontrivial-orbit cutoff makes soluble permutation generator number ≤rate×degree. | RDT Prop6.2 p21. |
 | [h86 : PublishedTheorem86Representatives](SymmetricSubgroupAsymptotics/MarkedC4SolubleContainerCount.lean) | At most2^(13n) actual conjugacy representatives cover maximal transitive soluble subgroups. | RDT Thm8.6(i) p34, citing Pyber Lemma3.2; weakened numerical menu form. |
-| [hDixon : PublishedDixonOrder](SymmetricSubgroupAsymptotics/MarkedC4SolubleContainerOrder.lean) | Soluble H≤S_n has card(H)≤24^(n/3). | Dixon bound as RDT Thm8.6(ii) p34. Original Dixon paper/locator not yet registered separately. |
 | [hAG : PublishedAschbacherGuralnickSolubleGeneration](SymmetricSubgroupAsymptotics/MarkedC4AschbacherGuralnickSolubleGeneration.lean) | Every finite group generated by a soluble subgroup and one element. | Aschbacher–Guralnick, J.Algebra77 (1982),189–201; RDT Thm8.4 p32. Ambient-recovery field internal. |
 | [hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput](SymmetricSubgroupAsymptotics/TraceyCorollaryThreeTwelveRaw.lean) | Exceptional degree3·2^m action has actual soluble subgroup and full binomial orbit partition, Mersenne exponent≥3. | TR Cor3.12 p17 PLUS preceding nonabelian PSL₂(p) construction Thm1.8/Cor3.11 excluding p=3. Cor3.12 alone is insufficient for exponent≥3. |
 | [compositionCatalogue : PublishedPrimitiveCompositionCatalogueCorrespondence](SymmetricSubgroupAsymptotics/PrimitiveTernaryThreeTenthsPublished.lean) | Faithful primitive degree<45 matches336 pinned rows; exact degree and order, or natural A_n/S_n identification. | PRIM degrees2–44. No ternary inequality field. |
@@ -234,10 +244,8 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence](SymmetricSubgroupAsymptotics/PrimitiveCatalogueClassificationPublished.lean) | Bare faithful primitive degree5–29 correspondence, actual group/socle exact orders and one-factor structural match. | PRIM degree5–29 pinned116 retained rows; inequality2outer≤degree kernel-checked internally. |
 | [hTraceySoluble : TraceySolubleOrbitInducedModuleInput](SymmetricSubgroupAsymptotics/TraceySolubleOrbitInducedInput.lean) | Actual soluble subgroup, actual2-complement, local dual nonzero-orbit count and all actual N-orbit E_sol bounds give induced submodule generators. | specialization; TR Thm4.24(ii)(b), Cor4.25(ii)(b), H₁=H,F₂. Keep both exact locators; this is not merely Thm1.6 coarse formula. |
 | [hMN : McIverNeumannPermutationGeneratorBound](SymmetricSubgroupAsymptotics/McIverNeumannPermutationSection.lean) | Every subgroup of S_s except literally fullS3 has≤floor(s/2) generators. | Blackburn–Neumann–Venkataraman, Enumeration of Finite Groups (2007), Lemma 5.2; proof reference Cameron–Solomon–Turull, Journal of Algebra 127 (1989), §4; LIT-MCIVER-NEUMANN. |
-| [publishedSix : PublishedDegreeSixThreeByTwoAffineClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineDegreeSixPublishedClassification.lean) | Actual degree6 two-triple affine/nontrivial-sign cell is S3×C2,S3²,3²:C4 orS3≀C2, with actual group charts; 3²:C4 includes irreducible complement chart. | Butler–McKay, Communications in Algebra 11(8) (1983), 863–911, degree-six classification; official TransGrp manual and pinned representative numbering. The retained irreducible affine chart is structural correspondence. |
 | [published8 : DegreeEightCanonicalCatalogue.PublishedClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineEightCanonicalCatalogue.lean) | Every actual transitive nonbinary subgroup of S8 is point-conjugate to one of24 pinned canonical actions. | Butler–McKay 1983, degree-eight classification; official TransGrp manual, with the 26 binary actions excluded from the 50-action list. |
 | [published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenCanonicalCatalogue.lean) | Every primitive subgroup of S16 point-conjugate to one of22 canonical actions:20 affine +naturalA16/S16. | PRIM degree16. NOT an all1954 transitive16 or527 semantic-source assumption. |
-| [publishedThree : PublishedDegreeTwoThreePairRepresentativeClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineDegreeTwoThreePairsRawPackage.lean) | Every actual transitive nonbinary degree6 three-pair action has one of fixed easy/central abstract group charts. | Butler–McKay 1983, degree-six classification and the official TransGrp representative correspondence. No source inequality is supplied. |
 | [publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification](SymmetricSubgroupAsymptotics/DegreeTwelveCanonicalCatalogueLocator.lean) | Every transitive subgroup of S12 point-conjugate to one of fixed301 literal tops. | Royle, Journal of Symbolic Computation 4(2) (1987), 255–268, degree-twelve classification of 301 actions; official TransGrp manual. |
 
 The quantitative `PublishedPrimitiveSocleDichotomyInput` is constructed by
@@ -259,7 +267,8 @@ The published hypotheses remain explicit mathematical inputs.
 The final composition follows this chain:
 
 1. Checked Burnside, Clifford, subgroup-count and projective-three proofs,
-   together with the remaining published structure and formulas, construct the finite affine package,
+   the checked subdirect socle-height and degree-six classifiers, and the
+   remaining published structure and formulas construct the finite affine package,
    quantitative socle profiles, exceptional Tracey head bound, and actual
    Clifford restriction consequence.
 2. Primitive and imprimitive affine consumers supply complete original

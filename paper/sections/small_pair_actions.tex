@@ -5,23 +5,32 @@ Every nonbinary transitive action on three pairs has a complete
 contractive forward row and negligible scalar.
 \end{proposition}
 \begin{proof}
-Its top is $C_3$ or $S_3$, and its binary permutation module is
-$\F_2^3=C\oplus A$, with constant line $C$ and augmentation
-plane $A$. The normal $C_3$ acts trivially on $C$ and irreducibly
-on $A$, so the only invariant kernels are $0,C,A,C\oplus A$.
-Above each kernel, subgroups are graphs of cocycles in the quotient
-module. Coprime averaging kills all $C_3$ cocycles. For $S_3$,
-the odd normal subgroup has no fixed vector on $A$, so
-$H^1(S_3,A)=0$, while $H^1(S_3,C)=\Hom(S_3,C_2)$ is generated
-by sign. This supplies the complete graph list, including nonsplit
-original lifts.
+The full pair wreath group has the decomposition
+\[
+ C_2\wr S_3\cong C_2\times(A\rtimes S_3)
+ \cong C_2\times S_4,
+\]
+where $\F_2^3=C\oplus A$ is the invariant sum of the constant line
+and the augmentation plane. The affine action of $A\rtimes S_3$
+on the four vectors of $A$ is faithful and has order $24$.
+Let $H$ be the image of the original action in this product, and let
+$L\leq S_4$ be its first projection. Transitivity gives $6\mid|H|$,
+hence $3\mid|L|$. Thus $|L|$ is $3,6,12$ or $24$.
+An order-six subgroup has a normal cubic subgroup, whose unique fixed
+point is fixed by the whole subgroup; restriction to the other three
+points identifies it with $S_3$. The order-twelve subgroup is $A_4$,
+and the order-twenty-four subgroup is $S_4$.
 
-The transitive actual groups are $C_6$, $A_4$, $C_2\times A_4$
-over $C_3$; and regular $S_3$, $C_2\times S_3$, two distinct
-degree-six actions of $S_4$, and $C_2\times S_4$ over $S_3$.
-At zero kernel only the sign graph is transitive; at nonzero
-kernel the coordinate projections are full. The two $S_4$ graphs
-remain separate actual actions throughout the pointing.
+The kernel of $H\to L$ is either trivial or the central $C_2$.
+In the first case $H\cong L$; in the second $H=L\times C_2$.
+The order-three case is not transitive on six points. Consequently every
+transitive actual group is isomorphic to one of
+\[
+ C_6,\quad S_3,\quad A_4,\quad S_4,\quad
+ C_2\times S_3,\quad C_2\times A_4,\quad C_2\times S_4.
+\]
+These are abstract charts on the original groups. Distinct permutation
+actions, including the two $S_4$ actions, retain their original pointings.
 
 The targets $C_6,A_4,S_3,C_2\times S_3,S_4$ have specified
 faithful representations of degrees at most five, less than six.
@@ -39,7 +48,7 @@ by a fixed constant times $2^{b/2}$. Thus
  Z_J(U)\leq Z_J(C_2\times(L/V))+C_U2^{b/2}.
 \]
 Its exponent $1/2<6/8$ is strict. The finite comparator theorem
-applies with the original normalizer for each of the eight actions.
+applies with the original normalizer for each original action.
 \end{proof}
 
 \begin{theorem}[Every nonbinary action of degree sixteen]

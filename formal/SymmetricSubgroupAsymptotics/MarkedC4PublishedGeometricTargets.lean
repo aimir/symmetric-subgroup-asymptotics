@@ -17,6 +17,10 @@ import SymmetricSubgroupAsymptotics.PrimitiveDegreeNineFromCompositionCatalogue
 import SymmetricSubgroupAsymptotics.PrimitiveDegreeSixCatalogueClassification
 import SymmetricSubgroupAsymptotics.TraceyPermutationFormulaConsequences
 import SymmetricSubgroupAsymptotics.TraceySolublePermutationConsequences
+import SymmetricSubgroupAsymptotics.SolublePermutationOrderBound
+import SymmetricSubgroupAsymptotics.SolubleSubdirectSocleHeight
+import SymmetricSubgroupAsymptotics.DegreeSixThreePairClassificationProof
+import SymmetricSubgroupAsymptotics.DegreeSixThreeByTwoClassificationProof
 
 /-! Target composition from the explicit current mathematical inputs.
 Every low-degree source and the degree-sixteen geometric cover is assembled
@@ -29,6 +33,9 @@ source/dependency and literature-boundary audit is separate from proving
 this composition. The degree-six/nine slices and binary/soluble permutation
 Tracey formulae are derived from the stronger retained inputs. The standalone
 Kovács--Praeger input is supplied by the character literature bundle.
+Soluble subdirect socle height and both degree-six block classifiers are
+proved internally. Dixon's order estimate is derived from the retained
+primitive structure, bounded catalogue, and soluble linear cube bound.
 See formal/README.md. -/
 set_option autoImplicit false
 noncomputable section
@@ -42,7 +49,7 @@ theorem T1_of_published_inputs
     (lit : PreE7CharacterLiterature)
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (hcomp : PrimitiveCompositionLengthInput)
-    (hsub : PublishedSolubleSubdirectHeight) (hseven : PublishedTheoremSeven)
+    (hseven : PublishedTheoremSeven)
     (h55 : PublishedTheorem55Binary)
     (h53 : ActualCaseIITargetStructure.PublishedProposition53Binary)
     (h57 : RDTExcessStructure.PublishedTheorem57Binary)
@@ -51,7 +58,6 @@ theorem T1_of_published_inputs
     (rdt46 : RDTTheorem46BinaryInput)
     (hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper)
     (h62 : PublishedProposition62) (h86 : PublishedTheorem86Representatives)
-    (hDixon : PublishedDixonOrder)
     (hAG : PublishedAschbacherGuralnickSolubleGeneration)
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
     (compositionCatalogue : PublishedPrimitiveCompositionCatalogueCorrespondence)
@@ -68,12 +74,16 @@ theorem T1_of_published_inputs
     (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
     (hTraceySoluble : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
-    (publishedSix : PublishedDegreeSixThreeByTwoAffineClassification)
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
-    (publishedThree : PublishedDegreeTwoThreePairRepresentativeClassification)
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     : T1 := by
+  have hsub := publishedSolubleSubdirectHeight
+  have publishedSix :=
+    DegreeSixThreeByTwoClassificationProof.publishedDegreeSixThreeByTwoAffineClassification
+  have publishedThree := DegreeSixThreePairClassificationProof.representativeClassification
+  have hDixon := SolublePermutationOrderProof.dixonOrder_of_primitive_inputs
+    compositionCatalogue hONanScott hSolubleBase
   have hKP := lit.kovacsPraeger
   have hSolubleFormula := hTraceySoluble.permutationFormulaRaw
   have primitiveSix :=
@@ -107,7 +117,7 @@ theorem allTargets_of_published_inputs
     (lit : PreE7CharacterLiterature)
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (hcomp : PrimitiveCompositionLengthInput)
-    (hsub : PublishedSolubleSubdirectHeight) (hseven : PublishedTheoremSeven)
+    (hseven : PublishedTheoremSeven)
     (h55 : PublishedTheorem55Binary)
     (h53 : ActualCaseIITargetStructure.PublishedProposition53Binary)
     (h57 : RDTExcessStructure.PublishedTheorem57Binary)
@@ -116,7 +126,6 @@ theorem allTargets_of_published_inputs
     (rdt46 : RDTTheorem46BinaryInput)
     (hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper)
     (h62 : PublishedProposition62) (h86 : PublishedTheorem86Representatives)
-    (hDixon : PublishedDixonOrder)
     (hAG : PublishedAschbacherGuralnickSolubleGeneration)
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
     (compositionCatalogue : PublishedPrimitiveCompositionCatalogueCorrespondence)
@@ -133,20 +142,18 @@ theorem allTargets_of_published_inputs
     (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
     (hTraceySoluble : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
-    (publishedSix : PublishedDegreeSixThreeByTwoAffineClassification)
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
-    (publishedThree : PublishedDegreeTwoThreePairRepresentativeClassification)
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     : AllTargets := by
   exact allTargets_iff_T1.mpr (T1_of_published_inputs
-    lit hZmud hcomp hsub hseven h55 h53 h57 h8 hderived
-    rdt46 hodd h62 h86 hDixon hAG hExceptionalOrbits compositionCatalogue
+    lit hZmud hcomp hseven h55 h53 h57 h8 hderived
+    rdt46 hodd h62 h86 hAG hExceptionalOrbits compositionCatalogue
     hPrimitiveGen strictCatalogue hLMM
     hTraceyRefined hTraceyPerm
     hSimpleGen smallAffineCatalogue hSolubleBase
     hONanScott hSimpleIndex catalogue hTraceySoluble hMN
-    publishedSix published8 published16 publishedThree publishedTwelve)
+    published8 published16 publishedTwelve)
 
 
 end SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu

@@ -764,3 +764,35 @@ Schur–Zassenhaus theorem already checked in pinned mathlib; no additional
 literature input is added. A uniform integer cap preserves the quantifier
 over all subrepresentations. Finally the standalone Kovács–Praeger input
 is supplied by the identical field in the retained character bundle.
+
+
+**Checked soluble socle-height and degree-six classification inputs.**
+The final facade now supplies RDT Lemma8.5 through
+`MarkedC4.OrdinaryNilpotentGeneration.publishedSolubleSubdirectHeight`.
+The proof uses the literal upper socle series. Ambient minimal normals
+correspond to simple integral conjugation submodules; finite products of
+factor socles remain semisimple after their actual epimorphic actions are
+inflated. The resulting equivariant embedding proves the exact joint
+socle intersection, and the height conclusion follows by quotient induction.
+No socle-height or project-capacity premise is retained for this theorem.
+
+The former Butler–McKay degree-six slices are supplied by
+`DegreeSixThreePairClassificationProof.representativeClassification` and
+`DegreeSixThreeByTwoClassificationProof.publishedDegreeSixThreeByTwoAffineClassification`.
+Both are unconditional proofs, using literal block wreath coordinates and
+small whole-group certificates, without an action or subgroup census.
+The three-pair proof uses `C₂ ≀ S₃ ≃ S₄ × C₂`; the two-triple proof retains
+the actual axes, irreducible quarter-turn and full-wreath charts. Original
+pointings and the exact source-data interfaces are unchanged. The published
+classification remains historical provenance, rather than a required premise
+for these two slices; the larger catalogue inputs remain explicit.
+
+**Dixon input derived from retained primitive inputs.**
+`SolublePermutationOrderProof.dixonOrder_of_primitive_inputs` proves the
+ordinary order inequality from the retained bounded composition catalogue,
+raw O'Nan–Scott structure and Halasi–Maróti soluble linear cube bound.
+These are not assumed order estimates on an arbitrary soluble permutation
+group. The proof checks bounded primitive orders, gives the large affine
+bound `|G| ≤ n⁴`, and then uses actual minimal-block wreath embeddings and
+actual orbit images. Only those three broader published premises remain;
+no separate Dixon assumption is requested by the final facade.

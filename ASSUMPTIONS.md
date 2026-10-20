@@ -253,17 +253,29 @@ The duplicate standalone Kovács–Praeger parameter is supplied by the
 existing character bundle. These five parameter removals leave the broader
 published catalogue, refined Tracey and soluble-orbit inputs explicit.
 
+The soluble subdirect socle-height statement is now proved unconditionally.
+The proof identifies the exact intersection of factor-socle inverse images
+using semisimple integral conjugation modules, then passes to the actual
+socle quotients. Both degree-six block classifications are also proved
+unconditionally through explicit faithful wreath charts: the three-pair
+and two-triple interfaces no longer require published catalogue inputs.
+Their original source predicates and retained action data are unchanged.
+The standalone Dixon order bound is derived from the already retained
+primitive catalogue, O'Nan–Scott structure and soluble irreducible linear
+cube bound, followed by actual block and orbit induction. These last three
+premises remain explicit; this is a dependency reduction for Dixon's bound.
+
 The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-36-parameter mathematical boundary, with formulations and source locators,
+32-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
 correspondences remain assumptions. On 20 October 2026 the recursive
-source/object audit passed for all 5,912 project modules in the public
+source/object audit passed for all 5,927 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.
