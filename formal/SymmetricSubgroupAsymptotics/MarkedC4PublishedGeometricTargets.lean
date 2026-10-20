@@ -9,6 +9,9 @@ import SymmetricSubgroupAsymptotics.BurnsideTwoPrimeSolvability
 import SymmetricSubgroupAsymptotics.CliffordRestriction
 import SymmetricSubgroupAsymptotics.BinaryNormalSubgroupBound
 import SymmetricSubgroupAsymptotics.ProjectiveThreeSimplicity
+import SymmetricSubgroupAsymptotics.TraceyRefinedInputConsequences
+import SymmetricSubgroupAsymptotics.FaithfulSimpleGeneratorFromTwoGeneration
+import SymmetricSubgroupAsymptotics.PGLTwoFiveIsomorphism
 
 /-! Target composition from the explicit current mathematical inputs.
 Every low-degree source and the degree-sixteen geometric cover is assembled
@@ -52,14 +55,10 @@ theorem T1_of_published_inputs
     (primitiveSix : PublishedPrimitiveDegreeSixClassification)
     (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
-    (hHoltRoneyDougal : FaithfulSimplePermutationGeneratorBound)
-    (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
-    (hTraceyLog : TraceyAffineInducedModuleInput)
     (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (smallAffineCatalogue : SmallAffineCanonicalRepresentatives.PublishedClassification)
-    (hProjectiveFive : StandardGLTwoFiveProjective.PublishedProjectiveIsomorphism)
     (hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound)
     (hAffineFive : PublishedDegreeFiveAffineClassification)
     (hONanScott : PrimitiveSocleRawStructure.PublishedONanScottStructure)
@@ -73,6 +72,9 @@ theorem T1_of_published_inputs
     (publishedThree : PublishedDegreeTwoThreePairRepresentativeClassification)
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     : T1 := by
+  have hHoltRoneyDougal := hSimpleGen.faithfulSimplePermutationGeneratorBound
+  have hTraceyHalf := hTraceyRefined.affineHalf
+  have hTraceyLog := hTraceyRefined.affine
   let socle := hONanScott.toSocleDichotomy hSimpleIndex
   have hgen := permutationSubgroupGeneratorBound_of_mcIverNeumann hMN
   exact T1_of_published_inputs_and_sixteenPairSource
@@ -83,7 +85,7 @@ theorem T1_of_published_inputs
     hHoltRoneyDougal hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
     hSimpleGen
     (PublishedPrimitiveAffineFiniteLiterature.ofCanonicalClassifications
-      smallAffineCatalogue ProjectiveThreeSimplicity.proved burnsideTwoPrimeSolvability hProjectiveFive hSolubleBase hAffineFive)
+      smallAffineCatalogue ProjectiveThreeSimplicity.proved burnsideTwoPrimeSolvability PGLTwoFiveIsomorphism.publishedProjectiveIsomorphism hSolubleBase hAffineFive)
     socle catalogue hTraceySoluble hMN
     publishedSix published8 published16 publishedThree publishedTwelve
     (DegreeSixteenCompleteGeometricSource.residualSource
@@ -115,14 +117,10 @@ theorem allTargets_of_published_inputs
     (primitiveSix : PublishedPrimitiveDegreeSixClassification)
     (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
-    (hHoltRoneyDougal : FaithfulSimplePermutationGeneratorBound)
-    (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
-    (hTraceyLog : TraceyAffineInducedModuleInput)
     (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (smallAffineCatalogue : SmallAffineCanonicalRepresentatives.PublishedClassification)
-    (hProjectiveFive : StandardGLTwoFiveProjective.PublishedProjectiveIsomorphism)
     (hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound)
     (hAffineFive : PublishedDegreeFiveAffineClassification)
     (hONanScott : PrimitiveSocleRawStructure.PublishedONanScottStructure)
@@ -140,8 +138,8 @@ theorem allTargets_of_published_inputs
     lit hZmud hcomp hsub hseven h55 h53 h57 h8 hderived
     rdt46 hodd h62 h86 hDixon hAG hTracey hSolubleFormula hExceptionalOrbits compositionCatalogue
     hDegreeNine hPrimitiveGen strictCatalogue primitiveSix hKP hLMM
-    hHoltRoneyDougal hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
-    hSimpleGen smallAffineCatalogue hProjectiveFive hSolubleBase hAffineFive
+    hTraceyRefined hTraceyPerm
+    hSimpleGen smallAffineCatalogue hSolubleBase hAffineFive
     hONanScott hSimpleIndex catalogue hTraceySoluble hMN
     publishedSix published8 published16 publishedThree publishedTwelve)
 
