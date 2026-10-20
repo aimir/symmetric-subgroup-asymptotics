@@ -1,0 +1,36 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveJointComplete
+import SymmetricSubgroupAsymptotics.PrimitiveSixTwelveNormalConsumerFacts
+import Mathlib.Tactic.FinCases
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveRow67CornerInstalledJointBoundedCatalogueReduced
+
+/-! Isolated actual degree6/12 normal-consumer route. Original records,
+finite index sets and all certificate declarations are imported unchanged. -/
+set_option autoImplicit false
+
+noncomputable section
+
+namespace SymmetricSubgroupAsymptotics
+
+namespace Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer
+
+namespace DegreeTwoTwelveJointComplete
+
+namespace BoundedCatalogueReduced
+
+open DegreeTwoTwelvePairFiniteCatalogue DegreeTwoTwelveFlexibleProfiles
+
+ def resolution
+    (socle : PublishedPrimitiveSocleDichotomyInput)
+    (primitiveCatalogue : PrimitiveSixTwelveNormalConsumerFacts)
+    (hZmud : ZmudFaithfulCharacterTupleInput) (lit : PreE7CharacterLiterature) :
+    DegreeTwoTwelvePairTopCatalogueResolution catalogue :=
+  _root_.SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer.DegreeTwoTwelveRow67CornerInstalledJoint.BoundedCatalogueReduced.RemainingData.resolution remainingData socle primitiveCatalogue hZmud lit
+
+end BoundedCatalogueReduced
+
+end DegreeTwoTwelveJointComplete
+
+end Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer
+
+end SymmetricSubgroupAsymptotics
+

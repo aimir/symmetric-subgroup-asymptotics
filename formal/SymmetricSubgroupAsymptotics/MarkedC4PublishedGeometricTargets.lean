@@ -1,3 +1,5 @@
+import SymmetricSubgroupAsymptotics.BinaryAffineSmallCatalogueConstruction
+import SymmetricSubgroupAsymptotics.PrimitiveAffineFiniteInputFromBinaryCatalogue
 import SymmetricSubgroupAsymptotics.TraceyRefinedInducedModuleProof
 import SymmetricSubgroupAsymptotics.MarkedC4PublishedClosedTargets
 import SymmetricSubgroupAsymptotics.DegreeSixteenCompleteGeometricSource
@@ -37,8 +39,12 @@ import SymmetricSubgroupAsymptotics.BinaryOriginalWordConsequences
 
 /-! Target composition from the explicit current mathematical inputs.
 The degree-eight small-affine complement classification is proved from
-complete checked GL(3,2) subgroup coverage; only degrees sixteen and
-twenty-seven remain in the small-affine classification parameter.
+complete checked GL(3,2) subgroup coverage. Its degree-sixteen slice uses
+the already-retained actual primitive16 correspondence; degree27 uses
+direct consequences of the retained336-row composition correspondence.
+The strict-head and degree18 consumers are proved from that same
+composition correspondence and the retained simple-index bounds; no
+separate253-row strict-head correspondence is required.
 Every low-degree source and the degree-sixteen geometric cover is assembled
 internally. The exceptional Tracey head and the actual retained Clifford
 corollary, the full 34-row affine receipt, and the degree-25 projective
@@ -89,13 +95,10 @@ theorem T1_of_published_inputs
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
     (compositionCatalogue : PublishedPrimitiveCompositionCatalogueCorrespondence)
     (hPrimitiveGen : PrimitiveNormalGeneratorInput)
-    (strictCatalogue : PublishedPrimitiveStrictHeadCatalogueCorrespondence)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
-    (smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification)
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
-    (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
@@ -113,13 +116,9 @@ theorem T1_of_published_inputs
   have publishedThree := DegreeSixThreePairClassificationProof.representativeClassification
   have hDixon := ElementaryDixonOrderProof.dixonOrder_of_primitive_inputs
     compositionCatalogue hONanScott
-  let smallClassification : SmallAffineCanonicalRepresentatives.PublishedClassification :=
-    SmallAffineCatalogueDegreeEightConsequences.published_of_remaining smallAffineCatalogue
-  let publishedSmall : PublishedPrimitiveAffineSmallCatalogueData := {
-    locator := SmallAffineCanonicalRepresentatives.locator smallClassification
-    representativeFacts := SmallAffineCanonicalRepresentatives.receipt
-      smallClassification ProjectiveThreeSimplicity.proved burnsideTwoPrimeSolvability }
-  let publishedFinite := publishedPrimitiveAffineFiniteInput_of_structural publishedSmall
+  let publishedSmall := BinaryAffineSmallCatalogueData.ofPrimitiveSixteen published16
+  let publishedFinite := publishedPrimitiveAffineFiniteInput_of_binary_and_compositionCatalogue
+    publishedSmall compositionCatalogue
     (DegreeTwentyFiveActualProjectiveData.publishedDegreeTwentyFiveLinearData
       burnsideTwoPrimeSolvability PGLTwoFiveIsomorphism.publishedProjectiveIsomorphism)
     (primitiveAffineEightyOne_complement_le_cube hcomp)
@@ -131,10 +130,10 @@ theorem T1_of_published_inputs
     fullLit.kovacsPraeger fullLit.kovacsPraegerBinary h55 h53 h57 h8 hderived
     rdt46 hodd h62 hLMM hDixon hAG
   exact T1_of_globalMarkedMoment_and_finitePackage fullLit hM4 hZmud hcomp hodd
-    hExceptionalOrbits compositionCatalogue hPrimitiveGen strictCatalogue hLMM
+    hExceptionalOrbits compositionCatalogue hPrimitiveGen hSimpleIndex hLMM
     hTraceyRefined hTraceyPerm hSimpleGen
     publishedSmall publishedFinite
-    (hONanScott.toSocleDichotomy hSimpleIndex) catalogue hMN
+    (hONanScott.toSocleDichotomy hSimpleIndex) hMN
     publishedSix published8 published16 publishedThree publishedTwelve
 
 /-- The same published inputs imply all three approved asymptotic targets. -/
@@ -148,13 +147,10 @@ theorem allTargets_of_published_inputs
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
     (compositionCatalogue : PublishedPrimitiveCompositionCatalogueCorrespondence)
     (hPrimitiveGen : PrimitiveNormalGeneratorInput)
-    (strictCatalogue : PublishedPrimitiveStrictHeadCatalogueCorrespondence)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
-    (smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification)
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
-    (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
@@ -163,10 +159,10 @@ theorem allTargets_of_published_inputs
   exact allTargets_iff_T1.mpr (T1_of_published_inputs
     lit hcomp h53 h57
     hodd hAG hExceptionalOrbits compositionCatalogue
-    hPrimitiveGen strictCatalogue hLMM
+    hPrimitiveGen hLMM
     hTraceyPerm
-    hSimpleGen smallAffineCatalogue
-    hSimpleIndex catalogue hMN
+    hSimpleGen
+    hSimpleIndex hMN
     published8 published16 publishedTwelve)
 
 

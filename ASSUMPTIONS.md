@@ -333,17 +333,26 @@ degree-four consumer by the actual normal ternary core and cyclic quotient.
 This replaces those consumers; it does not prove the stronger arbitrary-local
 per-orbit statement.
 
+Three further catalogue interfaces are unnecessary for the final exports.
+The strict-head and degree-eighteen bounds follow from actual composition
+order matches and the retained simple-index bound. The small-affine
+consumers follow from the already-retained primitive-16 correspondence,
+actual linear embeddings and composition order matches. Finally, actual
+semisimple compression with `3q ≤ 2r`, together with direct degree-six/twelve
+normal facts, replaces the 116-row locator. The stronger 253-row, 31-carrier
+and 116-row correspondences are not asserted as proved by these reductions.
+
 The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-20-parameter mathematical boundary, with formulations and source locators,
+17-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
 correspondences remain assumptions. On 21 October 2026 the recursive
-source/object audit passed for all 6,201 project modules in the public
+source/object audit passed for all 6,342 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.
