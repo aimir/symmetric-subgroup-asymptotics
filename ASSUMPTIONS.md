@@ -61,7 +61,7 @@ census. Primitive frame coverage retains the explicit published classification
 input and checked point-conjugacy bindings. These frame results and the complete
 degree-four residual constructor are components of the constructed degree-two
 joint catalogue, complete sixteen-pair source coverage and final composition.
-Their recursive source/object release audit remains pending. The complete six-pair
+Their recursive source/object release audit has passed. The complete six-pair
 B6 source is now constructed uniformly from actual top geometry. The
 required eight-pair source endpoint is now proved uniformly from the existing
 published degree-eight action classification; it does not require the
@@ -161,7 +161,8 @@ menu. Actual sixteen-pair source coverage is now proved by
 `DegreeSixteenCompleteGeometricSource.residualSource`, using actual minimal
 blocks and complete original quartet sources. All 283 joint-catalogue entries
 and the degree-two composition are also checked. The input reductions below
-are now constructed; the separate recursive release audit is in progress.
+are now constructed; the separate recursive release audit passed on
+20 October 2026.
 
 Standard classical logical foundations are permitted. Unproved project
 lemmas, proof placeholders and hidden certificate-acceptance assumptions are
@@ -214,13 +215,21 @@ deductions, and the exact original one-factor quotient are proved
 internally. The rounded all-subgroup generator bound is likewise derived
 from the retained McIver–Neumann theorem.
 
-The final T1 and AllTargets exports compile with these raw inputs; eleven
-target/helper declarations have standard-only axiom audits. The complete
+The final T1 and AllTargets exports compile with these raw inputs. A fresh
+audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
+`definitionChecks` reports exactly `propext`, `Classical.choice`, and
+`Quot.sound`. The complete
 50-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
-correspondences remain assumptions. The full transitive source/object
-release audit is still in progress; the input audit and a successful direct
-check are not substitutes for it.
+correspondences remain assumptions. On 20 October 2026 the recursive
+source/object audit passed for all 5,872 project modules in the public
+import closure. Every source in that closure is tracked in main and matches
+the audited bytes. Optional modules outside the closure and the source
+contents of pinned external package objects are outside that audit's scope.
+This establishes the verification-relative-to-published-inputs milestone
+defined above; it does not claim formal proofs of the retained literature
+inputs. Detailed receipts and audit records remain outside the publication
+repository.

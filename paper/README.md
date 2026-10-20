@@ -28,8 +28,10 @@ The [final formal exports](../formal/README.md) now construct degree-two
 coverage, the four-pair source, marked-C₄ encodings, affine consumers, and
 quantitative socle profiles internally. Their explicit remaining mathematical
 inputs are the published theorems and structural classifications listed in
-that README. The recursive source/object release audit is in progress;
-successful direct checks and standard-only axiom reports do not replace it.
+that README. The recursive source/object audit of the public Lean import
+closure and the fresh final-target axiom audit passed on 20 October 2026.
+This verifies the three targets relative to those explicit published inputs;
+it does not formalize the retained literature itself.
 
 The exact target and normalization are also recorded in [SPEC.md](../SPEC.md).
 Preparation notes and the manuscript reconstruction record are maintained
