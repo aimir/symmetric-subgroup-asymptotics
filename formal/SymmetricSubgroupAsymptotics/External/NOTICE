@@ -26,3 +26,16 @@ Sharp subgroup interval bound port:
   Selected modules: Basic, Tree, Escape, Packing, Theta, Decimal, GroupMain.
   License: Apache License 2.0; see LICENSE-APACHE-2.0.txt.
   Changes: local imports and pinned Lean 4.30 compatibility repairs.
+
+Projective-action foundations (mathlib backports):
+  David Loeffler, Antoine Chambert-Loir, Yunzhou (Edison) Xie, and mathlib contributors.
+  https://github.com/leanprover-community/mathlib4
+  Projectivization/Action.lean, selected PSL action section:
+    revision 29c53517cf8e316f02ecadf525b142c15f8eb386.
+  Projectivization/PSL/Stabilizer.lean:
+    revision d99d52c36bea862ef9499bfaef386d0bcba9ea48.
+  Copyright and author notices in the sources are preserved.
+  License: Apache License 2.0; see LICENSE-APACHE-2.0.txt.
+  Changes: selected declarations and pinned Lean 4.30 compatibility repairs.
+  The SL(3) elementary generation/perfectness and PSL(3) simplicity assembly
+  are new project proofs. No ATLAS source is included.
