@@ -240,17 +240,30 @@ and the faithful-simple generator input is derived from the retained
 finite-simple two-generation input. These three are dependency reductions,
 not formalizations of the stronger retained results.
 
+The degree-six and degree-nine primitive inputs are now derived from the
+retained 336-row composition catalogue. The degree-six proof constructs
+maximal-overgroup coset actions and uses the catalogue at degree twelve;
+it does not insert an order-60 recognition assumption. The binary formula
+is derived from the refined Tracey input, and the soluble permutation
+formula from its soluble-orbit induced-module input. Actual stabilizer
+induction, an explicit uniform integer cap, and a proved odd Hall subgroup
+existence theorem supply the transport. The last theorem uses mathlib's
+Schur–Zassenhaus theorem and introduces no new literature premise.
+The duplicate standalone Kovács–Praeger parameter is supplied by the
+existing character bundle. These five parameter removals leave the broader
+published catalogue, refined Tracey and soluble-orbit inputs explicit.
+
 The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-41-parameter mathematical boundary, with formulations and source locators,
+36-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
 correspondences remain assumptions. On 20 October 2026 the recursive
-source/object audit passed for all 5,905 project modules in the public
+source/object audit passed for all 5,912 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.
