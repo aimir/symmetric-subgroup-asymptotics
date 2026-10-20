@@ -266,6 +266,37 @@ Thus each compression decreases the total degree and preserves the
 claimed potential. Fixed points contribute zero and can be removed.
 \end{proof}
 
+\begin{lemma}[Bounded-section nilpotent core]\label{lem:bounded-core}
+Let $G$ be finite and soluble, of upper socle length at most $L$.
+Suppose every chief factor of every subgroup of $G$ has order at most $B$,
+and every abelian section has at most $M$ prime factors, counted with
+multiplicity. Then $G=\langle K,S\rangle$ for an actual nilpotent subgroup
+$K$ and a set $S$ with
+\[
+ |S|\leq L(B!+1)\lfloor\sqrt M\rfloor.
+\]
+\end{lemma}
+\begin{proof}
+Decompose the integral conjugation module of the actual socle $V$ into
+isotypic rows. Rows of multiplicity at most $\lfloor\sqrt M\rfloor$
+share that many normal generators, by the projections onto distinct simple
+types. The sum of the multiplicities, weighted by the prime-factor lengths
+of their simple types, is at most $M$. Hence there are at most
+$\lfloor\sqrt M\rfloor$ remaining rows. Each simple type has at most $B$
+elements. The action on these types has image of order at most
+$(B!)^{\lfloor\sqrt M\rfloor}$ and therefore needs at most
+$B!\lfloor\sqrt M\rfloor$ generators.
+Its kernel $C$ is the actual centralizer of the large rows and contains
+$V$. The normal image $C/V$ has upper socle length at most $L-1$;
+the section hypotheses pass to it. Apply induction there and lift its
+nilpotent core to a nilpotent supplement inside $C$. The large rows
+commute with that supplement, so adjoining them preserves nilpotence.
+Lift the quotient generators and adjoin the displayed action generators
+and the shared small-row generators. Their ordinary generated subgroup
+is $G$. This adds at most $(B!+1)\lfloor\sqrt M\rfloor$ generators
+at each of the $L$ steps. For $M=0$ the group is trivial.
+\end{proof}
+
 \begin{proof}[Proof of Theorem~\ref{thm:C4-moment}]
 If $G=\langle K,x_1,\ldots,x_l\rangle$, restriction and the displayed
 generator values determine a character. Thus
@@ -275,10 +306,13 @@ generator values determine a character. Thus
 Choose one encoding for each $G$ and bound by the sum of all encodings.
 This avoids requiring any unproved closure property of a marked family.
 
-For soluble groups in bounded orbit containers, the nilpotent generation
-theorem and the socle-length bound of
-\cite[Theorem 7 and Lemma 8.5]{RoneyDougalTracey2025} supply a
-nilpotent subgroup and $O_C(\sqrt b)$ additional generators. The ambient
+For soluble groups in the original orbit-cutoff-$C$ containers,
+the actual orbit images embed in groups of order at most $C!$.
+Their subdirect socle length is at most $C!$, and every chief section
+of every subgroup has order at most $C!$. The proved abelian-quotient
+bound gives prime-factor length at most $2b$ for every abelian section.
+Lemma~\ref{lem:bounded-core}, with $L=B=C!$ and $M=2b$, therefore
+supplies a nilpotent subgroup and $O_C(\sqrt b)$ additional generators. The ambient
 soluble group has order $2^{O(b)}$. The tuple choices and
 \eqref{eq:marked-generation} cost
 $2^{O_C(b^{3/2}+r\sqrt b)}$.

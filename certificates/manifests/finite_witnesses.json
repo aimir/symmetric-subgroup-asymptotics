@@ -47,9 +47,9 @@
   },
   "files": [
     {
-      "bytes": 20818,
+      "bytes": 21328,
       "path": "ASSUMPTIONS.md",
-      "sha256": "b4af0b5a597dcc8bd2047f6eedecbf25b2dcc8b37443d8d3e384eb0c96283d70"
+      "sha256": "cb14782cbab4a2ea6f652db882464be9a740ac1d8ca4536e01a3575e1c79deb7"
     },
     {
       "bytes": 10265,
@@ -647,9 +647,9 @@
       "sha256": "a00a77ef721a56ff4953acf671aa2610bb824873cd629f794a8b806f67a5f546"
     },
     {
-      "bytes": 53621,
+      "bytes": 54454,
       "path": "provenance/LITERATURE.md",
-      "sha256": "faac0cc794ba796b61f3498d3fbd32fa01c7be3348cad18b7989dca3b620b91b"
+      "sha256": "233e0c989361979fbf8f88d6128e98d92e93b963a9d4c64ddcae61a67a36ecf5"
     },
     {
       "bytes": 38908,
