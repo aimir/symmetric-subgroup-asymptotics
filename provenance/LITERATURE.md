@@ -841,3 +841,17 @@ count, and `MarkedC4SubquadraticContainersGlobal` proves the same marked
 moment from it. This is a requirement reduction, not a proof of Pyber's
 stronger class-count assertion. The complete current input list is in
 `formal/README.md`.
+
+
+**Bounded-orbit replacement of RDT Theorem 7.**
+The final T1 facade no longer assumes `PublishedTheoremSeven`.
+`bounded_nilpotent_core_generation` in `BoundedNilpotentCoreGeneration.lean`
+(the `MarkedC4.OrdinaryNilpotentGeneration` namespace) proves the sufficient
+bounded-chief-section variant with ordinary supplement size
+`L*(B!+1)*floor(sqrt M)`. The bounded physical orbit cutoff gives
+`L=B=C!`, while the proved KP theorem bounds the prime-factor length of
+all actual abelian sections by `2b`. The literal socle split, centralizer,
+normal quotient and nilpotent subgroup remain throughout the construction.
+The marked-moment consumer enlarges only a fixed tuple-control constant;
+it does not enlarge the source's orbit cutoff. This removes a required
+input and does not claim the sharper unrestricted RDT Theorem 7 constant.

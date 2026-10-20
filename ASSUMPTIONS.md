@@ -294,6 +294,14 @@ proper-normal ceiling. Its literal dependent factors, maximal full tail,
 and three numerical prices are preserved. The separate h55 parameter is
 removed; the h53 classification remains explicit.
 
+The separate soluble nilpotent-generation input is also removed. The
+proved bounded-chief-section theorem gives a nilpotent core and at most
+`L*(B!+1)*floor(sqrt M)` ordinary supplement generators. Actual bounded
+orbit images give `L=B=C!`, and the proved abelian-section estimate gives
+`M=2b`. The global marked-moment proof retains the original orbit cutoff C;
+only its fixed tuple-control constant is enlarged. The unrestricted sharp
+`4L*sqrt M` assertion is not claimed as proved and is not needed by T1.
+
 The degree-eight binary excess-two implication is proved by complete checked
 coverage of all 26 binary actions. The other 25 actions have at most three
 ambient normal generators for every normal subgroup, certified by short
@@ -316,13 +324,13 @@ The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-24-parameter mathematical boundary, with formulations and source locators,
+23-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
 correspondences remain assumptions. On 20 October 2026 the recursive
-source/object audit passed for all 6,103 project modules in the public
+source/object audit passed for all 6,136 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.

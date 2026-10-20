@@ -23,7 +23,7 @@ import SymmetricSubgroupAsymptotics.DegreeSixThreePairClassificationProof
 import SymmetricSubgroupAsymptotics.DegreeSixThreeByTwoClassificationProof
 import SymmetricSubgroupAsymptotics.CharacterLiteratureProvedBinary
 import SymmetricSubgroupAsymptotics.RDTDegreeEightExceptionalProof
-import SymmetricSubgroupAsymptotics.MarkedC4SubquadraticContainersGlobal
+import SymmetricSubgroupAsymptotics.BoundedCoreSubquadraticContainersGlobal
 import SymmetricSubgroupAsymptotics.T1CatalogueFromMarkedMoment
 import SymmetricSubgroupAsymptotics.LargeOrbitGeneratorConsequencesFinal
 import SymmetricSubgroupAsymptotics.ZmudFaithfulCharacterProof
@@ -64,6 +64,8 @@ The derived-normal quarter bound is proved by original pair-kernel degree
 induction, independently of the excess classification.
 The original-word theorem follows internally from the retained exact excess
 classification and the proved proper-normal ceiling.
+The bounded-orbit nilpotent-core construction supplies the marked moment
+without the sharper unrestricted Theorem Seven input.
 See formal/README.md. -/
 set_option autoImplicit false
 noncomputable section
@@ -76,7 +78,6 @@ open MarkedC4.SolubleContainerCount MarkedC4.SolubleContainerOrder
 theorem T1_of_published_inputs
     (lit : PreE7CharacterPublishedInputs)
     (hcomp : PrimitiveCompositionLengthInput)
-    (hseven : PublishedTheoremSeven)
     (h53 : ActualCaseIITargetStructure.PublishedProposition53Binary)
     (h57 : RDTExcessStructure.PublishedTheorem57Binary)
     (hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper)
@@ -105,7 +106,6 @@ theorem T1_of_published_inputs
   have hderived := publishedDerivedNormalQuarterBinary_proved
   have hONanScott := PrimitiveSocleRawStructure.publishedONanScottStructure
   have h55 := publishedTheorem55Binary_of_proposition53 h53
-  have hsub := publishedSolubleSubdirectHeight
   have publishedSix :=
     DegreeSixThreeByTwoClassificationProof.publishedDegreeSixThreeByTwoAffineClassification
   have publishedThree := DegreeSixThreePairClassificationProof.representativeClassification
@@ -114,7 +114,7 @@ theorem T1_of_published_inputs
   have h8 := RDTDegreeEightExceptionalProof.publishedDegreeEightExceptional
   have h62 := LargeOrbitGeneratorConsequences.publishedProposition62_of_retained_inputs
     hPrimitiveGen hTraceyRefined hcomp
-  have hM4 := SubquadraticContainersGlobal.marked_bound hsub hseven
+  have hM4 := BoundedCoreSubquadraticContainersGlobal.marked_bound
     fullLit.kovacsPraeger fullLit.kovacsPraegerBinary h55 h53 h57 h8 hderived
     rdt46 hodd h62 hLMM hDixon hAG
   exact T1_of_globalMarkedMoment_and_catalogues fullLit hM4 hZmud hcomp hodd
@@ -132,7 +132,6 @@ theorem T1_of_published_inputs
 theorem allTargets_of_published_inputs
     (lit : PreE7CharacterPublishedInputs)
     (hcomp : PrimitiveCompositionLengthInput)
-    (hseven : PublishedTheoremSeven)
     (h53 : ActualCaseIITargetStructure.PublishedProposition53Binary)
     (h57 : RDTExcessStructure.PublishedTheorem57Binary)
     (hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper)
@@ -156,7 +155,7 @@ theorem allTargets_of_published_inputs
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     : AllTargets := by
   exact allTargets_iff_T1.mpr (T1_of_published_inputs
-    lit hcomp hseven h53 h57
+    lit hcomp h53 h57
     hodd hAG hExceptionalOrbits compositionCatalogue
     hPrimitiveGen strictCatalogue hLMM
     hTraceyRefined hTraceyPerm
