@@ -13,6 +13,10 @@ import SymmetricSubgroupAsymptotics.TraceyRefinedInputConsequences
 import SymmetricSubgroupAsymptotics.FaithfulSimpleGeneratorFromTwoGeneration
 import SymmetricSubgroupAsymptotics.PGLTwoFiveIsomorphism
 import SymmetricSubgroupAsymptotics.DegreeFiveAffineClassificationComplete
+import SymmetricSubgroupAsymptotics.PrimitiveDegreeNineFromCompositionCatalogue
+import SymmetricSubgroupAsymptotics.PrimitiveDegreeSixCatalogueClassification
+import SymmetricSubgroupAsymptotics.TraceyPermutationFormulaConsequences
+import SymmetricSubgroupAsymptotics.TraceySolublePermutationConsequences
 
 /-! Target composition from the explicit current mathematical inputs.
 Every low-degree source and the degree-sixteen geometric cover is assembled
@@ -22,7 +26,10 @@ composition consequence, and the quantitative nonaffine socle profile are
 constructed internally from raw published inputs. The rounded generator
 bound is derived from the existing McIver--Neumann input. The incomplete sixteen-point locator is not used. The final
 source/dependency and literature-boundary audit is separate from proving
-this composition. See formal/README.md. -/
+this composition. The degree-six/nine slices and binary/soluble permutation
+Tracey formulae are derived from the stronger retained inputs. The standalone
+Kovács--Praeger input is supplied by the character literature bundle.
+See formal/README.md. -/
 set_option autoImplicit false
 noncomputable section
 namespace SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu
@@ -46,15 +53,10 @@ theorem T1_of_published_inputs
     (h62 : PublishedProposition62) (h86 : PublishedTheorem86Representatives)
     (hDixon : PublishedDixonOrder)
     (hAG : PublishedAschbacherGuralnickSolubleGeneration)
-    (hTracey : TraceyBinaryFormulaInput)
-    (hSolubleFormula : TraceySolublePermutationFormulaRawInput)
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
     (compositionCatalogue : PublishedPrimitiveCompositionCatalogueCorrespondence)
-    (hDegreeNine : PublishedPrimitiveDegreeNineClassification)
     (hPrimitiveGen : PrimitiveNormalGeneratorInput)
     (strictCatalogue : PublishedPrimitiveStrictHeadCatalogueCorrespondence)
-    (primitiveSix : PublishedPrimitiveDegreeSixClassification)
-    (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
     (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
@@ -72,6 +74,13 @@ theorem T1_of_published_inputs
     (publishedThree : PublishedDegreeTwoThreePairRepresentativeClassification)
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     : T1 := by
+  have hKP := lit.kovacsPraeger
+  have hSolubleFormula := hTraceySoluble.permutationFormulaRaw
+  have primitiveSix :=
+    PrimitiveDegreeSixCatalogueClassification.publishedPrimitiveDegreeSixClassification_of_compositionCatalogue
+      compositionCatalogue
+  have hTracey := hTraceyRefined.binaryFormula
+  have hDegreeNine := primitiveDegreeNineClassification_of_compositionCatalogue compositionCatalogue
   have hHoltRoneyDougal := hSimpleGen.faithfulSimplePermutationGeneratorBound
   have hTraceyHalf := hTraceyRefined.affineHalf
   have hTraceyLog := hTraceyRefined.affine
@@ -109,15 +118,10 @@ theorem allTargets_of_published_inputs
     (h62 : PublishedProposition62) (h86 : PublishedTheorem86Representatives)
     (hDixon : PublishedDixonOrder)
     (hAG : PublishedAschbacherGuralnickSolubleGeneration)
-    (hTracey : TraceyBinaryFormulaInput)
-    (hSolubleFormula : TraceySolublePermutationFormulaRawInput)
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
     (compositionCatalogue : PublishedPrimitiveCompositionCatalogueCorrespondence)
-    (hDegreeNine : PublishedPrimitiveDegreeNineClassification)
     (hPrimitiveGen : PrimitiveNormalGeneratorInput)
     (strictCatalogue : PublishedPrimitiveStrictHeadCatalogueCorrespondence)
-    (primitiveSix : PublishedPrimitiveDegreeSixClassification)
-    (hKP : KovacsPraegerAbelianizationBound)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
     (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
@@ -137,8 +141,8 @@ theorem allTargets_of_published_inputs
     : AllTargets := by
   exact allTargets_iff_T1.mpr (T1_of_published_inputs
     lit hZmud hcomp hsub hseven h55 h53 h57 h8 hderived
-    rdt46 hodd h62 h86 hDixon hAG hTracey hSolubleFormula hExceptionalOrbits compositionCatalogue
-    hDegreeNine hPrimitiveGen strictCatalogue primitiveSix hKP hLMM
+    rdt46 hodd h62 h86 hDixon hAG hExceptionalOrbits compositionCatalogue
+    hPrimitiveGen strictCatalogue hLMM
     hTraceyRefined hTraceyPerm
     hSimpleGen smallAffineCatalogue hSolubleBase
     hONanScott hSimpleIndex catalogue hTraceySoluble hMN
