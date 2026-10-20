@@ -1,8 +1,10 @@
 # Lean formalization
 
 The local project pins Lean **4.30.0** and mathlib commit
-`c5ea00351c28e24afc9f0f84379aa41082b1188f`. Its complete dependency graph is
-recorded in `lake-manifest.json`. With elan installed, obtain mathlib's
+`c5ea00351c28e24afc9f0f84379aa41082b1188f`. Its package dependency graph is
+recorded in `lake-manifest.json`. The checking scripts require Python 3.11+
+and a POSIX environment with `fcntl`, process groups, and `ps`.
+With elan installed, obtain mathlib's
 precompiled objects from this directory:
 
 ```sh
@@ -16,6 +18,23 @@ Check project modules individually, in dependency order, with
 python3 -B scripts/check_lean.py SymmetricSubgroupAsymptotics/FiniteGroupCertificates.lean \
   --log-dir ../lean-check-logs
 ```
+
+For a fresh checkout, the serial closure wrapper discovers the local import
+graph and checks dependencies before their consumers. From the repository root:
+
+```sh
+python3 -B scripts/check_lean_closure.py --log-dir ../lean-check-logs --plan
+python3 -B scripts/check_lean_closure.py --log-dir ../lean-check-logs --resume
+```
+
+The first command only prints the plan. The second checks the public root,
+reusing only matching successful receipts from that log directory. It preserves
+previous receipts and logs before reruns and stops on a failed check. Each
+compiler invocation uses `check_lean.py`, with 16 GiB limits and a one-hour
+wall timeout. To select only the final theorem's dependencies, add
+`--root SymmetricSubgroupAsymptotics.MarkedC4PublishedGeometricTargets`.
+This workflow checks source/object correspondence; the mathematical input
+boundary and exported declarations' axiom audits remain separate obligations.
 
 The runner requires existing import objects and validates available local
 check receipts. It records legacy imports without receipts as unverified;
@@ -34,6 +53,8 @@ Cached dependencies allow checking offline. There are no CI workflows.
 The supervisor's small process and receipt regressions run locally with
 `python3 -B scripts/test_check_lean.py` from the repository root; they do
 not invoke Lean or allocate large amounts of memory.
+The closure wrapper's import-order, resume, and failure-preservation tests run
+with `python3 -B scripts/test_check_lean_closure.py`, also without Lean.
 
 A successful source check does not by itself establish a standard-axioms-only
 proof. Legacy finite certificates may use `native_decide`; their generated
@@ -97,6 +118,7 @@ definition obligations as conclusions, not hypotheses.
 | `SymmetricSubgroupAsymptotics.lean` | Root import module. Individual theorem modules can be checked separately. |
 | `lean-toolchain`, `lakefile.lean`, `lake-manifest.json` | Pinned compiler, package configuration, and exact dependencies. |
 | `../scripts/check_lean.py` | Serialized compiler runner with memory, RSS, and wall-time limits. |
+| `../scripts/check_lean_closure.py` | Dependency-order planning and conservative serial resume for a local module closure. |
 | `../computations/python/` | Reproducible producers for the retained finite certificates. |
 
 Build logs, receipts, scratch proofs, and research status records are kept
