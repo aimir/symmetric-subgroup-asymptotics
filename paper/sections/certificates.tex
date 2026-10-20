@@ -72,3 +72,29 @@ and its boundedness-first induction are proved in Section~\ref{sec:assembly}.
 The supplementary affine-nine and narrow socket data provide independent
 local checks; the proof above uses the general frame and mixture arguments
 for those domains.
+
+
+\subsection{Formal verification}
+The accompanying Lean development fixes Lean~4.30.0 and a precise mathlib
+revision. Its final theorem proves Theorems~\ref{thm:main},
+\ref{thm:saddle} and~\ref{thm:elementary} relative to 46 explicit published
+mathematical and catalogue inputs, whose formulations and source locators
+are listed in \texttt{formal/README.md}. The project-specific source,
+capacity, marked-moment and summation statements are proved internally.
+The exported theorems use only the standard logical axioms of Lean in
+addition to their stated parameters.
+
+Four formerly external facts are also proved in the formal development:
+Burnside's two-prime solvability theorem; semisimplicity and conjugacy of
+constituents in Clifford restriction over an arbitrary field; the bound
+\[
+ \#\{N\mathrel{\unlhd}G\}\,2^{-\ell^2/4}\leq 8\,2^{2\ell}
+ \qquad (|G|=2^\ell);
+\]
+and simplicity of $\operatorname{PSL}_3(F)$ for every field $F$, including
+$\mathbf F_2$ and $\mathbf F_3$. The subgroup estimate follows from a
+stronger checked subgroup-interval theorem. The projective simplicity
+proof uses elementary-matrix generation, perfectness and Iwasawa's
+criterion; it uses no ATLAS code. These four facts are supplied internally
+and are not among the 46 remaining inputs. Ported proofs retain their
+Apache-2.0 attribution and exact source revisions in the formal sources.
