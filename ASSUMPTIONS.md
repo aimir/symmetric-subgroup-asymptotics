@@ -288,6 +288,12 @@ exact automorphism/inner-kernel structure of simple powers. It retains the
 full socle and the original quotient embedding. Neither theorem remains a
 parameter of the final exports.
 
+The ordinary dependent-word normal-generation theorem is derived from the
+retained exact binary excess classification and the proved universal
+proper-normal ceiling. Its literal dependent factors, maximal full tail,
+and three numerical prices are preserved. The separate h55 parameter is
+removed; the h53 classification remains explicit.
+
 The degree-eight binary excess-two implication is proved by complete checked
 coverage of all 26 binary actions. The other 25 actions have at most three
 ambient normal generators for every normal subgroup, certified by short
@@ -310,13 +316,13 @@ The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-25-parameter mathematical boundary, with formulations and source locators,
+24-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
 correspondences remain assumptions. On 20 October 2026 the recursive
-source/object audit passed for all 6,090 project modules in the public
+source/object audit passed for all 6,103 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.

@@ -31,6 +31,7 @@ import SymmetricSubgroupAsymptotics.RDTBoundedFactorEpimorphismProof
 import SymmetricSubgroupAsymptotics.SmallAffineCatalogueDegreeEightConsequences
 import SymmetricSubgroupAsymptotics.BinaryDerivedNormalQuarterProof
 import SymmetricSubgroupAsymptotics.PrimitiveSocleRawONanScottProof
+import SymmetricSubgroupAsymptotics.BinaryOriginalWordConsequences
 
 /-! Target composition from the explicit current mathematical inputs.
 The degree-eight small-affine complement classification is proved from
@@ -61,6 +62,8 @@ The arbitrary-normal-target bounded-factor epimorphism theorem is proved
 from joint kernel incidence and short adapted original generating tuples.
 The derived-normal quarter bound is proved by original pair-kernel degree
 induction, independently of the excess classification.
+The original-word theorem follows internally from the retained exact excess
+classification and the proved proper-normal ceiling.
 See formal/README.md. -/
 set_option autoImplicit false
 noncomputable section
@@ -74,7 +77,6 @@ theorem T1_of_published_inputs
     (lit : PreE7CharacterPublishedInputs)
     (hcomp : PrimitiveCompositionLengthInput)
     (hseven : PublishedTheoremSeven)
-    (h55 : PublishedTheorem55Binary)
     (h53 : ActualCaseIITargetStructure.PublishedProposition53Binary)
     (h57 : RDTExcessStructure.PublishedTheorem57Binary)
     (hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper)
@@ -102,6 +104,7 @@ theorem T1_of_published_inputs
   have rdt46 := RDTBoundedFactorEpimorphismProof.rdtTheorem46BinaryInput_proved
   have hderived := publishedDerivedNormalQuarterBinary_proved
   have hONanScott := PrimitiveSocleRawStructure.publishedONanScottStructure
+  have h55 := publishedTheorem55Binary_of_proposition53 h53
   have hsub := publishedSolubleSubdirectHeight
   have publishedSix :=
     DegreeSixThreeByTwoClassificationProof.publishedDegreeSixThreeByTwoAffineClassification
@@ -130,7 +133,6 @@ theorem allTargets_of_published_inputs
     (lit : PreE7CharacterPublishedInputs)
     (hcomp : PrimitiveCompositionLengthInput)
     (hseven : PublishedTheoremSeven)
-    (h55 : PublishedTheorem55Binary)
     (h53 : ActualCaseIITargetStructure.PublishedProposition53Binary)
     (h57 : RDTExcessStructure.PublishedTheorem57Binary)
     (hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper)
@@ -154,7 +156,7 @@ theorem allTargets_of_published_inputs
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     : AllTargets := by
   exact allTargets_iff_T1.mpr (T1_of_published_inputs
-    lit hcomp hseven h55 h53 h57
+    lit hcomp hseven h53 h57
     hodd hAG hExceptionalOrbits compositionCatalogue
     hPrimitiveGen strictCatalogue hLMM
     hTraceyRefined hTraceyPerm

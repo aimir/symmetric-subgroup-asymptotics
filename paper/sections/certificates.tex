@@ -77,7 +77,7 @@ for those domains.
 \subsection{Formal verification}
 The accompanying Lean development fixes Lean~4.30.0 and a precise mathlib
 revision. Its final theorem proves Theorems~\ref{thm:main},
-\ref{thm:saddle} and~\ref{thm:elementary} relative to 25 explicit published
+\ref{thm:saddle} and~\ref{thm:elementary} relative to 24 explicit published
 mathematical and catalogue inputs, whose formulations and source locators
 are listed in \texttt{formal/README.md}. The project-specific source,
 capacity, marked-moment and summation statements are proved internally.
@@ -96,7 +96,7 @@ $\mathbf F_2$ and $\mathbf F_3$. The subgroup estimate follows from a
 stronger checked subgroup-interval theorem. The projective simplicity
 proof uses elementary-matrix generation, perfectness and Iwasawa's
 criterion; it uses no ATLAS code. These four facts are supplied internally
-and are not among the 25 remaining inputs. Ported proofs retain their
+and are not among the 24 remaining inputs. Ported proofs retain their
 Apache-2.0 attribution and exact source revisions in the formal sources.
 
 
@@ -109,7 +109,7 @@ $F_{20}$ action. Separately, the half-dimension and logarithmic induced-module
 bounds are derived from the retained refined Tracey input, and the
 faithful-simple logarithmic generator bound from the retained simple-group
 two-generation input. These three implications remove redundant parameters;
-the stronger two published theorems remain among the 25 explicit inputs.
+the stronger two published theorems remain among the 24 explicit inputs.
 
 
 The separate primitive degree-six and degree-nine inputs follow from the
@@ -189,6 +189,11 @@ their conjugation modules and the quotient is the actual faithful top
 image. A nonelementary top supplies a quarter-module estimate; an elementary
 top kills the derived image, so the half-module estimate suffices. This
 proof does not assume the binary excess classification.
+The intrinsic proper-normal bound $d_G(N)\leq\lfloor n/4\rfloor+1$
+also gives the original dependent-word theorem from the retained exact
+excess classification. Its three prices, original factors and maximal
+fully projecting tail are unchanged. The separate dependent-word parameter
+is therefore redundant; the excess classification remains explicit.
 
 The raw O'Nan--Scott structural theorem is also proved internally. The full
 socle is constructed from actual minimal normal subgroups, including both

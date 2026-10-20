@@ -85,6 +85,11 @@ required excess-one equality d(Q)=d(G). Neither input assumes a marked
 source, encoding, recovery theorem or marked count. Those are constructed
 in `MarkedC4ActualMarkedRDTSource`, `MarkedC4ActualMarkedCaseIIFibre`,
 `MarkedC4ActualQuotientMarkedNormalBudget` and the associated modules.
+The original Theorem 5.5(ii) interface is now derived internally by
+`publishedTheorem55Binary_of_proposition53` in `BinaryOriginalWordConsequences.lean`,
+from the retained exact Proposition 5.3
+input and the proved intrinsic proper-normal ceiling. Only the exact excess
+classification remains a final parameter for this reduction.
 
 Applications: CNT-LIFT, CNT-GRAPH, CNT-FUSION, BIN-LARGE, BIN-MIX and the
 macro-A4/terminal estimates in ASM-OLD. The faithful degree is that of the
