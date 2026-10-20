@@ -132,13 +132,13 @@ outside the publication repository.
 
 The final exports are
 [T1_of_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
-and `allTargets_of_published_inputs`. Their **20 named inputs** are listed
+and `allTargets_of_published_inputs`. Their **17 named inputs** are listed
 below. The character bundle has one published general class-number field. Both
 abelian-quotient statements are now supplied by checked proofs. These are explicit theorem parameters,
 not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
-Nineteen formerly external requirements are now discharged by checked proofs
+Twenty-two formerly external requirements are now discharged by checked proofs
 or proved consumer replacements on the same pinned toolchain:
 
 | Proved result | Export and proof source |
@@ -160,9 +160,11 @@ or proved consumer replacements on the same pinned toolchain:
 | A nilpotent permutation group of faithful degree-n has at most (38/25)^n conjugacy classes. | [`nilpotentConjugacyClassInput`](SymmetricSubgroupAsymptotics/NilpotentConjugacyClassProof.lean), using proved binary, ternary and large-prime fourth-power bounds and actual disjoint coprime supports. All sharp character consumers are unchanged. |
 | If N is normal in a transitive binary permutation group and N≤G′, its ambient normal-generator number is at most floor(n/4). | [`publishedDerivedNormalQuarterBinary_proved`](SymmetricSubgroupAsymptotics/BinaryDerivedNormalQuarterProof.lean), by original-degree induction through actual central-pair kernels and faithful top images. The nonelementary top has a proved quarter-module bound; an elementary top kills the derived image. No excess classification is assumed. |
 | O'Nan–Scott structure: a finite faithful primitive action is affine, or its full socle is T^k with the exact degree alternatives and a faithful original quotient embedding into Out(T) ≀ S_k. | [`publishedONanScottStructure`](SymmetricSubgroupAsymptotics/PrimitiveSocleRawONanScottProof.lean), from actual minimal normals, the proved Scott subdirect theorem, point-stabilizer maximality, coordinate automorphisms and the exact inner kernel. Both minimal normals are retained in the two-regular case. No simple-group classification is assumed for this structural theorem. |
-
 | Uniform refined induced-module bounds, with one tuple length satisfying the half, logarithmic, coprime, primary and prime-power ceilings simultaneously. | [`traceyRefinedInducedModuleInput_proved`](SymmetricSubgroupAsymptotics/TraceyRefinedInducedModuleProof.lean), through actual Sylow/Mackey pieces, finite chain widths, Nakayama and coprime semisimplicity. The least actual uniform capacity satisfies every field; no induced-module theorem is assumed. |
 | The two actual consumers of the soluble-orbit input. | [`traceySolublePermutationFormulaRawInput_proved`](SymmetricSubgroupAsymptotics/TraceySolublePermutationFormulaProof.lean) proves the exact soluble permutation formula using actual mixed-prime chains and an odd Hall subgroup. [`degreeFourCoreInduced_uniform_half`](SymmetricSubgroupAsymptotics/PrimitiveAffineDegreeFourCoreCapacityProof.lean) retains the actual globally normal ternary core and cyclic derangement quotient. The stronger arbitrary-local per-orbit input is unused and is not claimed as proved. |
+| The strict ternary-head and degree-eighteen budgets used by T1. | [`primitiveTernaryStrictHeadBound_of_composition_and_simpleIndex`](SymmetricSubgroupAsymptotics/PrimitiveStrictHeadFromCompositionAndSimpleIndex.lean) and [`degreeEighteenTernaryHeadBound_from_composition`](SymmetricSubgroupAsymptotics/DegreeEighteenHeadFromComposition.lean), from actual order matches in the retained composition catalogue and the retained simple-index bound. The stronger 253-row structural correspondence is unused, not claimed as proved. |
+| The actual small-affine complement consumers in degrees 16 and 27. | [`BinaryAffineSmallCatalogueData.ofPrimitiveSixteen`](SymmetricSubgroupAsymptotics/BinaryAffineSmallCatalogueConstruction.lean) and [`publishedPrimitiveAffineFiniteInput_of_binary_and_compositionCatalogue`](SymmetricSubgroupAsymptotics/PrimitiveAffineFiniteInputFromBinaryCatalogue.lean). Degree 16 reuses the retained primitive-16 correspondence; degree 27 uses actual linear embeddings and the retained composition order matches. No separate 31-carrier locator is assumed or claimed as proved. |
+| The actual semisimple primitive-component compression and degree-six/twelve normal consumers. | [`primitiveComponentExhaustion_of_composition_and_margin`](SymmetricSubgroupAsymptotics/PrimitiveComponentMarginExhaustion.lean) and [`PrimitiveSixTwelveNormalConsumerFacts.of_composition`](SymmetricSubgroupAsymptotics/PrimitiveSixTwelveNormalConsumerFacts.lean), using the retained composition and simple-index inputs. Compression retains the actual full socle, quotient and block system with `3q ≤ 2r`. The 116-row correspondence and stronger `2q ≤ r` are unnecessary. |
 
 These proved results, both final exports, the T1-to-T2/T3 transfers and the
 definition checks have standard-only axiom audits. Historical lower-level
@@ -279,13 +281,10 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput](SymmetricSubgroupAsymptotics/TraceyCorollaryThreeTwelveRaw.lean) | Exceptional degree3·2^m action has actual soluble subgroup and full binomial orbit partition, Mersenne exponent≥3. | TR Cor3.12 p17 PLUS preceding nonabelian PSL₂(p) construction Thm1.8/Cor3.11 excluding p=3. Cor3.12 alone is insufficient for exponent≥3. |
 | [compositionCatalogue : PublishedPrimitiveCompositionCatalogueCorrespondence](SymmetricSubgroupAsymptotics/PrimitiveTernaryThreeTenthsPublished.lean) | Faithful primitive degree<45 matches336 pinned rows; exact degree and order, or natural A_n/S_n identification. | PRIM degrees2–44. No ternary inequality field. |
 | [hPrimitiveGen : PrimitiveNormalGeneratorInput](SymmetricSubgroupAsymptotics/C1PrimitiveTail.lean) | Normal subgroup of primitive degree w≥4 has ordinary rank≤floor(log₂w). | HRD Thm1.1 normal specialization, sole degree3 exception excluded. |
-| [strictCatalogue : PublishedPrimitiveStrictHeadCatalogueCorrespondence](SymmetricSubgroupAsymptotics/PrimitiveTernaryStrictHeadPublished.lean) | Primitive degree<34 matches253 rows with actual normal minimal self-centralizing E and exact card(G/E). | plus standard primitive structure; PRIM degrees2–33. `PrimitiveStrictHeadSocleMatch` supplies E/minimality/selfCentralizing, not only a row index; document this enriched structural correspondence. No head capacity field. |
 | [hLMM : LucchiniMenegazzoMorigiTransitiveCountInput](SymmetricSubgroupAsymptotics/Non2PreE7MenuMassAggregation.lean) | Labelled transitive subgroup count is subquadratic-exponential. | Lucchini–Menegazzo–Morigi, BLMS32 (2000),191–195; exact labelled2^(Cn²/√logn) statement is sourced through RDT introductionp2. ID LIT-TRANSITIVE-COUNT. |
 | [hTraceyPerm : TraceyPermutationGeneratorInput](SymmetricSubgroupAsymptotics/TraceyAffineInducedModuleInput.lean) | Transitive degree w≥2 group generated by≤ceil(w/√log₂w). | weakening; TR Thm1.1(1), constantc<1. Not the sharper2021 √3/2 bound. |
 | [hSimpleGen : FiniteSimpleTwoGeneratorBound](SymmetricSubgroupAsymptotics/ActualWreathSemisimpleCoefficient.lean) | Every finite centerless simple group has≤2 generators. | Guralnick–Kantor, Journal of Algebra 234 (2000), Theorem I, p.744 and Corollary p.745; LIT-SIMPLE-2GEN. |
-| [smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification](SymmetricSubgroupAsymptotics/SmallAffineCatalogueDegreeEightConsequences.lean) | Actual affine complement in degree16/27 is isomorphic to one of the fixed31 named carriers. Degree8 is proved internally from complete GL(3,2) subgroup coverage. | Roney-Dougal–Unger2003 plus pinned PrimGrp3.4.4. Solvability/chief-saving and exact maxima are constructed, not supplied. |
 | [hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds](SymmetricSubgroupAsymptotics/PrimitiveSocleRawSimpleIndex.lean) | For the actual least proper subgroup index ℓ of a finite nonabelian simple T: ℓ² < card(T) and card(Out(T)) ≤ 3 log₂ ℓ. | Ballester-Bolinches–Esteban-Romero–Jiménez-Seral, Theorem A(4), p.4 of arXiv:2203.16976v2; LIT-SIMPLE-INDEX. The bound ℓ ≥ 5 and all profile deductions are internal. |
-| [catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence](SymmetricSubgroupAsymptotics/PrimitiveCatalogueClassificationPublished.lean) | Bare faithful primitive degree5–29 correspondence, actual group/socle exact orders and one-factor structural match. | PRIM degree5–29 pinned116 retained rows; inequality2outer≤degree kernel-checked internally. |
 | [hMN : McIverNeumannPermutationGeneratorBound](SymmetricSubgroupAsymptotics/McIverNeumannPermutationSection.lean) | Every subgroup of S_s except literally fullS3 has≤floor(s/2) generators. | Blackburn–Neumann–Venkataraman, Enumeration of Finite Groups (2007), Lemma 5.2; proof reference Cameron–Solomon–Turull, Journal of Algebra 127 (1989), §4; LIT-MCIVER-NEUMANN. |
 | [published8 : DegreeEightCanonicalCatalogue.PublishedClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineEightCanonicalCatalogue.lean) | Every actual transitive nonbinary subgroup of S8 is point-conjugate to one of24 pinned canonical actions. | Butler–McKay 1983, degree-eight classification; official TransGrp manual, with the 26 binary actions excluded from the 50-action list. |
 | [published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenCanonicalCatalogue.lean) | Every primitive subgroup of S16 point-conjugate to one of22 canonical actions:20 affine +naturalA16/S16. | PRIM degree16. NOT an all1954 transitive16 or527 semantic-source assumption. |
@@ -295,9 +294,11 @@ The degree-eight affine-complement branch is also a checked theorem: the
 finite adjunction-closure proof covers all15 actual GL(3,2) subgroup classes,
 nonzero invariant vector/dual flags exclude12, and literal linear
 intertwiners identify the three survivors with the fixed canonical groups.
-The small-affine parameter therefore retains only degrees16 and27; it has
-31 remaining rows. This is a scope reduction, not a claim that the full
-eight-point transitive-action classification is proved.
+The remaining small-affine consumers are also constructed internally from
+the retained primitive-16 and composition correspondences. Their isolated
+consumer route imports the original finite records unchanged. No separate
+31-row small-affine input remains. This does not prove the stronger full
+31-carrier locator or the full eight-point transitive-action classification.
 
 The quantitative `PublishedPrimitiveSocleDichotomyInput` is constructed from
 the proved `publishedONanScottStructure` and the retained `hSimpleIndex`;
@@ -380,7 +381,7 @@ recovery workflow.
 
 ## Verification boundary
 
-The public import closure contains **6,201 project modules**. On
+The public import closure contains **6,342 project modules**. On
 21 October 2026, recursive verification matched their current sources,
 compiled objects, direct dependency fingerprints, and pinned toolchain
 against successful check receipts. Matching historical receipts were reused

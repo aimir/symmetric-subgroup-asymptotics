@@ -77,7 +77,7 @@ for those domains.
 \subsection{Formal verification}
 The accompanying Lean development fixes Lean~4.30.0 and a precise mathlib
 revision. Its final theorem proves Theorems~\ref{thm:main},
-\ref{thm:saddle} and~\ref{thm:elementary} relative to 20 explicit published
+\ref{thm:saddle} and~\ref{thm:elementary} relative to 17 explicit published
 mathematical and catalogue inputs, whose formulations and source locators
 are listed in \texttt{formal/README.md}. The project-specific source,
 capacity, marked-moment and summation statements are proved internally.
@@ -96,7 +96,7 @@ $\mathbf F_2$ and $\mathbf F_3$. The subgroup estimate follows from a
 stronger checked subgroup-interval theorem. The projective simplicity
 proof uses elementary-matrix generation, perfectness and Iwasawa's
 criterion; it uses no ATLAS code. These four facts are supplied internally
-and are not among the 20 remaining inputs. Ported proofs retain their
+and are not among the 17 remaining inputs. Ported proofs retain their
 Apache-2.0 attribution and exact source revisions in the formal sources.
 
 
@@ -130,7 +130,17 @@ nonzero-orbit count remains one under the actual Mackey twists, giving
 one generator per restricted orbit and the required half bound.
 These two consumers are proved directly; the stronger arbitrary-local
 per-soluble-orbit theorem is not asserted by this replacement.
-The broader catalogue correspondences remain explicit assumptions.
+The strict-head and degree-eighteen consumers likewise follow from actual
+order matches in the retained composition catalogue and the ordinary
+simple-index bound. No separate 253-row structural correspondence is needed.
+For semisimple primitive components, compression keeps the actual full
+socle and quotient, using the sufficient margin $3q\leq2r$ rather than the
+stronger half-degree estimate. The exact degree-six/twelve normal consumers
+are constructed separately; the order-$1320$ obstruction is excluded by
+an actual twelve-point action and its even eleven-cycle normalizer.
+Thus the 116-row primitive correspondence is also unnecessary for T1.
+These replacements do not assert the stronger unused correspondences.
+The remaining catalogue correspondences stay explicit assumptions.
 The
 repeated standalone abelianization parameter is supplied internally by a
 checked theorem.
@@ -192,9 +202,12 @@ complete subgroup coverage of the actual $\operatorname{GL}_3(\mathbf F_2)$.
 Single-element adjunction certificates cover all fifteen subgroup classes;
 fixed nonzero vector or covector flags exclude twelve, and literal linear
 intertwiners identify the three remaining canonical complements. The
-small-affine catalogue parameter now retains only degrees sixteen and
-twenty-seven. The full transitive degree-eight catalogue is a separate
-remaining input.
+remaining small-affine consumers are now constructed internally as well:
+degree sixteen reuses the retained primitive-sixteen point correspondence,
+and degree twenty-seven uses actual linear embeddings and the retained
+composition-order correspondence. The stronger separate small-affine
+carrier locator is unused. The full transitive degree-eight catalogue is
+a separate remaining input.
 
 The derived-normal quarter bound for transitive binary actions is proved
 by induction on the original degree. Actual central-pair kernels retain

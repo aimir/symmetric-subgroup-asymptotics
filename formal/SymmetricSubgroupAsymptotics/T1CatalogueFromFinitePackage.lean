@@ -1,6 +1,10 @@
+import SymmetricSubgroupAsymptotics.MarkedMomentComponentExhaustion
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoClosedSourceAssemblyBoundedCatalogueReduced
+import SymmetricSubgroupAsymptotics.PrimitiveStrictHeadFromCompositionAndSimpleIndex
+import SymmetricSubgroupAsymptotics.DegreeEighteenHeadFromComposition
 import SymmetricSubgroupAsymptotics.TraceySolublePermutationFormulaProof
 import SymmetricSubgroupAsymptotics.MarkedC4PublishedClosedTargets
-import SymmetricSubgroupAsymptotics.PrimitiveAffineFinitePackageConsumer
+import SymmetricSubgroupAsymptotics.PrimitiveAffineFinitePackageConsumerBinarySmallReduced
 import SymmetricSubgroupAsymptotics.DegreeSixteenCompleteGeometricSource
 import SymmetricSubgroupAsymptotics.CliffordActualRetainedConstituent
 import SymmetricSubgroupAsymptotics.CliffordRestriction
@@ -34,15 +38,14 @@ theorem T1_of_globalMarkedMoment_and_finitePackage
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
     (compositionCatalogue : PublishedPrimitiveCompositionCatalogueCorrespondence)
     (hPrimitiveGen : PrimitiveNormalGeneratorInput)
-    (strictCatalogue : PublishedPrimitiveStrictHeadCatalogueCorrespondence)
+    (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
     (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
-    (publishedSmall : PublishedPrimitiveAffineSmallCatalogueData)
+    (publishedSmall : BinaryAffineSmallCatalogueData)
     (publishedFinite : PublishedPrimitiveAffineFiniteInput)
     (socle : PublishedPrimitiveSocleDichotomyInput)
-    (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (publishedSix : PublishedDegreeSixThreeByTwoAffineClassification)
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
@@ -55,23 +58,26 @@ theorem T1_of_globalMarkedMoment_and_finitePackage
       compositionCatalogue
   have hDegreeNine := primitiveDegreeNineClassification_of_compositionCatalogue compositionCatalogue
   have hWeight := primitiveTernaryThreeTenthsWeightBound_of_published hcomp compositionCatalogue
-  have hPrimitive := primitiveTernaryStrictHeadBound_of_published hPrimitiveGen strictCatalogue
-  have h18 := degreeEighteenTernaryHeadBound_of_published strictCatalogue primitiveSix hPrimitive
+  have hPrimitive := primitiveTernaryStrictHeadBound_of_composition_and_simpleIndex
+    hPrimitiveGen compositionCatalogue hSimpleIndex
+  have h18 := degreeEighteenTernaryHeadBound_from_composition
+    compositionCatalogue hSimpleIndex primitiveSix hPrimitive
   have publishedPairs := FourPairCanonicalClassification.classification hZmud published8
   let degreeTwo : PrimitiveAffineResidualDegreeSource 2 :=
-    DegreeTwoClosedSourceAssembly.source_of_sixteenPairSource
-      socle catalogue primitiveSix hZmud lit publishedThree published8 publishedTwelve
+    DegreeTwoClosedSourceAssembly.BoundedCatalogueReduced.source_of_sixteenPairSource
+      socle (PrimitiveSixTwelveNormalConsumerFacts.of_composition compositionCatalogue hSimpleIndex) primitiveSix hZmud lit publishedThree published8 publishedTwelve
       (DegreeSixteenCompleteGeometricSource.residualSource
         published8 published16 socle hMN hZmud lit)
-  exact T1_of_catalogueExhaustion_marked lit hgen hM4 hTraceyRefined.binaryFormula
+  have hOuter := semisimpleOuterFactorPermutationBound_of_primitiveGenerator
+    hSimpleGen.faithfulSimplePermutationGeneratorBound
+  exact T1_of_componentExhaustion_marked lit hgen hM4 hTraceyRefined.binaryFormula
     (traceyBinaryExceptionalThree_of_raw traceySolublePermutationFormulaRawInput_proved hExceptionalOrbits)
     (primitiveTernaryChiefWeightBound_of_published hWeight hDegreeNine)
     hWeight hPrimitive h18 lit.kovacsPraeger hLMM
-    (semisimpleOuterFactorPermutationBound_of_primitiveGenerator
-      hSimpleGen.faithfulSimplePermutationGeneratorBound)
-    (preE7PrimitiveCatalogueExhaustionData
-      (preE7PrimitiveCatalogueClassificationInput_of_published socle catalogue)
-      (preE7PrimitiveAffineConsumerData_of_finitePackage hZmud lit hgen
+    hOuter
+    (primitiveComponentExhaustion_of_composition_and_margin
+      compositionCatalogue published8 published16 hSimpleIndex hOuter
+      (BinarySmallReduced.preE7PrimitiveAffineConsumerData_of_finitePackage hZmud lit hgen
         CliffordRawRestriction.proved.toHomogeneousRestriction hcomp lit.kovacsPraeger
         hMN hTraceyRefined.affineHalf hTraceyRefined.affine
         hTraceyRefined hTraceyPerm hSimpleGen publishedSmall publishedFinite publishedSix

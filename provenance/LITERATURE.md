@@ -864,3 +864,13 @@ normal quotient and nilpotent subgroup remain throughout the construction.
 The marked-moment consumer enlarges only a fixed tuple-control constant;
 it does not enlarge the source's orbit cutoff. This removes a required
 input and does not claim the sharper unrestricted RDT Theorem 7 constant.
+
+
+The final theorem no longer takes the separate 253-row strict-head,
+31-carrier small-affine or 116-row bounded primitive correspondences.
+Their actual consumers are proved from the retained 336-row composition
+correspondence, ordinary simple-index inequalities, primitive-16 point
+correspondence and proved linear-group facts. The semisimple comparator
+uses the sufficient bound `3q ≤ 2r` on the actual full-socle quotient;
+actual degree-six/twelve normal facts are constructed separately. These
+are consumer reductions, not proofs of the stronger unused correspondences.
