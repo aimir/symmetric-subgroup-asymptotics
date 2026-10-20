@@ -189,12 +189,15 @@ Tracey `5/16` head bound is now proved by
 `traceyBinaryExceptionalThree_of_raw` from the raw soluble formula and
 Corollary 3.12 orbit data. The actual-wreath Clifford faithfulness conclusion
 is now constructed by `CliffordRawRestriction.Input.toHomogeneousRestriction`
-from the raw normal-restriction theorem. Both constructors have checked
+from the normal-restriction theorem. The latter is now proved over arbitrary
+fields by `CliffordRawRestriction.proved`, so it is no longer an external
+parameter. Both constructors have checked
 sources and standard-only axiom audits. The corrected small-affine
 representative receipt is now constructed for all 34 fixed rows by
 `SmallAffineCanonicalRepresentatives.receipt`. It takes bare published
-catalogue coverage, classical `PSL₃(2)`/`PSL₃(3)` simplicity and Burnside's
-`p^a q^b` theorem, with no representative-facts or composition bound input.
+catalogue coverage and internally supplied proofs of `PSL₃(2)`/`PSL₃(3)`
+simplicity and Burnside's `p^a q^b` theorem, with no representative-facts or
+composition bound input.
 Its structural alternatives permit central abelian factors; the former
 invalid uniqueness condition has been removed. The degree-twenty-five
 projective-to-composition deduction is now proved from the actual
@@ -215,17 +218,28 @@ deductions, and the exact original one-factor quotient are proved
 internally. The rounded all-subgroup generator bound is likewise derived
 from the retained McIver–Neumann theorem.
 
+Four previously retained inputs are now checked theorems: Burnside's
+two-prime solvability theorem; arbitrary-field Clifford restriction;
+the weak binary normal-subgroup estimate (from the stronger proved
+Palcoux–Spiga subgroup-interval bound); and simplicity of `PSL₃(F)` for
+every field. The last proof uses elementary matrices and Iwasawa's
+criterion, with Apache-licensed mathlib backports and no ATLAS source.
+Their adapters are inserted directly in the final target facade.
+No corresponding argument is required from a caller of T1 or AllTargets.
+Exact upstream revisions and licensing are in
+[the external proof notice](formal/SymmetricSubgroupAsymptotics/External/NOTICE).
+
 The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-50-parameter mathematical boundary, with formulations and source locators,
+46-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
 correspondences remain assumptions. On 20 October 2026 the recursive
-source/object audit passed for all 5,872 project modules in the public
+source/object audit passed for all 5,897 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.

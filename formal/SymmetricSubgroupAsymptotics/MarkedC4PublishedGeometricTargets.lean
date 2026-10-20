@@ -5,6 +5,10 @@ import SymmetricSubgroupAsymptotics.TraceyExceptionalThreeFromRaw
 import SymmetricSubgroupAsymptotics.PrimitiveAffineCanonicalFiniteLiterature
 import SymmetricSubgroupAsymptotics.PrimitiveSocleRawDichotomy
 import SymmetricSubgroupAsymptotics.PermutationGeneratorBoundFromMcIverNeumann
+import SymmetricSubgroupAsymptotics.BurnsideTwoPrimeSolvability
+import SymmetricSubgroupAsymptotics.CliffordRestriction
+import SymmetricSubgroupAsymptotics.BinaryNormalSubgroupBound
+import SymmetricSubgroupAsymptotics.ProjectiveThreeSimplicity
 
 /-! Target composition from the explicit current mathematical inputs.
 Every low-degree source and the degree-sixteen geometric cover is assembled
@@ -26,7 +30,6 @@ open MarkedC4.SolubleContainerCount MarkedC4.SolubleContainerOrder
 theorem T1_of_published_inputs
     (lit : PreE7CharacterLiterature)
     (hZmud : ZmudFaithfulCharacterTupleInput)
-    (hClifford : CliffordRawRestriction.Input)
     (hcomp : PrimitiveCompositionLengthInput)
     (hsub : PublishedSolubleSubdirectHeight) (hseven : PublishedTheoremSeven)
     (h55 : PublishedTheorem55Binary)
@@ -56,8 +59,6 @@ theorem T1_of_published_inputs
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (smallAffineCatalogue : SmallAffineCanonicalRepresentatives.PublishedClassification)
-    (hPSLThree : StandardThreeDimensionalLinearGroups.PublishedSimplicity)
-    (hBurnside : PublishedBurnsideTwoPrimeSolvabilityInput)
     (hProjectiveFive : StandardGLTwoFiveProjective.PublishedProjectiveIsomorphism)
     (hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound)
     (hAffineFive : PublishedDegreeFiveAffineClassification)
@@ -71,28 +72,27 @@ theorem T1_of_published_inputs
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
     (publishedThree : PublishedDegreeTwoThreePairRepresentativeClassification)
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
-    (hFS : FusariSpigaBinaryNormalSubgroupInput) : T1 := by
+    : T1 := by
   let socle := hONanScott.toSocleDichotomy hSimpleIndex
   have hgen := permutationSubgroupGeneratorBound_of_mcIverNeumann hMN
   exact T1_of_published_inputs_and_sixteenPairSource
-    lit hZmud hClifford.toHomogeneousRestriction hgen hcomp hsub hseven h55 h53 h57 h8 hderived
+    lit hZmud CliffordRawRestriction.proved.toHomogeneousRestriction hgen hcomp hsub hseven h55 h53 h57 h8 hderived
     rdt46 hodd h62 h86 hDixon hAG hTracey
     (traceyBinaryExceptionalThree_of_raw hSolubleFormula hExceptionalOrbits) compositionCatalogue
     hDegreeNine hPrimitiveGen strictCatalogue primitiveSix hKP hLMM
     hHoltRoneyDougal hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
     hSimpleGen
     (PublishedPrimitiveAffineFiniteLiterature.ofCanonicalClassifications
-      smallAffineCatalogue hPSLThree hBurnside hProjectiveFive hSolubleBase hAffineFive)
+      smallAffineCatalogue ProjectiveThreeSimplicity.proved burnsideTwoPrimeSolvability hProjectiveFive hSolubleBase hAffineFive)
     socle catalogue hTraceySoluble hMN
     publishedSix published8 published16 publishedThree publishedTwelve
     (DegreeSixteenCompleteGeometricSource.residualSource
-      published8 published16 socle hMN hZmud lit) hFS
+      published8 published16 socle hMN hZmud lit) fusariSpigaBinaryNormalSubgroup
 
 /-- The same published inputs imply all three approved asymptotic targets. -/
 theorem allTargets_of_published_inputs
     (lit : PreE7CharacterLiterature)
     (hZmud : ZmudFaithfulCharacterTupleInput)
-    (hClifford : CliffordRawRestriction.Input)
     (hcomp : PrimitiveCompositionLengthInput)
     (hsub : PublishedSolubleSubdirectHeight) (hseven : PublishedTheoremSeven)
     (h55 : PublishedTheorem55Binary)
@@ -122,8 +122,6 @@ theorem allTargets_of_published_inputs
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (smallAffineCatalogue : SmallAffineCanonicalRepresentatives.PublishedClassification)
-    (hPSLThree : StandardThreeDimensionalLinearGroups.PublishedSimplicity)
-    (hBurnside : PublishedBurnsideTwoPrimeSolvabilityInput)
     (hProjectiveFive : StandardGLTwoFiveProjective.PublishedProjectiveIsomorphism)
     (hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound)
     (hAffineFive : PublishedDegreeFiveAffineClassification)
@@ -137,15 +135,15 @@ theorem allTargets_of_published_inputs
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
     (publishedThree : PublishedDegreeTwoThreePairRepresentativeClassification)
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
-    (hFS : FusariSpigaBinaryNormalSubgroupInput) : AllTargets := by
+    : AllTargets := by
   exact allTargets_iff_T1.mpr (T1_of_published_inputs
-    lit hZmud hClifford hcomp hsub hseven h55 h53 h57 h8 hderived
+    lit hZmud hcomp hsub hseven h55 h53 h57 h8 hderived
     rdt46 hodd h62 h86 hDixon hAG hTracey hSolubleFormula hExceptionalOrbits compositionCatalogue
     hDegreeNine hPrimitiveGen strictCatalogue primitiveSix hKP hLMM
     hHoltRoneyDougal hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
-    hSimpleGen smallAffineCatalogue hPSLThree hBurnside hProjectiveFive hSolubleBase hAffineFive
+    hSimpleGen smallAffineCatalogue hProjectiveFive hSolubleBase hAffineFive
     hONanScott hSimpleIndex catalogue hTraceySoluble hMN
-    publishedSix published8 published16 publishedThree publishedTwelve hFS)
+    publishedSix published8 published16 publishedThree publishedTwelve)
 
 
 end SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu

@@ -1,0 +1,41 @@
+Selected external Lean proofs
+
+Burnside port:
+  Ian Klatzco and Rado Kirov, odd-order-lean.
+  https://github.com/ianklatzco/odd-order-lean
+  Source revision: 22f7b889b7919c0487057b928079b79baf4f2e00
+  Selected public benchmark modules: ClassFunction, ClassSum, CharacterArith,
+  SchurZassenhaus, Burnside.
+  Copyright notices in each source are preserved.
+  License: Apache License 2.0; see LICENSE-APACHE-2.0.txt.
+  Changes: local import paths and compatibility repairs for pinned Lean 4.30.
+
+Clifford port:
+  Qiuzhen-CFSG/CFSG contributors, FormaTheoria finite-group development.
+  https://github.com/Qiuzhen-CFSG/CFSG
+  Source revision: 96b2a02085dc678f3e0a97b334c31ada599c55fd
+  Selected Theory/Representation modules: RepMap, RepEquiv,
+  SubrepresentationLattice, Isotypic, ConjugateRep, Clifford.
+  License: Apache License 2.0; see LICENSE-APACHE-2.0.txt.
+  Changes: local imports and pinned Lean 4.30 compatibility repairs.
+
+Sharp subgroup interval bound port:
+  Sébastien Palcoux and Pablo Spiga, sharp-intermediate-subgroup-bounds.
+  https://github.com/sebastienpalcoux/sharp-intermediate-subgroup-bounds
+  Source revision: 522d6dfcb5d25d47455375e3df0f8a561b7b780b
+  Selected modules: Basic, Tree, Escape, Packing, Theta, Decimal, GroupMain.
+  License: Apache License 2.0; see LICENSE-APACHE-2.0.txt.
+  Changes: local imports and pinned Lean 4.30 compatibility repairs.
+
+Projective-action foundations (mathlib backports):
+  David Loeffler, Antoine Chambert-Loir, Yunzhou (Edison) Xie, and mathlib contributors.
+  https://github.com/leanprover-community/mathlib4
+  Projectivization/Action.lean, selected PSL action section:
+    revision 29c53517cf8e316f02ecadf525b142c15f8eb386.
+  Projectivization/PSL/Stabilizer.lean:
+    revision d99d52c36bea862ef9499bfaef386d0bcba9ea48.
+  Copyright and author notices in the sources are preserved.
+  License: Apache License 2.0; see LICENSE-APACHE-2.0.txt.
+  Changes: selected declarations and pinned Lean 4.30 compatibility repairs.
+  The SL(3) elementary generation/perfectness and PSL(3) simplicity assembly
+  are new project proofs. No ATLAS source is included.

@@ -118,6 +118,7 @@ definition obligations as conclusions, not hypotheses.
 | Path | Contents |
 |---|---|
 | `SymmetricSubgroupAsymptotics/` | Definitions, analytic estimates, group-theoretic proofs, finite certificates, and theorem assemblers. |
+| `SymmetricSubgroupAsymptotics/External/` | Selected Apache-licensed proof ports and mathlib backports, with preserved notices and pinned provenance. |
 | `SymmetricSubgroupAsymptotics.lean` | Public import of the final proof facade and shared-threshold formulations. Optional certificate modules have their own imports. |
 | `lean-toolchain`, `lakefile.lean`, `lake-manifest.json` | Pinned compiler, package configuration, and exact dependencies. |
 | `../scripts/check_lean.py` | Serialized compiler runner with memory, RSS, and wall-time limits. |
@@ -131,11 +132,29 @@ outside the publication repository.
 
 The final exports are
 [T1_of_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
-and `allTargets_of_published_inputs`. Their **50 named inputs** are listed
+and `allTargets_of_published_inputs`. Their **46 named inputs** are listed
 below. The character bundle has four fields; ordinary abelianization is
 also passed separately as `hKP`. These are explicit theorem parameters,
 not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
+
+Four former literature parameters are now supplied by checked proofs on the
+same pinned toolchain:
+
+| Proved result | Export and proof source |
+|---|---|
+| Burnside: finite groups of order `p^a q^b` are soluble. | [`burnsideTwoPrimeSolvability`](SymmetricSubgroupAsymptotics/BurnsideTwoPrimeSolvability.lean), from the Klatzco–Kirov `odd-order-lean` proof. |
+| Clifford: restriction to an actual normal subgroup is semisimple and irreducible constituent types are conjugate, over any field. | [`CliffordRawRestriction.proved`](SymmetricSubgroupAsymptotics/CliffordRestriction.lean), from the FormaTheoria Clifford proof and its arbitrary-field adapter. |
+| Binary normal-subgroup bound: `#normalSubgroups(G) · 2^(−l²/4) ≤ 8 · 2^(2l)` for a group of order `2^l`. | [`fusariSpigaBinaryNormalSubgroup`](SymmetricSubgroupAsymptotics/BinaryNormalSubgroupBound.lean), from the stronger Palcoux–Spiga interval-count theorem, with coefficient `7.371968802 < 8`. |
+| `PSL(3,F)` is simple for every field `F`, hence for `F₂` and `F₃`. | [`ProjectiveThreeSimplicity.simple`](SymmetricSubgroupAsymptotics/ProjectiveThreeSimplicity.lean), using new [elementary generation and perfectness proofs](SymmetricSubgroupAsymptotics/SLThreeElementaryGeneration.lean), mathlib's Iwasawa criterion and Apache-licensed projective-action backports. No ATLAS code is included. |
+
+The four adapters, both final exports, the T1-to-T2/T3 transfers and the
+definition checks have standard-only axiom audits. Historical lower-level
+constructors still accept the corresponding interface types; these are
+filled internally in the final exports and are no longer assumptions there.
+Selected upstream proofs and backports live in `External/`; exact revisions,
+authorship, licenses and changes are recorded in
+[`External/NOTICE`](SymmetricSubgroupAsymptotics/External/NOTICE).
 
 RDT means Roney-Dougal–Tracey, arXiv:2503.05416v1. TR means Tracey's
 2018 transitive-generation paper, with page locators referring to its linked
@@ -157,7 +176,6 @@ and labelled transitive-count theorem are retained published counting inputs.
 |---|---|---|
 | [lit : PreE7CharacterLiterature](SymmetricSubgroupAsymptotics/Non2PreE7CharacterCertificateTemplate.lean) | Four fields: permutation class number ≤5^((b−1)/3) for b≥4; abelianization ≤3^(b/3); every abelian binary quotient ≤2^(b/2); nilpotent permutation class number ≤(38/25)^b. | CLASS and KP. Small b and uniform weakenings internal. |
 | [hZmud : ZmudFaithfulCharacterTupleInput](SymmetricSubgroupAsymptotics/ZmudFaithfulCharacterInput.lean) | t normal generators of the actual socle give t jointly faithful finite irreducible complex representations of any finite G. | Steinberg, arXiv:2201.09129v1, Corollary 2.25 (Zmud′), printed p.19; relative Theorem 2.24, p.18. Specialize to complex characteristic zero; the trivial-group/empty-tuple seam is elementary. |
-| [hClifford : CliffordRawRestriction.Input](SymmetricSubgroupAsymptotics/CliffordRawRestrictionInput.lean) | Restriction of an irreducible finite-dimensional representation to an actual normal subgroup is semisimple; irreducible constituent types are conjugate. | Tracey thesis2017 printedp14, Thm2.3.1(i),(ii), Remark2.3.4, citing Curtis–Reiner Thm49.7. Actual retained faithfulness is proved internally. |
 | [hcomp : PrimitiveCompositionLengthInput](SymmetricSubgroupAsymptotics/PrimitiveCompositionLengthInput.lean) | Every actual composition series of primitive degree r≥2 has length ≤(8/3)log₂r−4/3. | GPRV Thm1.3. |
 | [hsub : PublishedSolubleSubdirectHeight](SymmetricSubgroupAsymptotics/MarkedC4PublishedOrdinaryNilpotentGeneration.lean) | Soluble subdirect product socle length ≤maximum factor socle length. | RDT Lemma8.5 p33. |
 | [hseven : PublishedTheoremSeven](SymmetricSubgroupAsymptotics/MarkedC4PublishedOrdinaryNilpotentGeneration.lean) | Soluble G with socle length ≤L and abelian-section prime-factor length ≤M is generated by a nilpotent subgroup plus ≤4L√M elements. | RDT Thm7 p3, proofpp32–33. |
@@ -189,8 +207,6 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [hTraceyPerm : TraceyPermutationGeneratorInput](SymmetricSubgroupAsymptotics/TraceyAffineInducedModuleInput.lean) | Transitive degree w≥2 group generated by≤ceil(w/√log₂w). | weakening; TR Thm1.1(1), constantc<1. Not the sharper2021 √3/2 bound. |
 | [hSimpleGen : FiniteSimpleTwoGeneratorBound](SymmetricSubgroupAsymptotics/ActualWreathSemisimpleCoefficient.lean) | Every finite centerless simple group has≤2 generators. | Guralnick–Kantor, Journal of Algebra 234 (2000), Theorem I, p.744 and Corollary p.745; LIT-SIMPLE-2GEN. |
 | [smallAffineCatalogue : SmallAffineCanonicalRepresentatives.PublishedClassification](SymmetricSubgroupAsymptotics/SmallAffineCanonicalRepresentatives.lean) | Actual affine complement in degree8/16/27 is isomorphic to one of fixed34 named carriers. | Roney-Dougal–Unger2003 plus pinned PrimGrp3.4.4. Solvability/chief-saving and exact maxima are constructed, not supplied. |
-| [hPSLThree : StandardThreeDimensionalLinearGroups.PublishedSimplicity](SymmetricSubgroupAsymptotics/StandardThreeDimensionalLinearGroups.lean) | PSL₃(F₂), PSL₃(F₃) are simple. | Classical projective-linear simplicity; Conrad, Simplicity of PSL_n(F), §4; LIT-CLASSICAL-PSL3. Exact GL/SL orders and determinant split are internal. |
-| [hBurnside : PublishedBurnsideTwoPrimeSolvabilityInput](SymmetricSubgroupAsymptotics/PublishedBurnsideTwoPrimeSolvability.lean) | Every finite group of order p^a q^b is soluble. | Burnside, Proc. London Math. Soc. s2-1 (1904), 388–392; LIT-BURNSIDE-TWO-PRIMES. |
 | [hProjectiveFive : StandardGLTwoFiveProjective.PublishedProjectiveIsomorphism](SymmetricSubgroupAsymptotics/StandardGLTwoFiveProjective.lean) | Nonempty(PGL₂(F₅)≃S5), with Mathlib PGL=GL/center. | Adler, Pacific Journal of Mathematics 155(1) (1992), Lemma 13, printed p.17; LIT-PGL2FIVE. Scalar kernel and character are internal. |
 | [hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound](SymmetricSubgroupAsymptotics/PrimitiveAffinePublishedSmallStructuralInput.lean) | Faithful irreducible soluble linear G on V over prime field has card(G)≤card(V)³. | corollary; Halasi–Maróti, ProcAMS144 (2016),3231–3242, Thm1.1 authorp2 strong-base≤3. LIT-AFFINE-BASE. |
 | [hAffineFive : PublishedDegreeFiveAffineClassification](SymmetricSubgroupAsymptotics/PrimitiveAffinePublishedSmallStructuralInput.lean) | Primitive affine degree5 group C5,D10 or naturalF20 with point relabelling. | Elementary degree-five specialization of affine primitive structure (Liebeck–Praeger–Saxl 1988, type I, p.390) and GL₁(F₅) ≅ C₄. No capacity estimate is supplied. |
@@ -204,13 +220,12 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenCanonicalCatalogue.lean) | Every primitive subgroup of S16 point-conjugate to one of22 canonical actions:20 affine +naturalA16/S16. | PRIM degree16. NOT an all1954 transitive16 or527 semantic-source assumption. |
 | [publishedThree : PublishedDegreeTwoThreePairRepresentativeClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineDegreeTwoThreePairsRawPackage.lean) | Every actual transitive nonbinary degree6 three-pair action has one of fixed easy/central abstract group charts. | Butler–McKay 1983, degree-six classification and the official TransGrp representative correspondence. No source inequality is supplied. |
 | [publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification](SymmetricSubgroupAsymptotics/DegreeTwelveCanonicalCatalogueLocator.lean) | Every transitive subgroup of S12 point-conjugate to one of fixed301 literal tops. | Royle, Journal of Symbolic Computation 4(2) (1987), 255–268, degree-twelve classification of 301 actions; official TransGrp manual. |
-| [hFS : FusariSpigaBinaryNormalSubgroupInput](SymmetricSubgroupAsymptotics/Non2PreE7Sns2MenuMass.lean) | For a finite 2-group of order 2^l, #normalSubgroups(G) · 2^(−l²/4) ≤ 8 · 2^(2l). | Fusari–Spiga, Journal of Algebra 635 (2023), Theorem 1.1, p.487; LIT-ORDER-COUNT. Count normal subgroups by all subgroups and weaken the published constant to eight. |
 
 The quantitative `PublishedPrimitiveSocleDichotomyInput` is constructed by
 `PublishedONanScottStructure.toSocleDichotomy`; it is not an additional
 parameter here. Likewise the complete small-affine receipt, degree-25
 scalar datum and chief bound, exceptional Tracey `5/16` deduction, actual
-Clifford faithfulness, all low-degree source data, marked-C₄ moment, and
+Clifford restriction and faithfulness, Burnside solvability, the binary normal-subgroup bound, projective-three simplicity, all low-degree source data, marked-C₄ moment, and
 `PreE7PrimitiveAffineConsumerData` are internal conclusions. The weaker
 `PermutationSubgroupGeneratorBound` is derived from `hMN`, including the
 full `S₃` exception.
@@ -224,7 +239,8 @@ The published hypotheses remain explicit mathematical inputs.
 
 The final composition follows this chain:
 
-1. Raw published structure and formulas construct the finite affine package,
+1. Checked Burnside, Clifford, subgroup-count and projective-three proofs,
+   together with the remaining published structure and formulas, construct the finite affine package,
    quantitative socle profiles, exceptional Tracey head bound, and actual
    Clifford restriction consequence.
 2. Primitive and imprimitive affine consumers supply complete original

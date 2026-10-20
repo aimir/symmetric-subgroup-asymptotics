@@ -152,6 +152,20 @@ for every finite group X. The regular-factor joint envelope and the complete
 C4/carrier mixture apply this to the actual joint group. No permutation
 degree or independent factor-by-factor subgroup bound is substituted.
 
+**Formal status.** The final T1 facade no longer assumes the binary
+normal-subgroup consequence. `BinaryNormalSubgroupBound.lean` proves it
+from `SharpIntermediateSubgroupBounds.interval_card_lt_universal_decimal`,
+a port of the stronger Palcoux–Spiga sharp interval theorem (public
+formalization registered as PALOMAR-2026-09-03-000005 v1). The selected
+Apache-licensed proof is pinned to revision
+`522d6dfcb5d25d47455375e3df0f8a561b7b780b` of
+[sharp-intermediate-subgroup-bounds](https://github.com/sebastienpalcoux/sharp-intermediate-subgroup-bounds).
+It proves the coefficient `3685984401/500000000 < 8`; the adapter injects
+normal subgroups into the interval above the identity, including the trivial
+group separately. Both the sharp theorem and the T1 specialization have
+standard-only axiom audits on the project's pinned toolchain.
+
+
 **LIT-KP — journal article.** L. G. Kovács and C. E. Praeger,
 *Finite permutation groups with large abelian quotients*, Pacific J. Math.
 136 (1989), 283–292. [DOI](https://doi.org/10.2140/pjm.1989.136.283);
@@ -299,13 +313,19 @@ heads with the soluble formula, and proves the remaining numerical bound.
 
 The actual-wreath Clifford corollary is separately proved in
 `CliffordActualRetainedConstituent.lean` from
-`CliffordRawRestriction.Input`. The raw input is modular Clifford
+`CliffordRawRestriction.proved`, which inhabits the former
+`CliffordRawRestriction.Input`. This proved theorem is modular Clifford
 semisimplicity on a normal subgroup and conjugacy of constituent types.
 Tracey's 2017 thesis states these at printed p.14, Theorem 2.3.1(i),(ii)
 and Remark 2.3.4, citing Curtis–Reiner, *Representation Theory of Finite
 Groups and Associative Algebras*, Theorem 49.7. The project constructs the
 faithfulness of the actual retained section internally; that conclusion is
-not a literature hypothesis.
+not a literature hypothesis. The raw restriction theorem is no longer a
+T1 parameter either: six Apache-licensed FormaTheoria modules from
+[Qiuzhen-CFSG/CFSG](https://github.com/Qiuzhen-CFSG/CFSG), revision
+`96b2a02085dc678f3e0a97b334c31ada599c55fd`, are ported to Lean 4.30;
+`CliffordRestriction.lean` adapts the general-field decomposition to both
+required fields. The adapter and final exports have standard-only axiom audits.
 [Thesis](https://wrap.warwick.ac.uk/id/eprint/97251/1/WRAP_Theses_Tracey_2017.pdf).
 
 **LIT-TRACEY-SHARP — public preprint.** Gareth Tracey,
@@ -642,7 +662,13 @@ The mathematical assumption boundary is described in
 `p^a*q^b`, for primes `p,q` and nonnegative `a,b`, is soluble. The Lean
 surface is `PublishedBurnsideTwoPrimeSolvabilityInput` in
 `PublishedBurnsideTwoPrimeSolvability.lean`. It is group-uniform and has no
-catalogue or capacity parameter. Actual cardinalities are proved before
+catalogue or capacity parameter. It is now inhabited by the checked
+`burnsideTwoPrimeSolvability` adapter; the final T1 facade has no Burnside
+argument. The five Apache-licensed Klatzco–Kirov modules are pinned to
+`22f7b889b7919c0487057b928079b79baf4f2e00` of
+[odd-order-lean](https://github.com/ianklatzco/odd-order-lean). The port,
+adapter and final targets use only the three standard axioms.
+Actual cardinalities are proved before
 applying it. `S5SubgroupProjectiveClassification.lean` derives the needed
 subgroup classification internally from this theorem and the checked
 alternating-group and coset-action facts.
@@ -652,7 +678,15 @@ instances `PSL(3,F₂)` and `PSL(3,F₃)` are simple. The general Jordan–Dicks
 simplicity theorem is proved in Keith Conrad, *Simplicity of PSL_n(F)*,
 [Section 4](https://kconrad.math.uconn.edu/blurbs/grouptheory/PSLnsimple.pdf),
 using Theorem 2.10 and Theorems 4.1–4.5. The exact Lean input is
-`StandardThreeDimensionalLinearGroups.PublishedSimplicity`. Triviality of
+`StandardThreeDimensionalLinearGroups.PublishedSimplicity`. It is now
+inhabited by `ProjectiveThreeSimplicity.proved`, without an external
+simplicity assumption: the project proves elementary generation and
+perfectness of `SL₃(F)`, then applies mathlib's Iwasawa criterion to its
+faithful primitive projective action. This proves `PSL₃(F)` simplicity over
+**every field**, including `F₂` and `F₃`. The projective foundations are
+Apache-licensed mathlib backports, with exact revisions in `External/NOTICE`;
+no ATLAS code or certificates are included. The general proof and both final
+targets have standard-only axiom audits. Triviality of
 the two special-linear centers, all exact orders, the determinant split
 `GL₃(3) ≅ SL₃(3) × C₂`, and the chief-order certificates are proved
 internally. No affine-specific composition bound is imported.

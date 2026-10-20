@@ -115,6 +115,25 @@ class ClosureTests(unittest.TestCase):
         private.write_bytes(old)
         self.assertTrue(self.reusable(root, [dep]))
 
+    def test_module_ir_output_is_required_and_hashed_but_not_an_import_object(self):
+        dep = self.source("ModuleDep")
+        root = self.source("", [dep])
+        receipt = self.receipt(root, [dep])
+        ir = closure.objects(self.formal, root)[0].with_suffix(".ir")
+        ir.write_bytes(b"module IR")
+        dep_ir = closure.objects(self.formal, dep)[0].with_suffix(".ir")
+        dep_ir.write_bytes(b"dependency IR")
+        self.save(root, receipt)
+        self.assertFalse(self.reusable(root, [dep]))
+        receipt["output_hashes"][str(ir)] = checker.digest(ir)
+        self.save(root, receipt)
+        self.assertTrue(self.reusable(root, [dep]))
+        self.assertNotIn(str(dep_ir), receipt["import_olean_hashes"])
+        ir.write_bytes(b"changed IR")
+        self.assertFalse(self.reusable(root, [dep]))
+        ir.unlink()
+        self.assertFalse(self.reusable(root, [dep]))
+
     def test_omitted_direct_dependency_fingerprints_and_legacy_rejected(self):
         dep = self.source("Dep")
         root = self.source("", [dep])
