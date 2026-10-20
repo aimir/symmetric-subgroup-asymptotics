@@ -33,6 +33,9 @@ previous receipts and logs before reruns and stops on a failed check. Each
 compiler invocation uses `check_lean.py`, with 16 GiB limits and a one-hour
 wall timeout. To select only the final theorem's dependencies, add
 `--root SymmetricSubgroupAsymptotics.MarkedC4PublishedGeometricTargets`.
+The public root imports that proof facade and the specification's equivalent
+shared-threshold statements. Optional regression fixtures and alternative
+certificates can be selected through their own `--root` module names.
 This workflow checks source/object correspondence; the mathematical input
 boundary and exported declarations' axiom audits remain separate obligations.
 
@@ -115,7 +118,7 @@ definition obligations as conclusions, not hypotheses.
 | Path | Contents |
 |---|---|
 | `SymmetricSubgroupAsymptotics/` | Definitions, analytic estimates, group-theoretic proofs, finite certificates, and theorem assemblers. |
-| `SymmetricSubgroupAsymptotics.lean` | Root import module. Individual theorem modules can be checked separately. |
+| `SymmetricSubgroupAsymptotics.lean` | Public import of the final proof facade and shared-threshold formulations. Optional certificate modules have their own imports. |
 | `lean-toolchain`, `lakefile.lean`, `lake-manifest.json` | Pinned compiler, package configuration, and exact dependencies. |
 | `../scripts/check_lean.py` | Serialized compiler runner with memory, RSS, and wall-time limits. |
 | `../scripts/check_lean_closure.py` | Dependency-order planning and conservative serial resume for a local module closure. |
@@ -212,9 +215,9 @@ Clifford faithfulness, all low-degree source data, marked-C₄ moment, and
 `PermutationSubgroupGeneratorBound` is derived from `hMN`, including the
 full `S₃` exception.
 
-The final facade and root import pass current checks. The independent
-mathematical input audit is closed at this boundary; the full transitive
-source/object receipt audit is still running. These are separate claims.
+The independent mathematical input audit is closed at this boundary.
+Recursive source/object verification of the final facade and public root
+remains the release gate. These are separate claims.
 
 ## Proof organization
 
@@ -280,8 +283,8 @@ recovery workflow.
 
 ## Verification boundary
 
-The final T1 and AllTargets declarations, root import, and raw-input
-constructors pass current source checks. Eleven target/helper exports have
+The final T1 and AllTargets declarations and raw-input constructors have
+passed individual source checks. Eleven target/helper exports have
 standard-only axiom audits. The remaining release task is recursive
 source/object correspondence throughout the public import graph, reusing
 matching evidence and rechecking stale modules serially. Logs, relocation
