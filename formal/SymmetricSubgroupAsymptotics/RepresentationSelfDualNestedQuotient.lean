@@ -28,7 +28,7 @@ The underlying linear equivalence is the identity; the only calculation is
 that a homomorphism preserves inverses. -/
 def representationDualCompEquiv
     {H : Type u} [Group H] (rho : Representation k G V) (f : H →* G) :
-    (rho.comp f).dual.Equiv (rho.dual.comp f) :=
+    (Representation.dual (rho.comp f)).Equiv (rho.dual.comp f) :=
   Representation.Equiv.mk (LinearEquiv.refl k (Module.Dual k V)) (by
     intro h
     apply LinearMap.ext
@@ -67,7 +67,7 @@ theorem finrank_nestedSubrepresentation
     (hAB : A ≤ B) :
     Module.finrank k (nestedSubrepresentation A B hAB).toSubmodule =
       Module.finrank k A.toSubmodule :=
-  (nestedSubrepresentationEquiv A B hAB).finrank_eq
+  (nestedSubrepresentationEquiv A B hAB).finrank_eq.symm
 
 /-- The literal representation on `B / A`. -/
 def nestedQuotientRepresentation
@@ -89,9 +89,10 @@ def selfDualOrthogonalSubrepresentation
     intro a ha
     have he := Representation.IntertwiningMap.isIntertwining
       rho rho.dual e.toIntertwiningMap g x
-    rw [he]
-    change e x (rho g⁻¹ a) = 0
-    exact hx _ (A.apply_mem_toSubmodule g⁻¹ ha)
+    change e (rho g x) a = 0
+    have hev := congrArg (fun ell : Module.Dual k V => ell a) he
+    change e (rho g x) a = e x (rho g⁻¹ a) at hev
+    exact hev.trans (hx _ (A.apply_mem_toSubmodule g⁻¹ ha))
 
 /-- Orthogonal complementation reverses inclusion. -/
 theorem selfDualOrthogonalSubrepresentation_antitone
@@ -100,8 +101,9 @@ theorem selfDualOrthogonalSubrepresentation_antitone
     selfDualOrthogonalSubrepresentation rho e B ≤
       selfDualOrthogonalSubrepresentation rho e A := by
   intro x hx
-  rw [selfDualOrthogonalSubrepresentation, Submodule.mem_comap,
-    Submodule.mem_dualAnnihilator] at hx ⊢
+  change e x ∈ B.toSubmodule.dualAnnihilator at hx
+  change e x ∈ A.toSubmodule.dualAnnihilator
+  rw [Submodule.mem_dualAnnihilator] at hx ⊢
   intro a ha
   exact hx a (hAB ha)
 
@@ -110,8 +112,9 @@ chosen self-dual pairing. -/
 noncomputable def selfDualNestedPairing
     (rho : Representation k G V) (e : rho.Equiv rho.dual)
     (A B : Subrepresentation rho) (hAB : A ≤ B) :
-    (selfDualOrthogonalSubrepresentation rho e A).toRepresentation.
-      IntertwiningMap (nestedQuotientRepresentation A B hAB).dual where
+    Representation.IntertwiningMap
+      (selfDualOrthogonalSubrepresentation rho e A).toRepresentation
+      (Representation.dual (nestedQuotientRepresentation A B hAB)) where
   toLinearMap :=
     { toFun := fun d =>
         (nestedSubrepresentation A B hAB).toSubmodule.liftQ
@@ -121,21 +124,26 @@ noncomputable def selfDualNestedPairing
           (by
             intro b hb
             change e d.1 b.1 = 0
-            exact d.2 b.1 hb)
+            have hd := d.property
+            change e d.1 ∈ A.toSubmodule.dualAnnihilator at hd
+            rw [Submodule.mem_dualAnnihilator] at hd
+            exact hd b.1 hb)
       map_add' := by
         intro d f
         apply LinearMap.ext
         intro y
         obtain ⟨b, rfl⟩ :=
           (nestedSubrepresentation A B hAB).toSubmodule.mkQ_surjective y
-        rfl
+        change e (d.1 + f.1) b.1 = e d.1 b.1 + e f.1 b.1
+        simp only [map_add, LinearMap.add_apply]
       map_smul' := by
         intro c d
         apply LinearMap.ext
         intro y
         obtain ⟨b, rfl⟩ :=
           (nestedSubrepresentation A B hAB).toSubmodule.mkQ_surjective y
-        rfl }
+        change e (c • d.1) b.1 = c • e d.1 b.1
+        simp only [map_smul, LinearMap.smul_apply] }
   isIntertwining' := by
     intro g
     apply LinearMap.ext
@@ -147,8 +155,9 @@ noncomputable def selfDualNestedPairing
     have heq := Representation.IntertwiningMap.isIntertwining
       rho rho.dual e.toIntertwiningMap g d.1
     change e (rho g d.1) b.1 = e d.1 (rho g⁻¹ b.1)
-    rw [heq]
-    rfl
+    have hev := congrArg (fun ell : Module.Dual k V => ell b.1) heq
+    change e (rho g d.1) b.1 = e d.1 (rho g⁻¹ b.1) at hev
+    exact hev
 
 /-- Every functional on `B/A` extends to the ambient self-dual space, so
 the pairing map from `A^⊥` is onto. -/
@@ -160,19 +169,24 @@ theorem selfDualNestedPairing_surjective
   intro psi
   let psiB : Module.Dual k B.toSubmodule :=
     psi.comp (nestedSubrepresentation A B hAB).toSubmodule.mkQ
-  obtain ⟨phi, hphi⟩ := B.toSubmodule.dualRestrict_surjective psiB
+  obtain ⟨phi, hphi⟩ := (Subspace.dualRestrict_surjective (W := B.toSubmodule)) psiB
   obtain ⟨v, hv⟩ := e.surjective phi
   have hvOrth : v ∈ selfDualOrthogonalSubrepresentation rho e A := by
-    rw [selfDualOrthogonalSubrepresentation, Submodule.mem_comap,
-      Submodule.mem_dualAnnihilator]
+    change e v ∈ A.toSubmodule.dualAnnihilator
+    rw [Submodule.mem_dualAnnihilator]
     intro a ha
     let b : B.toSubmodule := ⟨a, hAB ha⟩
     have hr := LinearMap.congr_fun hphi b
     change phi a = psiB b at hr
-    rw [← hv, hr]
+    have hvEval := congrArg (fun ell : Module.Dual k V => ell a) hv
+    change e v a = phi a at hvEval
+    rw [hvEval, hr]
     change psi (Submodule.Quotient.mk b) = 0
-    rw [Submodule.Quotient.mk_eq_zero]
-    exact ha
+    have hbzero : (Submodule.Quotient.mk b :
+        B.toSubmodule ⧸ (nestedSubrepresentation A B hAB).toSubmodule) = 0 := by
+      rw [Submodule.Quotient.mk_eq_zero]
+      exact ha
+    rw [hbzero, map_zero]
   let d : (selfDualOrthogonalSubrepresentation rho e A).toSubmodule :=
     ⟨v, hvOrth⟩
   refine ⟨d, ?_⟩
@@ -183,8 +197,9 @@ theorem selfDualNestedPairing_surjective
   have hr := LinearMap.congr_fun hphi b
   change phi b.1 = psiB b at hr
   change e v b.1 = psi (Submodule.Quotient.mk b)
-  rw [hv]
-  exact hr
+  have hvEval := congrArg (fun ell : Module.Dual k V => ell b.1) hv
+  change e v b.1 = phi b.1 at hvEval
+  exact hvEval.trans hr
 
 /-- The kernel of the pairing on `A^⊥` is exactly `B^⊥`. -/
 theorem selfDualNestedPairing_ker
@@ -198,9 +213,10 @@ theorem selfDualNestedPairing_ker
   ext d
   constructor
   · intro hd
+    change selfDualNestedPairing rho e A B hAB d = 0 at hd
     change d.1 ∈ selfDualOrthogonalSubrepresentation rho e B
-    rw [selfDualOrthogonalSubrepresentation, Submodule.mem_comap,
-      Submodule.mem_dualAnnihilator]
+    change e d.1 ∈ B.toSubmodule.dualAnnihilator
+    rw [Submodule.mem_dualAnnihilator]
     intro b hb
     let bB : B.toSubmodule := ⟨b, hb⟩
     have hz := LinearMap.congr_fun hd
@@ -214,6 +230,8 @@ theorem selfDualNestedPairing_ker
     obtain ⟨b, rfl⟩ :=
       (nestedSubrepresentation A B hAB).toSubmodule.mkQ_surjective y
     change e d.1 b.1 = 0
+    change e d.1 ∈ B.toSubmodule.dualAnnihilator at hd
+    rw [Submodule.mem_dualAnnihilator] at hd
     exact hd b.1 b.2
 
 /-- Quotient the pairing by its exact kernel. -/
@@ -223,8 +241,8 @@ noncomputable def selfDualNestedQuotientIntertwiner
     (nestedQuotientRepresentation
       (selfDualOrthogonalSubrepresentation rho e B)
       (selfDualOrthogonalSubrepresentation rho e A)
-      (selfDualOrthogonalSubrepresentation_antitone rho e hAB)).
-        IntertwiningMap (nestedQuotientRepresentation A B hAB).dual where
+      (selfDualOrthogonalSubrepresentation_antitone rho e hAB)).IntertwiningMap
+        (Representation.dual (nestedQuotientRepresentation A B hAB)) where
   toLinearMap :=
     (nestedSubrepresentation
       (selfDualOrthogonalSubrepresentation rho e B)
@@ -232,7 +250,8 @@ noncomputable def selfDualNestedQuotientIntertwiner
       (selfDualOrthogonalSubrepresentation_antitone rho e hAB)).toSubmodule.liftQ
         (selfDualNestedPairing rho e A B hAB).toLinearMap (by
           intro d hd
-          rw [← selfDualNestedPairing_ker rho e A B hAB]
+          change d ∈ (selfDualNestedPairing rho e A B hAB).toLinearMap.ker
+          rw [selfDualNestedPairing_ker rho e A B hAB]
           exact hd)
   isIntertwining' := by
     intro g
@@ -242,8 +261,7 @@ noncomputable def selfDualNestedQuotientIntertwiner
       (nestedSubrepresentation
         (selfDualOrthogonalSubrepresentation rho e B)
         (selfDualOrthogonalSubrepresentation rho e A)
-        (selfDualOrthogonalSubrepresentation_antitone rho e hAB)).toSubmodule.
-          mkQ_surjective y
+        (selfDualOrthogonalSubrepresentation_antitone rho e hAB)).toSubmodule.mkQ_surjective y
     exact Representation.IntertwiningMap.isIntertwining _ _
       (selfDualNestedPairing rho e A B hAB) g d
 
@@ -257,15 +275,17 @@ theorem selfDualNestedQuotientIntertwiner_injective
     (nestedSubrepresentation
       (selfDualOrthogonalSubrepresentation rho e B)
       (selfDualOrthogonalSubrepresentation rho e A)
-      (selfDualOrthogonalSubrepresentation_antitone rho e hAB)).toSubmodule.
-        mkQ_surjective x
+      (selfDualOrthogonalSubrepresentation_antitone rho e hAB)).toSubmodule.mkQ_surjective x
   obtain ⟨f, rfl⟩ :=
     (nestedSubrepresentation
       (selfDualOrthogonalSubrepresentation rho e B)
       (selfDualOrthogonalSubrepresentation rho e A)
-      (selfDualOrthogonalSubrepresentation_antitone rho e hAB)).toSubmodule.
-        mkQ_surjective y
-  apply Submodule.Quotient.eq.mpr
+      (selfDualOrthogonalSubrepresentation_antitone rho e hAB)).toSubmodule.mkQ_surjective y
+  apply (Submodule.Quotient.eq
+    (nestedSubrepresentation
+      (selfDualOrthogonalSubrepresentation rho e B)
+      (selfDualOrthogonalSubrepresentation rho e A)
+      (selfDualOrthogonalSubrepresentation_antitone rho e hAB)).toSubmodule).mpr
   rw [← selfDualNestedPairing_ker rho e A B hAB]
   apply LinearMap.mem_ker.mpr
   change selfDualNestedPairing rho e A B hAB (d - f) = 0
@@ -292,7 +312,7 @@ noncomputable def selfDualNestedQuotientEquiv
       (selfDualOrthogonalSubrepresentation rho e B)
       (selfDualOrthogonalSubrepresentation rho e A)
       (selfDualOrthogonalSubrepresentation_antitone rho e hAB)).Equiv
-        (nestedQuotientRepresentation A B hAB).dual :=
+        (Representation.dual (nestedQuotientRepresentation A B hAB)) :=
   (selfDualNestedQuotientIntertwiner rho e A B hAB).ofBijective
     ⟨selfDualNestedQuotientIntertwiner_injective rho e A B hAB,
       selfDualNestedQuotientIntertwiner_surjective rho e A B hAB⟩
