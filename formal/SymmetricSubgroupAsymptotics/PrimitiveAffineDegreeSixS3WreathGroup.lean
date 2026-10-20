@@ -18,8 +18,8 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace DegreeSixS3Wreath
 
-private abbrev S3 := Equiv.Perm (Fin 3)
-private abbrev C2 := Multiplicative (ZMod 2)
+abbrev S3 := Equiv.Perm (Fin 3)
+abbrev C2 := Multiplicative (ZMod 2)
 
 /-- A computational enumeration of a two-block wreath product.  Defining
 this from the literal constructor, rather than transporting the product

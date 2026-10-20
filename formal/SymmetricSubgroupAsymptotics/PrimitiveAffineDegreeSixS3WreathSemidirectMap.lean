@@ -17,9 +17,6 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics
 namespace DegreeSixS3Wreath
 
-private abbrev S3 := Equiv.Perm (Fin 3)
-private abbrev C2 := Multiplicative (ZMod 2)
-
 /-- Additive two-coordinate ternary translation space. -/
 abbrev TernaryPlane := Fin 2 → ZMod 3
 
