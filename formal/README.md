@@ -132,13 +132,13 @@ outside the publication repository.
 
 The final exports are
 [T1_of_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
-and `allTargets_of_published_inputs`. Their **32 named inputs** are listed
-below. The character bundle has four fields; its abelianization field also
+and `allTargets_of_published_inputs`. Their **29 named inputs** are listed
+below. The character bundle has three published fields; its abelianization field also
 supplies the former standalone `hKP` parameter. These are explicit theorem parameters,
 not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
-Nine former literature parameters are now supplied by checked proofs on the
+Eleven formerly external facts are now supplied by checked proofs on the
 same pinned toolchain:
 
 | Proved result | Export and proof source |
@@ -152,6 +152,8 @@ same pinned toolchain:
 | Soluble subdirect socle length is at most the maximum factor socle length. | [`publishedSolubleSubdirectHeight`](SymmetricSubgroupAsymptotics/SolubleSubdirectSocleHeight.lean), from semisimple integral conjugation modules, the exact joint socle intersection, and quotient induction. This is the literal upper socle series. |
 | Every actual degree-six action with three physical pairs has one of the seven required abstract group models. | [`DegreeSixThreePairClassificationProof.representativeClassification`](SymmetricSubgroupAsymptotics/DegreeSixThreePairClassificationProof.lean), from `C₂ ≀ S₃ ≃ S₄ × C₂`, the central projection dichotomy, and internal four-point subgroup recognition. Both actual `S₄` actions are retained by the original source interface. |
 | Every degree-six two-triple affine cell with nontrivial kernel signs has one of the four required models. | [`publishedDegreeSixThreeByTwoAffineClassification`](SymmetricSubgroupAsymptotics/DegreeSixThreeByTwoClassificationProof.lean), through actual block coordinates, axes/product recognition, an irreducible `C₄` chart, and the full-wreath branch. No finite action classification premise is used. |
+| Every abelian p-group quotient of a faithful degree-n action has order at most p^(floor(n/p)); in particular every binary abelian quotient has order at most 2^(n/2). | [`abelian_pQuotient_card_le`](SymmetricSubgroupAsymptotics/PermutationAbelianQuotientOrderBound.lean), from full abelianization-order induction on actual central-prime blocks and complementary orbits, followed by actual Sylow restriction. Higher prime-power cyclic factors are retained. |
+| A transitive binary eight-point group of excess two is the actual Heisenberg group E8; a nonabelian normal quotient has trivial denominator and center/derived orders two. | [`publishedDegreeEightExceptional`](SymmetricSubgroupAsymptotics/RDTDegreeEightExceptionalProof.lean), from unconditional coverage of all 26 binary actions, short ambient normal-generation words for the other 25 actions, and the intrinsic E8 center/derived structure. |
 
 These proved results, both final exports, the T1-to-T2/T3 transfers and the
 definition checks have standard-only axiom audits. Historical lower-level
@@ -197,6 +199,28 @@ wreath embeddings and orbit images complete the induction. This is a
 proved dependency reduction; the three broader published inputs remain
 explicit. It does not claim a formal proof of Halasi–Maróti or O'Nan–Scott.
 
+Two further input reductions use weaker or already retained results.
+[`publishedProposition62_of_retained_inputs`](SymmetricSubgroupAsymptotics/LargeOrbitGeneratorConsequencesFinal.lean)
+derives the large-orbit soluble generator theorem from `hPrimitiveGen`,
+`hTraceyRefined`, and `hcomp`. Its stronger checked estimate is
+`d(G) ≤ 128 ∑ n_i / sqrt(log₂ n_i)` on the actual nontrivial orbits.
+The proof keeps correlated orbit actions in the whole quotient, uses ordinary
+lifting only across actual abelian kernels, and charges each literal local
+chief series through the primitive composition theorem. No generic soluble
+normal-closure-to-ordinary-generation step is used.
+
+The Pyber representative input is unnecessary for the final marked moment.
+[`index_eventually_exp_bound`](SymmetricSubgroupAsymptotics/LMMSubquadraticSolubleContainers.lean)
+derives a subquadratic literal container-menu count from the retained `hLMM`.
+Fibre sizes m_i pay only ∑m_i² ≤ n²; partition labels and the fixed local
+coefficient are negligible on that scale. The [alternate global assembly](SymmetricSubgroupAsymptotics/MarkedC4SubquadraticContainersGlobal.lean)
+retains the original character restrictions and the same bounded-source
+moment. This removes `h86` without claiming a formal proof of its stronger
+`2^(13n)` conjugacy-class estimate. The final [catalogue adapter](SymmetricSubgroupAsymptotics/T1CatalogueFromMarkedMoment.lean)
+uses this proved moment directly. The character bundle's binary field is
+also filled internally; its mixed-prime abelianization theorem remains a
+published input.
+
 RDT means Roney-Dougal–Tracey, arXiv:2503.05416v1. TR means Tracey's
 2018 transitive-generation paper, with page locators referring to its linked
 author manuscript. HRD means Holt–Roney-Dougal (2013); GPRV means
@@ -215,19 +239,16 @@ and labelled transitive-count theorem are retained published counting inputs.
 
 | Lean parameter and definition | Mathematical input | Published source or correspondence |
 |---|---|---|
-| [lit : PreE7CharacterLiterature](SymmetricSubgroupAsymptotics/Non2PreE7CharacterCertificateTemplate.lean) | Four fields: permutation class number ≤5^((b−1)/3) for b≥4; abelianization ≤3^(b/3); every abelian binary quotient ≤2^(b/2); nilpotent permutation class number ≤(38/25)^b. | CLASS and KP. Small b and uniform weakenings internal. |
+| [lit : PreE7CharacterPublishedInputs](SymmetricSubgroupAsymptotics/CharacterLiteratureProvedBinary.lean) | Three fields: permutation class number ≤5^((b−1)/3) for b≥4; mixed-prime abelianization ≤3^(b/3); nilpotent permutation class number ≤(38/25)^b. | CLASS and ordinary KP. The binary quotient field of the older internal API is proved and filled internally. |
 | [hZmud : ZmudFaithfulCharacterTupleInput](SymmetricSubgroupAsymptotics/ZmudFaithfulCharacterInput.lean) | t normal generators of the actual socle give t jointly faithful finite irreducible complex representations of any finite G. | Steinberg, arXiv:2201.09129v1, Corollary 2.25 (Zmud′), printed p.19; relative Theorem 2.24, p.18. Specialize to complex characteristic zero; the trivial-group/empty-tuple seam is elementary. |
 | [hcomp : PrimitiveCompositionLengthInput](SymmetricSubgroupAsymptotics/PrimitiveCompositionLengthInput.lean) | Every actual composition series of primitive degree r≥2 has length ≤(8/3)log₂r−4/3. | GPRV Thm1.3. |
 | [hseven : PublishedTheoremSeven](SymmetricSubgroupAsymptotics/MarkedC4PublishedOrdinaryNilpotentGeneration.lean) | Soluble G with socle length ≤L and abelian-section prime-factor length ≤M is generated by a nilpotent subgroup plus ≤4L√M elements. | RDT Thm7 p3, proofpp32–33. |
 | [h55 : PublishedTheorem55Binary](SymmetricSubgroupAsymptotics/MarkedC4RDTOriginalWordStructure.lean) | Actual bounded binary subdirect word, dependent/tail degrees: normal-generation bounds3x/8+y/2,5x/16+y/2,x/4+y/2 with exact excess exclusions. | RDT Thm5.5(ii) p17. |
 | [h53 : ActualCaseIITargetStructure.PublishedProposition53Binary](SymmetricSubgroupAsymptotics/MarkedC4ActualCaseIITargetStructure.lean) | Binary excess classification: excess1/2, degree≤32; exact excess2 degrees and excess1 normal restrictions. | RDT Prop5.3(i) p16. |
 | [h57 : RDTExcessStructure.PublishedTheorem57Binary](SymmetricSubgroupAsymptotics/MarkedC4RDTExcessStructure.lean) | Actual nonabelian normal quotient admits normal F with logcard([F,Q])+e logcard(C_Q(F))≤n/2 and centralizer log≤n/4, exact branch e and generator equality. | RDT Thm5.7 pp18–19. |
-| [h8 : RDTDegreeEightExceptional.PublishedDegreeEightExceptional](SymmetricSubgroupAsymptotics/MarkedC4RDTDegreeEightExceptional.lean) | Degree8/excess2 nonabelian quotient: denominator trivial, center log1, derived-plus-three-center log4. | RDT Thm5.7(i) p18 and Prop7.4 CaseIIa p25. This includes the forcing consequence, not merely the displayed theorem inequality. |
 | [hderived : RDTDerivedNormalQuarter.PublishedDerivedNormalQuarterBinary](SymmetricSubgroupAsymptotics/MarkedC4RDTDerivedNormalQuarter.lean) | Nonabelian transitive binary G, degree n>2, normal N≤G′: d_G(N)≤n/4. | RDT Prop5.3(i), used in Thm5.5(iii) proofp17. |
 | [rdt46 : RDTTheorem46BinaryInput](SymmetricSubgroupAsymptotics/MarkedC4RDTNormalFInterface.lean) | Bounded-factor binary epimorphism theorem with arbitrary actual normal F, centralizer/commutator and original derived-normal projection-kernel generation bound. | RDT Thm4.6 pp12–13. No marked count is imported. |
 | [hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper](SymmetricSubgroupAsymptotics/MarkedC4OrdinarySubgroupUpper.lean) | ∃β, s_n≤2^(n²/16+βn√n), n>1. | RDT Thm1 p1. Strong quantitative coarse bound, not merely an asymptotic main term. |
-| [h62 : PublishedProposition62](SymmetricSubgroupAsymptotics/MarkedC4LargeOrbitOrdinaryGeneration.lean) | For any positive rate, sufficiently large nontrivial-orbit cutoff makes soluble permutation generator number ≤rate×degree. | RDT Prop6.2 p21. |
-| [h86 : PublishedTheorem86Representatives](SymmetricSubgroupAsymptotics/MarkedC4SolubleContainerCount.lean) | At most2^(13n) actual conjugacy representatives cover maximal transitive soluble subgroups. | RDT Thm8.6(i) p34, citing Pyber Lemma3.2; weakened numerical menu form. |
 | [hAG : PublishedAschbacherGuralnickSolubleGeneration](SymmetricSubgroupAsymptotics/MarkedC4AschbacherGuralnickSolubleGeneration.lean) | Every finite group generated by a soluble subgroup and one element. | Aschbacher–Guralnick, J.Algebra77 (1982),189–201; RDT Thm8.4 p32. Ambient-recovery field internal. |
 | [hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput](SymmetricSubgroupAsymptotics/TraceyCorollaryThreeTwelveRaw.lean) | Exceptional degree3·2^m action has actual soluble subgroup and full binomial orbit partition, Mersenne exponent≥3. | TR Cor3.12 p17 PLUS preceding nonabelian PSL₂(p) construction Thm1.8/Cor3.11 excluding p=3. Cor3.12 alone is insufficient for exponent≥3. |
 | [compositionCatalogue : PublishedPrimitiveCompositionCatalogueCorrespondence](SymmetricSubgroupAsymptotics/PrimitiveTernaryThreeTenthsPublished.lean) | Faithful primitive degree<45 matches336 pinned rows; exact degree and order, or natural A_n/S_n identification. | PRIM degrees2–44. No ternary inequality field. |

@@ -45,7 +45,7 @@ this version, not an unspecified later revision.
   conditional lifting theorem for any fixed quotient map.
 
 
-The constructed large-orbit proof uses three explicit ordinary specializations:
+The earlier constructed large-orbit API records three ordinary specializations:
 `LargeOrbitOrdinaryGeneration.PublishedProposition62` is Proposition 6.2's
 small-generator consequence for every positive rate;
 `SolubleContainerCount.PublishedTheorem86Representatives` is Theorem 8.6(i)'s
@@ -55,7 +55,12 @@ maximal transitive soluble subgroups; and
 `|H| <= 24^(n/3)` bound. The empty action is included by its unique subgroup.
 The proof constructs the actual original-point container cover; none of
 these hypotheses contains that cover, an encoding, characters or a marked
-inequality. See `MarkedC4ConstructedLargeOrbitCutoff.marked_bound`.
+inequality. See `MarkedC4ConstructedLargeOrbitCutoff.marked_bound` for that
+historical conditional API. The current final proof instead derives the
+Proposition 6.2 and Dixon consequences from retained inputs and uses
+`LMMSubquadraticSolubleContainers.marked_bound`; it needs no separate Pyber
+representative estimate. The stronger Theorem 8.6(i) statement above is
+preserved as a source locator, not a current T1 hypothesis.
 
 **LIT-RDTTheorem4.6 (arbitrary-normal-subgroup interface).** The marked
   excessive-factor application retains the theorem's arbitrary normal
@@ -796,3 +801,21 @@ group. The proof checks bounded primitive orders, gives the large affine
 bound `|G| ≤ n⁴`, and then uses actual minimal-block wreath embeddings and
 actual orbit images. Only those three broader published premises remain;
 no separate Dixon assumption is requested by the final facade.
+
+
+The current final facade additionally supplies the binary KP quotient-order
+field and the degree-eight RDT excess-two implication internally. The former
+is a full-order p-group block/orbit induction followed by actual Sylow
+restriction; the latter uses unconditional 26-action coverage, short ambient
+normal-generation words and intrinsic E8 center/derived recognition. The
+ordinary mixed-prime KP theorem remains in the three-field character bundle.
+`LargeOrbitGeneratorConsequencesFinal` derives Proposition 6.2's exact
+interface from the retained HRD primitive normal-generator, refined Tracey
+and GPRV composition-length inputs. The Pyber/Theorem 8.6 representative
+estimate remains a valid historical reference but is not required by the
+current T1 signature: `LMMSubquadraticSolubleContainers` supplies the weaker
+subquadratic container count from the already retained labelled transitive
+count, and `MarkedC4SubquadraticContainersGlobal` proves the same marked
+moment from it. This is a requirement reduction, not a proof of Pyber's
+stronger class-count assertion. The complete current input list is in
+`formal/README.md`.

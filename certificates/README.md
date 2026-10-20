@@ -24,6 +24,15 @@ candidate generation and focused controls. GAP's group algorithms remain in
 the computational trust boundary. The general source-counting and weighted
 mixture theorems are separate mathematical inputs.
 
+The additional degree-eight excess proof is entirely kernel-checked.
+Complete original coverage of the 26 binary actions and short ambient
+normal-generation words exclude the 25 nonexceptional actions. Three small
+additional sparse normal registries cover `8T28`, `8T29` and `8T31`; the
+exceptional `E8` is recognized through its actual action and intrinsic
+center/derived subgroup. The [selected reproduction commands](../computations/README.md#selected-degree-eight-excess-witnesses)
+write only to explicitly chosen output directories. They do not add a GAP
+or catalogue premise to `publishedDegreeEightExceptional`.
+
 ## Carrier profiles and transition inequalities
 
 The [carrier certificate](schema/carrier_transitions.md) retains all 14,008

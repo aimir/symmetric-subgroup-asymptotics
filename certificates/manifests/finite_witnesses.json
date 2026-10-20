@@ -47,14 +47,14 @@
   },
   "files": [
     {
-      "bytes": 17670,
+      "bytes": 19239,
       "path": "ASSUMPTIONS.md",
-      "sha256": "c6a136a9b6de0cdd8b86390855583f4b3c661bfbfba548c73b9322261d2b4f04"
+      "sha256": "d5ade8bc8e43853046e9246da3cc28935c023dfbfeeff38a3b72c6ecdb961135"
     },
     {
-      "bytes": 8747,
+      "bytes": 9367,
       "path": "certificates/README.md",
-      "sha256": "2aca50e35efdc518d57fb45bd85c387de753b298ab99b878582dc6173c65b080"
+      "sha256": "27bccb90caecb365b87ae2b0433ed100c007dce33872f2a856d2b09d48e2996d"
     },
     {
       "bytes": 7395,
@@ -212,9 +212,9 @@
       "sha256": "3fea8e64b36752795889cb9104eee6658ce1299caa092d07cf96d22b1e29eaa5"
     },
     {
-      "bytes": 26431,
+      "bytes": 27949,
       "path": "computations/README.md",
-      "sha256": "2cbb4bd09a938beef02b3d6851a8bf7396148740dd36311a0f1b147f5606ab91"
+      "sha256": "02bb29058e4899458aef80ea05bd5fc0f73b0ce4fc446117666b509ee346a4ce"
     },
     {
       "bytes": 5659,
@@ -547,6 +547,16 @@
       "sha256": "b0873f4ee4159f4274966878c21a2d5b6d8f07f77ddbb7d5e5dfb28856c1b26e"
     },
     {
+      "bytes": 5155,
+      "path": "computations/python/export_lean_rdt_degree_eight_normal_registry_selected.py",
+      "sha256": "14d62c239e0ef26ab85ca790e3004f7d94be197e56682aaeaf260a019fd8b332"
+    },
+    {
+      "bytes": 6604,
+      "path": "computations/python/export_lean_rdt_degree_eight_normal_words.py",
+      "sha256": "5e221e329d369b5e5a10bdfada844052e4814780fe47675d661a1e36bedd94a6"
+    },
+    {
       "bytes": 19201,
       "path": "computations/python/export_lean_schreier_actions.py",
       "sha256": "df1bfdb79cd66dbfbda8883e3dd051799408723ca301556a87a21ecd12763159"
@@ -622,9 +632,9 @@
       "sha256": "a00a77ef721a56ff4953acf671aa2610bb824873cd629f794a8b806f67a5f546"
     },
     {
-      "bytes": 50571,
+      "bytes": 52060,
       "path": "provenance/LITERATURE.md",
-      "sha256": "90fcde946d0733558043c887cf71adb545a5aa2101ef2d36fad75f319c489fa9"
+      "sha256": "dea8c5f70c57671c983a4034825aa1395b457b2fab106d3a2880ff40523973d2"
     },
     {
       "bytes": 38908,
@@ -668,7 +678,7 @@
     "normal_rows": 21806
   },
   "schema_version": 2,
-  "scope": "Selected finite inputs and necessary regression controls. Normal and module lists retain actual generator maps and original physical degrees. Packages overlap; record counts must not be added as disjoint physical cases. Universal counting, lifting, weighted fusion and the global asymptotic theorem require separate mathematical proofs. The replay programs do not claim formal verification. The separate Lean carrier modules kernel-check four literal charts; full finite-menu acceptance remains a distinct formal obligation.",
+  "scope": "Selected finite inputs and necessary regression controls. Normal and module lists retain actual generator maps and original physical degrees. Packages overlap; record counts must not be added as disjoint physical cases. Universal counting, lifting, weighted fusion and the global asymptotic theorem require separate mathematical proofs. The replay programs do not claim formal verification. Separate Lean sources establish finite acceptance and universal bounds through kernel-checked proofs; those claims are not supplied by these replay commands or their output hashes. The selected degree-eight normal-word and sparse-registry producers likewise require independent Lean checks.",
   "six_block": {
     "actions": 182,
     "block_certificates": 224,
