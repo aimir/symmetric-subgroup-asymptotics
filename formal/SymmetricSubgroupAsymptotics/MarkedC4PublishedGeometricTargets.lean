@@ -6,6 +6,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveAffineCanonicalFiniteLiterature
 import SymmetricSubgroupAsymptotics.PrimitiveSocleRawDichotomy
 import SymmetricSubgroupAsymptotics.PermutationGeneratorBoundFromMcIverNeumann
 import SymmetricSubgroupAsymptotics.BurnsideTwoPrimeSolvability
+import SymmetricSubgroupAsymptotics.CliffordRestriction
 
 /-! Target composition from the explicit current mathematical inputs.
 Every low-degree source and the degree-sixteen geometric cover is assembled
@@ -27,7 +28,6 @@ open MarkedC4.SolubleContainerCount MarkedC4.SolubleContainerOrder
 theorem T1_of_published_inputs
     (lit : PreE7CharacterLiterature)
     (hZmud : ZmudFaithfulCharacterTupleInput)
-    (hClifford : CliffordRawRestriction.Input)
     (hcomp : PrimitiveCompositionLengthInput)
     (hsub : PublishedSolubleSubdirectHeight) (hseven : PublishedTheoremSeven)
     (h55 : PublishedTheorem55Binary)
@@ -75,7 +75,7 @@ theorem T1_of_published_inputs
   let socle := hONanScott.toSocleDichotomy hSimpleIndex
   have hgen := permutationSubgroupGeneratorBound_of_mcIverNeumann hMN
   exact T1_of_published_inputs_and_sixteenPairSource
-    lit hZmud hClifford.toHomogeneousRestriction hgen hcomp hsub hseven h55 h53 h57 h8 hderived
+    lit hZmud CliffordRawRestriction.proved.toHomogeneousRestriction hgen hcomp hsub hseven h55 h53 h57 h8 hderived
     rdt46 hodd h62 h86 hDixon hAG hTracey
     (traceyBinaryExceptionalThree_of_raw hSolubleFormula hExceptionalOrbits) compositionCatalogue
     hDegreeNine hPrimitiveGen strictCatalogue primitiveSix hKP hLMM
@@ -92,7 +92,6 @@ theorem T1_of_published_inputs
 theorem allTargets_of_published_inputs
     (lit : PreE7CharacterLiterature)
     (hZmud : ZmudFaithfulCharacterTupleInput)
-    (hClifford : CliffordRawRestriction.Input)
     (hcomp : PrimitiveCompositionLengthInput)
     (hsub : PublishedSolubleSubdirectHeight) (hseven : PublishedTheoremSeven)
     (h55 : PublishedTheorem55Binary)
@@ -138,7 +137,7 @@ theorem allTargets_of_published_inputs
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     (hFS : FusariSpigaBinaryNormalSubgroupInput) : AllTargets := by
   exact allTargets_iff_T1.mpr (T1_of_published_inputs
-    lit hZmud hClifford hcomp hsub hseven h55 h53 h57 h8 hderived
+    lit hZmud hcomp hsub hseven h55 h53 h57 h8 hderived
     rdt46 hodd h62 h86 hDixon hAG hTracey hSolubleFormula hExceptionalOrbits compositionCatalogue
     hDegreeNine hPrimitiveGen strictCatalogue primitiveSix hKP hLMM
     hHoltRoneyDougal hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
