@@ -151,3 +151,18 @@ catalogue identifiers, uniqueness of this normal axis, exhaustiveness of the
 finite menu, the full transport theorem's weights, or the subgroup asymptotic.
 The separate complete-menu verifier supplies the finite coverage check.
 These computations do not constitute Lean verification.
+
+## Degree-eight affine complement coverage
+
+The formal sources `GeneralThreeTwoCayley`, `GeneralThreeTwoSubgroupRows`
+and the15 adjunction modules give complete coverage of subgroups of the
+actual168-element GL(3,2), without a catalogue premise. The15-class closure
+is proved by `GeneralThreeTwoSubgroupCoverage.complete`. Literal nonzero
+vector/covector flags reject12 classes, and checked linear intertwiners
+identify the remaining C7, C7:C3 and GL(3,2) carriers. The final degree-eight
+small-affine locator is therefore unconditional. Degrees16 and27 retain
+31 fixed rows in their narrower published classification parameter.
+The separate full transitive degree-eight catalogue remains explicit.
+The [selected reproduction commands](../computations/README.md#complete-gl32-subgroup-certificates)
+emit ordinary kernel-checkable words; successful producer output alone is
+not the coverage proof.

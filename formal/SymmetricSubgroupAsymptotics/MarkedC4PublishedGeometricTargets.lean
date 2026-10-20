@@ -28,8 +28,12 @@ import SymmetricSubgroupAsymptotics.T1CatalogueFromMarkedMoment
 import SymmetricSubgroupAsymptotics.LargeOrbitGeneratorConsequencesFinal
 import SymmetricSubgroupAsymptotics.ZmudFaithfulCharacterProof
 import SymmetricSubgroupAsymptotics.RDTBoundedFactorEpimorphismProof
+import SymmetricSubgroupAsymptotics.SmallAffineCatalogueDegreeEightConsequences
 
 /-! Target composition from the explicit current mathematical inputs.
+The degree-eight small-affine complement classification is proved from
+complete checked GL(3,2) subgroup coverage; only degrees sixteen and
+twenty-seven remain in the small-affine classification parameter.
 Every low-degree source and the degree-sixteen geometric cover is assembled
 internally. The exceptional Tracey head and the actual retained Clifford
 corollary, the full 34-row affine receipt, and the degree-25 projective
@@ -39,7 +43,9 @@ bound is derived from the existing McIver--Neumann input. The incomplete sixteen
 source/dependency and literature-boundary audit is separate from proving
 this composition. The degree-six/nine slices and binary/soluble permutation
 Tracey formulae are derived from the stronger retained inputs. The full Kovács--Praeger and faithful-character tuple theorems are proved
-internally; the character bundle retains only its two class-number fields.
+internally; the character bundle retains only the general permutation class-number field. The nilpotent class-number
+bound is proved through prime-group fourth-power estimates and actual coprime
+support compression.
 Soluble subdirect socle height and both degree-six block classifiers are
 proved internally. Dixon's order estimate is derived from the retained
 primitive structure, bounded catalogue, and soluble linear cube bound.
@@ -77,7 +83,7 @@ theorem T1_of_published_inputs
     (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
-    (smallAffineCatalogue : SmallAffineCanonicalRepresentatives.PublishedClassification)
+    (smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification)
     (hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound)
     (hONanScott : PrimitiveSocleRawStructure.PublishedONanScottStructure)
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
@@ -107,7 +113,8 @@ theorem T1_of_published_inputs
     hExceptionalOrbits compositionCatalogue hPrimitiveGen strictCatalogue hLMM
     hTraceyRefined hTraceyPerm hSimpleGen
     (PublishedPrimitiveAffineFiniteLiterature.ofCanonicalClassifications
-      smallAffineCatalogue ProjectiveThreeSimplicity.proved burnsideTwoPrimeSolvability
+      (SmallAffineCatalogueDegreeEightConsequences.published_of_remaining smallAffineCatalogue)
+      ProjectiveThreeSimplicity.proved burnsideTwoPrimeSolvability
       PGLTwoFiveIsomorphism.publishedProjectiveIsomorphism hSolubleBase
       DegreeFiveAffineClassification.classification)
     (hONanScott.toSocleDichotomy hSimpleIndex) catalogue hTraceySoluble hMN
@@ -132,7 +139,7 @@ theorem allTargets_of_published_inputs
     (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
-    (smallAffineCatalogue : SmallAffineCanonicalRepresentatives.PublishedClassification)
+    (smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification)
     (hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound)
     (hONanScott : PrimitiveSocleRawStructure.PublishedONanScottStructure)
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)

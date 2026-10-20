@@ -132,13 +132,13 @@ outside the publication repository.
 
 The final exports are
 [T1_of_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
-and `allTargets_of_published_inputs`. Their **29 named inputs** are listed
-below. The character bundle has three published fields; its abelianization field also
-supplies the former standalone `hKP` parameter. These are explicit theorem parameters,
+and `allTargets_of_published_inputs`. Their **27 named inputs** are listed
+below. The character bundle has one published general class-number field. Both
+abelian-quotient statements are now supplied by checked proofs. These are explicit theorem parameters,
 not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
-Eleven formerly external facts are now supplied by checked proofs on the
+Fifteen formerly external facts are now supplied by checked proofs on the
 same pinned toolchain:
 
 | Proved result | Export and proof source |
@@ -154,6 +154,10 @@ same pinned toolchain:
 | Every degree-six two-triple affine cell with nontrivial kernel signs has one of the four required models. | [`publishedDegreeSixThreeByTwoAffineClassification`](SymmetricSubgroupAsymptotics/DegreeSixThreeByTwoClassificationProof.lean), through actual block coordinates, axes/product recognition, an irreducible `C₄` chart, and the full-wreath branch. No finite action classification premise is used. |
 | Every abelian p-group quotient of a faithful degree-n action has order at most p^(floor(n/p)); in particular every binary abelian quotient has order at most 2^(n/2). | [`abelian_pQuotient_card_le`](SymmetricSubgroupAsymptotics/PermutationAbelianQuotientOrderBound.lean), from full abelianization-order induction on actual central-prime blocks and complementary orbits, followed by actual Sylow restriction. Higher prime-power cyclic factors are retained. |
 | A transitive binary eight-point group of excess two is the actual Heisenberg group E8; a nonabelian normal quotient has trivial denominator and center/derived orders two. | [`publishedDegreeEightExceptional`](SymmetricSubgroupAsymptotics/RDTDegreeEightExceptionalProof.lean), from unconditional coverage of all 26 binary actions, short ambient normal-generation words for the other 25 actions, and the intrinsic E8 center/derived structure. |
+| Every abelian quotient of a faithful degree-n action has order at most 3^(n/3). | [`kovacsPraegerAbelianizationBound`](SymmetricSubgroupAsymptotics/KovacsPraegerAbelianizationProof.lean), using an actual nilpotent supplement, coprime support compression, and full p-group abelianization orders. |
+| t ambient normal generators of the actual socle yield t jointly faithful finite irreducible complex representations. | [`zmudFaithfulCharacterTupleInput_proved`](SymmetricSubgroupAsymptotics/ZmudFaithfulCharacterProof.lean), through primary semisimple duality, coinduction and injected irreducible constituents. The empty tuple and arbitrary nonsoluble groups are included. |
+| The bounded-factor ordinary epimorphism estimate retains every actual normal target F and the original derived-normal projection kernel. | [`rdtTheorem46BinaryInput_proved`](SymmetricSubgroupAsymptotics/RDTBoundedFactorEpimorphismProof.lean), from short adapted tuples and joint kernel incidence; its constants depend only on the factor-order bound. |
+| A nilpotent permutation group of faithful degree-n has at most (38/25)^n conjugacy classes. | [`nilpotentConjugacyClassInput`](SymmetricSubgroupAsymptotics/NilpotentConjugacyClassProof.lean), using proved binary, ternary and large-prime fourth-power bounds and actual disjoint coprime supports. All sharp character consumers are unchanged. |
 
 These proved results, both final exports, the T1-to-T2/T3 transfers and the
 definition checks have standard-only axiom audits. Historical lower-level
@@ -188,7 +192,8 @@ group's order and mathlib's Schur–Zassenhaus theorem construct its actual odd
 Hall subgroup. [`PermutationStabilizerInduced`](SymmetricSubgroupAsymptotics/PermutationStabilizerInduced.lean)
 proves the module transport used by both Tracey specializations, including
 the empty and singleton point-set endpoints. The repeated standalone
-Kovács–Praeger parameter is removed by projecting `lit.kovacsPraeger`.
+Kovács–Praeger parameter is now filled by the proved full abelianization
+theorem.
 
 The separate Dixon order input is also removed. [`dixonOrder_of_primitive_inputs`](SymmetricSubgroupAsymptotics/SolublePermutationOrderBound.lean)
 derives `|G| ≤ 24^(n/3)` from the retained `compositionCatalogue`,
@@ -218,8 +223,9 @@ retains the original character restrictions and the same bounded-source
 moment. This removes `h86` without claiming a formal proof of its stronger
 `2^(13n)` conjugacy-class estimate. The final [catalogue adapter](SymmetricSubgroupAsymptotics/T1CatalogueFromMarkedMoment.lean)
 uses this proved moment directly. The character bundle's binary field is
-also filled internally; its mixed-prime abelianization theorem remains a
-published input.
+also filled internally. The mixed-prime abelianization and faithful-character
+tuple theorems, and the arbitrary-normal-target epimorphism theorem, are
+proved internally as well.
 
 RDT means Roney-Dougal–Tracey, arXiv:2503.05416v1. TR means Tracey's
 2018 transitive-generation paper, with page locators referring to its linked
@@ -227,7 +233,8 @@ author manuscript. HRD means Holt–Roney-Dougal (2013); GPRV means
 Glasby–Praeger–Rosa–Verret (2018). PRIM means the published primitive
 classifications and pinned PrimGrp 3.4.4; TRANS means the published
 transitive classifications and pinned TransGrp 3.6.5. CLASS means the
-Garonzi–Maróti and Maróti class-number theorems. Full titles, links, and
+Garonzi–Maróti general class-number theorem and the now-proved Maróti
+nilpotent bound. Full titles, links, and
 version conventions appear in the [literature register](../provenance/LITERATURE.md).
 
 Finite correspondence inputs identify the **actual pinned representatives**.
@@ -239,15 +246,13 @@ and labelled transitive-count theorem are retained published counting inputs.
 
 | Lean parameter and definition | Mathematical input | Published source or correspondence |
 |---|---|---|
-| [lit : PreE7CharacterPublishedInputs](SymmetricSubgroupAsymptotics/CharacterLiteratureProvedBinary.lean) | Three fields: permutation class number ≤5^((b−1)/3) for b≥4; mixed-prime abelianization ≤3^(b/3); nilpotent permutation class number ≤(38/25)^b. | CLASS and ordinary KP. The binary quotient field of the older internal API is proved and filled internally. |
-| [hZmud : ZmudFaithfulCharacterTupleInput](SymmetricSubgroupAsymptotics/ZmudFaithfulCharacterInput.lean) | t normal generators of the actual socle give t jointly faithful finite irreducible complex representations of any finite G. | Steinberg, arXiv:2201.09129v1, Corollary 2.25 (Zmud′), printed p.19; relative Theorem 2.24, p.18. Specialize to complex characteristic zero; the trivial-group/empty-tuple seam is elementary. |
+| [lit : PreE7CharacterPublishedInputs](SymmetricSubgroupAsymptotics/CharacterLiteratureProvedBinary.lean) | One field: permutation class number ≤5^((b−1)/3) for b≥4. | Garonzi–Maróti, Theorem1.1. The two abelian-quotient fields and nilpotent class-number field of the older internal API are proved and filled internally. |
 | [hcomp : PrimitiveCompositionLengthInput](SymmetricSubgroupAsymptotics/PrimitiveCompositionLengthInput.lean) | Every actual composition series of primitive degree r≥2 has length ≤(8/3)log₂r−4/3. | GPRV Thm1.3. |
 | [hseven : PublishedTheoremSeven](SymmetricSubgroupAsymptotics/MarkedC4PublishedOrdinaryNilpotentGeneration.lean) | Soluble G with socle length ≤L and abelian-section prime-factor length ≤M is generated by a nilpotent subgroup plus ≤4L√M elements. | RDT Thm7 p3, proofpp32–33. |
 | [h55 : PublishedTheorem55Binary](SymmetricSubgroupAsymptotics/MarkedC4RDTOriginalWordStructure.lean) | Actual bounded binary subdirect word, dependent/tail degrees: normal-generation bounds3x/8+y/2,5x/16+y/2,x/4+y/2 with exact excess exclusions. | RDT Thm5.5(ii) p17. |
 | [h53 : ActualCaseIITargetStructure.PublishedProposition53Binary](SymmetricSubgroupAsymptotics/MarkedC4ActualCaseIITargetStructure.lean) | Binary excess classification: excess1/2, degree≤32; exact excess2 degrees and excess1 normal restrictions. | RDT Prop5.3(i) p16. |
 | [h57 : RDTExcessStructure.PublishedTheorem57Binary](SymmetricSubgroupAsymptotics/MarkedC4RDTExcessStructure.lean) | Actual nonabelian normal quotient admits normal F with logcard([F,Q])+e logcard(C_Q(F))≤n/2 and centralizer log≤n/4, exact branch e and generator equality. | RDT Thm5.7 pp18–19. |
 | [hderived : RDTDerivedNormalQuarter.PublishedDerivedNormalQuarterBinary](SymmetricSubgroupAsymptotics/MarkedC4RDTDerivedNormalQuarter.lean) | Nonabelian transitive binary G, degree n>2, normal N≤G′: d_G(N)≤n/4. | RDT Prop5.3(i), used in Thm5.5(iii) proofp17. |
-| [rdt46 : RDTTheorem46BinaryInput](SymmetricSubgroupAsymptotics/MarkedC4RDTNormalFInterface.lean) | Bounded-factor binary epimorphism theorem with arbitrary actual normal F, centralizer/commutator and original derived-normal projection-kernel generation bound. | RDT Thm4.6 pp12–13. No marked count is imported. |
 | [hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper](SymmetricSubgroupAsymptotics/MarkedC4OrdinarySubgroupUpper.lean) | ∃β, s_n≤2^(n²/16+βn√n), n>1. | RDT Thm1 p1. Strong quantitative coarse bound, not merely an asymptotic main term. |
 | [hAG : PublishedAschbacherGuralnickSolubleGeneration](SymmetricSubgroupAsymptotics/MarkedC4AschbacherGuralnickSolubleGeneration.lean) | Every finite group generated by a soluble subgroup and one element. | Aschbacher–Guralnick, J.Algebra77 (1982),189–201; RDT Thm8.4 p32. Ambient-recovery field internal. |
 | [hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput](SymmetricSubgroupAsymptotics/TraceyCorollaryThreeTwelveRaw.lean) | Exceptional degree3·2^m action has actual soluble subgroup and full binomial orbit partition, Mersenne exponent≥3. | TR Cor3.12 p17 PLUS preceding nonabelian PSL₂(p) construction Thm1.8/Cor3.11 excluding p=3. Cor3.12 alone is insufficient for exponent≥3. |
@@ -258,7 +263,7 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [hTraceyRefined : TraceyRefinedInducedModuleInput](SymmetricSubgroupAsymptotics/TraceyRefinedAffineInput.lean) | One generating-tuple length simultaneously satisfies half, logarithmic, prime-to-characteristic, primary-square-root and soluble prime-power binomial ceilings. | numerical specialization; TR Def1.5/Thm1.6 and Cor4.26–4.27. Exact per-field source locators should be added; this is stronger than citing just the coarse logarithmic corollary. |
 | [hTraceyPerm : TraceyPermutationGeneratorInput](SymmetricSubgroupAsymptotics/TraceyAffineInducedModuleInput.lean) | Transitive degree w≥2 group generated by≤ceil(w/√log₂w). | weakening; TR Thm1.1(1), constantc<1. Not the sharper2021 √3/2 bound. |
 | [hSimpleGen : FiniteSimpleTwoGeneratorBound](SymmetricSubgroupAsymptotics/ActualWreathSemisimpleCoefficient.lean) | Every finite centerless simple group has≤2 generators. | Guralnick–Kantor, Journal of Algebra 234 (2000), Theorem I, p.744 and Corollary p.745; LIT-SIMPLE-2GEN. |
-| [smallAffineCatalogue : SmallAffineCanonicalRepresentatives.PublishedClassification](SymmetricSubgroupAsymptotics/SmallAffineCanonicalRepresentatives.lean) | Actual affine complement in degree8/16/27 is isomorphic to one of fixed34 named carriers. | Roney-Dougal–Unger2003 plus pinned PrimGrp3.4.4. Solvability/chief-saving and exact maxima are constructed, not supplied. |
+| [smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification](SymmetricSubgroupAsymptotics/SmallAffineCatalogueDegreeEightConsequences.lean) | Actual affine complement in degree16/27 is isomorphic to one of the fixed31 named carriers. Degree8 is proved internally from complete GL(3,2) subgroup coverage. | Roney-Dougal–Unger2003 plus pinned PrimGrp3.4.4. Solvability/chief-saving and exact maxima are constructed, not supplied. |
 | [hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound](SymmetricSubgroupAsymptotics/PrimitiveAffinePublishedSmallStructuralInput.lean) | Faithful irreducible soluble linear G on V over prime field has card(G)≤card(V)³. | corollary; Halasi–Maróti, ProcAMS144 (2016),3231–3242, Thm1.1 authorp2 strong-base≤3. LIT-AFFINE-BASE. |
 | [hONanScott : PrimitiveSocleRawStructure.PublishedONanScottStructure](SymmetricSubgroupAsymptotics/PrimitiveSocleRawONanScott.lean) | An actual finite faithful primitive action has either a regular normal prime-power subgroup (elementary abelian by primitive affine structure), or its full socle is T^k with an actual quotient embedding into Out(T) ≀ S_k and the exact proper-index/order degree alternatives. No numerical compression bound. | Liebeck–Praeger–Saxl 1988, §1 pp.390–392 and theorem p.392; LIT-ONAN-SCOTT. Includes both minimal normals in the two-regular-socle cases. |
 | [hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds](SymmetricSubgroupAsymptotics/PrimitiveSocleRawSimpleIndex.lean) | For the actual least proper subgroup index ℓ of a finite nonabelian simple T: ℓ² < card(T) and card(Out(T)) ≤ 3 log₂ ℓ. | Ballester-Bolinches–Esteban-Romero–Jiménez-Seral, Theorem A(4), p.4 of arXiv:2203.16976v2; LIT-SIMPLE-INDEX. The bound ℓ ≥ 5 and all profile deductions are internal. |
@@ -268,6 +273,14 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [published8 : DegreeEightCanonicalCatalogue.PublishedClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineEightCanonicalCatalogue.lean) | Every actual transitive nonbinary subgroup of S8 is point-conjugate to one of24 pinned canonical actions. | Butler–McKay 1983, degree-eight classification; official TransGrp manual, with the 26 binary actions excluded from the 50-action list. |
 | [published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenCanonicalCatalogue.lean) | Every primitive subgroup of S16 point-conjugate to one of22 canonical actions:20 affine +naturalA16/S16. | PRIM degree16. NOT an all1954 transitive16 or527 semantic-source assumption. |
 | [publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification](SymmetricSubgroupAsymptotics/DegreeTwelveCanonicalCatalogueLocator.lean) | Every transitive subgroup of S12 point-conjugate to one of fixed301 literal tops. | Royle, Journal of Symbolic Computation 4(2) (1987), 255–268, degree-twelve classification of 301 actions; official TransGrp manual. |
+
+The degree-eight affine-complement branch is also a checked theorem: the
+finite adjunction-closure proof covers all15 actual GL(3,2) subgroup classes,
+nonzero invariant vector/dual flags exclude12, and literal linear
+intertwiners identify the three survivors with the fixed canonical groups.
+The small-affine parameter therefore retains only degrees16 and27; it has
+31 remaining rows. This is a scope reduction, not a claim that the full
+eight-point transitive-action classification is proved.
 
 The quantitative `PublishedPrimitiveSocleDichotomyInput` is constructed by
 `PublishedONanScottStructure.toSocleDichotomy`; it is not an additional

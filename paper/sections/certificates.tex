@@ -77,7 +77,7 @@ for those domains.
 \subsection{Formal verification}
 The accompanying Lean development fixes Lean~4.30.0 and a precise mathlib
 revision. Its final theorem proves Theorems~\ref{thm:main},
-\ref{thm:saddle} and~\ref{thm:elementary} relative to 29 explicit published
+\ref{thm:saddle} and~\ref{thm:elementary} relative to 27 explicit published
 mathematical and catalogue inputs, whose formulations and source locators
 are listed in \texttt{formal/README.md}. The project-specific source,
 capacity, marked-moment and summation statements are proved internally.
@@ -96,7 +96,7 @@ $\mathbf F_2$ and $\mathbf F_3$. The subgroup estimate follows from a
 stronger checked subgroup-interval theorem. The projective simplicity
 proof uses elementary-matrix generation, perfectness and Iwasawa's
 criterion; it uses no ATLAS code. These four facts are supplied internally
-and are not among the 29 remaining inputs. Ported proofs retain their
+and are not among the 27 remaining inputs. Ported proofs retain their
 Apache-2.0 attribution and exact source revisions in the formal sources.
 
 
@@ -109,7 +109,7 @@ $F_{20}$ action. Separately, the half-dimension and logarithmic induced-module
 bounds are derived from the retained refined Tracey input, and the
 faithful-simple logarithmic generator bound from the retained simple-group
 two-generation input. These three implications remove redundant parameters;
-the stronger two published theorems remain among the 29 explicit inputs.
+the stronger two published theorems remain among the 27 explicit inputs.
 
 
 The separate primitive degree-six and degree-nine inputs follow from the
@@ -122,8 +122,8 @@ induction and an odd Hall subgroup, the latter using the checked
 Schur--Zassenhaus theorem. An explicit integer cap preserves uniformity over
 all subrepresentations. These are dependency reductions; the broader
 catalogue and induced-module theorems remain explicit assumptions. The
-repeated standalone abelianization parameter is supplied by the existing
-character-literature bundle.
+repeated standalone abelianization parameter is supplied internally by a
+checked theorem.
 
 
 The soluble subdirect socle-length statement is proved internally using
@@ -144,7 +144,20 @@ $p$-quotients of faithful degree-$n$ actions is now proved internally,
 by central-prime block and orbit induction followed by actual Sylow
 restriction. Higher prime-power factors are retained, so the binary field
 of the character-literature interface is no longer an assumption. The
-mixed-prime abelianization bound remains explicit. The binary degree-eight
+mixed-prime abelianization bound is also proved internally: a minimal
+subgroup surjecting onto the actual abelian quotient is nilpotent, and its
+coprime factors admit faithful actions on disjoint original supports.
+The faithful-character tuple theorem is proved from the actual socle normal
+generators, primary semisimple duality, coinduction and irreducible
+constituent selection, including the empty tuple. The bounded-factor
+epimorphism theorem is proved with an arbitrary normal target subgroup:
+short original generating tuples retain their literal product support,
+and joint kernel incidence pays the centralizer and commutator factors
+together. The nilpotent class-number bound is also proved: binary and ternary
+actions satisfy fourth-power estimates by a commuting-pair count across a
+prime-index block kernel, and large primes use the faithful-action order
+bound. Actual disjoint coprime supports complete the nilpotent argument.
+These four results are no longer assumptions. The binary degree-eight
 excess-two implication is also proved internally: complete checked coverage
 of the 26 actions and short normal-generation words exclude the other
 25 actions, while the surviving $E_8$ has equal center and derived subgroup
@@ -159,3 +172,12 @@ uses the retained labelled transitive-group count at the weaker
 subquadratic scale established above. The sharper Pyber representative
 bound is unnecessary for the final marked moment; no formal proof of that
 stronger class-count theorem is claimed.
+
+The degree-eight primitive-affine complement classification is proved from
+complete subgroup coverage of the actual $\operatorname{GL}_3(\mathbf F_2)$.
+Single-element adjunction certificates cover all fifteen subgroup classes;
+fixed nonzero vector or covector flags exclude twelve, and literal linear
+intertwiners identify the three remaining canonical complements. The
+small-affine catalogue parameter now retains only degrees sixteen and
+twenty-seven. The full transitive degree-eight catalogue is a separate
+remaining input.
