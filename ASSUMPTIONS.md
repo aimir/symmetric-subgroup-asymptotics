@@ -229,17 +229,28 @@ No corresponding argument is required from a caller of T1 or AllTargets.
 Exact upstream revisions and licensing are in
 [the external proof notice](formal/SymmetricSubgroupAsymptotics/External/NOTICE).
 
+The exceptional `PGL₂(F₅) ≃ S₅` isomorphism and the complete degree-five
+affine classification are now also proved internally. The former uses the
+actual six-point projective action and an order-120 subgroup recognition
+lemma in `S₆`; the latter constructs literal affine coordinates and retains
+the original action conjugacy in the `F₂₀` branch. No classification,
+finite-table, or ATLAS premise is added. The two older induced-module
+half/logarithmic inputs are derived from the retained refined Tracey input,
+and the faithful-simple generator input is derived from the retained
+finite-simple two-generation input. These three are dependency reductions,
+not formalizations of the stronger retained results.
+
 The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-46-parameter mathematical boundary, with formulations and source locators,
+41-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
 correspondences remain assumptions. On 20 October 2026 the recursive
-source/object audit passed for all 5,897 project modules in the public
+source/object audit passed for all 5,905 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.

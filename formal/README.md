@@ -132,13 +132,13 @@ outside the publication repository.
 
 The final exports are
 [T1_of_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
-and `allTargets_of_published_inputs`. Their **46 named inputs** are listed
+and `allTargets_of_published_inputs`. Their **41 named inputs** are listed
 below. The character bundle has four fields; ordinary abelianization is
 also passed separately as `hKP`. These are explicit theorem parameters,
 not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
-Four former literature parameters are now supplied by checked proofs on the
+Six former literature parameters are now supplied by checked proofs on the
 same pinned toolchain:
 
 | Proved result | Export and proof source |
@@ -147,14 +147,25 @@ same pinned toolchain:
 | Clifford: restriction to an actual normal subgroup is semisimple and irreducible constituent types are conjugate, over any field. | [`CliffordRawRestriction.proved`](SymmetricSubgroupAsymptotics/CliffordRestriction.lean), from the FormaTheoria Clifford proof and its arbitrary-field adapter. |
 | Binary normal-subgroup bound: `#normalSubgroups(G) · 2^(−l²/4) ≤ 8 · 2^(2l)` for a group of order `2^l`. | [`fusariSpigaBinaryNormalSubgroup`](SymmetricSubgroupAsymptotics/BinaryNormalSubgroupBound.lean), from the stronger Palcoux–Spiga interval-count theorem, with coefficient `7.371968802 < 8`. |
 | `PSL(3,F)` is simple for every field `F`, hence for `F₂` and `F₃`. | [`ProjectiveThreeSimplicity.simple`](SymmetricSubgroupAsymptotics/ProjectiveThreeSimplicity.lean), using new [elementary generation and perfectness proofs](SymmetricSubgroupAsymptotics/SLThreeElementaryGeneration.lean), mathlib's Iwasawa criterion and Apache-licensed projective-action backports. No ATLAS code is included. |
+| `PGL₂(F₅) ≃ S₅`, using the actual quotient of `GL₂(F₅)` by its center. | [`PGLTwoFiveIsomorphism.publishedProjectiveIsomorphism`](SymmetricSubgroupAsymptotics/PGLTwoFiveIsomorphism.lean), through its faithful six-point projective action and a proved order-120 subgroup recognition theorem in `S₆`. No external classification or ATLAS source is used. |
+| A faithful degree-five affine action is `C₅`, `D₁₀` or natural `F₂₀`, retaining literal point relabelling in the last case. | [`DegreeFiveAffineClassification.classification`](SymmetricSubgroupAsymptotics/DegreeFiveAffineClassificationComplete.lean), from actual regular-translation coordinates, a faithful embedding into `F₂₀`, and the unique order-ten subgroup. |
 
-The four adapters, both final exports, the T1-to-T2/T3 transfers and the
+These proved results, both final exports, the T1-to-T2/T3 transfers and the
 definition checks have standard-only axiom audits. Historical lower-level
 constructors still accept the corresponding interface types; these are
 filled internally in the final exports and are no longer assumptions there.
 Selected upstream proofs and backports live in `External/`; exact revisions,
 authorship, licenses and changes are recorded in
 [`External/NOTICE`](SymmetricSubgroupAsymptotics/External/NOTICE).
+
+Three other formerly separate parameters are now proved consequences of
+stronger inputs retained below. [`TraceyRefinedInputConsequences`](SymmetricSubgroupAsymptotics/TraceyRefinedInputConsequences.lean)
+derives both the half-dimension and logarithmic induced-module statements
+from `hTraceyRefined`. [`FaithfulSimpleGeneratorFromTwoGeneration`](SymmetricSubgroupAsymptotics/FaithfulSimpleGeneratorFromTwoGeneration.lean)
+derives the faithful-simple logarithmic generator bound from `hSimpleGen`,
+using the elementary obstruction to a faithful small-degree simple action.
+These implications remove redundant parameters; they do **not** formalize
+the stronger refined Tracey or finite-simple two-generation theorems.
 
 RDT means Roney-Dougal–Tracey, arXiv:2503.05416v1. TR means Tracey's
 2018 transitive-generation paper, with page locators referring to its linked
@@ -200,16 +211,11 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [primitiveSix : PublishedPrimitiveDegreeSixClassification](SymmetricSubgroupAsymptotics/PrimitiveDegreeSixChiefPublished.lean) | Primitive degree6 group is A5,S5,A6 orS6. | PRIM degree6 slice; abstract group identifications suffice. |
 | [hKP : KovacsPraegerAbelianizationBound](SymmetricSubgroupAsymptotics/KovacsPraegerAbelianization.lean) | card(J/J′)≤3^(b/3) for J≤S_b. | Kovács–Praeger, Corollary p.284, LIT-KP. This input repeats `lit.kovacsPraeger`. |
 | [hLMM : LucchiniMenegazzoMorigiTransitiveCountInput](SymmetricSubgroupAsymptotics/Non2PreE7MenuMassAggregation.lean) | Labelled transitive subgroup count is subquadratic-exponential. | Lucchini–Menegazzo–Morigi, BLMS32 (2000),191–195; exact labelled2^(Cn²/√logn) statement is sourced through RDT introductionp2. ID LIT-TRANSITIVE-COUNT. |
-| [hHoltRoneyDougal : FaithfulSimplePermutationGeneratorBound](SymmetricSubgroupAsymptotics/SemisimpleOuterFactorPublished.lean) | Centerless finite simple group faithfully permuting w points generated by≤floor(log₂w). | corollary; HRD Thm1.1 by nontrivial orbit/maximal point stabilizer; S3 exception impossible. This corollary's short derivation is documented, not yet a separate raw-HRD adapter. |
-| [hTraceyHalf : TraceyAffineHalfInducedModuleInput](SymmetricSubgroupAsymptotics/TraceyAffineInducedModuleInput.lean) | Every submodule of actual induction from index s≥2 is generated by≤floor(a s/2). | numerical specialization; TR Thm1.6/Cor4.27(iii). Precise half-bound lemma-to-formula derivation is not separately constructed at this boundary. |
-| [hTraceyLog : TraceyAffineInducedModuleInput](SymmetricSubgroupAsymptotics/TraceyAffineInducedModuleInput.lean) | Every submodule generated by≤ceil(4as/√log₂s). | weakening; TR Cor4.27(iii), manuscriptpp30–31. |
 | [hTraceyRefined : TraceyRefinedInducedModuleInput](SymmetricSubgroupAsymptotics/TraceyRefinedAffineInput.lean) | One generating-tuple length simultaneously satisfies half, logarithmic, prime-to-characteristic, primary-square-root and soluble prime-power binomial ceilings. | numerical specialization; TR Def1.5/Thm1.6 and Cor4.26–4.27. Exact per-field source locators should be added; this is stronger than citing just the coarse logarithmic corollary. |
 | [hTraceyPerm : TraceyPermutationGeneratorInput](SymmetricSubgroupAsymptotics/TraceyAffineInducedModuleInput.lean) | Transitive degree w≥2 group generated by≤ceil(w/√log₂w). | weakening; TR Thm1.1(1), constantc<1. Not the sharper2021 √3/2 bound. |
 | [hSimpleGen : FiniteSimpleTwoGeneratorBound](SymmetricSubgroupAsymptotics/ActualWreathSemisimpleCoefficient.lean) | Every finite centerless simple group has≤2 generators. | Guralnick–Kantor, Journal of Algebra 234 (2000), Theorem I, p.744 and Corollary p.745; LIT-SIMPLE-2GEN. |
 | [smallAffineCatalogue : SmallAffineCanonicalRepresentatives.PublishedClassification](SymmetricSubgroupAsymptotics/SmallAffineCanonicalRepresentatives.lean) | Actual affine complement in degree8/16/27 is isomorphic to one of fixed34 named carriers. | Roney-Dougal–Unger2003 plus pinned PrimGrp3.4.4. Solvability/chief-saving and exact maxima are constructed, not supplied. |
-| [hProjectiveFive : StandardGLTwoFiveProjective.PublishedProjectiveIsomorphism](SymmetricSubgroupAsymptotics/StandardGLTwoFiveProjective.lean) | Nonempty(PGL₂(F₅)≃S5), with Mathlib PGL=GL/center. | Adler, Pacific Journal of Mathematics 155(1) (1992), Lemma 13, printed p.17; LIT-PGL2FIVE. Scalar kernel and character are internal. |
 | [hSolubleBase : HalasiMarotiSolubleIrreducibleCubeBound](SymmetricSubgroupAsymptotics/PrimitiveAffinePublishedSmallStructuralInput.lean) | Faithful irreducible soluble linear G on V over prime field has card(G)≤card(V)³. | corollary; Halasi–Maróti, ProcAMS144 (2016),3231–3242, Thm1.1 authorp2 strong-base≤3. LIT-AFFINE-BASE. |
-| [hAffineFive : PublishedDegreeFiveAffineClassification](SymmetricSubgroupAsymptotics/PrimitiveAffinePublishedSmallStructuralInput.lean) | Primitive affine degree5 group C5,D10 or naturalF20 with point relabelling. | Elementary degree-five specialization of affine primitive structure (Liebeck–Praeger–Saxl 1988, type I, p.390) and GL₁(F₅) ≅ C₄. No capacity estimate is supplied. |
 | [hONanScott : PrimitiveSocleRawStructure.PublishedONanScottStructure](SymmetricSubgroupAsymptotics/PrimitiveSocleRawONanScott.lean) | An actual finite faithful primitive action has either a regular normal prime-power subgroup (elementary abelian by primitive affine structure), or its full socle is T^k with an actual quotient embedding into Out(T) ≀ S_k and the exact proper-index/order degree alternatives. No numerical compression bound. | Liebeck–Praeger–Saxl 1988, §1 pp.390–392 and theorem p.392; LIT-ONAN-SCOTT. Includes both minimal normals in the two-regular-socle cases. |
 | [hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds](SymmetricSubgroupAsymptotics/PrimitiveSocleRawSimpleIndex.lean) | For the actual least proper subgroup index ℓ of a finite nonabelian simple T: ℓ² < card(T) and card(Out(T)) ≤ 3 log₂ ℓ. | Ballester-Bolinches–Esteban-Romero–Jiménez-Seral, Theorem A(4), p.4 of arXiv:2203.16976v2; LIT-SIMPLE-INDEX. The bound ℓ ≥ 5 and all profile deductions are internal. |
 | [catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence](SymmetricSubgroupAsymptotics/PrimitiveCatalogueClassificationPublished.lean) | Bare faithful primitive degree5–29 correspondence, actual group/socle exact orders and one-factor structural match. | PRIM degree5–29 pinned116 retained rows; inequality2outer≤degree kernel-checked internally. |
@@ -225,7 +231,7 @@ The quantitative `PublishedPrimitiveSocleDichotomyInput` is constructed by
 `PublishedONanScottStructure.toSocleDichotomy`; it is not an additional
 parameter here. Likewise the complete small-affine receipt, degree-25
 scalar datum and chief bound, exceptional Tracey `5/16` deduction, actual
-Clifford restriction and faithfulness, Burnside solvability, the binary normal-subgroup bound, projective-three simplicity, all low-degree source data, marked-C₄ moment, and
+Clifford restriction and faithfulness, Burnside solvability, the binary normal-subgroup bound, projective-three simplicity and the projective-five isomorphism, the degree-five affine classification, all low-degree source data, marked-C₄ moment, and
 `PreE7PrimitiveAffineConsumerData` are internal conclusions. The weaker
 `PermutationSubgroupGeneratorBound` is derived from `hMN`, including the
 full `S₃` exception.
