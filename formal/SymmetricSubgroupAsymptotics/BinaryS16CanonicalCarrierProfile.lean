@@ -98,8 +98,8 @@ def v4PointEquiv : mixturePoints (.inl .v4) ≃ Fin 4 where
     all_goals
       apply funext
       intro j
-      fin_cases j <;> native_decide
-  right_inv := by native_decide
+      fin_cases j <;> decide +kernel
+  right_inv := by decide +kernel
 
 def d8PointToFin (x : mixturePoints (.inl .d8)) : Fin 4 := by
   letI : DecidableEq (ZMod 2) := ZMod.decidableEq 2
@@ -123,9 +123,9 @@ def d8PointEquiv : mixturePoints (.inl .d8) ≃ Fin 4 where
       apply Prod.ext
       · apply funext
         intro j
-        fin_cases j <;> native_decide
-      · native_decide
-  right_inv := by native_decide
+        fin_cases j <;> decide +kernel
+      · decide +kernel
+  right_inv := by decide +kernel
 
 private theorem cyclicFour_generator_image (j : Fin 1) :
     cyclicFourPointEquiv.permCongr

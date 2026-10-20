@@ -127,7 +127,8 @@ noncomputable def quotientSummedEnvelope
 
 /-- The compressed raw row together with its actual faithful comparator
 action.  In the Y1 rank-tail row the comparator is trivial, so its faithful
-action is the empty action. -/
+action is padded to two fixed points for the common growing-comparator
+interface. -/
 noncomputable def quotientSummedPackage
     (lit : PreE7CharacterLiterature)
     {U : PreE7NonPairActionClass 8}
