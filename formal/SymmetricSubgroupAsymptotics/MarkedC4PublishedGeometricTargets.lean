@@ -21,6 +21,11 @@ import SymmetricSubgroupAsymptotics.SolublePermutationOrderBound
 import SymmetricSubgroupAsymptotics.SolubleSubdirectSocleHeight
 import SymmetricSubgroupAsymptotics.DegreeSixThreePairClassificationProof
 import SymmetricSubgroupAsymptotics.DegreeSixThreeByTwoClassificationProof
+import SymmetricSubgroupAsymptotics.CharacterLiteratureProvedBinary
+import SymmetricSubgroupAsymptotics.RDTDegreeEightExceptionalProof
+import SymmetricSubgroupAsymptotics.MarkedC4SubquadraticContainersGlobal
+import SymmetricSubgroupAsymptotics.T1CatalogueFromMarkedMoment
+import SymmetricSubgroupAsymptotics.LargeOrbitGeneratorConsequencesFinal
 
 /-! Target composition from the explicit current mathematical inputs.
 Every low-degree source and the degree-sixteen geometric cover is assembled
@@ -36,6 +41,11 @@ Kovács--Praeger input is supplied by the character literature bundle.
 Soluble subdirect socle height and both degree-six block classifiers are
 proved internally. Dixon's order estimate is derived from the retained
 primitive structure, bounded catalogue, and soluble linear cube bound.
+The binary abelian-quotient theorem and the degree-eight binary exception
+are proved internally. The container menu uses the retained subquadratic
+transitive count; the stronger Pyber representative estimate is unnecessary.
+The large-orbit soluble generator theorem is derived from the retained
+primitive normal-generator, composition-length and refined Tracey inputs.
 See formal/README.md. -/
 set_option autoImplicit false
 noncomputable section
@@ -46,18 +56,16 @@ open MarkedC4.OrdinaryNilpotentGeneration MarkedC4.LargeOrbitOrdinaryGeneration
 open MarkedC4.SolubleContainerCount MarkedC4.SolubleContainerOrder
 
 theorem T1_of_published_inputs
-    (lit : PreE7CharacterLiterature)
+    (lit : PreE7CharacterPublishedInputs)
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (hcomp : PrimitiveCompositionLengthInput)
     (hseven : PublishedTheoremSeven)
     (h55 : PublishedTheorem55Binary)
     (h53 : ActualCaseIITargetStructure.PublishedProposition53Binary)
     (h57 : RDTExcessStructure.PublishedTheorem57Binary)
-    (h8 : RDTDegreeEightExceptional.PublishedDegreeEightExceptional)
     (hderived : RDTDerivedNormalQuarter.PublishedDerivedNormalQuarterBinary)
     (rdt46 : RDTTheorem46BinaryInput)
     (hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper)
-    (h62 : PublishedProposition62) (h86 : PublishedTheorem86Representatives)
     (hAG : PublishedAschbacherGuralnickSolubleGeneration)
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
     (compositionCatalogue : PublishedPrimitiveCompositionCatalogueCorrespondence)
@@ -78,54 +86,41 @@ theorem T1_of_published_inputs
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     : T1 := by
+  let fullLit := lit.toLiterature
   have hsub := publishedSolubleSubdirectHeight
   have publishedSix :=
     DegreeSixThreeByTwoClassificationProof.publishedDegreeSixThreeByTwoAffineClassification
   have publishedThree := DegreeSixThreePairClassificationProof.representativeClassification
   have hDixon := SolublePermutationOrderProof.dixonOrder_of_primitive_inputs
     compositionCatalogue hONanScott hSolubleBase
-  have hKP := lit.kovacsPraeger
-  have hSolubleFormula := hTraceySoluble.permutationFormulaRaw
-  have primitiveSix :=
-    PrimitiveDegreeSixCatalogueClassification.publishedPrimitiveDegreeSixClassification_of_compositionCatalogue
-      compositionCatalogue
-  have hTracey := hTraceyRefined.binaryFormula
-  have hDegreeNine := primitiveDegreeNineClassification_of_compositionCatalogue compositionCatalogue
-  have hHoltRoneyDougal := hSimpleGen.faithfulSimplePermutationGeneratorBound
-  have hTraceyHalf := hTraceyRefined.affineHalf
-  have hTraceyLog := hTraceyRefined.affine
-  let socle := hONanScott.toSocleDichotomy hSimpleIndex
-  have hgen := permutationSubgroupGeneratorBound_of_mcIverNeumann hMN
-  exact T1_of_published_inputs_and_sixteenPairSource
-    lit hZmud CliffordRawRestriction.proved.toHomogeneousRestriction hgen hcomp hsub hseven h55 h53 h57 h8 hderived
-    rdt46 hodd h62 h86 hDixon hAG hTracey
-    (traceyBinaryExceptionalThree_of_raw hSolubleFormula hExceptionalOrbits) compositionCatalogue
-    hDegreeNine hPrimitiveGen strictCatalogue primitiveSix hKP hLMM
-    hHoltRoneyDougal hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
-    hSimpleGen
+  have h8 := RDTDegreeEightExceptionalProof.publishedDegreeEightExceptional
+  have h62 := LargeOrbitGeneratorConsequences.publishedProposition62_of_retained_inputs
+    hPrimitiveGen hTraceyRefined hcomp
+  have hM4 := SubquadraticContainersGlobal.marked_bound hsub hseven
+    fullLit.kovacsPraeger fullLit.kovacsPraegerBinary h55 h53 h57 h8 hderived
+    rdt46 hodd h62 hLMM hDixon hAG
+  exact T1_of_globalMarkedMoment_and_catalogues fullLit hM4 hZmud hcomp hodd
+    hExceptionalOrbits compositionCatalogue hPrimitiveGen strictCatalogue hLMM
+    hTraceyRefined hTraceyPerm hSimpleGen
     (PublishedPrimitiveAffineFiniteLiterature.ofCanonicalClassifications
       smallAffineCatalogue ProjectiveThreeSimplicity.proved burnsideTwoPrimeSolvability
       PGLTwoFiveIsomorphism.publishedProjectiveIsomorphism hSolubleBase
       DegreeFiveAffineClassification.classification)
-    socle catalogue hTraceySoluble hMN
+    (hONanScott.toSocleDichotomy hSimpleIndex) catalogue hTraceySoluble hMN
     publishedSix published8 published16 publishedThree publishedTwelve
-    (DegreeSixteenCompleteGeometricSource.residualSource
-      published8 published16 socle hMN hZmud lit) fusariSpigaBinaryNormalSubgroup
 
 /-- The same published inputs imply all three approved asymptotic targets. -/
 theorem allTargets_of_published_inputs
-    (lit : PreE7CharacterLiterature)
+    (lit : PreE7CharacterPublishedInputs)
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (hcomp : PrimitiveCompositionLengthInput)
     (hseven : PublishedTheoremSeven)
     (h55 : PublishedTheorem55Binary)
     (h53 : ActualCaseIITargetStructure.PublishedProposition53Binary)
     (h57 : RDTExcessStructure.PublishedTheorem57Binary)
-    (h8 : RDTDegreeEightExceptional.PublishedDegreeEightExceptional)
     (hderived : RDTDerivedNormalQuarter.PublishedDerivedNormalQuarterBinary)
     (rdt46 : RDTTheorem46BinaryInput)
     (hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper)
-    (h62 : PublishedProposition62) (h86 : PublishedTheorem86Representatives)
     (hAG : PublishedAschbacherGuralnickSolubleGeneration)
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
     (compositionCatalogue : PublishedPrimitiveCompositionCatalogueCorrespondence)
@@ -147,8 +142,8 @@ theorem allTargets_of_published_inputs
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     : AllTargets := by
   exact allTargets_iff_T1.mpr (T1_of_published_inputs
-    lit hZmud hcomp hseven h55 h53 h57 h8 hderived
-    rdt46 hodd h62 h86 hAG hExceptionalOrbits compositionCatalogue
+    lit hZmud hcomp hseven h55 h53 h57 hderived
+    rdt46 hodd hAG hExceptionalOrbits compositionCatalogue
     hPrimitiveGen strictCatalogue hLMM
     hTraceyRefined hTraceyPerm
     hSimpleGen smallAffineCatalogue hSolubleBase

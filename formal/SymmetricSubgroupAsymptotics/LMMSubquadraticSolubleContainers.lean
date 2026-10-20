@@ -96,7 +96,7 @@ theorem index_card_bound
       intro label _
       simpa only [Nat.card_eq_fintype_card, Fintype.card_pi, Nat.cast_prod] using
         local_menu_product_bound X ε B hε hB hcount label
-    _ = _ := by simp [Fintype.card_fun]
+    _ = _ := by simp
 
 private theorem coefficient_label_cost (B : ℝ) (hB : 0 ≤ B) (b : ℕ) :
     (b : ℝ) ^ b * B ^ b ≤
