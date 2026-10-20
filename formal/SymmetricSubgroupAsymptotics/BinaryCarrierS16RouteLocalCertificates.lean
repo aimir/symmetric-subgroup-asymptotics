@@ -212,10 +212,10 @@ theorem t1086_certificate : Certificate E1086.slot 8 2 := by
   constructor
   · change (∑ j : BinaryExceptional16ProfileCarrier.Occurrence,
         cellHalfDegree j.1) = 8
-    native_decide
+    decide +kernel
   · change (∑ j : BinaryExceptional16ProfileCarrier.Occurrence,
         retainedCellHalfSupport j.1) = 2
-    native_decide
+    decide +kernel
 
 /-- The routed `16T1086` axis keeps the same four displayed cells. -/
 theorem t1086AxisSlot_certificate
