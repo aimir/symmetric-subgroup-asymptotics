@@ -24,6 +24,39 @@ def live(pid):
 
 
 class SupervisorTests(unittest.TestCase):
+    def test_rss_probe_bounded_timeout_and_group_filter(self):
+        result = subprocess.CompletedProcess([], 0, "17 100\n18 900\n17 250\n")
+        with patch.object(runner.subprocess, "run", return_value=result) as run:
+            self.assertEqual(runner.group_rss_kib(17), 350)
+            self.assertEqual(run.call_args.kwargs["timeout"], 10)
+        with patch.object(runner.subprocess, "run",
+                          side_effect=subprocess.TimeoutExpired("ps", 10)):
+            with self.assertRaises(subprocess.TimeoutExpired):
+                runner.group_rss_kib(17)
+
+    def test_macos_probe_selects_whole_group(self):
+        result = subprocess.CompletedProcess([], 0, "17 100\n17 250\n")
+        with patch.object(runner.sys, "platform", "darwin"), \
+                patch.object(runner.subprocess, "run", return_value=result) as run:
+            self.assertEqual(runner.group_rss_kib(17), 350)
+            self.assertEqual(run.call_args.args[0],
+                             ["ps", "-g", "17", "-o", "pgid=,rss="])
+            self.assertTrue(run.call_args.kwargs["check"])
+            self.assertEqual(run.call_args.kwargs["timeout"], 10)
+
+    def test_macos_empty_group_is_distinct_from_probe_error(self):
+        with patch.object(runner.sys, "platform", "darwin"):
+            empty = subprocess.CalledProcessError(1, "ps", output="", stderr="")
+            with patch.object(runner.subprocess, "run", side_effect=empty):
+                self.assertEqual(runner.group_rss_kib(17), 0)
+            for status, output, error in [(1, "", "permission denied"),
+                                           (2, "", ""), (1, "malformed", "")]:
+                failure = subprocess.CalledProcessError(status, "ps", output=output,
+                                                        stderr=error)
+                with patch.object(runner.subprocess, "run", side_effect=failure):
+                    with self.assertRaises(subprocess.CalledProcessError):
+                        runner.group_rss_kib(17)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="lean-supervisor-test-")
         self.path = Path(self.temp.name).resolve()

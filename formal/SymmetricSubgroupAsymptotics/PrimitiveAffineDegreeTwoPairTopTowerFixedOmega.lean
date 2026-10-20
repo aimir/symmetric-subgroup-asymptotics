@@ -1,0 +1,1628 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoPairTopTowerOuterNestedQuotient
+
+/-!
+# The fixed direct-omega lift in a two-frame pair tower
+
+The coupled trivial-row argument must lift the fixed part of the direct
+kernel omega, rather than the whole omega module.  In the original quotient
+this lift is intrinsic: it is the intersection of the ambient omega subgroup
+with the center.  This file identifies that literal subgroup with the fixed
+space of the omega conjugation representation and pulls it back to the
+original pair action.
+-/
+
+set_option autoImplicit false
+noncomputable section
+open scoped Classical
+
+namespace SymmetricSubgroupAsymptotics
+namespace Non2UnipotentPrefixFiniteMenu
+namespace PrimitiveAffineImprimitiveBlockTransfer
+namespace DegreeTwoPairTopTowerRealization
+
+variable {s t : ℕ} {D : DegreeTwoPairTopFiniteInterface t}
+  {p : PreE7PairActionClass s}
+  (R : DegreeTwoPairTopTowerRealization D p)
+
+/-- The transported pair-sum denominator keeps the original normal axis. -/
+theorem outerNormalPairSumAxis_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.outerNormalPairSumAxis N).toSubmodule =
+      (R.frame.ambientAxis N.1).map R.secondFrame.pairSum :=
+  congrArg (fun M : Submodule (ZMod 2) (Fin s → ZMod 2) ↦
+    M.map R.secondFrame.pairSum)
+      (R.frame.normalSpace_map_subtype_eq_ambientAxis N.1)
+
+/-- The transported constant denominator keeps the original normal axis. -/
+theorem outerNormalConstantAxis_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.outerNormalConstantAxis N).toSubmodule =
+      (R.frame.ambientAxis N.1).comap R.secondFrame.pairConstant :=
+  congrArg (fun M : Submodule (ZMod 2) (Fin s → ZMod 2) ↦
+    M.comap R.secondFrame.pairConstant)
+      (R.frame.normalSpace_map_subtype_eq_ambientAxis N.1)
+
+private noncomputable def nestedQuotientEquivOfEqLeft
+    {G V : Type} [Group G] [AddCommGroup V] [Module (ZMod 2) V]
+    {rho : Representation (ZMod 2) G V}
+    (A A' B : Subrepresentation rho) (hAB : A ≤ B) (hA'B : A' ≤ B)
+    (h : A = A') :
+    (nestedQuotientRepresentation A B hAB).Equiv
+      (nestedQuotientRepresentation A' B hA'B) := by
+  subst A'
+  exact Representation.Equiv.refl _
+
+/-- The actual central part of the direct-kernel omega subgroup in the
+original quotient. -/
+def rawKernelOmegaFixedLift
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subgroup (preE7PairAction s p ⧸ N.1) :=
+  R.rawKernelOmegaLift N ⊓ Subgroup.center (preE7PairAction s p ⧸ N.1)
+
+instance rawKernelOmegaFixedLift_normal
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaFixedLift N).Normal := by
+  change (R.rawKernelOmegaLift N ⊓
+    Subgroup.center (preE7PairAction s p ⧸ N.1)).Normal
+  infer_instance
+
+/-- Pull the fixed omega lift back to the original action.  This is the
+normal subgroup denoted `D` in the three-layer coupled-head argument. -/
+def rawKernelOmegaFixedOriginalPreimage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subgroup (preE7PairAction s p) := by
+  letI : N.1.Normal := N.2
+  exact (R.rawKernelOmegaFixedLift N).comap (QuotientGroup.mk' N.1)
+
+instance rawKernelOmegaFixedOriginalPreimage_normal
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaFixedOriginalPreimage N).Normal := by
+  letI : N.1.Normal := N.2
+  exact Subgroup.Normal.comap inferInstance (QuotientGroup.mk' N.1)
+
+theorem originalNormal_le_rawKernelOmegaFixedOriginalPreimage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    N.1 ≤ R.rawKernelOmegaFixedOriginalPreimage N := by
+  intro u hu
+  change QuotientGroup.mk' N.1 u ∈ R.rawKernelOmegaFixedLift N
+  have hq : QuotientGroup.mk' N.1 u = 1 :=
+    (QuotientGroup.eq_one_iff _).mpr hu
+  rw [hq]
+  exact Subgroup.one_mem _
+
+/-- Image of the fixed omega lift in the intermediate pair top. -/
+def rawKernelOmegaFixedTopImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subgroup (R.frame.top.range ⧸ R.outerTopNormal N.1) :=
+  (R.rawKernelOmegaFixedLift N).map (R.outerQuotientMap N)
+
+instance rawKernelOmegaFixedTopImage_normal
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaFixedTopImage N).Normal :=
+  Subgroup.Normal.map inferInstance _ (R.outerQuotientMap_surjective N)
+
+theorem rawKernelOmegaFixedTopImage_le_innerKernel
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.rawKernelOmegaFixedTopImage N ≤ (R.innerQuotientMap N).ker := by
+  rintro y ⟨x, hx, rfl⟩
+  apply MonoidHom.mem_ker.mpr
+  simpa only [rawQuotientMap, MonoidHom.comp_apply] using
+    MonoidHom.mem_ker.mp hx.1.1
+
+/-- Pull the fixed intermediate image back before the second quotient. -/
+def rawKernelOmegaFixedIntermediatePreimage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subgroup R.frame.top.range := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  exact (R.rawKernelOmegaFixedTopImage N).comap
+    (QuotientGroup.mk' (R.outerTopNormal N.1))
+
+/-- The fixed intermediate pullback is exactly the first-top image of the
+fixed original pullback. -/
+theorem rawKernelOmegaFixedIntermediatePreimage_eq_map
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.rawKernelOmegaFixedIntermediatePreimage N =
+      (R.rawKernelOmegaFixedOriginalPreimage N).map
+        R.frame.top.rangeRestrict := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  ext y
+  constructor
+  · intro hy
+    change QuotientGroup.mk' (R.outerTopNormal N.1) y ∈
+      (R.rawKernelOmegaFixedLift N).map (R.outerQuotientMap N) at hy
+    obtain ⟨q, hq, hqy⟩ := hy
+    obtain ⟨u, rfl⟩ := QuotientGroup.mk'_surjective N.1 q
+    rw [R.outerQuotientMap_apply] at hqy
+    have hdiv : R.frame.top.rangeRestrict u / y ∈
+        R.outerTopNormal N.1 :=
+      QuotientGroup.eq_iff_div_mem.mp hqy
+    obtain ⟨n, hn, hntop⟩ := hdiv
+    have hnFixed : n ∈ R.rawKernelOmegaFixedOriginalPreimage N :=
+      R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N hn
+    refine ⟨n⁻¹ * u,
+      (R.rawKernelOmegaFixedOriginalPreimage N).mul_mem
+        ((R.rawKernelOmegaFixedOriginalPreimage N).inv_mem hnFixed) hq, ?_⟩
+    rw [map_mul, map_inv, hntop]
+    simp only [div_eq_mul_inv, mul_inv_rev, inv_inv, mul_assoc, inv_mul_cancel, mul_one]
+  · rintro ⟨u, hu, rfl⟩
+    change QuotientGroup.mk' (R.outerTopNormal N.1)
+        (R.frame.top.rangeRestrict u) ∈
+      (R.rawKernelOmegaFixedLift N).map (R.outerQuotientMap N)
+    exact ⟨QuotientGroup.mk' N.1 u, hu, rfl⟩
+
+theorem outerTopNormal_le_rawKernelOmegaFixedIntermediatePreimage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.outerTopNormal N.1 ≤ R.rawKernelOmegaFixedIntermediatePreimage N := by
+  rw [R.rawKernelOmegaFixedIntermediatePreimage_eq_map N]
+  exact Subgroup.map_mono
+    (R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N)
+
+instance rawKernelOmegaFixedIntermediatePreimage_normal
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaFixedIntermediatePreimage N).Normal := by
+  letI : N.1.Normal := N.2
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  exact Subgroup.Normal.comap inferInstance
+    (QuotientGroup.mk' (R.outerTopNormal N.1))
+
+/-- A fixed omega vector gives a central element of the original quotient.
+The statement keeps the concrete omega embedding visible for later
+coordinate calculations. -/
+theorem binaryCentralOmegaEmbedding_mem_center_of_fixed
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (z : binaryCentralOmega (R.rawQuotientMap N).ker)
+    (hz : Additive.ofMul z ∈
+      (binaryKernelOmegaConjugationRepresentation
+        (R.rawQuotientMap N)).invariants) :
+    ((binaryCentralOmegaEmbedding z : (R.rawQuotientMap N).ker) : preE7PairAction s p ⧸ N.1) ∈
+      Subgroup.center (preE7PairAction s p ⧸ N.1) := by
+  apply Subgroup.mem_center_iff.mpr
+  intro q
+  have hfix : binaryKernelOmegaConjugateOmega (R.rawQuotientMap N) q z = z :=
+    Additive.ofMul.injective (hz q)
+  have hval := congrArg
+    (fun w : binaryCentralOmega (R.rawQuotientMap N).ker ↦
+      ((binaryCentralOmegaEmbedding w : (R.rawQuotientMap N).ker) :
+        preE7PairAction s p ⧸ N.1)) hfix
+  exact mul_inv_eq_iff_eq_mul.mp
+    ((binaryKernelOmegaConjugate_val (R.rawQuotientMap N) q z).symm.trans hval)
+
+/-- Conversely, an omega element central in the original quotient is fixed
+by the whole omega conjugation representation. -/
+theorem fixed_of_binaryCentralOmegaEmbedding_mem_center
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (z : binaryCentralOmega (R.rawQuotientMap N).ker)
+    (hz : ((binaryCentralOmegaEmbedding z : (R.rawQuotientMap N).ker) : preE7PairAction s p ⧸ N.1) ∈
+      Subgroup.center (preE7PairAction s p ⧸ N.1)) :
+    Additive.ofMul z ∈
+      (binaryKernelOmegaConjugationRepresentation
+        (R.rawQuotientMap N)).invariants := by
+  intro q
+  apply Additive.toMul.injective
+  apply binaryCentralOmegaEmbedding_injective
+  apply Subtype.ext
+  exact (binaryKernelOmegaConjugate_val (R.rawQuotientMap N) q z).trans
+    (mul_inv_eq_iff_eq_mul.mpr (Subgroup.mem_center_iff.mp hz q))
+
+instance rawKernelOmegaFixedLift_commGroup
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    CommGroup (R.rawKernelOmegaFixedLift N) :=
+  { (inferInstance : Group (R.rawKernelOmegaFixedLift N)) with
+    mul_comm := by
+      intro x y
+      apply Subtype.ext
+      exact (Subgroup.mem_center_iff.mp x.2.2 y.1).symm }
+
+/-- The underlying additive group of the fixed omega lift is elementary
+binary, because it is contained in the ambient omega subgroup. -/
+instance rawKernelOmegaFixedLift_module
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module (ZMod 2) (Additive (R.rawKernelOmegaFixedLift N)) :=
+  AddCommGroup.zmodModule (n := 2) (fun x ↦ by
+    apply Additive.toMul.injective
+    apply Subtype.ext
+    change (x.toMul.1 : preE7PairAction s p ⧸ N.1) ^ 2 = 1
+    exact x.toMul.2.1.2.2)
+
+/-- Fixed vectors in raw omega are exactly the additive form of the literal
+central omega lift. -/
+noncomputable def rawKernelOmegaInvariantsEquivFixedLift
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (binaryKernelOmegaConjugationRepresentation
+        (R.rawQuotientMap N)).invariants ≃ₗ[ZMod 2]
+      Additive (R.rawKernelOmegaFixedLift N) := by
+  let e : (binaryKernelOmegaConjugationRepresentation
+        (R.rawQuotientMap N)).invariants ≃+
+      Additive (R.rawKernelOmegaFixedLift N) := {
+    toFun v := Additive.ofMul
+      ⟨(R.rawKernelOmegaEquiv N v.1.toMul :
+          R.rawKernelOmegaLift N).1,
+        (R.rawKernelOmegaEquiv N v.1.toMul).2,
+        by
+          rw [R.rawKernelOmegaEquiv_val N]
+          exact R.binaryCentralOmegaEmbedding_mem_center_of_fixed
+            N v.1.toMul v.2⟩
+    invFun z :=
+      let omega := (R.rawKernelOmegaEquiv N).symm
+        ⟨z.toMul.1, z.toMul.2.1⟩
+      ⟨Additive.ofMul omega, by
+        apply R.fixed_of_binaryCentralOmegaEmbedding_mem_center N omega
+        rw [← R.rawKernelOmegaEquiv_val N omega]
+        have he := congrArg Subtype.val
+          ((R.rawKernelOmegaEquiv N).apply_symm_apply
+            ⟨z.toMul.1, z.toMul.2.1⟩)
+        exact he.symm ▸ z.toMul.2.2⟩
+    left_inv v := by
+      apply Subtype.ext
+      apply Additive.toMul.injective
+      exact (R.rawKernelOmegaEquiv N).symm_apply_apply v.1.toMul
+    right_inv z := by
+      apply Additive.toMul.injective
+      apply Subtype.ext
+      exact congrArg (fun x : R.rawKernelOmegaLift N ↦
+        (x : preE7PairAction s p ⧸ N.1))
+        ((R.rawKernelOmegaEquiv N).apply_symm_apply
+          ⟨z.toMul.1, z.toMul.2.1⟩)
+    map_add' v w := by
+      apply Additive.toMul.injective
+      apply Subtype.ext
+      exact congrArg (fun x : R.rawKernelOmegaLift N ↦
+        (x : preE7PairAction s p ⧸ N.1))
+        (map_mul (R.rawKernelOmegaEquiv N) v.1.toMul w.1.toMul)
+  }
+  exact LinearEquiv.ofBijective (e.toAddMonoidHom.toZModLinearMap 2) e.bijective
+
+/-- Project the literal fixed lift onto the second pair kernel. -/
+def rawKernelOmegaFixedProjection
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.rawKernelOmegaFixedLift N →* (R.innerQuotientMap N).ker where
+  toFun z := ⟨R.outerQuotientMap N z.1, by
+    apply MonoidHom.mem_ker.mpr
+    simpa only [rawQuotientMap, MonoidHom.comp_apply] using
+      MonoidHom.mem_ker.mp z.2.1.1⟩
+  map_one' := Subtype.ext (map_one _)
+  map_mul' x y := Subtype.ext (map_mul _ x.1 y.1)
+
+@[simp] theorem rawKernelOmegaFixedProjection_apply
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (z : R.rawKernelOmegaFixedLift N) :
+    ((R.rawKernelOmegaFixedProjection N z : (R.innerQuotientMap N).ker) :
+        R.frame.top.range ⧸ R.outerTopNormal N.1) =
+      R.outerQuotientMap N z.1 :=
+  rfl
+
+theorem rawKernelOmegaFixedProjection_range_eq
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaFixedProjection N).range =
+      (R.rawKernelOmegaFixedTopImage N).subgroupOf
+        (R.innerQuotientMap N).ker := by
+  ext y
+  constructor
+  · rintro ⟨z, rfl⟩
+    exact ⟨z, z.2, rfl⟩
+  · rintro ⟨z, hz, hzy⟩
+    exact ⟨⟨z, hz⟩, Subtype.ext hzy⟩
+
+/-- Actual second-section coordinates of the fixed intermediate image. -/
+def fixedOmegaInnerSubrepresentation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation (R.innerSectionModule N).ρ :=
+  (R.innerSectionModuleChart N).normalSubrepresentation
+    (R.innerQuotientMap N) (R.innerQuotientMap_surjective N)
+    (R.innerSectionModule N) (R.rawKernelOmegaFixedTopImage N)
+
+/-- Additive coordinates for the fixed projection in the actual second
+section module. -/
+noncomputable def rawKernelOmegaFixedInnerSectionMap
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Additive (R.rawKernelOmegaFixedLift N) →ₗ[ZMod 2]
+      R.innerSectionModule N :=
+  (AddMonoidHom.toMultiplicativeRight.symm
+    ((R.innerSectionModuleChart N).equiv.symm.toMonoidHom.comp
+      (R.rawKernelOmegaFixedProjection N))).toZModLinearMap 2
+
+@[simp] theorem rawKernelOmegaFixedInnerSectionMap_apply
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (z : R.rawKernelOmegaFixedLift N) :
+    R.rawKernelOmegaFixedInnerSectionMap N (Additive.ofMul z) =
+      ((R.innerSectionModuleChart N).kernelCoordinates
+        (R.innerQuotientMap N) (R.innerSectionModule N)
+        (R.rawKernelOmegaFixedProjection N z)).toAdd :=
+  rfl
+
+theorem rawKernelOmegaFixedInnerSectionMap_range_eq
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    LinearMap.range (R.rawKernelOmegaFixedInnerSectionMap N) =
+      (R.fixedOmegaInnerSubrepresentation N).toSubmodule := by
+  let E := R.innerSectionModuleChart N
+  let L := (R.rawKernelOmegaFixedTopImage N).subgroupOf
+    (R.innerQuotientMap N).ker
+  have hker : (E.kernelCoordinates
+      (R.innerQuotientMap N) (R.innerSectionModule N)).ker ≤ L := by
+    intro x hx
+    have hx1 : x = 1 := by
+      apply E.equiv.symm.injective
+      exact (MonoidHom.mem_ker.mp hx).trans
+        (map_one E.equiv.symm).symm
+    subst x
+    exact Subgroup.one_mem _
+  ext v
+  constructor
+  · rintro ⟨z, rfl⟩
+    change ((E.kernelCoordinates
+      (R.innerQuotientMap N) (R.innerSectionModule N)
+      (R.rawKernelOmegaFixedProjection N z.toMul)).toAdd) ∈
+        E.normalSpace (R.innerQuotientMap N)
+          (R.innerSectionModule N) (R.rawKernelOmegaFixedTopImage N)
+    apply (sectionSubgroupImage_mem_iff (p := 2)
+      (E.kernelCoordinates (R.innerQuotientMap N)
+        (R.innerSectionModule N)) L hker
+      (R.rawKernelOmegaFixedProjection N z.toMul)).2
+    exact (R.rawKernelOmegaFixedProjection_range_eq N).le ⟨z.toMul, rfl⟩
+  · intro hv
+    let y : (R.innerQuotientMap N).ker :=
+      E.equiv (Multiplicative.ofAdd v)
+    have hcoord : (E.kernelCoordinates
+        (R.innerQuotientMap N) (R.innerSectionModule N) y).toAdd = v := by
+      change (E.equiv.symm (E.equiv (Multiplicative.ofAdd v))).toAdd = v
+      rw [E.equiv.symm_apply_apply]
+      rfl
+    have hy : y ∈ L := by
+      apply (sectionSubgroupImage_mem_iff (p := 2)
+        (E.kernelCoordinates (R.innerQuotientMap N)
+          (R.innerSectionModule N)) L hker y).1
+      change v ∈ E.normalSpace (R.innerQuotientMap N)
+        (R.innerSectionModule N) (R.rawKernelOmegaFixedTopImage N) at hv
+      rwa [hcoord]
+    have hyrange : y ∈ (R.rawKernelOmegaFixedProjection N).range := by
+      rw [R.rawKernelOmegaFixedProjection_range_eq N]
+      exact hy
+    obtain ⟨z, hz⟩ := hyrange
+    refine ⟨Additive.ofMul z, ?_⟩
+    rw [R.rawKernelOmegaFixedInnerSectionMap_apply N z, hz, hcoord]
+
+instance rawKernelOmegaFixedProjectionKernel_module
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module (ZMod 2) (Additive (R.rawKernelOmegaFixedProjection N).ker) :=
+  AddCommGroup.zmodModule (n := 2) (fun x ↦ by
+    apply Additive.toMul.injective
+    apply Subtype.ext
+    apply Subtype.ext
+    change (x.toMul.1.1 : preE7PairAction s p ⧸ N.1) ^ 2 = 1
+    exact x.toMul.1.2.1.2.2)
+
+/-- The linear kernel of the fixed inner section map is the additive form
+of its literal group kernel. -/
+noncomputable def rawKernelOmegaFixedInnerKernelEquivProjectionKernel
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaFixedInnerSectionMap N).ker ≃ₗ[ZMod 2]
+      Additive (R.rawKernelOmegaFixedProjection N).ker := by
+  let f : (R.rawKernelOmegaFixedInnerSectionMap N).ker →ₗ[ZMod 2]
+      Additive (R.rawKernelOmegaFixedProjection N).ker := {
+    toFun := fun z ↦ Additive.ofMul ⟨z.1.toMul, by
+      apply MonoidHom.mem_ker.mpr
+      let E := R.innerSectionModuleChart N
+      have hz : R.rawKernelOmegaFixedInnerSectionMap N z.1 = 0 :=
+        LinearMap.mem_ker.mp z.2
+      apply E.equiv.symm.injective
+      change Multiplicative.ofAdd
+          (R.rawKernelOmegaFixedInnerSectionMap N z.1) = _
+      rw [hz, map_one]
+      rfl⟩
+    map_add' _ _ := rfl
+    map_smul' _ _ := rfl
+  }
+  apply LinearEquiv.ofBijective f
+  constructor
+  · intro z w hzw
+    apply Subtype.ext
+    exact Additive.toMul.injective
+      (congrArg (fun a : Additive
+        (R.rawKernelOmegaFixedProjection N).ker ↦ a.toMul.1) hzw)
+  · intro z
+    let x : Additive (R.rawKernelOmegaFixedLift N) :=
+      Additive.ofMul z.toMul.1
+    have hx : x ∈ (R.rawKernelOmegaFixedInnerSectionMap N).ker := by
+      apply LinearMap.mem_ker.mpr
+      rw [R.rawKernelOmegaFixedInnerSectionMap_apply N z.toMul.1]
+      rw [MonoidHom.mem_ker.mp z.toMul.2]
+      change ((R.innerSectionModuleChart N).equiv.symm 1).toAdd = 0
+      rw [map_one]
+      rfl
+    exact ⟨⟨x, hx⟩, rfl⟩
+
+theorem rawKernelOmegaFixedOriginalPreimage_commutator_mem_right
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (u v : preE7PairAction s p)
+    (hv : v ∈ R.rawKernelOmegaFixedOriginalPreimage N) :
+    u⁻¹ * v * u * v⁻¹ ∈ N.1 := by
+  letI : N.1.Normal := N.2
+  apply (QuotientGroup.eq_one_iff _).mp
+  change QuotientGroup.mk' N.1 (u⁻¹ * v * u * v⁻¹) = 1
+  simp only [map_mul, map_inv]
+  have hcentral : Commute (QuotientGroup.mk' N.1 u)
+      (QuotientGroup.mk' N.1 v) :=
+    Subgroup.mem_center_iff.mp hv.2 (QuotientGroup.mk' N.1 u)
+  calc
+    _ = (QuotientGroup.mk' N.1 u)⁻¹ *
+        (QuotientGroup.mk' N.1 v * QuotientGroup.mk' N.1 u) *
+        (QuotientGroup.mk' N.1 v)⁻¹ := by group
+    _ = 1 := by rw [← hcentral.eq]; group
+
+/-- A fixed pullback element commutes modulo the denominator with every
+element of the original action. -/
+theorem rawKernelOmegaFixedOriginalPreimage_commutator_mem_left
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (u v : preE7PairAction s p)
+    (hu : u ∈ R.rawKernelOmegaFixedOriginalPreimage N) :
+    u⁻¹ * v * u * v⁻¹ ∈ N.1 := by
+  letI : N.1.Normal := N.2
+  apply (QuotientGroup.eq_one_iff _).mp
+  change QuotientGroup.mk' N.1 (u⁻¹ * v * u * v⁻¹) = 1
+  simp only [map_mul, map_inv]
+  have hcentral : Commute (QuotientGroup.mk' N.1 u)
+      (QuotientGroup.mk' N.1 v) :=
+    (Subgroup.mem_center_iff.mp hu.2 (QuotientGroup.mk' N.1 v)).symm
+  calc
+    _ = (QuotientGroup.mk' N.1 u)⁻¹ *
+        (QuotientGroup.mk' N.1 v * QuotientGroup.mk' N.1 u) *
+        (QuotientGroup.mk' N.1 v)⁻¹ := by group
+    _ = 1 := by rw [← hcentral.eq]; group
+
+/-- In particular, two elements of the fixed pullback commute modulo the
+original denominator. -/
+theorem rawKernelOmegaFixedOriginalPreimage_commutator_mem
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (u v : preE7PairAction s p)
+    (hu : u ∈ R.rawKernelOmegaFixedOriginalPreimage N)
+    (_hv : v ∈ R.rawKernelOmegaFixedOriginalPreimage N) :
+    u⁻¹ * v * u * v⁻¹ ∈ N.1 :=
+  R.rawKernelOmegaFixedOriginalPreimage_commutator_mem_left N u v hu
+
+/-- A central normal axis has no coinvariant displacement outside its
+denominator axis.  This is the reusable linear form of the calculation
+`[D,U] ≤ N`; it applies at either pair frame and after any chosen
+identification of its top with a catalogue group. -/
+private theorem coinvariantsKer_sharedOriginalAxis_le_ambientAxis
+    {X H : Type} [Group H] {w : ℕ}
+    {U : Subgroup (Equiv.Perm X)}
+    (F : BinaryPairFrame U (Fin w))
+    (rho : Representation (ZMod 2) H (Fin w → ZMod 2))
+    (e : H ≃* F.top.range)
+    (he : ∀ g v, rho g v = F.coordinateTopAction (e g) v)
+    (N D : Subgroup U) [N.Normal] [D.Normal]
+    (hcentral : ∀ (u : U) (k : F.top.ker),
+      (k : U) ∈ D →
+        ((k⁻¹ * MulAut.conjNormal u k : F.top.ker) : U) ∈ N) :
+    Representation.Coinvariants.ker
+        (F.sharedOriginalAxis rho e he D).toRepresentation ≤
+      (F.ambientAxis N).comap
+        (F.sharedOriginalAxis rho e he D).toSubmodule.subtype := by
+  apply Submodule.span_le.mpr
+  rintro _ ⟨⟨g, v⟩, rfl⟩
+  obtain ⟨u, hu⟩ := F.top.rangeRestrict_surjective (e g)
+  obtain ⟨k, hkD, hkv⟩ := (F.mem_ambientAxis D v.1).1 v.2
+  let c : F.top.ker := k⁻¹ * MulAut.conjNormal u k
+  have hcN : (c : U) ∈ N := hcentral u k hkD
+  change rho g v.1 - v.1 ∈ F.ambientAxis N
+  apply (F.mem_ambientAxis N _).2
+  refine ⟨c, hcN, ?_⟩
+  rw [he, ← hu]
+  rw [← hkv, F.coordinateTopAction_bits]
+  have hmul := congrArg Multiplicative.toAdd
+    (F.bitsHom.map_mul k⁻¹ (MulAut.conjNormal u k))
+  have hinv := congrArg Multiplicative.toAdd (F.bitsHom.map_inv k)
+  change F.bits c =
+    F.bits k⁻¹ + F.bits (MulAut.conjNormal u k) at hmul
+  change F.bits k⁻¹ = -F.bits k at hinv
+  rw [hmul, hinv, sub_eq_add_neg, add_comm]
+
+/-- Quotienting an invariant state by a subspace containing all intrinsic
+displacements costs no more than the state's coinvariant dimension. -/
+private theorem nestedQuotient_finrank_le_coinvariants
+    {G V : Type} [Group G] [AddCommGroup V] [Module (ZMod 2) V]
+    [FiniteDimensional (ZMod 2) V]
+    {rho : Representation (ZMod 2) G V}
+    (A B : Subrepresentation rho) (hAB : A ≤ B)
+    (hcoinv : Representation.Coinvariants.ker B.toRepresentation ≤
+      A.toSubmodule.comap B.toSubmodule.subtype) :
+    Module.finrank (ZMod 2)
+        (nestedQuotientRepresentation A B hAB).asModule ≤
+      Module.finrank (ZMod 2) B.toRepresentation.Coinvariants := by
+  have hA :=
+    (A.toSubmodule.comap B.toSubmodule.subtype).finrank_quotient_add_finrank
+  have hC :=
+    (Representation.Coinvariants.ker
+      B.toRepresentation).finrank_quotient_add_finrank
+  have hle : Module.finrank (ZMod 2)
+      (Representation.Coinvariants.ker B.toRepresentation) ≤
+        Module.finrank (ZMod 2)
+          (A.toSubmodule.comap B.toSubmodule.subtype) :=
+    Submodule.finrank_mono hcoinv
+  change Module.finrank (ZMod 2)
+      (nestedQuotientRepresentation A B hAB).asModule +
+        Module.finrank (ZMod 2)
+          (A.toSubmodule.comap B.toSubmodule.subtype) =
+      Module.finrank (ZMod 2) B.toSubmodule at hA
+  change Module.finrank (ZMod 2) B.toRepresentation.Coinvariants +
+      Module.finrank (ZMod 2)
+        (Representation.Coinvariants.ker B.toRepresentation) =
+      Module.finrank (ZMod 2) B.toSubmodule at hC
+  omega
+
+/-- Enlarging a quotient denominator can only decrease its dimension. -/
+private theorem finrank_quotient_le_of_le
+    {V : Type*} [AddCommGroup V] [Module (ZMod 2) V]
+    [FiniteDimensional (ZMod 2) V]
+    (A B : Submodule (ZMod 2) V) (hAB : A ≤ B) :
+    Module.finrank (ZMod 2) (V ⧸ B) ≤
+      Module.finrank (ZMod 2) (V ⧸ A) := by
+  have hA := A.finrank_quotient_add_finrank
+  have hB := B.finrank_quotient_add_finrank
+  have hle := Submodule.finrank_mono hAB
+  omega
+
+/-! ## The three literal axes of the fixed lift -/
+
+/-- The second-kernel coordinate state contributed by the fixed omega
+lift.  This is `K` in the coupled three-head inequality. -/
+def fixedOmegaInnerNaturalAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) :=
+  R.secondFrame.sharedOriginalAxis
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+    R.topEquiv R.module_action_eq
+    (R.rawKernelOmegaFixedIntermediatePreimage N)
+
+/-- The fixed inner axis before transporting the second-frame top to the
+literal catalogue top. -/
+def fixedOmegaInnerCoordinateAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation R.secondFrame.coordinateTopAction :=
+  R.secondFrame.sharedOriginalAxis
+    R.secondFrame.coordinateTopAction (MulEquiv.refl _) (fun _ _ ↦ rfl)
+    (R.rawKernelOmegaFixedIntermediatePreimage N)
+
+/-- The first-kernel coordinate state contributed by the fixed omega lift,
+before separating its pair-sum and pair-constant coordinates. -/
+def fixedOmegaOuterAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2)
+        R.frame.top.range (Fin s)) :=
+  R.frame.sharedOriginalAxis
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    (MulEquiv.refl R.frame.top.range) (fun _ _ ↦ rfl)
+    (R.rawKernelOmegaFixedOriginalPreimage N)
+
+/-- Pair-sum image `W` of the fixed first-kernel state. -/
+def fixedOmegaPairSumPullbackAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation R.secondFrame.pulledBackCoordinateTopAction :=
+  intertwinerImage
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    R.secondFrame.pulledBackCoordinateTopAction
+    R.secondFrame.pairSumIntertwiner (R.fixedOmegaOuterAxis N)
+
+/-- Pair-constant preimage `L` of the fixed first-kernel state. -/
+def fixedOmegaConstantPullbackAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation R.secondFrame.pulledBackCoordinateTopAction :=
+  intertwinerPreimage
+    R.secondFrame.pulledBackCoordinateTopAction
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    R.secondFrame.pairConstantIntertwiner (R.fixedOmegaOuterAxis N)
+
+/-- Transport the fixed pair-sum state to the literal bottom top. -/
+def fixedOmegaPairSumAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) :=
+  R.transportInnerNaturalAxis
+    (R.secondFrame.descendPulledBackSubrepresentation
+      (R.fixedOmegaPairSumPullbackAxis N))
+
+/-- Transport the fixed pair-constant state to the literal bottom top. -/
+def fixedOmegaConstantAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)) :=
+  R.transportInnerNaturalAxis
+    (R.secondFrame.descendPulledBackSubrepresentation
+      (R.fixedOmegaConstantPullbackAxis N))
+
+theorem fixedOmegaInnerNaturalAxis_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.fixedOmegaInnerNaturalAxis N).toSubmodule =
+      R.secondFrame.ambientAxis
+        ((R.rawKernelOmegaFixedOriginalPreimage N).map
+          R.frame.top.rangeRestrict) :=
+  congrArg R.secondFrame.ambientAxis
+    (R.rawKernelOmegaFixedIntermediatePreimage_eq_map N)
+
+theorem fixedOmegaInnerCoordinateAxis_le_kernelTop
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.fixedOmegaInnerCoordinateAxis N ≤
+      R.secondFrame.kernelTopPermutationSubrepresentation :=
+  R.secondFrame.ambientAxis_le_kernelSpace
+    (R.rawKernelOmegaFixedIntermediatePreimage N)
+
+theorem fixedOmegaPairSumAxis_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.fixedOmegaPairSumAxis N).toSubmodule =
+      (R.frame.ambientAxis
+          (R.rawKernelOmegaFixedOriginalPreimage N)).map
+        R.secondFrame.pairSum :=
+  rfl
+
+theorem fixedOmegaConstantAxis_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.fixedOmegaConstantAxis N).toSubmodule =
+      (R.frame.ambientAxis
+          (R.rawKernelOmegaFixedOriginalPreimage N)).comap
+        R.secondFrame.pairConstant :=
+  rfl
+
+theorem moduleAxis_le_fixedOmegaInnerNaturalAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.moduleAxis N ≤ R.fixedOmegaInnerNaturalAxis N := by
+  intro v hv
+  change v ∈ R.secondFrame.ambientAxis
+    (R.rawKernelOmegaFixedIntermediatePreimage N)
+  change v ∈ R.secondFrame.ambientAxis (R.outerTopNormal N.1) at hv
+  obtain ⟨k, hk, rfl⟩ := (R.secondFrame.mem_ambientAxis _ v).1 hv
+  exact (R.secondFrame.mem_ambientAxis _ _).2
+    ⟨k, R.outerTopNormal_le_rawKernelOmegaFixedIntermediatePreimage N hk,
+      rfl⟩
+
+theorem innerNormalCoordinateAxis_le_fixedOmegaInnerCoordinateAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.innerNormalCoordinateAxis N ≤ R.fixedOmegaInnerCoordinateAxis N := by
+  intro v hv
+  change v ∈ R.secondFrame.ambientAxis
+    (R.rawKernelOmegaFixedIntermediatePreimage N)
+  change v ∈ R.secondFrame.ambientAxis (R.outerTopNormal N.1) at hv
+  obtain ⟨k, hk, rfl⟩ := (R.secondFrame.mem_ambientAxis _ v).1 hv
+  exact (R.secondFrame.mem_ambientAxis _ _).2
+    ⟨k, R.outerTopNormal_le_rawKernelOmegaFixedIntermediatePreimage N hk,
+      rfl⟩
+
+theorem outerNormalAxis_le_fixedOmegaOuterAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.frame.normalTopPermutationSubrepresentation N.1 ≤
+      R.fixedOmegaOuterAxis N := by
+  intro v hv
+  change v ∈ R.frame.ambientAxis
+    (R.rawKernelOmegaFixedOriginalPreimage N)
+  change v ∈ (R.frame.normalSpace N.1).map R.frame.kernelSpace.subtype at hv
+  rw [R.frame.normalSpace_map_subtype_eq_ambientAxis N.1] at hv
+  obtain ⟨k, hk, rfl⟩ := (R.frame.mem_ambientAxis N.1 v).1 hv
+  exact (R.frame.mem_ambientAxis _ _).2
+    ⟨k, R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N hk, rfl⟩
+
+theorem fixedOmegaOuterAxis_le_kernelTop
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.fixedOmegaOuterAxis N ≤
+      R.frame.kernelTopPermutationSubrepresentation :=
+  R.frame.ambientAxis_le_kernelSpace
+    (R.rawKernelOmegaFixedOriginalPreimage N)
+
+theorem outerNormalPairSum_le_fixedOmegaPairSum
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.outerNormalPairSumPullbackAxis N ≤
+      R.fixedOmegaPairSumPullbackAxis N :=
+  intertwinerImage_mono _ _ _
+    (R.outerNormalAxis_le_fixedOmegaOuterAxis N)
+
+theorem outerNormalPairSumAxis_le_fixedOmegaPairSumAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.outerNormalPairSumAxis N ≤ R.fixedOmegaPairSumAxis N :=
+  R.outerNormalPairSum_le_fixedOmegaPairSum N
+
+theorem outerNormalConstant_le_fixedOmegaConstant
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    R.outerNormalConstantAxis N ≤ R.fixedOmegaConstantAxis N := by
+  intro v hv
+  change v ∈
+    (R.frame.ambientAxis
+      (R.rawKernelOmegaFixedOriginalPreimage N)).comap
+        R.secondFrame.pairConstant
+  change v ∈ (R.outerNormalConstantAxis N).toSubmodule at hv
+  rw [R.outerNormalConstantAxis_toSubmodule N] at hv
+  change R.secondFrame.pairConstant v ∈ R.frame.ambientAxis N.1 at hv
+  obtain ⟨k, hk, hkv⟩ := (R.frame.mem_ambientAxis N.1 _).1 hv
+  exact (R.frame.mem_ambientAxis _ _).2
+    ⟨k, R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N hk, hkv⟩
+
+/-- A fixed projection-kernel element is literally an element of the first
+kernel in the direct two-frame quotient. -/
+def rawKernelOmegaFixedOuterInclusion
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.rawKernelOmegaFixedProjection N).ker →*
+      (R.rawKernelProjection N).ker where
+  toFun z := ⟨⟨z.1.1, z.1.2.1.1⟩, by
+    apply MonoidHom.mem_ker.mpr
+    apply Subtype.ext
+    exact congrArg Subtype.val (MonoidHom.mem_ker.mp z.2)⟩
+  map_one' := rfl
+  map_mul' _ _ := rfl
+
+theorem rawKernelOmegaFixedOuterInclusion_injective
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Function.Injective (R.rawKernelOmegaFixedOuterInclusion N) := by
+  intro z w hzw
+  apply Subtype.ext
+  apply Subtype.ext
+  exact congrArg (fun y : (R.rawKernelProjection N).ker ↦
+    (((y : (R.rawQuotientMap N).ker) :
+      preE7PairAction s p ⧸ N.1))) hzw
+
+/-- First zero-cut coordinates on the kernel of the fixed projection. -/
+noncomputable def rawKernelOmegaFixedOuterCoordinateMap
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Additive (R.rawKernelOmegaFixedProjection N).ker →ₗ[ZMod 2]
+      R.frame.zeroCutModule N.1 :=
+  (AddMonoidHom.toMultiplicativeRight.symm
+    ((R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm.toMonoidHom.comp
+      (R.rawKernelOmegaFixedOuterInclusion N))).toZModLinearMap 2
+
+theorem rawKernelOmegaFixedOuterCoordinateMap_injective
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Function.Injective (R.rawKernelOmegaFixedOuterCoordinateMap N) := by
+  intro z w hzw
+  apply Additive.toMul.injective
+  apply R.rawKernelOmegaFixedOuterInclusion_injective N
+  apply (R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm.injective
+  exact congrArg Multiplicative.ofAdd hzw
+
+/-- The part of the first pair kernel contained in the fixed original
+pullback. -/
+abbrev fixedOmegaOuterRetainedKernel
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  (R.rawKernelOmegaFixedOriginalPreimage N).subgroupOf R.frame.top.ker
+
+instance fixedOmegaOuterRetainedKernel_commGroup
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    CommGroup (R.fixedOmegaOuterRetainedKernel N) :=
+  { (inferInstance : Group (R.fixedOmegaOuterRetainedKernel N)) with
+    mul_comm := by
+      intro x y
+      apply Subtype.ext
+      apply R.frame.bitsHom_injective
+      change R.frame.bitsHom (x.1 * y.1) = R.frame.bitsHom (y.1 * x.1)
+      rw [map_mul, map_mul, mul_comm] }
+
+instance fixedOmegaOuterRetainedKernel_module
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module (ZMod 2) (Additive (R.fixedOmegaOuterRetainedKernel N)) :=
+  AddCommGroup.zmodModule (n := 2) (fun z => by
+    apply Additive.toMul.injective
+    apply Subtype.ext
+    apply R.frame.bitsHom_injective
+    change R.frame.bitsHom (z.toMul.1 ^ 2) = R.frame.bitsHom 1
+    rw [map_pow, map_one]
+    apply Multiplicative.toAdd.injective
+    change 2 • (R.frame.bitsHom z.toMul.1).toAdd = 0
+    simp only [two_nsmul]
+    funext i
+    exact CharTwo.add_self_eq_zero ((R.frame.bitsHom z.toMul.1).toAdd i))
+
+noncomputable def fixedOmegaOuterZeroCutMap
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Additive (R.fixedOmegaOuterRetainedKernel N) →ₗ[ZMod 2]
+      R.frame.zeroCutModule N.1 :=
+  (AddMonoidHom.toMultiplicativeRight.symm
+    ((R.frame.zeroCutMap N.1).comp
+      (R.fixedOmegaOuterRetainedKernel N).subtype)).toZModLinearMap 2
+
+/-- The fixed projection kernel has exactly the zero-cut image of the
+fixed first-kernel pullback. -/
+theorem rawKernelOmegaFixedOuterCoordinateMap_range_eq
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    LinearMap.range (R.rawKernelOmegaFixedOuterCoordinateMap N) =
+      LinearMap.range (R.fixedOmegaOuterZeroCutMap N) := by
+  ext a
+  constructor
+  · rintro ⟨z, rfl⟩
+    obtain ⟨l, hl⟩ := R.frame.zeroCutMap_surjective N.1
+      (Multiplicative.ofAdd (R.rawKernelOmegaFixedOuterCoordinateMap N z))
+    change R.frame.zeroCutMap N.1 l =
+      (R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm
+        (R.rawKernelOmegaFixedOuterInclusion N z.toMul) at hl
+    have hchart := congrArg
+      (R.outerZeroCutKernelEquivRawKernelProjectionKer N) hl
+    rw [(R.outerZeroCutKernelEquivRawKernelProjectionKer N).apply_symm_apply]
+      at hchart
+    have hval := congrArg
+      (fun y : (R.rawKernelProjection N).ker ↦
+        (((y : (R.rawQuotientMap N).ker) :
+          preE7PairAction s p ⧸ N.1))) hchart
+    have hlFixed : (l : preE7PairAction s p) ∈
+        R.rawKernelOmegaFixedOriginalPreimage N := by
+      change QuotientGroup.mk' N.1 (l : preE7PairAction s p) ∈
+        R.rawKernelOmegaFixedLift N
+      have heq : QuotientGroup.mk' N.1 (l : preE7PairAction s p) =
+          z.toMul.1.1 :=
+        (R.outerZeroCutKernelEquivRawKernelProjectionKer_val N l).symm.trans hval
+      exact heq.symm ▸ z.toMul.1.2
+    let lFixed : R.fixedOmegaOuterRetainedKernel N := ⟨l, hlFixed⟩
+    refine ⟨Additive.ofMul lFixed, ?_⟩
+    exact congrArg Multiplicative.toAdd hl
+  · rintro ⟨l, rfl⟩
+    let q : preE7PairAction s p ⧸ N.1 :=
+      QuotientGroup.mk' N.1
+        (l.toMul.1 : preE7PairAction s p)
+    have hqFixed : q ∈ R.rawKernelOmegaFixedLift N := l.toMul.2
+    let z : R.rawKernelOmegaFixedLift N := ⟨q, hqFixed⟩
+    have hqOuter : q ∈ (R.outerQuotientMap N).ker := by
+      rw [R.outerQuotientMap_ker_eq_zeroCutBase_ker N]
+      exact (R.frame.zeroCutKernelMap N.1 l.toMul.1).property
+    have hzker : z ∈ (R.rawKernelOmegaFixedProjection N).ker := by
+      apply MonoidHom.mem_ker.mpr
+      apply Subtype.ext
+      exact MonoidHom.mem_ker.mp hqOuter
+    let zker : (R.rawKernelOmegaFixedProjection N).ker := ⟨z, hzker⟩
+    refine ⟨Additive.ofMul zker, ?_⟩
+    apply Multiplicative.ofAdd.injective
+    apply (R.outerZeroCutKernelEquivRawKernelProjectionKer N).injective
+    apply Subtype.ext
+    apply Subtype.ext
+    change (((R.outerZeroCutKernelEquivRawKernelProjectionKer N)
+        ((R.outerZeroCutKernelEquivRawKernelProjectionKer N).symm
+          (R.rawKernelOmegaFixedOuterInclusion N zker)) :
+        (R.rawQuotientMap N).ker) : preE7PairAction s p ⧸ N.1) = _
+    rw [MulEquiv.apply_symm_apply]
+    exact (R.outerZeroCutKernelEquivRawKernelProjectionKer_val
+      N l.toMul.1).symm
+
+/-- The fixed inner layer after removing the original-normal axis. -/
+abbrev fixedOmegaInnerQuotientRepresentation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  nestedQuotientRepresentation
+    (R.moduleAxis N) (R.fixedOmegaInnerNaturalAxis N)
+    (R.moduleAxis_le_fixedOmegaInnerNaturalAxis N)
+
+/-- The image of the fixed inner coordinate quotient in the actual second
+section module. -/
+abbrev fixedOmegaInnerSectionImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  intertwinerImage
+    R.secondFrame.kernelTopPermutationSubrepresentation.toRepresentation
+    (R.secondFrame.sectionTopRepresentation (R.outerTopNormal N.1))
+    (R.secondFrame.sectionTopIntertwiner (R.outerTopNormal N.1))
+    (nestedSubrepresentation (R.fixedOmegaInnerCoordinateAxis N)
+      R.secondFrame.kernelTopPermutationSubrepresentation
+      (R.fixedOmegaInnerCoordinateAxis_le_kernelTop N))
+
+/-- The coordinate section image is the actual section image of the fixed
+intermediate subgroup. -/
+theorem fixedOmegaInnerSectionImage_toSubmodule
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.fixedOmegaInnerSectionImage N).toSubmodule =
+      (R.fixedOmegaInnerSubrepresentation N).toSubmodule := by
+  letI : (R.outerTopNormal N.1).Normal := R.outerTopNormal_normal N.1
+  let E := R.innerSectionModuleChart N
+  let L := (R.rawKernelOmegaFixedTopImage N).subgroupOf
+    (R.innerQuotientMap N).ker
+  have hker : (E.kernelCoordinates
+      (R.innerQuotientMap N) (R.innerSectionModule N)).ker ≤ L := by
+    intro x hx
+    have hx1 : x = 1 := by
+      apply E.equiv.symm.injective
+      exact (MonoidHom.mem_ker.mp hx).trans
+        (map_one E.equiv.symm).symm
+    subst x
+    exact Subgroup.one_mem _
+  ext v
+  constructor
+  · rintro ⟨b, hb, rfl⟩
+    change b.1 ∈ (R.fixedOmegaInnerCoordinateAxis N).toSubmodule at hb
+    change b.1 ∈ R.secondFrame.ambientAxis
+      (R.rawKernelOmegaFixedIntermediatePreimage N) at hb
+    obtain ⟨k, hk, hkb⟩ :=
+      (R.secondFrame.mem_ambientAxis _ b.1).1 hb
+    have hbEq : (R.secondFrame.kernelSpaceHom k).toAdd = b := by
+      apply Subtype.ext
+      exact hkb
+    rw [← hbEq]
+    let v := (R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ
+      (R.secondFrame.kernelSpaceHom k).toAdd
+    have hcoord : (E.kernelCoordinates
+        (R.innerQuotientMap N) (R.innerSectionModule N)
+        (E.equiv (Multiplicative.ofAdd v))).toAdd = v := by
+      change (E.equiv.symm (E.equiv (Multiplicative.ofAdd v))).toAdd = v
+      rw [E.equiv.symm_apply_apply]
+      rfl
+    change v ∈ E.normalSpace (R.innerQuotientMap N)
+      (R.innerSectionModule N) (R.rawKernelOmegaFixedTopImage N)
+    rw [← hcoord]
+    apply (sectionSubgroupImage_mem_iff (p := 2)
+      (E.kernelCoordinates (R.innerQuotientMap N)
+        (R.innerSectionModule N)) L hker _).2
+    change (E.equiv (Multiplicative.ofAdd
+      ((R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ
+        (R.secondFrame.kernelSpaceHom k).toAdd)) :
+          R.frame.top.range ⧸ R.outerTopNormal N.1) ∈
+      R.rawKernelOmegaFixedTopImage N
+    have he := R.secondFrame.literalSectionModuleChart_equiv_mk
+      R.topEquiv (R.outerTopNormal N.1) k
+    have he' : ((E.equiv (Multiplicative.ofAdd
+        ((R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ
+          (R.secondFrame.kernelSpaceHom k).toAdd)) :
+            (R.innerQuotientMap N).ker) :
+              R.frame.top.range ⧸ R.outerTopNormal N.1) =
+        QuotientGroup.mk' (R.outerTopNormal N.1) (k : R.frame.top.range) := by
+      simpa only [E, innerSectionModuleChart, innerSectionModule,
+        innerQuotientMap] using he
+    exact (congrArg (fun q : R.frame.top.range ⧸ R.outerTopNormal N.1 ↦
+      q ∈ R.rawKernelOmegaFixedTopImage N) he').mpr hk
+  · intro hv
+    change v ∈ E.normalSpace (R.innerQuotientMap N)
+      (R.innerSectionModule N) (R.rawKernelOmegaFixedTopImage N) at hv
+    let y : (R.innerQuotientMap N).ker :=
+      E.equiv (Multiplicative.ofAdd v)
+    have hcoord : (E.kernelCoordinates
+        (R.innerQuotientMap N) (R.innerSectionModule N) y).toAdd = v := by
+      change (E.equiv.symm (E.equiv (Multiplicative.ofAdd v))).toAdd = v
+      rw [E.equiv.symm_apply_apply]
+      rfl
+    have hy : y ∈ L := by
+      apply (sectionSubgroupImage_mem_iff (p := 2)
+        (E.kernelCoordinates (R.innerQuotientMap N)
+          (R.innerSectionModule N)) L hker y).1
+      rwa [hcoord]
+    obtain ⟨x, hx⟩ :=
+      (R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ_surjective v
+    obtain ⟨k, hk⟩ := R.secondFrame.kernelSpaceHom_bijective.2
+      (Multiplicative.ofAdd x)
+    have hxk : (R.secondFrame.kernelSpaceHom k).toAdd = x :=
+      congrArg Multiplicative.toAdd hk
+    have hyval :
+        (y : R.frame.top.range ⧸ R.outerTopNormal N.1) =
+          QuotientGroup.mk' (R.outerTopNormal N.1)
+            (k : R.frame.top.range) := by
+      change ((E.equiv (Multiplicative.ofAdd v) :
+        (R.innerQuotientMap N).ker) :
+          R.frame.top.range ⧸ R.outerTopNormal N.1) = _
+      rw [← hx, ← hxk]
+      have he := R.secondFrame.literalSectionModuleChart_equiv_mk
+        R.topEquiv (R.outerTopNormal N.1) k
+      simpa only [E, innerSectionModuleChart, innerSectionModule,
+        innerQuotientMap] using he
+    have hkFixed : (k : R.frame.top.range) ∈
+        R.rawKernelOmegaFixedIntermediatePreimage N := by
+      change QuotientGroup.mk' (R.outerTopNormal N.1)
+        (k : R.frame.top.range) ∈ R.rawKernelOmegaFixedTopImage N
+      rw [← hyval]
+      exact hy
+    let b : R.secondFrame.kernelTopPermutationSubrepresentation.toSubmodule :=
+      (R.secondFrame.kernelSpaceHom k).toAdd
+    have hb : b.1 ∈ (R.fixedOmegaInnerCoordinateAxis N).toSubmodule := by
+      change R.secondFrame.bits k ∈
+        R.secondFrame.ambientAxis
+          (R.rawKernelOmegaFixedIntermediatePreimage N)
+      exact (R.secondFrame.bits_mem_ambientAxis _ k).2 hkFixed
+    refine ⟨b, hb, ?_⟩
+    change (R.secondFrame.normalSpace (R.outerTopNormal N.1)).mkQ b = v
+    rw [show (b : R.secondFrame.kernelSpace) = x from hxk, hx]
+
+/-- Transporting the fixed inner quotient to the physical second top leaves
+its underlying quotient unchanged. -/
+def fixedOmegaInnerQuotientCoordinateEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Representation.Equiv
+      ((R.fixedOmegaInnerQuotientRepresentation N).comp
+        R.topEquiv.symm.toMonoidHom)
+      (nestedQuotientRepresentation
+        (R.innerNormalCoordinateAxis N)
+        (R.fixedOmegaInnerCoordinateAxis N)
+        (R.innerNormalCoordinateAxis_le_fixedOmegaInnerCoordinateAxis N)) :=
+  Representation.Equiv.mk (LinearEquiv.refl _ _) (by
+    intro g
+    apply LinearMap.ext
+    intro x
+    obtain ⟨b, rfl⟩ :=
+      (nestedSubrepresentation
+        (R.moduleAxis N) (R.fixedOmegaInnerNaturalAxis N)
+        (R.moduleAxis_le_fixedOmegaInnerNaturalAxis N)).toSubmodule.mkQ_surjective x
+    apply congrArg
+      (nestedSubrepresentation
+        (R.innerNormalCoordinateAxis N)
+        (R.fixedOmegaInnerCoordinateAxis N)
+        (R.innerNormalCoordinateAxis_le_fixedOmegaInnerCoordinateAxis N)).toSubmodule.mkQ
+    apply Subtype.ext
+    change permutationFunctionRepresentation (ZMod 2) D.top (Fin t)
+      (R.topEquiv.symm g) b.1 = R.secondFrame.coordinateTopAction g b.1
+    rw [R.module_action_eq, R.topEquiv.apply_symm_apply])
+
+/-- The fixed inner quotient is the exact fixed coordinate image in the
+actual second-frame section. -/
+noncomputable def fixedOmegaInnerQuotientSectionImageEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Representation.Equiv
+      ((R.fixedOmegaInnerQuotientRepresentation N).comp
+        R.topEquiv.symm.toMonoidHom)
+      (R.fixedOmegaInnerSectionImage N).toRepresentation := by
+  let hAB : R.secondFrame.normalTopPermutationSubrepresentation
+      (R.outerTopNormal N.1) ≤ R.fixedOmegaInnerCoordinateAxis N := by
+    rw [← R.innerNormalCoordinateAxis_eq_normalTopPermutation N]
+    exact R.innerNormalCoordinateAxis_le_fixedOmegaInnerCoordinateAxis N
+  let eImage := R.secondFrame.sectionTopNestedQuotientImageEquiv
+    (R.outerTopNormal N.1) (R.fixedOmegaInnerCoordinateAxis N) hAB
+      (R.fixedOmegaInnerCoordinateAxis_le_kernelTop N)
+  let eDenominator := nestedQuotientEquivOfEqLeft
+    (R.innerNormalCoordinateAxis N)
+    (R.secondFrame.normalTopPermutationSubrepresentation (R.outerTopNormal N.1))
+    (R.fixedOmegaInnerCoordinateAxis N)
+    (R.innerNormalCoordinateAxis_le_fixedOmegaInnerCoordinateAxis N) hAB
+    (R.innerNormalCoordinateAxis_eq_normalTopPermutation N)
+  exact (R.fixedOmegaInnerQuotientCoordinateEquiv N).trans
+    (eDenominator.trans eImage)
+
+/-- The fixed outer layer after removing the original-normal axis. -/
+abbrev fixedOmegaOuterQuotientRepresentation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  nestedQuotientRepresentation
+    (R.frame.normalTopPermutationSubrepresentation N.1)
+    (R.fixedOmegaOuterAxis N)
+    (R.outerNormalAxis_le_fixedOmegaOuterAxis N)
+
+/-- Section-image realization of the fixed outer coordinate quotient. -/
+abbrev fixedOmegaOuterSectionImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  intertwinerImage
+    R.frame.kernelTopPermutationSubrepresentation.toRepresentation
+    (R.frame.sectionTopRepresentation N.1)
+    (R.frame.sectionTopIntertwiner N.1)
+    (nestedSubrepresentation (R.fixedOmegaOuterAxis N)
+      R.frame.kernelTopPermutationSubrepresentation
+      (R.fixedOmegaOuterAxis_le_kernelTop N))
+
+noncomputable def fixedOmegaOuterQuotientSectionImageEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.fixedOmegaOuterQuotientRepresentation N).Equiv
+      (R.fixedOmegaOuterSectionImage N).toRepresentation :=
+  R.frame.sectionTopNestedQuotientImageEquiv N.1
+    (R.fixedOmegaOuterAxis N)
+    (R.outerNormalAxis_le_fixedOmegaOuterAxis N)
+    (R.fixedOmegaOuterAxis_le_kernelTop N)
+
+@[simp] theorem zeroCutSectionEquiv_fixedOmegaOuterZeroCutMap
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal})
+    (l : R.fixedOmegaOuterRetainedKernel N) :
+    R.frame.zeroCutSectionEquiv N.1
+        (R.fixedOmegaOuterZeroCutMap N (Additive.ofMul l)) =
+      (R.frame.normalSpace N.1).mkQ
+        (R.frame.kernelSpaceHom l.1).toAdd :=
+  rfl
+
+theorem fixedOmegaOuterZeroCutRange_map_eq_sectionImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (LinearMap.range (R.fixedOmegaOuterZeroCutMap N)).map
+        (R.frame.zeroCutSectionEquiv N.1).toLinearMap =
+      (R.fixedOmegaOuterSectionImage N).toSubmodule := by
+  ext v
+  constructor
+  · rintro ⟨a, ⟨l, rfl⟩, rfl⟩
+    let b : R.frame.kernelTopPermutationSubrepresentation.toSubmodule :=
+      (R.frame.kernelSpaceHom l.toMul.1).toAdd
+    have hb : b.1 ∈ (R.fixedOmegaOuterAxis N).toSubmodule := by
+      change R.frame.bits l.toMul.1 ∈
+        R.frame.ambientAxis (R.rawKernelOmegaFixedOriginalPreimage N)
+      exact (R.frame.bits_mem_ambientAxis _ l.toMul.1).2 l.toMul.2
+    exact ⟨b, hb, rfl⟩
+  · rintro ⟨b, hb, rfl⟩
+    change b.1 ∈ (R.fixedOmegaOuterAxis N).toSubmodule at hb
+    change b.1 ∈
+      R.frame.ambientAxis (R.rawKernelOmegaFixedOriginalPreimage N) at hb
+    obtain ⟨l, hl, hlb⟩ := (R.frame.mem_ambientAxis _ b.1).1 hb
+    let lFixed : R.fixedOmegaOuterRetainedKernel N := ⟨l, hl⟩
+    refine ⟨R.fixedOmegaOuterZeroCutMap N (Additive.ofMul lFixed),
+      ⟨Additive.ofMul lFixed, rfl⟩, ?_⟩
+    change R.frame.zeroCutSectionEquiv N.1
+      (R.fixedOmegaOuterZeroCutMap N (Additive.ofMul lFixed)) = _
+    rw [R.zeroCutSectionEquiv_fixedOmegaOuterZeroCutMap N lFixed]
+    apply congrArg (R.frame.normalSpace N.1).mkQ
+    apply Subtype.ext
+    exact hlb
+
+/-- The fixed projection kernel is linearly equivalent to the exact fixed
+outer section image. -/
+noncomputable def rawKernelOmegaFixedOuterEquivSectionImage
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Additive (R.rawKernelOmegaFixedProjection N).ker ≃ₗ[ZMod 2]
+      (R.fixedOmegaOuterSectionImage N).toSubmodule := by
+  let e := R.frame.zeroCutSectionEquiv N.1
+  let f : Additive (R.rawKernelOmegaFixedProjection N).ker →ₗ[ZMod 2]
+      (R.fixedOmegaOuterSectionImage N).toSubmodule :=
+    ((e.toLinearMap.comp
+      (R.rawKernelOmegaFixedOuterCoordinateMap N)).codRestrict
+        (R.fixedOmegaOuterSectionImage N).toSubmodule (fun z ↦ by
+          rw [← R.fixedOmegaOuterZeroCutRange_map_eq_sectionImage N]
+          exact ⟨R.rawKernelOmegaFixedOuterCoordinateMap N z,
+            by
+              rw [← R.rawKernelOmegaFixedOuterCoordinateMap_range_eq N]
+              exact ⟨z, rfl⟩,
+            rfl⟩))
+  apply LinearEquiv.ofBijective f
+  constructor
+  · intro x y hxy
+    apply R.rawKernelOmegaFixedOuterCoordinateMap_injective N
+    exact e.injective (congrArg Subtype.val hxy)
+  · rintro ⟨v, hv⟩
+    rw [← R.fixedOmegaOuterZeroCutRange_map_eq_sectionImage N] at hv
+    obtain ⟨a, ha, hav⟩ := hv
+    rw [← R.rawKernelOmegaFixedOuterCoordinateMap_range_eq N] at ha
+    obtain ⟨z, hz⟩ := ha
+    refine ⟨z, ?_⟩
+    apply Subtype.ext
+    change e (R.rawKernelOmegaFixedOuterCoordinateMap N z) = v
+    rw [hz]
+    exact hav
+
+/-- Rank-nullity for the literal fixed lift splits raw fixed omega between
+the actual inner and outer coordinate quotients. -/
+theorem rawKernelOmega_invariants_finrank_le_fixedQuotients
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (binaryKernelOmegaConjugationRepresentation
+          (R.rawQuotientMap N)).invariants ≤
+      Module.finrank (ZMod 2)
+          (R.fixedOmegaInnerQuotientRepresentation N).asModule +
+        Module.finrank (ZMod 2)
+          (R.fixedOmegaOuterQuotientRepresentation N).asModule := by
+  let q := R.rawKernelOmegaFixedInnerSectionMap N
+  have hdim := q.finrank_range_add_finrank_ker
+  have hdomain := (R.rawKernelOmegaInvariantsEquivFixedLift N).finrank_eq
+  have hrange : Module.finrank (ZMod 2) q.range =
+      Module.finrank (ZMod 2)
+        (R.fixedOmegaInnerQuotientRepresentation N).asModule := by
+    calc
+      Module.finrank (ZMod 2) q.range =
+          Module.finrank (ZMod 2)
+            (R.fixedOmegaInnerSubrepresentation N).toSubmodule :=
+        congrArg (fun P : Submodule (ZMod 2) (R.innerSectionModule N) ↦
+            Module.finrank (ZMod 2) P)
+          (R.rawKernelOmegaFixedInnerSectionMap_range_eq N)
+      _ = Module.finrank (ZMod 2)
+            (R.fixedOmegaInnerSectionImage N).toSubmodule :=
+        congrArg (fun P : Submodule (ZMod 2) (R.innerSectionModule N) ↦
+            Module.finrank (ZMod 2) P)
+          (R.fixedOmegaInnerSectionImage_toSubmodule N).symm
+      _ = Module.finrank (ZMod 2)
+            (R.fixedOmegaInnerQuotientRepresentation N).asModule :=
+        (R.fixedOmegaInnerQuotientSectionImageEquiv N).toLinearEquiv.finrank_eq.symm
+  have hker : Module.finrank (ZMod 2) q.ker =
+      Module.finrank (ZMod 2)
+        (R.fixedOmegaOuterQuotientRepresentation N).asModule := by
+    calc
+      Module.finrank (ZMod 2) q.ker =
+          Module.finrank (ZMod 2)
+            (Additive (R.rawKernelOmegaFixedProjection N).ker) :=
+        (R.rawKernelOmegaFixedInnerKernelEquivProjectionKernel N).finrank_eq
+      _ = Module.finrank (ZMod 2)
+            (R.fixedOmegaOuterSectionImage N).toSubmodule :=
+        (R.rawKernelOmegaFixedOuterEquivSectionImage N).finrank_eq
+      _ = Module.finrank (ZMod 2)
+            (R.fixedOmegaOuterQuotientRepresentation N).asModule :=
+        (R.fixedOmegaOuterQuotientSectionImageEquiv N).toLinearEquiv.finrank_eq.symm
+  rw [hrange, hker] at hdim
+  omega
+
+/-- The literal fixed pair-sum quotient over the catalogue top. -/
+abbrev fixedOmegaPairSumQuotientRepresentation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  nestedQuotientRepresentation
+    (R.outerNormalPairSumAxis N) (R.fixedOmegaPairSumAxis N)
+    (R.outerNormalPairSumAxis_le_fixedOmegaPairSumAxis N)
+
+/-- The literal fixed pair-constant quotient over the catalogue top. -/
+abbrev fixedOmegaConstantQuotientRepresentation
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :=
+  nestedQuotientRepresentation
+    (R.outerNormalConstantAxis N) (R.fixedOmegaConstantAxis N)
+    (R.outerNormalConstant_le_fixedOmegaConstant N)
+
+/-- Pair-sum on the fixed outer quotient. -/
+noncomputable def fixedOmegaOuterPairSumMap
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (R.fixedOmegaOuterQuotientRepresentation N).IntertwiningMap
+      (nestedQuotientRepresentation
+        (R.outerNormalPairSumPullbackAxis N)
+        (R.fixedOmegaPairSumPullbackAxis N)
+        (R.outerNormalPairSum_le_fixedOmegaPairSum N)) :=
+  nestedQuotientMap
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    R.secondFrame.pulledBackCoordinateTopAction
+    R.secondFrame.pairSumIntertwiner
+    (R.frame.normalTopPermutationSubrepresentation N.1)
+    (R.fixedOmegaOuterAxis N)
+    (R.outerNormalAxis_le_fixedOmegaOuterAxis N)
+
+theorem fixedOmegaOuterPairSumMap_surjective
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Function.Surjective (R.fixedOmegaOuterPairSumMap N) :=
+  nestedQuotientMap_surjective _ _ _ _ _ _
+
+/-- The kernel of fixed outer pair-sum is exactly the fixed constant
+quotient. -/
+noncomputable def fixedOmegaOuterPairSumKernelEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (nestedQuotientRepresentation
+      (R.outerNormalConstantPullbackAxis N)
+      (R.fixedOmegaConstantPullbackAxis N)
+      (intertwinerPreimage_mono _ _ _
+        (R.outerNormalAxis_le_fixedOmegaOuterAxis N))).Equiv
+      (R.fixedOmegaOuterPairSumMap N).ker.toRepresentation :=
+  nestedQuotientMapKernelEquiv
+    R.secondFrame.pulledBackCoordinateTopAction
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    R.secondFrame.pulledBackCoordinateTopAction
+    R.secondFrame.pairConstantIntertwiner
+    R.secondFrame.pairSumIntertwiner
+    R.secondFrame.pairConstantIntertwiner_injective
+    R.secondFrame.pairConstant_pairSum_exact_linear
+    (R.frame.normalTopPermutationSubrepresentation N.1)
+    (R.fixedOmegaOuterAxis N)
+    (R.outerNormalAxis_le_fixedOmegaOuterAxis N)
+
+/-- Transport the fixed pair-sum quotient from the first physical top to
+the literal catalogue top. -/
+noncomputable def fixedOmegaPairSumPullbackQuotientEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (nestedQuotientRepresentation
+      (R.outerNormalPairSumPullbackAxis N)
+      (R.fixedOmegaPairSumPullbackAxis N)
+      (R.outerNormalPairSum_le_fixedOmegaPairSum N)).Equiv
+      ((R.fixedOmegaPairSumQuotientRepresentation N).comp
+        R.outerTopToLiteral) :=
+  R.outerPullbackNestedQuotientEquiv _ _ _
+
+/-- Transport the fixed pair-constant quotient to the literal catalogue
+top. -/
+noncomputable def fixedOmegaConstantPullbackQuotientEquiv
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    (nestedQuotientRepresentation
+      (R.outerNormalConstantPullbackAxis N)
+      (R.fixedOmegaConstantPullbackAxis N)
+      (intertwinerPreimage_mono _ _ _
+        (R.outerNormalAxis_le_fixedOmegaOuterAxis N))).Equiv
+      ((R.fixedOmegaConstantQuotientRepresentation N).comp
+        R.outerTopToLiteral) :=
+  R.outerPullbackNestedQuotientEquiv _ _ _
+
+/-- Intrinsic displacements of the fixed inner axis already lie in the
+literal normal denominator. -/
+theorem fixedOmegaInner_coinvariantsKer_le_moduleAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Representation.Coinvariants.ker
+        (R.fixedOmegaInnerNaturalAxis N).toRepresentation ≤
+      (R.moduleAxis N).toSubmodule.comap
+        (R.fixedOmegaInnerNaturalAxis N).toSubmodule.subtype := by
+  change Representation.Coinvariants.ker
+      (R.secondFrame.sharedOriginalAxis
+        (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+        R.topEquiv R.module_action_eq
+        (R.rawKernelOmegaFixedIntermediatePreimage N)).toRepresentation ≤
+    (R.secondFrame.ambientAxis (R.outerTopNormal N.1)).comap _
+  apply coinvariantsKer_sharedOriginalAxis_le_ambientAxis
+    R.secondFrame
+    (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+    R.topEquiv R.module_action_eq
+    (R.outerTopNormal N.1)
+    (R.rawKernelOmegaFixedIntermediatePreimage N)
+  intro u k hk
+  rw [R.rawKernelOmegaFixedIntermediatePreimage_eq_map N] at hk
+  obtain ⟨a, ha⟩ := R.frame.top.rangeRestrict_surjective u
+  obtain ⟨v, hvD, hvk⟩ := hk
+  refine ⟨v⁻¹ * a * v * a⁻¹,
+    R.rawKernelOmegaFixedOriginalPreimage_commutator_mem_left N v a hvD,
+    ?_⟩
+  apply Subtype.ext
+  simp only [map_mul, map_inv, ha, hvk]
+  rfl
+
+/-- Intrinsic displacements of the fixed outer axis lie in the first-frame
+normal denominator. -/
+theorem fixedOmegaOuter_coinvariantsKer_le_normalAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Representation.Coinvariants.ker
+        (R.fixedOmegaOuterAxis N).toRepresentation ≤
+      (R.frame.ambientAxis N.1).comap
+        (R.fixedOmegaOuterAxis N).toSubmodule.subtype := by
+  exact coinvariantsKer_sharedOriginalAxis_le_ambientAxis
+    R.frame
+    (permutationFunctionRepresentation (ZMod 2)
+      R.frame.top.range (Fin s))
+    (MulEquiv.refl R.frame.top.range) (fun _ _ ↦ rfl)
+    N.1 (R.rawKernelOmegaFixedOriginalPreimage N)
+    (fun u k hk ↦
+      R.rawKernelOmegaFixedOriginalPreimage_commutator_mem_left
+        N k.1 u hk)
+
+/-- Pair-sum carries every fixed-outer displacement into the corresponding
+normal pair-sum axis. -/
+theorem fixedOmegaPairSum_coinvariantsKer_le_normalAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Representation.Coinvariants.ker
+        (R.fixedOmegaPairSumAxis N).toRepresentation ≤
+      (R.outerNormalPairSumAxis N).toSubmodule.comap
+        (R.fixedOmegaPairSumAxis N).toSubmodule.subtype := by
+  rw [R.outerNormalPairSumAxis_toSubmodule N]
+  apply Submodule.span_le.mpr
+  rintro _ ⟨⟨g, w⟩, rfl⟩
+  change permutationFunctionRepresentation (ZMod 2) D.top (Fin t)
+      g w.1 - w.1 ∈
+    (R.frame.ambientAxis N.1).map R.secondFrame.pairSum
+  have hw := w.2
+  change w.1 ∈
+    (R.frame.ambientAxis
+      (R.rawKernelOmegaFixedOriginalPreimage N)).map
+        R.secondFrame.pairSum at hw
+  obtain ⟨b, hb, hbw⟩ := hw
+  obtain ⟨u, hu⟩ := R.secondFrame.top.rangeRestrict_surjective
+    (R.topEquiv g)
+  let bD : (R.fixedOmegaOuterAxis N).toSubmodule := ⟨b, hb⟩
+  have hbnormal :
+      (R.fixedOmegaOuterAxis N).toRepresentation u bD - bD ∈
+        (R.frame.ambientAxis N.1).comap
+          (R.fixedOmegaOuterAxis N).toSubmodule.subtype :=
+    R.fixedOmegaOuter_coinvariantsKer_le_normalAxis N
+      (Representation.Coinvariants.sub_mem_ker
+        (ρ := (R.fixedOmegaOuterAxis N).toRepresentation) u bD)
+  refine ⟨((R.fixedOmegaOuterAxis N).toRepresentation u bD - bD).1,
+    hbnormal, ?_⟩
+  change R.secondFrame.pairSum
+    (((R.fixedOmegaOuterAxis N).toRepresentation u bD).1 - bD.1) = _
+  rw [map_sub]
+  change R.secondFrame.pairSum
+      ((R.fixedOmegaOuterAxis N).toRepresentation u bD).1 -
+        R.secondFrame.pairSum b = _
+  rw [show R.secondFrame.pairSum
+      ((R.fixedOmegaOuterAxis N).toRepresentation u bD).1 =
+        R.secondFrame.pulledBackCoordinateTopAction u
+          (R.secondFrame.pairSum b) from
+    Representation.IntertwiningMap.isIntertwining _ _
+      R.secondFrame.pairSumIntertwiner u bD.1]
+  change R.secondFrame.coordinateTopAction
+      (R.secondFrame.top.rangeRestrict u) (R.secondFrame.pairSum b) -
+        R.secondFrame.pairSum b = _
+  rw [hu, ← R.module_action_eq, hbw]
+
+/-- Pair-constant pulls every displacement of the fixed constant axis back
+to the normal constant axis. -/
+theorem fixedOmegaConstant_coinvariantsKer_le_normalAxis
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Representation.Coinvariants.ker
+        (R.fixedOmegaConstantAxis N).toRepresentation ≤
+      (R.outerNormalConstantAxis N).toSubmodule.comap
+        (R.fixedOmegaConstantAxis N).toSubmodule.subtype := by
+  rw [R.outerNormalConstantAxis_toSubmodule N]
+  apply Submodule.span_le.mpr
+  rintro _ ⟨⟨g, a⟩, rfl⟩
+  change R.secondFrame.pairConstant
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t)
+        g a.1 - a.1) ∈ R.frame.ambientAxis N.1
+  obtain ⟨u, hu⟩ := R.secondFrame.top.rangeRestrict_surjective
+    (R.topEquiv g)
+  let bD : (R.fixedOmegaOuterAxis N).toSubmodule :=
+    ⟨R.secondFrame.pairConstant a.1, a.2⟩
+  have hbnormal :
+      (R.fixedOmegaOuterAxis N).toRepresentation u bD - bD ∈
+        (R.frame.ambientAxis N.1).comap
+          (R.fixedOmegaOuterAxis N).toSubmodule.subtype :=
+    R.fixedOmegaOuter_coinvariantsKer_le_normalAxis N
+      (Representation.Coinvariants.sub_mem_ker
+        (ρ := (R.fixedOmegaOuterAxis N).toRepresentation) u bD)
+  change ((R.fixedOmegaOuterAxis N).toRepresentation u bD - bD).1 ∈
+    R.frame.ambientAxis N.1 at hbnormal
+  rw [R.module_action_eq, ← hu]
+  rw [map_sub]
+  change R.secondFrame.pairConstant
+    (R.secondFrame.pulledBackCoordinateTopAction u a.1) -
+      R.secondFrame.pairConstant a.1 ∈ R.frame.ambientAxis N.1
+  rw [show R.secondFrame.pairConstant
+      (R.secondFrame.pulledBackCoordinateTopAction u a.1) =
+        ((R.fixedOmegaOuterAxis N).toRepresentation u bD).1 from
+    Representation.IntertwiningMap.isIntertwining _ _
+      R.secondFrame.pairConstantIntertwiner u a.1]
+  change ((R.fixedOmegaOuterAxis N).toRepresentation u bD).1 - bD.1 ∈ _
+  exact hbnormal
+
+/-- The fixed outer quotient splits exactly into its pair-constant and
+pair-sum quotients. -/
+theorem fixedOmegaOuterQuotient_finrank_eq_constant_add_pairSum
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (R.fixedOmegaOuterQuotientRepresentation N).asModule =
+      Module.finrank (ZMod 2)
+          (R.fixedOmegaConstantQuotientRepresentation N).asModule +
+        Module.finrank (ZMod 2)
+          (R.fixedOmegaPairSumQuotientRepresentation N).asModule := by
+  let q := R.fixedOmegaOuterPairSumMap N
+  have hdim := q.toLinearMap.finrank_range_add_finrank_ker
+  rw [LinearMap.range_eq_top.mpr
+    (R.fixedOmegaOuterPairSumMap_surjective N), finrank_top] at hdim
+  have hker :=
+    (R.fixedOmegaOuterPairSumKernelEquiv N).toLinearEquiv.finrank_eq
+  have hsum :=
+    (R.fixedOmegaPairSumPullbackQuotientEquiv N).toLinearEquiv.finrank_eq
+  have hconstant :=
+    (R.fixedOmegaConstantPullbackQuotientEquiv N).toLinearEquiv.finrank_eq
+  change Module.finrank (ZMod 2)
+      (nestedQuotientRepresentation
+        (R.outerNormalPairSumPullbackAxis N)
+        (R.fixedOmegaPairSumPullbackAxis N)
+        (R.outerNormalPairSum_le_fixedOmegaPairSum N)).asModule +
+      Module.finrank (ZMod 2) q.ker.toSubmodule =
+    Module.finrank (ZMod 2)
+      (R.fixedOmegaOuterQuotientRepresentation N).asModule at hdim
+  change Module.finrank (ZMod 2)
+      (nestedQuotientRepresentation
+        (R.outerNormalConstantPullbackAxis N)
+        (R.fixedOmegaConstantPullbackAxis N)
+        (intertwinerPreimage_mono _ _ _
+          (R.outerNormalAxis_le_fixedOmegaOuterAxis N))).asModule =
+    Module.finrank (ZMod 2) q.ker.toSubmodule at hker
+  change Module.finrank (ZMod 2)
+      (nestedQuotientRepresentation
+        (R.outerNormalPairSumPullbackAxis N)
+        (R.fixedOmegaPairSumPullbackAxis N)
+        (R.outerNormalPairSum_le_fixedOmegaPairSum N)).asModule =
+    Module.finrank (ZMod 2)
+      (R.fixedOmegaPairSumQuotientRepresentation N).asModule at hsum
+  change Module.finrank (ZMod 2)
+      (nestedQuotientRepresentation
+        (R.outerNormalConstantPullbackAxis N)
+        (R.fixedOmegaConstantPullbackAxis N)
+        (intertwinerPreimage_mono _ _ _
+          (R.outerNormalAxis_le_fixedOmegaOuterAxis N))).asModule =
+    Module.finrank (ZMod 2)
+      (R.fixedOmegaConstantQuotientRepresentation N).asModule at hconstant
+  omega
+
+theorem fixedOmegaInnerQuotient_finrank_le_coinvariants
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (R.fixedOmegaInnerQuotientRepresentation N).asModule ≤
+      Module.finrank (ZMod 2)
+        (R.fixedOmegaInnerNaturalAxis N).toRepresentation.Coinvariants :=
+  nestedQuotient_finrank_le_coinvariants
+    (R.moduleAxis N) (R.fixedOmegaInnerNaturalAxis N)
+    (R.moduleAxis_le_fixedOmegaInnerNaturalAxis N)
+    (R.fixedOmegaInner_coinvariantsKer_le_moduleAxis N)
+
+theorem fixedOmegaPairSumQuotient_finrank_le_coinvariants
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (R.fixedOmegaPairSumQuotientRepresentation N).asModule ≤
+      Module.finrank (ZMod 2)
+        (R.fixedOmegaPairSumAxis N).toRepresentation.Coinvariants :=
+  nestedQuotient_finrank_le_coinvariants
+    (R.outerNormalPairSumAxis N) (R.fixedOmegaPairSumAxis N)
+    (R.outerNormalPairSumAxis_le_fixedOmegaPairSumAxis N)
+    (R.fixedOmegaPairSum_coinvariantsKer_le_normalAxis N)
+
+/-- The fixed-lift product lies in the literal original-normal constant
+denominator.  This is the formal `[B,D] = KW ≤ L ∩ N` step. -/
+theorem fixedOmega_productSpan_le_normalConstant
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    binaryCoordinateProductSpan
+        (R.fixedOmegaInnerNaturalAxis N).toSubmodule
+        (R.fixedOmegaPairSumAxis N).toSubmodule ≤
+      (R.outerNormalConstantAxis N).toSubmodule := by
+  rw [R.fixedOmegaInnerNaturalAxis_toSubmodule N,
+    R.fixedOmegaPairSumAxis_toSubmodule N]
+  rw [R.outerNormalConstantAxis_toSubmodule N]
+  exact R.frame.nestedPair_productSpan_le_normalConstantPreimage
+    R.secondFrame N.1 (R.rawKernelOmegaFixedOriginalPreimage N)
+    (R.originalNormal_le_rawKernelOmegaFixedOriginalPreimage N)
+    (by
+      intro u hu k hk
+      exact R.rawKernelOmegaFixedOriginalPreimage_commutator_mem
+        N k.1 u hk hu)
+
+theorem fixedOmega_productSpan_le_constant
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    binaryCoordinateProductSpan
+        (R.fixedOmegaInnerNaturalAxis N).toSubmodule
+        (R.fixedOmegaPairSumAxis N).toSubmodule ≤
+      (R.fixedOmegaConstantAxis N).toSubmodule :=
+  (R.fixedOmega_productSpan_le_normalConstant N).trans
+    (R.outerNormalConstant_le_fixedOmegaConstant N)
+
+/-- The coupled product/displacement denominator is contained in the
+literal normal constant denominator. -/
+theorem fixedOmegaCoupledDenominator_le_normalConstant
+    {J : Type*} (generators : J → D.top)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    binaryCoupledDenominator
+        (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+        generators (R.fixedOmegaConstantAxis N)
+        (binaryCoordinateProductSpan
+          (R.fixedOmegaInnerNaturalAxis N).toSubmodule
+          (R.fixedOmegaPairSumAxis N).toSubmodule)
+        (R.fixedOmega_productSpan_le_constant N) ≤
+      (R.outerNormalConstantAxis N).toSubmodule.comap
+        (R.fixedOmegaConstantAxis N).toSubmodule.subtype := by
+  apply sup_le
+  · intro z hz
+    exact R.fixedOmega_productSpan_le_normalConstant N hz
+  · exact (representationGeneratorDisplacementSpan_le_coinvariantsKer
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+      generators (R.fixedOmegaConstantAxis N)).trans
+        (R.fixedOmegaConstant_coinvariantsKer_le_normalAxis N)
+
+/-- Consequently the normal constant quotient is no larger than the third
+coupled catalogue term. -/
+theorem fixedOmegaConstantQuotient_finrank_le_coupled
+    {J : Type*} (generators : J → D.top)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (R.fixedOmegaConstantQuotientRepresentation N).asModule ≤
+      Module.finrank (ZMod 2)
+        ((R.fixedOmegaConstantAxis N).toSubmodule ⧸
+          binaryCoupledDenominator
+            (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+            generators (R.fixedOmegaConstantAxis N)
+            (binaryCoordinateProductSpan
+              (R.fixedOmegaInnerNaturalAxis N).toSubmodule
+              (R.fixedOmegaPairSumAxis N).toSubmodule)
+            (R.fixedOmega_productSpan_le_constant N)) := by
+  exact finrank_quotient_le_of_le
+    (binaryCoupledDenominator
+      (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+      generators (R.fixedOmegaConstantAxis N)
+      (binaryCoordinateProductSpan
+        (R.fixedOmegaInnerNaturalAxis N).toSubmodule
+        (R.fixedOmegaPairSumAxis N).toSubmodule)
+      (R.fixedOmega_productSpan_le_constant N))
+    ((R.outerNormalConstantAxis N).toSubmodule.comap
+      (R.fixedOmegaConstantAxis N).toSubmodule.subtype)
+    (R.fixedOmegaCoupledDenominator_le_normalConstant generators N)
+
+/-- The complete fixed part of raw omega is bounded by the three literal
+coupled heads.  This is the family-independent structural inequality used
+by every paired-eight catalogue row. -/
+theorem rawKernelOmega_invariants_finrank_le_fixedHeads
+    {J : Type*} (generators : J → D.top)
+    (N : {N : Subgroup (preE7PairAction s p) // N.Normal}) :
+    Module.finrank (ZMod 2)
+        (binaryKernelOmegaConjugationRepresentation
+          (R.rawQuotientMap N)).invariants ≤
+      Module.finrank (ZMod 2)
+          (R.fixedOmegaInnerNaturalAxis N).toRepresentation.Coinvariants +
+        Module.finrank (ZMod 2)
+          (R.fixedOmegaPairSumAxis N).toRepresentation.Coinvariants +
+        Module.finrank (ZMod 2)
+          ((R.fixedOmegaConstantAxis N).toSubmodule ⧸
+            binaryCoupledDenominator
+              (permutationFunctionRepresentation (ZMod 2) D.top (Fin t))
+              generators (R.fixedOmegaConstantAxis N)
+              (binaryCoordinateProductSpan
+                (R.fixedOmegaInnerNaturalAxis N).toSubmodule
+                (R.fixedOmegaPairSumAxis N).toSubmodule)
+              (R.fixedOmega_productSpan_le_constant N)) := by
+  have hsplit :=
+    R.rawKernelOmega_invariants_finrank_le_fixedQuotients N
+  have houter := R.fixedOmegaOuterQuotient_finrank_eq_constant_add_pairSum N
+  have hinner := R.fixedOmegaInnerQuotient_finrank_le_coinvariants N
+  have hsum := R.fixedOmegaPairSumQuotient_finrank_le_coinvariants N
+  have hconstant :=
+    R.fixedOmegaConstantQuotient_finrank_le_coupled generators N
+  omega
+
+end DegreeTwoPairTopTowerRealization
+end PrimitiveAffineImprimitiveBlockTransfer
+end Non2UnipotentPrefixFiniteMenu
+end SymmetricSubgroupAsymptotics
+
+end

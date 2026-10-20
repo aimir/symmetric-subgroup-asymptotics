@@ -110,8 +110,10 @@ noncomputable def degreeThreeNonzeroSignedKernelPostFourSource
               hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
               hr hcomponent hs18 hthree
 
-/-- Fully concrete degree-three residual source, depending only on the
-published inputs already exposed by the surrounding affine theorem. -/
+/-- Complete ordinary degree-three construction: the two-sign and post-four
+source boundaries are discharged here. The four-pair classification remains
+an explicit certificate-valued input whose construction is separate; it is
+not identified with a bare published catalogue-completeness statement. -/
 noncomputable def degreeThreeResidualSource
     (hKP : KovacsPraegerAbelianizationBound)
     (publishedSix : PublishedDegreeSixThreeByTwoAffineClassification)

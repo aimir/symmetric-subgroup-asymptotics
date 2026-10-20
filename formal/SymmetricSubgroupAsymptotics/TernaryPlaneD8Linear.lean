@@ -37,25 +37,26 @@ def monomialRepresentation :
       map_add' := by
         intro v w
         funext i
-        revert d v w i
-        native_decide
+        exact mul_add _ _ _
       map_smul' := by
         intro c v
         funext i
-        revert d c v i
-        native_decide }
+        change _ * (c * _) = c * (_ * _)
+        exact mul_left_comm _ _ _ }
   map_one' := by
     apply LinearMap.ext
     intro v
     funext i
-    revert v i
-    native_decide
+    exact congrArg
+      (fun f : MulAut TernaryKernel => (f (Multiplicative.ofAdd v)).toAdd i)
+      monomialAction.map_one
   map_mul' d e := by
     apply LinearMap.ext
     intro v
     funext i
-    revert d e v i
-    native_decide
+    exact congrArg
+      (fun f : MulAut TernaryKernel => (f (Multiplicative.ofAdd v)).toAdd i)
+      (monomialAction.map_mul d e)
 
 @[simp] theorem monomialRepresentation_apply
     (d : D8) (v : TernaryPlane) (i : Fin 2) :
@@ -78,13 +79,15 @@ theorem monomialRepresentation_asGroupHom_injective :
       (Representation.asGroupHom monomialRepresentation) := by
   intro d e h
   apply (show ∀ d e : D8,
-      (∀ v : TernaryPlane,
-        monomialRepresentation d v = monomialRepresentation e v) →
-          d = e by native_decide) d e
-  intro v
+      (∀ j i : Fin 2,
+        monomialRepresentation d (Pi.single j (1 : ZMod 3)) i =
+          monomialRepresentation e (Pi.single j (1 : ZMod 3)) i) →
+          d = e by decide +kernel) d e
+  intro j i
   exact congrArg
     (fun u : (Module.End (ZMod 3) TernaryPlane)ˣ =>
-      (u : Module.End (ZMod 3) TernaryPlane) v) h
+      ((u : Module.End (ZMod 3) TernaryPlane)
+        (Pi.single j (1 : ZMod 3))) i) h
 
 /-- Matrix form of the standard `D8` action, in the coordinate basis of
 `Fin 2 → ZMod 3`. -/

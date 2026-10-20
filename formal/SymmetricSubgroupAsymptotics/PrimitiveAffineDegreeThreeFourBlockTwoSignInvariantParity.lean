@@ -29,7 +29,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
+local instance primitiveAffineDegreeThreeFourBlockTwoSignInvariantParity_localInstance1 : Fact P.p.Prime := (chart block P).primeFact
 
 private abbrev QuotientRep :
     Representation (ZMod P.p)

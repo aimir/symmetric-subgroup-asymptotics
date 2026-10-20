@@ -1,35 +1,36 @@
 \section{Nonaffine primitive components and compressed quotients}
 \label{sec:primitive-compression}
 
-\begin{lemma}[Core-free subgroups of a simple power]
+\begin{lemma}[Degree forms of a primitive socle]
 \label{lem:simple-power-index}
-Let $S$ be nonabelian simple, let $\ell$ be its least proper subgroup
-index, and let $H\leq S^a$ be core-free. Then $[S^a:H]\geq\ell^a$.
+Let a nonaffine primitive group of degree $r$ have full socle $S^a$,
+where $S$ is nonabelian simple and $\ell$ is its least proper subgroup
+index. Then either $r=[S:H]^a$ for a proper subgroup $H<S$, or
+$r=|S|^d$ with $a\leq2d$. In particular, $\ell\geq5$ and
+$r\geq\ell^a$.
 \end{lemma}
 \begin{proof}
-We use $\ell^2<|S|$, proved in
-\cite[Theorem~A(4)]{BallesterBolinchesEstebanRomeroJimenezSeral2022}.
-Induct on $a$. Let $P\leq S^{a-1}$ and $B\leq S$ be the projections
-of $H$, with common Goursat quotient $Q$. If $B<S$, then $|Q|<|S|$.
-A full coordinate factor contained in $P$ must map trivially to $Q$,
-and would therefore be contained in $H$, contrary to core-freeness.
-Thus $P$ is core-free and the induction hypothesis gives
-$[S^a:H]\geq[S^{a-1}:P][S:B]\geq\ell^a$.
+Use the structural cases in \cite[\S1 and the theorem on
+p.~392]{LiebeckPraegerSaxl1988ONanScott}. Almost simple and their
+product actions give the first form. Diagonal and compound diagonal
+actions give $a=mt$, $d=(m-1)t$, with $m\geq2$; this also includes
+the cases with two regular minimal normal subgroups. Twisted wreath
+actions give $d=a$. Thus the full socle, including both minimal
+normal subgroups when present, satisfies the stated alternatives.
 
-If $B=S$, then $Q=S$: otherwise the last factor is contained in $H$.
-Every full coordinate factor contained in $P$ maps onto $Q$, so there
-is at most one, since images of distinct factors commute. If there is
-none, the index is $|S|[S^{a-1}:P]\geq\ell^a$. If there is one,
-write $P=S_i\times P'$; the map to $Q$ is an isomorphism on $S_i$
-and trivial on $P'$, and $P'$ is core-free in $S^{a-2}$. Hence
-$[S^a:H]=|S|[S^{a-2}:P']>\ell^a$. This proves the induction.
+An index below five would embed $S$ in the soluble group $S_4$,
+so $\ell\geq5$. The first form gives $r\geq\ell^a$ directly.
+In the second, use $\ell^2<|S|$ from
+\cite[Theorem~A(4)]{BallesterBolinchesEstebanRomeroJimenezSeral2022}
+to obtain $\ell^a\leq\ell^{2d}\leq|S|^d=r$.
 \end{proof}
 
 \begin{theorem}[Primitive compression]\label{thm:primitive-compression}
 If $L\leq S_r$ is nonaffine primitive, its socle $E$ is semisimple
 and $L/E$ has a specified faithful action of positive degree $u$
-with $2u\leq h(r)$. This assertion uses the finite primitive
-classification only in actual degrees $5\leq r\leq29$.
+with $2u\leq h(r)$. Beyond the structural O'Nan--Scott theorem,
+the finite primitive catalogue is used only in actual degrees
+$5\leq r\leq29$.
 \end{theorem}
 \begin{proof}
 Every nontrivial normal subgroup of a primitive group is transitive.

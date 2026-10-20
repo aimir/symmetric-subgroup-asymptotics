@@ -88,7 +88,7 @@ def certificate : EncodedCayleyCertificate
   parent_next := parent_next_checked
 
 theorem rows_injective : Function.Injective certificate.rows :=
-  by native_decide
+  by decide +kernel
 
 theorem previous_checked : ∀ i j,
     certificate.next (previousRow i j) j = i :=
@@ -138,7 +138,7 @@ def classInvariant : FiniteConjugacyGeneratorInvariant ambient representative wh
   generator_invariant := by
     intro i x
     rcases x with ⟨j⟩
-    fin_cases i <;> fin_cases j <;> native_decide
+    fin_cases i <;> fin_cases j <;> decide +kernel
   representative_injective := by decide +kernel
 
 private def centralizerCard (i : Fin 8) : ℕ :=
@@ -154,7 +154,7 @@ private theorem centralizer_card : ∀ i : Fin 8,
       Subgroup.mem_centralizer_singleton_iff.symm
   fin_cases i <;>
     rw [Nat.card_eq_fintype_card, Fintype.card_subtype] <;>
-    native_decide
+    decide +kernel
 
 private theorem class_card_sum :
     (∑ i : Fin 8, Nat.card Source / centralizerCard i) =

@@ -33,7 +33,7 @@ variable {k G V A : Type} [Field k] [Group G] [Finite G]
 
 /-- Mackey projection of an arbitrary subrepresentation after restriction
 to the actual Sylow subgroup. -/
-def inducedMackeyRestrictedSubmoduleCoordinate
+def inducedMackeySylowRestrictedSubmoduleCoordinate
     (H : Subgroup G) (P : Sylow 3 G)
     (rho : Representation k H V)
     [Fintype (DoubleCoset.Quotient (H : Set G) ((P : Subgroup G) : Set G))]
@@ -54,14 +54,14 @@ def inducedMackeyRestrictedSubmoduleCoordinate
       H (P : Subgroup G) rho p v.1 q
 
 omit [FiniteDimensional k V] in
-theorem inducedMackeyRestrictedSubmoduleCoordinate_injective
+theorem inducedMackeySylowRestrictedSubmoduleCoordinate_injective
     (H : Subgroup G) (P : Sylow 3 G)
     (rho : Representation k H V)
     [Fintype (DoubleCoset.Quotient (H : Set G) ((P : Subgroup G) : Set G))]
     (M : Subrepresentation
       ((Representation.ind H.subtype rho).comp (P : Subgroup G).subtype)) :
     Function.Injective (fun v q ↦
-      inducedMackeyRestrictedSubmoduleCoordinate H P rho M q v) := by
+      inducedMackeySylowRestrictedSubmoduleCoordinate H P rho M q v) := by
   intro v w h
   apply Subtype.ext
   apply (inducedMackeyDecomposition H (P : Subgroup G) rho).injective
@@ -106,8 +106,8 @@ theorem inducedRestrictionTernary_head_le_widthCore
         (inducedOrbitStabilizer H (P : Subgroup G) q.out)
         (inducedOrbitFibre H (P : Subgroup G) rho q.out)
         (j q) (hj q) S)
-      (inducedMackeyRestrictedSubmoduleCoordinate H P rho M)
-      (inducedMackeyRestrictedSubmoduleCoordinate_injective H P rho M)
+      (inducedMackeySylowRestrictedSubmoduleCoordinate H P rho M)
+      (inducedMackeySylowRestrictedSubmoduleCoordinate_injective H P rho M)
   exact hlocal.trans
     (ternaryLocalWidth_weighted_sum_le_core
       (Module.finrank k V) j H.index

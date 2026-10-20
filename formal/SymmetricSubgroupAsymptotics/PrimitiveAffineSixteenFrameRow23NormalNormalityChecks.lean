@@ -1,0 +1,68 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState0Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState1Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState2Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState3Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState4Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState5Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState6Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState7Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState8Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState9Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState10Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState11Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState12Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState13Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState14Checks
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityState15Checks
+
+
+/-! Assembled normality checks.  Generated from a selected certificate; Lean rechecks all words. -/
+set_option autoImplicit false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 0
+noncomputable section
+open scoped Classical
+
+namespace SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityChecks
+
+abbrev Source := PrimitiveAffineSixteenFrameRow23NormalCore.Source
+local instance sourceGroup : Group Source := PrimitiveAffineSixteenFrameRow23TopCertificate.group
+
+def normality (i : Fin 16) :
+    FiniteNormalityWordCertificate PrimitiveAffineSixteenFrameRow23NormalCore.topAmbient (PrimitiveAffineSixteenFrameRow23NormalCore.stateGenerators i) :=
+by
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState0Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState1Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState2Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState3Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState4Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState5Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState6Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState7Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState8Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState9Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState10Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState11Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState12Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState13Checks.normality ?_ i
+  intro i
+  refine Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState14Checks.normality ?_ i
+  intro i
+  exact Fin.cases PrimitiveAffineSixteenFrameRow23NormalNormalityState15Checks.normality (fun i ↦ Fin.elim0 i) i
+
+end SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow23NormalNormalityChecks
+
+end

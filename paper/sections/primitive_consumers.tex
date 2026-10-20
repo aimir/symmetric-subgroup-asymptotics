@@ -133,10 +133,11 @@ the affine exponent is at most $\log(3)/3<1$.
 
 At degree twenty-five the scalar subgroup of $R\leq\GL_2(5)$
 has order dividing four. Its projective image is a soluble
-subgroup of $\operatorname{PGL}_2(5)\cong S_5$, of order at
-most twenty-four. An intransitive subgroup has this bound
-immediately; a soluble transitive subgroup of prime degree five
-has a regular normal $C_5$ and lies in its order-twenty normalizer.
+subgroup of $\operatorname{PGL}_2(5)\cong S_5$ \cite[Lemma~13]{Adler1992Modular}, of order at
+most twenty-four. Indeed, a subgroup $P\leq S_5$ not containing
+$A_5$ has index at least five: otherwise its coset kernel is trivial
+and would embed $S_5$ in $S_4$. A soluble $P$ cannot contain $A_5$,
+so $|P|\leq24$.
 Each central quotient lift costs at most
 $|\Hom(J,C_4)|\leq2^{b/2}$. Counting all fixed target normals
 and using $d(J)\leq b/2+1$ gives
@@ -217,6 +218,33 @@ the moment error is $o(n^2)$. Thus it is at most
 $2^{-n^2/512}$ eventually. The hot event is empty at $b=0$.
 \end{proof}
 
+\begin{lemma}[A nonabelian order saving]
+\label{lem:nonabelian-order-saving}
+Write $\Omega(m)$ for the number of prime factors of $m$, counted with
+multiplicity, and let $c_{\rm ab}(G)$ count the abelian composition factors
+of a finite group $G$. If $E$ is a nonabelian simple normal subgroup of
+$G$, then
+\[
+ c_{\rm ab}(G)+\Omega(|E|)\leq\Omega(|G|).
+\]
+The same inequality holds if $G$ maps onto a finite group $S$ with a
+nonabelian normal subgroup $E$ contained in every nontrivial normal
+subgroup of $S$. In this second case $E$ is a subgroup of the target $S$;
+no uniqueness condition is required in $G$.
+\end{lemma}
+\begin{proof}
+Fix an actual chief series of $G$. In the first case, take the first
+term whose intersection with $E$ is nontrivial. Simplicity makes that
+intersection equal to $E$, so $E$ injects into the corresponding chief
+factor. In the second case, take the first term with nontrivial image
+in $S$. The preceding term maps trivially, and the image of the chosen
+term contains $E$. Thus that chief factor maps onto a group containing
+$E$. In either case the factor is nonabelian and its order is divisible
+by $|E|$. Additivity of $\Omega$ along the series proves the claim:
+abelian chief factors pay their full order charge, while this nonabelian
+factor saves at least $\Omega(|E|)$.
+\end{proof}
+
 \begin{theorem}[The nonsoluble primitive affine range]
 \label{thm:nonsoluble-primitive-consumer}
 All primitive affine actions $U=\F_p^d\rtimes R$ of degrees
@@ -265,14 +293,17 @@ gap $27/64$.
 At $w=25$, quotient the scalar subgroup of order dividing four.
 The projective image is a nonsoluble subgroup of
 $\operatorname{PGL}_2(5)\cong S_5$, hence $A_5$ or $S_5$.
-For completeness, an intransitive subgroup of $S_5$ is soluble;
-a transitive subgroup has one or six Sylow-five subgroups.
-The former case lies in the order-twenty normalizer. In the latter,
-its order is $30,60,$ or $120$; order thirty would give an
-impossible faithful degree-four action of $S_5$ by cosets.
-The other two orders give $A_5,S_5$. Therefore $R$ has at
-most three abelian factors, all $C_2$, so its exponent is
-at most $3/2+17/64=113/64<3-1/4$.
+To see this uniformly, a subgroup not containing $A_5$ has order
+at most twenty-four, as above. Its order divides $120$ and hence
+has at most two prime divisors, so Burnside's theorem
+\cite{Burnside1904TwoPrimes} makes it soluble.
+Thus a nonsoluble projective image contains $A_5$ and is $A_5$ or $S_5$.
+Now $|R|$ divides $|\GL_2(5)|=480$, so
+$\Omega(|R|)\leq7$, while $\Omega(|A_5|)=4$.
+Lemma~\ref{lem:nonabelian-order-saving}, applied in the actual projective
+quotient, gives at most three abelian factors of $R$. Its exponent is
+therefore at most $3\gamma+17/64<119/64<3-1/4$.
+The argument also covers nonsplit scalar extensions.
 
 The only remaining prime-power degrees below sixty-four are
 $8,16,27$: prime-degree stabilizers are cyclic, and
@@ -285,16 +316,21 @@ finite composition-factor data for the literal stabilizers:
 degree&primitive indices&abelian factors of $R$&bound on $\kappa(R)$\\
 \midrule
 8&3&none&0\\
-16&11--20&at most one $C_2$ and one $C_3$&$33/32$\\
-27&10,11&at most one $C_2$&$1/2$\\\bottomrule
+16&11--20&at most two&$17/16$\\
+27&10,11&at most one&$17/32$\\\bottomrule
 \end{tabular}
 \end{center}
 The affine classification is that of
 \cite{RoneyDougalUnger2003Affine}; the representative conventions and
 cross-catalogue indexing are those of
-\cite{PrimGrp344,RoneyDougal2005Primitive}. The displayed
-composition series supply respectively exponent bounds
-$1/4,41/32,49/64$, all with physical gap greater than $1/4$.
+\cite{PrimGrp344,RoneyDougal2005Primitive}. These counts also follow from Lemma~\ref{lem:nonabelian-order-saving}:
+the degree-sixteen complements have alternating simple cores or actual
+projective quotients with alternating cores, and their exact orders leave
+at most two prime-factor charges. In particular the scalar $C_3$ in
+$\GL_2(4)$ is retained; no unique-minimal-normal claim is made there.
+At degree twenty-seven the determinant-one subgroup of $\GL_3(3)$ is
+simple of index two. The displayed bounds supply respectively exponent
+bounds $1/4,21/16,51/64$, all with physical gap greater than $1/4$.
 The catalogue completeness is used only at these three degrees;
 the other ranges were covered analytically.
 

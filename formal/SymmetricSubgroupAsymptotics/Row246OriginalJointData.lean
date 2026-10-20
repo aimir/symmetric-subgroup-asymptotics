@@ -1,0 +1,20 @@
+import SymmetricSubgroupAsymptotics.Row246OriginalQuotientSocles
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveTernaryKleinNaturalFamily
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelveFlexibleProfiles
+import SymmetricSubgroupAsymptotics.FiniteNormalRegistrySocleOfQuotientBounds
+set_option autoImplicit false
+noncomputable section
+namespace SymmetricSubgroupAsymptotics.Row246OriginalJointData
+open Non2UnipotentPrefixFiniteMenu
+open Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer
+open DegreeTwoTwelvePairFiniteCatalogue
+
+def jointData : DegreeTwoTwelveJointFiniteRows.DegreeTwoTwelveJointFiniteRowData row246Interface 2 2 where
+  topSocle := FiniteNormalStateRegistry.QuotientSocleGeneratorFamily.ofQuotientBounds _ (fun N => by
+    letI := N.2
+    exact Row246OriginalQuotientSocles.quotientSocle N.1)
+  natural := PrimitiveAffineDegreeTwoTwelveTernaryKleinNaturalFamily.row246Natural
+
+def flexibleData : DegreeTwoTwelveFlexibleProfiles.Data row246Interface :=
+  .ofExact jointData (by decide +kernel)
+end SymmetricSubgroupAsymptotics.Row246OriginalJointData

@@ -127,7 +127,7 @@ theorem primeElevenToTwentyThree_margin
     exact_mod_cast width_le_evenWidth_add_one w
   have hsR : (2 : ℝ) ≤ s := by exact_mod_cast hs
   rcases hr with rfl | rfl | rfl | rfl | rfl
-  · have homega : ArithmeticFunction.cardFactors 110 = 3 := by native_decide
+  · have homega : ArithmeticFunction.cardFactors 110 = 3 := by decide +kernel
     rw [homega] at hK
     have hKR : (K : ℝ) ≤ 3 := by exact_mod_cast hK
     have heta' : eta < (17 / 32 : ℝ) * (s / 2) * 3 := by
@@ -144,7 +144,7 @@ theorem primeElevenToTwentyThree_margin
     rw [hwR]
     nlinarith
 
-  · have homega : ArithmeticFunction.cardFactors 156 = 4 := by native_decide
+  · have homega : ArithmeticFunction.cardFactors 156 = 4 := by decide +kernel
     rw [homega] at hK
     have hKR : (K : ℝ) ≤ 4 := by exact_mod_cast hK
     have heta' : eta < (17 / 32 : ℝ) * (s / 2) * 4 := by
@@ -160,7 +160,7 @@ theorem primeElevenToTwentyThree_margin
     unfold preE7CharacterRho
     rw [hwR]
     nlinarith
-  · have homega : ArithmeticFunction.cardFactors 272 = 5 := by native_decide
+  · have homega : ArithmeticFunction.cardFactors 272 = 5 := by decide +kernel
     rw [homega] at hK
     have hKR : (K : ℝ) ≤ 5 := by exact_mod_cast hK
     have heta' : eta < (17 / 32 : ℝ) * (s / 2) * 5 := by
@@ -176,7 +176,7 @@ theorem primeElevenToTwentyThree_margin
     unfold preE7CharacterRho
     rw [hwR]
     nlinarith
-  · have homega : ArithmeticFunction.cardFactors 342 = 4 := by native_decide
+  · have homega : ArithmeticFunction.cardFactors 342 = 4 := by decide +kernel
     rw [homega] at hK
     have hKR : (K : ℝ) ≤ 4 := by exact_mod_cast hK
     have heta' : eta < (17 / 32 : ℝ) * (s / 2) * 4 := by
@@ -192,7 +192,7 @@ theorem primeElevenToTwentyThree_margin
     unfold preE7CharacterRho
     rw [hwR]
     nlinarith
-  · have homega : ArithmeticFunction.cardFactors 506 = 3 := by native_decide
+  · have homega : ArithmeticFunction.cardFactors 506 = 3 := by decide +kernel
     rw [homega] at hK
     have hKR : (K : ℝ) ≤ 3 := by exact_mod_cast hK
     have heta' : eta < (17 / 32 : ℝ) * (s / 2) * 3 := by
@@ -376,7 +376,7 @@ noncomputable def of_primeSeven
       exact hdiv
     have heta0 :=
       ActualWreathCompressionTower.envelope_eta_le_natHalf_weightedAbelianBudget_of_squarefree
-        T.tower T.integralCapacities 42 (by norm_num) (by native_decide) htdiv
+        T.tower T.integralCapacities 42 (by norm_num) (by decide +kernel) htdiv
     have heta : T.tower.envelope.eta ≤
         ((s / 2 : ℕ) : ℝ) * weightedAbelianFactorBudget 42 := by
       refine heta0.trans ?_

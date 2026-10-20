@@ -58,8 +58,8 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-local instance fourBlockSignedTranslationPrimeFact : Fact P.p.Prime :=
-  (chart block P).primeFact
+local instance degreeThreeFourBlockSignedTranslationCompatibility_primeFact :
+    Fact P.p.Prime := (chart block P).primeFact
 
 /-- The block relabelling already used by the fixed four-pair chart. -/
 noncomputable def degreeThreeFourBlockIndexEquiv

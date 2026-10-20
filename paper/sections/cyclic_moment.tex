@@ -140,7 +140,8 @@ For a product $D$ of actual transitive binary actions of degree less
 than $C$, of total degree $b$, we claim
 \begin{equation}\label{eq:bounded-C4}
  \log|\Sub(D\times C_4^r)|
-       \leq F(b,r)+O_C((b+r)\log(b+r+2)).
+       \leq F(b,r)+\log\mathcal P(r)+O_C(b\log(b+r+2)),
+ \qquad \mathcal P(r)=16(r+1)^2.
 \end{equation}
 First condition on coordinate projections, refining any intransitive
 projection into its actual orbits. This costs $2^{O_C(b)}$ and does
@@ -190,11 +191,36 @@ The epimorphism estimate
 \]
 This is paid by the exact reserve
 $F(b,r)-F(b-w,r)=w(b-w)/8+wr/4+w^2/16$.
-Induct on the number of physical coordinates. The lower normal-tableau
-chains absorb the normal-axis sums exactly as in equation (7.1) of
-the cited proof; their count and the reorderings have logarithm
-$O_C(b\log(b+2))$. The accumulated epimorphism errors are
-$O_C(b\log(b+r+2))$. This proves \eqref{eq:bounded-C4}.
+To perform the induction without repeating a terminal cost, retain one
+ordering and the whole monotone chain of original normal subgroups in
+each physical factor. If there are $t$ factors, each has order at most
+$2^C$, hence at most $2^{2^C}$ subgroups. A monotone chain is encoded
+by the entry time of each subgroup in its downward closure. The total history menu therefore
+has size at most
+\[
+ t!\,(t+1)^{2^{2^C}t}.
+\]
+For one fixed history, the priority of an excessive quotient depends
+only on the current original normal subgroup and its original factor.
+Thus the same priority applies to every subgroup in that history,
+including its successive suffix projections. The literal decoder bounds
+each positive step by epimorphisms on that same suffix family; it does
+not introduce a fresh normal-subgroup menu.
+
+Keep the initial support bound $b$ fixed in the induction. Each positive
+step pays at most $A_C(b+r+2)^{k_C}$, in addition to its exact difference
+of $F$ values, for constants depending only on $C$. At the stopping
+leaf, the nonexcess estimate contributes
+$T_C(b)=2^{O_C(b\log(b+2))}$ once. The vertical group at zero remaining
+physical degree contributes at most
+$\mathcal P(r)2^{F(0,r)}$. Hence the fixed-history bound is
+\[
+ \mathcal P(r)\,T_C(b)
+       \bigl(A_C(b+r+2)^{k_C}\bigr)^t2^{F(b,r)}.
+\]
+The quadratic differences telescope. Summing the single history menu,
+and using $t\leq b$, gives \eqref{eq:bounded-C4}. In particular neither
+the stopping cost nor $\mathcal P(r)$ is paid at every peel.
 
 \subsection{The weighted generation reduction}
 \begin{proof}[Proof of Theorem~\ref{thm:C4-moment}]

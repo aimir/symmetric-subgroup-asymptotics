@@ -60,6 +60,27 @@ theorem le_of_basis_mem (W : Submodule (ZMod 2) (Fin w → ZMod 2))
   rw [map_smul]
   exact W.smul_mem (a i) (h i)
 
+/-- The displayed coordinate basis spans the checked coordinate space. -/
+theorem space_eq_span_basis :
+    C.space = Submodule.span (ZMod 2)
+      (Set.range fun i ↦ C.inclusion (Pi.single i 1)) := by
+  apply le_antisymm
+  · apply C.le_of_basis_mem
+    intro i
+    exact Submodule.subset_span ⟨i, rfl⟩
+  · apply Submodule.span_le.mpr
+    rintro _ ⟨i, rfl⟩
+    exact ⟨Pi.single i 1, rfl⟩
+
+/-- One displayed basis vector outside another checked coordinate space
+certifies failure of subspace containment. -/
+theorem not_le_of_basis_not_mem
+    (W : Submodule (ZMod 2) (Fin w → ZMod 2))
+    (i : Fin d) (hi : C.inclusion (Pi.single i 1) ∉ W) :
+    ¬ C.space ≤ W := by
+  intro h
+  exact hi (h ⟨Pi.single i 1, rfl⟩)
+
 end BinaryCoordinateSpace
 
 /-- The actual permutation action on binary pair coordinates. The inverse

@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.Non2SchurRowProfile
+import SymmetricSubgroupAsymptotics.SchurTargetExtension
 import Mathlib.Algebra.Field.ZMod
 import Mathlib.LinearAlgebra.Dimension.Free
 
@@ -93,6 +94,50 @@ theorem two_le_schurSimpleProductDegree_of_nonfixed
     exact Nat.dvd_one.mp ⟨_, hone.symm⟩
   exact hnonfixed
     (representationSubmoduleFixed_of_binary_finrank_one sigma S hdim)
+
+/-- A binary target of dimension at most two contains every nonfixed simple
+row with multiplicity at most one.  This is the small exceptional case in
+the paired-eight quotient-state table: all other quotient displacement
+kernels have a cyclic dual. -/
+theorem schurSocleMultiplicity_le_one_of_finrank_le_two_of_nonfixed
+    [FiniteDimensional (ZMod 2) A]
+    (sigma : Representation (ZMod 2) B A)
+    (S : Submodule (ZMod 2)[B] sigma.asModule)
+    [IsSimpleModule (ZMod 2)[B] S]
+    (hnonfixed : ¬ representationSubmoduleFixed
+      (k := ZMod 2) (B := B) (A := A) sigma S)
+    {V : Type} [AddCommGroup V] [Module (ZMod 2) V]
+    [Module (ZMod 2)[B] V]
+    [IsScalarTower (ZMod 2) (ZMod 2)[B] V]
+    [FiniteDimensional (ZMod 2) V]
+    (hV : Module.finrank (ZMod 2) V ≤ 2) :
+    schurSocleMultiplicity
+        (k := ZMod 2) (R := (ZMod 2)[B]) (A := V) (X := S) ≤ 1 := by
+  haveI : FiniteDimensional (ZMod 2) S :=
+    FiniteDimensional.of_injective
+      (S.subtype.restrictScalars (ZMod 2)) S.subtype_injective
+  have hdim : 2 ≤ Module.finrank (ZMod 2) S := by
+    by_contra hnot
+    have hpos : 0 < Module.finrank (ZMod 2) S := by
+      letI : Nontrivial S := IsSimpleModule.nontrivial (ZMod 2)[B] S
+      exact Module.finrank_pos (R := ZMod 2) (M := S)
+    have hone : Module.finrank (ZMod 2) S = 1 := by omega
+    exact hnonfixed
+      (representationSubmoduleFixed_of_binary_finrank_one sigma S hone)
+  have hoccupied := finrank_mul_schurSocleMultiplicity_le
+    (k := ZMod 2) (R := (ZMod 2)[B]) (A := V) (X := S)
+  by_contra hnot
+  have hmult : 2 ≤ schurSocleMultiplicity
+      (k := ZMod 2) (R := (ZMod 2)[B]) (A := V) (X := S) := by omega
+  have : 4 ≤ Module.finrank (ZMod 2) V :=
+    calc
+      4 = 2 * 2 := by norm_num
+      _ ≤ Module.finrank (ZMod 2) S *
+          schurSocleMultiplicity
+            (k := ZMod 2) (R := (ZMod 2)[B]) (A := V) (X := S) :=
+        Nat.mul_le_mul hdim hmult
+      _ ≤ Module.finrank (ZMod 2) V := hoccupied
+  omega
 
 /-- Equality in the first possible nonfixed Schur degree forces the
 two-dimensional, Schur-dimension-one profile used by the scalar `C₃`

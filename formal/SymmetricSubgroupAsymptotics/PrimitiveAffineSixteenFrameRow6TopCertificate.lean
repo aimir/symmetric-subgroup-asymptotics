@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.BinaryNormalGeneratorChecks
 import SymmetricSubgroupAsymptotics.FiniteConjugacyGeneratorInvariant
 import SymmetricSubgroupAsymptotics.FiniteConjugacyCentralizerCardinalCover
 import SymmetricSubgroupAsymptotics.FinitePermutationEncoding
+import SymmetricSubgroupAsymptotics.EncodedPermutationRowChecks
 import Mathlib.Order.Fin.Basic
 import Mathlib.Tactic.FinCases
 
@@ -88,8 +89,16 @@ def certificate : EncodedCayleyCertificate
   parent_lt := parent_lt_checked
   parent_next := parent_next_checked
 
+/-- Recover the stored row index by a bounded lookup in this literal table. -/
+private def decodeCode (code : Fin (16 ^ 16)) : Fin 192 :=
+  ((List.finRange 192).find? (fun i ↦ decide (certificate.rows i = code))).getD 0
+
+private theorem decodeCode_leftInverse : Function.LeftInverse decodeCode certificate.rows := by
+  intro i
+  fin_cases i <;> decide +kernel
+
 theorem rows_injective : Function.Injective certificate.rows :=
-  by native_decide
+  decodeCode_leftInverse.injective
 
 theorem previous_checked : ∀ i j,
     certificate.next (previousRow i j) j = i :=
@@ -150,7 +159,12 @@ private def classCode (x : Source) : Fin 9 := classCodeRows x.index
 def classInvariant : FiniteConjugacyGeneratorInvariant ambient representative where
   Code := Fin 9
   code := classCode
-  generator_invariant := by native_decide +revert
+  generator_invariant := by
+    exact certificate.row_generator_invariant_of_permutationCodes
+      rows_injective previousRow previous_checked classCodeRows
+      decodeCode decodeCode_leftInverse (by
+        intro j i
+        fin_cases j <;> fin_cases i <;> decide +kernel)
   representative_injective := by decide +kernel
 
 private def centralizerCard (i : Fin 9) : ℕ :=
@@ -160,13 +174,11 @@ private theorem centralizer_card : ∀ i : Fin 9,
     Nat.card (Subgroup.centralizer ({representative i} : Set Source)) =
       centralizerCard i := by
   intro i
-  letI : DecidablePred (fun x : Source =>
-      x ∈ Subgroup.centralizer ({representative i} : Set Source)) :=
-    fun x => decidable_of_iff (x * representative i = representative i * x)
-      Subgroup.mem_centralizer_singleton_iff.symm
-  fin_cases i <;>
-    rw [Nat.card_eq_fintype_card, Fintype.card_subtype] <;>
-    native_decide
+  change Nat.card (Subgroup.centralizer
+    ({(⟨representativeRows i⟩ : Source)} : Set Source)) = centralizerCard i
+  rw [certificate.row_centralizer_card_permutationCodeMul
+    rows_injective previousRow previous_checked]
+  fin_cases i <;> decide +kernel
 
 private theorem class_card_sum :
     (∑ i : Fin 9, Nat.card Source / centralizerCard i) =

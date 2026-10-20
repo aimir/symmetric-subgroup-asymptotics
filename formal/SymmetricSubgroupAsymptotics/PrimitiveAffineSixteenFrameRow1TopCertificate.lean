@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.BinaryNormalGeneratorChecks
 import SymmetricSubgroupAsymptotics.FiniteConjugacyGeneratorInvariant
 import SymmetricSubgroupAsymptotics.FiniteConjugacyCentralizerCardinalCover
 import SymmetricSubgroupAsymptotics.FinitePermutationEncoding
+import SymmetricSubgroupAsymptotics.EncodedPermutationRowChecks
 import Mathlib.Order.Fin.Basic
 import Mathlib.Tactic.FinCases
 
@@ -89,7 +90,7 @@ def certificate : EncodedCayleyCertificate
   parent_next := parent_next_checked
 
 theorem rows_injective : Function.Injective certificate.rows :=
-  by native_decide
+  by decide +kernel
 
 theorem previous_checked : ∀ i j,
     certificate.next (previousRow i j) j = i :=
@@ -136,7 +137,10 @@ private def classCode (x : Source) : Fin 8 := classCodeRows x.index
 def classInvariant : FiniteConjugacyGeneratorInvariant ambient representative where
   Code := Fin 8
   code := classCode
-  generator_invariant := by native_decide +revert
+  generator_invariant := by
+    intro j x
+    rcases x with ⟨i⟩
+    fin_cases j <;> fin_cases i <;> decide +kernel
   representative_injective := by decide +kernel
 
 private def centralizerCard (i : Fin 8) : ℕ :=
@@ -146,13 +150,11 @@ private theorem centralizer_card : ∀ i : Fin 8,
     Nat.card (Subgroup.centralizer ({representative i} : Set Source)) =
       centralizerCard i := by
   intro i
-  letI : DecidablePred (fun x : Source =>
-      x ∈ Subgroup.centralizer ({representative i} : Set Source)) :=
-    fun x => decidable_of_iff (x * representative i = representative i * x)
-      Subgroup.mem_centralizer_singleton_iff.symm
-  fin_cases i <;>
-    rw [Nat.card_eq_fintype_card, Fintype.card_subtype] <;>
-    native_decide
+  change Nat.card (Subgroup.centralizer
+    ({(⟨representativeRows i⟩ : Source)} : Set Source)) = centralizerCard i
+  rw [certificate.row_centralizer_card_permutationCodeMul
+    rows_injective previousRow previous_checked]
+  fin_cases i <;> decide +kernel
 
 private theorem class_card_sum :
     (∑ i : Fin 8, Nat.card Source / centralizerCard i) =

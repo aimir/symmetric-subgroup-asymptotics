@@ -117,6 +117,18 @@ def submodule : Submodule (ZMod 2) B.toSubmodule :=
 theorem finrank : Module.finrank (ZMod 2) D.submodule = d :=
   C.submoduleOf_finrank B.toSubmodule D.space_le_state
 
+/-- Forgetting the state subtype sends the checked displacement submodule
+back to its literal coordinate space. -/
+theorem submodule_map_subtype :
+    D.submodule.map B.toSubmodule.subtype = C.space := by
+  ext v
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    exact hx
+  · intro hv
+    have hvB : v ∈ B.toSubmodule := D.space_le_state hv
+    exact ⟨⟨v, hvB⟩, hv, rfl⟩
+
 /-- Every checked coordinate basis vector is a sum of genuine retained
 generator displacements. -/
 theorem le_generatorDisplacementSpan :
@@ -129,6 +141,71 @@ theorem le_generatorDisplacementSpan :
   apply Submodule.sum_mem
   intro t _
   exact Submodule.subset_span ⟨⟨D.termGenerator j t, D.termVector j t⟩, rfl⟩
+
+/-- If every displayed group-generator displacement of a coordinate basis
+of the whole state lies in the checked displacement chart, then the chart
+contains the complete retained-generator displacement span.  Together with
+`le_generatorDisplacementSpan`, this lets a generated finite certificate
+identify the intrinsic coinvariant kernel exactly. -/
+theorem generatorDisplacementSpan_le_of_basis_mem
+    {b : ℕ} (S : BinaryCoordinateSpace w b)
+    (hstate : B.toSubmodule = S.space)
+    (hbasis : ∀ i j,
+      (⟨rho (generators i) (S.inclusion (Pi.single j 1)) -
+          S.inclusion (Pi.single j 1),
+        B.toSubmodule.sub_mem
+          (B.apply_mem_toSubmodule (generators i) (by
+            rw [hstate]
+            exact ⟨Pi.single j 1, rfl⟩))
+          (by
+            rw [hstate]
+            exact ⟨Pi.single j 1, rfl⟩)⟩ : B.toSubmodule) ∈
+        D.submodule) :
+    representationGeneratorDisplacementSpan rho generators B ≤
+      D.submodule := by
+  apply Submodule.span_le.mpr
+  rintro _ ⟨⟨i, v⟩, rfl⟩
+  let delta : B.toSubmodule →ₗ[ZMod 2] B.toSubmodule :=
+    B.toRepresentation (generators i) - LinearMap.id
+  have hSB : S.space ≤ B.toSubmodule := by
+    rw [hstate]
+  have hchart : S.submoduleOf B.toSubmodule hSB ≤
+      D.submodule.comap delta := by
+    apply S.submoduleOf_le_of_basis_mem B.toSubmodule hSB
+    intro j
+    change delta
+      (⟨S.inclusion (Pi.single j 1),
+        hSB ⟨Pi.single j 1, rfl⟩⟩ : B.toSubmodule) ∈ D.submodule
+    simpa only [delta, LinearMap.sub_apply, LinearMap.id_apply] using hbasis i j
+  have hv : v ∈ S.submoduleOf B.toSubmodule hSB := by
+    change (v : Fin w → ZMod 2) ∈ S.space
+    rw [← hstate]
+    exact v.2
+  have := hchart hv
+  simpa only [Submodule.mem_comap, delta, LinearMap.sub_apply,
+    LinearMap.id_apply] using this
+
+/-- A full-state reverse basis check upgrades the generated displacement
+certificate to an equality. -/
+theorem generatorDisplacementSpan_eq_of_basis_mem
+    {b : ℕ} (S : BinaryCoordinateSpace w b)
+    (hstate : B.toSubmodule = S.space)
+    (hbasis : ∀ i j,
+      (⟨rho (generators i) (S.inclusion (Pi.single j 1)) -
+          S.inclusion (Pi.single j 1),
+        B.toSubmodule.sub_mem
+          (B.apply_mem_toSubmodule (generators i) (by
+            rw [hstate]
+            exact ⟨Pi.single j 1, rfl⟩))
+          (by
+            rw [hstate]
+            exact ⟨Pi.single j 1, rfl⟩)⟩ : B.toSubmodule) ∈
+        D.submodule) :
+    representationGeneratorDisplacementSpan rho generators B =
+      D.submodule := by
+  apply le_antisymm
+  · exact D.generatorDisplacementSpan_le_of_basis_mem S hstate hbasis
+  · exact D.le_generatorDisplacementSpan
 
 end BinaryCoordinateDisplacementCertificate
 

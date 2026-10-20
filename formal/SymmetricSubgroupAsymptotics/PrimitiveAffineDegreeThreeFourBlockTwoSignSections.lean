@@ -34,7 +34,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
 
 private abbrev G := preE7NonPairAction w U
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
+local instance primitiveAffineDegreeThreeFourBlockTwoSignSections_localInstance1 : Fact P.p.Prime := (chart block P).primeFact
 
 private abbrev PairChart
     (hr : Nat.card block.Fibre = 3)

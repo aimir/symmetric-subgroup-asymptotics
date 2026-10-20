@@ -47,9 +47,9 @@
   },
   "files": [
     {
-      "bytes": 7307,
+      "bytes": 13918,
       "path": "ASSUMPTIONS.md",
-      "sha256": "19430a6024dda3766391f47da36d4d4183bece773f349fb5ef25f8d47f8baaf9"
+      "sha256": "b61742114c726ca3cbf342dc0f6794c16fcc43f2cd63ece8675cd5d975938ade"
     },
     {
       "bytes": 8747,
@@ -212,9 +212,9 @@
       "sha256": "3fea8e64b36752795889cb9104eee6658ce1299caa092d07cf96d22b1e29eaa5"
     },
     {
-      "bytes": 9002,
+      "bytes": 26431,
       "path": "computations/README.md",
-      "sha256": "ff68261753bf624050c780adec0b3da9a16eb32a6b73d889ba7cb3eaab2e5219"
+      "sha256": "2cbb4bd09a938beef02b3d6851a8bf7396148740dd36311a0f1b147f5606ab91"
     },
     {
       "bytes": 5659,
@@ -467,24 +467,104 @@
       "sha256": "deb22cb95b3edf2d0d522d164e973986b500e05d8cb0c13eed6549007f96d3e4"
     },
     {
+      "bytes": 11743,
+      "path": "computations/python/export_lean_action16_data_chunks.py",
+      "sha256": "23fe1b27d0798e3d230b06b09d78ead8a4489f179d292ee9f2c4b108f2dd5f25"
+    },
+    {
       "bytes": 10728,
       "path": "computations/python/export_lean_action_registry.py",
       "sha256": "bccd975ea6eb51aa29fb511e17afefd988e1e0f45a908a747c55bf11f5cf5436"
     },
     {
-      "bytes": 15956,
+      "bytes": 10251,
+      "path": "computations/python/export_lean_carrier_modular.py",
+      "sha256": "360e2c4b878b09686e1658fedd83ad7177791f52f1520e43b9870e7da6a2e487"
+    },
+    {
+      "bytes": 17276,
       "path": "computations/python/export_lean_carriers.py",
-      "sha256": "a6fd5fca33f35c1c3b1a6e97e66cf7904149103c950a226a8dd46e4454753ad0"
+      "sha256": "8626b2f40bd5897cd1ec8901c4fde9a63425ee0983a8d8e516cfcc4a4f6f336e"
     },
     {
-      "bytes": 8644,
+      "bytes": 5776,
+      "path": "computations/python/export_lean_finite_entry8.py",
+      "sha256": "24eb6f2f20d54899634dbe073b712388649918c59e0aa014b47654b26a3aa6a9"
+    },
+    {
+      "bytes": 8655,
       "path": "computations/python/export_lean_generator_edges.py",
-      "sha256": "576113d5a9e4e793178b6cf4d431afcceb0f948a7aeecc3ebf1b8c154faa27e1"
+      "sha256": "61038ff49a619684fa2b369b9da397b2487997f3c4b6bf8c2001b1b69ec3830f"
     },
     {
-      "bytes": 8064,
+      "bytes": 26824,
+      "path": "computations/python/export_lean_kernel_axes.py",
+      "sha256": "25757ab7f4fecc32b765533372deebecbf31aa7d2f457f7cddbff5b8c10eae74"
+    },
+    {
+      "bytes": 8957,
+      "path": "computations/python/export_lean_kernel_gaps.py",
+      "sha256": "16b4739a3f6eeb94d37e99c7f0d0c13fd3bd0c1a086a3c2348e9181a2b1b8e81"
+    },
+    {
+      "bytes": 9351,
       "path": "computations/python/export_lean_menu_cayley.py",
-      "sha256": "e261909d41bd3bbeedd1f279c5cb7e9d165610fb824ceafad3a028ed3e0fb3c3"
+      "sha256": "51358b1e4849d1e8edb5e93ea390f29351778b20c241a45d07a4c41ebbfd4882"
+    },
+    {
+      "bytes": 8364,
+      "path": "computations/python/export_lean_normal_characters.py",
+      "sha256": "6ceb048ad9355262c7906e5a4f1ef0770af6e2417936fbd7123af4a473cfc949"
+    },
+    {
+      "bytes": 15835,
+      "path": "computations/python/export_lean_normal_registry.py",
+      "sha256": "550ca3a24f2c63489355ac64c20f38d33ac69083b876d3673cfad5ca9305f6eb"
+    },
+    {
+      "bytes": 35354,
+      "path": "computations/python/export_lean_pair_bindings.py",
+      "sha256": "67413ee5ef6a4950779cf7803f8580f5905fc634a4022a7a0d2a397000acf879"
+    },
+    {
+      "bytes": 5518,
+      "path": "computations/python/export_lean_pair_frames.py",
+      "sha256": "580f23e6dd506dc01d1a8d7433233f4fce1620cd1872219075f955e4aa147f82"
+    },
+    {
+      "bytes": 6968,
+      "path": "computations/python/export_lean_pair_installed.py",
+      "sha256": "a8685d573dedd61f97fc91bb3b614fe9223fdae965b84dd2ab551e063a997835"
+    },
+    {
+      "bytes": 12000,
+      "path": "computations/python/export_lean_pair_local.py",
+      "sha256": "22faccde188e63b293367139ff9b682f7ce21049bb68d3675aaf0c9475bca17d"
+    },
+    {
+      "bytes": 33068,
+      "path": "computations/python/export_lean_prime_composition.py",
+      "sha256": "b0873f4ee4159f4274966878c21a2d5b6d8f07f77ddbb7d5e5dfb28856c1b26e"
+    },
+    {
+      "bytes": 19201,
+      "path": "computations/python/export_lean_schreier_actions.py",
+      "sha256": "df1bfdb79cd66dbfbda8883e3dd051799408723ca301556a87a21ecd12763159"
+    },
+    {
+      "bytes": 7977,
+      "path": "computations/python/export_lean_schreier_assembly.py",
+      "sha256": "75423d85a418d3fc658f607e2cb1bdf16a262dc8d969d23dd9f73245e8bde82a"
+    },
+    {
+      "bytes": 9652,
+      "path": "computations/python/export_lean_schreier_bindings.py",
+      "sha256": "6269a5bb9532fb3434a6435abfefe5bc5b7094b6499569cf3d15936214f31eb6"
+    },
+    {
+      "bytes": 18107,
+      "path": "computations/python/export_lean_top_registry.py",
+      "sha256": "05cca7f6f3fd303e3414dff42fdea2aea80b2c76a2d8b0b58e99390ec9c33066"
     },
     {
       "bytes": 4862,
@@ -500,6 +580,11 @@
       "bytes": 10372,
       "path": "computations/python/pair_top_modules.py",
       "sha256": "f25a117e41125fcfe4e27fc308b36e1ba1f5ca2005ad2bfd750f80186597c9b3"
+    },
+    {
+      "bytes": 5074,
+      "path": "computations/python/permutation_words.py",
+      "sha256": "538e943f8078692d03803456f838bce218168fdca92d6dda763bfc47752a30a7"
     },
     {
       "bytes": 10400,
@@ -532,19 +617,19 @@
       "sha256": "0a7b1c3f7be96cbf862c16644d99761d389f5964d96689ad5fb380b597ead615"
     },
     {
-      "bytes": 6935,
+      "bytes": 8399,
       "path": "paper/references.bib",
-      "sha256": "8c6e5232ff99324e1ddb79c8a634838057e00c7cefb6d19d246ebdb747626b04"
+      "sha256": "a00a77ef721a56ff4953acf671aa2610bb824873cd629f794a8b806f67a5f546"
     },
     {
-      "bytes": 22095,
+      "bytes": 43076,
       "path": "provenance/LITERATURE.md",
-      "sha256": "89511de40b1b2019a450733aff918119ed8ce70f7d1b6d319a5a5356a9f5239c"
+      "sha256": "c20e9dcc284ee38279309767a0bd3d4f5e15948b4ea3ebdcc074ea9dd5f2ccdd"
     },
     {
-      "bytes": 37349,
+      "bytes": 38908,
       "path": "provenance/claims.json",
-      "sha256": "56003fe0926331200c554428b0b4f240ea143db0894b014a04666d91477ff1dd"
+      "sha256": "b1d35ae4abbf6a5caa53b976d72409395354ef3433e85849769c1aac8e23e09c"
     }
   ],
   "four_block": {

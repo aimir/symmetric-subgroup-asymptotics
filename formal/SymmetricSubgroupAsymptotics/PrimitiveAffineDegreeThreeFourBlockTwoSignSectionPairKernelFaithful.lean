@@ -28,7 +28,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
   (P : PrimitiveAffineProfile block.Component block.Fibre)
   [Nontrivial block.Fibre]
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
+local instance primitiveAffineDegreeThreeFourBlockTwoSignSectionPairKernelFaithful_localInstance1 : Fact P.p.Prime := (chart block P).primeFact
 
 /-- A nontrivial literal pair-kernel element changes at least one of the two
 actual scalar isotypes. -/

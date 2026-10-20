@@ -1,5 +1,4 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineSmallPublishedCatalogue
-import SymmetricSubgroupAsymptotics.UniqueMinimalNormalAbelianLength
 
 /-!
 # Consequences of the published small affine catalogue
@@ -166,15 +165,9 @@ theorem chief_abelianLength_le_rowCap
     representative_is_nonsoluble_row L C r hrepNonsolvable
   refine ⟨r, hrDegree, hrNonsoluble, ?_⟩
   let K := (C r).nonsolubleCore hrNonsoluble
-  letI : K.core.Normal := K.normal
-  have hseries := actualChiefSeriesAbelianLength_le_quotient_cardFactors
-    (actualChiefSeriesComap e.symm s) K.core K.ne_bot
-      K.noncommutative K.le_every_nontrivial_normal
-  rw [actualChiefSeriesComap_abelianLength e.symm s,
-    K.quotient_card_eq] at hseries
-  exact hseries.trans
-    (SmallAffineCatalogueRow.nonsolubleCoreQuotient_cardFactors_le
-      r hrNonsoluble)
+  have hseries := K.chief_bound (actualChiefSeriesComap e.symm s)
+  rw [actualChiefSeriesComap_abelianLength e.symm s] at hseries
+  exact hseries
 
 /-- Fixed-target-envelope wrapper around the literal-chief-series result. -/
 theorem trace_abelianLength_le_rowCap

@@ -31,7 +31,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
 
 private abbrev G := preE7NonPairAction w U
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
+local instance primitiveAffineDegreeThreeFourBlockTwoSignSectionPairKernelAction_localInstance1 : Fact P.p.Prime := (chart block P).primeFact
 
 /-- The literal pair kernel maps to the actual acting top of every proper
 section.  This is the original quotient map `G/E → G/(E ⊔ N)`, restricted

@@ -1,5 +1,8 @@
 import SymmetricSubgroupAsymptotics.BinaryPairResidualTop
 import SymmetricSubgroupAsymptotics.PermutationBinaryRankThreeOrder
+import SymmetricSubgroupAsymptotics.RepresentationNestedQuotientAmbient
+import SymmetricSubgroupAsymptotics.RepresentationNestedQuotientImage
+import SymmetricSubgroupAsymptotics.DualGeneratorSchurCapacity
 
 /-! The rank-three residual of an original eight-pair frame.
 The ambient denominator is the literal image of normalSpace in the
@@ -46,6 +49,88 @@ theorem normalTop_comap_eq :
       F.normalSpace N :=
   Submodule.comap_map_eq_of_injective (f := F.kernelSpace.subtype)
     Subtype.val_injective (F.normalSpace N)
+
+/-- The kernel of the literal section intertwiner is the nested copy of the
+original normal coordinate axis inside the correlated kernel state. -/
+theorem sectionTopIntertwiner_ker_eq_nestedNormalTop :
+    (F.sectionTopIntertwiner N).ker =
+      nestedSubrepresentation
+        (F.normalTopPermutationSubrepresentation N)
+        F.kernelTopPermutationSubrepresentation
+        (F.normalTop_le_kernelTop N) := by
+  apply Subrepresentation.toSubmodule_injective
+  ext x
+  change (F.normalSpace N).mkQ x = 0 ↔
+    x ∈ (F.normalTopPermutationSubrepresentation N).toSubmodule.comap
+      F.kernelSpace.subtype
+  change (Submodule.Quotient.mk x : F.kernelSpace ⧸ F.normalSpace N) = 0 ↔ _
+  rw [Submodule.Quotient.mk_eq_zero, F.normalTop_comap_eq N]
+  rfl
+
+/-- The image in an actual pair section of any retained coordinate state
+`B` is the literal nested quotient `B/A`, where `A` is the original normal
+axis.  The statement is equivariant for the actual top action. -/
+noncomputable def sectionTopNestedQuotientImageEquiv
+    (B : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) F.top.range I))
+    (hAB : F.normalTopPermutationSubrepresentation N ≤ B)
+    (hBK : B ≤ F.kernelTopPermutationSubrepresentation) :
+    (nestedQuotientRepresentation
+      (F.normalTopPermutationSubrepresentation N) B hAB).Equiv
+      (intertwinerImage
+        F.kernelTopPermutationSubrepresentation.toRepresentation
+        (F.sectionTopRepresentation N)
+        (F.sectionTopIntertwiner N)
+        (nestedSubrepresentation B
+          F.kernelTopPermutationSubrepresentation hBK)).toRepresentation := by
+  let K := F.kernelTopPermutationSubrepresentation
+  let A := F.normalTopPermutationSubrepresentation N
+  let q := F.sectionTopIntertwiner N
+  let B' := nestedSubrepresentation B K hBK
+  have hAK : A ≤ K := F.normalTop_le_kernelTop N
+  have hker : q.ker = nestedSubrepresentation A K hAK :=
+    F.sectionTopIntertwiner_ker_eq_nestedNormalTop N
+  let eAmbient := nestedQuotientAmbientEquiv A B K hAB hBK
+  have himage (L : Subrepresentation K.toRepresentation) (hL : L ≤ B')
+      (heq : L = q.ker) :
+      (nestedQuotientRepresentation L B' hL).Equiv
+        (intertwinerImage K.toRepresentation (F.sectionTopRepresentation N) q B').toRepresentation := by
+    subst L
+    exact nestedQuotientImageEquiv
+      K.toRepresentation (F.sectionTopRepresentation N) q B' hL
+  exact eAmbient.trans (himage (nestedSubrepresentation A K hAK)
+    (nestedSubrepresentation_mono A B K hAB hBK) hker.symm)
+
+/-- A finite dual-generator certificate for the ambient coordinate quotient
+therefore bounds the Schur capacity of its actual image in the pair
+section. -/
+theorem sectionTopImage_schurCapacity_le_of_nestedQuotient_dual_generated
+    [Finite I]
+    (B : Subrepresentation
+      (permutationFunctionRepresentation (ZMod 2) F.top.range I))
+    (hAB : F.normalTopPermutationSubrepresentation N ≤ B)
+    (hBK : B ≤ F.kernelTopPermutationSubrepresentation)
+    (H : ℕ)
+    (hgen : RepresentationGeneratedBy
+      (nestedQuotientRepresentation
+        (F.normalTopPermutationSubrepresentation N) B hAB).dual H) :
+    representationSchurCapacity
+      (intertwinerImage
+        F.kernelTopPermutationSubrepresentation.toRepresentation
+        (F.sectionTopRepresentation N)
+        (F.sectionTopIntertwiner N)
+        (nestedSubrepresentation B
+          F.kernelTopPermutationSubrepresentation hBK)).toRepresentation ≤ H :=
+  representationSchurCapacity_le_of_equiv_dual_generated
+    (nestedQuotientRepresentation
+      (F.normalTopPermutationSubrepresentation N) B hAB)
+    (intertwinerImage
+      F.kernelTopPermutationSubrepresentation.toRepresentation
+      (F.sectionTopRepresentation N)
+      (F.sectionTopIntertwiner N)
+      (nestedSubrepresentation B
+        F.kernelTopPermutationSubrepresentation hBK)).toRepresentation
+    (F.sectionTopNestedQuotientImageEquiv N B hAB hBK) H hgen
 
 /-- The quotient equivalence is induced by identity on the original
 correlated flip vectors. -/

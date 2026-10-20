@@ -38,6 +38,14 @@ private theorem s3AffineCoordinates_injective :
     Function.Injective s3AffineCoordinates := by
   decide +kernel
 
+/-- The affine multiplication law is checked only on the six literal
+three-point permutations, independently of the wreath product. -/
+private theorem s3TranslationCoordinate_mul (g h : S3) :
+    s3TranslationCoordinate (g*h)=s3TranslationCoordinate g+
+      OddMarkerTernaryChart.signScalar (oddMarkerSign g)*s3TranslationCoordinate h := by
+  revert g h
+  decide +kernel
+
 /-- The two affine offsets of the base permutations in the wreath product. -/
 def ternaryCoordinates (g : G) : TernaryPlane
   | 0 => s3TranslationCoordinate g.left.1
@@ -58,17 +66,19 @@ def monomialAut (d : D8) : MulAut TernaryKernel where
     apply Multiplicative.toAdd.injective
     funext i
     revert d v i
-    native_decide
+    decide +kernel
   right_inv v := by
     apply Multiplicative.toAdd.injective
     funext i
     revert d v i
-    native_decide
+    decide +kernel
   map_mul' v w := by
     apply Multiplicative.toAdd.injective
     funext i
-    revert d v w i
-    native_decide
+    let j : Fin 2 := if d.right=1 then i else ⟨1-i.val,by omega⟩
+    let c := OddMarkerTernaryChart.signScalar (if i=0 then d.left.1 else d.left.2)
+    change c*(v.toAdd j+w.toAdd j)=c*v.toAdd j+c*w.toAdd j
+    exact mul_add _ _ _
 
 /-- The preceding monomial automorphisms form the literal `D8`
 representation on `C₃²`. -/
@@ -80,14 +90,14 @@ def monomialAction : D8 →* MulAut TernaryKernel where
     apply Multiplicative.toAdd.injective
     funext i
     revert v i
-    native_decide
+    decide +kernel
   map_mul' d e := by
     apply MulEquiv.ext
     intro v
     apply Multiplicative.toAdd.injective
     funext i
     revert d e v i
-    native_decide
+    decide +kernel
 
 /-- Canonical split model of the degree-six comparator. -/
 abbrev SemidirectModel :=
@@ -105,14 +115,27 @@ def semidirectMap : G →* SemidirectModel where
     · apply Multiplicative.toAdd.injective
       funext i
       revert i
-      native_decide
+      decide +kernel
     · exact map_one projection
   map_mul' g h := by
     apply SemidirectProduct.ext
     · apply Multiplicative.toAdd.injective
       funext i
-      revert g h i
-      native_decide
+      rcases g with ⟨⟨g0,g1⟩,s⟩
+      rcases h with ⟨⟨h0,h1⟩,t⟩
+      rcases C2Wreath.cases s with rfl | rfl <;> fin_cases i
+      · change s3TranslationCoordinate (g0*h0)=s3TranslationCoordinate g0+
+          OddMarkerTernaryChart.signScalar (oddMarkerSign g0)*s3TranslationCoordinate h0
+        exact s3TranslationCoordinate_mul g0 h0
+      · change s3TranslationCoordinate (g1*h1)=s3TranslationCoordinate g1+
+          OddMarkerTernaryChart.signScalar (oddMarkerSign g1)*s3TranslationCoordinate h1
+        exact s3TranslationCoordinate_mul g1 h1
+      · change s3TranslationCoordinate (g0*h1)=s3TranslationCoordinate g0+
+          OddMarkerTernaryChart.signScalar (oddMarkerSign g0)*s3TranslationCoordinate h1
+        exact s3TranslationCoordinate_mul g0 h1
+      · change s3TranslationCoordinate (g1*h0)=s3TranslationCoordinate g1+
+          OddMarkerTernaryChart.signScalar (oddMarkerSign g1)*s3TranslationCoordinate h0
+        exact s3TranslationCoordinate_mul g1 h0
     · exact map_mul projection g h
 
 /-- The coordinate homomorphism is injective.  The only finite decision is

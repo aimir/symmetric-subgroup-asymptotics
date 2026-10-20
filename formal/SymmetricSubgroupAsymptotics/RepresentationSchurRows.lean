@@ -27,6 +27,29 @@ def representationSubmoduleFixed
     (σ : Representation k B A) (S : Submodule k[B] σ.asModule) : Prop :=
   ∀ (g : B) (x : S), MonoidAlgebra.single g (1 : k) • x = x
 
+/-- A corresponding simple row is fixed before a surjective inflation if
+and only if it is fixed afterwards. -/
+theorem representationInflatedSubmodule_fixed_iff
+    {D : Type u} [Group D]
+    (γ : D →* B) (hγ : Function.Surjective γ)
+    (σ : Representation k B A) (S : Submodule k[B] σ.asModule) :
+    representationSubmoduleFixed (σ.comp γ)
+        (representationInflatedSubmodule γ hγ σ S) ↔
+      representationSubmoduleFixed σ S := by
+  constructor
+  · intro hfixed b x
+    obtain ⟨d, rfl⟩ := hγ b
+    let x' : representationInflatedSubmodule γ hγ σ S :=
+      ⟨x.1, x.2⟩
+    have hx := congrArg Subtype.val (hfixed d x')
+    apply Subtype.ext
+    simpa only [Submodule.coe_smul, Representation.single_smul, one_smul] using hx
+  · intro hfixed d x
+    apply Subtype.ext
+    let x' : S := ⟨x.1, x.2⟩
+    have hx := congrArg Subtype.val (hfixed (γ d) x')
+    simpa only [Submodule.coe_smul, Representation.single_smul, one_smul] using hx
+
 /-- Forget equivariance while retaining the proof that the image lies in
 the original invariant subspace. -/
 def simpleHomToInvariantsOfFixed

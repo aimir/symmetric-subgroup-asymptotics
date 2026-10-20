@@ -52,11 +52,22 @@ irreducible kernels. The primitive/rank checker and the affine-nine constructor'
 groups instead use GAP's normal-subgroup algorithm for those lists. Constructive block
 coverage and catalogue-based coverage are kept distinct. Exact cyclotomic
 characters, conjugacy, presentations and normalizers remain GAP computations.
-The zero-ternary frames use complete GAP normal menus for their top groups and
-stabilizers, an independent binary cyclic-sum closure for the eight-block
-module lattices, and explicit odd-subgroup and normalizer witnesses in the
-sixteen-block cases. The primitive frame domains use PrimGrp completeness;
-the 29 imprimitive tops have a separate constructive coverage proof.
+The original zero-ternary frame bounds now have structural Lean proofs.
+The eligible eight-point actions use actual Sylow-normalizer point witnesses,
+valid for every local epimorphism and twist. The four-by-four branch uses a
+common envelope for the whole original quotient socle and the actual Sylow
+centralizer dichotomy; it requires no four-by-four top or module-lattice
+census. Primitive frame coverage retains the explicit published classification
+input and checked point-conjugacy bindings. These frame results and the complete
+degree-four residual constructor are components of the constructed degree-two
+joint catalogue, complete sixteen-pair source coverage and final composition.
+Their recursive source/object release audit remains pending. The complete six-pair
+B6 source is now constructed uniformly from actual top geometry. The
+required eight-pair source endpoint is now proved uniformly from the existing
+published degree-eight action classification; it does not require the
+alternative 527-entry ambient source table. The historical computational menus
+are evidence for their own supplied witnesses, not extra hypotheses of these
+structural frame theorems.
 
 For the four exceptional charts, the data retain maps alpha:U->Q and beta:P->Q
 onto the same specified quotient, with exact kernels and unchanged physical
@@ -119,9 +130,97 @@ must inspect both the full theorem types and their transitive axiom
 dependencies; an unproved theorem passed as an argument can be absent from an
 axiom report while remaining a mathematical assumption.
 
+The legacy `PublishedDegreeTwoFourPairClassification` and
+`RDTMarkedC4ReductionInput` are certificate-valued interfaces, not accepted
+literature assumptions. Their active constructions are now checked:
+[`FourPairCanonicalClassification.classification`](formal/SymmetricSubgroupAsymptotics/FourPairCanonicalClassification.lean)
+builds the four-pair certificates from the published action classification,
+and
+[`ActualGlobalMarkedMoment.marked_bound`](formal/SymmetricSubgroupAsymptotics/MarkedC4ActualGlobalMarkedMoment.lean)
+constructs the full marked moment from its fifteen explicit ordinary
+published inputs. Neither certificate-valued interface remains a project
+hypothesis of the current published-input T1 facade.
+
+The earlier
+[conditional adapter](formal/SymmetricSubgroupAsymptotics/MarkedC4PublishedDegreeTwoT1.lean)
+accepts degree-two source data. The current
+[final facade](formal/SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
+constructs those data internally. Its eight-pair endpoint is supplied by
+[`PairedEightActualRepresentativeSource`](formal/SymmetricSubgroupAsymptotics/PairedEightActualRepresentativeSource.lean),
+using only the existing published degree-eight classification, Zmud and
+character-literature inputs. It retains the literal pair action, every
+original normal denominator and all top-map fibres. The 527-entry source
+table is an alternative construction of this endpoint, not an additional
+T1 obligation. The full six-pair source is also proved by
+`SixPairActualCompleteRepresentativeSource.representativeSource`: primitive
+tops use the existing source, and the actual three-pair/two-triple top
+geometries have nonbinary quotient socle capacity one. The universal natural
+module has capacity two; binary original quotients have order at most 32.
+All original axes and hot fibres are summed inside the unchanged width-12
+menu. Actual sixteen-pair source coverage is now proved by
+`DegreeSixteenCompleteGeometricSource.residualSource`, using actual minimal
+blocks and complete original quartet sources. All 283 joint-catalogue entries
+and the degree-two composition are also checked. The input reductions below
+are now constructed; the separate recursive release audit is in progress.
+
 Standard classical logical foundations are permitted. Unproved project
 lemmas, proof placeholders and hidden certificate-acceptance assumptions are
 excluded from either substantive verification milestone. The c=1 application,
 shared-C3 moment and inverse-complement compatibility remain required checked
 applications of the reusable results. Source verification, computational
 replay, manuscript review and formal proof are reported separately.
+
+The degree-sixteen locator is not an admissible literature assumption as
+currently typed. Its four listed classes omit imprimitive, pair-free tops
+with nonzero ternary local action, such as `A4 ≀ C4`. The existing 64 finite
+row proofs remain valid within their hypotheses; they do not prove this
+coverage proposition. The active replacement retains the actual minimal
+block system. The pair, primitive and two-primitive-eight-block branches
+now have complete checked width-32 sources, and the four-quartet constructor
+is proved for both zero and nonzero odd local kernels. Their assembly
+constructs `DegreeTwoSixteenPairResidualSource` from the bare published
+degree-eight and primitive-degree-sixteen classifications, the published
+socle and McIver--Neumann inputs, Zhmud and character literature. No
+project-owned sixteen-point coverage proposition is assumed.
+
+The final input audit exposed three older boundaries. The exceptional
+Tracey `5/16` head bound is now proved by
+`traceyBinaryExceptionalThree_of_raw` from the raw soluble formula and
+Corollary 3.12 orbit data. The actual-wreath Clifford faithfulness conclusion
+is now constructed by `CliffordRawRestriction.Input.toHomogeneousRestriction`
+from the raw normal-restriction theorem. Both constructors have checked
+sources and standard-only axiom audits. The corrected small-affine
+representative receipt is now constructed for all 34 fixed rows by
+`SmallAffineCanonicalRepresentatives.receipt`. It takes bare published
+catalogue coverage, classical `PSL₃(2)`/`PSL₃(3)` simplicity and Burnside's
+`p^a q^b` theorem, with no representative-facts or composition bound input.
+Its structural alternatives permit central abelian factors; the former
+invalid uniqueness condition has been removed. The degree-twenty-five
+projective-to-composition deduction is now proved from the actual
+`GL₂(5)` embedding, `PGL₂(5) ≅ S₅`, Burnside's theorem, and internal
+subgroup and chief-order arguments. It also constructs the actual scalar
+`C₄` datum. The complete finite affine package is built by
+`PublishedPrimitiveAffineFiniteLiterature.ofCanonicalClassifications`;
+neither a representative receipt nor an affine-capacity bound is assumed
+at the updated geometric target facade.
+
+The quantitative `PublishedPrimitiveSocleDichotomyInput` is now constructed
+by `PrimitiveSocleRawStructure.PublishedONanScottStructure.toSocleDichotomy`.
+Its inputs are ordinary O'Nan–Scott full-socle/degree structure and the two
+published simple-index inequalities of Ballester-Bolinches,
+Esteban-Romero and Jiménez-Seral. Least-index selection, the lower bound
+five, the faithful outer-wreath action, all numerical degree/logarithm
+deductions, and the exact original one-factor quotient are proved
+internally. The rounded all-subgroup generator bound is likewise derived
+from the retained McIver–Neumann theorem.
+
+The final T1 and AllTargets exports compile with these raw inputs; eleven
+target/helper declarations have standard-only axiom audits. The complete
+50-parameter mathematical boundary, with formulations and source locators,
+is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
+No project capacity, source, marked-moment, affine-consumer or quantitative
+socle-profile premise remains in those signatures. Ordinary published
+counting theorems and explicitly described finite structural catalogue
+correspondences remain assumptions. The full transitive source/object
+release audit is still in progress; the input audit and a successful direct
+check are not substitutes for it.

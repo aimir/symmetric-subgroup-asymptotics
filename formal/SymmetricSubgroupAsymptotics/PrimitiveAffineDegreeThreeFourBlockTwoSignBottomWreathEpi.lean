@@ -29,7 +29,7 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w}
 private abbrev G (w : ℕ) (U : PreE7NonPairActionClass w) :=
   preE7NonPairAction w U
 
-local instance : Fact P.p.Prime := (chart block P).primeFact
+local instance primitiveAffineDegreeThreeFourBlockTwoSignBottomWreathEpi_localInstance1 : Fact P.p.Prime := (chart block P).primeFact
 
 /-- The original four-block group splits over its literal ternary
 translation intersection when the signed quotient is binary. -/

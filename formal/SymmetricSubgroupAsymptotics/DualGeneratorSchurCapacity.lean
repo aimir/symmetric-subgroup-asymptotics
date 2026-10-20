@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.InducedSubrepresentationCount
 import SymmetricSubgroupAsymptotics.RepresentationCoordinateHeads
+import SymmetricSubgroupAsymptotics.RepresentationDualSubquotientGenerators
 import SymmetricSubgroupAsymptotics.RepresentationHeadExact
 import SymmetricSubgroupAsymptotics.SchurRepresentation
 
@@ -135,6 +136,100 @@ theorem representationSchurCapacity_le_of_dual_generated
       exact_mod_cast (Module.finrank_pos (R := k) (M := S))
     apply (div_le_iff₀ hpos).mpr
     exact_mod_cast hhom
+
+/-- A dual-generator certificate may be transported across an equivariant
+linear equivalence before applying the Schur-capacity bound.  This is useful
+when a concrete section is presented by a quotient chart while the finite
+certificate is stated for a literal coordinate quotient. -/
+theorem representationSchurCapacity_le_of_equiv_dual_generated
+    {U : Type} [AddCommGroup U] [Module k U]
+    (rho : Representation k G V) (sigma : Representation k G U)
+    [FiniteDimensional k U]
+    (e : rho.Equiv sigma) (H : ℕ)
+    (hgen : RepresentationGeneratedBy rho.dual H) :
+    representationSchurCapacity sigma ≤ H := by
+  let d : rho.dual.IntertwiningMap sigma.dual :=
+    RepresentationHeadExact.dualMap e.symm.toIntertwiningMap
+  have hd : Function.Surjective d :=
+    LinearMap.dualMap_surjective_of_injective e.symm.injective
+  have hgen' : RepresentationGeneratedBy sigma.dual H :=
+    representationGeneratedBy_of_surjective rho.dual sigma.dual d hd hgen
+  exact representationSchurCapacity_le_of_dual_generated sigma H hgen'
+
+/-- If a quotient-group representation inflates to a representation
+equivalent to one with a generated contragredient, then the quotient-group
+representation has the same capacity bound.  Surjectivity of the acting
+group map makes inflation capacity-neutral. -/
+theorem representationSchurCapacity_le_of_comp_equiv_dual_generated
+    {Q U : Type} [Group Q] [AddCommGroup U] [Module k U]
+    (rho : Representation k G V) (sigma : Representation k Q U)
+    [FiniteDimensional k U]
+    (q : G →* Q) (hq : Function.Surjective q)
+    (e : rho.Equiv (sigma.comp q)) (H : ℕ)
+    (hgen : RepresentationGeneratedBy rho.dual H) :
+    representationSchurCapacity sigma ≤ H := by
+  have hcomp : representationSchurCapacity (sigma.comp q) ≤ H :=
+    representationSchurCapacity_le_of_equiv_dual_generated
+      rho (sigma.comp q) e H hgen
+  rwa [representationSchurCapacity_comp q hq sigma] at hcomp
+
+/-- An integral representation-capacity bound gives the corresponding
+Schur-scaled multiplicity bound on every simple row. -/
+theorem schurSocleMultiplicity_le_nat_mul_end_finrank_of_capacity_le
+    (sigma : Representation k G W) [FiniteDimensional k W]
+    (H : ℕ) (hcap : representationSchurCapacity sigma ≤ H)
+    {X : Type} [AddCommGroup X] [Module k X]
+    [Module k[G] X] [IsScalarTower k k[G] X]
+    [FiniteDimensional k X] [IsSimpleModule k[G] X] :
+    schurSocleMultiplicity
+        (k := k) (R := k[G]) (A := sigma.asModule) (X := X) ≤
+      H * Module.finrank (Module.End k[G] X) X := by
+  have hdim : (0 : ℝ) < Module.finrank k X := by
+    letI : Nontrivial X := IsSimpleModule.nontrivial k[G] X
+    exact_mod_cast (Module.finrank_pos (R := k) (M := X))
+  have hhom := schurHom_finrank_le_capacity
+    (k := k) (R := k[G]) (A := sigma.asModule) (M := X)
+  have hratio :
+      (Module.finrank k (X →ₗ[k[G]] sigma.asModule) : ℝ) /
+          Module.finrank k X ≤ H := by
+    calc
+      _ ≤ representationSchurCapacity sigma := by
+        apply (div_le_iff₀ hdim).2
+        simpa only [representationSchurCapacity] using hhom
+      _ ≤ H := hcap
+  rw [schurSimpleRatio_eq_multiplicity_division
+      (k := k) (R := k[G]) (A := sigma.asModule) (X := X)] at hratio
+  have hEnd : (0 : ℝ) < Module.finrank (Module.End k[G] X) X := by
+    have htower := schur_simple_finrank_tower (k := k) (R := k[G]) (X := X)
+    have hpositive : 0 < Module.finrank (Module.End k[G] X) X := by
+      by_contra hn
+      have hz := Nat.eq_zero_of_not_pos hn
+      rw [htower, hz, mul_zero] at hdim
+      norm_num at hdim
+    exact_mod_cast hpositive
+  have hmul :
+      (schurSocleMultiplicity
+        (k := k) (R := k[G]) (A := sigma.asModule) (X := X) : ℝ) ≤
+        H * Module.finrank (Module.End k[G] X) X :=
+    (div_le_iff₀ hEnd).mp hratio
+  exact_mod_cast hmul
+
+/-- A generated contragredient gives the integral Schur-scaled row bound
+used by the coupled nonfixed argument.  For a simple source `X`, dualising
+embeds `Hom(X, sigma)` into `Hom(sigma⁺, X⁺)`.  Evaluation on `H`
+generators bounds the latter by `H * dim_k X`; the scalar-extension formula
+`dim_k X = dim_k End(X) * dim_End(X) X` then cancels the first Schur factor. -/
+theorem schurSocleMultiplicity_le_of_dual_generated
+    (sigma : Representation k G W) [FiniteDimensional k W]
+    (H : ℕ) (hgen : RepresentationGeneratedBy sigma.dual H)
+    {X : Type} [AddCommGroup X] [Module k X]
+    [Module k[G] X] [IsScalarTower k k[G] X]
+    [FiniteDimensional k X] [IsSimpleModule k[G] X] :
+    schurSocleMultiplicity
+        (k := k) (R := k[G]) (A := sigma.asModule) (X := X) ≤
+      H * Module.finrank (Module.End k[G] X) X := by
+  exact schurSocleMultiplicity_le_nat_mul_end_finrank_of_capacity_le
+    sigma H (representationSchurCapacity_le_of_dual_generated sigma H hgen)
 
 end SymmetricSubgroupAsymptotics
 

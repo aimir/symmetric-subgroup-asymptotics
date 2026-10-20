@@ -24,6 +24,13 @@ finite certificates. The [reading guide](../docs/blueprint/MANUSCRIPT_ROUTE.md)
 describes how the parts fit together. The manuscript is a mathematical proof
 draft; the computational checks are not formal verification.
 
+The [final formal exports](../formal/README.md) now construct degree-two
+coverage, the four-pair source, marked-C₄ encodings, affine consumers, and
+quantitative socle profiles internally. Their explicit remaining mathematical
+inputs are the published theorems and structural classifications listed in
+that README. The recursive source/object release audit is in progress;
+successful direct checks and standard-only axiom reports do not replace it.
+
 The exact target and normalization are also recorded in [SPEC.md](../SPEC.md).
 Preparation notes and the manuscript reconstruction record are maintained
 outside this publication tree.

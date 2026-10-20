@@ -1,0 +1,34 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCatalogueJointParameters
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCatalogueFiniteRows
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCataloguePairedBinding
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCatalogueJointCount
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCatalogueCoreCount
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCatalogueTernaryCount
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeTwoTwelvePairFiniteCataloguePairedCount
+
+/-! Final assembly of the generated count-twelve pair-top catalogue. -/
+
+set_option autoImplicit false
+noncomputable section
+open scoped Classical
+
+namespace SymmetricSubgroupAsymptotics
+namespace Non2UnipotentPrefixFiniteMenu
+namespace PrimitiveAffineImprimitiveBlockTransfer
+namespace DegreeTwoTwelvePairFiniteCatalogue
+
+noncomputable def catalogue : DegreeTwoTwelvePairTopFiniteCatalogue where
+  row := row
+  pairedSix := pairedSix
+  pairedSixBinding := pairedBinding
+  joint_count := joint_count_certified
+  core_count := core_count_certified
+  ternary_count := ternary_count_certified
+  paired_count := paired_count_certified
+
+end DegreeTwoTwelvePairFiniteCatalogue
+end PrimitiveAffineImprimitiveBlockTransfer
+end Non2UnipotentPrefixFiniteMenu
+end SymmetricSubgroupAsymptotics
+
+end

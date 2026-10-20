@@ -122,12 +122,12 @@ theorem ternarySignedWreathThree_orderThree_uniformSubrepresentationGeneratorBou
   letI : Fact (3 : ℕ).Prime := ⟨Nat.prime_three⟩
   let HSylow : Sylow 3 TernarySignedWreathThree :=
     Sylow.ofCard H (by
-      have hfac : (Nat.factorization 48) 3 = 1 := by native_decide
+      have hfac : (Nat.factorization 48) 3 = 1 := by decide +kernel
       rw [hH, ternarySignedWreathThree_card, hfac]
       norm_num)
   let TSylow : Sylow 3 TernarySignedWreathThree :=
     Sylow.ofCard TernarySignedTopC3 (by
-      have hfac : (Nat.factorization 48) 3 = 1 := by native_decide
+      have hfac : (Nat.factorization 48) 3 = 1 := by decide +kernel
       rw [ternarySignedTopC3_card, ternarySignedWreathThree_card, hfac]
       norm_num)
   obtain ⟨g, hg⟩ := MulAction.exists_smul_eq

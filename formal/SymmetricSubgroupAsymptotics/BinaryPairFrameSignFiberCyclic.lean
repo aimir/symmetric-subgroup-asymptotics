@@ -290,7 +290,7 @@ theorem signFiber_uniformSubrepresentationGeneratorBound_one_of_card_three
   have hale : a ≤ 1 := by
     have := (Nat.prime_three.pow_dvd_iff_le_factorization
       (by norm_num : 48 ≠ 0)).mp hapow
-    have hfac : (Nat.factorization 48) 3 = 1 := by native_decide
+    have hfac : (Nat.factorization 48) 3 = 1 := by decide +kernel
     simpa only [hfac] using this
   have haone : a = 1 := by
     rw [ha] at hHone

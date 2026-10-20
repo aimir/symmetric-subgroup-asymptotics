@@ -1,0 +1,133 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow27NormalCore
+
+
+/-! Transition checks for normal state 17, classes 11--21.  Generated from a selected certificate; Lean rechecks all words. -/
+set_option autoImplicit false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 0
+noncomputable section
+open scoped Classical
+
+namespace SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow27NormalState17Classes1TransitionChecks
+
+abbrev Source := PrimitiveAffineSixteenFrameRow27NormalCore.Source
+local instance sourceGroup : Group Source := PrimitiveAffineSixteenFrameRow27TopCertificate.group
+abbrev topAmbient := PrimitiveAffineSixteenFrameRow27NormalCore.topAmbient
+
+def classIndex : Fin 11 → Fin 33 :=
+  (Fin.cases (11) (Fin.cases (12) (Fin.cases (13) (Fin.cases (14) (Fin.cases (15) (Fin.cases (16) (Fin.cases (17) (Fin.cases (18) (Fin.cases (19) (Fin.cases (20) (Fin.cases (21) (fun i => Fin.elim0 i))))))))))))
+
+private def parentWordsTable : Array (FiniteGeneratorWord (Fin 9)) :=
+  #[FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 7),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 8),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (FiniteGeneratorWord.generator 8),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 2)) (FiniteGeneratorWord.generator 8)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2)),FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.one,FiniteGeneratorWord.one,FiniteGeneratorWord.one]
+
+private def representativeWordsTable : Array (FiniteGeneratorWord (Fin 9)) :=
+  #[FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 3)) (FiniteGeneratorWord.generator 1)) (FiniteGeneratorWord.generator 4),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (FiniteGeneratorWord.generator 5)) (FiniteGeneratorWord.generator 2)) (FiniteGeneratorWord.generator 3),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 4)) (FiniteGeneratorWord.generator 4)) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 4)) (FiniteGeneratorWord.generator 5)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 4)),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (FiniteGeneratorWord.generator 5)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 4))) (FiniteGeneratorWord.generator 3),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (FiniteGeneratorWord.generator 4)) (FiniteGeneratorWord.generator 2)) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 2))) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 4))) (FiniteGeneratorWord.generator 3)) (FiniteGeneratorWord.generator 5),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 2)) (FiniteGeneratorWord.generator 5)) (FiniteGeneratorWord.generator 4)) (FiniteGeneratorWord.generator 2),FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 6),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 0)) (FiniteGeneratorWord.generator 1)) (FiniteGeneratorWord.generator 6),FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.mul (FiniteGeneratorWord.one) (FiniteGeneratorWord.generator 1)) (FiniteGeneratorWord.generator 2)) (FiniteGeneratorWord.generator 6)) (FiniteGeneratorWord.inv (FiniteGeneratorWord.generator 3))]
+
+private def childWordsTable : Array (FiniteNormalJoinWord (Fin 9) Source) :=
+  #[FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (FiniteNormalJoinWord.parent 5)) (FiniteNormalJoinWord.parent 2)) (FiniteNormalJoinWord.parent 3),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 4))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 3))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.conjugate (PrimitiveAffineSixteenFrameRow27NormalCore.usedSource 0))),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 4)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 2))) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 4)),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.parent 4),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 3))) (FiniteNormalJoinWord.parent 4)) (FiniteNormalJoinWord.parent 2),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 2))) (FiniteNormalJoinWord.parent 3),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.parent 2)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 3)),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 4),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 5),FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 4),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 5),FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 4),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 5),FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 4),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 5),FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 4),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 5),FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 4),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 5),FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 4),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 5),FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 4),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 5),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.conjugate (PrimitiveAffineSixteenFrameRow27NormalCore.usedSource 0)),FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 4),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 5),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0)) (FiniteNormalJoinWord.parent 1)) (FiniteNormalJoinWord.conjugate (PrimitiveAffineSixteenFrameRow27NormalCore.usedSource 0)),FiniteNormalJoinWord.one,FiniteNormalJoinWord.one,FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 0),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 1),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 3),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 4),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 5),FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.mul (FiniteNormalJoinWord.one) (FiniteNormalJoinWord.parent 2)) (FiniteNormalJoinWord.parent 0)) (FiniteNormalJoinWord.inv (FiniteNormalJoinWord.parent 3))) (FiniteNormalJoinWord.conjugate (PrimitiveAffineSixteenFrameRow27NormalCore.usedSource 0)),FiniteNormalJoinWord.one,FiniteNormalJoinWord.one]
+
+private instance finiteGeneratorWordInhabited :
+    Inhabited (FiniteGeneratorWord (Fin 9)) :=
+  ⟨FiniteGeneratorWord.one⟩
+
+private instance finiteNormalJoinWordInhabited :
+    Inhabited (FiniteNormalJoinWord (Fin 9) Source) :=
+  ⟨FiniteNormalJoinWord.one⟩
+
+def parentWords (r : Fin 11) (k : Fin 9) :
+    FiniteGeneratorWord (Fin 9) :=
+  parentWordsTable[r.val * 9 + k.val]!
+
+def representativeWord (r : Fin 11) : FiniteGeneratorWord (Fin 9) :=
+  representativeWordsTable[r.val]!
+
+def childWords (r : Fin 11) (k : Fin 9) :
+    FiniteNormalJoinWord (Fin 9) Source :=
+  childWordsTable[r.val * 9 + k.val]!
+
+private theorem all_code_checked :
+    (∀ (r : Fin 11) (k : Fin 9),
+      (parentWords r k).evalCodeOps (permutationFunctionPairOne 16)
+          permutationFunctionPairMul permutationFunctionPairInv
+          (fun q ↦ PrimitiveAffineSixteenFrameRow27NormalCore.usedCode
+            (PrimitiveAffineSixteenFrameRow27NormalCore.stateUsed (PrimitiveAffineSixteenFrameRow27NormalCore.child 17 (classIndex r)) q)) =
+        PrimitiveAffineSixteenFrameRow27NormalCore.usedCode (PrimitiveAffineSixteenFrameRow27NormalCore.stateUsed 17 k)) ∧
+    (∀ r : Fin 11,
+      (representativeWord r).evalCodeOps (permutationFunctionPairOne 16)
+          permutationFunctionPairMul permutationFunctionPairInv
+          (fun q ↦ PrimitiveAffineSixteenFrameRow27NormalCore.usedCode
+            (PrimitiveAffineSixteenFrameRow27NormalCore.stateUsed (PrimitiveAffineSixteenFrameRow27NormalCore.child 17 (classIndex r)) q)) =
+        PrimitiveAffineSixteenFrameRow27NormalCore.usedCode (PrimitiveAffineSixteenFrameRow27NormalCore.representativeUsed (classIndex r))) ∧
+    (∀ (r : Fin 11) (k : Fin 9),
+      (childWords r k).evalCodeOpsWith (permutationFunctionPairOne 16)
+          permutationFunctionPairMul permutationFunctionPairInv PrimitiveAffineSixteenFrameRow27NormalCore.usedEncode
+          (fun q ↦ PrimitiveAffineSixteenFrameRow27NormalCore.usedCode (PrimitiveAffineSixteenFrameRow27NormalCore.stateUsed 17 q))
+          (PrimitiveAffineSixteenFrameRow27NormalCore.usedCode (PrimitiveAffineSixteenFrameRow27NormalCore.representativeUsed (classIndex r))) =
+        PrimitiveAffineSixteenFrameRow27NormalCore.usedCode
+          (PrimitiveAffineSixteenFrameRow27NormalCore.stateUsed (PrimitiveAffineSixteenFrameRow27NormalCore.child 17 (classIndex r)) k)) := by
+  decide +kernel
+
+private theorem childConjugators_checked : ∀ (r : Fin 11) (k : Fin 9),
+    (childWords r k).ConjugatorsSatisfy
+      (fun g ↦ PrimitiveAffineSixteenFrameRow27NormalCore.usedEncode g = PrimitiveAffineSixteenFrameRow27NormalCore.sourceCode.encode g) := by
+  intro r k
+  fin_cases r <;> fin_cases k <;>
+    simp [childWords, childWordsTable,
+      FiniteNormalJoinWord.ConjugatorsSatisfy]
+
+theorem parentWords_checked : ∀ (r : Fin 11) (k : Fin 9),
+    (parentWords r k).eval
+        (PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators (PrimitiveAffineSixteenFrameRow27NormalCore.child 17 (classIndex r))) =
+      PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators 17 k := by
+  intro r k
+  apply FiniteGeneratorWord.eq_of_evalCode_eq PrimitiveAffineSixteenFrameRow27NormalCore.sourceCode
+    (PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators (PrimitiveAffineSixteenFrameRow27NormalCore.child 17 (classIndex r)))
+    (parentWords r k) (PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators 17 k)
+  simpa only [PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators_eq_used,
+    PrimitiveAffineSixteenFrameRow27NormalCore.sourceCode_encode_used] using
+      ((FiniteGeneratorWord.evalCodeOps_eq_evalCode PrimitiveAffineSixteenFrameRow27NormalCore.sourceCode
+        (fun q ↦ PrimitiveAffineSixteenFrameRow27NormalCore.usedCode
+          (PrimitiveAffineSixteenFrameRow27NormalCore.stateUsed (PrimitiveAffineSixteenFrameRow27NormalCore.child 17 (classIndex r)) q))
+        (parentWords r k)).symm.trans (all_code_checked.1 r k))
+
+theorem representativeWords_checked : ∀ r : Fin 11,
+    (representativeWord r).eval
+        (PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators (PrimitiveAffineSixteenFrameRow27NormalCore.child 17 (classIndex r))) =
+      PrimitiveAffineSixteenFrameRow27NormalCore.topRepresentative (classIndex r) := by
+  intro r
+  apply FiniteGeneratorWord.eq_of_evalCode_eq PrimitiveAffineSixteenFrameRow27NormalCore.sourceCode
+    (PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators (PrimitiveAffineSixteenFrameRow27NormalCore.child 17 (classIndex r)))
+    (representativeWord r) (PrimitiveAffineSixteenFrameRow27NormalCore.topRepresentative (classIndex r))
+  simpa only [PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators_eq_used,
+    PrimitiveAffineSixteenFrameRow27NormalCore.topRepresentative_eq_used,
+    PrimitiveAffineSixteenFrameRow27NormalCore.sourceCode_encode_used] using
+      ((FiniteGeneratorWord.evalCodeOps_eq_evalCode PrimitiveAffineSixteenFrameRow27NormalCore.sourceCode
+        (fun q ↦ PrimitiveAffineSixteenFrameRow27NormalCore.usedCode
+          (PrimitiveAffineSixteenFrameRow27NormalCore.stateUsed (PrimitiveAffineSixteenFrameRow27NormalCore.child 17 (classIndex r)) q))
+        (representativeWord r)).symm.trans (all_code_checked.2.1 r))
+
+theorem childWords_checked : ∀ (r : Fin 11) (k : Fin 9),
+    (childWords r k).eval (parent := PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators 17)
+        (PrimitiveAffineSixteenFrameRow27NormalCore.topRepresentative (classIndex r)) =
+      PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators (PrimitiveAffineSixteenFrameRow27NormalCore.child 17 (classIndex r)) k := by
+  intro r k
+  apply FiniteNormalJoinWord.eq_of_evalCode_eq PrimitiveAffineSixteenFrameRow27NormalCore.sourceCode
+    (PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators 17) (PrimitiveAffineSixteenFrameRow27NormalCore.topRepresentative (classIndex r))
+    (childWords r k)
+    (PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators (PrimitiveAffineSixteenFrameRow27NormalCore.child 17 (classIndex r)) k)
+  simpa only [PrimitiveAffineSixteenFrameRow27NormalCore.stateGenerators_eq_used,
+    PrimitiveAffineSixteenFrameRow27NormalCore.topRepresentative_eq_used,
+    PrimitiveAffineSixteenFrameRow27NormalCore.sourceCode_encode_used] using
+      ((FiniteNormalJoinWord.evalCodeWith_eq PrimitiveAffineSixteenFrameRow27NormalCore.sourceCode PrimitiveAffineSixteenFrameRow27NormalCore.usedEncode
+        (fun q ↦ PrimitiveAffineSixteenFrameRow27NormalCore.usedCode (PrimitiveAffineSixteenFrameRow27NormalCore.stateUsed 17 q))
+        (PrimitiveAffineSixteenFrameRow27NormalCore.usedCode (PrimitiveAffineSixteenFrameRow27NormalCore.representativeUsed (classIndex r)))
+        (childWords r k) (childConjugators_checked r k)).symm.trans
+          ((FiniteNormalJoinWord.evalCodeOpsWith_eq_evalCodeWith
+            PrimitiveAffineSixteenFrameRow27NormalCore.sourceCode PrimitiveAffineSixteenFrameRow27NormalCore.usedEncode
+            (fun q ↦ PrimitiveAffineSixteenFrameRow27NormalCore.usedCode (PrimitiveAffineSixteenFrameRow27NormalCore.stateUsed 17 q))
+            (PrimitiveAffineSixteenFrameRow27NormalCore.usedCode (PrimitiveAffineSixteenFrameRow27NormalCore.representativeUsed (classIndex r)))
+            (childWords r k)).symm.trans (all_code_checked.2.2 r k)))
+
+end SymmetricSubgroupAsymptotics.PrimitiveAffineSixteenFrameRow27NormalState17Classes1TransitionChecks
+
+end
