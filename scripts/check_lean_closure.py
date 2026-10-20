@@ -74,6 +74,13 @@ def objects(formal, module):
                         Path(str(primary) + ".server")) if p.is_file()]
 
 
+def output_artifacts(formal, module):
+    """Lean module sources may also emit an IR file; imports use oleans only."""
+    paths = objects(formal, module)
+    ir = paths[0].with_suffix(".ir")
+    return paths + ([ir] if ir.is_file() else [])
+
+
 def resumable(formal, logs, module, deps, checker, checker_path, environment=None):
     """Fail closed; exact map equality rejects omitted or extra fingerprints."""
     try:
@@ -88,7 +95,7 @@ def resumable(formal, logs, module, deps, checker, checker_path, environment=Non
         expected_sources = {str(source_path(formal, dep)): checker.digest(source_path(formal, dep))
                             for dep in deps}
         expected_imports = {str(p): checker.digest(p) for dep in deps for p in objects(formal, dep)}
-        expected_outputs = {str(p): checker.digest(p) for p in objects(formal, module)}
+        expected_outputs = {str(p): checker.digest(p) for p in output_artifacts(formal, module)}
         pins = {str(p): checker.digest(p) for p in
                 (formal / "lean-toolchain", formal / "lake-manifest.json")}
         return (receipt.get("schema") == 2 and receipt.get("success") is True
