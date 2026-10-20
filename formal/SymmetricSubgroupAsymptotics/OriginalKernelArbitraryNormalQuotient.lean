@@ -73,6 +73,16 @@ abbrev sectionModule := A ⧸ E.normalSpace π A N
 def sectionMap : π.ker →* Multiplicative (E.sectionModule π A N) :=
   sectionSubgroupCutMap (E.kernelCoordinates π A) (N.subgroupOf π.ker)
 
+/-- The section coordinate of an additive kernel vector, over an arbitrary
+prime-field chart. -/
+theorem sectionMap_equiv_ofAdd_general (v : A) :
+    (E.sectionMap π A N (E.equiv (Multiplicative.ofAdd v))).toAdd =
+      (E.normalSpace π A N).mkQ v := by
+  change (E.normalSpace π A N).mkQ
+      ((E.equiv.symm (E.equiv (Multiplicative.ofAdd v))).toAdd) = _
+  rw [MulEquiv.symm_apply_apply]
+  rfl
+
 omit [N.Normal] in
 theorem sectionMap_surjective : Function.Surjective (E.sectionMap π A N) :=
   sectionSubgroupCutMap_surjective (E.kernelCoordinates π A)
@@ -101,6 +111,45 @@ def sectionRepresentation :
       (E.sectionMap π A N (MulAut.conjNormal g k)).toAdd :=
   normalSectionTopRepresentation_apply π.ker N (E.sectionMap π A N)
     (E.sectionMap_surjective π A N) (E.sectionMap_ker π A N) g k
+
+/-- The literal quotient map from the kernel module to its section is
+equivariant for the original ambient action over every prime field. -/
+theorem sectionRepresentation_mkQ_general (g : Q) (v : A) :
+    (E.sectionRepresentation π A N).ρ (QuotientGroup.mk' (π.ker ⊔ N) g)
+        ((E.normalSpace π A N).mkQ v) =
+      (E.normalSpace π A N).mkQ (A.ρ (π g) v) := by
+  let k : π.ker := E.equiv (Multiplicative.ofAdd v)
+  have hc : MulAut.conjNormal g k =
+      E.equiv (Multiplicative.ofAdd (A.ρ (π g) v)) := by
+    apply Subtype.ext
+    rw [E.conjugate g v]
+    rfl
+  rw [← E.sectionMap_equiv_ofAdd_general π A N v,
+    E.sectionRepresentation_apply, hc,
+    E.sectionMap_equiv_ofAdd_general]
+
+/-- The literal acting top factored from an arbitrary onto top map. -/
+def sectionLabelTop (hπ : Function.Surjective π) :
+    B →* Q ⧸ (π.ker ⊔ N) :=
+  π.liftOfSurjective hπ
+    ⟨QuotientGroup.mk' (π.ker ⊔ N), by
+      rw [QuotientGroup.ker_mk']
+      exact le_sup_left⟩
+
+@[simp] theorem sectionLabelTop_apply (hπ : Function.Surjective π) (g : Q) :
+    sectionLabelTop π N hπ (π g) =
+      QuotientGroup.mk' (π.ker ⊔ N) g :=
+  MonoidHom.liftOfRightInverse_comp_apply π (Function.surjInv hπ)
+    (Function.rightInverse_surjInv hπ) _ g
+
+/-- Equivariance of the literal section quotient under the factored top. -/
+theorem sectionRepresentation_mkQ_sectionLabelTop
+    (hπ : Function.Surjective π) (b : B) (v : A) :
+    (E.normalSpace π A N).mkQ (A.ρ b v) =
+      (E.sectionRepresentation π A N).ρ (sectionLabelTop π N hπ b)
+        ((E.normalSpace π A N).mkQ v) := by
+  obtain ⟨g, rfl⟩ := hπ b
+  rw [sectionLabelTop_apply, E.sectionRepresentation_mkQ_general]
 
 /-- The actual quotient `Q/N` maps onto its actual acting top. -/
 def base : (Q ⧸ N) →* Q ⧸ (π.ker ⊔ N) :=
