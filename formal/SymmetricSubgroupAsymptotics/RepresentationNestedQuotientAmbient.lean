@@ -62,6 +62,12 @@ noncomputable def nestedQuotientAmbientIntertwiner
           (nestedSubrepresentation_mono A B C hAB hBC)).toSubmodule.mkQ.comp
         (nestedSubrepresentationEquiv B C hBC).toLinearMap) (by
           intro a ha
+          change (Submodule.Quotient.mk (nestedSubrepresentationEquiv B C hBC a) :
+            (nestedSubrepresentation B C hBC).toSubmodule ⧸
+              (nestedSubrepresentation
+                (nestedSubrepresentation A C (hAB.trans hBC))
+                (nestedSubrepresentation B C hBC)
+                (nestedSubrepresentation_mono A B C hAB hBC)).toSubmodule) = 0
           rw [Submodule.Quotient.mk_eq_zero]
           exact ha)
   isIntertwining' := by
@@ -83,14 +89,27 @@ theorem nestedQuotientAmbientIntertwiner_injective
     (nestedSubrepresentation A B hAB).toSubmodule.mkQ_surjective x
   obtain ⟨b, rfl⟩ :=
     (nestedSubrepresentation A B hAB).toSubmodule.mkQ_surjective y
-  apply Submodule.Quotient.eq.mpr
+  apply (Submodule.Quotient.eq (nestedSubrepresentation A B hAB).toSubmodule).mpr
+  change (Submodule.Quotient.mk (nestedSubrepresentationEquiv B C hBC a) :
+      (nestedSubrepresentation B C hBC).toSubmodule ⧸
+        (nestedSubrepresentation
+          (nestedSubrepresentation A C (hAB.trans hBC))
+          (nestedSubrepresentation B C hBC)
+          (nestedSubrepresentation_mono A B C hAB hBC)).toSubmodule) =
+      Submodule.Quotient.mk (nestedSubrepresentationEquiv B C hBC b) at hxy
   have hmem :
       nestedSubrepresentationEquiv B C hBC (a - b) ∈
         (nestedSubrepresentation
           (nestedSubrepresentation A C (hAB.trans hBC))
           (nestedSubrepresentation B C hBC)
           (nestedSubrepresentation_mono A B C hAB hBC)).toSubmodule :=
-    Submodule.Quotient.eq.mp hxy
+    by
+      simpa only [map_sub] using
+        (Submodule.Quotient.eq
+          (nestedSubrepresentation
+            (nestedSubrepresentation A C (hAB.trans hBC))
+            (nestedSubrepresentation B C hBC)
+            (nestedSubrepresentation_mono A B C hAB hBC)).toSubmodule).mp hxy
   exact hmem
 
 theorem nestedQuotientAmbientIntertwiner_surjective
@@ -104,11 +123,14 @@ theorem nestedQuotientAmbientIntertwiner_surjective
     (nestedSubrepresentation
       (nestedSubrepresentation A C (hAB.trans hBC))
       (nestedSubrepresentation B C hBC)
-      (nestedSubrepresentation_mono A B C hAB hBC)).toSubmodule.
-        mkQ_surjective y
+      (nestedSubrepresentation_mono A B C hAB hBC)).toSubmodule.mkQ_surjective y
   let b : B.toSubmodule := ⟨c.1.1, c.2⟩
   refine ⟨Submodule.Quotient.mk b, ?_⟩
-  apply Submodule.Quotient.eq.mpr
+  apply (Submodule.Quotient.eq
+    (nestedSubrepresentation
+      (nestedSubrepresentation A C (hAB.trans hBC))
+      (nestedSubrepresentation B C hBC)
+      (nestedSubrepresentation_mono A B C hAB hBC)).toSubmodule).mpr
   change nestedSubrepresentationEquiv B C hBC b - c ∈
     (nestedSubrepresentation
       (nestedSubrepresentation A C (hAB.trans hBC))
