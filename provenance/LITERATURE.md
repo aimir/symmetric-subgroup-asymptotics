@@ -811,15 +811,18 @@ pointings and the exact source-data interfaces are unchanged. The published
 classification remains historical provenance, rather than a required premise
 for these two slices; the larger catalogue inputs remain explicit.
 
-**Dixon input derived from retained primitive inputs.**
-`SolublePermutationOrderProof.dixonOrder_of_primitive_inputs` proves the
-ordinary order inequality from the retained bounded composition catalogue,
-the proved raw O'Nan–Scott structure and retained Halasi–Maróti soluble linear cube bound.
-These are not assumed order estimates on an arbitrary soluble permutation
-group. The proof checks bounded primitive orders, gives the large affine
-bound `|G| ≤ n⁴`, and then uses actual minimal-block wreath embeddings and
-actual orbit images. Only the catalogue and soluble linear cube premises remain;
-no separate Dixon assumption is requested by the final facade.
+**Dixon and soluble affine order inputs removed.**
+`ElementaryDixonOrderProof.dixonOrder_of_primitive_inputs` proves the
+ordinary soluble permutation order inequality from the retained bounded
+composition catalogue and the proved raw O'Nan–Scott structure. The large
+affine step uses `|G| ≤ n^(d+1)` and `2^d ≤ n`, rather than a linear base-size
+theorem. Actual minimal-block wreath embeddings and orbit images complete
+the induction. `primitiveAffineEightyOne_complement_le_cube` handles the
+other former Halasi–Maróti consumer from retained GPRV composition length:
+solubility gives Ω(|G|) ≤ 15, hence Ω(|R|) ≤ 11; the actual embedding into
+GL₄(F₃), of order 24261120, then gives `|R| ≤ 81³` by a checked divisor budget.
+LIT-AFFINE-BASE remains historical provenance; its general theorem is no
+longer an input to the final facade. This does not formalize that theorem.
 
 
 The current final facade additionally supplies the binary KP quotient-order
