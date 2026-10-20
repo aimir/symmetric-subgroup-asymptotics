@@ -55,10 +55,12 @@ specified quotient-module action. -/
   apply Multiplicative.ofAdd.injective
   apply E.equiv.injective
   apply Subtype.ext
+  change (E.equiv (E.equiv.symm (MulAut.conjNormal q x)) : Q) = _
   rw [E.equiv.apply_symm_apply]
   rw [E.conjugate]
-  change q * (x : Q) * q⁻¹ = _
-  rfl
+  change q * (x : Q) * q⁻¹ =
+    q * (E.equiv (E.equiv.symm x) : Q) * q⁻¹
+  rw [E.equiv.apply_symm_apply]
 
 /-- The literal image of `N ∩ ker π` in the original kernel module. -/
 def normalSpace : Submodule (ZMod p) A :=
