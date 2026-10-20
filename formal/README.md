@@ -216,8 +216,9 @@ Clifford faithfulness, all low-degree source data, marked-C₄ moment, and
 full `S₃` exception.
 
 The independent mathematical input audit is closed at this boundary.
-Recursive source/object verification of the final facade and public root
-remains the release gate. These are separate claims.
+Recursive source/object verification of the final facade and public root,
+and the final exported-declaration axiom audit, passed on 20 October 2026.
+The published hypotheses remain explicit mathematical inputs.
 
 ## Proof organization
 
@@ -283,16 +284,27 @@ recovery workflow.
 
 ## Verification boundary
 
-The final T1 and AllTargets declarations and raw-input constructors have
-passed individual source checks. Eleven target/helper exports have
-standard-only axiom audits. The remaining release task is recursive
-source/object correspondence throughout the public import graph, reusing
-matching evidence and rechecking stale modules serially. Logs, relocation
-attestations, and status records stay outside this repository. Pinned
-external Lean/mathlib objects form a separate dependency boundary.
+The public import closure contains **5,872 project modules**. On
+20 October 2026, recursive verification matched their current sources,
+compiled objects, direct dependency fingerprints, and pinned toolchain
+against successful check receipts. Matching historical receipts were reused
+with explicit relocation evidence; stale consumers were checked serially.
+All sources in this closure are tracked in the main checkout and match the
+audited bytes. Optional modules outside this public closure are not covered
+by this release claim.
+
+A fresh axiom audit of `T1_of_published_inputs`,
+`allTargets_of_published_inputs`, `T2_of_T1`, `T3_of_T1`,
+`allTargets_iff_T1`, and `definitionChecks` reports exactly `propext`,
+`Classical.choice`, and `Quot.sound`. The final audit used the serialized
+runner with 16 GiB allocator and RSS limits. Logs, receipts, relocation
+attestations, and detailed audit records stay outside this repository.
+Pinned external Lean/mathlib objects form a separate dependency boundary;
+their contents were not recursively rebuilt and source-certified here.
 
 A standard-only `#print axioms` result excludes extra Lean axioms and native
 computation acceptance from that theorem. It does not prove its explicit
-published hypotheses or certify stale source objects. The release claim
-requires the explicit mathematical boundary above, current kernel checks,
-and matching dependency provenance together.
+published hypotheses or certify stale source objects. This release combines
+the explicit mathematical boundary above, current kernel checks, and
+matching dependency provenance. It establishes verification relative to
+the stated published inputs, rather than a proof of those inputs themselves.
