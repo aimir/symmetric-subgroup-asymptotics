@@ -265,17 +265,42 @@ primitive catalogue, O'Nan–Scott structure and soluble irreducible linear
 cube bound, followed by actual block and orbit induction. These last three
 premises remain explicit; this is a dependency reduction for Dixon's bound.
 
+The full order bound for abelian p-quotients is now proved from faithful
+p-group actions and actual Sylow restriction. It includes higher prime-power
+cyclic factors, so the binary character-literature field is filled internally;
+the remaining `PreE7CharacterPublishedInputs` bundle has three published
+fields. The mixed-prime abelianization bound is not inferred by multiplying
+the separate prime bounds and remains explicit.
+
+The degree-eight binary excess-two implication is proved by complete checked
+coverage of all 26 binary actions. The other 25 actions have at most three
+ambient normal generators for every normal subgroup, certified by short
+conjugate-product words and complete normal registries. The surviving E8
+model has center equal to its derived subgroup, of order two; every
+nonabelian normal quotient therefore has trivial denominator. No action
+classification hypothesis is added.
+
+The large-orbit ordinary generator estimate is derived from the retained
+primitive normal-generator, refined Tracey and primitive composition-length
+inputs. Its induction retains all original orbit correlations and lifts
+ordinary generators only across actual abelian chief kernels. The stronger
+checked bound is 128 times the sum of n_i/sqrt(log₂ n_i) over nontrivial
+orbits; a rate-only integer power-of-two cutoff gives the former h62 field.
+The final marked moment also avoids h86: the retained labelled transitive
+count gives the weaker subquadratic container menu sufficient for the same
+argument. This does not prove Pyber's sharper exponential class bound.
+
 The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-32-parameter mathematical boundary, with formulations and source locators,
+29-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
 correspondences remain assumptions. On 20 October 2026 the recursive
-source/object audit passed for all 5,927 project modules in the public
+source/object audit passed for all 5,985 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.

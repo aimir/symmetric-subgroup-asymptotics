@@ -223,6 +223,49 @@ and using $t\leq b$, gives \eqref{eq:bounded-C4}. In particular neither
 the stopping cost nor $\mathcal P(r)$ is paid at every peel.
 
 \subsection{The weighted generation reduction}
+
+\begin{lemma}[Ordinary generation on the original orbits]
+\label{lem:soluble-orbit-generation}
+Let $G$ be a finite soluble permutation group, and let $n_i$ be its
+nontrivial orbit lengths. Then
+\[
+ d(G)\leq128\sum_i\frac{n_i}{\sqrt{\log n_i}}.
+\]
+\end{lemma}
+\begin{proof}
+Induct on the sum of the actual orbit lengths, retaining their joint
+faithful action. For a primitive head of degree $r$, the kernel of the
+remaining orbit actions embeds as a normal subgroup of that primitive
+image. The primitive normal-subgroup generator theorem bounds its
+ordinary rank by $\lfloor\log r\rfloor$ for $r\geq4$; the degrees two
+and three give the harmless uniform bound $\lfloor\log r\rfloor+2$.
+
+For an imprimitive head, take a minimal block of size $r$ and $s$ blocks.
+Keep the other orbit actions in the top group, even when that top acts
+nonfaithfully on these $s$ blocks. Along the actual chief series of the
+soluble primitive block component, each kernel is abelian. Its module
+generators supplement any subgroup already surjecting onto the quotient,
+so they lift ordinary generators. Tracey's induced-module bound and the
+primitive composition-length estimate give total cost at most
+\[
+ B(s)c(r),\qquad
+ B(s)=\left\lceil\frac{4s}{\sqrt{\log s}}\right\rceil,
+ \quad c(r)=\frac83\log r-\frac43.
+\]
+The two scalar inequalities, valid for $r,s\geq2$, are
+\begin{align*}
+ \log r+2&\leq\frac{128r}{\sqrt{\log r}},\\
+ B(s)c(r)+\frac{128s}{\sqrt{\log s}}
+ &\leq\frac{128rs}{\sqrt{\log(rs)}}.
+\end{align*}
+For the latter put $a=\log r$, $b=\log s$. Use $B(s)\leq5s/\sqrt b$,
+$b\geq1$, and
+$\sqrt{1+a}(1+a/8)\leq2^a$; this last inequality follows from
+$1+x\leq e^x$ and $\ln2\geq5/8$.
+Thus each compression decreases the total degree and preserves the
+claimed potential. Fixed points contribute zero and can be removed.
+\end{proof}
+
 \begin{proof}[Proof of Theorem~\ref{thm:C4-moment}]
 If $G=\langle K,x_1,\ldots,x_l\rangle$, restriction and the displayed
 generator values determine a character. Thus
@@ -248,18 +291,25 @@ $2^{F(m,r)+o_C(b^2)}$ for $r=O(b)$; \eqref{eq:coarse} bounds the
 odd factor by $2^{d^2/16+O(d^{3/2})}$. Since
 $F(m,r)+d^2/16\leq F(b,r)$, the bounded soluble case follows.
 
-For the large-orbit step fix $\eta>0$. The soluble generator estimate
-\cite[Proposition 6.2]{RoneyDougalTracey2025} supplies a cutoff $C$
-such that the large-orbit projection requires at most
+For the large-orbit step fix $\eta>0$. Lemma~\ref{lem:soluble-orbit-generation}
+supplies a cutoff $C$ such that the large-orbit projection requires at most
 $\eta b/\delta$ generators, where $\delta=(\log24)/3$ is the soluble
 order constant. Its kernel is an actual subgroup on the small support.
 Working in a product of maximal transitive soluble containers, the
 choices of lifts and their marked values cost at most
 $2^{\eta b^2+2\eta rb/\delta}$ by \eqref{eq:marked-generation}.
-The orbit partitions and container choices cost $2^{O(b\log b)}$
-by \cite[Theorem 8.6]{RoneyDougalTracey2025}. The bounded-source
-estimate is at most $F(b,r)$ since $F$ increases with physical degree.
-First take $b\to\infty$ with $\eta,C$ fixed, and then $\eta\to0$.
+Only a subquadratic container-menu exponent is needed. For every
+$\varepsilon>0$, the labelled transitive-group count gives a constant
+$A_\varepsilon$ and at most $A_\varepsilon2^{\varepsilon m^2}$ local
+containers on any $m$ labelled points. An orbit partition with fibre sizes
+$m_i$ therefore has at most
+$A_\varepsilon^b2^{\varepsilon\sum_i m_i^2}
+ \leq A_\varepsilon^b2^{\varepsilon b^2}$ choices.
+There are at most $b^b$ partition labels. Hence the complete original
+container menu has exponent $o(b^2)$; no sharper maximal-soluble class
+count is required. The bounded-source estimate is at most $F(b,r)$ since
+$F$ increases with physical degree. First take $b\to\infty$ with
+$\eta,C,\varepsilon$ fixed, and then $\eta,\varepsilon\to0$.
 This proves the soluble result uniformly for $0\leq r\leq K_0b$.
 It does not assert a uniform $O(b^{3/2})$ error as $C$ varies.
 

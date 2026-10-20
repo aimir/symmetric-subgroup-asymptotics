@@ -480,3 +480,29 @@ table: each listed normal-state row has its mask bit set, and every set mask
 bit maps back to a literal row. These two kernel-checked identities replace
 repeated searches for existential membership witnesses while preserving the
 same normal-registry and quotient-socle interfaces.
+
+
+## Selected degree-eight excess witnesses
+
+The two bounded producers below reproduce the additional normal registries
+and short ambient normal-generation words used by the internally proved
+RDT degree-eight exception:
+
+```sh
+python3 computations/python/export_lean_rdt_degree_eight_normal_registry_selected.py --master 8T28 --root . --output-dir ../rdt-eight-witnesses/registry --receipt ../rdt-eight-witnesses/registry.json
+python3 computations/python/export_lean_rdt_degree_eight_normal_words.py --master 8T28 --root . --output-dir ../rdt-eight-witnesses/words --receipt ../rdt-eight-witnesses/words.json
+```
+
+Every invocation selects one source. The new sparse registries are for
+`8T28`, `8T29` and `8T31`, each with 64 source elements. The word producer
+also handles the other nonexceptional degree-eight sources, with at most
+128 source elements. Both enforce fixed operation and time ceilings, require
+an explicit output directory, and keep optional receipts outside the supplied
+publication root. They use the standard library and the retained public
+selected-emitter functions, without invoking GAP, a compiler, or a bulk job.
+
+The selected `8T28` reproduction gives byte-identical copies of its checked
+states, registry and normal-word source. Lean independently proves normal
+coverage and every word equation. `RDTDegreeEightExceptionalProof` combines
+all 26 actual action branches and the intrinsic Heisenberg model, so neither
+producer success nor an external catalogue supplies the exceptional theorem.
