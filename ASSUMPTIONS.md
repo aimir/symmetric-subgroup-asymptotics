@@ -59,9 +59,9 @@ common envelope for the whole original quotient socle and the actual Sylow
 centralizer dichotomy; it requires no four-by-four top or module-lattice
 census. Primitive frame coverage retains the explicit published classification
 input and checked point-conjugacy bindings. These frame results and the complete
-degree-four residual constructor are distinct from the still-unfinished
-degree-two joint catalogue, complete sixteen-pair source coverage and final
-composition. The complete six-pair
+degree-four residual constructor are components of the constructed degree-two
+joint catalogue, complete sixteen-pair source coverage and final composition.
+Their recursive source/object release audit remains pending. The complete six-pair
 B6 source is now constructed uniformly from actual top geometry. The
 required eight-pair source endpoint is now proved uniformly from the existing
 published degree-eight action classification; it does not require the
