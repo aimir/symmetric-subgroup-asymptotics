@@ -743,3 +743,24 @@ The first implication pads the same common generating tuple to the natural
 half-dimension floor; the second uses its existing logarithmic bound.
 No additional published theorem is assumed for these implications. The
 refined Tracey theorem itself remains an explicit input.
+
+
+**Further checked specializations of retained published inputs.**
+The final facade derives `PublishedPrimitiveDegreeNineClassification` and
+`PublishedPrimitiveDegreeSixClassification` from the already retained
+`PublishedPrimitiveCompositionCatalogueCorrespondence`. The former checks
+the degree-nine order list; the latter also excludes a primitive order-720
+coset action at degree twelve and proves the needed subgroup recognition
+through actual maximal overgroups. The broader primitive catalogue
+correspondence remains a published assumption, with the same pinned rows.
+
+`TraceyPermutationFormulaConsequences.lean` derives the binary head formula
+from the prime-to and prime-power fields of the refined induced-module
+input. `TraceySolublePermutationConsequences.lean` derives the soluble
+permutation-module formula from the retained soluble-orbit theorem, using
+the actual full acting group and a proved odd Hall subgroup. The helper
+`SolubleOddHall.lean` proves existence by minimal-normal induction and the
+Schur–Zassenhaus theorem already checked in pinned mathlib; no additional
+literature input is added. A uniform integer cap preserves the quantifier
+over all subrepresentations. Finally the standalone Kovács–Praeger input
+is supplied by the identical field in the retained character bundle.
