@@ -191,7 +191,7 @@ noncomputable def singletonOfOrderTwentyOne
         have hdvd : Nat.card L ∣
             Nat.card (MulAction.stabilizer T (0 : Fin 8)) :=
           Subgroup.card_dvd_of_surjective f hf
-        rw [h6, hsource] at hdvd
+        rw [h6.1, hsource] at hdvd
         norm_num at hdvd
     have hfker : Nat.card f.ker = 7 :=
       surjectiveHom_kernel_card_seven_of_twentyOne_to_three
