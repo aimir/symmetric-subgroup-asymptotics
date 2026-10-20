@@ -250,7 +250,7 @@ induction, an explicit uniform integer cap, and a proved odd Hall subgroup
 existence theorem supply the transport. The last theorem uses mathlib's
 Schur–Zassenhaus theorem and introduces no new literature premise.
 The duplicate standalone Kovács–Praeger parameter is supplied by the
-existing character bundle. These five parameter removals leave the broader
+proved full abelianization theorem. These five earlier parameter removals leave the broader
 published catalogue, refined Tracey and soluble-orbit inputs explicit.
 
 The soluble subdirect socle-height statement is now proved unconditionally.
@@ -268,9 +268,15 @@ premises remain explicit; this is a dependency reduction for Dixon's bound.
 The full order bound for abelian p-quotients is now proved from faithful
 p-group actions and actual Sylow restriction. It includes higher prime-power
 cyclic factors, so the binary character-literature field is filled internally;
-the remaining `PreE7CharacterPublishedInputs` bundle has three published
-fields. The mixed-prime abelianization bound is not inferred by multiplying
-the separate prime bounds and remains explicit.
+the mixed-prime bound is proved using an actual nilpotent supplement and
+disjoint coprime supports, rather than multiplying prime bounds on the same
+degree. The `PreE7CharacterPublishedInputs` bundle now has only the general permutation class-number
+field. The nilpotent class bound is proved from prime-group fourth-power
+estimates and actual disjoint coprime supports. The exact faithful-character tuple theorem and bounded-factor
+epimorphism theorem are also proved internally; neither is a T1 assumption.
+The degree-eight affine-complement locator is proved from complete checked
+coverage of the15 actual GL(3,2) subgroup classes. Its remaining catalogue
+parameter requests only the31 fixed complement rows in degrees16 and27.
 
 The degree-eight binary excess-two implication is proved by complete checked
 coverage of all 26 binary actions. The other 25 actions have at most three
@@ -294,13 +300,13 @@ The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-29-parameter mathematical boundary, with formulations and source locators,
+27-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
 correspondences remain assumptions. On 20 October 2026 the recursive
-source/object audit passed for all 5,985 project modules in the public
+source/object audit passed for all 6,066 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.

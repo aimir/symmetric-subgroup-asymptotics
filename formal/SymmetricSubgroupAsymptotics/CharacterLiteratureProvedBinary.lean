@@ -1,27 +1,27 @@
 import SymmetricSubgroupAsymptotics.PermutationAbelianQuotientOrderBound
+import SymmetricSubgroupAsymptotics.KovacsPraegerAbelianizationProof
+import SymmetricSubgroupAsymptotics.NilpotentConjugacyClassProof
 
-/-! The current character literature boundary contains three statements.
-The binary abelian-quotient field in the original four-field internal API
-is supplied by a proved theorem, including all higher binary exponents. -/
+/-! The current character literature boundary contains one statement.
+The two abelian-quotient fields and the nilpotent class-number field in
+the original four-field internal API are supplied by proved theorems. -/
 
 set_option autoImplicit false
 
 namespace SymmetricSubgroupAsymptotics
 
-/-- The remaining published statements used by the character template.
-The ordinary mixed-prime Kovács--Praeger bound remains explicit. -/
+/-- The remaining general permutation class-number statement. Both
+Kovács--Praeger fields and the nilpotent class-number bound are proved. -/
 structure PreE7CharacterPublishedInputs : Prop where
   garonziMaroti : GaronziMarotiConjugacyClassBound
-  kovacsPraeger : KovacsPraegerAbelianizationBound
-  maroti : NilpotentConjugacyClassInput
 
-/-- Fill the old internal interface with the proved binary theorem. -/
+/-- Fill the old internal interface with the three proved fields. -/
 theorem PreE7CharacterPublishedInputs.toLiterature
     (h : PreE7CharacterPublishedInputs) : PreE7CharacterLiterature where
   garonziMaroti := h.garonziMaroti
-  kovacsPraeger := h.kovacsPraeger
+  kovacsPraeger := KovacsPraegerAbelianizationProof.kovacsPraegerAbelianizationBound
   kovacsPraegerBinary :=
     PermutationAbelianQuotientOrderBound.kovacsPraegerBinaryAbelianQuotientBound
-  maroti := h.maroti
+  maroti := NilpotentConjugacyClassProof.nilpotentConjugacyClassInput
 
 end SymmetricSubgroupAsymptotics

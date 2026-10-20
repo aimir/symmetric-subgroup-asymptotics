@@ -70,8 +70,8 @@ preserved as a source locator, not a current T1 hypothesis.
   nontrivial-target restriction of the unmarked "In particular" statement,
   with literal R-subdirect and P-direct bounded factors, the actual full
   projection onto P, and every source-normal U<=G' intersect ker(projection).
-  Constants depend only on the fixed prime 2 and k. This is a named
-  literature hypothesis, not a marked subgroup-count or encoding premise.
+  Constants depend only on the fixed prime 2 and k. The exact interface is
+  now proved in `RDTBoundedFactorEpimorphismProof`; it is not a T1 hypothesis.
 
 The ordinary interfaces in `MarkedC4RDTOriginalWordStructure` and
 `MarkedC4RDTExcessStructure` retain Theorem 5.5(ii), p.17, and Theorem 5.7,
@@ -367,7 +367,9 @@ author p.2: k(P)<=(38/25)^b for nilpotent P<=S_b.
 Applications: the character entries of NB-EXHAUST and FIN-MENU. The nilpotent
 bound applies to an actual Sylow subgroup of a common preimage. An abstract
 quotient does not acquire the same faithful permutation degree automatically.
-The conjectural 5^(b/4) bound is not an input.
+No conjectural general permutation-group bound is used. The exact
+nilpotent1.52 interface is now proved in `NilpotentConjugacyClassProof`,
+using prime-group fourth-power bounds and actual disjoint coprime supports.
 
 The formal `NilpotentConjugacyClassInput` states this bound for the actual
 permutation subgroup. `BinaryCharacterEnvelope` proves the passage to
@@ -636,7 +638,9 @@ Representations*, Algebras and Representation Theory 26 (2023), 1641–1667,
 Corollary 2.25 (Žmud′), printed p.19 of that manuscript, is the group case;
 Theorem 2.24, p.18, is the relative version. Over the complex numbers the
 characteristic condition is automatic. The irreducible constituents give
-the jointly faithful tuple in `ZmudFaithfulCharacterTupleInput`.
+the jointly faithful tuple in `ZmudFaithfulCharacterTupleInput`. Its exact
+finite complex formulation is now proved in `ZmudFaithfulCharacterProof`,
+including the empty tuple, and is supplied internally to T1.
 
 **LIT-MCIVER-NEUMANN — sharp permutation generation.** The ordinary
 half-degree generator bound, with the full `S₃` exception, is recorded in
@@ -808,7 +812,10 @@ field and the degree-eight RDT excess-two implication internally. The former
 is a full-order p-group block/orbit induction followed by actual Sylow
 restriction; the latter uses unconditional 26-action coverage, short ambient
 normal-generation words and intrinsic E8 center/derived recognition. The
-ordinary mixed-prime KP theorem remains in the three-field character bundle.
+ordinary mixed-prime KP theorem is now proved from a nilpotent supplement,
+full prime-power abelianizations and actual disjoint coprime supports. Both
+KP fields and the nilpotent class-number bound are supplied internally;
+the character bundle retains only the Garonzi–Maróti general class bound.
 `LargeOrbitGeneratorConsequencesFinal` derives Proposition 6.2's exact
 interface from the retained HRD primitive normal-generator, refined Tracey
 and GPRV composition-length inputs. The Pyber/Theorem 8.6 representative

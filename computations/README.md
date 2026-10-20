@@ -506,3 +506,31 @@ states, registry and normal-word source. Lean independently proves normal
 coverage and every word equation. `RDTDegreeEightExceptionalProof` combines
 all 26 actual action branches and the intrinsic Heisenberg model, so neither
 producer success nor an external catalogue supplies the exceptional theorem.
+
+## Complete GL(3,2) subgroup certificates
+
+The bounded producer `python/emit_general_three_two_coverage.py` constructs
+168 literal invertible matrices and 15 subgroup classes. Its 2,520
+single-element adjunction certificates use ordinary words in both directions.
+Lean checks those equations on the actual matrices and proves coverage by a
+generic adjunction-closure theorem. Fixed vector or covector flags exclude
+12 classes from primitive affine complements; literal linear intertwiners
+bind the remaining three to the fixed canonical groups.
+
+To reproduce this selected certificate in a fresh directory:
+
+```sh
+python3 computations/python/emit_general_three_two_coverage.py \
+  --output-dir /tmp/gl3-two-proof > /tmp/gl3-two-receipt.json
+python3 computations/python/find_general_three_two_invariant_flags.py \
+  --receipt /tmp/gl3-two-receipt.json
+python3 computations/python/find_general_three_two_affine_bindings.py \
+  --receipt /tmp/gl3-two-receipt.json
+```
+
+The producers refuse an ambient order above168 and have explicit operation,
+source-size and time caps. They require no GAP or catalogue database. Their
+output is untrusted until checked; the checked endpoint is
+`PrimitiveAffineDegreeEightCanonicalComplements.catalogue_locator`.
+This proves the degree-eight small-affine complement slice, not the full
+transitive eight-point action classification.

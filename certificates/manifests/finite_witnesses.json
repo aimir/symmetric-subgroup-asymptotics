@@ -47,14 +47,14 @@
   },
   "files": [
     {
-      "bytes": 19239,
+      "bytes": 19790,
       "path": "ASSUMPTIONS.md",
-      "sha256": "d5ade8bc8e43853046e9246da3cc28935c023dfbfeeff38a3b72c6ecdb961135"
+      "sha256": "2f6430998300ddd6c637732bd9baf959fdf4ae6e13a899abdb91426f3e609537"
     },
     {
-      "bytes": 9367,
+      "bytes": 10265,
       "path": "certificates/README.md",
-      "sha256": "27bccb90caecb365b87ae2b0433ed100c007dce33872f2a856d2b09d48e2996d"
+      "sha256": "7ab61fbbd8182e01e7205647ff51df07cb0ef2fcce9084e8cab7fc9f6a14a980"
     },
     {
       "bytes": 7395,
@@ -212,9 +212,9 @@
       "sha256": "3fea8e64b36752795889cb9104eee6658ce1299caa092d07cf96d22b1e29eaa5"
     },
     {
-      "bytes": 27949,
+      "bytes": 29314,
       "path": "computations/README.md",
-      "sha256": "02bb29058e4899458aef80ea05bd5fc0f73b0ce4fc446117666b509ee346a4ce"
+      "sha256": "f344e0142822eaeafa586fd39916cd470a0ed028e7df40bf46eb04dd1ea314a1"
     },
     {
       "bytes": 5659,
@@ -467,6 +467,11 @@
       "sha256": "deb22cb95b3edf2d0d522d164e973986b500e05d8cb0c13eed6549007f96d3e4"
     },
     {
+      "bytes": 18768,
+      "path": "computations/python/emit_general_three_two_coverage.py",
+      "sha256": "d2588bd8bdd4713ddeba87dc08861f4e22e72cadb50f8aef3a5a0fbea22d1917"
+    },
+    {
       "bytes": 11743,
       "path": "computations/python/export_lean_action16_data_chunks.py",
       "sha256": "23fe1b27d0798e3d230b06b09d78ead8a4489f179d292ee9f2c4b108f2dd5f25"
@@ -582,6 +587,16 @@
       "sha256": "87fd535230582d0e647ee5bdb58ac3afb36f0ba1b924e98fc7a40e8b96d1db68"
     },
     {
+      "bytes": 4608,
+      "path": "computations/python/find_general_three_two_affine_bindings.py",
+      "sha256": "c208b4e23f8d661831fd0f9ad348d530beb5483aedcc02ee310f9232761c01af"
+    },
+    {
+      "bytes": 1982,
+      "path": "computations/python/find_general_three_two_invariant_flags.py",
+      "sha256": "13b9c21f138cf3f1d2c49f19880c857858a778d2e7a5ebbe3f9f1258e103428f"
+    },
+    {
       "bytes": 6906,
       "path": "computations/python/pair_top_interfaces.py",
       "sha256": "01dd628e02956f80971270c1b1860f09142e06b4c6bbcfec70fb73387b5bec68"
@@ -632,9 +647,9 @@
       "sha256": "a00a77ef721a56ff4953acf671aa2610bb824873cd629f794a8b806f67a5f546"
     },
     {
-      "bytes": 52060,
+      "bytes": 52608,
       "path": "provenance/LITERATURE.md",
-      "sha256": "dea8c5f70c57671c983a4034825aa1395b457b2fab106d3a2880ff40523973d2"
+      "sha256": "af405cd1a619d6d59410c0805861c7b9425295c48f6e69bb1eb6e68f2e2229f9"
     },
     {
       "bytes": 38908,
@@ -646,6 +661,14 @@
     "actions": 10,
     "central_quotient_maps": 5,
     "normal_kernels": 72
+  },
+  "general_three_two_coverage": {
+    "adjunctions": 2520,
+    "ambient_order": 168,
+    "flag_exclusions": 12,
+    "formal_endpoint": "PrimitiveAffineDegreeEightCanonicalComplements.catalogue_locator",
+    "irreducible_complement_rows": 3,
+    "subgroup_classes": 15
   },
   "interpretation": "Digests bind these exact bytes. They are not proof certificates. Mathematical acceptance uses each documented replay, coverage argument and classification premise.",
   "kind": "finite_certificate_manifest",
