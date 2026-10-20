@@ -266,7 +266,6 @@ theorem degreeFourLinearCoordinate_range_ne_bot_of_nonzeroTernaryCore
   exact hk (congrArg Subtype.val h)
 
 theorem degreeFourTranslationSoclePart_normalGen_le_sharp
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hr : Nat.card block.Fibre = 4)
     (hs : 2 ≤ Nat.card block.Points)
@@ -275,7 +274,7 @@ theorem degreeFourTranslationSoclePart_normalGen_le_sharp
     (N : DegreeFourLiteralNormalAxis (w := w) (U := U)) :
     MarkedC4.normalGen (degreeFourTranslationSoclePart block P N) ≤
       degreeFourSocleSlots (Nat.card block.Points) :=
-  degreeFourTranslationCarried_normalGen_le_sharp block P hTracey
+  degreeFourTranslationCarried_normalGen_le_sharp block P
     hTraceyPerm hr hs hD i0 N (degreeFourTranslationSoclePart block P N)
     (minimalNormalSoclePart_le_of
       (DegreeFourRetainedQuotient N)
@@ -284,11 +283,10 @@ theorem degreeFourTranslationSoclePart_normalGen_le_sharp
       (fun _ _ hM ↦ hM))
 
 /-- Complete sharp retained-socle generator menu in the nonzero-core branch.
-The active binary part uses Tracey's normal-core orbit term.  The core-central
+The active binary part uses the actual normal-core cyclic-orbit bound.  The core-central
 part is disjoint from the retained linear block kernel by Clifford
 homogeneity and is charged through the exact actual top section. -/
 noncomputable def degreeFourNonzeroRetainedSocleGeneratorBound
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
@@ -340,7 +338,7 @@ noncomputable def degreeFourNonzeroRetainedSocleGeneratorBound
           degreeFourSocleSlots (Nat.card block.Points)
     let i0 : block.Points := Classical.choice inferInstance
     exact degreeFourTranslationSoclePart_normalGen_le_sharp
-      block P hTracey hTraceyPerm hr hs hD i0 N
+      block P hTraceyPerm hr hs hD i0 N
   · let H := trivialActionSoclePart
       (DegreeFourRetainedQuotient N)
       (CliffordHomogeneousRestriction.retainedCoreImage
@@ -371,7 +369,6 @@ noncomputable def degreeFourNonzeroCharacterIntervalSource
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
     (family : PreE7NoPairNoC3EarlierOwnerFamily)
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
@@ -383,7 +380,7 @@ noncomputable def degreeFourNonzeroCharacterIntervalSource
   degreeFourCharacterIntervalSource block P hZmud lit family
     (fun N hretained ↦
       degreeFourNonzeroRetainedSocleGeneratorBound
-        block P hTracey hMN hClifford hTraceyPerm
+        block P hMN hClifford hTraceyPerm
           hr hs hD N hretained)
     hr hs hsUpper
 

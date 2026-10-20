@@ -235,16 +235,16 @@ actual six-point projective action and an order-120 subgroup recognition
 lemma in `S₆`; the latter constructs literal affine coordinates and retains
 the original action conjugacy in the `F₂₀` branch. No classification,
 finite-table, or ATLAS premise is added. The two older induced-module
-half/logarithmic inputs are derived from the retained refined Tracey input,
-and the faithful-simple generator input is derived from the retained
-finite-simple two-generation input. These three are dependency reductions,
-not formalizations of the stronger retained results.
+half/logarithmic inputs are derived from the internally proved refined
+induced-module theorem. The faithful-simple generator input is derived from
+the retained finite-simple two-generation input; that latter dependency
+reduction does not formalize the stronger two-generation theorem.
 
 The degree-six and degree-nine primitive inputs are now derived from the
 retained 336-row composition catalogue. The degree-six proof constructs
 maximal-overgroup coset actions and uses the catalogue at degree twelve;
 it does not insert an order-60 recognition assumption. The binary formula
-is derived from the refined Tracey input, and the soluble permutation
+is derived from the proved refined theorem, and the soluble permutation
 formula from its soluble-orbit induced-module input. Actual stabilizer
 induction, an explicit uniform integer cap, and a proved odd Hall subgroup
 existence theorem supply the transport. The last theorem uses mathlib's
@@ -314,8 +314,8 @@ nonabelian normal quotient therefore has trivial denominator. No action
 classification hypothesis is added.
 
 The large-orbit ordinary generator estimate is derived from the retained
-primitive normal-generator, refined Tracey and primitive composition-length
-inputs. Its induction retains all original orbit correlations and lifts
+primitive normal-generator and primitive composition-length inputs, together
+with the internally proved refined induced-module theorem. Its induction retains all original orbit correlations and lifts
 ordinary generators only across actual abelian chief kernels. The stronger
 checked bound is 128 times the sum of n_i/sqrt(log₂ n_i) over nontrivial
 orbits; a rate-only integer power-of-two cutoff gives the former h62 field.
@@ -323,17 +323,27 @@ The final marked moment also avoids h86: the retained labelled transitive
 count gives the weaker subquadratic container menu sufficient for the same
 argument. This does not prove Pyber's sharper exponential class bound.
 
+The refined induced-module theorem is now proved in
+`TraceyRefinedInducedModuleProof.lean`. It uses actual Sylow/Mackey indices,
+finite chain widths, a proved binomial square-root estimate, Nakayama and
+coprime semisimplicity; one least uniform integer satisfies all five fields.
+The soluble-orbit input is also unnecessary for T1. Its exact permutation
+consumer is proved by two capacities on the same original module, and its
+degree-four consumer by the actual normal ternary core and cyclic quotient.
+This replaces those consumers; it does not prove the stronger arbitrary-local
+per-orbit statement.
+
 The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-22-parameter mathematical boundary, with formulations and source locators,
+20-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
-correspondences remain assumptions. On 20 October 2026 the recursive
-source/object audit passed for all 6,141 project modules in the public
+correspondences remain assumptions. On 21 October 2026 the recursive
+source/object audit passed for all 6,201 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.

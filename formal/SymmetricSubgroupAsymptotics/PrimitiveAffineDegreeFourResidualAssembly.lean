@@ -70,7 +70,6 @@ exception witness. -/
 noncomputable def degreeFourNonzeroResidualSource
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
@@ -89,7 +88,7 @@ noncomputable def degreeFourNonzeroResidualSource
     (hD : degreeFourTernaryCore block P ≠ ⊥) :
     PreE7RankTailSourceOrYonedaTopData w U := by
   exact degreeFourNonzeroCharacterIntervalSource block P hZmud lit .acomp
-    hTracey hMN hClifford hTraceyPerm hr block.degrees_ge_two.2
+    hMN hClifford hTraceyPerm hr block.degrees_ge_two.2
     (degreeFourTwentyFourExceptionalBlockCount_le_3072 hs) hD
 
 /-- Exhaust the complete degree-four residual lane once the adjacent
@@ -99,7 +98,6 @@ classification or counting premise is introduced here. -/
 noncomputable def degreeFourResidualSource_of_zeroCore
     (hZmud : ZmudFaithfulCharacterTupleInput)
     (lit : PreE7CharacterLiterature)
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
@@ -119,7 +117,7 @@ noncomputable def degreeFourResidualSource_of_zeroCore
   | degreeFour hr' hs =>
       by_cases hD : degreeFourTernaryCore block P = ⊥
       · exact ⟨zeroCore U hw basePoint block P hres hr hs hD⟩
-      · exact ⟨degreeFourNonzeroResidualSource hZmud lit hTracey hMN
+      · exact ⟨degreeFourNonzeroResidualSource hZmud lit hMN
           hClifford hTraceyPerm U hw basePoint block P hres hr hs hD⟩
 
 end PrimitiveAffineImprimitiveBlockTransfer

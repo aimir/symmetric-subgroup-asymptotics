@@ -102,7 +102,6 @@ primitive socle dichotomy; all other alternatives are proved geometrically. -/
 def degreeFourSixteenFrameReduction
     (published : DegreeEightCanonicalCatalogue.PublishedClassification)
     (socle : PublishedPrimitiveSocleDichotomyInput)
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
@@ -133,7 +132,7 @@ def degreeFourSixteenFrameReduction
         by_cases hzero : degreeFourTernaryCore inner R = ⊥
         · exact .zero C b inner R hinner hpoints hzero
         · exact .bounded (degreeFourZeroCoreSixteenNonzeroInnerBounds block P
-            hTracey hMN hClifford hTraceyPerm hr hD C inner R hinner hpoints hzero)
+            hMN hClifford hTraceyPerm hr hD C inner R hinner hpoints hzero)
     | eight _ b inner hinner hpoints =>
         exact .bounded (degreeFourZeroCoreSixteenEightInnerBounds block P
           published hr hD C inner hinner hpoints)

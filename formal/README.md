@@ -132,14 +132,14 @@ outside the publication repository.
 
 The final exports are
 [T1_of_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
-and `allTargets_of_published_inputs`. Their **22 named inputs** are listed
+and `allTargets_of_published_inputs`. Their **20 named inputs** are listed
 below. The character bundle has one published general class-number field. Both
 abelian-quotient statements are now supplied by checked proofs. These are explicit theorem parameters,
 not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
-Seventeen formerly external facts are now supplied by checked proofs on the
-same pinned toolchain:
+Nineteen formerly external requirements are now discharged by checked proofs
+or proved consumer replacements on the same pinned toolchain:
 
 | Proved result | Export and proof source |
 |---|---|
@@ -161,6 +161,9 @@ same pinned toolchain:
 | If N is normal in a transitive binary permutation group and N≤G′, its ambient normal-generator number is at most floor(n/4). | [`publishedDerivedNormalQuarterBinary_proved`](SymmetricSubgroupAsymptotics/BinaryDerivedNormalQuarterProof.lean), by original-degree induction through actual central-pair kernels and faithful top images. The nonelementary top has a proved quarter-module bound; an elementary top kills the derived image. No excess classification is assumed. |
 | O'Nan–Scott structure: a finite faithful primitive action is affine, or its full socle is T^k with the exact degree alternatives and a faithful original quotient embedding into Out(T) ≀ S_k. | [`publishedONanScottStructure`](SymmetricSubgroupAsymptotics/PrimitiveSocleRawONanScottProof.lean), from actual minimal normals, the proved Scott subdirect theorem, point-stabilizer maximality, coordinate automorphisms and the exact inner kernel. Both minimal normals are retained in the two-regular case. No simple-group classification is assumed for this structural theorem. |
 
+| Uniform refined induced-module bounds, with one tuple length satisfying the half, logarithmic, coprime, primary and prime-power ceilings simultaneously. | [`traceyRefinedInducedModuleInput_proved`](SymmetricSubgroupAsymptotics/TraceyRefinedInducedModuleProof.lean), through actual Sylow/Mackey pieces, finite chain widths, Nakayama and coprime semisimplicity. The least actual uniform capacity satisfies every field; no induced-module theorem is assumed. |
+| The two actual consumers of the soluble-orbit input. | [`traceySolublePermutationFormulaRawInput_proved`](SymmetricSubgroupAsymptotics/TraceySolublePermutationFormulaProof.lean) proves the exact soluble permutation formula using actual mixed-prime chains and an odd Hall subgroup. [`degreeFourCoreInduced_uniform_half`](SymmetricSubgroupAsymptotics/PrimitiveAffineDegreeFourCoreCapacityProof.lean) retains the actual globally normal ternary core and cyclic derangement quotient. The stronger arbitrary-local per-orbit input is unused and is not claimed as proved. |
+
 These proved results, both final exports, the T1-to-T2/T3 transfers and the
 definition checks have standard-only axiom audits. Historical lower-level
 constructors still accept the corresponding interface types; these are
@@ -169,27 +172,26 @@ Selected upstream proofs and backports live in `External/`; exact revisions,
 authorship, licenses and changes are recorded in
 [`External/NOTICE`](SymmetricSubgroupAsymptotics/External/NOTICE).
 
-Three other formerly separate parameters are now proved consequences of
-stronger inputs retained below. [`TraceyRefinedInputConsequences`](SymmetricSubgroupAsymptotics/TraceyRefinedInputConsequences.lean)
-derives both the half-dimension and logarithmic induced-module statements
-from `hTraceyRefined`. [`FaithfulSimpleGeneratorFromTwoGeneration`](SymmetricSubgroupAsymptotics/FaithfulSimpleGeneratorFromTwoGeneration.lean)
-derives the faithful-simple logarithmic generator bound from `hSimpleGen`,
-using the elementary obstruction to a faithful small-degree simple action.
-These implications remove redundant parameters; they do **not** formalize
-the stronger refined Tracey or finite-simple two-generation theorems.
+The half-dimension and logarithmic induced-module statements follow from
+that proved refined theorem through
+[`TraceyRefinedInputConsequences`](SymmetricSubgroupAsymptotics/TraceyRefinedInputConsequences.lean).
+[`FaithfulSimpleGeneratorFromTwoGeneration`](SymmetricSubgroupAsymptotics/FaithfulSimpleGeneratorFromTwoGeneration.lean)
+derives the faithful-simple logarithmic generator bound from the still
+retained `hSimpleGen`. Finite-simple two-generation remains an explicit
+published input.
 
-Five more separate inputs are now checked consequences of stronger inputs:
+Five further interfaces are supplied by checked theorems or retained inputs:
 
-| Derived result | Retained premise and checked proof |
+| Derived result | Source and checked proof |
 |---|---|
 | Primitive degree-nine order list, including the natural `A₉`/`S₉` branches. | `compositionCatalogue`, through [`primitiveDegreeNineClassification_of_compositionCatalogue`](SymmetricSubgroupAsymptotics/PrimitiveDegreeNineFromCompositionCatalogue.lean). Only the literal degree-nine numerical rows are evaluated. |
 | Primitive degree-six types `A₅`, `S₅`, `A₆`, `S₆`. | The same `compositionCatalogue`, through [`publishedPrimitiveDegreeSixClassification_of_compositionCatalogue`](SymmetricSubgroupAsymptotics/PrimitiveDegreeSixCatalogueClassification.lean). Actual maximal-overgroup coset actions and the degree-twelve order list prove the order-60 recognition step. |
-| Binary transitive permutation-submodule head formula. | `hTraceyRefined`, through [`TraceyRefinedInducedModuleInput.binaryFormula`](SymmetricSubgroupAsymptotics/TraceyPermutationFormulaConsequences.lean), using the actual stabilizer induction and the prime-to/prime-power bounds. |
-| Uniform soluble transitive permutation-module generator formula. | `hTraceySoluble`, through [`TraceySolubleOrbitInducedModuleInput.permutationFormulaRaw`](SymmetricSubgroupAsymptotics/TraceySolublePermutationConsequences.lean). A single explicit integer cap handles all subrepresentations. |
+| Binary transitive permutation-submodule head formula. | The proved refined theorem, through [`TraceyRefinedInducedModuleInput.binaryFormula`](SymmetricSubgroupAsymptotics/TraceyPermutationFormulaConsequences.lean), using the actual stabilizer induction and the prime-to/prime-power bounds. |
+| Uniform soluble transitive permutation-module generator formula. | [`traceySolublePermutationFormulaRawInput_proved`](SymmetricSubgroupAsymptotics/TraceySolublePermutationFormulaProof.lean). The minimum of two actual uniform tuple lengths handles all subrepresentations. |
 | The three ordinary original-word normal-generation prices of RDT Theorem 5.5(ii). | `h53`, through [`publishedTheorem55Binary_of_proposition53`](SymmetricSubgroupAsymptotics/BinaryOriginalWordConsequences.lean). The proved proper-normal ceiling `normalGen(N) ≤ floor(n/4)+1` supplies the exact 3/8 and 5/16 prices; the retained excess-one restriction supplies the quarter price. Original dependent factors and the maximal full tail are unchanged. |
 
-These reductions do not prove the broader retained catalogue or induced-module
-theorems. The auxiliary [`exists_isTwoComplement_of_isSolvable`](SymmetricSubgroupAsymptotics/SolubleOddHall.lean)
+The broader catalogue correspondences remain inputs. The refined induced-module
+interface is proved; the stronger unused per-soluble-orbit interface is not claimed. The auxiliary [`exists_isTwoComplement_of_isSolvable`](SymmetricSubgroupAsymptotics/SolubleOddHall.lean)
 is proved without an additional hypothesis: induction on a finite soluble
 group's order and mathlib's Schur–Zassenhaus theorem construct its actual odd
 Hall subgroup. [`PermutationStabilizerInduced`](SymmetricSubgroupAsymptotics/PermutationStabilizerInduced.lean)
@@ -215,7 +217,7 @@ Halasi–Maróti base-size theorem.
 Two further input reductions use weaker or already retained results.
 [`publishedProposition62_of_retained_inputs`](SymmetricSubgroupAsymptotics/LargeOrbitGeneratorConsequencesFinal.lean)
 derives the large-orbit soluble generator theorem from `hPrimitiveGen`,
-`hTraceyRefined`, and `hcomp`. Its stronger checked estimate is
+`hcomp`, and the internally proved refined induced-module theorem. Its stronger checked estimate is
 `d(G) ≤ 128 ∑ n_i / sqrt(log₂ n_i)` on the actual nontrivial orbits.
 The proof keeps correlated orbit actions in the whole quotient, uses ordinary
 lifting only across actual abelian kernels, and charges each literal local
@@ -279,13 +281,11 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [hPrimitiveGen : PrimitiveNormalGeneratorInput](SymmetricSubgroupAsymptotics/C1PrimitiveTail.lean) | Normal subgroup of primitive degree w≥4 has ordinary rank≤floor(log₂w). | HRD Thm1.1 normal specialization, sole degree3 exception excluded. |
 | [strictCatalogue : PublishedPrimitiveStrictHeadCatalogueCorrespondence](SymmetricSubgroupAsymptotics/PrimitiveTernaryStrictHeadPublished.lean) | Primitive degree<34 matches253 rows with actual normal minimal self-centralizing E and exact card(G/E). | plus standard primitive structure; PRIM degrees2–33. `PrimitiveStrictHeadSocleMatch` supplies E/minimality/selfCentralizing, not only a row index; document this enriched structural correspondence. No head capacity field. |
 | [hLMM : LucchiniMenegazzoMorigiTransitiveCountInput](SymmetricSubgroupAsymptotics/Non2PreE7MenuMassAggregation.lean) | Labelled transitive subgroup count is subquadratic-exponential. | Lucchini–Menegazzo–Morigi, BLMS32 (2000),191–195; exact labelled2^(Cn²/√logn) statement is sourced through RDT introductionp2. ID LIT-TRANSITIVE-COUNT. |
-| [hTraceyRefined : TraceyRefinedInducedModuleInput](SymmetricSubgroupAsymptotics/TraceyRefinedAffineInput.lean) | One generating-tuple length simultaneously satisfies half, logarithmic, prime-to-characteristic, primary-square-root and soluble prime-power binomial ceilings. | numerical specialization; TR Def1.5/Thm1.6 and Cor4.26–4.27. Exact per-field source locators should be added; this is stronger than citing just the coarse logarithmic corollary. |
 | [hTraceyPerm : TraceyPermutationGeneratorInput](SymmetricSubgroupAsymptotics/TraceyAffineInducedModuleInput.lean) | Transitive degree w≥2 group generated by≤ceil(w/√log₂w). | weakening; TR Thm1.1(1), constantc<1. Not the sharper2021 √3/2 bound. |
 | [hSimpleGen : FiniteSimpleTwoGeneratorBound](SymmetricSubgroupAsymptotics/ActualWreathSemisimpleCoefficient.lean) | Every finite centerless simple group has≤2 generators. | Guralnick–Kantor, Journal of Algebra 234 (2000), Theorem I, p.744 and Corollary p.745; LIT-SIMPLE-2GEN. |
 | [smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification](SymmetricSubgroupAsymptotics/SmallAffineCatalogueDegreeEightConsequences.lean) | Actual affine complement in degree16/27 is isomorphic to one of the fixed31 named carriers. Degree8 is proved internally from complete GL(3,2) subgroup coverage. | Roney-Dougal–Unger2003 plus pinned PrimGrp3.4.4. Solvability/chief-saving and exact maxima are constructed, not supplied. |
 | [hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds](SymmetricSubgroupAsymptotics/PrimitiveSocleRawSimpleIndex.lean) | For the actual least proper subgroup index ℓ of a finite nonabelian simple T: ℓ² < card(T) and card(Out(T)) ≤ 3 log₂ ℓ. | Ballester-Bolinches–Esteban-Romero–Jiménez-Seral, Theorem A(4), p.4 of arXiv:2203.16976v2; LIT-SIMPLE-INDEX. The bound ℓ ≥ 5 and all profile deductions are internal. |
 | [catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence](SymmetricSubgroupAsymptotics/PrimitiveCatalogueClassificationPublished.lean) | Bare faithful primitive degree5–29 correspondence, actual group/socle exact orders and one-factor structural match. | PRIM degree5–29 pinned116 retained rows; inequality2outer≤degree kernel-checked internally. |
-| [hTraceySoluble : TraceySolubleOrbitInducedModuleInput](SymmetricSubgroupAsymptotics/TraceySolubleOrbitInducedInput.lean) | Actual soluble subgroup, actual2-complement, local dual nonzero-orbit count and all actual N-orbit E_sol bounds give induced submodule generators. | specialization; TR Thm4.24(ii)(b), Cor4.25(ii)(b), H₁=H,F₂. Keep both exact locators; this is not merely Thm1.6 coarse formula. |
 | [hMN : McIverNeumannPermutationGeneratorBound](SymmetricSubgroupAsymptotics/McIverNeumannPermutationSection.lean) | Every subgroup of S_s except literally fullS3 has≤floor(s/2) generators. | Blackburn–Neumann–Venkataraman, Enumeration of Finite Groups (2007), Lemma 5.2; proof reference Cameron–Solomon–Turull, Journal of Algebra 127 (1989), §4; LIT-MCIVER-NEUMANN. |
 | [published8 : DegreeEightCanonicalCatalogue.PublishedClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineEightCanonicalCatalogue.lean) | Every actual transitive nonbinary subgroup of S8 is point-conjugate to one of24 pinned canonical actions. | Butler–McKay 1983, degree-eight classification; official TransGrp manual, with the 26 binary actions excluded from the 50-action list. |
 | [published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenCanonicalCatalogue.lean) | Every primitive subgroup of S16 point-conjugate to one of22 canonical actions:20 affine +naturalA16/S16. | PRIM degree16. NOT an all1954 transitive16 or527 semantic-source assumption. |
@@ -311,7 +311,7 @@ full `S₃` exception.
 
 The independent mathematical input audit is closed at this boundary.
 Recursive source/object verification of the final facade and public root,
-and the final exported-declaration axiom audit, passed on 20 October 2026.
+and the final exported-declaration axiom audit, passed on 21 October 2026.
 The published hypotheses remain explicit mathematical inputs.
 
 ## Proof organization
@@ -380,8 +380,8 @@ recovery workflow.
 
 ## Verification boundary
 
-The public import closure contains **5,872 project modules**. On
-20 October 2026, recursive verification matched their current sources,
+The public import closure contains **6,201 project modules**. On
+21 October 2026, recursive verification matched their current sources,
 compiled objects, direct dependency fingerprints, and pinned toolchain
 against successful check receipts. Matching historical receipts were reused
 with explicit relocation evidence; stale consumers were checked serially.

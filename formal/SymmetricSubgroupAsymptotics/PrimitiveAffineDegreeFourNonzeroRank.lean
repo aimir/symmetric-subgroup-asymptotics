@@ -20,7 +20,6 @@ variable {w : ℕ} {U : PreE7NonPairActionClass w} {basePoint : Fin w}
 
 /-- The retained and killed branches use their original kernels. -/
 theorem degreeFourNonzero_binary_relative_head_le
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
@@ -32,7 +31,7 @@ theorem degreeFourNonzero_binary_relative_head_le
   have h := primeRelativeHead_le_of_retained_socles 2 (E block P)
     (degreeFourSocleSlots (Nat.card block.Points)) (Nat.card block.Points)
     (fun K hK => degreeFourNonzeroRetainedSocleGeneratorBound block P
-      hTracey hMN hClifford hTraceyPerm hr hs hD K hK)
+      hMN hClifford hTraceyPerm hr hs hD K hK)
     (degreeFourComplement_binary_sectional_rank block P hr) N
   have hslots : degreeFourSocleSlots (Nat.card block.Points) ≤ Nat.card block.Points := by
     unfold degreeFourSocleSlots
@@ -42,7 +41,6 @@ theorem degreeFourNonzero_binary_relative_head_le
 /-- In the actual four-by-four branch the original rank contribution is
 at most four, independently of its normal subgroup and of diagonal cores. -/
 theorem degreeFourFourBlockNonzero_binary_relative_head_le_four
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
@@ -52,7 +50,7 @@ theorem degreeFourFourBlockNonzero_binary_relative_head_le_four
     (N : Subgroup (preE7NonPairAction w U)) [N.Normal] :
     Module.finrank (ZMod 2) (primeRelativeCharacters 2 N) ≤ 4 := by
   simpa only [hs] using degreeFourNonzero_binary_relative_head_le block P
-    hTracey hMN hClifford hTraceyPerm hr (by omega) hD N
+    hMN hClifford hTraceyPerm hr (by omega) hD N
 
 end Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer
 end SymmetricSubgroupAsymptotics

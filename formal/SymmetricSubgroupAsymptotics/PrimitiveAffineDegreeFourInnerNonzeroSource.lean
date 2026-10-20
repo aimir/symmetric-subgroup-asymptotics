@@ -54,7 +54,6 @@ local instance innerNonzeroSource_prime : Fact P.p.Prime := (chart block P).prim
 geometry and its nonzero ternary core. No normal-rank or module bound is
 left as a certificate field. -/
 def degreeFourZeroCoreSixteenNonzeroInnerBounds
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
@@ -73,7 +72,7 @@ def degreeFourZeroCoreSixteenNonzeroInnerBounds
     apply C.relative_head_le 2 4 _ N
     intro M _
     exact degreeFourFourBlockNonzero_binary_relative_head_le_four inner R
-      hTracey hMN hClifford hTraceyPerm hinner hpoints hinnerD M
+      hMN hClifford hTraceyPerm hinner hpoints hinnerD M
   · intro B
     exact nonzeroInnerFourBlock_head_le_six_at C inner R
       (degreeFour_profilePrime_eq_two block P hr) hinner hpoints hinnerD i

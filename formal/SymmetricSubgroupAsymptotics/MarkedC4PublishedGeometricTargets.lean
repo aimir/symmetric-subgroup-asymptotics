@@ -1,3 +1,4 @@
+import SymmetricSubgroupAsymptotics.TraceyRefinedInducedModuleProof
 import SymmetricSubgroupAsymptotics.MarkedC4PublishedClosedTargets
 import SymmetricSubgroupAsymptotics.DegreeSixteenCompleteGeometricSource
 import SymmetricSubgroupAsymptotics.CliffordActualRetainedConstituent
@@ -90,19 +91,18 @@ theorem T1_of_published_inputs
     (hPrimitiveGen : PrimitiveNormalGeneratorInput)
     (strictCatalogue : PublishedPrimitiveStrictHeadCatalogueCorrespondence)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
-    (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification)
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
     (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
-    (hTraceySoluble : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     : T1 := by
   let fullLit := lit.toLiterature
+  have hTraceyRefined := traceyRefinedInducedModuleInput_proved
   have hZmud := zmudFaithfulCharacterTupleInput_proved
   have rdt46 := RDTBoundedFactorEpimorphismProof.rdtTheorem46BinaryInput_proved
   have hderived := publishedDerivedNormalQuarterBinary_proved
@@ -134,7 +134,7 @@ theorem T1_of_published_inputs
     hExceptionalOrbits compositionCatalogue hPrimitiveGen strictCatalogue hLMM
     hTraceyRefined hTraceyPerm hSimpleGen
     publishedSmall publishedFinite
-    (hONanScott.toSocleDichotomy hSimpleIndex) catalogue hTraceySoluble hMN
+    (hONanScott.toSocleDichotomy hSimpleIndex) catalogue hMN
     publishedSix published8 published16 publishedThree publishedTwelve
 
 /-- The same published inputs imply all three approved asymptotic targets. -/
@@ -150,13 +150,11 @@ theorem allTargets_of_published_inputs
     (hPrimitiveGen : PrimitiveNormalGeneratorInput)
     (strictCatalogue : PublishedPrimitiveStrictHeadCatalogueCorrespondence)
     (hLMM : LucchiniMenegazzoMorigiTransitiveCountInput)
-    (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (smallAffineCatalogue : SmallAffineCatalogueDegreeEightConsequences.PublishedRemainingClassification)
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
     (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
-    (hTraceySoluble : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
@@ -166,9 +164,9 @@ theorem allTargets_of_published_inputs
     lit hcomp h53 h57
     hodd hAG hExceptionalOrbits compositionCatalogue
     hPrimitiveGen strictCatalogue hLMM
-    hTraceyRefined hTraceyPerm
+    hTraceyPerm
     hSimpleGen smallAffineCatalogue
-    hSimpleIndex catalogue hTraceySoluble hMN
+    hSimpleIndex catalogue hMN
     published8 published16 publishedTwelve)
 
 

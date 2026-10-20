@@ -51,7 +51,6 @@ theorem degreeFourFourBlockBinaryTop_original_head_le_four
 inputs are the already explicit published inputs of the retained-socle
 rank theorem. No local rank or frame-capacity certificate is assumed. -/
 theorem degreeFourNonzeroFourBlock_original_sum_le_ten
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
@@ -70,7 +69,7 @@ theorem degreeFourNonzeroFourBlock_original_sum_le_ten
         (B.toRepresentation.IntertwiningMap
           (Representation.trivial (ZMod 2) (preE7NonPairAction w U) (ZMod 2))) ≤ 10 := by
   have hn := degreeFourFourBlockNonzero_binary_relative_head_le_four block P
-    hTracey hMN hClifford hTraceyPerm hr hs hD N
+    hMN hClifford hTraceyPerm hr hs hD N
   by_cases hTop : IsPGroup 2 block.Top
   · have hb := degreeFourFourBlockBinaryTop_original_head_le_four block
       hr hs hTop x f hf rho hL hdim hrho B
