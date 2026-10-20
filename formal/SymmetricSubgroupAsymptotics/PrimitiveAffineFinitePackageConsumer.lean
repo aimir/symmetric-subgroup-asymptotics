@@ -13,7 +13,6 @@ def preE7PrimitiveAffineConsumerData_of_finitePackage
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hcomp : PrimitiveCompositionLengthInput)
     (hKP : KovacsPraegerAbelianizationBound)
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
     (hTraceyLog : TraceyAffineInducedModuleInput)
@@ -30,7 +29,7 @@ def preE7PrimitiveAffineConsumerData_of_finitePackage
     (degreeTwo : PrimitiveAffineResidualDegreeSource 2) :
     PreE7PrimitiveAffineConsumerData := by
   let exceptional := preE7PrimitiveAffineExceptionalCellConsumerData_of_degreeTwoSource
-    hZmud lit hgen hClifford hKP hTracey hMN hTraceyHalf hTraceyLog hTraceyRefined
+    hZmud lit hgen hClifford hKP hMN hTraceyHalf hTraceyLog hTraceyRefined
     hTraceyPerm hSimpleGen publishedSmall publishedSix publishedPairs published8
     published16 socle degreeTwo
   let components := preE7PrimitiveAffineImprimitiveComponentSourceData publishedSmall

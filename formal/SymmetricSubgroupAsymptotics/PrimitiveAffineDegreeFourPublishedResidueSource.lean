@@ -15,7 +15,6 @@ def degreeFourResidualSource_of_publishedFrames
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
     (socle : PublishedPrimitiveSocleDichotomyInput)
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
@@ -23,7 +22,7 @@ def degreeFourResidualSource_of_publishedFrames
     (hTraceyRefined : TraceyRefinedInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput) :
     PrimitiveAffineResidualDegreeSource 4 := by
-  apply degreeFourResidualSource_of_originalResidues hZmud lit hTracey hMN hClifford
+  apply degreeFourResidualSource_of_originalResidues hZmud lit hMN hClifford
     hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
   · intro w U basePoint block P _ hr hD hs
     apply degreeFourFourBlockSource_of_retainedSocles block P hZmud lit hr hs
@@ -31,7 +30,7 @@ def degreeFourResidualSource_of_publishedFrames
     exact degreeFourZeroCore_fourPoint_quotientSocle_le_two block P hMN hr hs hD N
   · exact degreeFourZeroCoreEightFrameBounds_of_published published8
   · exact degreeFourZeroCoreSixteenFrameBounds_of_published published8 published16 socle
-      hTracey hMN hClifford hTraceyPerm
+      hMN hClifford hTraceyPerm
 
 end Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer
 end SymmetricSubgroupAsymptotics

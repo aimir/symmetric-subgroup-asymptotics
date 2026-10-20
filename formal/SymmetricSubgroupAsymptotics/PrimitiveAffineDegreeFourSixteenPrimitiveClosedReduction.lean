@@ -51,7 +51,6 @@ def degreeFourSixteenPrimitiveClosedReduction
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
     (socle : PublishedPrimitiveSocleDichotomyInput)
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
@@ -60,7 +59,7 @@ def degreeFourSixteenPrimitiveClosedReduction
     DegreeFourSixteenPrimitiveClosedReduction block P :=
   DegreeFourSixteenFrameReduction.closePrimitive block P published8 published16 hr hD
     (degreeFourSixteenFrameReduction block P published8 socle
-      hTracey hMN hClifford hTraceyPerm hr hD hs)
+      hMN hClifford hTraceyPerm hr hD hs)
 
 end Non2UnipotentPrefixFiniteMenu.PrimitiveAffineImprimitiveBlockTransfer
 end SymmetricSubgroupAsymptotics

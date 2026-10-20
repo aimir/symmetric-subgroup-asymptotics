@@ -759,14 +759,22 @@ most two. The automorphism count and affine-wreath consequences are proved
 internally; no such consequences are part of this literature input.
 
 
-**Redundant Tracey input surfaces.**
-`TraceyRefinedInputConsequences.lean` proves that the retained
-`TraceyRefinedInducedModuleInput` implies both the older
-`TraceyAffineHalfInducedModuleInput` and `TraceyAffineInducedModuleInput`.
-The first implication pads the same common generating tuple to the natural
-half-dimension floor; the second uses its existing logarithmic bound.
-No additional published theorem is assumed for these implications. The
-refined Tracey theorem itself remains an explicit input.
+**Proved refined induced-module bounds and soluble consumers.**
+`TraceyRefinedInducedModuleProof.lean` proves the complete
+`TraceyRefinedInducedModuleInput`, with one actual uniform tuple length
+satisfying all five numerical fields. The proof uses literal Sylow/Mackey
+orbits, finite symmetric-chain widths, a binomial square-root estimate,
+Nakayama and coprime semisimplicity. Its half and logarithmic consequences
+are supplied internally by `TraceyRefinedInputConsequences.lean`.
+`TraceySolublePermutationFormulaProof.lean` independently proves the exact
+soluble transitive permutation formula, using the minimum of the actual
+chain-width and odd-Hall capacities. The degree-four consumer is proved in
+`PrimitiveAffineDegreeFourCoreCapacityProof.lean`, retaining the globally
+normal ternary core, the actual local dual-orbit count one, and the cyclic
+derangement quotient. The stronger arbitrary-local per-soluble-orbit input
+is unused by T1 and is not asserted as proved. Neither Tracey interface
+remains a parameter of the final exports; the separate permutation-generator
+and exceptional-orbit inputs listed in formal/README.md remain explicit.
 
 
 **Further checked specializations of retained published inputs.**
@@ -779,15 +787,12 @@ through actual maximal overgroups. The broader primitive catalogue
 correspondence remains a published assumption, with the same pinned rows.
 
 `TraceyPermutationFormulaConsequences.lean` derives the binary head formula
-from the prime-to and prime-power fields of the refined induced-module
-input. `TraceySolublePermutationConsequences.lean` derives the soluble
-permutation-module formula from the retained soluble-orbit theorem, using
-the actual full acting group and a proved odd Hall subgroup. The helper
-`SolubleOddHall.lean` proves existence by minimal-normal induction and the
-Schur–Zassenhaus theorem already checked in pinned mathlib; no additional
-literature input is added. A uniform integer cap preserves the quantifier
-over all subrepresentations. Finally the standalone Kovács–Praeger input
-is supplied by the identical field in the retained character bundle.
+from the now-proved refined theorem. `SolubleOddHall.lean` constructs the
+actual odd Hall subgroup by minimal-normal induction and pinned mathlib's
+Schur–Zassenhaus theorem. `OddHallOrbitPrice.lean` proves that every actual
+Mackey orbit pays the odd part of the original index; the same original
+induced module supplies the resulting uniform generators. The standalone
+Kovács–Praeger input is supplied by the internally proved character bundle.
 
 
 **Checked soluble socle-height and degree-six classification inputs.**
@@ -835,8 +840,9 @@ full prime-power abelianizations and actual disjoint coprime supports. Both
 KP fields and the nilpotent class-number bound are supplied internally;
 the character bundle retains only the Garonzi–Maróti general class bound.
 `LargeOrbitGeneratorConsequencesFinal` derives Proposition 6.2's exact
-interface from the retained HRD primitive normal-generator, refined Tracey
-and GPRV composition-length inputs. The Pyber/Theorem 8.6 representative
+interface from the retained HRD primitive normal-generator and GPRV
+composition-length inputs, together with the internally proved refined
+induced-module theorem. The Pyber/Theorem 8.6 representative
 estimate remains a valid historical reference but is not required by the
 current T1 signature: `LMMSubquadraticSolubleContainers` supplies the weaker
 subquadratic container count from the already retained labelled transitive

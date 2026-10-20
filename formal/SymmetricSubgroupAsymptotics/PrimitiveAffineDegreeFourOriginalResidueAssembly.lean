@@ -61,7 +61,6 @@ noncomputable def degreeFourZeroCoreResidualSource_of_originalResidues
 boundaries still explicit rather than disguised as published hypotheses. -/
 noncomputable def degreeFourResidualSource_of_originalResidues
     (hZmud : ZmudFaithfulCharacterTupleInput) (lit : PreE7CharacterLiterature)
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
@@ -72,7 +71,7 @@ noncomputable def degreeFourResidualSource_of_originalResidues
     (frames8 : DegreeFourZeroCoreEightFrameBoundsInput)
     (frames16 : DegreeFourZeroCoreSixteenFrameBoundsInput) :
     PrimitiveAffineResidualDegreeSource 4 :=
-  degreeFourResidualSource_of_zeroCore hZmud lit hTracey hMN hClifford hTraceyPerm
+  degreeFourResidualSource_of_zeroCore hZmud lit hMN hClifford hTraceyPerm
     (degreeFourZeroCoreResidualSource_of_originalResidues hZmud lit hMN
       hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm fourBlocks frames8 frames16)
 

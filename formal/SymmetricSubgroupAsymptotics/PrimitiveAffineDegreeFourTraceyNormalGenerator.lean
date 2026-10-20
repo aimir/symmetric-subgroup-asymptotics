@@ -1,13 +1,14 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeFourTraceyCapacity
+import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeFourCoreCapacityProof
 import SymmetricSubgroupAsymptotics.PrimitiveAffineDegreeFourFiveCharacterIntervalSource
 
 /-!
 # Tracey bound for the degree-four translation-carried normal section
 
-This narrow consumer applies the generic prime-explicit Tracey transport to
-one concrete normal subrepresentation of the actual correlated translation
-module.  Its exported statement mentions only the normal-generator bound;
-the dependent induced representation is confined to the proof body.
+This narrow consumer uses the actual normal ternary core and cyclic
+derangement quotient to bound one concrete normal subrepresentation of the
+actual correlated translation module. Its exported statement mentions only the
+normal-generator bound; the dependent induced representation stays in the proof.
 -/
 
 set_option autoImplicit false
@@ -93,7 +94,6 @@ private theorem degreeFourTraceyLiteralIntertwiner_injective
     (localTranslationChart block P) i
 
 private theorem degreeFourTraceyLiteralInduced_uniform_half
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hr : Nat.card block.Fibre = 4)
     (hs : 2 ≤ Nat.card block.Points)
@@ -103,64 +103,13 @@ private theorem degreeFourTraceyLiteralInduced_uniform_half
       (degreeFourTraceyLiteralInducedRepresentation
         block P hTraceyPerm i)
       (Nat.card block.Points / 2) := by
-  letI : Fintype block.Points := Fintype.ofFinite _
-  let C := localTranslationChart block P
-  let rho := degreeFourTraceyLiteralLocalRepresentation
-    block P hTraceyPerm i
-  let NTracey : Subgroup (preE7NonPairAction w U) :=
-    degreeFourTraceySubgroup block P hTraceyPerm hs
-  letI : IsSolvable NTracey :=
-    degreeFourTraceySubgroup_isSolvable block P hTraceyPerm hr hs
-  obtain ⟨P₂, hP₂, hHall⟩ :=
-    exists_degreeFourTraceyTwoComplement block P hTraceyPerm hr hs
-  have hp : C.p = 2 := by
-    simpa only [C, localTranslationChart] using
-      degreeFour_profilePrime_eq_two block P hr
-  have hdim : Module.finrank (ZMod C.p) C.V = 2 := by
-    let C0 := chart block P
-    letI : Finite C0.V := Finite.of_injective
-      (fun v : C0.V ↦ C0.equiv.symm (Multiplicative.ofAdd v))
-      C0.equiv.symm.injective
-    have hdegree : 4 = P.p ^ C0.d := by
-      rw [← hr]
-      simpa [PrimitiveAffineProfile.ElementaryChart.d] using
-        P.degree_eq_prime_pow_finrank C0.equiv (origin block)
-    have hd0 : C0.d = 2 :=
-      (prime_pow_positive_injective (d := C0.d) (e := 2)
-        P.p_prime Nat.prime_two C0.d_pos (by norm_num)
-        (hdegree.symm.trans (by norm_num))).2
-    simpa only [C, C0, localTranslationChart,
-      PrimitiveAffineProfile.ElementaryChart.d] using hd0
-  have hchi : primeTraceyLocalDualOrbitCount i rho NTracey P₂ = 1 :=
-    degreeFourTraceyLocalDualOrbitCount_eq_one
-      block P hTraceyPerm hr hs hD P₂ hP₂ hHall i
-  have horbit :
-      ∀ e : MulAction.orbitRel.Quotient NTracey block.Points → ℕ,
-        (∀ o, TraceyBinarySolubleFormulaBounds
-          (Nat.card o.orbit) (e o)) →
-        (∑ o, e o) ≤ Nat.card block.Points / 2 := by
-    intro e he
-    have h := degreeFourTracey_esol_sum_le_half
-      block P hTraceyPerm hs e he
-    dsimp only [NTracey] at h ⊢
-    convert h using 1
-    apply Finset.sum_congr
-    · ext o
-      simp
-    · intro o ho
-      rfl
-  have hTraceyP : PrimeTraceySolubleOrbitInducedModuleInput C.p :=
-    primeTraceySolubleOrbitInducedModuleInput_of_eq_two hTracey hp
-  change UniformSubrepresentationGeneratorBound
-    (Representation.ind
-      (MulAction.stabilizer (preE7NonPairAction w U) i).subtype rho)
-    (Nat.card block.Points / 2)
-  exact hTraceyP.uniform_half i rho NTracey P₂ hP₂ hchi hdim horbit
+  simpa only [degreeFourTraceyLiteralInducedRepresentation,
+    degreeFourTraceyLiteralLocalRepresentation] using
+    degreeFourCoreInduced_uniform_half block P hTraceyPerm hr hs hD i
 
 /- Every translation-carried retained normal subgroup, and hence the
 translation-selected socle part, inherits the sharp slot budget. -/
 theorem degreeFourTranslationCarried_normalGen_le_sharp
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hTraceyPerm : TraceyPermutationGeneratorInput)
     (hr : Nat.card block.Fibre = 4)
     (hs : 2 ≤ Nat.card block.Points)
@@ -194,7 +143,7 @@ theorem degreeFourTranslationCarried_normalGen_le_sharp
           block P hTraceyPerm i0)
         (Nat.card block.Points / 2) := by
       exact degreeFourTraceyLiteralInduced_uniform_half
-        block P hTracey hTraceyPerm hr hs hD i0
+        block P hTraceyPerm hr hs hD i0
     have htransport : UniformSubrepresentationGeneratorBound sigma
         (Nat.card block.Points / 2) :=
       hinduced.of_injective f

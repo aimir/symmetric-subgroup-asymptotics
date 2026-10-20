@@ -16,7 +16,6 @@ def preE7PrimitiveAffineExceptionalCellConsumerData_of_degreeTwoSourceAndCatalog
     (hgen : PermutationSubgroupGeneratorBound)
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hKP : KovacsPraegerAbelianizationBound)
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
     (hTraceyLog : TraceyAffineInducedModuleInput)
@@ -37,7 +36,7 @@ def preE7PrimitiveAffineExceptionalCellConsumerData_of_degreeTwoSourceAndCatalog
       hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm hgen
       (FourPairCanonicalClassification.classification hZmud published8))
     (degreeFourResidualSource_of_publishedFrames hZmud lit published8
-      published16 socle hTracey hMN hClifford hTraceyHalf hTraceyLog
+      published16 socle hMN hClifford hTraceyHalf hTraceyLog
       hTraceyRefined hTraceyPerm)
 
 /-- The full affine consumer, using the existing primitive consumer and
@@ -50,7 +49,6 @@ def preE7PrimitiveAffineConsumerData_of_degreeTwoSourceAndCatalogue
     (hClifford : CliffordHomogeneousRestriction.Input)
     (hcomp : PrimitiveCompositionLengthInput)
     (hKP : KovacsPraegerAbelianizationBound)
-    (hTracey : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (hTraceyHalf : TraceyAffineHalfInducedModuleInput)
     (hTraceyLog : TraceyAffineInducedModuleInput)
@@ -71,7 +69,7 @@ def preE7PrimitiveAffineConsumerData_of_degreeTwoSourceAndCatalogue
       hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm hgen
       (FourPairCanonicalClassification.classification hZmud published8))
     (degreeFourResidualSource_of_publishedFrames hZmud lit published8
-      published16 socle hTracey hMN hClifford hTraceyHalf hTraceyLog
+      published16 socle hMN hClifford hTraceyHalf hTraceyLog
       hTraceyRefined hTraceyPerm)
 
 

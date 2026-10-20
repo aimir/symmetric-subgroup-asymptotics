@@ -53,7 +53,6 @@ theorem T1_of_published_inputs_and_sixteenPairSource
     (publishedAffine : PublishedPrimitiveAffineFiniteLiterature)
     (socle : PublishedPrimitiveSocleDichotomyInput)
     (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
-    (hTraceySoluble : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (publishedSix : PublishedDegreeSixThreeByTwoAffineClassification)
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
@@ -70,7 +69,7 @@ theorem T1_of_published_inputs_and_sixteenPairSource
     rdt46 hodd h62 h86 hDixon hAG hTracey hExceptional compositionCatalogue
     hDegreeNine hPrimitiveGen strictCatalogue primitiveSix hKP hLMM
     hHoltRoneyDougal hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
-    hSimpleGen publishedAffine socle catalogue hTraceySoluble hMN
+    hSimpleGen publishedAffine socle catalogue hMN
     publishedSix published8 published16 degreeTwo
     (fusionCoarseEstimate_of_published_theorem_one hodd) hFS
 
@@ -110,7 +109,6 @@ theorem allTargets_of_published_inputs_and_sixteenPairSource
     (publishedAffine : PublishedPrimitiveAffineFiniteLiterature)
     (socle : PublishedPrimitiveSocleDichotomyInput)
     (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
-    (hTraceySoluble : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (publishedSix : PublishedDegreeSixThreeByTwoAffineClassification)
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
@@ -124,7 +122,7 @@ theorem allTargets_of_published_inputs_and_sixteenPairSource
     rdt46 hodd h62 h86 hDixon hAG hTracey hExceptional compositionCatalogue
     hDegreeNine hPrimitiveGen strictCatalogue primitiveSix hKP hLMM
     hHoltRoneyDougal hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
-    hSimpleGen publishedAffine socle catalogue hTraceySoluble hMN
+    hSimpleGen publishedAffine socle catalogue hMN
     publishedSix published8 published16 publishedThree publishedTwelve sixteenPair hFS)
 
 end SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu

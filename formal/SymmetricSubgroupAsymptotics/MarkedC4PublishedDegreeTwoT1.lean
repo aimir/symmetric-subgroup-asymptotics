@@ -54,7 +54,6 @@ theorem T1_of_published_inputs_and_degreeTwoAffineSource
     (publishedAffine : PublishedPrimitiveAffineFiniteLiterature)
     (socle : PublishedPrimitiveSocleDichotomyInput)
     (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
-    (hTraceySoluble : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (publishedSix : PublishedDegreeSixThreeByTwoAffineClassification)
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
@@ -73,7 +72,7 @@ theorem T1_of_published_inputs_and_degreeTwoAffineSource
     hgen hcomp hsub hseven h55 h53 h57 h8 hderived rdt46 hodd h62 h86
     hDixon hAG hTracey hExceptional hWeight hDegreeNine hPrimitive h18 hKP
     hLMM hHoltRoneyDougal hTraceyHalf hTraceyLog hTraceyRefined hTraceyPerm
-    hSimpleGen publishedAffine socle catalogue hTraceySoluble hMN
+    hSimpleGen publishedAffine socle catalogue hMN
     publishedSix publishedPairs published8 published16 degreeTwo hcoarse hFS
 
 end SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu

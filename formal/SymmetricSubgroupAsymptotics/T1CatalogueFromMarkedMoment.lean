@@ -1,3 +1,4 @@
+import SymmetricSubgroupAsymptotics.TraceySolublePermutationFormulaProof
 import SymmetricSubgroupAsymptotics.MarkedC4PublishedClosedTargets
 import SymmetricSubgroupAsymptotics.DegreeSixteenCompleteGeometricSource
 import SymmetricSubgroupAsymptotics.CliffordActualRetainedConstituent
@@ -40,7 +41,6 @@ theorem T1_of_globalMarkedMoment_and_catalogues
     (publishedAffine : PublishedPrimitiveAffineFiniteLiterature)
     (socle : PublishedPrimitiveSocleDichotomyInput)
     (catalogue : PublishedBoundedPrimitiveCatalogueCorrespondence)
-    (hTraceySoluble : TraceySolubleOrbitInducedModuleInput)
     (hMN : McIverNeumannPermutationGeneratorBound)
     (publishedSix : PublishedDegreeSixThreeByTwoAffineClassification)
     (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
@@ -62,7 +62,7 @@ theorem T1_of_globalMarkedMoment_and_catalogues
       (DegreeSixteenCompleteGeometricSource.residualSource
         published8 published16 socle hMN hZmud lit)
   exact T1_of_catalogueExhaustion_marked lit hgen hM4 hTraceyRefined.binaryFormula
-    (traceyBinaryExceptionalThree_of_raw hTraceySoluble.permutationFormulaRaw hExceptionalOrbits)
+    (traceyBinaryExceptionalThree_of_raw traceySolublePermutationFormulaRawInput_proved hExceptionalOrbits)
     (primitiveTernaryChiefWeightBound_of_published hWeight hDegreeNine)
     hWeight hPrimitive h18 lit.kovacsPraeger hLMM
     (semisimpleOuterFactorPermutationBound_of_primitiveGenerator
@@ -71,7 +71,7 @@ theorem T1_of_globalMarkedMoment_and_catalogues
       (preE7PrimitiveCatalogueClassificationInput_of_published socle catalogue)
       (preE7PrimitiveAffineConsumerData_of_degreeTwoSource hZmud lit hgen
         CliffordRawRestriction.proved.toHomogeneousRestriction hcomp lit.kovacsPraeger
-        hTraceySoluble hMN hTraceyRefined.affineHalf hTraceyRefined.affine
+        hMN hTraceyRefined.affineHalf hTraceyRefined.affine
         hTraceyRefined hTraceyPerm hSimpleGen publishedAffine publishedSix
         publishedPairs published8 published16 socle degreeTwo))
     (fusionCoarseEstimate_of_published_theorem_one hodd) fusariSpigaBinaryNormalSubgroup
