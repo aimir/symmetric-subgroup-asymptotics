@@ -247,13 +247,15 @@ chief series through the primitive composition theorem. No generic soluble
 normal-closure-to-ordinary-generation step is used.
 
 The Pyber representative input is unnecessary for the final marked moment.
-[`index_eventually_exp_bound`](SymmetricSubgroupAsymptotics/LMMSubquadraticSolubleContainers.lean)
-derives a subquadratic literal container-menu count from the retained `hLMM`.
-Fibre sizes m_i pay only ∑m_i² ≤ n²; partition labels and the fixed local
-coefficient are negligible on that scale. The [alternate global assembly](SymmetricSubgroupAsymptotics/MarkedC4SubquadraticContainersGlobal.lean)
-retains the original character restrictions and the same bounded-source
-moment. This removes `h86` without claiming a formal proof of its stronger
-`2^(13n)` conjugacy-class estimate. The final [catalogue adapter](SymmetricSubgroupAsymptotics/T1CatalogueFromMarkedMoment.lean)
+The [constructed soluble cover](SymmetricSubgroupAsymptotics/CFSGSolubleWreathContainersRate.lean)
+has at most `2^(4096 b log₂(b+2)^4)` labels, retaining every original orbit
+and point label. Its [marked encoding](SymmetricSubgroupAsymptotics/CFSGConstructedSolubleContainersMoment.lean)
+chooses one actual containing soluble group, records the same relative
+tuple there, and retains the original character restrictions and bounded
+source moment. The [global assembly](SymmetricSubgroupAsymptotics/CFSGConstructedContainersGlobal.lean)
+therefore needs neither `h86` nor a transitive-count premise. The separate
+nonsoluble pre-E7 menu still uses `hLMM`. This does not assert Pyber's
+stronger `2^(13n)` conjugacy-class estimate. The final [catalogue adapter](SymmetricSubgroupAsymptotics/T1CatalogueFromMarkedMoment.lean)
 uses this proved moment directly. The character bundle's binary field is
 also filled internally. The mixed-prime abelianization and faithful-character
 tuple theorems, and the arbitrary-normal-target epimorphism theorem, are
@@ -268,7 +270,7 @@ at most `L*(B!+1)*floor(sqrt M)` ordinary generators. The proof uses the
 actual socle's isotypic rows, shares generators across small multiplicities,
 and centralizes the large rows before quotient induction. For the original
 orbit cutoff C, the checked choices are `L=B=C!` and `M=2b`.
-[`BoundedCoreSubquadraticContainersGlobal.marked_bound`](SymmetricSubgroupAsymptotics/BoundedCoreSubquadraticContainersGlobal.lean)
+[`CFSGConstructedContainersGlobal.marked_bound`](SymmetricSubgroupAsymptotics/CFSGConstructedContainersGlobal.lean)
 keeps that original source and orbit cutoff; only the fixed tuple-control
 constant increases. This removes `hseven` without asserting the sharper
 unrestricted `4L*sqrt M` theorem. No new hypothesis replaces it.

@@ -315,9 +315,12 @@ with the internally proved refined induced-module theorem. Its induction retains
 ordinary generators only across actual abelian chief kernels. The stronger
 checked bound is 128 times the sum of n_i/sqrt(log₂ n_i) over nontrivial
 orbits; a rate-only integer power-of-two cutoff gives the former h62 field.
-The final marked moment also avoids h86: the retained labelled transitive
-count gives the weaker subquadratic container menu sufficient for the same
-argument. This does not prove Pyber's sharper exponential class bound.
+The final marked moment also avoids h86: the constructed actual soluble
+cover has `2^(O(b log⁴(b+2)))` labels, and the same original relative-tuple
+encoding pays that menu once. This branch now needs no labelled-transitive
+count premise. The independent nonsoluble pre-E7 action menu still uses
+the retained transitive-count theorem. This does not prove Pyber's sharper
+exponential class bound.
 
 The refined induced-module theorem is now proved in
 `TraceyRefinedInducedModuleProof.lean`. It uses actual Sylow/Mackey indices,

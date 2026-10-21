@@ -27,6 +27,7 @@ import SymmetricSubgroupAsymptotics.DegreeSixThreeByTwoClassificationProof
 import SymmetricSubgroupAsymptotics.CharacterLiteratureProvedBinary
 import SymmetricSubgroupAsymptotics.RDTDegreeEightExceptionalProof
 import SymmetricSubgroupAsymptotics.BoundedCoreSubquadraticContainersGlobal
+import SymmetricSubgroupAsymptotics.CFSGConstructedContainersGlobal
 import SymmetricSubgroupAsymptotics.T1CatalogueFromFinitePackage
 import SymmetricSubgroupAsymptotics.PrimitiveAffineEightyOneFromComposition
 import SymmetricSubgroupAsymptotics.LargeOrbitGeneratorConsequencesFinal
@@ -80,7 +81,6 @@ theorem T1_of_published_inputs_actualConsumers
   have publishedSix :=
     DegreeSixThreeByTwoClassificationProof.publishedDegreeSixThreeByTwoAffineClassification
   have publishedThree := DegreeSixThreePairClassificationProof.representativeClassification
-  have hDixon := ElementaryDixonOrderProof.WithoutCatalogue.dixonOrder_of_primitive_inputs
   let publishedSmall := BinaryAffineSmallCatalogueData.ofPrimitiveSixteen published16
   let publishedFinite := publishedPrimitiveAffineFiniteInput_of_binary_and_genericTwentySeven
     publishedSmall
@@ -91,9 +91,9 @@ theorem T1_of_published_inputs_actualConsumers
   have h8 := RDTDegreeEightExceptionalProof.publishedDegreeEightExceptional
   have h62 := LargeOrbitGeneratorConsequences.publishedProposition62_of_retained_inputs
     hPrimitiveGen hTraceyRefined hcomp
-  have hM4 := BoundedCoreSubquadraticContainersGlobal.marked_bound
+  have hM4 := CFSGConstructedContainersGlobal.marked_bound
     fullLit.kovacsPraeger fullLit.kovacsPraegerBinary h55 h53 h57 h8 hderived
-    rdt46 hodd h62 hLMM hDixon hAG
+    rdt46 hodd h62 hAG
   exact T1_of_globalMarkedMoment_actualPrimitiveAndTwelveConsumers fullLit hM4 hZmud hcomp hodd
     hExceptionalOrbits hPrimitiveGen hSimpleIndex hLMM
     hTraceyRefined hTraceyPerm hSimpleGen
