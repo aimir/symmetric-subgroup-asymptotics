@@ -77,176 +77,82 @@ for those domains.
 \subsection{Formal verification}
 The accompanying Lean development fixes Lean~4.30.0 and a precise mathlib
 revision. Its final theorem proves Theorems~\ref{thm:main},
-\ref{thm:saddle} and~\ref{thm:elementary} relative to 16 explicit published
-mathematical and catalogue inputs, whose formulations and source locators
-are listed in \texttt{formal/README.md}. The project-specific source,
-capacity, marked-moment and summation statements are proved internally.
-The exported theorems use only the standard logical axioms of Lean in
-addition to their stated parameters.
+\ref{thm:saddle} and~\ref{thm:elementary} relative to twelve explicit
+published mathematical inputs. Their complete formulations, Lean types
+and publication locators appear in \texttt{formal/README.md}. No finite
+primitive or transitive catalogue correspondence is a parameter of the
+final theorem. The project-specific source, capacity, marked-moment and
+summation statements are proved internally. Both final exports have only
+the standard logical axioms of Lean in addition to their stated parameters.
 
-Four formerly external facts are also proved in the formal development:
-Burnside's two-prime solvability theorem; semisimplicity and conjugacy of
-constituents in Clifford restriction over an arbitrary field; the bound
+Several classical results are proved internally: Burnside's two-prime
+solvability theorem; semisimplicity and conjugacy of Clifford constituents
+over an arbitrary field; the binary normal-subgroup bound
 \[
  \#\{N\mathrel{\unlhd}G\}\,2^{-\ell^2/4}\leq 8\,2^{2\ell}
  \qquad (|G|=2^\ell);
 \]
-and simplicity of $\operatorname{PSL}_3(F)$ for every field $F$, including
-$\mathbf F_2$ and $\mathbf F_3$. The subgroup estimate follows from a
-stronger checked subgroup-interval theorem. The projective simplicity
-proof uses elementary-matrix generation, perfectness and Iwasawa's
-criterion; it uses no ATLAS code. These four facts are supplied internally
-and are not among the 16 remaining inputs. Ported proofs retain their
-Apache-2.0 attribution and exact source revisions in the formal sources.
+simplicity of $\operatorname{PSL}_3(F)$; and
+$\operatorname{PGL}_2(\mathbf F_5)\cong S_5$.
+The projective proofs use elementary matrices and faithful projective
+actions, without ATLAS code. The selected proof ports preserve their
+Apache-2.0 attribution and exact revisions in the formal sources.
+Full abelianization-order bounds for faithful permutation actions,
+including higher prime-power cyclic factors, supply both abelian-quotient
+fields of the character interface. The faithful-character tuple theorem,
+nilpotent class-number bound and arbitrary-normal-target bounded-factor
+epimorphism theorem are also proved internally.
 
+The refined induced-module theorem keeps one uniform generator capacity
+satisfying the half-dimension, logarithmic, coprime, primary and prime-power
+bounds simultaneously. Its proof uses actual Sylow--Mackey pieces,
+finite chain widths, Nakayama's lemma and coprime semisimplicity. The two
+soluble-orbit consumers are proved on the actual permutation module and
+on the actual globally normal ternary core. These replacements do not
+assert the stronger unused arbitrary-local per-orbit statement.
+Raw O'Nan--Scott structure is proved using actual minimal normal subgroups,
+the full socle, point-stabilizer maximality and the exact inner kernel in
+the outer-wreath action. The quantitative simple-index inequalities remain
+an explicit published input.
 
-The exceptional isomorphism $\operatorname{PGL}_2(\mathbf F_5)\cong S_5$
-and the complete degree-five affine classification are also proved
-internally. The former uses the six-point projective action and an
-order-$120$ subgroup recognition argument in $S_6$. The latter constructs
-actual translation coordinates and retains point conjugacy for the natural
-$F_{20}$ action. The refined induced-module theorem is now proved internally. The proof
-uses the literal Sylow--Mackey decomposition, symmetric-chain bounds on
-mixed-prime grids, Nakayama's lemma in the defining characteristic, and
-semisimplicity after restriction to a coprime subgroup. The least actual
-uniform number of module generators satisfies the half-dimension,
-logarithmic, coprime, primary square-root and prime-power binomial bounds
-simultaneously. In particular, its half and logarithmic consequences are
-not separate assumptions. The faithful-simple logarithmic generator bound
-still follows from the retained finite-simple two-generation input.
+Exact binary excess classification is now proved internally, including
+all degree and proper-normal restrictions. The proof retains the original
+pair kernels, joint parity relations and square carries, and checks the
+finite scalar certificates in Lean's kernel. It also proves the full
+original abelianization consequences. Together with the intrinsic
+proper-normal bound, it supplies the three original dependent-word prices
+without changing their factors or maximal fully projecting tail.
+Roney-Dougal--Tracey's normal-$F$ quotient theorem remains explicit: its
+commutator is the ambient $[F,Q]$, and its centralizer, original quotient,
+excess and generator-equality hypotheses are all retained.
 
+The current primitive consumers use actual linear and full-socle structure
+rather than bounded catalogue correspondence. This proves the ternary
+chief-weight and $3/10$ budgets and the ordinary Dixon order bound.
+The strict-head bound is used away from degrees $10$ and $12$; the complete
+physical $C_3$ source pays those two actual semisimple sectors separately.
+This route does not claim the stronger unused global strict-head theorem.
+The actual degree-eighteen bound and sufficient semisimple compression
+margin $3q\leq2r$ complete the primitive consumers.
 
-The separate primitive degree-six and degree-nine inputs follow from the
-retained bounded composition catalogue. In degree six, actual coset actions
-and the degree-twelve order list supply the subgroup recognition step.
-The binary permutation formula follows from the proved refined theorem.
-For the soluble permutation formula, the proof takes the minimum of two
-uniform capacities on the same original induced module: its mixed-prime
-chain width and the number of actual odd-Hall orbits. Every such orbit
-pays the odd part of the original index. The other use of the former
-soluble-orbit input, in degree four, follows from the actual globally
-normal ternary core and its cyclic derangement quotient. The local dual
-nonzero-orbit count remains one under the actual Mackey twists, giving
-one generator per restricted orbit and the required half bound.
-These two consumers are proved directly; the stronger arbitrary-local
-per-soluble-orbit theorem is not asserted by this replacement.
-The strict-head and degree-eighteen consumers likewise follow from actual
-order matches in the retained composition catalogue and the ordinary
-simple-index bound. No separate 253-row structural correspondence is needed.
-For semisimple primitive components, compression keeps the actual full
-socle and quotient, using the sufficient margin $3q\leq2r$ rather than the
-stronger half-degree estimate. The exact degree-six/twelve normal consumers
-are constructed separately; the order-$1320$ obstruction is excluded by
-an actual twelve-point action and its even eleven-cycle normalizer.
-Thus the 116-row primitive correspondence is also unnecessary for T1.
-These replacements do not assert the stronger unused correspondences.
-The remaining catalogue correspondences stay explicit assumptions.
-The
-repeated standalone abelianization parameter is supplied internally by a
-checked theorem.
+Small affine sources keep their actual block systems, translation kernels,
+normal axes and quotient fibres. Degree eight has complete checked linear
+and transitive action coverage. Degree sixteen uses the proved
+$\operatorname{GL}_4(\mathbf F_2)\cong A_8$ geometry and the original
+translation kernel; degree twenty-seven uses proved linear structure.
+The degree-five affine classification and degree-$25$ projective facts are
+internal, and degree $81$ follows from the retained composition-length
+bound and the exact $\operatorname{GL}_4(3)$ order budget. Complete
+original twelve-pair and sixteen-pair sources therefore require no action
+catalogue premise. Stronger optional classifiers and their finite witness
+packages remain separate from the final proof route.
 
-
-The soluble subdirect socle-length statement is proved internally using
-integral conjugation modules and the exact joint socle intersection,
-followed by induction on the actual socle quotients. Both degree-six block
-classification inputs are also proved from faithful wreath coordinates,
-without a finite action catalogue. The three-pair proof uses
-$C_2\wr S_3\cong S_4\times C_2$; the two-triple proof retains the actual
-axes, irreducible quarter-turn and full-wreath charts. Finally the ordinary
-Dixon order bound is derived from the retained primitive catalogue and
-proved O'Nan--Scott structure. Elementary linear-map counting supplies the
-large affine step; actual block and orbit induction complete the proof.
-The soluble linear cube input is also removed: at degree $81$, the retained
-primitive composition theorem and the exact order of $\mathrm{GL}_4(3)$
-give the required complement bound. The general Halasi--Mar'oti theorem is
-not asserted as formally proved.
-
-
-The full-order bound $|A|\leq p^{\lfloor n/p\rfloor}$ for abelian
-$p$-quotients of faithful degree-$n$ actions is now proved internally,
-by central-prime block and orbit induction followed by actual Sylow
-restriction. Higher prime-power factors are retained, so the binary field
-of the character-literature interface is no longer an assumption. The
-mixed-prime abelianization bound is also proved internally: a minimal
-subgroup surjecting onto the actual abelian quotient is nilpotent, and its
-coprime factors admit faithful actions on disjoint original supports.
-The faithful-character tuple theorem is proved from the actual socle normal
-generators, primary semisimple duality, coinduction and irreducible
-constituent selection, including the empty tuple. The bounded-factor
-epimorphism theorem is proved with an arbitrary normal target subgroup:
-short original generating tuples retain their literal product support,
-and joint kernel incidence pays the centralizer and commutator factors
-together. The nilpotent class-number bound is also proved: binary and ternary
-actions satisfy fourth-power estimates by a commuting-pair count across a
-prime-index block kernel, and large primes use the faithful-action order
-bound. Actual disjoint coprime supports complete the nilpotent argument.
-These four results are no longer assumptions. The binary degree-eight
-excess-two implication is also proved internally: complete checked coverage
-of the 26 actions and short normal-generation words exclude the other
-25 actions, while the surviving $E_8$ has equal center and derived subgroup
-of order two. Its nonabelian normal quotients have trivial denominator.
-
-Lemma~\ref{lem:soluble-orbit-generation} is formalized using the retained
-primitive normal-generator and composition-length inputs, together
-with the proved refined induced-module theorem.
-The proof keeps the correlated actions on all original orbits in its
-quotient and uses ordinary generation through actual abelian chief kernels.
-It supplies the large-orbit cutoff internally. Finally the container menu
-uses the retained labelled transitive-group count at the weaker
-subquadratic scale established above. The sharper Pyber representative
-bound is unnecessary for the final marked moment; no formal proof of that
-stronger class-count theorem is claimed.
-
-The degree-eight primitive-affine complement classification is proved from
-complete subgroup coverage of the actual $\operatorname{GL}_3(\mathbf F_2)$.
-Single-element adjunction certificates cover all fifteen subgroup classes;
-fixed nonzero vector or covector flags exclude twelve, and literal linear
-intertwiners identify the three remaining canonical complements. The
-remaining small-affine consumers are now constructed internally as well:
-degree sixteen reuses the retained primitive-sixteen point correspondence,
-and degree twenty-seven uses actual linear embeddings and the retained
-composition-order correspondence. The stronger separate small-affine
-carrier locator is unused.
-
-The full transitive degree-eight correspondence is now proved as well.
-An actual transitive Sylow two-subgroup reduces the original action to
-the checked binary action list. Larger binary seeds use short generator
-words and actual normalizer actions. Of the five regular order-eight
-seeds, cyclic Sylow theory and abelian automorphism-group bounds handle
-two; the other three use finite word certificates for normalizer images
-and joins, followed by literal point-conjugacy certificates. Every step
-keeps the same original subgroup and its point action. This proves
-coverage by the fixed twenty-four nonbinary representatives without
-assuming a catalogue correspondence. The final theorem supplies this
-proved correspondence internally.
-
-The derived-normal quarter bound for transitive binary actions is proved
-by induction on the original degree. Actual central-pair kernels retain
-their conjugation modules and the quotient is the actual faithful top
-image. A nonelementary top supplies a quarter-module estimate; an elementary
-top kills the derived image, so the half-module estimate suffices. This
-proof does not assume the binary excess classification.
-The intrinsic proper-normal bound $d_G(N)\leq\lfloor n/4\rfloor+1$
-also gives the original dependent-word theorem from the retained exact
-excess classification. Its three prices, original factors and maximal
-fully projecting tail are unchanged. The separate dependent-word parameter
-is therefore redundant; the excess classification remains explicit.
-
-The raw O'Nan--Scott structural theorem is also proved internally. The full
-socle is constructed from actual minimal normal subgroups, including both
-regular factors when two occur. Point-stabilizer maximality and the proved
-Scott subdirect theorem give the exact degree forms. Coordinate
-automorphisms of the simple power have exactly the inner automorphisms as
-their outer-wreath kernel, giving a faithful action of the original socle
-quotient. This structural proof uses no classification of finite simple
-groups. The quantitative simple-index and outer-order inequalities remain
-explicit published inputs.
-
-
-The soluble nilpotent-core hypothesis is also unnecessary for the final
-marked moment. The formal development proves Lemma~\ref{lem:bounded-core}
-with ordinary supplement bound $L(B!+1)\lfloor\sqrt M\rfloor$.
-On the original bounded-orbit source its parameters are $L=B=C!$ and
-$M=2b$. This enlarges only a fixed tuple-counting constant, preserves the
-physical orbit cutoff, and removes the separate Theorem~7 input. The
-sharper unrestricted constant $4L\sqrt M$ is not asserted by this proof.
+Finally, the marked moment uses the retained coarse subgroup bound and
+labelled transitive-group count. Its soluble nilpotent core has the proved
+ordinary supplement bound $L(B!+1)\lfloor\sqrt M\rfloor$ on the original
+bounded-orbit source, with $L=B=C!$ and $M=2b$. This changes only a fixed
+constant and does not claim the sharper unrestricted $4L\sqrt M$ theorem.
+The original cutoff, action weights, character restrictions and terminal
+attachment are preserved. Recursive local source/object verification and
+exported-declaration axiom audits accompany the kernel checks; detailed
+build records are kept outside the publication repository.

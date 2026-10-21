@@ -42,8 +42,8 @@ claims: all transitive index-two kernels from Sylow wreath roots and all
 central-involution extensions from the trivial normal. The mathematical
 closure arguments are in the [binary schema](certificates/schema/binary_menu.md).
 Its verifier uses literal permutations and GAP algorithms, without catalogue
-queries or `NormalSubgroups`. Catalogue completeness remains a separate input
-for the nonbinary and primitive ranges listed in the literature register.
+queries or `NormalSubgroups`. The historical catalogue packages have separate completeness contracts;
+none of those correspondences is a premise of the current final T1 export.
 
 The other finite packages specify their own completeness evidence in the
 [certificate inventory](certificates/README.md). Nonbinary normal menus use
@@ -57,8 +57,8 @@ The eligible eight-point actions use actual Sylow-normalizer point witnesses,
 valid for every local epimorphism and twist. The four-by-four branch uses a
 common envelope for the whole original quotient socle and the actual Sylow
 centralizer dichotomy; it requires no four-by-four top or module-lattice
-census. Primitive frame coverage retains the explicit published classification
-input and checked point-conjugacy bindings. These frame results and the complete
+census. The current primitive frame consumer uses actual translation kernels;
+stronger optional classifiers retain their separate coverage contracts. These frame results and the complete
 degree-four residual constructor are components of the constructed degree-two
 joint catalogue, complete sixteen-pair source coverage and final composition.
 Their recursive source/object release audit has passed. The complete six-pair
@@ -158,8 +158,8 @@ geometries have nonbinary quotient socle capacity one. The universal natural
 module has capacity two; binary original quotients have order at most 32.
 All original axes and hot fibres are summed inside the unchanged width-12
 menu. Actual sixteen-pair source coverage is now proved by
-`DegreeSixteenCompleteGeometricSource.residualSource`, using actual minimal
-blocks and complete original quartet sources. All 283 joint-catalogue entries
+the actual source in `DegreeTwoSourceWithoutTwelveOrSixteenCatalogue.lean`,
+using actual minimal blocks and complete original quartet sources. All 283 joint-catalogue entries
 and the degree-two composition are also checked. The input reductions below
 are now constructed; the separate recursive release audit passed on
 20 October 2026.
@@ -171,19 +171,14 @@ shared-C3 moment and inverse-complement compatibility remain required checked
 applications of the reusable results. Source verification, computational
 replay, manuscript review and formal proof are reported separately.
 
-The degree-sixteen locator is not an admissible literature assumption as
-currently typed. Its four listed classes omit imprimitive, pair-free tops
-with nonzero ternary local action, such as `A4 ≀ C4`. The existing 64 finite
-row proofs remain valid within their hypotheses; they do not prove this
-coverage proposition. The active replacement retains the actual minimal
-block system. The pair, primitive and two-primitive-eight-block branches
-now have complete checked width-32 sources, and the four-quartet constructor
-is proved for both zero and nonzero odd local kernels. Their assembly
-constructs `DegreeTwoSixteenPairResidualSource` from the bare published
-primitive-degree-sixteen classification, the internally proved degree-eight
-correspondence, the published socle and McIver--Neumann inputs, Zhmud and
-character literature. No
-project-owned sixteen-point coverage proposition is assumed.
+The old four-class sixteen-point locator is insufficient: it omits
+imprimitive pair-free tops with nonzero ternary local action, such as
+`A4 ≀ C4`. Its local row proofs do not imply coverage. The current source
+instead retains the actual minimal block system, and its primitive,
+pair, four-quartet and two-primitive-eight-block branches are all proved.
+The primitive branch now uses the original elementary translation kernel;
+no primitive-sixteen correspondence is needed. The same actual-source
+route also removes the transitive-twelve correspondence.
 
 The final input audit exposed three older boundaries. The exceptional
 Tracey `5/16` head bound is now proved by
@@ -293,10 +288,10 @@ full socle and the original quotient embedding. Neither theorem remains a
 parameter of the final exports.
 
 The ordinary dependent-word normal-generation theorem is derived from the
-retained exact binary excess classification and the proved universal
+now-proved exact binary excess classification and the proved universal
 proper-normal ceiling. Its literal dependent factors, maximal full tail,
 and three numerical prices are preserved. The separate h55 parameter is
-removed; the h53 classification remains explicit.
+removed; the exact h53 classification is also proved internally.
 
 The separate soluble nilpotent-generation input is also removed. The
 proved bounded-chief-section theorem gives a nilpotent core and at most
@@ -334,30 +329,38 @@ degree-four consumer by the actual normal ternary core and cyclic quotient.
 This replaces those consumers; it does not prove the stronger arbitrary-local
 per-orbit statement.
 
-Three further catalogue interfaces are unnecessary for the final exports.
-The strict-head and degree-eighteen bounds follow from actual composition
-order matches and the retained simple-index bound. The small-affine
-consumers follow from the already-retained primitive-16 correspondence,
-actual linear embeddings and composition order matches. Finally, actual
-semisimple compression with `3q ≤ 2r`, together with direct degree-six/twelve
-normal facts, replaces the 116-row locator. The stronger 253-row, 31-carrier
-and 116-row correspondences are not asserted as proved by these reductions.
+The final actual-source route requires no finite action-catalogue
+correspondence. Primitive chief weights and the 3/10 weight bound use
+actual linear and full-socle structure, the retained composition-length
+theorem and simple-index inequalities. The strict-head bound is used away
+from degrees 10 and 12; the complete physical C3 source pays those two
+actual semisimple sectors separately. Actual degree-eighteen heads and
+semisimple compression give the remaining consumers. This does not assert
+the stronger unused global strict-head theorem or the 336-row, 253-row,
+31-carrier and 116-row correspondences.
 
-The final T1 and AllTargets exports compile with these raw inputs. A fresh
-audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
-`definitionChecks` reports exactly `propext`, `Classical.choice`, and
-`Quot.sound`. The complete
-16-parameter mathematical boundary, with formulations and source locators,
-is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
-No project capacity, source, marked-moment, affine-consumer or quantitative
-socle-profile premise remains in those signatures. Ordinary published
-counting theorems and explicitly described finite structural catalogue
-correspondences remain assumptions. On 21 October 2026 the recursive
-source/object audit passed for all 7,309 project modules in the public
-import closure. Every source in that closure is tracked in main and matches
-the audited bytes. Optional modules outside the closure and the source
-contents of pinned external package objects are outside that audit's scope.
-This establishes the verification-relative-to-published-inputs milestone
-defined above; it does not claim formal proofs of the retained literature
-inputs. Detailed receipts and audit records remain outside the publication
-repository.
+The actual affine consumer assembly retains original block systems,
+translation kernels and normal axes. At degree 16 it uses the proved
+`GL₄(F₂) ≃ A₈` geometry; degree 27 uses proved linear structure. Complete
+twelve-pair and sixteen-pair sources therefore require neither the
+301-action transitive-twelve correspondence nor primitive-sixteen coverage.
+
+The final T1 and AllTargets exports have twelve explicit published inputs,
+with their mathematical formulations and source locators listed after the
+bounds and folder structure in [formal/README.md](formal/README.md).
+The only remaining binary local input is Roney-Dougal–Tracey's exact
+normal-F theorem: it concerns the ambient commutator `[F,Q]`, actual
+centralizer, original nonabelian quotient and excess/rank alternatives.
+The other eleven inputs are the published general counting, composition,
+generation and simple-group inequalities listed there. No project capacity,
+source, marked-moment, affine-consumer or quantitative socle-profile premise
+occurs in those signatures.
+
+The axiom audit reports only `propext`, `Classical.choice` and `Quot.sound`.
+Recursive source/object verification checks the current local import
+closure against successful receipts and pinned toolchain fingerprints.
+Optional modules outside that closure and the source correspondence of
+installed external package objects are outside its scope. Detailed receipts,
+audits and research status records stay outside the publication repository.
+This is verification relative to the listed published inputs; it does not
+claim formal proofs of those remaining inputs.

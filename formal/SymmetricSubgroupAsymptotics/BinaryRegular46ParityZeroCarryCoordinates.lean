@@ -1,0 +1,68 @@
+import SymmetricSubgroupAsymptotics.BinaryRegular46ParityZeroIntrinsicRadical
+import SymmetricSubgroupAsymptotics.BinaryCoordinateSpaceKernelEquality
+
+/-! The original graph-state chart and intrinsic radical chart agree
+with the literal square-carry annihilator denominators. Identities are
+proved on8/4 chart columns and16 defect columns, not all binary vectors. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxHeartbeats 2000000
+noncomputable section
+namespace SymmetricSubgroupAsymptotics.BinaryRegular46ParityZeroCarryCoordinates
+local instance : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+abbrev V := Fin 16 → ZMod 2
+def annihilatorSpace {q : ℕ} (masks : Fin q → ℕ) : Submodule (ZMod 2) V :=
+  ⨅ i, (binaryRowFunctional (binaryVectorOfMask 16 (masks i))).ker
+def stateAnnihilator : Fin 8 → ℕ := ![255,33024,33280,33792,34816,36864,40960,49152]
+def radicalAnnihilator : Fin 12 → ℕ := ![225,210,180,120,256,512,1024,2048,4096,8192,16384,32768]
+abbrev wideState := annihilatorSpace stateAnnihilator
+abbrev lowerRadical := annihilatorSpace radicalAnnihilator
+abbrev S := BinaryRegular46GraphHeadRigidity.stateChart 0
+abbrev R := BinaryRegular46ParityZeroIntrinsicRadical.radical
+
+private def constraints {q : ℕ} (masks : Fin q → ℕ) :
+    V →ₗ[ZMod 2] (Fin q → ZMod 2) where
+  toFun v i := binaryRowFunctional (binaryVectorOfMask 16 (masks i)) v
+  map_add' v z := by funext i;exact map_add (binaryRowFunctional _) v z
+  map_smul' c v := by funext i;exact map_smul (binaryRowFunctional _) c v
+private theorem constraints_ker {q : ℕ} (masks : Fin q → ℕ) :
+    (constraints masks).ker = annihilatorSpace masks := by
+  ext v
+  constructor
+  · intro hv
+    apply (Submodule.mem_iInf _).mpr
+    intro i
+    have hz : constraints masks v = 0 := hv
+    exact congrFun hz i
+  · intro hv
+    change constraints masks v = 0
+    funext i
+    exact (Submodule.mem_iInf _).mp hv i
+private def stateSection : (Fin 8 → ZMod 2) →ₗ[ZMod 2] V :=
+  (binaryRectangularMatrixOfColumnMasks 16 8
+    (![1,256,512,1024,2048,4096,8192,16384] : Fin 8 → ℕ)).mulVecLin
+private def radicalSection : (Fin 12 → ZMod 2) →ₗ[ZMod 2] V :=
+  (binaryRectangularMatrixOfColumnMasks 16 12
+    (![1,2,4,8,256,512,1024,2048,4096,8192,16384,32768] : Fin 12 → ℕ)).mulVecLin
+private def stateDefect : V →ₗ[ZMod 2] V := S.inclusion.comp S.coordinates - LinearMap.id
+private def radicalDefect : V →ₗ[ZMod 2] V := R.inclusion.comp R.coordinates - LinearMap.id
+private theorem state_columns_zero : ∀ j : Fin 8,
+    constraints stateAnnihilator (S.inclusion (Pi.single j 1)) = 0 := by decide +kernel
+private theorem state_defect_columns : ∀ j : Fin 16,
+    S.inclusion (S.coordinates (Pi.single j 1)) - Pi.single j 1 =
+      (stateDefect.comp stateSection) (constraints stateAnnihilator (Pi.single j 1)) := by decide +kernel
+private theorem radical_columns_zero : ∀ j : Fin 4,
+    constraints radicalAnnihilator (R.inclusion (Pi.single j 1)) = 0 := by decide +kernel
+private theorem radical_defect_columns : ∀ j : Fin 16,
+    R.inclusion (R.coordinates (Pi.single j 1)) - Pi.single j 1 =
+      (radicalDefect.comp radicalSection) (constraints radicalAnnihilator (Pi.single j 1)) := by decide +kernel
+
+theorem state_eq_wideState : S.space = wideState :=
+  (S.space_eq_ker_of_basis_factor (constraints stateAnnihilator) (stateDefect.comp stateSection)
+    state_columns_zero state_defect_columns).trans (constraints_ker stateAnnihilator)
+
+theorem radical_eq_lowerRadical : R.space = lowerRadical :=
+  (R.space_eq_ker_of_basis_factor (constraints radicalAnnihilator) (radicalDefect.comp radicalSection)
+    radical_columns_zero radical_defect_columns).trans (constraints_ker radicalAnnihilator)
+
+end SymmetricSubgroupAsymptotics.BinaryRegular46ParityZeroCarryCoordinates
