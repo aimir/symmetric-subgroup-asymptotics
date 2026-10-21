@@ -36,6 +36,7 @@ import SymmetricSubgroupAsymptotics.CFSGProjectiveLinearCardComparison
 import SymmetricSubgroupAsymptotics.CFSGSymplecticEvenOrderRefinement
 import SymmetricSubgroupAsymptotics.CFSGTypeASimpleIndexReduction
 import SymmetricSubgroupAsymptotics.CFSGSubgroupFamilyFaithfulness
+import SymmetricSubgroupAsymptotics.CFSGSymplecticBinaryGenerationReduction
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -97,6 +98,11 @@ The symplectic realization also supplies a noncentral fourth root of
 one in every characteristic, proving even cardinality for all original
 simple type-C models. Their entire classifier branch is discharged
 from the parity residual, including odd characteristic.
+For field order two and every classifier-admissible rank, an explicit
+Coxeter word and a disjoint order-three/root word generate the actual
+elementary group. Transport through the same projective realization proves
+two-generation for the original binary type-C models. Nonbinary type-C
+models remain in the generation residual.
 
 The soluble-generation extension steps and the bounded binary counting leaf
 are also proved here. Importing this file does not replace any outstanding
