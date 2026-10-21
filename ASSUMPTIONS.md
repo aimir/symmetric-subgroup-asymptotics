@@ -221,6 +221,14 @@ semilinear-classification premise. Other literal model cases remain explicit
 in `publishedSimpleIndexBounds_of_cfsg_and_remaining_non_typeA_suzuki_models`;
 the global published simple-index input is therefore still retained by T1.
 
+The same optional reduction proves two-generation for every original type-C
+model, using explicit matrix pairs and the proved Serre-projective
+realization. Together with type A, Suzuki and the previously proved finite
+cases, these are removed by
+`finiteSimpleTwoGeneratorBound_of_cfsg_and_remaining_non_typeA_suzuki_C_models`.
+The other model cases remain explicit, so the global published
+two-generation input is still retained by T1.
+
 Four previously retained inputs are now checked theorems: Burnside's
 two-prime solvability theorem; arbitrary-field Clifford restriction;
 the weak binary normal-subgroup estimate (from the stronger proved

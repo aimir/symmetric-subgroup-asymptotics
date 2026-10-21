@@ -37,6 +37,8 @@ import SymmetricSubgroupAsymptotics.CFSGSymplecticEvenOrderRefinement
 import SymmetricSubgroupAsymptotics.CFSGTypeASimpleIndexReduction
 import SymmetricSubgroupAsymptotics.CFSGSubgroupFamilyFaithfulness
 import SymmetricSubgroupAsymptotics.CFSGSymplecticBinaryGenerationReduction
+import SymmetricSubgroupAsymptotics.CFSGSymplecticGenerationReduction
+import SymmetricSubgroupAsymptotics.CFSGSymplecticFormPreservation
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -102,7 +104,13 @@ For field order two and every classifier-admissible rank, an explicit
 Coxeter word and a disjoint order-three/root word generate the actual
 elementary group. Transport through the same projective realization proves
 two-generation for the original binary type-C models. Nonbinary type-C
-models remain in the generation residual.
+models use a different explicit pair: full long-root extraction, actual
+coordinate tori and signed Coxeter propagation recover every original
+simple-root parameter. The three-element field has its own checked pair.
+Thus every classifier-admissible type-C model is two-generated, and the
+entire C branch is removed from the exact generation residual. The same
+natural matrices embed into the form-preserving symplectic group;
+surjectivity onto that full group is not assumed.
 
 The soluble-generation extension steps and the bounded binary counting leaf
 are also proved here. Importing this file does not replace any outstanding
