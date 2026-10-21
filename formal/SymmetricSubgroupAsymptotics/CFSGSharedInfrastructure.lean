@@ -20,6 +20,7 @@ import SymmetricSubgroupAsymptotics.CFSGSuzukiSimpleIndexReduction
 import SymmetricSubgroupAsymptotics.CFSGSerreOrdinaryTwistModels
 import SymmetricSubgroupAsymptotics.CFSGSerreRepresentationDescent
 import SymmetricSubgroupAsymptotics.CFSGSerreGeneratorRepresentation
+import SymmetricSubgroupAsymptotics.CFSGPSLTwoSimpleIndexReduction
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -48,6 +49,9 @@ parameters, cross-root relations or the uniform finite-type nilpotence bound.
 Diagram and field automorphisms now identify the literal graphs for the
 ordinary twisted A, D, E6 and triality families. The exceptional long-short
 isogenies remain separate.
+The original rank-one type-A matrix model also satisfies both actual
+least-index bounds, including field orders four and five by the same
+argument. Higher-rank type-A and other simple-index cases remain explicit.
 Actual divided-power-stable kernels also support a descended action on
 any surjective representation image. A simple source identifies its
 projective quotient with the nontrivial projective image; this does not
