@@ -1,0 +1,206 @@
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesData
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow0
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow1
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow2
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow3
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow4
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow5
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow6
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow7
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow8
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInput9Pilot
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow10
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow11
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow12
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow13
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow14
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow15
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow16
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow17
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow18
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow19
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow20
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow21
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow22
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow23
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow24
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow25
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow26
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow27
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow28
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow29
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow30
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow31
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesInputRow32
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow0_0
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow0_1
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow0_2
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow0_3
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow0_4
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow0_5
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow0_6
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow0_7
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow0_8
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow0_9
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow1_0
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow1_1
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow1_2
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow1_3
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow1_4
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow1_5
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow1_6
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow1_7
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow1_8
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow1_9
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow2_0
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow2_1
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow2_2
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow2_3
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow2_4
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow2_5
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow2_6
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow2_7
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow2_8
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow2_9
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow3_0
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow3_1
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow3_2
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow3_3
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow3_4
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow3_5
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow3_6
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow3_7
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow3_8
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow3_9
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow4_0
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow4_1
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow4_2
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow4_3
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow4_4
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow4_5
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow4_6
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow4_7
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow4_8
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow4_9
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow5_0
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow5_1
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow5_2
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow5_3
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow5_4
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow5_5
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow5_6
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow5_7
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow5_8
+import SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarriesTargetRow5_9
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 10000
+set_option maxHeartbeats 2000000
+noncomputable section
+open scoped Classical
+namespace SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarries
+
+theorem input_basis : ∀ i j, binaryRowFunctional (input i) (Pi.single j 1) =
+    inputActual i (Pi.single j 1) := by
+  intro i j
+  fin_cases i
+  · exact input_basis_row_0 j
+  · exact input_basis_row_1 j
+  · exact input_basis_row_2 j
+  · exact input_basis_row_3 j
+  · exact input_basis_row_4 j
+  · exact input_basis_row_5 j
+  · exact input_basis_row_6 j
+  · exact input_basis_row_7 j
+  · exact input_basis_row_8 j
+  · exact input_basis_row_9 j
+  · exact input_basis_row_10 j
+  · exact input_basis_row_11 j
+  · exact input_basis_row_12 j
+  · exact input_basis_row_13 j
+  · exact input_basis_row_14 j
+  · exact input_basis_row_15 j
+  · exact input_basis_row_16 j
+  · exact input_basis_row_17 j
+  · exact input_basis_row_18 j
+  · exact input_basis_row_19 j
+  · exact input_basis_row_20 j
+  · exact input_basis_row_21 j
+  · exact input_basis_row_22 j
+  · exact input_basis_row_23 j
+  · exact input_basis_row_24 j
+  · exact input_basis_row_25 j
+  · exact input_basis_row_26 j
+  · exact input_basis_row_27 j
+  · exact input_basis_row_28 j
+  · exact input_basis_row_29 j
+  · exact input_basis_row_30 j
+  · exact input_basis_row_31 j
+  · exact input_basis_row_32 j
+
+theorem target_basis : ∀ i j k, binaryRowFunctional (target i j) (Pi.single k 1) =
+    targetActual i j (Pi.single k 1) := by
+  intro i j k
+  fin_cases i <;> fin_cases j
+  · exact target_basis_row_0_0 k
+  · exact target_basis_row_0_1 k
+  · exact target_basis_row_0_2 k
+  · exact target_basis_row_0_3 k
+  · exact target_basis_row_0_4 k
+  · exact target_basis_row_0_5 k
+  · exact target_basis_row_0_6 k
+  · exact target_basis_row_0_7 k
+  · exact target_basis_row_0_8 k
+  · exact target_basis_row_0_9 k
+  · exact target_basis_row_1_0 k
+  · exact target_basis_row_1_1 k
+  · exact target_basis_row_1_2 k
+  · exact target_basis_row_1_3 k
+  · exact target_basis_row_1_4 k
+  · exact target_basis_row_1_5 k
+  · exact target_basis_row_1_6 k
+  · exact target_basis_row_1_7 k
+  · exact target_basis_row_1_8 k
+  · exact target_basis_row_1_9 k
+  · exact target_basis_row_2_0 k
+  · exact target_basis_row_2_1 k
+  · exact target_basis_row_2_2 k
+  · exact target_basis_row_2_3 k
+  · exact target_basis_row_2_4 k
+  · exact target_basis_row_2_5 k
+  · exact target_basis_row_2_6 k
+  · exact target_basis_row_2_7 k
+  · exact target_basis_row_2_8 k
+  · exact target_basis_row_2_9 k
+  · exact target_basis_row_3_0 k
+  · exact target_basis_row_3_1 k
+  · exact target_basis_row_3_2 k
+  · exact target_basis_row_3_3 k
+  · exact target_basis_row_3_4 k
+  · exact target_basis_row_3_5 k
+  · exact target_basis_row_3_6 k
+  · exact target_basis_row_3_7 k
+  · exact target_basis_row_3_8 k
+  · exact target_basis_row_3_9 k
+  · exact target_basis_row_4_0 k
+  · exact target_basis_row_4_1 k
+  · exact target_basis_row_4_2 k
+  · exact target_basis_row_4_3 k
+  · exact target_basis_row_4_4 k
+  · exact target_basis_row_4_5 k
+  · exact target_basis_row_4_6 k
+  · exact target_basis_row_4_7 k
+  · exact target_basis_row_4_8 k
+  · exact target_basis_row_4_9 k
+  · exact target_basis_row_5_0 k
+  · exact target_basis_row_5_1 k
+  · exact target_basis_row_5_2 k
+  · exact target_basis_row_5_3 k
+  · exact target_basis_row_5_4 k
+  · exact target_basis_row_5_5 k
+  · exact target_basis_row_5_6 k
+  · exact target_basis_row_5_7 k
+  · exact target_basis_row_5_8 k
+  · exact target_basis_row_5_9 k
+
+end SymmetricSubgroupAsymptotics.BinaryHeisenberg14PhiZeroOuterCarries
