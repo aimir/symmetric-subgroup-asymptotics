@@ -1,0 +1,191 @@
+{
+  "upstream_commit": "25507f8795f2e499b392f3312a576538e1c5ef78",
+  "transformation": "Import module paths CFSG[.*] are prefixed with SymmetricSubgroupAsymptotics.External.; Audit.lean module-name filter receives the same prefix. Mathematical declarations unchanged.",
+  "files": {
+    "CFSG.lean": {
+      "upstream_sha256": "9615aff3545969d0c228e8ab7fc887373612884f5c9348a52135046c40da7d2c",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG.lean",
+      "local_sha256": "1ab17a1108f79c500387ae23ba2c31f488b91724516cfba9a0b798f30c3c5191"
+    },
+    "CFSG/Audit.lean": {
+      "upstream_sha256": "cc15f78fdab6b8e5689b16b007bb75eac65ad5329bf980444960e8accca67f29",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Audit.lean",
+      "local_sha256": "ab8fa7ab53b2853375075ec6360f8b0eeb70c71178f27e2404b3ccf344d236b8"
+    },
+    "CFSG/Classification.lean": {
+      "upstream_sha256": "fdd086d935abe80028ee4fc479577f2c7f07e5e9ee9ce50da14885a3672827a0",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Classification.lean",
+      "local_sha256": "553a9d0e7386abe439d323545407bee38813e97b92f77b8af64cbf70ba38dcef"
+    },
+    "CFSG/Index.lean": {
+      "upstream_sha256": "7e12dc89e8012468765d9e7f8923ace24b05637524433e2a4cb39fe6b878f0f4",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Index.lean",
+      "local_sha256": "adf2be2cf60c4a8bff97d8fce17b3974f92c69b302057756561a5c52827c6a21"
+    },
+    "CFSG/Models/Chevalley.lean": {
+      "upstream_sha256": "9c5a414768efe0fb5296317ef82e746f310bff8fe49ef3e4ebc92ead351244ea",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Chevalley.lean",
+      "local_sha256": "9c5a414768efe0fb5296317ef82e746f310bff8fe49ef3e4ebc92ead351244ea"
+    },
+    "CFSG/Models/LieFamilies.lean": {
+      "upstream_sha256": "71e075ceac00522203e17114198926a470235d520801413d3a9fb8ba3bc060dd",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/LieFamilies.lean",
+      "local_sha256": "d1048721a02a0b9d75400f4441da2912e592fe4b1d3965815957901122b9cb6f"
+    },
+    "CFSG/Models/Mathieu22.lean": {
+      "upstream_sha256": "30b836e0b413325727c0d859d7193494720986cf65d4cb43828754684482481b",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Mathieu22.lean",
+      "local_sha256": "30b836e0b413325727c0d859d7193494720986cf65d4cb43828754684482481b"
+    },
+    "CFSG/Models/MatrixData.lean": {
+      "upstream_sha256": "88b82f7201d764a99a2d075cd7986f7d72831c42c0300b38f5bd33246f72eeb3",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/MatrixData.lean",
+      "local_sha256": "88b82f7201d764a99a2d075cd7986f7d72831c42c0300b38f5bd33246f72eeb3"
+    },
+    "CFSG/Models/MatrixGroups/Co1.lean": {
+      "upstream_sha256": "db1f67428e274811db893f8c2aa5c88f7f9fb2b3b4d245117a002187d8fec14b",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/MatrixGroups/Co1.lean",
+      "local_sha256": "4717aa86805c730b81b68898f59ee0733432fc01f7b4d5f484083cab8a31992d"
+    },
+    "CFSG/Models/MatrixGroups/Co3.lean": {
+      "upstream_sha256": "3fe75e7d2c5f8997550fdf2c31aa2afa4843527c0297b85c96626e26b4b48e2e",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/MatrixGroups/Co3.lean",
+      "local_sha256": "3d8458c88fa17fc341d3ea6b9226493092b240335bbe89b99d64d54a8c5a0644"
+    },
+    "CFSG/Models/MatrixGroups/HN.lean": {
+      "upstream_sha256": "e94f8e7e8fd787be00e7e796569a302456526185b67bb73a19b54e7392acd762",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/MatrixGroups/HN.lean",
+      "local_sha256": "74501a9a57d8b718a85322e2b1a34c74a3669987d0864e47d31dd87d942790ac"
+    },
+    "CFSG/Models/MatrixGroups/Ly.lean": {
+      "upstream_sha256": "053d061d05edcb0f4e78cd169f3c24099d270e6a6ceb2b558aa173635cd4642f",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/MatrixGroups/Ly.lean",
+      "local_sha256": "8c654477c2e3244de5eed0d9d3157c207292b354230366a975801bfe91b94d0f"
+    },
+    "CFSG/Models/MatrixGroups/ON.lean": {
+      "upstream_sha256": "488dbe44ca7df4f9e3dee8b4170dc10e985933257a07b1b499b4fad994df5559",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/MatrixGroups/ON.lean",
+      "local_sha256": "4ff4ed5f4cf2557739bf673178c3fe818d5e1a2ee25302f12e604b11f1dad2b3"
+    },
+    "CFSG/Models/MatrixGroups/Ru.lean": {
+      "upstream_sha256": "315481d8181b88ea1b1a3d4830c20095ee9c4c6babbd44386407a1acd2947a03",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/MatrixGroups/Ru.lean",
+      "local_sha256": "d924b7d8a667505ccc5c1a96ab9aa3543a3b0c8457aea9743ddf5862ee100561"
+    },
+    "CFSG/Models/MatrixGroups/Suz.lean": {
+      "upstream_sha256": "6503ce129fad7958e0bfefcf5d97f32e484147a76c39fa94a02a746eda641a57",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/MatrixGroups/Suz.lean",
+      "local_sha256": "f38e6896561efb319e20bb19b296784ef2b349b7d0d5768be37d64feee6ac3db"
+    },
+    "CFSG/Models/MatrixGroups/Th.lean": {
+      "upstream_sha256": "89f059122e7fd12ca9e873a608c4e1f921f2b9d2dcbeee90dc391cf3e67fff4e",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/MatrixGroups/Th.lean",
+      "local_sha256": "a1e148b037866e8b1d2f66f3cc9eab494853ee9e9de78c21fd10a9830b3a5d01"
+    },
+    "CFSG/Models/Monster.lean": {
+      "upstream_sha256": "cf89ab2f73175d8e92fa6946dd48e7885cb3e346066583c502c2bc9e26781bc6",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Monster.lean",
+      "local_sha256": "cf89ab2f73175d8e92fa6946dd48e7885cb3e346066583c502c2bc9e26781bc6"
+    },
+    "CFSG/Models/Presentation.lean": {
+      "upstream_sha256": "ee7a7f6936fed14ad9c27e3b0a6e8675047f19de28f050edda4cb8ab8230c4f7",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentation.lean",
+      "local_sha256": "ee7a7f6936fed14ad9c27e3b0a6e8675047f19de28f050edda4cb8ab8230c4f7"
+    },
+    "CFSG/Models/Presentations/Co2.lean": {
+      "upstream_sha256": "e963f4e6c7d78c91e096fd73890a7ad5829569d84e30f52dc2b0e8bfa6f13ff4",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentations/Co2.lean",
+      "local_sha256": "32ca544961beb3afd6c90c764805c1e429c053a0971d76b23c2858f2db2d9959"
+    },
+    "CFSG/Models/Presentations/HS.lean": {
+      "upstream_sha256": "44dc441d975730320e782c39aa4b2e6e5f31fe82fe2e3005285cfe6d99ac9c74",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentations/HS.lean",
+      "local_sha256": "94baf92e894069680339c9eccb00d5b98b4fc26394dcc2b037b22b743e195be0"
+    },
+    "CFSG/Models/Presentations/He.lean": {
+      "upstream_sha256": "3048a1a7388baf6a60c58393e36cdc0950e731e20f616e5caf65281990263a55",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentations/He.lean",
+      "local_sha256": "54d7cf622ebf33bf4f7029ea0539e74625ff6ca194cefe7aa45ddbeb2bc03e95"
+    },
+    "CFSG/Models/Presentations/J1.lean": {
+      "upstream_sha256": "39a79f1d58014b83b74c71a67b1a90260445450403ff303f5ef8ad3f8b9dabe6",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentations/J1.lean",
+      "local_sha256": "7d0d0d303e6fcc7116c34d813c556ab487d6a60316afe139e6bcaccfed946ca0"
+    },
+    "CFSG/Models/Presentations/J2.lean": {
+      "upstream_sha256": "24adab232b0f67944a23a5288bec3342041a8d33f3b710af9094c7bc77790e6b",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentations/J2.lean",
+      "local_sha256": "d59ed030a64bf9d84cc0404e133944085951a2f44466919fe6f598061a9ec176"
+    },
+    "CFSG/Models/Presentations/J3.lean": {
+      "upstream_sha256": "9e380c70480b4380484851936bfeb0c4f87acaa473256a1d65daf99ac1b3788c",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentations/J3.lean",
+      "local_sha256": "9f10f74d7fa0a16ad5296b14c431c0abcec2dd0a5c2a0abed98b6e96f3fe4248"
+    },
+    "CFSG/Models/Presentations/J4.lean": {
+      "upstream_sha256": "80c742ded268ec9dd5d05481dad27b043dfcce103c0689963afa0151475806f7",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentations/J4.lean",
+      "local_sha256": "36162603e6fc604e19e966e6379197cdcc70e59141fa5a7f7f3201a9f3f78800"
+    },
+    "CFSG/Models/Presentations/M11.lean": {
+      "upstream_sha256": "bef8ae0614f949b9874f85176503bcb93f45fd7eff935c4febb86cc13a593f07",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentations/M11.lean",
+      "local_sha256": "3eaf814317008aa6b950077ce98e8e85f35138f1ebd3f82df5ecae8c9a31d9ad"
+    },
+    "CFSG/Models/Presentations/M12.lean": {
+      "upstream_sha256": "97e912b5a783f3e4e2abfb411fba84b09b92c0cd8fc98b59ef5092441c46309f",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentations/M12.lean",
+      "local_sha256": "d282e16f3ad361214bbc0c69bade5447d9291ad0603f09e1b62d18004fd654f7"
+    },
+    "CFSG/Models/Presentations/M23.lean": {
+      "upstream_sha256": "f6cbd9278eec05d64d4e3b17ccb6b1eee236610b2484519d0a4bf6bbf933b0e9",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentations/M23.lean",
+      "local_sha256": "5baed44d1c0ad4468f75edfc8f318ba233dca1ca1b1150673569d7de823bc1f2"
+    },
+    "CFSG/Models/Presentations/M24.lean": {
+      "upstream_sha256": "175aba9eef788d43f003ac51e5f263dc79146bb6adef899f0a38cd7228bfcc12",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentations/M24.lean",
+      "local_sha256": "a374f31e2ad29bc8cbabf2d4b5c365204ee914f2f47f19006c40b19ccd71c3b4"
+    },
+    "CFSG/Models/Presentations/McL.lean": {
+      "upstream_sha256": "4c3a125383d4dcb828a275d45233e9930cec11b55fcea96006c09911b6cf6080",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Presentations/McL.lean",
+      "local_sha256": "4ddc575fbc8d5fad68ed054948406f7f9ff4c6fa19d8f1582e9211ba2fc374b6"
+    },
+    "CFSG/Models/Sporadic.lean": {
+      "upstream_sha256": "0fdb9fb7e7930b49e4425da5ffd4ed8ccc6049f932084fe26b9c17c60356a8d3",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Sporadic.lean",
+      "local_sha256": "6704931883f577af724e571f04a0afdeb0dcd2bbe16d07ef2b926ad55a0a10a8"
+    },
+    "CFSG/Models/Suzuki.lean": {
+      "upstream_sha256": "4e2403a14b83a17596b7dff7689b71353a5baa41f5ba5246b566c8624d6cb58a",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/Suzuki.lean",
+      "local_sha256": "4e2403a14b83a17596b7dff7689b71353a5baa41f5ba5246b566c8624d6cb58a"
+    },
+    "CFSG/Models/YGroups.lean": {
+      "upstream_sha256": "886a19827beb65986af477f66c62d377c4ad5fb7d663816f0349b9c5183df5c9",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Models/YGroups.lean",
+      "local_sha256": "886a19827beb65986af477f66c62d377c4ad5fb7d663816f0349b9c5183df5c9"
+    },
+    "CFSG/Parameters.lean": {
+      "upstream_sha256": "4cde7ca7a2188914ce46db09a172b044d175f50721872a923e5b7a50df9b2235",
+      "local_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Parameters.lean",
+      "local_sha256": "4cde7ca7a2188914ce46db09a172b044d175f50721872a923e5b7a50df9b2235"
+    },
+    "NOTICE.md": {
+      "upstream_sha256": "e20a91df8ab38115608b3d607d17771f5fd26aa4ffc3dc21ec885b9e03a57d55",
+      "local_path": "provenance/CFSG/NOTICE.md",
+      "local_sha256": "e20a91df8ab38115608b3d607d17771f5fd26aa4ffc3dc21ec885b9e03a57d55"
+    },
+    "LICENSES/Apache-2.0.txt": {
+      "upstream_sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+      "local_path": "provenance/CFSG/Apache-2.0.txt",
+      "local_sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1"
+    },
+    "provenance/atlas.json": {
+      "upstream_sha256": "5ccb62e7312f10cba8416252206bc7b44bbf266915f23b4685c3dca244efa875",
+      "local_path": "provenance/CFSG/atlas.json",
+      "local_sha256": "5ccb62e7312f10cba8416252206bc7b44bbf266915f23b4685c3dca244efa875"
+    }
+  }
+}

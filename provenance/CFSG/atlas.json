@@ -1,0 +1,358 @@
+{
+  "schema": 1,
+  "source": "ATLAS of Finite Group Representations",
+  "retrieved": "2026-10-21",
+  "presentations": [
+    {
+      "group": "M11",
+      "identifier": "M11G1-P1",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/M11/mag/M11G1-P1.M",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/pres/M11G1-P1",
+      "sha256": "6404bdc4b2839ce2b04b1754554406fcc84c3d647065b75bffd69c3e750c9dc4",
+      "generators": [
+        "x",
+        "y"
+      ],
+      "relator_count": 5,
+      "reduced_words_sha256": "acf0f6661ffb6349b5da1dace0bd108b92bd6da30e50167e2071bed54a8ad129"
+    },
+    {
+      "group": "M12",
+      "identifier": "M12G1-P1",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/M12/mag/M12G1-P1.M",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/pres/M12G1-P1",
+      "sha256": "f763cb073fddc8a22ec94c83442db1d0c936d7ecdb061d382ac2fcf6d22c299e",
+      "generators": [
+        "x",
+        "y"
+      ],
+      "relator_count": 6,
+      "reduced_words_sha256": "89ada5cf1954fe1825dd5e59382098fa5e54dc0a804af9a35980c3d42f49af43"
+    },
+    {
+      "group": "M23",
+      "identifier": "M23G1-P1",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/M23/mag/M23G1-P1.M",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/pres/M23G1-P1",
+      "sha256": "3a4a7b8b116ac25b147b94ce0a6c6a73a730420e9865792d60587bd99cdc0e32",
+      "generators": [
+        "x",
+        "y"
+      ],
+      "relator_count": 9,
+      "reduced_words_sha256": "35ea2b4d2e31ef1088a1f3770d6dc041b4b1e3a02ce555558141428cbfeb8459"
+    },
+    {
+      "group": "M24",
+      "identifier": "M24G1-P1",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/M24/mag/M24G1-P1.M",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/pres/M24G1-P1",
+      "sha256": "3bf09bbeddfa76f9fedd79ba8264cbd2b4d1d22947412b305cddba3a50798114",
+      "generators": [
+        "x",
+        "y"
+      ],
+      "relator_count": 7,
+      "reduced_words_sha256": "396659b9c2f7cd286433f458f8af82bf2ff14d36125695f7286e71551a3ecbb8"
+    },
+    {
+      "group": "HS",
+      "identifier": "HSG1-P1",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/HS/mag/HSG1-P1.M",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/pres/HSG1-P1",
+      "sha256": "6f1863b22ce2bf3a4c7dfb4b84200dc614d4b40a5f8f6bd164832ae998d3b25b",
+      "generators": [
+        "x",
+        "y"
+      ],
+      "relator_count": 13,
+      "reduced_words_sha256": "5d236b218203f3d095fc1b142a9184d0132229c28fa99fb677c5ee929d83c7a0"
+    },
+    {
+      "group": "McL",
+      "identifier": "McLG1-P1",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/McL/mag/McLG1-P1.M",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/pres/McLG1-P1",
+      "sha256": "84a601b1aecb12c3ab3b96a9f5009e94bec5fe6e1988f9f12cfde37512c59583",
+      "generators": [
+        "x",
+        "y"
+      ],
+      "relator_count": 15,
+      "reduced_words_sha256": "8e44caf34a3afc8872ff5e7344db0eb54f6527d63178f24a1ce084383d72f398"
+    },
+    {
+      "group": "Co2",
+      "identifier": "Co2G1-P1",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Co2/mag/Co2G1-P1.M",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/pres/Co2G1-P1",
+      "sha256": "85179f5887ea4f86b3ca5ed0f37cafdca9512f7fb85cbd52d91ad26b27833c5b",
+      "generators": [
+        "x",
+        "y"
+      ],
+      "relator_count": 10,
+      "reduced_words_sha256": "547faaf23c48bcec0eddd166f7bae493cd75ceba5bb19fa0fca9e6d521b7b94f"
+    },
+    {
+      "group": "J2",
+      "identifier": "J2G1-P1",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/J2/mag/J2G1-P1.M",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/pres/J2G1-P1",
+      "sha256": "2b88b30c8b93d8866ac00d4e4780d4db84105bf5e07cfa4d28ccf9e6fdbc949d",
+      "generators": [
+        "x",
+        "y"
+      ],
+      "relator_count": 5,
+      "reduced_words_sha256": "f1d688cf70d4968955bee956365e80ca166043caa7b6be23e2d276c1b6727e63"
+    },
+    {
+      "group": "He",
+      "identifier": "HeG1-P1",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/He/mag/HeG1-P1.M",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/pres/HeG1-P1",
+      "sha256": "6ab1294d2599ce209cb9ef53e433cdb40342244ac387c425d0682be6ab55e374",
+      "generators": [
+        "x",
+        "y"
+      ],
+      "relator_count": 7,
+      "reduced_words_sha256": "ddaff00e64461294c42eabc7e34d0b71a9018804c8b92d9056a116f179e02090"
+    },
+    {
+      "group": "J1",
+      "identifier": "J1G1-P1",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/J1/mag/J1G1-P1.M",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/pres/J1G1-P1",
+      "sha256": "d59534c449adee5461053f262627c77b3ffce57e2b25741dcdfecf9c030c9ae4",
+      "generators": [
+        "x",
+        "y"
+      ],
+      "relator_count": 5,
+      "reduced_words_sha256": "e164e456756cedb6b512c846c84d9729965b2fc157ec12ab36740a1825a2c9a8"
+    },
+    {
+      "group": "J3",
+      "identifier": "J3G1-P1",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/J3/mag/J3G1-P1.M",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/pres/J3G1-P1",
+      "sha256": "db34e17432d777cb96784c78883ff956352f822ae1f9472f60fdff96a26f5082",
+      "generators": [
+        "x",
+        "y"
+      ],
+      "relator_count": 8,
+      "reduced_words_sha256": "8a6dd921dde23ecf952c5b1d727235ad8ec95f3ed7b03582ec65677a240a2d8a"
+    },
+    {
+      "group": "J4",
+      "identifier": "J4G2-P1",
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/J4/mag/J4G2-P1.M",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/pres/J4G2-P1",
+      "sha256": "0ed9ed620f24b22490d2cb32f202ecbeb422ff665b4614b9ad8c6a6d7b118135",
+      "generators": [
+        "x",
+        "y",
+        "t"
+      ],
+      "relator_count": 12,
+      "reduced_words_sha256": "b358c84f939152ad39669fd977dbf8ccf4346f89d595c88d61ae20f7fa2c78a9"
+    }
+  ],
+  "matrices": [
+    {
+      "group": "Co3",
+      "identifier": "Co3G1-f2r22B0",
+      "generator": 1,
+      "prime": 2,
+      "dimension": 22,
+      "rank_mod_prime": 22,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Co3/mtx/Co3G1-f2r22B0.m1",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/Co3G1-f2r22B0",
+      "sha256": "dd8ebb98003ed5f05f326041bc4a2e30f99965fcf78977fab0e2f1b7dd43fd6d",
+      "digits_sha256": "0266303f9105e28dee4b4758ec1a6c5313a0ca6f93fbe09eb30eaf31a4ff44f8"
+    },
+    {
+      "group": "Co3",
+      "identifier": "Co3G1-f2r22B0",
+      "generator": 2,
+      "prime": 2,
+      "dimension": 22,
+      "rank_mod_prime": 22,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Co3/mtx/Co3G1-f2r22B0.m2",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/Co3G1-f2r22B0",
+      "sha256": "76e444857a17ada74e62b42dee191de52554a6e80aff98a0b819effbe6972823",
+      "digits_sha256": "0aaae5084a55228ac0af7c985f757962dd876705a1fc7db6351bf85b2af11903"
+    },
+    {
+      "group": "Co1",
+      "identifier": "Co1G1-f2r24B0",
+      "generator": 1,
+      "prime": 2,
+      "dimension": 24,
+      "rank_mod_prime": 24,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Co1/mtx/Co1G1-f2r24B0.m1",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/Co1G1-f2r24B0",
+      "sha256": "6e8bf98081b3935875e99553a45c0b7349b4a0f15b9e591c1c723836d260dc64",
+      "digits_sha256": "4bfcf73a5c2939288c763421e53d8db2fc612bd4dcf10776a3be6d4d2a3baf51"
+    },
+    {
+      "group": "Co1",
+      "identifier": "Co1G1-f2r24B0",
+      "generator": 2,
+      "prime": 2,
+      "dimension": 24,
+      "rank_mod_prime": 24,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Co1/mtx/Co1G1-f2r24B0.m2",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/Co1G1-f2r24B0",
+      "sha256": "8d2b1281690e1823a43d32916e7076b128516a3aa464e433632cc3f34e3eefd7",
+      "digits_sha256": "ba2e2409e0402db4f0012456e51517006ba54117fa6a1bed4b6567fcf2e7ac17"
+    },
+    {
+      "group": "Suz",
+      "identifier": "SuzG1-f3r64B0",
+      "generator": 1,
+      "prime": 3,
+      "dimension": 64,
+      "rank_mod_prime": 64,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Suz/mtx/SuzG1-f3r64B0.m1",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/SuzG1-f3r64B0",
+      "sha256": "c8bab5ec5d182b8e05f39dffe3f9013aa42b9b4c52b573e08d93956099ac3bbe",
+      "digits_sha256": "be13a1dd387c781e2700eb283fd9a676b027c737ca8784abdeb1182fe41c023b"
+    },
+    {
+      "group": "Suz",
+      "identifier": "SuzG1-f3r64B0",
+      "generator": 2,
+      "prime": 3,
+      "dimension": 64,
+      "rank_mod_prime": 64,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Suz/mtx/SuzG1-f3r64B0.m2",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/SuzG1-f3r64B0",
+      "sha256": "aee050036595c66a8caf0bbc125f8b91a66abece37f8dde0fc96dd9c78fab46c",
+      "digits_sha256": "9e8bff7c3f0428e79d1aeb1f980c58827bcbfd5cb2a06c6fbd432cc5bdb51f24"
+    },
+    {
+      "group": "HN",
+      "identifier": "HNG1-f5r133B0",
+      "generator": 1,
+      "prime": 5,
+      "dimension": 133,
+      "rank_mod_prime": 133,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/HN/mtx/HNG1-f5r133B0.m1",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/HNG1-f5r133B0",
+      "sha256": "a771e96ffbc69b01e4cb8c89b3be9189e6cd9bf46f410c5b417177cadffbca35",
+      "digits_sha256": "2189952e3f11df789d393dcd71216482550b42abe43eff2d18dd12837689dafb"
+    },
+    {
+      "group": "HN",
+      "identifier": "HNG1-f5r133B0",
+      "generator": 2,
+      "prime": 5,
+      "dimension": 133,
+      "rank_mod_prime": 133,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/HN/mtx/HNG1-f5r133B0.m2",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/HNG1-f5r133B0",
+      "sha256": "8c61afada719e9bfb27d9ce276ac5948f2f5b38cda4bc1e968fc75cd91c58525",
+      "digits_sha256": "d71ab8add5f5443f563ceadd67050198da204cd9e803f605de74980c160a4712"
+    },
+    {
+      "group": "Th",
+      "identifier": "ThG1-f3r248B0",
+      "generator": 1,
+      "prime": 3,
+      "dimension": 248,
+      "rank_mod_prime": 248,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Th/mtx/ThG1-f3r248B0.m1",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/ThG1-f3r248B0",
+      "sha256": "c26c5bd352c26cd51cb393bdcebc4000294cf8bb4481aa60083ff1e47dde1f6e",
+      "digits_sha256": "631f1e503651c4d51bc528d64aaabc80cf09657c7afa1daf594752e5ef3fe593"
+    },
+    {
+      "group": "Th",
+      "identifier": "ThG1-f3r248B0",
+      "generator": 2,
+      "prime": 3,
+      "dimension": 248,
+      "rank_mod_prime": 248,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Th/mtx/ThG1-f3r248B0.m2",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/ThG1-f3r248B0",
+      "sha256": "dac4e70b409671262a3b61fd9be07756a25c3424e2d49270ff490846e33d7e0d",
+      "digits_sha256": "083973f75c598decb3e5370fb46a585560a5edcf8c79305011cd02c465717eb2"
+    },
+    {
+      "group": "ON",
+      "identifier": "ONG1-f3r154B0",
+      "generator": 1,
+      "prime": 3,
+      "dimension": 154,
+      "rank_mod_prime": 154,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/ON/mtx/ONG1-f3r154B0.m1",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/ONG1-f3r154B0",
+      "sha256": "af214ace93f8d75ea83612a035f2366e821eb2f86b1231317946861dc6792f8d",
+      "digits_sha256": "08b6559faf6bac12766d66e4e5ed8e989c7c839f9860e3bfb8d39754c2e387e1"
+    },
+    {
+      "group": "ON",
+      "identifier": "ONG1-f3r154B0",
+      "generator": 2,
+      "prime": 3,
+      "dimension": 154,
+      "rank_mod_prime": 154,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/ON/mtx/ONG1-f3r154B0.m2",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/ONG1-f3r154B0",
+      "sha256": "5461fa1eb1a48a933696e98e3ca7734f2a0fd048c1b5e38a4d38700816280f89",
+      "digits_sha256": "6d115499f944ab508f51bbc93fdbf3278678f8d5a01695250dae914420416f3f"
+    },
+    {
+      "group": "Ly",
+      "identifier": "LyG1-f5r111B0",
+      "generator": 1,
+      "prime": 5,
+      "dimension": 111,
+      "rank_mod_prime": 111,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Ly/mtx/LyG1-f5r111B0.m1",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/LyG1-f5r111B0",
+      "sha256": "103c658ca3b39d9eb1eabca3675dc4edb1db216a2299f3f30d638a018770abbd",
+      "digits_sha256": "8a6f25472e6383069002f195570f0ccefaea1a011bfea859e820a0fb08e9334c"
+    },
+    {
+      "group": "Ly",
+      "identifier": "LyG1-f5r111B0",
+      "generator": 2,
+      "prime": 5,
+      "dimension": 111,
+      "rank_mod_prime": 111,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Ly/mtx/LyG1-f5r111B0.m2",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/LyG1-f5r111B0",
+      "sha256": "e287afb8f3dc46d0737273911cc425909240301b10a53661fa0362b580105464",
+      "digits_sha256": "a8c89daf5cef1fabd24603eb258d1d603e7f2bcf015c4ca9ddeabb92610a4ad0"
+    },
+    {
+      "group": "Ru",
+      "identifier": "RuG1-f2r28B0",
+      "generator": 1,
+      "prime": 2,
+      "dimension": 28,
+      "rank_mod_prime": 28,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Ru/mtx/RuG1-f2r28B0.m1",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/RuG1-f2r28B0",
+      "sha256": "90fdc2cc19d14f86aa9e222441ca0d5da4ea6dd6bd21338f218d51d908643c15",
+      "digits_sha256": "cb30fef57aa2b1dbbd4adf0dd972b05e5aba9fbcdc0388504081e3e1fdbf5c3b"
+    },
+    {
+      "group": "Ru",
+      "identifier": "RuG1-f2r28B0",
+      "generator": 2,
+      "prime": 2,
+      "dimension": 28,
+      "rank_mod_prime": 28,
+      "url": "https://brauer.maths.qmul.ac.uk/Atlas/spor/Ru/mtx/RuG1-f2r28B0.m2",
+      "detail": "https://brauer.maths.qmul.ac.uk/Atlas/v3/matrep/RuG1-f2r28B0",
+      "sha256": "2066fe9ad569fb4a4b7df0d7cd755df613265d71fce73059021159dc4b81193d",
+      "digits_sha256": "091d5d19d31c5ab8e7a260690e01d715ece9e96e0a25578b10588623c324079b"
+    }
+  ]
+}
