@@ -87,9 +87,10 @@ in `MarkedC4ActualMarkedRDTSource`, `MarkedC4ActualMarkedCaseIIFibre`,
 `MarkedC4ActualQuotientMarkedNormalBudget` and the associated modules.
 The original Theorem 5.5(ii) interface is now derived internally by
 `publishedTheorem55Binary_of_proposition53` in `BinaryOriginalWordConsequences.lean`,
-from the retained exact Proposition 5.3
-input and the proved intrinsic proper-normal ceiling. Only the exact excess
-classification remains a final parameter for this reduction.
+from the internally proved exact Proposition 5.3 and intrinsic
+proper-normal ceiling. The full Theorem 5.7 interface is also proved
+internally by `publishedTheorem57Binary_proved` in
+`BinaryNormalFTheorem57Proof.lean`; neither is a final theorem parameter.
 
 Applications: CNT-LIFT, CNT-GRAPH, CNT-FUSION, BIN-LARGE, BIN-MIX and the
 macro-A4/terminal estimates in ASM-OLD. The faithful degree is that of the
@@ -886,7 +887,10 @@ The exact binary excess theorem, RDT Proposition5.3, is now proved as
 `publishedProposition53Binary_proved`, with no hypotheses. The construction
 retains original kernels, correlated parity and square carries, and full
 abelianization orders. It also supplies RDT Theorem5.5's original-word
-prices. RDT Theorem5.7 remains the sole local normal-F input in the current
-twelve-parameter boundary. Its actual ambient `[F,Q]` and centralizer,
-original quotient and excess/rank alternatives are stated explicitly in
-[formal/README.md](../formal/README.md).
+prices. RDT Theorem5.7 is now proved without hypotheses as
+`publishedTheorem57Binary_proved`. The proof keeps the ambient `[F,Q]`,
+centralizer, original quotient and exact excess/rank alternatives, including
+the degree-eight exception. In the last degree-32 cases, joint order bounds
+and invariant-interval constructions retain actual annihilators and
+original affine cocycles. The eleven remaining published inputs are stated
+explicitly in [formal/README.md](../formal/README.md).

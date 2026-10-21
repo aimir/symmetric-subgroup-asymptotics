@@ -1,3 +1,4 @@
+import SymmetricSubgroupAsymptotics.BinaryNormalFTheorem57Proof
 import SymmetricSubgroupAsymptotics.MarkedC4PublishedGeometricTargets
 import SymmetricSubgroupAsymptotics.Targets
 
