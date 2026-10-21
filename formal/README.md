@@ -126,6 +126,7 @@ definition obligations as conclusions, not hypotheses.
 | `SymmetricSubgroupAsymptotics/CFSGSuzukiModelGeneration.lean` | Actual Suzuki generating pair and exact classifier dispatch, with the original positive-parameter guard. |
 | `SymmetricSubgroupAsymptotics/CFSGSuzukiModelGoodSylow.lean` | Actual Suzuki Sylow witness, soluble normalizer and opposite-subgroup generation; the original matrices supply every structural premise. |
 | `SymmetricSubgroupAsymptotics/CFSGSuzukiModelCardinality.lean` | Exact Suzuki order from a proved, disjoint two-cell decomposition with unique coordinates. |
+| `SymmetricSubgroupAsymptotics/CFSGSuzukiOuterBound.lean` | Actual outer group has order at most `2*m+1`; combined with original central-root orbits, this proves both required least-index bounds. |
 | `SymmetricSubgroupAsymptotics/CFSGSerreDividedPowers.lean` | Binomial multiplication on the literal integral Serre lattice, preserved by base change. Uniform finite-type nilpotence remains open. |
 | `SymmetricSubgroupAsymptotics/CFSGSerreRootOperatorInvertible.lean` | Every original root operator has an actual invertible lift, proved through pointwise divided-power nilpotence in every characteristic. This supplies neither additive root parameters nor cross-root relations. |
 | `SymmetricSubgroupAsymptotics/CFSGOrdinarySubgroupUpperProof.lean` | Coarse all-subgroup count from three retained inputs, using actual bounded nilpotent counts and constructed soluble covers. |

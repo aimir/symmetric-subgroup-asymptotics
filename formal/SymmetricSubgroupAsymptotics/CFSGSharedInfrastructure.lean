@@ -16,6 +16,7 @@ import SymmetricSubgroupAsymptotics.CFSGSuzukiEvenOrder
 import SymmetricSubgroupAsymptotics.CFSGSerreRootDirection
 import SymmetricSubgroupAsymptotics.CFSGSerreLocalNilpotence
 import SymmetricSubgroupAsymptotics.CFSGSerreTwistGraphProjection
+import SymmetricSubgroupAsymptotics.CFSGSuzukiSimpleIndexReduction
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -33,7 +34,10 @@ remaining concrete cases are explicitly retained in the reduction theorems.
 
 The literal type-A and Suzuki families now have checked two-generator
 and good-Sylow witnesses. Suzuki's original matrix Bruhat decomposition
-also supplies its exact order and normalizer intersection. Shared integral
+also supplies its exact order and normalizer intersection.
+Suzuki's outer group has order at most the original field exponent,
+and its actual least proper index satisfies the required numerical packet.
+Shared integral
 Serre divided-power and local-nilpotence lemmas support further Lie families;
 every displayed root operator now has a checked invertible lift, including
 after integral base change. These facts do not assert additive root
