@@ -77,7 +77,7 @@ for those domains.
 \subsection{Formal verification}
 The accompanying Lean development fixes Lean~4.30.0 and a precise mathlib
 revision. Its final theorem proves Theorems~\ref{thm:main},
-\ref{thm:saddle} and~\ref{thm:elementary} relative to 17 explicit published
+\ref{thm:saddle} and~\ref{thm:elementary} relative to 16 explicit published
 mathematical and catalogue inputs, whose formulations and source locators
 are listed in \texttt{formal/README.md}. The project-specific source,
 capacity, marked-moment and summation statements are proved internally.
@@ -96,7 +96,7 @@ $\mathbf F_2$ and $\mathbf F_3$. The subgroup estimate follows from a
 stronger checked subgroup-interval theorem. The projective simplicity
 proof uses elementary-matrix generation, perfectness and Iwasawa's
 criterion; it uses no ATLAS code. These four facts are supplied internally
-and are not among the 17 remaining inputs. Ported proofs retain their
+and are not among the 16 remaining inputs. Ported proofs retain their
 Apache-2.0 attribution and exact source revisions in the formal sources.
 
 
@@ -206,8 +206,19 @@ remaining small-affine consumers are now constructed internally as well:
 degree sixteen reuses the retained primitive-sixteen point correspondence,
 and degree twenty-seven uses actual linear embeddings and the retained
 composition-order correspondence. The stronger separate small-affine
-carrier locator is unused. The full transitive degree-eight catalogue is
-a separate remaining input.
+carrier locator is unused.
+
+The full transitive degree-eight correspondence is now proved as well.
+An actual transitive Sylow two-subgroup reduces the original action to
+the checked binary action list. Larger binary seeds use short generator
+words and actual normalizer actions. Of the five regular order-eight
+seeds, cyclic Sylow theory and abelian automorphism-group bounds handle
+two; the other three use finite word certificates for normalizer images
+and joins, followed by literal point-conjugacy certificates. Every step
+keeps the same original subgroup and its point action. This proves
+coverage by the fixed twenty-four nonbinary representatives without
+assuming a catalogue correspondence. The final theorem supplies this
+proved correspondence internally.
 
 The derived-normal quarter bound for transitive binary actions is proved
 by induction on the original degree. Actual central-pair kernels retain

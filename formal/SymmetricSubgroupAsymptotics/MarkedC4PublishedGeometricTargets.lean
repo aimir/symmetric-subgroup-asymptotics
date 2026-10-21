@@ -36,6 +36,7 @@ import SymmetricSubgroupAsymptotics.SmallAffineCatalogueDegreeEightConsequences
 import SymmetricSubgroupAsymptotics.BinaryDerivedNormalQuarterProof
 import SymmetricSubgroupAsymptotics.PrimitiveSocleRawONanScottProof
 import SymmetricSubgroupAsymptotics.BinaryOriginalWordConsequences
+import SymmetricSubgroupAsymptotics.S8TransitiveCanonicalCoverage
 
 /-! Target composition from the explicit current mathematical inputs.
 The degree-eight small-affine complement classification is proved from
@@ -100,10 +101,10 @@ theorem T1_of_published_inputs
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
     (hMN : McIverNeumannPermutationGeneratorBound)
-    (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     : T1 := by
+  have published8 := S8TransitiveCanonicalCoverage.publishedClassification
   let fullLit := lit.toLiterature
   have hTraceyRefined := traceyRefinedInducedModuleInput_proved
   have hZmud := zmudFaithfulCharacterTupleInput_proved
@@ -152,7 +153,6 @@ theorem allTargets_of_published_inputs
     (hSimpleGen : FiniteSimpleTwoGeneratorBound)
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
     (hMN : McIverNeumannPermutationGeneratorBound)
-    (published8 : DegreeEightCanonicalCatalogue.PublishedClassification)
     (published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification)
     (publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification)
     : AllTargets := by
@@ -163,7 +163,7 @@ theorem allTargets_of_published_inputs
     hTraceyPerm
     hSimpleGen
     hSimpleIndex hMN
-    published8 published16 publishedTwelve)
+    published16 publishedTwelve)
 
 
 end SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu
