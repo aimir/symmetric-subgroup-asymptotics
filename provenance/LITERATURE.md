@@ -820,12 +820,13 @@ The three-pair proof uses `C₂ ≀ S₃ ≃ S₄ × C₂`; the two-triple proof
 the actual axes, irreducible quarter-turn and full-wreath charts. Original
 pointings and the exact source-data interfaces are unchanged. The published
 classification remains historical provenance, rather than a required premise
-for these two slices; the larger catalogue inputs remain explicit.
+for these two slices. Stronger optional catalogue APIs are distinct from
+the current actual-source proof route.
 
 **Dixon and soluble affine order inputs removed.**
-`ElementaryDixonOrderProof.dixonOrder_of_primitive_inputs` proves the
-ordinary soluble permutation order inequality from the retained bounded
-composition catalogue and the proved raw O'Nan–Scott structure. The large
+`ElementaryDixonOrderProof.WithoutCatalogue.dixonOrder_of_primitive_inputs`
+proves the ordinary soluble permutation order inequality from actual
+primitive linear/socle structure and block and orbit induction. The large
 affine step uses `|G| ≤ n^(d+1)` and `2^d ≤ n`, rather than a linear base-size
 theorem. Actual minimal-block wreath embeddings and orbit images complete
 the induction. `primitiveAffineEightyOne_complement_le_cube` handles the
@@ -872,11 +873,20 @@ it does not enlarge the source's orbit cutoff. This removes a required
 input and does not claim the sharper unrestricted RDT Theorem 7 constant.
 
 
-The final theorem no longer takes the separate 253-row strict-head,
-31-carrier small-affine or 116-row bounded primitive correspondences.
-Their actual consumers are proved from the retained 336-row composition
-correspondence, ordinary simple-index inequalities, primitive-16 point
-correspondence and proved linear-group facts. The semisimple comparator
-uses the sufficient bound `3q ≤ 2r` on the actual full-socle quotient;
-actual degree-six/twelve normal facts are constructed separately. These
-are consumer reductions, not proofs of the stronger unused correspondences.
+The final theorem takes no finite primitive or transitive catalogue
+correspondence. Actual linear/full-socle arguments supply the chief-weight,
+3/10 and Dixon consumers; the strict-head estimate is used away from
+degrees10/12, with those actual semisimple sectors paid by the complete C3
+source. Actual translation-kernel sources replace both the primitive-16
+and transitive-twelve correspondence inputs. Semisimple compression uses
+the sufficient margin `3q ≤ 2r`. These replacements do not prove the
+stronger unused catalogue interfaces or global strict-head statement.
+
+The exact binary excess theorem, RDT Proposition5.3, is now proved as
+`publishedProposition53Binary_proved`, with no hypotheses. The construction
+retains original kernels, correlated parity and square carries, and full
+abelianization orders. It also supplies RDT Theorem5.5's original-word
+prices. RDT Theorem5.7 remains the sole local normal-F input in the current
+twelve-parameter boundary. Its actual ambient `[F,Q]` and centralizer,
+original quotient and excess/rank alternatives are stated explicitly in
+[formal/README.md](../formal/README.md).

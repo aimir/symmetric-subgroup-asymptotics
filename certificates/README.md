@@ -160,9 +160,11 @@ actual168-element GL(3,2), without a catalogue premise. The15-class closure
 is proved by `GeneralThreeTwoSubgroupCoverage.complete`. Literal nonzero
 vector/covector flags reject12 classes, and checked linear intertwiners
 identify the remaining C7, C7:C3 and GL(3,2) carriers. The final degree-eight
-small-affine locator is therefore unconditional. Degrees16 and27 retain
-31 fixed rows in their narrower published classification parameter.
-The separate full transitive degree-eight catalogue remains explicit.
+small-affine locator is therefore unconditional. The final degree16 and27
+consumers use actual translation kernels and proved linear structure,
+without a small-affine carrier correspondence. Full transitive degree-eight
+coverage is also proved internally. The stronger optional catalogue APIs
+and their serialized witnesses have their own completeness contracts.
 The [selected reproduction commands](../computations/README.md#complete-gl32-subgroup-certificates)
 emit ordinary kernel-checkable words; successful producer output alone is
 not the coverage proof.
