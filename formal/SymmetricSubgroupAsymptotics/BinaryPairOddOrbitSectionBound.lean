@@ -11,7 +11,7 @@ noncomputable section
 namespace SymmetricSubgroupAsymptotics.BinaryPairFrame
 open OriginalKernelModuleChart
 local instance : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
-local instance : Fact (Nat.Prime 3) := ⟨Nat.prime_three⟩
+local instance oddOrbitSectionBoundFactPrimeThree : Fact (Nat.Prime 3) := ⟨Nat.prime_three⟩
 
 variable {X I : Type} [Finite X] [Fintype I]
   {U : Subgroup (Equiv.Perm X)} (F : BinaryPairFrame U I)

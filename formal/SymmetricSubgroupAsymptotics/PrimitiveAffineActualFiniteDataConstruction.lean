@@ -1,0 +1,21 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAffinePrimitiveActualConsumer
+import SymmetricSubgroupAsymptotics.DegreeTwentyFiveActualProjectiveData
+import SymmetricSubgroupAsymptotics.PrimitiveAffineEightyOneFromComposition
+import SymmetricSubgroupAsymptotics.BurnsideTwoPrimeSolvability
+import SymmetricSubgroupAsymptotics.PGLTwoFiveIsomorphism
+import SymmetricSubgroupAsymptotics.DegreeFiveAffineClassificationComplete
+
+/-! The remaining finite primitive outputs are already proved actual
+25/81/5 facts. This construction has no degree16 catalogue parameter. -/
+set_option autoImplicit false
+noncomputable section
+namespace SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu
+
+def actualPrimitiveAffineFiniteData (hcomp : PrimitiveCompositionLengthInput) :
+    ActualPrimitiveAffineFiniteData where
+  degree25 := DegreeTwentyFiveActualProjectiveData.publishedDegreeTwentyFiveLinearData
+    burnsideTwoPrimeSolvability PGLTwoFiveIsomorphism.publishedProjectiveIsomorphism
+  degree81 := primitiveAffineEightyOne_complement_le_cube hcomp
+  degreeFive := degreeFiveSource_of_publishedClassification DegreeFiveAffineClassification.classification
+
+end SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu
