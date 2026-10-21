@@ -1,0 +1,500 @@
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesData
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow0
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow1
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow2
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow3
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow4
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow5
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow6
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow7
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow8
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow9
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow10
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow11
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow12
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow13
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow14
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow15
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow16
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow17
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow18
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow19
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow20
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow21
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow22
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow23
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow24
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow25
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow26
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow27
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow28
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow29
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow30
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow31
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow32
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow33
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow34
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow35
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow36
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow37
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow38
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow39
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow40
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow41
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow42
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow43
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow44
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow45
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow46
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow47
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow48
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow49
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow50
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow51
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow52
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow53
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow54
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow55
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow56
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow57
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow58
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow59
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow60
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow61
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow62
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow63
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow64
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow65
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow66
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow67
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow68
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow69
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow70
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow71
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow72
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow73
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow74
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow75
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow76
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow77
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow78
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow79
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow80
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow81
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow82
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow83
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow84
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow85
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow86
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow87
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow88
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow89
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow90
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow91
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow92
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow93
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow94
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow95
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow96
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow97
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow98
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow99
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow100
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow101
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow102
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow103
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow104
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow105
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow106
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow107
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow108
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow109
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow110
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow111
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow112
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow113
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow114
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow115
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow116
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow117
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow118
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow119
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow120
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow121
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow122
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow123
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow124
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow125
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow126
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow127
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow128
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow129
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow130
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow131
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow132
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow133
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow134
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow135
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow136
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow137
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow138
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow139
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow140
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow141
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow142
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow143
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow144
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow145
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow146
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow147
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow148
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow149
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow150
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow151
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow152
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow153
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow154
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow155
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow156
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow157
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow158
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow159
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow160
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow161
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow162
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow163
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow164
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow165
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow166
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow167
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInput168Pilot
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow169
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow170
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow171
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow172
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow173
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow174
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow175
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow176
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow177
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow178
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow179
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow180
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow181
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow182
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow183
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow184
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow185
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow186
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow187
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow188
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow189
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow190
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesInputRow191
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow0_0
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow0_1
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow0_2
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow0_3
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow0_4
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow0_5
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow0_6
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow0_7
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow1_0
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow1_1
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow1_2
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow1_3
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow1_4
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow1_5
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow1_6
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow1_7
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow2_0
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow2_1
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow2_2
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow2_3
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow2_4
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow2_5
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow2_6
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow2_7
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow3_0
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow3_1
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow3_2
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow3_3
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow3_4
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow3_5
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow3_6
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow3_7
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow4_0
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow4_1
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow4_2
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow4_3
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow4_4
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow4_5
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow4_6
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow4_7
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow5_0
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow5_1
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow5_2
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow5_3
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow5_4
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow5_5
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow5_6
+import SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarriesTargetRow5_7
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 10000
+set_option maxHeartbeats 2000000
+noncomputable section
+open scoped Classical
+namespace SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarries
+
+theorem input_basis : ∀ i j, binaryRowFunctional (input i) (Pi.single j 1) =
+    inputActual i (Pi.single j 1) := by
+  intro i j
+  fin_cases i
+  · exact input_basis_row_0 j
+  · exact input_basis_row_1 j
+  · exact input_basis_row_2 j
+  · exact input_basis_row_3 j
+  · exact input_basis_row_4 j
+  · exact input_basis_row_5 j
+  · exact input_basis_row_6 j
+  · exact input_basis_row_7 j
+  · exact input_basis_row_8 j
+  · exact input_basis_row_9 j
+  · exact input_basis_row_10 j
+  · exact input_basis_row_11 j
+  · exact input_basis_row_12 j
+  · exact input_basis_row_13 j
+  · exact input_basis_row_14 j
+  · exact input_basis_row_15 j
+  · exact input_basis_row_16 j
+  · exact input_basis_row_17 j
+  · exact input_basis_row_18 j
+  · exact input_basis_row_19 j
+  · exact input_basis_row_20 j
+  · exact input_basis_row_21 j
+  · exact input_basis_row_22 j
+  · exact input_basis_row_23 j
+  · exact input_basis_row_24 j
+  · exact input_basis_row_25 j
+  · exact input_basis_row_26 j
+  · exact input_basis_row_27 j
+  · exact input_basis_row_28 j
+  · exact input_basis_row_29 j
+  · exact input_basis_row_30 j
+  · exact input_basis_row_31 j
+  · exact input_basis_row_32 j
+  · exact input_basis_row_33 j
+  · exact input_basis_row_34 j
+  · exact input_basis_row_35 j
+  · exact input_basis_row_36 j
+  · exact input_basis_row_37 j
+  · exact input_basis_row_38 j
+  · exact input_basis_row_39 j
+  · exact input_basis_row_40 j
+  · exact input_basis_row_41 j
+  · exact input_basis_row_42 j
+  · exact input_basis_row_43 j
+  · exact input_basis_row_44 j
+  · exact input_basis_row_45 j
+  · exact input_basis_row_46 j
+  · exact input_basis_row_47 j
+  · exact input_basis_row_48 j
+  · exact input_basis_row_49 j
+  · exact input_basis_row_50 j
+  · exact input_basis_row_51 j
+  · exact input_basis_row_52 j
+  · exact input_basis_row_53 j
+  · exact input_basis_row_54 j
+  · exact input_basis_row_55 j
+  · exact input_basis_row_56 j
+  · exact input_basis_row_57 j
+  · exact input_basis_row_58 j
+  · exact input_basis_row_59 j
+  · exact input_basis_row_60 j
+  · exact input_basis_row_61 j
+  · exact input_basis_row_62 j
+  · exact input_basis_row_63 j
+  · exact input_basis_row_64 j
+  · exact input_basis_row_65 j
+  · exact input_basis_row_66 j
+  · exact input_basis_row_67 j
+  · exact input_basis_row_68 j
+  · exact input_basis_row_69 j
+  · exact input_basis_row_70 j
+  · exact input_basis_row_71 j
+  · exact input_basis_row_72 j
+  · exact input_basis_row_73 j
+  · exact input_basis_row_74 j
+  · exact input_basis_row_75 j
+  · exact input_basis_row_76 j
+  · exact input_basis_row_77 j
+  · exact input_basis_row_78 j
+  · exact input_basis_row_79 j
+  · exact input_basis_row_80 j
+  · exact input_basis_row_81 j
+  · exact input_basis_row_82 j
+  · exact input_basis_row_83 j
+  · exact input_basis_row_84 j
+  · exact input_basis_row_85 j
+  · exact input_basis_row_86 j
+  · exact input_basis_row_87 j
+  · exact input_basis_row_88 j
+  · exact input_basis_row_89 j
+  · exact input_basis_row_90 j
+  · exact input_basis_row_91 j
+  · exact input_basis_row_92 j
+  · exact input_basis_row_93 j
+  · exact input_basis_row_94 j
+  · exact input_basis_row_95 j
+  · exact input_basis_row_96 j
+  · exact input_basis_row_97 j
+  · exact input_basis_row_98 j
+  · exact input_basis_row_99 j
+  · exact input_basis_row_100 j
+  · exact input_basis_row_101 j
+  · exact input_basis_row_102 j
+  · exact input_basis_row_103 j
+  · exact input_basis_row_104 j
+  · exact input_basis_row_105 j
+  · exact input_basis_row_106 j
+  · exact input_basis_row_107 j
+  · exact input_basis_row_108 j
+  · exact input_basis_row_109 j
+  · exact input_basis_row_110 j
+  · exact input_basis_row_111 j
+  · exact input_basis_row_112 j
+  · exact input_basis_row_113 j
+  · exact input_basis_row_114 j
+  · exact input_basis_row_115 j
+  · exact input_basis_row_116 j
+  · exact input_basis_row_117 j
+  · exact input_basis_row_118 j
+  · exact input_basis_row_119 j
+  · exact input_basis_row_120 j
+  · exact input_basis_row_121 j
+  · exact input_basis_row_122 j
+  · exact input_basis_row_123 j
+  · exact input_basis_row_124 j
+  · exact input_basis_row_125 j
+  · exact input_basis_row_126 j
+  · exact input_basis_row_127 j
+  · exact input_basis_row_128 j
+  · exact input_basis_row_129 j
+  · exact input_basis_row_130 j
+  · exact input_basis_row_131 j
+  · exact input_basis_row_132 j
+  · exact input_basis_row_133 j
+  · exact input_basis_row_134 j
+  · exact input_basis_row_135 j
+  · exact input_basis_row_136 j
+  · exact input_basis_row_137 j
+  · exact input_basis_row_138 j
+  · exact input_basis_row_139 j
+  · exact input_basis_row_140 j
+  · exact input_basis_row_141 j
+  · exact input_basis_row_142 j
+  · exact input_basis_row_143 j
+  · exact input_basis_row_144 j
+  · exact input_basis_row_145 j
+  · exact input_basis_row_146 j
+  · exact input_basis_row_147 j
+  · exact input_basis_row_148 j
+  · exact input_basis_row_149 j
+  · exact input_basis_row_150 j
+  · exact input_basis_row_151 j
+  · exact input_basis_row_152 j
+  · exact input_basis_row_153 j
+  · exact input_basis_row_154 j
+  · exact input_basis_row_155 j
+  · exact input_basis_row_156 j
+  · exact input_basis_row_157 j
+  · exact input_basis_row_158 j
+  · exact input_basis_row_159 j
+  · exact input_basis_row_160 j
+  · exact input_basis_row_161 j
+  · exact input_basis_row_162 j
+  · exact input_basis_row_163 j
+  · exact input_basis_row_164 j
+  · exact input_basis_row_165 j
+  · exact input_basis_row_166 j
+  · exact input_basis_row_167 j
+  · exact input_basis_row_168 j
+  · exact input_basis_row_169 j
+  · exact input_basis_row_170 j
+  · exact input_basis_row_171 j
+  · exact input_basis_row_172 j
+  · exact input_basis_row_173 j
+  · exact input_basis_row_174 j
+  · exact input_basis_row_175 j
+  · exact input_basis_row_176 j
+  · exact input_basis_row_177 j
+  · exact input_basis_row_178 j
+  · exact input_basis_row_179 j
+  · exact input_basis_row_180 j
+  · exact input_basis_row_181 j
+  · exact input_basis_row_182 j
+  · exact input_basis_row_183 j
+  · exact input_basis_row_184 j
+  · exact input_basis_row_185 j
+  · exact input_basis_row_186 j
+  · exact input_basis_row_187 j
+  · exact input_basis_row_188 j
+  · exact input_basis_row_189 j
+  · exact input_basis_row_190 j
+  · exact input_basis_row_191 j
+
+theorem target_basis : ∀ i j k, binaryRowFunctional (target i j) (Pi.single k 1) =
+    targetActual i j (Pi.single k 1) := by
+  intro i j k
+  fin_cases i <;> fin_cases j
+  · exact target_basis_row_0_0 k
+  · exact target_basis_row_0_1 k
+  · exact target_basis_row_0_2 k
+  · exact target_basis_row_0_3 k
+  · exact target_basis_row_0_4 k
+  · exact target_basis_row_0_5 k
+  · exact target_basis_row_0_6 k
+  · exact target_basis_row_0_7 k
+  · exact target_basis_row_1_0 k
+  · exact target_basis_row_1_1 k
+  · exact target_basis_row_1_2 k
+  · exact target_basis_row_1_3 k
+  · exact target_basis_row_1_4 k
+  · exact target_basis_row_1_5 k
+  · exact target_basis_row_1_6 k
+  · exact target_basis_row_1_7 k
+  · exact target_basis_row_2_0 k
+  · exact target_basis_row_2_1 k
+  · exact target_basis_row_2_2 k
+  · exact target_basis_row_2_3 k
+  · exact target_basis_row_2_4 k
+  · exact target_basis_row_2_5 k
+  · exact target_basis_row_2_6 k
+  · exact target_basis_row_2_7 k
+  · exact target_basis_row_3_0 k
+  · exact target_basis_row_3_1 k
+  · exact target_basis_row_3_2 k
+  · exact target_basis_row_3_3 k
+  · exact target_basis_row_3_4 k
+  · exact target_basis_row_3_5 k
+  · exact target_basis_row_3_6 k
+  · exact target_basis_row_3_7 k
+  · exact target_basis_row_4_0 k
+  · exact target_basis_row_4_1 k
+  · exact target_basis_row_4_2 k
+  · exact target_basis_row_4_3 k
+  · exact target_basis_row_4_4 k
+  · exact target_basis_row_4_5 k
+  · exact target_basis_row_4_6 k
+  · exact target_basis_row_4_7 k
+  · exact target_basis_row_5_0 k
+  · exact target_basis_row_5_1 k
+  · exact target_basis_row_5_2 k
+  · exact target_basis_row_5_3 k
+  · exact target_basis_row_5_4 k
+  · exact target_basis_row_5_5 k
+  · exact target_basis_row_5_6 k
+  · exact target_basis_row_5_7 k
+
+end SymmetricSubgroupAsymptotics.BinaryRegular46FullConstantOuterCarries
