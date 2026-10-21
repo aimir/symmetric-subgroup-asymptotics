@@ -22,6 +22,15 @@ import SymmetricSubgroupAsymptotics.CFSGSerreRepresentationDescent
 import SymmetricSubgroupAsymptotics.CFSGSerreGeneratorRepresentation
 import SymmetricSubgroupAsymptotics.CFSGPSLTwoSimpleIndexReduction
 import SymmetricSubgroupAsymptotics.CFSGSerreEvenOrderRefinement
+import SymmetricSubgroupAsymptotics.CFSGTypeATransvectionRecognition
+import SymmetricSubgroupAsymptotics.CFSGTypeARootPermutation
+import SymmetricSubgroupAsymptotics.CFSGTypeAOuterIndexNumerics
+import SymmetricSubgroupAsymptotics.CFSGSymplecticImageCentralizer
+import SymmetricSubgroupAsymptotics.CFSGSymplecticElementaryCenter
+import SymmetricSubgroupAsymptotics.CFSGSymplecticProjectiveRealization
+import SymmetricSubgroupAsymptotics.CFSGIncidenceOrientation
+import SymmetricSubgroupAsymptotics.CFSGColorOrientationIndex
+import SymmetricSubgroupAsymptotics.CFSGEquivariantAutomorphismFaithfulness
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -53,11 +62,26 @@ isogenies remain separate.
 The original rank-one type-A matrix model also satisfies both actual
 least-index bounds, including field orders four and five by the same
 argument. Higher-rank type-A and other simple-index cases remain explicit.
+For higher-rank type A the squared-index inequality and the lower bound
+`q^r <= ell` are proved on the actual matrix quotient. Transvections are
+recognized by Sylow centres, and every automorphism permutes the original
+full point-root and hyperplane-root groups. The higher-rank outer count
+still needs the collineation bound; its numerical adapter retains this
+premise explicitly.
 Actual divided-power-stable kernels also support a descended action on
 any surjective representation image. A simple source identifies its
 projective quotient with the nontrivial projective image; this does not
 assume or prove that the image is a named classical group. The six literal
 Serre generator relations have a reusable quotient-map constructor.
+The concrete symplectic matrices now satisfy those six relations over
+the rationals, preserve the original integral lattice, and intertwine
+every original root operator after base change. The action on this
+actual image has scalar commutant. Identification with the full classical
+symplectic group remains separate.
+Its action range is exactly that of the literal elementary matrix group.
+When the original projective source is simple, this gives an actual
+isomorphism to the elementary group's central quotient; no Lie-algebra
+faithfulness or full classical-group generation is assumed.
 In characteristic two every original root lift is an involution. Any
 nontrivial quotient of an untwisted Serre model consequently has even
 cardinality, without a matrix-group recognition hypothesis.
