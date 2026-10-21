@@ -168,3 +168,16 @@ and their serialized witnesses have their own completeness contracts.
 The [selected reproduction commands](../computations/README.md#complete-gl32-subgroup-certificates)
 emit ordinary kernel-checkable words; successful producer output alone is
 not the coverage proof.
+
+## Binary normal-F certificates
+
+[`BinaryNormalFTheorem57Proof`](../formal/SymmetricSubgroupAsymptotics/BinaryNormalFTheorem57Proof.lean)
+proves the full published binary normal-F interface without hypotheses.
+Its exact excess reduction leaves degrees 4, 8, 16 and 32. The final
+32-point clauses retain the original pair action, kernel, quotient and
+normal denominator. Checked layer coordinates and literal restriction
+ranges supply joint bounds; invariant intervals construct proper normal
+subgroups where the whole quotient is insufficient. Selected commutator
+annihilator certificates prove the required zero cocycle class without
+assuming either extension splits. These are imported Lean proofs, not
+claims inferred from successful witness generation.

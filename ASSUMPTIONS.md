@@ -345,14 +345,17 @@ translation kernels and normal axes. At degree 16 it uses the proved
 twelve-pair and sixteen-pair sources therefore require neither the
 301-action transitive-twelve correspondence nor primitive-sixteen coverage.
 
-The final T1 and AllTargets exports have twelve explicit published inputs,
+The final T1 and AllTargets exports have eleven explicit published inputs,
 with their mathematical formulations and source locators listed after the
 bounds and folder structure in [formal/README.md](formal/README.md).
-The only remaining binary local input is Roney-Dougal–Tracey's exact
-normal-F theorem: it concerns the ambient commutator `[F,Q]`, actual
-centralizer, original nonabelian quotient and excess/rank alternatives.
-The other eleven inputs are the published general counting, composition,
-generation and simple-group inequalities listed there. No project capacity,
+The exact binary normal-F theorem is now proved without hypotheses as
+[`publishedTheorem57Binary_proved`](formal/SymmetricSubgroupAsymptotics/BinaryNormalFTheorem57Proof.lean).
+It retains the ambient commutator `[F,Q]`, actual centralizer, original
+nonabelian quotient and every excess/rank alternative. Its proper-normal
+constructions keep the same original denominator and actual affine cocycle;
+no split-extension or capacity statement is assumed.
+The remaining eleven inputs are the published general counting,
+composition, generation and simple-group inequalities listed there. No project capacity,
 source, marked-moment, affine-consumer or quantitative socle-profile premise
 occurs in those signatures.
 

@@ -1,10 +1,11 @@
 import SymmetricSubgroupAsymptotics.MarkedC4PublishedActualAffineTargets
+import SymmetricSubgroupAsymptotics.BinaryNormalFTheorem57Proof
 
-/-! Public targets from twelve explicit published inputs. Exact binary
-excess is proved internally. Complete original affine sources replace the
-bounded composition and primitive12/16 correspondences. The normal-F
-quotient theorem remains an explicit published input. Stronger unused
-catalogue interfaces remain available separately. -/
+/-! Public targets from eleven explicit published inputs. Exact binary
+excess and the full original-quotient normal-F theorem are proved internally.
+Complete original affine sources replace the bounded composition and
+primitive12/16 correspondences. Stronger unused catalogue interfaces remain
+available separately. -/
 set_option autoImplicit false
 noncomputable section
 namespace SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu
@@ -16,7 +17,6 @@ open MarkedC4.SolubleContainerCount MarkedC4.SolubleContainerOrder
 theorem T1_of_published_inputs
     (lit : PreE7CharacterPublishedInputs)
     (hcomp : PrimitiveCompositionLengthInput)
-    (h57 : RDTExcessStructure.PublishedTheorem57Binary)
     (hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper)
     (hAG : PublishedAschbacherGuralnickSolubleGeneration)
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
@@ -28,13 +28,12 @@ theorem T1_of_published_inputs
     (hMN : McIverNeumannPermutationGeneratorBound)
     : T1 := by
   exact T1_of_published_inputs_actualAffineSources
-    lit hcomp h57 hodd hAG hExceptionalOrbits hPrimitiveGen hLMM hTraceyPerm hSimpleGen hSimpleIndex hMN
+    lit hcomp publishedTheorem57Binary_proved hodd hAG hExceptionalOrbits hPrimitiveGen hLMM hTraceyPerm hSimpleGen hSimpleIndex hMN
 
-/-- The same twelve inputs imply all three approved asymptotic targets. -/
+/-- The same eleven inputs imply all three approved asymptotic targets. -/
 theorem allTargets_of_published_inputs
     (lit : PreE7CharacterPublishedInputs)
     (hcomp : PrimitiveCompositionLengthInput)
-    (h57 : RDTExcessStructure.PublishedTheorem57Binary)
     (hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper)
     (hAG : PublishedAschbacherGuralnickSolubleGeneration)
     (hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput)
@@ -46,6 +45,6 @@ theorem allTargets_of_published_inputs
     (hMN : McIverNeumannPermutationGeneratorBound)
     : AllTargets := by
   exact allTargets_of_published_inputs_actualAffineSources
-    lit hcomp h57 hodd hAG hExceptionalOrbits hPrimitiveGen hLMM hTraceyPerm hSimpleGen hSimpleIndex hMN
+    lit hcomp publishedTheorem57Binary_proved hodd hAG hExceptionalOrbits hPrimitiveGen hLMM hTraceyPerm hSimpleGen hSimpleIndex hMN
 
 end SymmetricSubgroupAsymptotics.Non2UnipotentPrefixFiniteMenu
