@@ -233,7 +233,11 @@ realization. Together with type A, Suzuki and the previously proved finite
 cases, these are removed by
 `finiteSimpleTwoGeneratorBound_of_cfsg_and_remaining_non_typeA_suzuki_C_models`.
 The other model cases remain explicit, so the global published
-two-generation input is still retained by T1.
+two-generation input is still retained by T1. The corresponding
+original type-D family is now also proved in full, all ranks at least
+four and all prime-power fields. Its exact residual adapter is
+`finiteSimpleTwoGeneratorBound_of_cfsg_and_remaining_non_typeA_suzuki_C_D_models`;
+other model families still remain.
 
 Four previously retained inputs are now checked theorems: Burnside's
 two-prime solvability theorem; arbitrary-field Clifford restriction;

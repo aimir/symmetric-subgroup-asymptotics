@@ -51,6 +51,7 @@ import SymmetricSubgroupAsymptotics.CFSGSymplecticHyperbolicPairOrbit
 import SymmetricSubgroupAsymptotics.CFSGSymplecticFullGroup
 import SymmetricSubgroupAsymptotics.CFSGSymplecticProjectiveNaturalRootLines
 import SymmetricSubgroupAsymptotics.CFSGGTwoEvenOrderRefinement
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDGenerationReduction
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -133,7 +134,12 @@ chain Weyl word of fourth power one proves even order for the entire
 original type-D family, removing all D tags from the parity residual.
 An actual generating pair also recovers all original simple roots for
 every binary type-D rank at least four. The exact generation residual
-therefore omits those binary D tags; nonbinary D remains explicit.
+omits the binary D tags. The subsequent nonbinary pair uses primitive
+root-parameter extraction and signed star propagation; both endpoint
+geometries recover the original short roots and Weyl word in the same
+subgroup. Every original D model of rank at least four is therefore
+two-generated, and all D tags are removed from the exact generation
+residual. No full orthogonal-group recognition theorem is assumed.
 For the original symplectic model, the actual short-root conjugacy
 and a moved natural projective point prove `q <= ell` and
 `ell*(q-1) <= q^(2*r)-1`. The natural centre has at most two elements
