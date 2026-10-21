@@ -223,6 +223,9 @@ the global published simple-index input is therefore still retained by T1. The o
 `ell^2 < |G|` for every original type-C model, using actual symmetric
 shears and an injective augmented cell. Its outer-automorphism inequality
 is still open, so type C is not yet removed from this global input.
+The original elementary matrix realization is also proved to be the full
+natural symplectic group by a Gaussian base case and hyperbolic-pair
+stabilizer induction; this identification is not an extra assumption.
 
 The same optional reduction proves two-generation for every original type-C
 model, using explicit matrix pairs and the proved Serre-projective

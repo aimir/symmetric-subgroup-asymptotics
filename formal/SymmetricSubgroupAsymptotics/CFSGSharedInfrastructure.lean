@@ -48,6 +48,8 @@ import SymmetricSubgroupAsymptotics.CFSGSymmetricMatrixCardinality
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBEvenOrderRefinement
 import SymmetricSubgroupAsymptotics.CFSGSymplecticLeastIndexSquare
 import SymmetricSubgroupAsymptotics.CFSGSymplecticHyperbolicPairOrbit
+import SymmetricSubgroupAsymptotics.CFSGSymplecticFullGroup
+import SymmetricSubgroupAsymptotics.CFSGSymplecticProjectiveNaturalRootLines
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -96,8 +98,8 @@ Serre generator relations have a reusable quotient-map constructor.
 The concrete symplectic matrices now satisfy those six relations over
 the rationals, preserve the original integral lattice, and intertwine
 every original root operator after base change. The action on this
-actual image has scalar commutant. Identification with the full classical
-symplectic group remains separate.
+actual image has scalar commutant. The full natural symplectic group
+identification is proved by the later stabilizer induction.
 Its action range is exactly that of the literal elementary matrix group.
 When the original projective source is simple, this gives an actual
 isomorphism to the elementary group's central quotient; no Lie-algebra
@@ -118,8 +120,9 @@ coordinate tori and signed Coxeter propagation recover every original
 simple-root parameter. The three-element field has its own checked pair.
 Thus every classifier-admissible type-C model is two-generated, and the
 entire C branch is removed from the exact generation residual. The same
-natural matrices embed into the form-preserving symplectic group;
-surjectivity onto that full group is not assumed.
+natural matrices identify with the full form-preserving symplectic group:
+the rank-one Gaussian base and the actual hyperbolic-pair stabilizer
+prove surjectivity in all ranks. This is a proved theorem, not an input.
 The original untransposed type-D model now has the same complete
 rational-to-integral image construction, using a shared square-zero
 matrix realization. The two fork projections prove a scalar commutant
@@ -140,6 +143,10 @@ Borel factor proves `ell^2 < |G|` for every admissible original C model,
 including characteristic two. Actual elementary words also move every
 nonzero natural vector and every hyperbolic partner. Intrinsic abstract
 root recognition and the outer bound remain separate obligations.
+The actual natural root lines descend injectively to the projective
+quotient: a common nonzero fixed vector forces any central scalar
+relating two transvections to equal one. Their parameters, cardinalities,
+projective labels and conjugation laws are consequently exact.
 The natural type-B realization retains the short roots' quadratic
 exponential coefficients. The fourth conjugation coefficient is proved
 zero on the actual original image before using the source's four-term
