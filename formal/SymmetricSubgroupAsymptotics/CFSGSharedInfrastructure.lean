@@ -18,6 +18,8 @@ import SymmetricSubgroupAsymptotics.CFSGSerreLocalNilpotence
 import SymmetricSubgroupAsymptotics.CFSGSerreTwistGraphProjection
 import SymmetricSubgroupAsymptotics.CFSGSuzukiSimpleIndexReduction
 import SymmetricSubgroupAsymptotics.CFSGSerreOrdinaryTwistModels
+import SymmetricSubgroupAsymptotics.CFSGSerreRepresentationDescent
+import SymmetricSubgroupAsymptotics.CFSGSerreGeneratorRepresentation
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -46,6 +48,11 @@ parameters, cross-root relations or the uniform finite-type nilpotence bound.
 Diagram and field automorphisms now identify the literal graphs for the
 ordinary twisted A, D, E6 and triality families. The exceptional long-short
 isogenies remain separate.
+Actual divided-power-stable kernels also support a descended action on
+any surjective representation image. A simple source identifies its
+projective quotient with the nontrivial projective image; this does not
+assume or prove that the image is a named classical group. The six literal
+Serre generator relations have a reusable quotient-map constructor.
 
 The soluble-generation extension steps and the bounded binary counting leaf
 are also proved here. Importing this file does not replace any outstanding
