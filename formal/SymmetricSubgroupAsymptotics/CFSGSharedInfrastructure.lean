@@ -21,6 +21,7 @@ import SymmetricSubgroupAsymptotics.CFSGSerreOrdinaryTwistModels
 import SymmetricSubgroupAsymptotics.CFSGSerreRepresentationDescent
 import SymmetricSubgroupAsymptotics.CFSGSerreGeneratorRepresentation
 import SymmetricSubgroupAsymptotics.CFSGPSLTwoSimpleIndexReduction
+import SymmetricSubgroupAsymptotics.CFSGSerreEvenOrderRefinement
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -57,6 +58,9 @@ any surjective representation image. A simple source identifies its
 projective quotient with the nontrivial projective image; this does not
 assume or prove that the image is a named classical group. The six literal
 Serre generator relations have a reusable quotient-map constructor.
+In characteristic two every original root lift is an involution. Any
+nontrivial quotient of an untwisted Serre model consequently has even
+cardinality, without a matrix-group recognition hypothesis.
 
 The soluble-generation extension steps and the bounded binary counting leaf
 are also proved here. Importing this file does not replace any outstanding
