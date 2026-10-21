@@ -31,6 +31,9 @@ import SymmetricSubgroupAsymptotics.CFSGSymplecticProjectiveRealization
 import SymmetricSubgroupAsymptotics.CFSGIncidenceOrientation
 import SymmetricSubgroupAsymptotics.CFSGColorOrientationIndex
 import SymmetricSubgroupAsymptotics.CFSGEquivariantAutomorphismFaithfulness
+import SymmetricSubgroupAsymptotics.CFSGInnerActionFaithfulness
+import SymmetricSubgroupAsymptotics.CFSGProjectiveLinearCardComparison
+import SymmetricSubgroupAsymptotics.CFSGSymplecticEvenOrderRefinement
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -85,6 +88,10 @@ faithfulness or full classical-group generation is assumed.
 In characteristic two every original root lift is an involution. Any
 nontrivial quotient of an untwisted Serre model consequently has even
 cardinality, without a matrix-group recognition hypothesis.
+The symplectic realization also supplies a noncentral fourth root of
+one in every characteristic, proving even cardinality for all original
+simple type-C models. Their entire classifier branch is discharged
+from the parity residual, including odd characteristic.
 
 The soluble-generation extension steps and the bounded binary counting leaf
 are also proved here. Importing this file does not replace any outstanding
