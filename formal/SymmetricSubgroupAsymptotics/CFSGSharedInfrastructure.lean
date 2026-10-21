@@ -17,6 +17,7 @@ import SymmetricSubgroupAsymptotics.CFSGSerreRootDirection
 import SymmetricSubgroupAsymptotics.CFSGSerreLocalNilpotence
 import SymmetricSubgroupAsymptotics.CFSGSerreTwistGraphProjection
 import SymmetricSubgroupAsymptotics.CFSGSuzukiSimpleIndexReduction
+import SymmetricSubgroupAsymptotics.CFSGSerreOrdinaryTwistModels
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -42,6 +43,9 @@ Serre divided-power and local-nilpotence lemmas support further Lie families;
 every displayed root operator now has a checked invertible lift, including
 after integral base change. These facts do not assert additive root
 parameters, cross-root relations or the uniform finite-type nilpotence bound.
+Diagram and field automorphisms now identify the literal graphs for the
+ordinary twisted A, D, E6 and triality families. The exceptional long-short
+isogenies remain separate.
 
 The soluble-generation extension steps and the bounded binary counting leaf
 are also proved here. Importing this file does not replace any outstanding

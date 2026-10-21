@@ -129,6 +129,7 @@ definition obligations as conclusions, not hypotheses.
 | `SymmetricSubgroupAsymptotics/CFSGSuzukiOuterBound.lean` | Actual outer group has order at most `2*m+1`; combined with original central-root orbits, this proves both required least-index bounds. |
 | `SymmetricSubgroupAsymptotics/CFSGSerreDividedPowers.lean` | Binomial multiplication on the literal integral Serre lattice, preserved by base change. Uniform finite-type nilpotence remains open. |
 | `SymmetricSubgroupAsymptotics/CFSGSerreRootOperatorInvertible.lean` | Every original root operator has an actual invertible lift, proved through pointwise divided-power nilpotence in every characteristic. This supplies neither additive root parameters nor cross-root relations. |
+| `SymmetricSubgroupAsymptotics/CFSGSerreOrdinaryTwistModels.lean` | Original diagram/Frobenius graph identifications for twisted A, D, E6 and triality, built on the same integral lattice and its scalar extension. Exceptional long-short isogenies are separate. |
 | `SymmetricSubgroupAsymptotics/CFSGOrdinarySubgroupUpperProof.lean` | Coarse all-subgroup count from three retained inputs, using actual bounded nilpotent counts and constructed soluble covers. |
 | `lean-toolchain`, `lakefile.lean`, `lake-manifest.json` | Pinned compiler, package configuration, and exact dependencies. |
 | `../scripts/check_lean.py` | Serialized compiler runner with memory, RSS, and wall-time limits. |
