@@ -41,6 +41,10 @@ import SymmetricSubgroupAsymptotics.CFSGSymplecticGenerationReduction
 import SymmetricSubgroupAsymptotics.CFSGSymplecticFormPreservation
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDEvenOrderRefinement
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDBinaryGenerationReduction
+import SymmetricSubgroupAsymptotics.CFSGSymplecticMinimumIndexLower
+import SymmetricSubgroupAsymptotics.CFSGSymplecticMinimumIndexUpper
+import SymmetricSubgroupAsymptotics.CFSGSymplecticCenterCardinality
+import SymmetricSubgroupAsymptotics.CFSGSymmetricMatrixCardinality
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -123,6 +127,12 @@ original type-D family, removing all D tags from the parity residual.
 An actual generating pair also recovers all original simple roots for
 every binary type-D rank at least four. The exact generation residual
 therefore omits those binary D tags; nonbinary D remains explicit.
+For the original symplectic model, the actual short-root conjugacy
+and a moved natural projective point prove `q <= ell` and
+`ell*(q-1) <= q^(2*r)-1`. The natural centre has at most two elements
+and is trivial in characteristic two. An injective block-cell chart
+counts symmetric parameter pairs exactly; group membership and the
+final square-index/outer bounds are separate obligations.
 
 The soluble-generation extension steps and the bounded binary counting leaf
 are also proved here. Importing this file does not replace any outstanding
