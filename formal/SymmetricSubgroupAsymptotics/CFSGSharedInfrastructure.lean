@@ -45,6 +45,7 @@ import SymmetricSubgroupAsymptotics.CFSGSymplecticMinimumIndexLower
 import SymmetricSubgroupAsymptotics.CFSGSymplecticMinimumIndexUpper
 import SymmetricSubgroupAsymptotics.CFSGSymplecticCenterCardinality
 import SymmetricSubgroupAsymptotics.CFSGSymmetricMatrixCardinality
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBEvenOrderRefinement
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -133,6 +134,14 @@ and a moved natural projective point prove `q <= ell` and
 and is trivial in characteristic two. An injective block-cell chart
 counts symmetric parameter pairs exactly; group membership and the
 final square-index/outer bounds are separate obligations.
+The natural type-B realization retains the short roots' quadratic
+exponential coefficients. The fourth conjugation coefficient is proved
+zero on the actual original image before using the source's four-term
+root operator. In odd characteristic its scalar commutant and actual
+projective image give the original-model comparison. Together with the
+characteristic-two root-involution proof, a chain Weyl word proves
+even order for every original type-B model. All B tags are removed from
+the exact parity residual.
 
 The soluble-generation extension steps and the bounded binary counting leaf
 are also proved here. Importing this file does not replace any outstanding
