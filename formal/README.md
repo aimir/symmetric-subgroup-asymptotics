@@ -132,13 +132,13 @@ outside the publication repository.
 
 The final exports are
 [T1_of_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
-and `allTargets_of_published_inputs`. Their **17 named inputs** are listed
+and `allTargets_of_published_inputs`. Their **16 named inputs** are listed
 below. The character bundle has one published general class-number field. Both
 abelian-quotient statements are now supplied by checked proofs. These are explicit theorem parameters,
 not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
-Twenty-two formerly external requirements are now discharged by checked proofs
+Twenty-three formerly external requirements are now discharged by checked proofs
 or proved consumer replacements on the same pinned toolchain:
 
 | Proved result | Export and proof source |
@@ -152,6 +152,7 @@ or proved consumer replacements on the same pinned toolchain:
 | Soluble subdirect socle length is at most the maximum factor socle length. | [`publishedSolubleSubdirectHeight`](SymmetricSubgroupAsymptotics/SolubleSubdirectSocleHeight.lean), from semisimple integral conjugation modules, the exact joint socle intersection, and quotient induction. This is the literal upper socle series. |
 | Every actual degree-six action with three physical pairs has one of the seven required abstract group models. | [`DegreeSixThreePairClassificationProof.representativeClassification`](SymmetricSubgroupAsymptotics/DegreeSixThreePairClassificationProof.lean), from `C₂ ≀ S₃ ≃ S₄ × C₂`, the central projection dichotomy, and internal four-point subgroup recognition. Both actual `S₄` actions are retained by the original source interface. |
 | Every degree-six two-triple affine cell with nontrivial kernel signs has one of the four required models. | [`publishedDegreeSixThreeByTwoAffineClassification`](SymmetricSubgroupAsymptotics/DegreeSixThreeByTwoClassificationProof.lean), through actual block coordinates, axes/product recognition, an irreducible `C₄` chart, and the full-wreath branch. No finite action classification premise is used. |
+| Every actual transitive nonbinary eight-point action is point-conjugate to a fixed canonical representative. | [`S8TransitiveCanonicalCoverage.publishedClassification`](SymmetricSubgroupAsymptotics/S8TransitiveCanonicalCoverage.lean), through an actual transitive binary subgroup, unconditional binary action coverage, regular-seed normalizer and join certificates, and literal point-conjugacy witnesses. No eight-point classification premise is retained. |
 | Every abelian p-group quotient of a faithful degree-n action has order at most p^(floor(n/p)); in particular every binary abelian quotient has order at most 2^(n/2). | [`abelian_pQuotient_card_le`](SymmetricSubgroupAsymptotics/PermutationAbelianQuotientOrderBound.lean), from full abelianization-order induction on actual central-prime blocks and complementary orbits, followed by actual Sylow restriction. Higher prime-power cyclic factors are retained. |
 | A transitive binary eight-point group of excess two is the actual Heisenberg group E8; a nonabelian normal quotient has trivial denominator and center/derived orders two. | [`publishedDegreeEightExceptional`](SymmetricSubgroupAsymptotics/RDTDegreeEightExceptionalProof.lean), from unconditional coverage of all 26 binary actions, short ambient normal-generation words for the other 25 actions, and the intrinsic E8 center/derived structure. |
 | Every abelian quotient of a faithful degree-n action has order at most 3^(n/3). | [`kovacsPraegerAbelianizationBound`](SymmetricSubgroupAsymptotics/KovacsPraegerAbelianizationProof.lean), using an actual nilpotent supplement, coprime support compression, and full p-group abelianization orders. |
@@ -286,7 +287,6 @@ and labelled transitive-count theorem are retained published counting inputs.
 | [hSimpleGen : FiniteSimpleTwoGeneratorBound](SymmetricSubgroupAsymptotics/ActualWreathSemisimpleCoefficient.lean) | Every finite centerless simple group has≤2 generators. | Guralnick–Kantor, Journal of Algebra 234 (2000), Theorem I, p.744 and Corollary p.745; LIT-SIMPLE-2GEN. |
 | [hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds](SymmetricSubgroupAsymptotics/PrimitiveSocleRawSimpleIndex.lean) | For the actual least proper subgroup index ℓ of a finite nonabelian simple T: ℓ² < card(T) and card(Out(T)) ≤ 3 log₂ ℓ. | Ballester-Bolinches–Esteban-Romero–Jiménez-Seral, Theorem A(4), p.4 of arXiv:2203.16976v2; LIT-SIMPLE-INDEX. The bound ℓ ≥ 5 and all profile deductions are internal. |
 | [hMN : McIverNeumannPermutationGeneratorBound](SymmetricSubgroupAsymptotics/McIverNeumannPermutationSection.lean) | Every subgroup of S_s except literally fullS3 has≤floor(s/2) generators. | Blackburn–Neumann–Venkataraman, Enumeration of Finite Groups (2007), Lemma 5.2; proof reference Cameron–Solomon–Turull, Journal of Algebra 127 (1989), §4; LIT-MCIVER-NEUMANN. |
-| [published8 : DegreeEightCanonicalCatalogue.PublishedClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineEightCanonicalCatalogue.lean) | Every actual transitive nonbinary subgroup of S8 is point-conjugate to one of24 pinned canonical actions. | Butler–McKay 1983, degree-eight classification; official TransGrp manual, with the 26 binary actions excluded from the 50-action list. |
 | [published16 : PrimitiveSixteenCanonicalCatalogue.PublishedClassification](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenCanonicalCatalogue.lean) | Every primitive subgroup of S16 point-conjugate to one of22 canonical actions:20 affine +naturalA16/S16. | PRIM degree16. NOT an all1954 transitive16 or527 semantic-source assumption. |
 | [publishedTwelve : DegreeTwelveCanonicalCatalogueLocator.PublishedClassification](SymmetricSubgroupAsymptotics/DegreeTwelveCanonicalCatalogueLocator.lean) | Every transitive subgroup of S12 point-conjugate to one of fixed301 literal tops. | Royle, Journal of Symbolic Computation 4(2) (1987), 255–268, degree-twelve classification of 301 actions; official TransGrp manual. |
 
@@ -298,7 +298,8 @@ The remaining small-affine consumers are also constructed internally from
 the retained primitive-16 and composition correspondences. Their isolated
 consumer route imports the original finite records unchanged. No separate
 31-row small-affine input remains. This does not prove the stronger full
-31-carrier locator or the full eight-point transitive-action classification.
+31-carrier locator. The full eight-point transitive-action correspondence is
+separately supplied by the checked theorem above.
 
 The quantitative `PublishedPrimitiveSocleDichotomyInput` is constructed from
 the proved `publishedONanScottStructure` and the retained `hSimpleIndex`;
@@ -381,7 +382,7 @@ recovery workflow.
 
 ## Verification boundary
 
-The public import closure contains **6,342 project modules**. On
+The public import closure contains **7,309 project modules**. On
 21 October 2026, recursive verification matched their current sources,
 compiled objects, direct dependency fingerprints, and pinned toolchain
 against successful check receipts. Matching historical receipts were reused

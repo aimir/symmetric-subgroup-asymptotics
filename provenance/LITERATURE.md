@@ -479,7 +479,13 @@ chapter *The Library of Transitive Groups*, opening paragraphs, attributes
 degrees at most eleven to Gregory Butler and John McKay, *The transitive
 groups of degree up to eleven*, Communications in Algebra 11(8) (1983),
 863–911, [DOI](https://doi.org/10.1080/00927878308822884). This supplies
-degree-six and degree-eight completeness. Degree twelve is Gordon F.
+historical degree-six and degree-eight completeness. Both degree-six source
+slices and the full degree-eight correspondence are now supplied by checked
+proofs. In degree eight, `S8TransitiveCanonicalCoverage.publishedClassification`
+keeps the original subgroup and actual point conjugator through a transitive
+binary subgroup, its normalizer actions and short word certificates. The
+twenty-four fixed nonbinary representatives therefore need no external
+completeness premise in the final theorem. Degree twelve is Gordon F.
 Royle, *The transitive groups of degree twelve*, Journal of Symbolic
 Computation 4(2) (1987), 255–268,
 [DOI](https://doi.org/10.1016/S0747-7171(87)80068-8), with 301 conjugacy

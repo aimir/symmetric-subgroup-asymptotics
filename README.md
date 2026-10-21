@@ -10,7 +10,7 @@ Read the [statement and normalization](SPEC.md),
 [assumptions and evidence boundary](ASSUMPTIONS.md).
 
 The [Lean proof](formal/README.md) establishes T1 and its T2/T3 consequences
-relative to 17 explicitly named published mathematical inputs. The final
+relative to 16 explicitly named published mathematical inputs. The final
 target axiom audit uses only `propext`, `Classical.choice`, and `Quot.sound`;
 the public import closure passed recursive source/object verification on
 21 October 2026. Project-specific capacity, source, marked-moment, affine

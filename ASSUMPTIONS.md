@@ -64,7 +64,7 @@ joint catalogue, complete sixteen-pair source coverage and final composition.
 Their recursive source/object release audit has passed. The complete six-pair
 B6 source is now constructed uniformly from actual top geometry. The
 required eight-pair source endpoint is now proved uniformly from the existing
-published degree-eight action classification; it does not require the
+proved degree-eight action classification; it does not require the
 alternative 527-entry ambient source table. The historical computational menus
 are evidence for their own supplied witnesses, not extra hypotheses of these
 structural frame theorems.
@@ -147,7 +147,7 @@ accepts degree-two source data. The current
 [final facade](formal/SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
 constructs those data internally. Its eight-pair endpoint is supplied by
 [`PairedEightActualRepresentativeSource`](formal/SymmetricSubgroupAsymptotics/PairedEightActualRepresentativeSource.lean),
-using only the existing published degree-eight classification, Zmud and
+using the internally proved degree-eight classification, Zmud and
 character-literature inputs. It retains the literal pair action, every
 original normal denominator and all top-map fibres. The 527-entry source
 table is an alternative construction of this endpoint, not an additional
@@ -180,8 +180,9 @@ block system. The pair, primitive and two-primitive-eight-block branches
 now have complete checked width-32 sources, and the four-quartet constructor
 is proved for both zero and nonzero odd local kernels. Their assembly
 constructs `DegreeTwoSixteenPairResidualSource` from the bare published
-degree-eight and primitive-degree-sixteen classifications, the published
-socle and McIver--Neumann inputs, Zhmud and character literature. No
+primitive-degree-sixteen classification, the internally proved degree-eight
+correspondence, the published socle and McIver--Neumann inputs, Zhmud and
+character literature. No
 project-owned sixteen-point coverage proposition is assumed.
 
 The final input audit exposed three older boundaries. The exceptional
@@ -346,13 +347,13 @@ The final T1 and AllTargets exports compile with these raw inputs. A fresh
 audit of both exports, `T2_of_T1`, `T3_of_T1`, `allTargets_iff_T1`, and
 `definitionChecks` reports exactly `propext`, `Classical.choice`, and
 `Quot.sound`. The complete
-17-parameter mathematical boundary, with formulations and source locators,
+16-parameter mathematical boundary, with formulations and source locators,
 is listed after the bounds and folder structure in [formal/README.md](formal/README.md).
 No project capacity, source, marked-moment, affine-consumer or quantitative
 socle-profile premise remains in those signatures. Ordinary published
 counting theorems and explicitly described finite structural catalogue
 correspondences remain assumptions. On 21 October 2026 the recursive
-source/object audit passed for all 6,342 project modules in the public
+source/object audit passed for all 7,309 project modules in the public
 import closure. Every source in that closure is tracked in main and matches
 the audited bytes. Optional modules outside the closure and the source
 contents of pinned external package objects are outside that audit's scope.

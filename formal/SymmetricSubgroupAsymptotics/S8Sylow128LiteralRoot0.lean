@@ -1,0 +1,36 @@
+import SymmetricSubgroupAsymptotics.S8Sylow128LiteralModels
+import SymmetricSubgroupAsymptotics.FiniteSubgroupAdjunctionWords
+import Mathlib.Tactic.FinCases
+
+/-! One exact literal seed-adjunction equality. Both actual generator
+inclusions are certified by ordinary words, with identity conjugator. -/
+set_option autoImplicit false
+noncomputable section
+namespace SymmetricSubgroupAsymptotics.S8Sylow128LiteralRoot0
+open S8Sylow128LeftCosets
+
+def sourceGenerators : Fin 4 → Ambient :=
+  Matrix.vecCons (representatives (S8Sylow128DoubleCosets.roots 0))
+    BinaryMenuCayley8T35.generators
+
+def certificate : FiniteGeneratorEquivWordCertificate (MulAut.conj (1 : Ambient))
+    sourceGenerators (S8Sylow128LiteralModels.generators 0) where
+  forward := {
+    words := ![.one, (.generator 1), (.generator 2), (.generator 3)]
+    equations := by
+      intro j
+      fin_cases j <;> apply Equiv.ext <;> intro x <;> revert x <;> decide +kernel }
+  backward := {
+    words := ![.one, (.generator 1), (.generator 2), (.generator 3)]
+    equations := by
+      intro j
+      fin_cases j <;> apply Equiv.ext <;> intro x <;> revert x <;> decide +kernel }
+
+theorem exact_eq : H ⊔ Subgroup.closure
+    {representatives (S8Sylow128DoubleCosets.roots 0)} =
+      S8Sylow128LiteralModels.rows 0 := by
+  simpa only [map_one, one_smul] using
+    FiniteSubgroupAdjunctionCoverage.adjoin_eq_of_words _ _ _ 1 certificate
+
+end SymmetricSubgroupAsymptotics.S8Sylow128LiteralRoot0
+end
