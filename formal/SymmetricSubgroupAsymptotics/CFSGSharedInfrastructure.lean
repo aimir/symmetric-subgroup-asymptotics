@@ -40,6 +40,7 @@ import SymmetricSubgroupAsymptotics.CFSGSymplecticBinaryGenerationReduction
 import SymmetricSubgroupAsymptotics.CFSGSymplecticGenerationReduction
 import SymmetricSubgroupAsymptotics.CFSGSymplecticFormPreservation
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDEvenOrderRefinement
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDBinaryGenerationReduction
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -119,6 +120,9 @@ in every characteristic. Its actual elementary central quotient is
 isomorphic to the original simple projective source. A noncentral
 chain Weyl word of fourth power one proves even order for the entire
 original type-D family, removing all D tags from the parity residual.
+An actual generating pair also recovers all original simple roots for
+every binary type-D rank at least four. The exact generation residual
+therefore omits those binary D tags; nonbinary D remains explicit.
 
 The soluble-generation extension steps and the bounded binary counting leaf
 are also proved here. Importing this file does not replace any outstanding
