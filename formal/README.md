@@ -120,9 +120,14 @@ definition obligations as conclusions, not hypotheses.
 | `SymmetricSubgroupAsymptotics/` | Definitions, analytic estimates, group-theoretic proofs, finite certificates, and theorem assemblers. |
 | `SymmetricSubgroupAsymptotics/External/` | Selected proof ports, concrete classification models, and mathlib backports, with preserved notices and pinned provenance. |
 | `SymmetricSubgroupAsymptotics/External/CFSG/` | Concrete CFSG models and exhaustiveness proposition, frozen at the source revision recorded in `../provenance/CFSG_SOURCE.md`. The proposition alone supplies no generation, order or automorphism theorem. |
-| `SymmetricSubgroupAsymptotics/CFSGSharedInfrastructure.lean` | Optional import for concrete classification transport, proved alternating-family bounds, literal generating subsets, elementary soluble-generation lifting, and bounded binary counting. |
+| `SymmetricSubgroupAsymptotics/CFSGSharedInfrastructure.lean` | Optional import for concrete classification transport, alternating-family bounds, literal type-A and Suzuki generation/Sylow witnesses, integral Serre lemmas, soluble-generation lifting, and bounded binary counting. |
 | `SymmetricSubgroupAsymptotics.lean` | Public import of the final proof facade and shared-threshold formulations. Optional certificate modules have their own imports. |
 | `SymmetricSubgroupAsymptotics/CFSGTypeAModelGeneration.lean` | Proved two-generation for the entire literal matrix type-A family; all other residual model obligations remain explicit. |
+| `SymmetricSubgroupAsymptotics/CFSGSuzukiModelGeneration.lean` | Actual Suzuki generating pair and exact classifier dispatch, with the original positive-parameter guard. |
+| `SymmetricSubgroupAsymptotics/CFSGSuzukiModelGoodSylow.lean` | Actual Suzuki Sylow witness, soluble normalizer and opposite-subgroup generation; the original matrices supply every structural premise. |
+| `SymmetricSubgroupAsymptotics/CFSGSuzukiModelCardinality.lean` | Exact Suzuki order from a proved, disjoint two-cell decomposition with unique coordinates. |
+| `SymmetricSubgroupAsymptotics/CFSGSerreDividedPowers.lean` | Binomial multiplication on the literal integral Serre lattice, preserved by base change. Uniform finite-type nilpotence remains open. |
+| `SymmetricSubgroupAsymptotics/CFSGSerreRootOperatorInvertible.lean` | Every original root operator has an actual invertible lift, proved through pointwise divided-power nilpotence in every characteristic. This supplies neither additive root parameters nor cross-root relations. |
 | `SymmetricSubgroupAsymptotics/CFSGOrdinarySubgroupUpperProof.lean` | Coarse all-subgroup count from three retained inputs, using actual bounded nilpotent counts and constructed soluble covers. |
 | `lean-toolchain`, `lakefile.lean`, `lake-manifest.json` | Pinned compiler, package configuration, and exact dependencies. |
 | `../scripts/check_lean.py` | Serialized compiler runner with memory, RSS, and wall-time limits. |
