@@ -34,6 +34,8 @@ import SymmetricSubgroupAsymptotics.CFSGEquivariantAutomorphismFaithfulness
 import SymmetricSubgroupAsymptotics.CFSGInnerActionFaithfulness
 import SymmetricSubgroupAsymptotics.CFSGProjectiveLinearCardComparison
 import SymmetricSubgroupAsymptotics.CFSGSymplecticEvenOrderRefinement
+import SymmetricSubgroupAsymptotics.CFSGTypeASimpleIndexReduction
+import SymmetricSubgroupAsymptotics.CFSGSubgroupFamilyFaithfulness
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -64,13 +66,16 @@ ordinary twisted A, D, E6 and triality families. The exceptional long-short
 isogenies remain separate.
 The original rank-one type-A matrix model also satisfies both actual
 least-index bounds, including field orders four and five by the same
-argument. Higher-rank type-A and other simple-index cases remain explicit.
+argument. The entire type-A family now satisfies both required
+simple-index bounds; other family cases remain explicit.
 For higher-rank type A the squared-index inequality and the lower bound
 `q^r <= ell` are proved on the actual matrix quotient. Transvections are
 recognized by Sylow centres, and every automorphism permutes the original
-full point-root and hyperplane-root groups. The higher-rank outer count
-still needs the collineation bound; its numerical adapter retains this
-premise explicitly.
+full point-root and hyperplane-root groups. Actual PGL frame alignment
+and the frame-stabilizer injection into field automorphisms give the
+collineation count. Cancelling the actual inner group then proves
+`|Out PSL_n(F)| <= 2*n*|RingAut(F)|` for `n >= 3`, discharging the
+numerical adapter's outer premise.
 Actual divided-power-stable kernels also support a descended action on
 any surjective representation image. A simple source identifies its
 projective quotient with the nontrivial projective image; this does not

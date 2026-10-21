@@ -214,6 +214,13 @@ deductions, and the exact original one-factor quotient are proved
 internally. The rounded all-subgroup generator bound is likewise derived
 from the retained McIver–Neumann theorem.
 
+The optional concrete CFSG reduction proves both simple-index inequalities
+for alternating groups, every original type-A model, and Suzuki groups.
+The type-A outer bound uses a proved projective-frame count, with no
+semilinear-classification premise. Other literal model cases remain explicit
+in `publishedSimpleIndexBounds_of_cfsg_and_remaining_non_typeA_suzuki_models`;
+the global published simple-index input is therefore still retained by T1.
+
 Four previously retained inputs are now checked theorems: Burnside's
 two-prime solvability theorem; arbitrary-field Clifford restriction;
 the weak binary normal-subgroup estimate (from the stronger proved
