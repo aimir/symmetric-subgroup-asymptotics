@@ -39,6 +39,7 @@ import SymmetricSubgroupAsymptotics.CFSGSubgroupFamilyFaithfulness
 import SymmetricSubgroupAsymptotics.CFSGSymplecticBinaryGenerationReduction
 import SymmetricSubgroupAsymptotics.CFSGSymplecticGenerationReduction
 import SymmetricSubgroupAsymptotics.CFSGSymplecticFormPreservation
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDEvenOrderRefinement
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -111,6 +112,13 @@ Thus every classifier-admissible type-C model is two-generated, and the
 entire C branch is removed from the exact generation residual. The same
 natural matrices embed into the form-preserving symplectic group;
 surjectivity onto that full group is not assumed.
+The original untransposed type-D model now has the same complete
+rational-to-integral image construction, using a shared square-zero
+matrix realization. The two fork projections prove a scalar commutant
+in every characteristic. Its actual elementary central quotient is
+isomorphic to the original simple projective source. A noncentral
+chain Weyl word of fourth power one proves even order for the entire
+original type-D family, removing all D tags from the parity residual.
 
 The soluble-generation extension steps and the bounded binary counting leaf
 are also proved here. Importing this file does not replace any outstanding
