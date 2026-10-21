@@ -50,6 +50,7 @@ import SymmetricSubgroupAsymptotics.CFSGSymplecticLeastIndexSquare
 import SymmetricSubgroupAsymptotics.CFSGSymplecticHyperbolicPairOrbit
 import SymmetricSubgroupAsymptotics.CFSGSymplecticFullGroup
 import SymmetricSubgroupAsymptotics.CFSGSymplecticProjectiveNaturalRootLines
+import SymmetricSubgroupAsymptotics.CFSGGTwoEvenOrderRefinement
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -155,6 +156,15 @@ projective image give the original-model comparison. Together with the
 characteristic-two root-involution proof, a chain Weyl word proves
 even order for every original type-B model. All B tags are removed from
 the exact parity residual.
+The original G2 Serre model also has a checked rational/integral
+representation, obtained by folding the three outer D4 roots. The
+short-root polynomial retains its genuine quadratic coefficient. On
+the actual representation image a long Weyl word has fourth power one
+and is noncentral. Simple projective descent proves even order for
+all original simple G2 models. The natural eight-dimensional module
+is reducible; the proof uses its actual action image and assumes no
+scalar-commutant or named-group recognition assertion. Twisted G2
+and other exceptional cases remain explicit in the parity residual.
 
 The soluble-generation extension steps and the bounded binary counting leaf
 are also proved here. Importing this file does not replace any outstanding
