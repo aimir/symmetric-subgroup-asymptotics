@@ -46,6 +46,8 @@ import SymmetricSubgroupAsymptotics.CFSGSymplecticMinimumIndexUpper
 import SymmetricSubgroupAsymptotics.CFSGSymplecticCenterCardinality
 import SymmetricSubgroupAsymptotics.CFSGSymmetricMatrixCardinality
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBEvenOrderRefinement
+import SymmetricSubgroupAsymptotics.CFSGSymplecticLeastIndexSquare
+import SymmetricSubgroupAsymptotics.CFSGSymplecticHyperbolicPairOrbit
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -132,8 +134,12 @@ For the original symplectic model, the actual short-root conjugacy
 and a moved natural projective point prove `q <= ell` and
 `ell*(q-1) <= q^(2*r)-1`. The natural centre has at most two elements
 and is trivial in characteristic two. An injective block-cell chart
-counts symmetric parameter pairs exactly; group membership and the
-final square-index/outer bounds are separate obligations.
+counts symmetric parameter pairs exactly. Every symmetric shear belongs
+to the actual elementary group. An augmented cell with a two-coordinate
+Borel factor proves `ell^2 < |G|` for every admissible original C model,
+including characteristic two. Actual elementary words also move every
+nonzero natural vector and every hyperbolic partner. Intrinsic abstract
+root recognition and the outer bound remain separate obligations.
 The natural type-B realization retains the short roots' quadratic
 exponential coefficients. The fourth conjugation coefficient is proved
 zero on the actual original image before using the source's four-term

@@ -219,7 +219,10 @@ for alternating groups, every original type-A model, and Suzuki groups.
 The type-A outer bound uses a proved projective-frame count, with no
 semilinear-classification premise. Other literal model cases remain explicit
 in `publishedSimpleIndexBounds_of_cfsg_and_remaining_non_typeA_suzuki_models`;
-the global published simple-index input is therefore still retained by T1.
+the global published simple-index input is therefore still retained by T1. The optional reduction also proves
+`ell^2 < |G|` for every original type-C model, using actual symmetric
+shears and an injective augmented cell. Its outer-automorphism inequality
+is still open, so type C is not yet removed from this global input.
 
 The same optional reduction proves two-generation for every original type-C
 model, using explicit matrix pairs and the proved Serre-projective
