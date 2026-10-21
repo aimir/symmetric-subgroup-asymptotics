@@ -892,5 +892,5 @@ prices. RDT Theorem5.7 is now proved without hypotheses as
 centralizer, original quotient and exact excess/rank alternatives, including
 the degree-eight exception. In the last degree-32 cases, joint order bounds
 and invariant-interval constructions retain actual annihilators and
-original affine cocycles. The eleven remaining published inputs are stated
+original affine cocycles. The ten remaining published inputs are stated
 explicitly in [formal/README.md](../formal/README.md).

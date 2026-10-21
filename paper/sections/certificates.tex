@@ -77,13 +77,27 @@ for those domains.
 \subsection{Formal verification}
 The accompanying Lean development fixes Lean~4.30.0 and a precise mathlib
 revision. Its final theorem proves Theorems~\ref{thm:main},
-\ref{thm:saddle} and~\ref{thm:elementary} relative to eleven explicit
+\ref{thm:saddle} and~\ref{thm:elementary} relative to ten explicit
 published mathematical inputs. Their complete formulations, Lean types
 and publication locators appear in \texttt{formal/README.md}. No finite
 primitive or transitive catalogue correspondence is a parameter of the
 final theorem. The project-specific source, capacity, marked-moment and
 summation statements are proved internally. Both final exports have only
 the standard logical axioms of Lean in addition to their stated parameters.
+
+The coarse all-subgroup estimate is derived internally from the retained
+soluble-generation, primitive composition-length and primitive
+normal-generation inputs. For every fixed orbit cutoff $C$, the actual
+bounded nilpotent family has size at most
+\[
+  2^{b^2/16+A_C b\log_2(b+2)}.
+\]
+Its proof retains the binary and odd nilpotent sectors and their joint
+subdirect words. An actual soluble container menu of size
+$2^{O(b\log^4(b+2))}$, together with original-support compression and the
+large-orbit generator bound, gives
+$s_n\leq 2^{n^2/16+\beta n\sqrt n}$. This coarse estimate is therefore
+not an additional parameter of the final formal theorem.
 
 Several classical results are proved internally: Burnside's two-prime
 solvability theorem; semisimplicity and conjugacy of Clifford constituents
@@ -166,8 +180,8 @@ original twelve-pair and sixteen-pair sources therefore require no action
 catalogue premise. Stronger optional classifiers and their finite witness
 packages remain separate from the final proof route.
 
-Finally, the marked moment uses the retained coarse subgroup bound and
-labelled transitive-group count. Its soluble nilpotent core has the proved
+Finally, the marked moment uses the now-derived coarse subgroup bound and
+the retained labelled transitive-group count. Its soluble nilpotent core has the proved
 ordinary supplement bound $L(B!+1)\lfloor\sqrt M\rfloor$ on the original
 bounded-orbit source, with $L=B=C!$ and $M=2b$. This changes only a fixed
 constant and does not claim the sharper unrestricted $4L\sqrt M$ theorem.

@@ -32,7 +32,7 @@ reusing only matching successful receipts from that log directory. It preserves
 previous receipts and logs before reruns and stops on a failed check. Each
 compiler invocation uses `check_lean.py`, with 16 GiB limits and a one-hour
 wall timeout. To select only the final theorem's dependencies, add
-`--root SymmetricSubgroupAsymptotics.MarkedC4PublishedGeometricTargets`.
+`--root SymmetricSubgroupAsymptotics.MarkedC4PublishedTenTargets`.
 The public root imports that proof facade and the specification's equivalent
 shared-threshold statements. Optional regression fixtures and alternative
 certificates can be selected through their own `--root` module names.
@@ -118,8 +118,12 @@ definition obligations as conclusions, not hypotheses.
 | Path | Contents |
 |---|---|
 | `SymmetricSubgroupAsymptotics/` | Definitions, analytic estimates, group-theoretic proofs, finite certificates, and theorem assemblers. |
-| `SymmetricSubgroupAsymptotics/External/` | Selected Apache-licensed proof ports and mathlib backports, with preserved notices and pinned provenance. |
+| `SymmetricSubgroupAsymptotics/External/` | Selected proof ports, concrete classification models, and mathlib backports, with preserved notices and pinned provenance. |
+| `SymmetricSubgroupAsymptotics/External/CFSG/` | Concrete CFSG models and exhaustiveness proposition, frozen at the source revision recorded in `../provenance/CFSG_SOURCE.md`. The proposition alone supplies no generation, order or automorphism theorem. |
+| `SymmetricSubgroupAsymptotics/CFSGSharedInfrastructure.lean` | Optional import for concrete classification transport, proved alternating-family bounds, literal generating subsets, elementary soluble-generation lifting, and bounded binary counting. |
 | `SymmetricSubgroupAsymptotics.lean` | Public import of the final proof facade and shared-threshold formulations. Optional certificate modules have their own imports. |
+| `SymmetricSubgroupAsymptotics/CFSGTypeAModelGeneration.lean` | Proved two-generation for the entire literal matrix type-A family; all other residual model obligations remain explicit. |
+| `SymmetricSubgroupAsymptotics/CFSGOrdinarySubgroupUpperProof.lean` | Coarse all-subgroup count from three retained inputs, using actual bounded nilpotent counts and constructed soluble covers. |
 | `lean-toolchain`, `lakefile.lean`, `lake-manifest.json` | Pinned compiler, package configuration, and exact dependencies. |
 | `../scripts/check_lean.py` | Serialized compiler runner with memory, RSS, and wall-time limits. |
 | `../scripts/check_lean_closure.py` | Dependency-order planning and conservative serial resume for a local module closure. |
@@ -128,17 +132,25 @@ definition obligations as conclusions, not hypotheses.
 Build logs, receipts, scratch proofs, and research status records are kept
 outside the publication repository.
 
+The concrete CFSG statement is pinned at commit
+`25507f8795f2e499b392f3312a576538e1c5ef78`; see
+[source provenance](../provenance/CFSG_SOURCE.md). The optional shared
+infrastructure keeps its remaining model cases explicit. An exhaustiveness
+isomorphism supplies no quantitative property of a model without a proof of
+that property. In particular, importing this infrastructure does not discharge
+any of the published inputs in the T1 facade below.
+
 ## Explicit input boundary
 
 The final exports are
-[T1_of_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
-and `allTargets_of_published_inputs`. Their **11 named inputs** are listed
+[T1_of_ten_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedTenTargets.lean)
+and `allTargets_of_ten_published_inputs`. Their **10 named inputs** are listed
 below. The character bundle has one published general class-number field. Both
 abelian-quotient statements are now supplied by checked proofs. These are explicit theorem parameters,
 not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
-Twenty-eight formerly external requirements are now discharged by checked proofs
+Twenty-nine formerly external requirements are now discharged by checked proofs
 or proved consumer replacements on the same pinned toolchain:
 
 | Proved result | Export and proof source |
@@ -254,6 +266,17 @@ keeps that original source and orbit cutoff; only the fixed tuple-control
 constant increases. This removes `hseven` without asserting the sharper
 unrestricted `4L*sqrt M` theorem. No new hypothesis replaces it.
 
+The coarse ordinary bound is now supplied by
+[`ordinarySubgroupUpper_of_retained_inputs`](SymmetricSubgroupAsymptotics/CFSGOrdinarySubgroupUpperProof.lean).
+For each fixed orbit cutoff C, the actual bounded nilpotent family satisfies
+`#NilpotentFamily(C,b) ≤ 2^(b²/16 + A_C b log₂(b+2))`.
+The proof retains the actual binary and odd nilpotent sectors, their original
+cutoff and their joint subdirect words. A constructed soluble container menu
+has size `2^(O(b log⁴(b+2)))`; original-support compression and the retained
+large-orbit generator bound then give `s_n ≤ 2^(n²/16 + β n√n)`.
+This removes `hodd` as an independent parameter. The old eleven-input
+exports remain available as compatibility theorems.
+
 RDT means Roney-Dougal–Tracey, arXiv:2503.05416v1. TR means Tracey's
 2018 transitive-generation paper, with page locators referring to its linked
 author manuscript. HRD means Holt–Roney-Dougal (2013); GPRV means
@@ -266,15 +289,14 @@ version conventions appear in the [literature register](../provenance/LITERATURE
 
 The remaining inputs are ordinary published mathematical theorems.
 No action-catalogue correspondence, project capacity, marked moment,
-complete source or asymptotic target is included in them. The coarse
-all-subgroup upper bound and labelled transitive-count theorem are retained
-counting inputs.
+complete source or asymptotic target is included in them. The labelled
+transitive-count theorem remains a counting input. The coarse
+all-subgroup upper bound is proved from `hAG`, `hPrimitiveGen` and `hcomp`.
 
 | Lean parameter and definition | Mathematical input | Published source or correspondence |
 |---|---|---|
 | [lit : PreE7CharacterPublishedInputs](SymmetricSubgroupAsymptotics/CharacterLiteratureProvedBinary.lean) | One field: permutation class number ≤5^((b−1)/3) for b≥4. | Garonzi–Maróti, Theorem1.1. The two abelian-quotient fields and nilpotent class-number field of the older internal API are proved and filled internally. |
 | [hcomp : PrimitiveCompositionLengthInput](SymmetricSubgroupAsymptotics/PrimitiveCompositionLengthInput.lean) | Every actual composition series of primitive degree r≥2 has length ≤(8/3)log₂r−4/3. | GPRV Thm1.3. |
-| [hodd : OrdinarySubgroupUpper.PublishedTheoremOneUpper](SymmetricSubgroupAsymptotics/MarkedC4OrdinarySubgroupUpper.lean) | ∃β, s_n≤2^(n²/16+βn√n), n>1. | RDT Thm1 p1. Strong quantitative coarse bound, not merely an asymptotic main term. |
 | [hAG : PublishedAschbacherGuralnickSolubleGeneration](SymmetricSubgroupAsymptotics/MarkedC4AschbacherGuralnickSolubleGeneration.lean) | Every finite group generated by a soluble subgroup and one element. | Aschbacher–Guralnick, J.Algebra77 (1982),189–201; RDT Thm8.4 p32. Ambient-recovery field internal. |
 | [hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput](SymmetricSubgroupAsymptotics/TraceyCorollaryThreeTwelveRaw.lean) | Exceptional degree3·2^m action has actual soluble subgroup and full binomial orbit partition, Mersenne exponent≥3. | TR Cor3.12 p17 PLUS preceding nonabelian PSL₂(p) construction Thm1.8/Cor3.11 excluding p=3. Cor3.12 alone is insufficient for exponent≥3. |
 | [hPrimitiveGen : PrimitiveNormalGeneratorInput](SymmetricSubgroupAsymptotics/C1PrimitiveTail.lean) | Normal subgroup of primitive degree w≥4 has ordinary rank≤floor(log₂w). | HRD Thm1.1 normal specialization, sole degree3 exception excluded. |
@@ -328,7 +350,7 @@ The final composition follows this chain:
 |---|---|---|
 | Definitions | [Statements](SymmetricSubgroupAsymptotics/Statements.lean), [DefinitionsVerified](SymmetricSubgroupAsymptotics/DefinitionsVerified.lean) | Literal subgroup counts, explicit benchmarks, and definition checks. |
 | Analysis | [ShiftedCoefficientRatio](SymmetricSubgroupAsymptotics/ShiftedCoefficientRatio.lean), [SaddleBenchmarkEstimates](SymmetricSubgroupAsymptotics/SaddleBenchmarkEstimates.lean), [ElementaryBenchmarkEstimates](SymmetricSubgroupAsymptotics/ElementaryBenchmarkEstimates.lean) | Uniform coefficient estimates and the transfers from T1 to T2 and T3. |
-| Final composition | [T1RelativeClosure](SymmetricSubgroupAsymptotics/T1RelativeClosure.lean), [MarkedC4PublishedGeometricTargets](SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean) | Complete remainder estimate and final T1/AllTargets exports. |
+| Final composition | [T1RelativeClosure](SymmetricSubgroupAsymptotics/T1RelativeClosure.lean), [MarkedC4PublishedTenTargets](SymmetricSubgroupAsymptotics/MarkedC4PublishedTenTargets.lean) | Complete remainder estimate and final T1/AllTargets exports. |
 | Affine consumers | [PrimitiveAffinePrimitiveConsumer](SymmetricSubgroupAsymptotics/PrimitiveAffinePrimitiveConsumer.lean), [PrimitiveAffineImprimitiveComponentTransfer](SymmetricSubgroupAsymptotics/PrimitiveAffineImprimitiveComponentTransfer.lean) | Transfer through actual block systems, including small and binary component groups. |
 | Finite affine structure | [SmallAffineCanonicalReceipt](SymmetricSubgroupAsymptotics/SmallAffineCanonicalReceipt.lean), [DegreeTwentyFiveActualProjectiveData](SymmetricSubgroupAsymptotics/DegreeTwentyFiveActualProjectiveData.lean), [PrimitiveAffineCanonicalFiniteLiterature](SymmetricSubgroupAsymptotics/PrimitiveAffineCanonicalFiniteLiterature.lean) | Construct all 34 receipts, the actual scalar datum and every-chief bound, and the full finite affine package. |
 | Nonaffine structure | [PrimitiveSocleRawDichotomy](SymmetricSubgroupAsymptotics/PrimitiveSocleRawDichotomy.lean), [PrimitiveSocleRawProfile](SymmetricSubgroupAsymptotics/PrimitiveSocleRawProfile.lean) | Construct the profile on the actual full socle and exact original quotient from ordinary published structure. |
@@ -382,8 +404,8 @@ All sources in this closure are tracked in the main checkout and match the
 audited bytes. Optional modules outside this public closure are not covered
 by this release claim.
 
-A fresh axiom audit of `T1_of_published_inputs`,
-`allTargets_of_published_inputs`, `T2_of_T1`, `T3_of_T1`,
+A fresh axiom audit of `T1_of_ten_published_inputs`,
+`allTargets_of_ten_published_inputs`, `T2_of_T1`, `T3_of_T1`,
 `allTargets_iff_T1`, and `definitionChecks` reports exactly `propext`,
 `Classical.choice`, and `Quot.sound`. The final audit used the serialized
 runner with 16 GiB allocator and RSS limits. Logs, receipts, relocation

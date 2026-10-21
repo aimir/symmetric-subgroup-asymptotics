@@ -11,6 +11,8 @@ The PDF is written to `paper/main.pdf`. Intermediate TeX files use a temporary
 directory. Use `--output /path/to/paper.pdf` to choose a different output and
 `--build-dir /path/outside/the/publication/tree` to retain the build log.
 There is no network step or CI workflow.
+The build stages TeX sources outside the publication tree, so stale auxiliary
+files beside the originals cannot shadow its bibliography or references.
 
 `main.tex` assembles the mathematical sections and the bibliography. The
 argument proves the critical-family formula, complete binary recurrence,

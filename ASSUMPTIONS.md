@@ -144,7 +144,7 @@ hypothesis of the current published-input T1 facade.
 The earlier
 [conditional adapter](formal/SymmetricSubgroupAsymptotics/MarkedC4PublishedDegreeTwoT1.lean)
 accepts degree-two source data. The current
-[final facade](formal/SymmetricSubgroupAsymptotics/MarkedC4PublishedGeometricTargets.lean)
+[final facade](formal/SymmetricSubgroupAsymptotics/MarkedC4PublishedTenTargets.lean)
 constructs those data internally. Its eight-pair endpoint is supplied by
 [`PairedEightActualRepresentativeSource`](formal/SymmetricSubgroupAsymptotics/PairedEightActualRepresentativeSource.lean),
 using the internally proved degree-eight classification, Zmud and
@@ -345,7 +345,7 @@ translation kernels and normal axes. At degree 16 it uses the proved
 twelve-pair and sixteen-pair sources therefore require neither the
 301-action transitive-twelve correspondence nor primitive-sixteen coverage.
 
-The final T1 and AllTargets exports have eleven explicit published inputs,
+The final T1 and AllTargets exports have ten explicit published inputs,
 with their mathematical formulations and source locators listed after the
 bounds and folder structure in [formal/README.md](formal/README.md).
 The exact binary normal-F theorem is now proved without hypotheses as
@@ -354,7 +354,7 @@ It retains the ambient commutator `[F,Q]`, actual centralizer, original
 nonabelian quotient and every excess/rank alternative. Its proper-normal
 constructions keep the same original denominator and actual affine cocycle;
 no split-extension or capacity statement is assumed.
-The remaining eleven inputs are the published general counting,
+The remaining ten inputs are the published general counting,
 composition, generation and simple-group inequalities listed there. No project capacity,
 source, marked-moment, affine-consumer or quantitative socle-profile premise
 occurs in those signatures.

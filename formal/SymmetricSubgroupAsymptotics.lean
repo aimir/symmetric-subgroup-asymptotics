@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.BinaryNormalFTheorem57Proof
-import SymmetricSubgroupAsymptotics.MarkedC4PublishedGeometricTargets
+import SymmetricSubgroupAsymptotics.MarkedC4PublishedTenTargets
 import SymmetricSubgroupAsymptotics.Targets
 
 /-!

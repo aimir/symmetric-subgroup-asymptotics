@@ -30,10 +30,28 @@ def main() -> None:
 
     def build(directory: Path) -> None:
         directory.mkdir(parents=True, exist_ok=True)
+        sources = directory / "sources"
+        shutil.copytree(
+            paper, sources, dirs_exist_ok=True,
+            ignore=shutil.ignore_patterns(
+                "main.pdf", "*.aux", "*.bbl", "*.blg", "*.log", "*.out",
+                "*.toc", "*.fls", "*.fdb_latexmk", "*.synctex.gz",
+            ),
+        )
+        main_source = directory / "main.tex"
+        if main_source.resolve() != (paper / "main.tex").resolve():
+            shutil.copy2(paper / "main.tex", main_source)
+        build_env = env.copy()
+        # Stale auxiliaries beside the original sources must not shadow
+        # the bibliography and references generated in this build directory.
+        build_env["TEXINPUTS"] = os.pathsep.join(
+            (str(directory), str(sources), os.environ.get("TEXINPUTS", ""))
+        )
+        build_env["BIBINPUTS"] = str(sources) + os.pathsep + os.environ.get("BIBINPUTS", "")
         subprocess.run(
             [latexmk, "-pdf", "-interaction=nonstopmode", "-halt-on-error",
              "-file-line-error", f"-outdir={directory}", "main.tex"],
-            cwd=paper, env=env, check=True,
+            cwd=directory, env=build_env, check=True,
         )
         result = directory / "main.pdf"
         if not result.is_file():
@@ -44,7 +62,10 @@ def main() -> None:
         print(f"Manuscript: {args.output.resolve()}")
 
     if args.build_dir is not None:
-        build(args.build_dir.resolve())
+        directory = args.build_dir.resolve()
+        if directory.is_relative_to(root):
+            parser.error("--build-dir must be outside the publication repository")
+        build(directory)
     else:
         with tempfile.TemporaryDirectory(prefix="symmetric-subgroups-tex-") as tmp:
             build(Path(tmp))
