@@ -651,7 +651,11 @@ actual degree-five normalizer is handled separately. The original
 rank-two twisted-A models also have good Sylow witnesses, proved through
 their literal fixed/derived Serre groups in
 [`CFSGTwistedA2GoodSylowReduction`](SymmetricSubgroupAsymptotics/CFSGTwistedA2GoodSylowReduction.lean).
-Neither statement leaves a model-identification premise.
+Neither statement leaves a model-identification premise. The original G2
+models now have a defining-prime good-Sylow witness as well
+([`CFSGGTwoGoodSylowReduction`](SymmetricSubgroupAsymptotics/CFSGGTwoGoodSylowReduction.lean)).
+Its normalizer proof uses the actual folded D4 matrices and singular-flag
+recovery in every characteristic, including two and three.
 
 The full positive Sylow centres of the original E6/E7/E8 models have the
 field's cardinality
@@ -663,8 +667,8 @@ subgroup index is at least the field order
 [`CFSGExceptionalRootDegree`](SymmetricSubgroupAsymptotics/CFSGExceptionalRootDegree.lean)).
 These facts do not yet give the exceptional outer-automorphism bound.
 
-[`CFSGSevenTargetsResidualModels`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsResidualModels.lean)
-threads these completed good-Sylow model cases into T1 and AllTargets.
+[`CFSGSevenTargetsGTwoResidualModels`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsGTwoResidualModels.lean)
+threads these completed good-Sylow model cases, including G2, into T1 and AllTargets.
 Its parameters are CFSG, five published inputs (general class count, the
 two Tracey inputs, labelled transitive count, and ordinary permutation
 rank), and **two still-unproved model callbacks**: the remaining good-Sylow
