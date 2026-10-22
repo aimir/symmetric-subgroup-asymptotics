@@ -53,6 +53,7 @@ import SymmetricSubgroupAsymptotics.CFSGSymplecticProjectiveNaturalRootLines
 import SymmetricSubgroupAsymptotics.CFSGGTwoEvenOrderRefinement
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDGenerationReduction
 import SymmetricSubgroupAsymptotics.CFSGSymplecticCardinality
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBGenerationCharTwoReduction
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -181,3 +182,10 @@ The soluble-generation extension steps and the bounded binary counting leaf
 are also proved here. Importing this file does not replace any outstanding
 published input of T1 by an unproved concrete-model assertion.
 -/
+
+/-! In characteristic two, restriction of the actual B matrices to their
+hyperbolic block is an isomorphism with the literal elementary C group.
+The invariant transpose-quadratic form proves its kernel trivial. The
+original simple Serre source therefore inherits two-generation, and only
+these B tags leave the exact generation residual. Odd-characteristic B
+generation remains open at this checkpoint. -/

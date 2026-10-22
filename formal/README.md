@@ -458,3 +458,5 @@ published hypotheses or certify stale source objects. This release combines
 the explicit mathematical boundary above, current kernel checks, and
 matching dependency provenance. It establishes verification relative to
 the stated published inputs, rather than a proof of those inputs themselves.
+
+The optional CFSG route also includes `CFSGOrthogonalBGenerationCharTwoReduction.lean`: every original classifier-admissible type-B model over a field of characteristic two is proved two-generated. The actual natural B-to-C restriction is injective by its transpose-quadratic invariant and surjective by finite-field squaring. Original-source descent uses the same actual action image and its nontrivial central quotient. Odd-characteristic B remains in the exact generation residual.
