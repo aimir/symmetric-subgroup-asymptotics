@@ -100,6 +100,7 @@ import SymmetricSubgroupAsymptotics.CFSGNormTwoGeckParameterizedCollecting
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBSimpleIndexReduction
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexTrialityD4TwinQuotient
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDGlobalField
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDHigherRankSimpleIndexReduction
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDNegativeDilation
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexTrialityD4LocalDirectionIndex
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexTrialityD4PlaneConnectivity
@@ -107,6 +108,8 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexTrialityD4NeighborAxisMa
 import SymmetricSubgroupAsymptotics.CFSGNormTwoCoordinateNormalizerDiagram
 import SymmetricSubgroupAsymptotics.CFSGNormTwoCoordinateExcludedHeight
 import SymmetricSubgroupAsymptotics.CFSGNormTwoGeckWeylDegreeTransport
+import SymmetricSubgroupAsymptotics.CFSGExceptionalGoodSylowReduction
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexTrialityD4PointTypeStabilizer
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
 
@@ -284,14 +287,14 @@ separate obligations. -/
 /-! The original D models now satisfy the required squared least-index
 inequality, an explicit projective-point upper bound, and the stronger
 root-star lower bound q^(r-1) <= ell. All are proved through actual matrix
-subgroups and the same original central quotient. The D outer-group
-bound is still an independent open model obligation. -/
+subgroups and the same original central quotient. The continuation below proves the D outer-group
+bound in every rank at least five; D4 remains separate. -/
 
 /-! Odd-characteristic B now has the required squared least-index
 inequality and explicit lower/upper index bounds on the original model.
 The actual elementary centre is proved trivial using both its quadratic
-form and determinant, including q=3/rank3. The logarithmic B outer-group
-estimate is still open, so these tags remain in that combined residual. -/
+form and determinant, including q=3/rank3. The continuation below proves the logarithmic B outer-group
+estimate and removes these tags from the combined residual. -/
 
 /-! The actual primitive-profile foundations now include ordinary rank
 addition across the literal kernel, and a same-series composition bound
@@ -385,12 +388,19 @@ For original D of rank at least five, the faithful point action extends
 to Q-singular subspaces, with ONE proved global field component and actual
 linear normalization, retaining Q=0 in characteristic two. Linear pieces
 fixing both opposed halves give one actual quadratic dilation on all
-singular points. Whole linear realization and D Out remain open. The
+singular points. Direct cross-pairing zero-locus rigidity proves whole
+semilinear realization on every original automorphism. The actual O/E
+index, GO point-image cardinality and centre bound yield |Out|<=8|Aut(K)|.
+The original q^(r-1) index lower bound closes both required simple-index
+inequalities for EVERY D rank at least five, in every characteristic;
+these tags leave the exact residual. D4 remains open. The
 original D4 neighbour graph has genuine q-clique fibres, a reversible
 three-projective-parameter twin quotient, and an actual local direction
 homomorphism of index at most six. Its original plane graph is connected
 and its local maximal cliques are exactly the three geometric sorts.
-Global type coherence remains open.
+The actual global type homomorphism and natural POINT-type stabilizer
+index at most THREE are proved. Point reconstruction and the D4 outer
+bound remain open; the two maximal-space types may still be interchanged.
 
 For original E6/E7/E8, actual complementary positive-root subgroups,
 arbitrary-parameter collecting words, self-root Weyl conjugation and
@@ -398,7 +408,14 @@ rank-one parabolic covers are proved. Integral lattice gradings detect
 the actual complement and simple subgroup, and literal Weyl words carry
 the original quadratic degrees. The whole actual Bruhat cover is proved,
 and genuine normalizing words reduce to integral diagram permutations.
-The global Sylow-normalizer solubility proof still needs its actual word
-kernel. These are optional CFSG
+The actual matrix/lattice word kernel is abelian, and the remaining
+diagram action is soluble. The E6 integral mod-three discriminant excludes
+its nontrivial diagram word, including in characteristic two. An actual
+diagonal-factor argument proves positive-root Sylow maximality and soluble
+normalizers, so the original E6/E7/E8 good-Sylow endpoints now hold in every
+characteristic. Exactly these three tags leave the narrowed AG residual in
+`CFSGExceptionalGoodSylowReduction`; other exceptional and twisted tags
+remain explicit. Two-element generation and outer bounds are separate.
+These are optional CFSG
 infrastructure results; the public T1 endpoint still has ten published inputs.
 -/
