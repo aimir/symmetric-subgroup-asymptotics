@@ -12,7 +12,7 @@ open scoped Classical
 namespace SymmetricSubgroupAsymptotics.CFSGAlternatingSylowNoFixedPoint
 
 theorem exists_move
-    {X : Type*} [Fintype X] (hsize : 3 ≤ Nat.card X) (heven : 2 ∣ Nat.card X)
+    {X : Type*} [Fintype X] [DecidableEq X] (hsize : 3 ≤ Nat.card X) (heven : 2 ∣ Nat.card X)
     (P : Sylow 2 (alternatingGroup X)) (x : X) : ∃ g : P, g • x ≠ x := by
   letI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
   letI : MulAction.IsPretransitive (alternatingGroup X) X :=
