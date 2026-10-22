@@ -479,21 +479,22 @@ The optional generic primitive route also proves bounds on the same actual serie
 
 `CFSGPrimitiveCoarseDegreeBounds.lean` combines those actual affine and full-socle constructions into degree-only bounds for every faithful nontrivial finite primitive action: a(G) ≤ L²+3L for every original composition series, and d(N) ≤ L²+4L for each actual normal subgroup, where L=log₂(degree). The first theorem displays only `PublishedSimpleIndexBounds`; the second also displays `FiniteSimpleTwoGeneratorBound`. Neither uses the sharp primitive composition or primitive normal-generation input. These coarse conclusions do not replace those sharper public T1 premises yet.
 
-The type-D intrinsic infrastructure (`CFSGOrthogonalDIndexUnipotentCenter.lean`, `CFSGOrthogonalDIndexUnipotentFixedSpace.lean`) identifies the centre of the actual flag-unitriangular subgroup with its highest paired-root line and the additive group of the same field, in every characteristic. Its fixed vectors are exactly the first natural line. The proof preserves the actual split quadratic form, excluding the spurious diagonal shear in characteristic two. The continuation (`CFSGOrthogonalDIndexOddSylow.lean`) proves that this same subgroup is Sylow in odd characteristic, using its actual partial-flag normalizer and middle two-plane action. The characteristic-two component invariant and subsequent polar/triality automorphism reconstruction remain open.
+The type-D intrinsic infrastructure (`CFSGOrthogonalDIndexUnipotentCenter.lean`, `CFSGOrthogonalDIndexUnipotentFixedSpace.lean`) identifies the centre of the actual flag-unitriangular subgroup with its highest paired-root line and the additive group of the same field, in every characteristic. Its fixed vectors are exactly the first natural line. The proof preserves the actual split quadratic form, excluding the spurious diagonal shear in characteristic two. The continuation (`CFSGOrthogonalDIndexOddSylow.lean`) proves that this same subgroup is Sylow in odd characteristic, using its actual partial-flag normalizer and middle two-plane action. The all-characteristic continuation is now proved in `CFSGOrthogonalDIndexSylow.lean`: parity of three maximal singular-space distances excludes the final-pair swap from the actual unipotent normalizer. Subsequent polar/triality automorphism reconstruction remains open.
 
-The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now proves that the literal flag-unitriangular subgroup is Sylow, its normalizer is the actual flag Borel, and its centre is exactly the highest long-root field line. Actual projective automorphisms preserve the conjugate root lines (`CFSGOrthogonalBProjectiveRootLines.lean`). Each line has a well-defined natural two-plane label, recovered as range(x-I) from any nonidentity root element. All statements retain the same original matrix subgroup and projective quotient. Coverage of all singular two-planes, polar-point reconstruction and the odd-B outer-automorphism bound remain open.
+The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now proves that the literal flag-unitriangular subgroup is Sylow, its normalizer is the actual flag Borel, and its centre is exactly the highest long-root field line. Actual projective automorphisms preserve the conjugate root lines (`CFSGOrthogonalBProjectiveRootLines.lean`). Each line has a well-defined natural two-plane label, recovered as range(x-I) from any nonidentity root element. All statements retain the same original matrix subgroup and projective quotient. The continuation `CFSGOrthogonalBSingularPlaneAction.lean` now proves coverage of all totally singular two-planes and the exact projective automorphism action on them, using actual pair normalization and the literal tail embedding. Polar-point reconstruction and the odd-B outer-automorphism bound remain open.
 
 `CFSGPrimitiveSublinearBounds.lean` proves that those estimates are uniformly sublinear across all actual primitive actions. Its first applications are an eventual c=1 relative-character tail and an eventual three-tenths primitive chief-weight tail. The statements retain only the displayed simple-index/Out and, where used, simple-two-generation inputs; they do not invoke the sharp primitive inputs. These are infinite-tail replacements with a uniform eventual threshold, not proofs of the existing cutoffs 34/45 or of the intervening bounded ranges. The public T1 premises are unchanged.
 
 The original untwisted F₄ parity branch is now proved (`CFSGFFourEvenOrderRefinement.lean`). The actual E₆ fold satisfies the pinned F₄ Serre relations; a long-root Weyl word has fourth power one and is noncentral on the same original image, in every characteristic. This removes precisely F₄ from the optional parity residual. F₄ generation and outer-automorphism bounds, twisted exceptional parity, and the public ten-input boundary remain unchanged.
 
 The optional soluble-generation reduction now proves actual good-Sylow
-data for every original C model and every original characteristic-two B
-model (`CFSGOrthogonalBCharTwoGoodSylowReduction.lean`). The same natural
-C Sylow has a soluble normalizer and generates with its actual J-conjugate;
-central-quotient and original-source transport preserve those witnesses.
-These families leave the narrowed Aschbacher–Guralnick callback; that entire
-published input is still retained for the other open models.
+data for every original A, B, C, D and Suzuki model
+(`CFSGClassicalGoodSylowReduction.lean`). The original B and D proofs
+retain their actual flag-unitriangular subgroups, soluble normalizers and
+displayed opposition/Coxeter conjugates; C uses its actual J-conjugate.
+Central-quotient and original-source transport preserve those witnesses.
+Exactly these families leave the narrowed Aschbacher–Guralnick callback;
+that entire published input is still retained for the other open models.
 
 Original twisted E₆ now has even order in odd characteristic
 (`CFSGTwistedE6OddPrimeParity.lean`). The proof constructs literal

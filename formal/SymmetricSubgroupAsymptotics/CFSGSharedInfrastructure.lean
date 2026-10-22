@@ -82,6 +82,8 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalBRootLinePlaneLabel
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBCharTwoGoodSylowReduction
 import SymmetricSubgroupAsymptotics.CFSGTwistedE6OddPrimeParity
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBSingularVectorOrbit
+import SymmetricSubgroupAsymptotics.CFSGClassicalGoodSylowReduction
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBSingularPlaneAction
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -294,16 +296,16 @@ its highest paired-root line, isomorphic to the same additive field;
 its fixed vectors are exactly the first natural line. These assertions
 hold in every characteristic and use the actual split quadratic form,
 not merely its polar form. Odd-characteristic Sylow maximality is now proved for this same subgroup.
-The characteristic-two component invariant and D outer geometry remain
-separate obligations. -/
+The all-characteristic component and good-Sylow continuation is now proved below;
+D outer geometry remains separate. -/
 
 /-! For odd B the literal U is now proved Sylow, N(U) is its actual
 flag Borel, and Z(U) is exactly the highest long-root field line. Its
 conjugate root lines are now intrinsically preserved by every actual
 projective automorphism. Each literal line has a well-defined natural
 two-plane label, recovered as range(x-I) for a nonidentity root element.
-Surjectivity onto all singular planes, polar-point reconstruction and the
-remaining outer bound are not yet asserted. -/
+Surjectivity onto all singular planes and the exact projective action on them
+are now proved below. Polar-point reconstruction and the outer bound remain open. -/
 
 /-! Those coarse primitive bounds are now uniformly sublinear in degree.
 Their first checked applications are the eventual c=1 relative-character
@@ -333,5 +335,15 @@ in odd characteristic: literal fixed-A2 commutator lifts map to the same
 E6 long-root Weyl word. Prime two is retained explicitly.
 
 Odd-B singular-vector normalization is now proved on the same natural
-matrix action, in rank at least two. Singular-plane orbit coverage and
-polar-point/outer-automorphism reconstruction remain separate. -/
+matrix action, in rank at least two. The continuation covers all totally singular two-planes and carries the exact
+projective automorphism action. Polar-point/outer reconstruction remains open. -/
+
+/-! The combined good-Sylow callback now removes every original B and D
+model as well as A, C and Suzuki. D uses the all-characteristic parity of
+three maximal singular-space distances to exclude the last-pair swap
+from its actual unipotent normalizer; no order/component premise is used.
+B uses the literal product of coordinate flips, with the middle weight
+and full quadratic short-root terms retained. Each actual natural Sylow
+has a soluble normalizer and generates with the displayed conjugate.
+The other model tags remain in the explicit callback, so this is not a
+CFSG-only proof of the whole published soluble-generation input. -/
