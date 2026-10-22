@@ -59,6 +59,8 @@ import SymmetricSubgroupAsymptotics.CFSGNormTwoRootStrings
 import SymmetricSubgroupAsymptotics.CFSGSymplecticSimpleIndexReduction
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBGenerationReduction
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBCharTwoSimpleIndexReduction
+import SymmetricSubgroupAsymptotics.CFSGCompositionLengthCardinality
+import SymmetricSubgroupAsymptotics.CFSGSimpleProductCompositionLength
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -221,3 +223,11 @@ quotient functoriality therefore identifies the ORIGINAL B projective
 model with natural projective C, and simplicity transfers in that
 direction. Both required simple-index bounds hold for these B tags;
 only odd-characteristic B remains in that family residual. -/
+
+/-! The generic primitive-input foundations now bound every actual
+composition chain by log₂ of its group order. Every subnormal subgroup
+of a finite product of nonabelian simple groups is proved to be a literal
+coordinate product, and every actual composition chain of that product
+has length at most the number of original factors. These facts use no
+classification premise; the sharper quantitative primitive inputs remain
+separate obligations. -/
