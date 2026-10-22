@@ -369,7 +369,7 @@ full `S₃` exception.
 
 The independent mathematical input audit is closed at this boundary.
 Recursive source/object verification of the final facade and public root,
-and the final exported-declaration axiom audit, passed on 21 October 2026.
+and the final exported-declaration axiom audit, passed on 22 October 2026.
 The published hypotheses remain explicit mathematical inputs.
 
 ## Proof organization
@@ -438,8 +438,8 @@ recovery workflow.
 
 ## Verification boundary
 
-On 21 October 2026, recursive verification of the public import closure
-matched its current sources,
+On 22 October 2026, recursive verification of all 9,672 local modules in
+the public import closure matched their current sources,
 compiled objects, direct dependency fingerprints, and pinned toolchain
 against successful check receipts. Matching historical receipts were reused
 with explicit relocation evidence; stale consumers were checked serially.
