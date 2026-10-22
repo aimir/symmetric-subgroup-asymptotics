@@ -471,7 +471,7 @@ the stated published inputs, rather than a proof of those inputs themselves.
 
 The optional CFSG route also includes `CFSGOrthogonalBGenerationCharTwoReduction.lean`: every original classifier-admissible type-B model over a field of characteristic two is proved two-generated. The actual natural B-to-C restriction is injective by its transpose-quadratic invariant and surjective by finite-field squaring. Original-source descent uses the same actual action image and its nontrivial central quotient. The subsequent `CFSGOrthogonalBGenerationReduction.lean` closes odd characteristic as well: an actual torus/filter pair, cleaned signed orbit and coefficient-two recovery yield all original simple roots. Every original B model of rank at least three is now two-generated and all B tags leave the residual.
 
-The optional exceptional infrastructure constructs the actual E6/E7/E8 norm-two lattices and derives finiteness, a coordinate base, reducedness, irreducibility and the exact transposed Cartan matrices (`CFSGExceptionalNormTwoBases.lean`). It maps each original rational Lie presentation to its literal Geck matrices. `CFSGNormTwoRootStrings.lean` derives the simply-laced ordinary string coefficients from positive integer norms. `CFSGExceptionalGeckIntegralData.lean` now supplies integral divided powers and same-image fourth-coefficient cancellation for all three original Cartan sources over every coefficient ring. The actual same-image Weyl word is now proved noncentral of fourth power one in every characteristic (`CFSGExceptionalGeckEvenOrderRefinement.lean`), giving even order on all three original simple projective models. Those three untwisted tags leave the parity residual; generation and automorphism bounds remain open.
+The optional exceptional infrastructure constructs the actual E6/E7/E8 norm-two lattices and derives finiteness, a coordinate base, reducedness, irreducibility and the exact transposed Cartan matrices (`CFSGExceptionalNormTwoBases.lean`). It maps each original rational Lie presentation to its literal Geck matrices. `CFSGNormTwoRootStrings.lean` derives the simply-laced ordinary string coefficients from positive integer norms. `CFSGExceptionalGeckIntegralData.lean` now supplies integral divided powers and same-image fourth-coefficient cancellation for all three original Cartan sources over every coefficient ring. The actual same-image Weyl word is now proved noncentral of fourth power one in every characteristic (`CFSGExceptionalGeckEvenOrderRefinement.lean`), giving even order on all three original simple projective models. Those three untwisted tags leave the parity residual. The later checked continuation proves good-Sylow generation and sufficient outer-order bounds; stronger two-element generation is separate and unused by T1.
 
 `CFSGOrthogonalBCharTwoSimpleIndexReduction.lean` transfers both simple-index bounds from the actual natural projective C group to the original characteristic-two B model. The original B image kernel is proved trivial by an actual fixed-vector orbit argument; the same centre quotients are transported before transferring simplicity. No C-source simplicity or characteristic-two B scalar-commutant hypothesis is assumed. The whole B family now leaves the simple-index residual, by the odd-characteristic continuation described below.
 
@@ -492,7 +492,7 @@ The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now prove
 
 `CFSGPrimitiveSublinearBounds.lean` proves that those estimates are uniformly sublinear across all actual primitive actions. Its first applications are an eventual c=1 relative-character tail and an eventual three-tenths primitive chief-weight tail. The statements retain only the displayed simple-index/Out and, where used, simple-two-generation inputs; they do not invoke the sharp primitive inputs. These are infinite-tail replacements with a uniform eventual threshold, not proofs of the existing cutoffs 34/45 or of the intervening bounded ranges. The public T1 premises are unchanged.
 
-The original untwisted F₄ parity branch is now proved (`CFSGFFourEvenOrderRefinement.lean`). The actual E₆ fold satisfies the pinned F₄ Serre relations; a long-root Weyl word has fourth power one and is noncentral on the same original image, in every characteristic. This removes precisely F₄ from the optional parity residual. F₄ generation and outer-automorphism bounds, twisted exceptional parity, and the public ten-input boundary remain unchanged.
+The original untwisted F₄ parity branch is now proved (`CFSGFFourEvenOrderRefinement.lean`). The actual E₆ fold satisfies the pinned F₄ Serre relations; a long-root Weyl word has fourth power one and is noncentral on the same original image, in every characteristic. This removes precisely F₄ from the optional parity residual. F₄ generation and outer-automorphism bounds, twisted exceptional parity, and the public seven-input boundary remain unchanged.
 
 The optional soluble-generation reduction now proves actual good-Sylow
 data for every original A, B, C, D and Suzuki model
@@ -546,7 +546,7 @@ Its diagonal-factor proof allows ambient scalar normalizers; no equality
 with a prematurely restricted Borel is assumed. Exactly E6, E7 and E8 leave
 the narrowed AG callback in `CFSGExceptionalGoodSylowReduction.lean`.
 Other families remain explicit, and the public T1 theorem still retains
-the ten listed published inputs.
+the seven listed published inputs.
 
 
 The optional polar continuation transports every original singular subspace
@@ -627,8 +627,7 @@ remaining diagram action is soluble. For E6 an integral mod-three
 discriminant excludes its diagram flip even in characteristic two.
 The actual diagonal-factor argument then proves positive-root Sylow
 maximality, soluble normalizers and the good-Sylow endpoint for each
-original E6/E7/E8 model in every characteristic. Two-element generation
-and outer bounds remain separate. These modules
+original E6/E7/E8 model in every characteristic. Two-element generation remains separate and unused by T1; the later outer-order continuation is proved below. These modules
 belong to the optional CFSG backend. The public T1 endpoint has the seven
 published inputs listed above. Eliminating the two stronger generation
 premises does not prove their full statements or close the other inputs.
@@ -670,8 +669,8 @@ positive roots, and the strict least-index inequality ell² < |G| is now
 proved for all three exceptional families
 ([`CFSGExceptionalIndexSquare`](SymmetricSubgroupAsymptotics/CFSGExceptionalIndexSquare.lean)).
 A common lattice argument gives at most 512 roots and at least ten
-positive commuting roots for every root. The exceptional outer-automorphism
-bound remains open in this backend.
+positive commuting roots for every root. The actual outer-order continuation
+is now proved below.
 
 The original-group automorphism infrastructure now includes inner
 alignment of both literal opposite Sylow subgroups
@@ -684,8 +683,26 @@ intersections recover the literal simple-root groups and a Cartan diagram
 permutation
 ([`CFSGNormTwoCoordinateOriginalSimpleRootAction`](SymmetricSubgroupAsymptotics/CFSGNormTwoCoordinateOriginalSimpleRootAction.lean)).
 These statements use actual quotient maps and do not assume that an
-arbitrary projective automorphism lifts. Common-field compatibility and
-the final outer-order count remain open.
+arbitrary projective automorphism lifts. Stabilizing the simple-root
+lines forces one common field automorphism along the connected diagram
+([`CFSGNormTwoCoordinateOriginalCommonField`](SymmetricSubgroupAsymptotics/CFSGNormTwoCoordinateOriginalCommonField.lean)).
+Explicit integral Smith witnesses bound the literal Cartan scaling-image
+indices by 3, 2, and 1 for E6, E7, and E8 respectively
+([`CFSGCartanE6PowerIndex`](SymmetricSubgroupAsymptotics/CFSGCartanE6PowerIndex.lean),
+[`CFSGCartanE7PowerIndex`](SymmetricSubgroupAsymptotics/CFSGCartanE7PowerIndex.lean),
+[`CFSGCartanE8PowerIndex`](SymmetricSubgroupAsymptotics/CFSGCartanE8PowerIndex.lean)).
+Faithful restriction to the signed root parameters and the actual inner
+Cartan torus now prove the outer-order bounds
+**6|Aut(K)|, 2|Aut(K)|, and |Aut(K)|** on the original E6, E7 and E8 models
+([`CFSGExceptionalOriginalOuterBound`](SymmetricSubgroupAsymptotics/CFSGExceptionalOriginalOuterBound.lean)).
+No automorphism-lifting or group-recognition premise is supplied.
+The sufficient internal budget is proved in
+[`CFSGExceptionalOuterBudget`](SymmetricSubgroupAsymptotics/CFSGExceptionalOuterBudget.lean):
+coefficient six globally, coefficient three below least index 27, and
+Out≤24 below30. For E6's small-index case, 36 explicit positive-root
+witnesses and the original order lower bound force the two-element field.
+All three tags leave the sufficient simple-index residual. This does not
+assert the stronger published coefficient-three inequality globally.
 
 For the remaining classical good-Sylow cases, the whole upper unitary
 subgroup lies in the original fixed group's derived image, including the
@@ -698,7 +715,13 @@ Actual opposite-subgroup words give nonzero column pivots, and upper
 radicals clear the corresponding isotropic columns
 ([`CFSGTwistedAUnitaryOppositePivot`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryOppositePivot.lean),
 [`CFSGTwistedAUnitaryNaturalColumnClearing`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryNaturalColumnClearing.lean)).
-Two-Sylow generation is still required.
+The actual Gaussian factorization now proves generation by the two
+literal opposite upper Sylow subgroups in every admissible rank and field
+([`CFSGTwistedAUnitaryGoodSylowReduction`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryGoodSylowReduction.lean)).
+Its rank-two induction includes the raw two-element-field base without
+asserting that this small base is perfect. Original derived-image and
+central-quotient transport close the whole classifier twisted-A branch,
+with no model-identification premise.
 
 The original twisted-D derived image also has a defining-characteristic
 Sylow subgroup with soluble normalizer
@@ -706,16 +729,19 @@ Sylow subgroup with soluble normalizer
 Its whole natural preimage is literally fixed by the twist
 ([`CFSGTwistedDDerivedFixed`](SymmetricSubgroupAsymptotics/CFSGTwistedDDerivedFixed.lean)).
 Fixed-chain parameters and folded-root vector clearing are proved in that
-same image. Relative generation and the final projective transport remain
-open. Neither classical good-Sylow callback is discharged by these
-prerequisites alone.
+same image. The projective transport is now proved on this actual derived
+image; relative generation remains open. The twisted-D callback is not
+discharged by these prerequisites alone.
 
-[`CFSGSevenTargetsExceptionalSquares`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsExceptionalSquares.lean)
-threads these completed good-Sylow model cases, including G2, into T1 and AllTargets.
+[`CFSGSevenTargetsUnitaryExceptionalE`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsUnitaryExceptionalE.lean)
+threads these completed model cases, including the entire unitary branch
+and the sufficient E6/E7/E8 simple-index bounds, into T1 and AllTargets.
 Its parameters are CFSG, five published inputs (general class count, the
 two Tracey inputs, labelled transitive count, and ordinary permutation
 rank), and **two still-unproved model callbacks**: the remaining good-Sylow
-cases and the remaining sufficient simple-index/outer bounds. For E6/E7/E8,
-the latter callback now requires only the outer-order budget. This residual
+cases and the remaining sufficient simple-index/outer bounds. E6/E7/E8
+are absent from both callbacks, and all twisted-A tags are absent from the
+good-Sylow callback. The current family and endpoint audits use only
+`propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
 continues to have seven published inputs.
