@@ -90,6 +90,13 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexProjectiveRootRelation
 import SymmetricSubgroupAsymptotics.CFSGExceptionalGeckSylowGeneration
 import SymmetricSubgroupAsymptotics.CFSGNormTwoGeckBorelPowerElements
 
+import SymmetricSubgroupAsymptotics.CFSGPolarSubspaceSemilinearRestriction
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBNaturalSubspaceCompatibility
+import SymmetricSubgroupAsymptotics.CFSGPolarOppositePointRigidity
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBIsometryIndexRankOne
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBSpecialIsometryIndex
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexSingularSubspaceSemilinear
+import SymmetricSubgroupAsymptotics.CFSGNormTwoGeckParameterizedCollecting
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
 
@@ -375,3 +382,32 @@ giving two conjugate Sylow generators. Their literal torus envelope B is
 soluble, contains U+, and normalizes U+; every defining-p element of B
 lies in U+. The global containment N_G(U+) <= B is not proved here, so
 no exceptional good-Sylow or whole published input is removed. -/
+
+
+/-! The original odd-B inner action now agrees with its literal matrices on
+points and every singular subspace. Actual root words align every full-rank
+singular image with the positive coordinate space. On each original singular
+subspace of dimension at least three, the reconstructed action has a proved
+semilinear projective restriction; this is not yet a whole-polar-space
+semilinear theorem. Restricted functionals and opposition rigidity are proved.
+The actual rank-one elementary B group has index at most two in the literal
+special isometry group, without a named-group recognition input.
+
+For original D in rank at least five, the R11 neighbour gap reconstructs the
+faithful original point action over every finite field. Its singular-subspace
+extension retains Q=0, not just polar-self-orthogonality in characteristic two.
+Local semilinearity on each Q-singular subspace is proved. Rank-four triality
+and whole-space semilinearity remain open.
+
+The actual exceptional adjacent collecting word now holds with arbitrary two
+parameters over every field, via exact integer polynomial identities. These
+local collecting identities do not yet prove global Bruhat decomposition or
+the reverse Sylow-normalizer containment. No further public input is removed.
+-/
+
+
+/-! The special-isometry index bound is now proved in EVERY positive
+original B rank over an odd finite field. The actual inverse maximal-space
+normalization and right-hand parabolic factorization give a one-sided cover;
+actual last-pair square words give index at most two. No SO/Omega recognition,
+order formula, or unproved elementary normality premise is used. -/
