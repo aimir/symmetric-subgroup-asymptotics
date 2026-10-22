@@ -56,6 +56,7 @@ import SymmetricSubgroupAsymptotics.CFSGSymplecticCardinality
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBGenerationCharTwoReduction
 import SymmetricSubgroupAsymptotics.CFSGExceptionalNormTwoBases
 import SymmetricSubgroupAsymptotics.CFSGNormTwoRootStrings
+import SymmetricSubgroupAsymptotics.CFSGSymplecticSimpleIndexReduction
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -157,7 +158,15 @@ to the actual elementary group. An augmented cell with a two-coordinate
 Borel factor proves `ell^2 < |G|` for every admissible original C model,
 including characteristic two. Actual elementary words also move every
 nonzero natural vector and every hyperbolic partner. Intrinsic abstract
-root recognition and the outer bound remain separate obligations.
+root recognition and the outer bound are proved in the later complete
+simple-index packet. In odd characteristic actual Sylow centres
+recognize the projective natural roots. In characteristic two the same
+normalizer-centre atom construction gives at most three images of the
+original root conjugacy family. Its stabilizer acts faithfully on the
+original points. Orthogonality yields collineations; the literal PGSp
+count and exact field frame stabilizer bound the actual outer group.
+The entire original C family consequently satisfies both required
+simple-index inequalities and leaves that exact remaining-model predicate.
 The actual natural root lines descend injectively to the projective
 quotient: a common nonzero fixed vector forces any central scalar
 relating two transvections to equal one. Their parameters, cardinalities,
