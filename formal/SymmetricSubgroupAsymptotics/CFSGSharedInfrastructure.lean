@@ -65,6 +65,9 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexSquare
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexStarLower
 import SymmetricSubgroupAsymptotics.CFSGExceptionalGeckIntegralData
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBIndexBounds
+import SymmetricSubgroupAsymptotics.CFSGAffineCoarseComposition
+import SymmetricSubgroupAsymptotics.CFSGNonaffineCoarseComposition
+import SymmetricSubgroupAsymptotics.CFSGNonaffineNormalRank
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -249,3 +252,11 @@ inequality and explicit lower/upper index bounds on the original model.
 The actual elementary centre is proved trivial using both its quadratic
 form and determinant, including q=3/rank3. The logarithmic B outer-group
 estimate is still open, so these tags remain in that combined residual. -/
+
+/-! The actual primitive-profile foundations now include ordinary rank
+addition across the literal kernel, and a same-series composition bound
+k + log2|G/S| for a full semisimple socle S=T^k. Affine profiles have the
+proved coarse bound (1+floor(log2 n))*log2 n for every composition series
+and every subgroup's ordinary rank. The nonaffine normal-rank bound is
+2k+log2|G/S| under the explicit simple-factor rank<=2 premise. These
+coarse estimates do not assert the sharper retained primitive inputs. -/
