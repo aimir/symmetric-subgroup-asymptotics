@@ -673,6 +673,27 @@ A common lattice argument gives at most 512 roots and at least ten
 positive commuting roots for every root. The exceptional outer-automorphism
 bound remains open in this backend.
 
+The original-group automorphism infrastructure now includes inner
+alignment of both literal opposite Sylow subgroups
+([`CFSGNormTwoCoordinateOriginalPairAlignment`](SymmetricSubgroupAsymptotics/CFSGNormTwoCoordinateOriginalPairAlignment.lean)).
+For automorphisms preserving the positive subgroup, its simple axes in
+the actual abelianization form an intrinsic family and are permuted
+([`CFSGNormTwoCoordinateOriginalAxisPermutation`](SymmetricSubgroupAsymptotics/CFSGNormTwoCoordinateOriginalAxisPermutation.lean)).
+These statements use actual quotient maps and do not assume that an
+arbitrary projective automorphism lifts. Literal root-group recovery and
+the outer-order estimate are still required.
+
+For the remaining classical good-Sylow cases, the whole outer unitary
+radical is proved to lie in the original fixed group's derived image
+([`CFSGTwistedAUnitaryRadicalMiddleAction`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryRadicalMiddleAction.lean)),
+and actual upper unitary matrices factor through the smaller middle block
+([`CFSGTwistedAUnitaryUpperFactorization`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryUpperFactorization.lean)).
+Original twisted-D Sylow subgroups have genuine fixed-matrix lifts
+([`CFSGTwistedDFixedSylowLifts`](SymmetricSubgroupAsymptotics/CFSGTwistedDFixedSylowLifts.lean));
+their retained folded-root tests recover singular prefixes in every
+characteristic. These are proved prerequisites; the corresponding
+good-Sylow callbacks remain open.
+
 [`CFSGSevenTargetsExceptionalSquares`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsExceptionalSquares.lean)
 threads these completed good-Sylow model cases, including G2, into T1 and AllTargets.
 Its parameters are CFSG, five published inputs (general class count, the
