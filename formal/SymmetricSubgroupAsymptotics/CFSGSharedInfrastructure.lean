@@ -54,6 +54,8 @@ import SymmetricSubgroupAsymptotics.CFSGGTwoEvenOrderRefinement
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDGenerationReduction
 import SymmetricSubgroupAsymptotics.CFSGSymplecticCardinality
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBGenerationCharTwoReduction
+import SymmetricSubgroupAsymptotics.CFSGExceptionalNormTwoBases
+import SymmetricSubgroupAsymptotics.CFSGNormTwoRootStrings
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -189,3 +191,11 @@ The invariant transpose-quadratic form proves its kernel trivial. The
 original simple Serre source therefore inherits two-generation, and only
 these B tags leave the exact generation residual. Odd-characteristic B
 generation remains open at this checkpoint. -/
+
+/-! The actual E6/E7/E8 norm-two integer lattices now supply finite,
+reduced, irreducible crystallographic root pairings, literal coordinate
+bases, and transpose-correct Cartan identities. The six Serre relations
+then give representations of the original rational Lie presentations
+on their actual Geck matrix spaces. This rational endpoint does not yet
+assert integral divided powers, finite-field images, faithfulness, parity,
+or generation of the original exceptional groups. -/

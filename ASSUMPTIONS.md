@@ -399,3 +399,5 @@ claim formal proofs of those remaining inputs.
 The optional CFSG route also proves the exact order of every finite natural symplectic group internally (`CFSGSymplecticCardinality.elementary_card` and `symplectic_card`, in the stabilizer-coordinates namespace). This supports the ongoing outer-automorphism calculation; it does not discharge another entire public T1 input.
 
 Characteristic-two type-B generation is also proved internally on the pinned original model, with its actual matrix image identified with the elementary C group (`CFSGOrthogonalBGenerationCharTwoReduction`). Only binary-characteristic B tags are removed from this optional generation residual; the public T1 boundary still retains ten independent published inputs.
+
+The shared exceptional route now derives the actual finite E6/E7/E8 root systems and rational Geck representations internally, including the coordinate base, irreducibility and exact Cartan binding. These results discharge root-system construction prerequisites only. The integral/group-image steps and the exceptional quantitative model bounds remain open, and the public ten-input boundary is unchanged.
