@@ -75,6 +75,10 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexUnipotentFixedSpace
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBProjectiveLongRoots
 import SymmetricSubgroupAsymptotics.CFSGPrimitiveSublinearBounds
 import SymmetricSubgroupAsymptotics.CFSGFFourEvenOrderRefinement
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexOddSylow
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexDeterminant
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBProjectiveRootLines
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBRootLinePlaneLabel
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -286,14 +290,17 @@ composition or primitive normal-generation inputs. -/
 its highest paired-root line, isomorphic to the same additive field;
 its fixed vectors are exactly the first natural line. These assertions
 hold in every characteristic and use the actual split quadratic form,
-not merely its polar form. Sylow maximality, the characteristic-two
-component invariant and D outer geometry remain separate obligations. -/
+not merely its polar form. Odd-characteristic Sylow maximality is now proved for this same subgroup.
+The characteristic-two component invariant and D outer geometry remain
+separate obligations. -/
 
 /-! For odd B the literal U is now proved Sylow, N(U) is its actual
 flag Borel, and Z(U) is exactly the highest long-root field line. Its
-conjugate root elements are therefore intrinsically preserved by every
-actual projective automorphism. This element recognition does not yet
-assert polar two-plane reconstruction or the remaining outer bound. -/
+conjugate root lines are now intrinsically preserved by every actual
+projective automorphism. Each literal line has a well-defined natural
+two-plane label, recovered as range(x-I) for a nonidentity root element.
+Surjectivity onto all singular planes, polar-point reconstruction and the
+remaining outer bound are not yet asserted. -/
 
 /-! Those coarse primitive bounds are now uniformly sublinear in degree.
 Their first checked applications are the eventual c=1 relative-character
@@ -306,3 +313,8 @@ The proof folds the actual E6 Geck representation, verifies the pinned F4
 Cartan relations, and tests a long-root Weyl word on that same image.
 Only F4 leaves this parity residual; its generation/Out bounds and the
 twisted exceptional cases remain open. -/
+
+/-! The odd-characteristic D Sylow proof retains the final middle 2-plane.
+Its actual normalizer action is diagonal or anti-diagonal; a p-power
+anti-diagonal element contradicts its determinant one exactly when 2!=0.
+This argument makes no characteristic-two component assertion. -/
