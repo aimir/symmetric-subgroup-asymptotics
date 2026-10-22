@@ -68,6 +68,7 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalBIndexBounds
 import SymmetricSubgroupAsymptotics.CFSGAffineCoarseComposition
 import SymmetricSubgroupAsymptotics.CFSGNonaffineCoarseComposition
 import SymmetricSubgroupAsymptotics.CFSGNonaffineNormalRank
+import SymmetricSubgroupAsymptotics.CFSGExceptionalGeckEvenOrderRefinement
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -223,8 +224,10 @@ then give representations of the original rational Lie presentations
 on their actual Geck matrix spaces. Their literal integral divided-power
 matrices and same-image fourth-coefficient cancellation are also proved,
 including explicit E6/E7/E8 installers over every coefficient ring.
-Finite-group image noncentrality, parity, faithfulness, generation and
-outer bounds remain separate obligations. -/
+The actual Weyl word is now noncentral in the same generated image
+and has fourth power one in every characteristic. Simple projective
+descent proves even order on each original E6/E7/E8 model. Generation
+and outer bounds remain separate obligations. -/
 
 /-! The same characteristic-two B image action is now proved faithful
 using its actual terminal-root image and nonzero-vector orbit. Centre
@@ -260,3 +263,8 @@ proved coarse bound (1+floor(log2 n))*log2 n for every composition series
 and every subgroup's ordinary rank. The nonaffine normal-rank bound is
 2k+log2|G/S| under the explicit simple-factor rank<=2 premise. These
 coarse estimates do not assert the sharper retained primitive inputs. -/
+
+/-! Exactly the untwisted E6/E7/E8 tags now leave the parity residual.
+The coefficient-one noncentral witness works in characteristic two too,
+and is tested on the same original E-generator image. Twisted exceptional
+and other remaining models are retained explicitly. -/
