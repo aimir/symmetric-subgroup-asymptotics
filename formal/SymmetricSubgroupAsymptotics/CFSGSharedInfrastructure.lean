@@ -52,6 +52,7 @@ import SymmetricSubgroupAsymptotics.CFSGSymplecticFullGroup
 import SymmetricSubgroupAsymptotics.CFSGSymplecticProjectiveNaturalRootLines
 import SymmetricSubgroupAsymptotics.CFSGGTwoEvenOrderRefinement
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDGenerationReduction
+import SymmetricSubgroupAsymptotics.CFSGSymplecticCardinality
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -125,6 +126,10 @@ entire C branch is removed from the exact generation residual. The same
 natural matrices identify with the full form-preserving symplectic group:
 the rank-one Gaussian base and the actual hyperbolic-pair stabilizer
 prove surjectivity in all ranks. This is a proved theorem, not an input.
+The same first-pair stabilizer recurrence and an exact affine-fibre count
+now prove the full finite order formula
+`|Sp_(2*n)(K)| = q^(n*n) * product_(i=1..n) (q^(2*i)-1)`,
+including ranks zero and one, with no published order premise.
 The original untransposed type-D model now has the same complete
 rational-to-integral image construction, using a shared square-zero
 matrix realization. The two fork projections prove a scalar commutant

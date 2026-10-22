@@ -395,3 +395,5 @@ installed external package objects are outside its scope. Detailed receipts,
 audits and research status records stay outside the publication repository.
 This is verification relative to the listed published inputs; it does not
 claim formal proofs of those remaining inputs.
+
+The optional CFSG route also proves the exact order of every finite natural symplectic group internally (`CFSGSymplecticCardinality.elementary_card` and `symplectic_card`, in the stabilizer-coordinates namespace). This supports the ongoing outer-automorphism calculation; it does not discharge another entire public T1 input.
