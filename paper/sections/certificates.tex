@@ -77,7 +77,7 @@ for those domains.
 \subsection{Formal verification}
 The accompanying Lean development fixes Lean~4.30.0 and a precise mathlib
 revision. Its final theorem proves Theorems~\ref{thm:main},
-\ref{thm:saddle} and~\ref{thm:elementary} relative to ten explicit
+\ref{thm:saddle} and~\ref{thm:elementary} relative to eight explicit
 published mathematical inputs. Their complete formulations, Lean types
 and publication locators appear in \texttt{formal/README.md}. No finite
 primitive or transitive catalogue correspondence is a parameter of the
@@ -136,7 +136,12 @@ assert the stronger unused arbitrary-local per-orbit statement.
 Raw O'Nan--Scott structure is proved using actual minimal normal subgroups,
 the full socle, point-stabilizer maximality and the exact inner kernel in
 the outer-wreath action. The quantitative simple-index inequalities remain
-an explicit published input.
+an explicit published input. They also imply $|\operatorname{Aut}(S)|\leq|S|^2$
+for every finite nonabelian simple $S$, so simple two-generation is not a
+separate input. The primitive relative ternary-head tail follows directly
+from actual affine orders and full-socle quotient orders, as in
+Lemma~\ref{lem:ternary-block}; no ordinary primitive normal-generation
+theorem is required.
 
 Exact binary excess classification is now proved internally, including
 all degree and proper-normal restrictions. The proof retains the original

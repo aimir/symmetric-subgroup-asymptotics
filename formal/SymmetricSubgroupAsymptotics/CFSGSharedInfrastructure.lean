@@ -414,8 +414,10 @@ SUFFICIENT simple-index residual. This internal boundary keeps coefficient
 three below degree27 and uses coefficient six beyond it, with the proved
 finite Out<=24 safeguard below30. The original primitive chief-weight,
 strict-head and component-compression conclusions are preserved by checked
-consumers. Whole public T1 forwarding from this boundary is still separate;
-the stronger published coefficient-three theorem is unchanged.
+consumers. Whole T1/AllTargets forwarding from this boundary is now proved in
+CFSGSufficientPublishedTargetsCombined. The public eight-input facade fills
+this sufficient boundary from the retained stronger published coefficient-three
+theorem. No normal-generator or finite-simple two-generator input remains.
 
 For original E6/E7/E8, actual complementary positive-root subgroups,
 arbitrary-parameter collecting words, self-root Weyl conjugation and
@@ -435,5 +437,20 @@ A concrete candidate pair also recovers the full original E6 root lines
 U3,U4,U5 over every finite field of order at least three, using actual
 parameter extraction and Weyl-word identities. Full two-element generation,
 including the two-element field, remains open. These are optional CFSG
-infrastructure results; the public T1 endpoint still has ten published inputs.
+infrastructure results. The public T1 endpoint now has eight published inputs: the
+needed simple automorphism count follows from sufficient SI, and the primitive
+relative-head tail follows from actual affine/full-socle quotient orders. The
+stronger ordinary generation theorems are neither asserted nor needed here.
 -/
+
+/-! Generated-Lie triangularity and the original integral lattice degrees now
+recognize each transported negative simple-root line. Primitive integer matrix
+entries force an actual unimodular conjugation scalar to be plus or minus one;
+integer polynomial transport gives the original root-unit identity over every
+coefficient ring. CFSGE6GenerationNegativeFifthRecovery applies this to the
+SAME E6 candidate pair and recovers its actual negative fifth-root subgroup for
+all finite fields of order at least three. This does not assert full E6
+simple two-generation. The original twisted-D parity packet is also complete,
+without assuming ambient untwisted-D simplicity; other residual tags remain
+explicit. None of these individual family advances closes the whole CFSG-only
+T1 theorem. -/

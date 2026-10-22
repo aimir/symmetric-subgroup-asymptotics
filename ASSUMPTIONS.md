@@ -373,7 +373,7 @@ translation kernels and normal axes. At degree 16 it uses the proved
 twelve-pair and sixteen-pair sources therefore require neither the
 301-action transitive-twelve correspondence nor primitive-sixteen coverage.
 
-The final T1 and AllTargets exports have ten explicit published inputs,
+The final T1 and AllTargets exports have eight explicit published inputs,
 with their mathematical formulations and source locators listed after the
 bounds and folder structure in [formal/README.md](formal/README.md).
 The exact binary normal-F theorem is now proved without hypotheses as
@@ -382,10 +382,13 @@ It retains the ambient commutator `[F,Q]`, actual centralizer, original
 nonabelian quotient and every excess/rank alternative. Its proper-normal
 constructions keep the same original denominator and actual affine cocycle;
 no split-extension or capacity statement is assumed.
-The remaining ten inputs are the published general counting,
+The remaining eight inputs are the published general counting,
 composition, generation and simple-group inequalities listed there. No project capacity,
 source, marked-moment, affine-consumer or quantitative socle-profile premise
-occurs in those signatures.
+occurs in those signatures. Primitive normal generation and finite-simple
+two-generation are also absent: direct actual-order relative-head bounds
+and the simple-index consequence `|Aut(S)| ≤ |S|²` suffice. These replacements
+do not assert the stronger ordinary generation theorems.
 
 The axiom audit reports only `propext`, `Classical.choice` and `Quot.sound`.
 Recursive source/object verification checks the current local import
@@ -398,9 +401,9 @@ claim formal proofs of those remaining inputs.
 
 The optional CFSG route also proves the exact order of every finite natural symplectic group internally (`CFSGSymplecticCardinality.elementary_card` and `symplectic_card`, in the stabilizer-coordinates namespace). This supports the ongoing outer-automorphism calculation; it does not discharge another entire public T1 input.
 
-Characteristic-two type-B generation is also proved internally on the pinned original model, with its actual matrix image identified with the elementary C group (`CFSGOrthogonalBGenerationCharTwoReduction`). Only binary-characteristic B tags are removed from this optional generation residual; the public T1 boundary still retains ten independent published inputs.
+Characteristic-two type-B generation is also proved internally on the pinned original model, with its actual matrix image identified with the elementary C group (`CFSGOrthogonalBGenerationCharTwoReduction`). Only binary-characteristic B tags are removed from this optional generation residual; the public T1 boundary has eight independent published inputs.
 
-The shared exceptional route now derives the actual finite E6/E7/E8 root systems and rational Geck representations internally, including the coordinate base, irreducibility and exact Cartan binding. The integral continuation is now proved (`CFSGExceptionalGeckIntegralData`): the literal divided-power matrices and same-image fourth-coefficient equation are verified on each original E6/E7/E8 source over every coefficient ring. The same original-image Weyl word is also proved noncentral with fourth power one in every characteristic, yielding even order for each original simple E6/E7/E8 model (`CFSGExceptionalGeckEvenOrderRefinement`). Those three untwisted tags leave the parity residual. Exceptional generation/outer bounds and other parity families remain open, and the public ten-input boundary is unchanged.
+The shared exceptional route now derives the actual finite E6/E7/E8 root systems and rational Geck representations internally, including the coordinate base, irreducibility and exact Cartan binding. The integral continuation is now proved (`CFSGExceptionalGeckIntegralData`): the literal divided-power matrices and same-image fourth-coefficient equation are verified on each original E6/E7/E8 source over every coefficient ring. The same original-image Weyl word is also proved noncentral with fourth power one in every characteristic, yielding even order for each original simple E6/E7/E8 model (`CFSGExceptionalGeckEvenOrderRefinement`). Those three untwisted tags leave the parity residual. Exceptional generation/outer bounds and other parity families remain open, and this family result alone does not close the public eight-input boundary.
 
 The complete original type-C simple-index packet is now proved (`CFSGSymplecticSimpleIndexReduction`). The actual outer group has order at most twice the field-automorphism count in odd characteristic and three times in characteristic two. The latter charges the original natural-root family stabilizer index before counting; no projective-automorphism lift is assumed. Together with the proved squared-index bound, this removes all C tags from the optional simple-index residual. The whole published simple-index input is still retained for the other open model families.
 

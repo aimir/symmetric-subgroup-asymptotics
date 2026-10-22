@@ -88,11 +88,17 @@ such a certificate.
 \end{theorem}
 \begin{proof}
 Write $E=\prod_iS_i$. Each $S_i$ is a literal subgroup of $S_w$.
-A nontrivial orbit, followed by a maximal overgroup of its point
-stabilizer, supplies a faithful primitive action of $S_i$ of degree
-at most $w$. Hence $d(S_i)\leq\log w$ by
-\cite[Theorem~1.1]{HoltRoneyDougal2013}, and
-$|\operatorname{Aut}(S_i)|\leq|S_i|^{\log w}$.
+The retained simple-index inequalities give
+$|\operatorname{Out}(S_i)|\leq|S_i|$: if $\ell_i\geq5$ is the least
+proper subgroup index, then
+$|\operatorname{Out}(S_i)|\leq3\log\ell_i<\ell_i^2<|S_i|$.
+Since a nonabelian simple group is centerless,
+\[
+ |\operatorname{Aut}(S_i)|
+   =|S_i|\,|\operatorname{Out}(S_i)|\leq|S_i|^2.
+\]
+This supplies the required automorphism count without a simple-group
+generation theorem.
 Since $\sum_i\log|S_i|\leq\log(w!)\leq w\log w$, the product in
 Lemma~\ref{lem:semisimple-fibre} has logarithm at most
 $Cw\log^2(w+b+1)$ for an absolute $C$. The reserve is
