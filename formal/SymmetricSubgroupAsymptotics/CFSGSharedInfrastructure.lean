@@ -64,6 +64,7 @@ import SymmetricSubgroupAsymptotics.CFSGSimpleProductCompositionLength
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexSquare
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexStarLower
 import SymmetricSubgroupAsymptotics.CFSGExceptionalGeckIntegralData
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBIndexBounds
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -242,3 +243,9 @@ inequality, an explicit projective-point upper bound, and the stronger
 root-star lower bound q^(r-1) <= ell. All are proved through actual matrix
 subgroups and the same original central quotient. The D outer-group
 bound is still an independent open model obligation. -/
+
+/-! Odd-characteristic B now has the required squared least-index
+inequality and explicit lower/upper index bounds on the original model.
+The actual elementary centre is proved trivial using both its quadratic
+form and determinant, including q=3/rank3. The logarithmic B outer-group
+estimate is still open, so these tags remain in that combined residual. -/
