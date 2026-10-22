@@ -86,8 +86,9 @@ summation statements are proved internally. Both final exports have only
 the standard logical axioms of Lean in addition to their stated parameters.
 
 The coarse all-subgroup estimate is derived internally from the retained
-soluble-generation, primitive composition-length and primitive
-normal-generation inputs. For every fixed orbit cutoff $C$, the actual
+soluble-generation input alone. For soluble primitive actions, the
+composition and subgroup-rank bounds used in its large-orbit step follow
+unconditionally from the actual affine structure. For every fixed orbit cutoff $C$, the actual
 bounded nilpotent family has size at most
 \[
   2^{b^2/16+A_C b\log_2(b+2)}.

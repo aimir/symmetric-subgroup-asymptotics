@@ -425,3 +425,13 @@ The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now prove
 `CFSGPrimitiveSublinearBounds.lean` proves that those estimates are uniformly sublinear across all actual primitive actions. Its first applications are an eventual c=1 relative-character tail and an eventual three-tenths primitive chief-weight tail. The statements retain only the displayed simple-index/Out and, where used, simple-two-generation inputs; they do not invoke the sharp primitive inputs. These are infinite-tail replacements with a uniform eventual threshold, not proofs of the existing cutoffs 34/45 or of the intervening bounded ranges. The public T1 premises are unchanged.
 
 The original untwisted F₄ parity branch is now proved (`CFSGFFourEvenOrderRefinement.lean`). The actual E₆ fold satisfies the pinned F₄ Serre relations; a long-root Weyl word has fourth power one and is noncentral on the same original image, in every characteristic. This removes precisely F₄ from the optional parity residual. F₄ generation and outer-automorphism bounds, twisted exceptional parity, and the public ten-input boundary remain unchanged.
+
+The coarse all-subgroup upper bound is now derived from the retained
+Aschbacher–Guralnick input alone (`CFSGOrdinarySubgroupUpperFromSoluble`).
+For soluble primitive actions, composition length and subgroup rank are
+bounded unconditionally by L²+L, where L=log₂(degree). The original-support
+large-orbit recurrence pays this cost with constant 1280 and proves
+Proposition 6.2 without the sharp primitive inputs. Both the marked-moment
+construction and the public T1 facade use this unconditional recurrence.
+The ten public parameters are unchanged because the sharp primitive
+inputs still have other consumers.

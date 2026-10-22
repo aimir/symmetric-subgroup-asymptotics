@@ -307,7 +307,7 @@ constant increases. This removes `hseven` without asserting the sharper
 unrestricted `4L*sqrt M` theorem. No new hypothesis replaces it.
 
 The coarse ordinary bound is now supplied by
-[`ordinarySubgroupUpper_of_retained_inputs`](SymmetricSubgroupAsymptotics/CFSGOrdinarySubgroupUpperProof.lean).
+[`ordinarySubgroupUpper_of_soluble_generation`](SymmetricSubgroupAsymptotics/CFSGOrdinarySubgroupUpperFromSoluble.lean).
 For each fixed orbit cutoff C, the actual bounded nilpotent family satisfies
 `#NilpotentFamily(C,b) ≤ 2^(b²/16 + A_C b log₂(b+2))`.
 The proof retains the actual binary and odd nilpotent sectors, their original
@@ -331,7 +331,10 @@ The remaining inputs are ordinary published mathematical theorems.
 No action-catalogue correspondence, project capacity, marked moment,
 complete source or asymptotic target is included in them. The labelled
 transitive-count theorem remains a counting input. The coarse
-all-subgroup upper bound is proved from `hAG`, `hPrimitiveGen` and `hcomp`.
+all-subgroup upper bound is proved from `hAG` alone. The actual soluble
+primitive bounds and large-orbit generation theorem are now unconditional
+(`CFSGSolublePrimitiveCoarse.lean`, `CFSGSolubleOrbitFinal.lean`).
+The sharp primitive inputs remain necessary in other T1 consumers.
 
 | Lean parameter and definition | Mathematical input | Published source or correspondence |
 |---|---|---|

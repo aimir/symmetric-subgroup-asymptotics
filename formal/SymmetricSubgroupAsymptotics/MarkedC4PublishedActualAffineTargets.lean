@@ -1,3 +1,4 @@
+import SymmetricSubgroupAsymptotics.CFSGSolubleOrbitFinal
 import SymmetricSubgroupAsymptotics.MarkedC4PublishedActualTargets
 import SymmetricSubgroupAsymptotics.T1FromActualAffineSources
 import SymmetricSubgroupAsymptotics.BinaryExcessProposition53Proof
@@ -40,8 +41,7 @@ theorem T1_of_published_inputs_actualAffineSources
     DegreeSixThreeByTwoClassificationProof.publishedDegreeSixThreeByTwoAffineClassification
   have publishedThree := DegreeSixThreePairClassificationProof.representativeClassification
   have h8 := RDTDegreeEightExceptionalProof.publishedDegreeEightExceptional
-  have h62 := LargeOrbitGeneratorConsequences.publishedProposition62_of_retained_inputs
-    hPrimitiveGen hTraceyRefined hcomp
+  have h62 := CFSGSolubleOrbitConsequences.publishedProposition62_proved
   have hM4 := CFSGConstructedContainersGlobal.marked_bound
     fullLit.kovacsPraeger fullLit.kovacsPraegerBinary h55 h53 h57 h8 hderived
     rdt46 hodd h62 hAG

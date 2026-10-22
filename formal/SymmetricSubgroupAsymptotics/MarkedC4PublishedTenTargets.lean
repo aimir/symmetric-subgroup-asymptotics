@@ -1,9 +1,9 @@
 import SymmetricSubgroupAsymptotics.MarkedC4PublishedGeometricTargets
-import SymmetricSubgroupAsymptotics.CFSGOrdinarySubgroupUpperProof
+import SymmetricSubgroupAsymptotics.CFSGOrdinarySubgroupUpperFromSoluble
 
 /-! Public targets with ten independent published inputs. The coarse
 ordinary subgroup count is supplied internally from the retained soluble
-generation, primitive composition, and primitive normal-generation inputs.
+generation input, using unconditional soluble primitive and large-orbit bounds.
 No CFSG family hypothesis is hidden in this reduction. -/
 set_option autoImplicit false
 noncomputable section
@@ -23,7 +23,7 @@ theorem T1_of_ten_published_inputs
     (hSimpleIndex : PrimitiveSocleRawStructure.PublishedSimpleIndexBounds)
     (hMN : McIverNeumannPermutationGeneratorBound) : T1 := by
   exact T1_of_published_inputs lit hcomp
-    (CFSGReduction.ordinarySubgroupUpper_of_retained_inputs hAG hPrimitiveGen hcomp)
+    (CFSGReduction.ordinarySubgroupUpper_of_soluble_generation hAG)
     hAG hExceptionalOrbits hPrimitiveGen hLMM hTraceyPerm hSimpleGen hSimpleIndex hMN
 
 theorem allTargets_of_ten_published_inputs

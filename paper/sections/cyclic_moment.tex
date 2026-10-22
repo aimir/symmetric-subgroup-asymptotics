@@ -229,39 +229,47 @@ the stopping cost nor $\mathcal P(r)$ is paid at every peel.
 Let $G$ be a finite soluble permutation group, and let $n_i$ be its
 nontrivial orbit lengths. Then
 \[
- d(G)\leq128\sum_i\frac{n_i}{\sqrt{\log n_i}}.
+ d(G)\leq1280\sum_i\frac{n_i}{\sqrt{\log n_i}}.
 \]
 \end{lemma}
 \begin{proof}
+A soluble primitive group of degree $r$ has an actual regular elementary
+abelian normal subgroup. Its point stabilizer acts faithfully on that
+subgroup, giving $|P|\leq r^{1+\lfloor\log r\rfloor}$. Consequently every
+composition series of $P$, and every subgroup's ordinary rank, has length
+at most $c(r)=(\log r)^2+\log r$. This argument uses no sharp published
+primitive composition or normal-generation theorem.
+
 Induct on the sum of the actual orbit lengths, retaining their joint
 faithful action. For a primitive head of degree $r$, the kernel of the
-remaining orbit actions embeds as a normal subgroup of that primitive
-image. The primitive normal-subgroup generator theorem bounds its
-ordinary rank by $\lfloor\log r\rfloor$ for $r\geq4$; the degrees two
-and three give the harmless uniform bound $\lfloor\log r\rfloor+2$.
+remaining orbit actions embeds in that primitive image, so its ordinary
+rank is at most $c(r)$.
 
 For an imprimitive head, take a minimal block of size $r$ and $s$ blocks.
 Keep the other orbit actions in the top group, even when that top acts
 nonfaithfully on these $s$ blocks. Along the actual chief series of the
 soluble primitive block component, each kernel is abelian. Its module
 generators supplement any subgroup already surjecting onto the quotient,
-so they lift ordinary generators. Tracey's induced-module bound and the
-primitive composition-length estimate give total cost at most
+so they lift ordinary generators. The proved induced-module bound and
+the preceding elementary composition bound give total cost at most
 \[
  B(s)c(r),\qquad
- B(s)=\left\lceil\frac{4s}{\sqrt{\log s}}\right\rceil,
- \quad c(r)=\frac83\log r-\frac43.
+ B(s)=\left\lceil\frac{4s}{\sqrt{\log s}}\right\rceil.
 \]
 The two scalar inequalities, valid for $r,s\geq2$, are
 \begin{align*}
- \log r+2&\leq\frac{128r}{\sqrt{\log r}},\\
- B(s)c(r)+\frac{128s}{\sqrt{\log s}}
- &\leq\frac{128rs}{\sqrt{\log(rs)}}.
+ c(r)&\leq\frac{1280r}{\sqrt{\log r}},\\
+ B(s)c(r)+\frac{1280s}{\sqrt{\log s}}
+ &\leq\frac{1280rs}{\sqrt{\log(rs)}}.
 \end{align*}
 For the latter put $a=\log r$, $b=\log s$. Use $B(s)\leq5s/\sqrt b$,
 $b\geq1$, and
-$\sqrt{1+a}(1+a/8)\leq2^a$; this last inequality follows from
-$1+x\leq e^x$ and $\ln2\geq5/8$.
+\[
+ \sqrt{1+a}\left(1+\frac{a^2+a}{256}\right)\leq2^a.
+\]
+Indeed $\sqrt{1+a}\leq e^{a/2}$ and
+$1+(a^2+a)/256\leq(1+a/16)^2\leq e^{a/8}$ for $a\geq0$;
+now $\ln2\geq5/8$ gives the assertion.
 Thus each compression decreases the total degree and preserves the
 claimed potential. Fixed points contribute zero and can be removed.
 \end{proof}
