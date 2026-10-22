@@ -610,8 +610,8 @@ degrees27..63 use actual quotient rounding, and degree64 onward uses
 the two-thirds compression. The stronger published coefficient-three
 theorem remains available. Full T1 and AllTargets forwarding from the
 sufficient boundary is proved in
-[`CFSGSufficientPublishedTargetsCombined`](SymmetricSubgroupAsymptotics/CFSGSufficientPublishedTargetsCombined.lean).
-This optional route has seven other published inputs plus sufficient
+[`CFSGSufficientPublishedTargetsOrder`](SymmetricSubgroupAsymptotics/CFSGSufficientPublishedTargetsOrder.lean).
+This optional route has six other published inputs plus sufficient
 simple-index bounds. Its CFSG variant still exposes the unproved
 nonclassical model callback; it is not a CFSG-only theorem.
 
@@ -629,7 +629,7 @@ The actual diagonal-factor argument then proves positive-root Sylow
 maximality, soluble normalizers and the good-Sylow endpoint for each
 original E6/E7/E8 model in every characteristic. Two-element generation
 and outer bounds remain separate. These modules
-belong to the optional CFSG backend. The public T1 endpoint has the eight
+belong to the optional CFSG backend. The public T1 endpoint has the seven
 published inputs listed above. Eliminating the two stronger generation
 premises does not prove their full statements or close the other inputs.
 
@@ -642,3 +642,32 @@ and primitive integral entries now recover the actual negative fifth-root
 line as well (`CFSGE6GenerationNegativeFifthRecovery.lean`). Full
 two-element generation, including the two-element field, remains open and
 is no longer required by T1.
+
+The complete alternating-family good-Sylow theorem is proved in
+[`CFSGAlternatingGoodSylow`](SymmetricSubgroupAsymptotics/CFSGAlternatingGoodSylow.lean).
+It constructs two generating conjugate Sylow two-subgroups in every degree
+at least five and proves self-normalization in degree at least six; the
+actual degree-five normalizer is handled separately. The original
+rank-two twisted-A models also have good Sylow witnesses, proved through
+their literal fixed/derived Serre groups in
+[`CFSGTwistedA2GoodSylowReduction`](SymmetricSubgroupAsymptotics/CFSGTwistedA2GoodSylowReduction.lean).
+Neither statement leaves a model-identification premise.
+
+The full positive Sylow centres of the original E6/E7/E8 models have the
+field's cardinality
+([`CFSGExceptionalOriginalSylowCenters`](SymmetricSubgroupAsymptotics/CFSGExceptionalOriginalSylowCenters.lean)).
+Their projected dominant-root conjugacy families are preserved by every
+actual group automorphism, and full unit scaling proves that each proper
+subgroup index is at least the field order
+([`CFSGExceptionalOriginalIntrinsicRootFamily`](SymmetricSubgroupAsymptotics/CFSGExceptionalOriginalIntrinsicRootFamily.lean),
+[`CFSGExceptionalRootDegree`](SymmetricSubgroupAsymptotics/CFSGExceptionalRootDegree.lean)).
+These facts do not yet give the exceptional outer-automorphism bound.
+
+[`CFSGSevenTargetsResidualModels`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsResidualModels.lean)
+threads these completed good-Sylow model cases into T1 and AllTargets.
+Its parameters are CFSG, five published inputs (general class count, the
+two Tracey inputs, labelled transitive count, and ordinary permutation
+rank), and **two still-unproved model callbacks**: the remaining good-Sylow
+cases and the remaining sufficient simple-index/outer bounds. This residual
+interface is not a theorem from CFSG alone; the canonical public endpoint
+continues to have seven published inputs.
