@@ -72,6 +72,7 @@ import SymmetricSubgroupAsymptotics.CFSGExceptionalGeckEvenOrderRefinement
 import SymmetricSubgroupAsymptotics.CFSGPrimitiveCoarseDegreeBounds
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexUnipotentCenter
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexUnipotentFixedSpace
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBProjectiveLongRoots
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -285,3 +286,9 @@ its fixed vectors are exactly the first natural line. These assertions
 hold in every characteristic and use the actual split quadratic form,
 not merely its polar form. Sylow maximality, the characteristic-two
 component invariant and D outer geometry remain separate obligations. -/
+
+/-! For odd B the literal U is now proved Sylow, N(U) is its actual
+flag Borel, and Z(U) is exactly the highest long-root field line. Its
+conjugate root elements are therefore intrinsically preserved by every
+actual projective automorphism. This element recognition does not yet
+assert polar two-plane reconstruction or the remaining outer bound. -/
