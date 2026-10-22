@@ -58,6 +58,7 @@ import SymmetricSubgroupAsymptotics.CFSGExceptionalNormTwoBases
 import SymmetricSubgroupAsymptotics.CFSGNormTwoRootStrings
 import SymmetricSubgroupAsymptotics.CFSGSymplecticSimpleIndexReduction
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBGenerationReduction
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBCharTwoSimpleIndexReduction
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -213,3 +214,10 @@ then give representations of the original rational Lie presentations
 on their actual Geck matrix spaces. This rational endpoint does not yet
 assert integral divided powers, finite-field images, faithfulness, parity,
 or generation of the original exceptional groups. -/
+
+/-! The same characteristic-two B image action is now proved faithful
+using its actual terminal-root image and nonzero-vector orbit. Centre
+quotient functoriality therefore identifies the ORIGINAL B projective
+model with natural projective C, and simplicity transfers in that
+direction. Both required simple-index bounds hold for these B tags;
+only odd-characteristic B remains in that family residual. -/
