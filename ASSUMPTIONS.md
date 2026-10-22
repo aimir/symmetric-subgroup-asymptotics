@@ -435,3 +435,20 @@ Proposition 6.2 without the sharp primitive inputs. Both the marked-moment
 construction and the public T1 facade use this unconditional recurrence.
 The ten public parameters are unchanged because the sharp primitive
 inputs still have other consumers.
+
+The optional soluble-generation reduction now proves actual good-Sylow
+data for every original C model and every original characteristic-two B
+model (`CFSGOrthogonalBCharTwoGoodSylowReduction.lean`). The same natural
+C Sylow has a soluble normalizer and generates with its actual J-conjugate;
+central-quotient and original-source transport preserve those witnesses.
+These families leave the narrowed Aschbacher–Guralnick callback; that entire
+published input is still retained for the other open models.
+
+Original twisted E₆ now has even order in odd characteristic
+(`CFSGTwistedE6OddPrimeParity.lean`). The proof constructs literal
+commutators in its derived fixed subgroup and identifies their actions with
+the original E₆ long roots. Characteristic two remains open; no whole
+twisted-E₆ tag is removed. Actual odd-B singular-vector normalization is
+also proved (`CFSGOrthogonalBSingularVectorOrbit.lean`), in rank at least
+two, using original matrix elements. It does not yet prove the polar
+point reconstruction or the B outer bound.

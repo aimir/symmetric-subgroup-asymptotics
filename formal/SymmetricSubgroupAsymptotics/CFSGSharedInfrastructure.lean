@@ -79,6 +79,9 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexOddSylow
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexDeterminant
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBProjectiveRootLines
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBRootLinePlaneLabel
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBCharTwoGoodSylowReduction
+import SymmetricSubgroupAsymptotics.CFSGTwistedE6OddPrimeParity
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBSingularVectorOrbit
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -318,3 +321,17 @@ twisted exceptional cases remain open. -/
 Its actual normalizer action is diagonal or anti-diagonal; a p-power
 anti-diagonal element contradicts its determinant one exactly when 2!=0.
 This argument makes no characteristic-two component assertion. -/
+
+/-! The actual C defining-characteristic Sylow has a soluble normalizer
+and generates with its actual J-conjugate. This good-Sylow datum descends
+to the original C projective model and, through the proved characteristic-two
+B/C quotient equivalence, to original binary B. Exactly those families
+leave the narrowed Aschbacher--Guralnick model callback. Other leaves remain.
+
+The original derived-fixed twisted-E6 projective model now has even order
+in odd characteristic: literal fixed-A2 commutator lifts map to the same
+E6 long-root Weyl word. Prime two is retained explicitly.
+
+Odd-B singular-vector normalization is now proved on the same natural
+matrix action, in rank at least two. Singular-plane orbit coverage and
+polar-point/outer-automorphism reconstruction remain separate. -/
