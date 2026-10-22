@@ -74,6 +74,7 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexUnipotentCenter
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexUnipotentFixedSpace
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBProjectiveLongRoots
 import SymmetricSubgroupAsymptotics.CFSGPrimitiveSublinearBounds
+import SymmetricSubgroupAsymptotics.CFSGFFourEvenOrderRefinement
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -299,3 +300,9 @@ Their first checked applications are the eventual c=1 relative-character
 tail and the eventual primitive three-tenths chief-weight tail. They retain
 only the displayed simple-group inputs, not the sharp primitive inputs.
 No fixed cutoff 34 or45, or coverage below a new cutoff, is asserted. -/
+
+/-! The original untwisted F4 model now has even order in every characteristic.
+The proof folds the actual E6 Geck representation, verifies the pinned F4
+Cartan relations, and tests a long-root Weyl word on that same image.
+Only F4 leaves this parity residual; its generation/Out bounds and the
+twisted exceptional cases remain open. -/
