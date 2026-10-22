@@ -61,6 +61,8 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalBGenerationReduction
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBCharTwoSimpleIndexReduction
 import SymmetricSubgroupAsymptotics.CFSGCompositionLengthCardinality
 import SymmetricSubgroupAsymptotics.CFSGSimpleProductCompositionLength
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexSquare
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexStarLower
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -231,3 +233,9 @@ coordinate product, and every actual composition chain of that product
 has length at most the number of original factors. These facts use no
 classification premise; the sharper quantitative primitive inputs remain
 separate obligations. -/
+
+/-! The original D models now satisfy the required squared least-index
+inequality, an explicit projective-point upper bound, and the stronger
+root-star lower bound q^(r-1) <= ell. All are proved through actual matrix
+subgroups and the same original central quotient. The D outer-group
+bound is still an independent open model obligation. -/
