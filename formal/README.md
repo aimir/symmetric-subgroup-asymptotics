@@ -679,20 +679,36 @@ alignment of both literal opposite Sylow subgroups
 For automorphisms preserving the positive subgroup, its simple axes in
 the actual abelianization form an intrinsic family and are permuted
 ([`CFSGNormTwoCoordinateOriginalAxisPermutation`](SymmetricSubgroupAsymptotics/CFSGNormTwoCoordinateOriginalAxisPermutation.lean)).
+For automorphisms preserving both opposite subgroups, full normalizer
+intersections recover the literal simple-root groups and a Cartan diagram
+permutation
+([`CFSGNormTwoCoordinateOriginalSimpleRootAction`](SymmetricSubgroupAsymptotics/CFSGNormTwoCoordinateOriginalSimpleRootAction.lean)).
 These statements use actual quotient maps and do not assume that an
-arbitrary projective automorphism lifts. Literal root-group recovery and
-the outer-order estimate are still required.
+arbitrary projective automorphism lifts. Common-field compatibility and
+the final outer-order count remain open.
 
-For the remaining classical good-Sylow cases, the whole outer unitary
-radical is proved to lie in the original fixed group's derived image
-([`CFSGTwistedAUnitaryRadicalMiddleAction`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryRadicalMiddleAction.lean)),
-and actual upper unitary matrices factor through the smaller middle block
-([`CFSGTwistedAUnitaryUpperFactorization`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryUpperFactorization.lean)).
-Original twisted-D Sylow subgroups have genuine fixed-matrix lifts
-([`CFSGTwistedDFixedSylowLifts`](SymmetricSubgroupAsymptotics/CFSGTwistedDFixedSylowLifts.lean));
-their retained folded-root tests recover singular prefixes in every
-characteristic. These are proved prerequisites; the corresponding
-good-Sylow callbacks remain open.
+For the remaining classical good-Sylow cases, the whole upper unitary
+subgroup lies in the original fixed group's derived image, including the
+small middle-block cases
+([`CFSGTwistedAUnitaryWholeUpperDerived`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryWholeUpperDerived.lean)).
+The literal upper subgroup is a defining-characteristic Sylow subgroup
+and its normalizer is soluble
+([`CFSGTwistedAUnitaryOriginalSylow`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryOriginalSylow.lean)).
+Actual opposite-subgroup words give nonzero column pivots, and upper
+radicals clear the corresponding isotropic columns
+([`CFSGTwistedAUnitaryOppositePivot`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryOppositePivot.lean),
+[`CFSGTwistedAUnitaryNaturalColumnClearing`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryNaturalColumnClearing.lean)).
+Two-Sylow generation is still required.
+
+The original twisted-D derived image also has a defining-characteristic
+Sylow subgroup with soluble normalizer
+([`CFSGTwistedDDerivedSylowNormalizer`](SymmetricSubgroupAsymptotics/CFSGTwistedDDerivedSylowNormalizer.lean)).
+Its whole natural preimage is literally fixed by the twist
+([`CFSGTwistedDDerivedFixed`](SymmetricSubgroupAsymptotics/CFSGTwistedDDerivedFixed.lean)).
+Fixed-chain parameters and folded-root vector clearing are proved in that
+same image. Relative generation and the final projective transport remain
+open. Neither classical good-Sylow callback is discharged by these
+prerequisites alone.
 
 [`CFSGSevenTargetsExceptionalSquares`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsExceptionalSquares.lean)
 threads these completed good-Sylow model cases, including G2, into T1 and AllTargets.
