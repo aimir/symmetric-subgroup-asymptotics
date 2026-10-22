@@ -63,6 +63,7 @@ import SymmetricSubgroupAsymptotics.CFSGCompositionLengthCardinality
 import SymmetricSubgroupAsymptotics.CFSGSimpleProductCompositionLength
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexSquare
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexStarLower
+import SymmetricSubgroupAsymptotics.CFSGExceptionalGeckIntegralData
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -215,9 +216,11 @@ entire B branch leaves the exact generation residual. -/
 reduced, irreducible crystallographic root pairings, literal coordinate
 bases, and transpose-correct Cartan identities. The six Serre relations
 then give representations of the original rational Lie presentations
-on their actual Geck matrix spaces. This rational endpoint does not yet
-assert integral divided powers, finite-field images, faithfulness, parity,
-or generation of the original exceptional groups. -/
+on their actual Geck matrix spaces. Their literal integral divided-power
+matrices and same-image fourth-coefficient cancellation are also proved,
+including explicit E6/E7/E8 installers over every coefficient ring.
+Finite-group image noncentrality, parity, faithfulness, generation and
+outer bounds remain separate obligations. -/
 
 /-! The same characteristic-two B image action is now proved faithful
 using its actual terminal-root image and nonzero-vector orbit. Centre
