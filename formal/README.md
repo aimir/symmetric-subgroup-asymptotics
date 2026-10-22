@@ -496,11 +496,13 @@ Central-quotient and original-source transport preserve those witnesses.
 Exactly these families leave the narrowed Aschbacher–Guralnick callback;
 that entire published input is still retained for the other open models.
 
-Original twisted E₆ now has even order in odd characteristic
-(`CFSGTwistedE6OddPrimeParity.lean`). The proof constructs literal
-commutators in its derived fixed subgroup and identifies their actions with
-the original E₆ long roots. Characteristic two remains open; no whole
-twisted-E₆ tag is removed. Actual odd-B singular-vector normalization is
+Original twisted E₆ now has even order in every characteristic
+(`CFSGTwistedE6EvenOrderRefinement.lean`). Odd characteristic uses literal
+commutators in its derived fixed subgroup. At prime two, the actual A₂
+Singer-seven and Weyl-braid identities yield both root signs in the derived
+image; exact commutator-image transport returns preimages in the original
+derived fixed subgroup. This removes precisely twisted E₆ from the parity
+residual. Other exceptional/twisted families and all ten public inputs remain. Actual odd-B singular-vector normalization is
 also proved (`CFSGOrthogonalBSingularVectorOrbit.lean`), in rank at least
 two, using original matrix elements. It does not yet prove the polar
 point reconstruction or the B outer bound.

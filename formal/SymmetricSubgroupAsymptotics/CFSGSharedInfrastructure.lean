@@ -80,7 +80,7 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexDeterminant
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBProjectiveRootLines
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBRootLinePlaneLabel
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBCharTwoGoodSylowReduction
-import SymmetricSubgroupAsymptotics.CFSGTwistedE6OddPrimeParity
+import SymmetricSubgroupAsymptotics.CFSGTwistedE6EvenOrderRefinement
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBSingularVectorOrbit
 import SymmetricSubgroupAsymptotics.CFSGClassicalGoodSylowReduction
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBSingularPlaneAction
@@ -331,8 +331,10 @@ B/C quotient equivalence, to original binary B. Exactly those families
 leave the narrowed Aschbacher--Guralnick model callback. Other leaves remain.
 
 The original derived-fixed twisted-E6 projective model now has even order
-in odd characteristic: literal fixed-A2 commutator lifts map to the same
-E6 long-root Weyl word. Prime two is retained explicitly.
+in every characteristic. At prime two, actual A2 Singer-seven and Weyl-braid
+identities put the original positive and negative roots in the derived image;
+literal source lifts recover the same noncentral long-root Weyl word.
+Only twisted E6 leaves this parity residual; other tags remain explicit.
 
 Odd-B singular-vector normalization is now proved on the same natural
 matrix action, in rank at least two. The continuation covers all totally singular two-planes and carries the exact
