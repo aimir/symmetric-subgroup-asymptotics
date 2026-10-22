@@ -84,6 +84,11 @@ import SymmetricSubgroupAsymptotics.CFSGTwistedE6EvenOrderRefinement
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBSingularVectorOrbit
 import SymmetricSubgroupAsymptotics.CFSGClassicalGoodSylowReduction
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBSingularPlaneAction
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBPointAction
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexSingularPlaneOrbit
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexProjectiveRootRelation
+import SymmetricSubgroupAsymptotics.CFSGExceptionalGeckSylowGeneration
+import SymmetricSubgroupAsymptotics.CFSGNormTwoGeckBorelPowerElements
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -305,7 +310,7 @@ conjugate root lines are now intrinsically preserved by every actual
 projective automorphism. Each literal line has a well-defined natural
 two-plane label, recovered as range(x-I) for a nonidentity root element.
 Surjectivity onto all singular planes and the exact projective action on them
-are now proved below. Polar-point reconstruction and the outer bound remain open. -/
+are now proved below. Semilinear realization and the outer bound remain open. -/
 
 /-! Those coarse primitive bounds are now uniformly sublinear in degree.
 Their first checked applications are the eventual c=1 relative-character
@@ -338,7 +343,7 @@ Only twisted E6 leaves this parity residual; other tags remain explicit.
 
 Odd-B singular-vector normalization is now proved on the same natural
 matrix action, in rank at least two. The continuation covers all totally singular two-planes and carries the exact
-projective automorphism action. Polar-point/outer reconstruction remains open. -/
+projective automorphism action. The actual point action is proved below; semilinear/outer reconstruction remains open. -/
 
 /-! The combined good-Sylow callback now removes every original B and D
 model as well as A, C and Suzuki. D uses the all-characteristic parity of
@@ -349,3 +354,24 @@ and full quadratic short-root terms retained. Each actual natural Sylow
 has a soluble normalizer and generates with the displayed conjugate.
 The other model tags remain in the explicit callback, so this is not a
 CFSG-only proof of the whole published soluble-generation input. -/
+
+/-! Original odd-B singular points now satisfy the proved incidence-star
+axioms for intersecting nonadjacent singular two-planes. Exact same-cone
+counts prove the local bridge, and the reconstructed faithful relation
+action preserves point orthogonality. The explicit R11 lower count is now
+proved on the original residual vectors and installs the actual faithful
+projective-group automorphism action in `originalPointAction`. No count
+or recognition premise remains in that action. Semilinear realization
+and the quantitative outer bound remain open.
+
+Original D singular vector/pair/plane normalization and the intrinsic
+root-product adjacency relation are now proved in every characteristic.
+Four/six-form joint-fixed vectors lift these particular quotient
+commutation/product relations; arbitrary quotient automorphisms are not
+lifted. D4 triality and the outer bound remain separate obligations.
+
+For the actual E6/E7/E8 models, positive and negative p-subgroups generate,
+giving two conjugate Sylow generators. Their literal torus envelope B is
+soluble, contains U+, and normalizes U+; every defining-p element of B
+lies in U+. The global containment N_G(U+) <= B is not proved here, so
+no exceptional good-Sylow or whole published input is removed. -/

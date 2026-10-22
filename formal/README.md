@@ -481,7 +481,7 @@ The optional generic primitive route also proves bounds on the same actual serie
 
 The type-D intrinsic infrastructure (`CFSGOrthogonalDIndexUnipotentCenter.lean`, `CFSGOrthogonalDIndexUnipotentFixedSpace.lean`) identifies the centre of the actual flag-unitriangular subgroup with its highest paired-root line and the additive group of the same field, in every characteristic. Its fixed vectors are exactly the first natural line. The proof preserves the actual split quadratic form, excluding the spurious diagonal shear in characteristic two. The continuation (`CFSGOrthogonalDIndexOddSylow.lean`) proves that this same subgroup is Sylow in odd characteristic, using its actual partial-flag normalizer and middle two-plane action. The all-characteristic continuation is now proved in `CFSGOrthogonalDIndexSylow.lean`: parity of three maximal singular-space distances excludes the final-pair swap from the actual unipotent normalizer. Subsequent polar/triality automorphism reconstruction remains open.
 
-The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now proves that the literal flag-unitriangular subgroup is Sylow, its normalizer is the actual flag Borel, and its centre is exactly the highest long-root field line. Actual projective automorphisms preserve the conjugate root lines (`CFSGOrthogonalBProjectiveRootLines.lean`). Each line has a well-defined natural two-plane label, recovered as range(x-I) from any nonidentity root element. All statements retain the same original matrix subgroup and projective quotient. The continuation `CFSGOrthogonalBSingularPlaneAction.lean` now proves coverage of all totally singular two-planes and the exact projective automorphism action on them, using actual pair normalization and the literal tail embedding. Polar-point reconstruction and the odd-B outer-automorphism bound remain open.
+The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now proves that the literal flag-unitriangular subgroup is Sylow, its normalizer is the actual flag Borel, and its centre is exactly the highest long-root field line. Actual projective automorphisms preserve the conjugate root lines (`CFSGOrthogonalBProjectiveRootLines.lean`). Each line has a well-defined natural two-plane label, recovered as range(x-I) from any nonidentity root element. All statements retain the same original matrix subgroup and projective quotient. The continuation `CFSGOrthogonalBSingularPlaneAction.lean` now proves coverage of all totally singular two-planes and the exact projective automorphism action on them, using actual pair normalization and the literal tail embedding. The actual polar-point action is proved below; semilinear realization and the odd-B outer-automorphism bound remain open.
 
 `CFSGPrimitiveSublinearBounds.lean` proves that those estimates are uniformly sublinear across all actual primitive actions. Its first applications are an eventual c=1 relative-character tail and an eventual three-tenths primitive chief-weight tail. The statements retain only the displayed simple-index/Out and, where used, simple-two-generation inputs; they do not invoke the sharp primitive inputs. These are infinite-tail replacements with a uniform eventual threshold, not proofs of the existing cutoffs 34/45 or of the intervening bounded ranges. The public T1 premises are unchanged.
 
@@ -504,5 +504,34 @@ image; exact commutator-image transport returns preimages in the original
 derived fixed subgroup. This removes precisely twisted E₆ from the parity
 residual. Other exceptional/twisted families and all ten public inputs remain. Actual odd-B singular-vector normalization is
 also proved (`CFSGOrthogonalBSingularVectorOrbit.lean`), in rank at least
-two, using original matrix elements. It does not yet prove the polar
-point reconstruction or the B outer bound.
+two, using original matrix elements. It supplies the original-vector input to the point reconstruction below;
+the B outer bound remains open.
+
+The original odd-B local point reconstruction is now proved in
+`CFSGOrthogonalBPointStars.lean`. Exact counts of the same original
+singular cone and tangent cones yield a fourth singular plane through
+any point avoiding three given directions. The reconstructed point action
+is faithful on the plane-relation automorphism group and preserves original
+orthogonality (`CFSGOrthogonalBPointOrthogonality.lean`). The actual R11
+lower common-neighbour count is now proved on the original residual vectors
+in `CFSGOrthogonalBR11CommonNeighbourCount.lean`. The resulting
+`CFSGOrthogonalBPointAction.lean` installs the faithful original projective-group
+automorphism action, with no count or recognition hypothesis. Semilinear
+realization and the odd-B outer-automorphism bound remain open.
+
+`CFSGOrthogonalDIndexSingularPlaneOrbit.lean` now proves the full original
+singular-vector, pair and two-plane orbit in every characteristic.
+`CFSGOrthogonalDIndexProjectiveRootRelation.lean` proves intrinsic
+root-product adjacency preservation on the original central quotient.
+Specific quotient commutation and product equalities lift using common
+fixed vectors; no arbitrary quotient-automorphism lift is assumed.
+The D₄ triality and outer-automorphism steps remain open.
+
+`CFSGExceptionalGeckSylowGeneration.lean` proves that the original E₆,
+E₇ and E₈ models are generated by two conjugate defining-characteristic
+Sylow subgroups. The actual positive-root subgroup is normal in its
+literal soluble torus envelope, and every defining-prime-power element
+of that envelope lies in the positive subgroup
+(`CFSGNormTwoGeckBorelPowerElements.lean`). The reverse normalizer
+containment remains open. These are checked infrastructure results;
+the public T1 theorem still retains the ten listed published inputs.
