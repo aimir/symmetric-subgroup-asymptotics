@@ -70,6 +70,8 @@ import SymmetricSubgroupAsymptotics.CFSGNonaffineCoarseComposition
 import SymmetricSubgroupAsymptotics.CFSGNonaffineNormalRank
 import SymmetricSubgroupAsymptotics.CFSGExceptionalGeckEvenOrderRefinement
 import SymmetricSubgroupAsymptotics.CFSGPrimitiveCoarseDegreeBounds
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexUnipotentCenter
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexUnipotentFixedSpace
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -276,3 +278,10 @@ actual normal subgroup's ordinary rank, L=log2(degree). Their only
 quantitative inputs are the displayed simple-index/Out and, for rank,
 simple-two-generation premises. They do not use the retained primitive
 composition or primitive normal-generation inputs. -/
+
+/-! The literal D flag-unitriangular subgroup now has centre exactly
+its highest paired-root line, isomorphic to the same additive field;
+its fixed vectors are exactly the first natural line. These assertions
+hold in every characteristic and use the actual split quadratic form,
+not merely its polar form. Sylow maximality, the characteristic-two
+component invariant and D outer geometry remain separate obligations. -/
