@@ -69,6 +69,7 @@ import SymmetricSubgroupAsymptotics.CFSGAffineCoarseComposition
 import SymmetricSubgroupAsymptotics.CFSGNonaffineCoarseComposition
 import SymmetricSubgroupAsymptotics.CFSGNonaffineNormalRank
 import SymmetricSubgroupAsymptotics.CFSGExceptionalGeckEvenOrderRefinement
+import SymmetricSubgroupAsymptotics.CFSGPrimitiveCoarseDegreeBounds
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -268,3 +269,10 @@ coarse estimates do not assert the sharper retained primitive inputs. -/
 The coefficient-one noncentral witness works in characteristic two too,
 and is tested on the same original E-generator image. Twisted exceptional
 and other remaining models are retained explicitly. -/
+
+/-! The actual raw primitive dichotomy now assembles degree-only coarse
+bounds L²+3L for every original composition series, and L²+4L for every
+actual normal subgroup's ordinary rank, L=log2(degree). Their only
+quantitative inputs are the displayed simple-index/Out and, for rank,
+simple-two-generation premises. They do not use the retained primitive
+composition or primitive normal-generation inputs. -/
