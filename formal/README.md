@@ -537,36 +537,33 @@ containment remains open. These are checked infrastructure results;
 the public T1 theorem still retains the ten listed published inputs.
 
 
-The optional polar continuation now transports every original singular
-subspace and preserves its dimension. For odd B, the reconstructed inner
-action agrees with the literal matrices and actual root words normalize
-maximal singular subspaces (`CFSGOrthogonalBNaturalSubspaceCompatibility.lean`).
-`CFSGPolarSubspaceSemilinearRestriction.lean` proves semilinearity on each
-singular subspace of dimension at least three. Restricted functionals and
-opposed-point rigidity are also proved; extension to the entire polar space
-and the odd-B outer bound remain open. The actual rank-one elementary B
-subgroup has index at most two in the literal determinant-one isometry group
-(`CFSGOrthogonalBIsometryIndexRankOne.lean`), with no PSL/SO identification.
+The optional polar continuation transports every original singular subspace
+and preserves its dimension. The **whole original B family now satisfies both
+simple-index inequalities**, in both characteristics
+(`CFSGOrthogonalBSimpleIndexReduction.lean`). For odd B, actual point/plane
+reconstruction, unique global field coherence, maximal-space linearity,
+opposed-space normalization, common mixed-scalar coherence, the genuine
+square obstruction, and the actual special-isometry kernel prove the full
+polar realization (`CFSGOrthogonalBSemilinearPolarIsometry.lean`). The actual
+SO/elementary index is at most two in every positive rank over an odd finite
+field; cancellation gives |Out| ≤ 2|Aut(K)|. No named SO/Omega recognition,
+independent automorphism theorem, or group-order formula is assumed. Every B
+tag is removed from the exact remaining simple-index predicate.
 
 For D of rank at least five, `CFSGOrthogonalDIndexPolarPointAction.lean`
 constructs the faithful original point action from the proved R11 neighbour
 gap. `CFSGOrthogonalDIndexSingularSubspaceSemilinear.lean` extends it to actual
 quadratic singular subspaces and proves their local projective semilinearity.
 The carriers require Q=0 over every field, including characteristic two.
-D4 triality and the global outer bound remain separate obligations.
+For D4, `CFSGOrthogonalDIndexTrialityD4TwinQuotient.lean` proves the reversible
+local quotient by true twins, with exact q-element original neighbour fibres
+and three literal projective parameters. Global triality coherence and all
+D-family outer bounds remain open.
 
-`CFSGNormTwoGeckParameterizedCollecting.lean` proves the actual adjacent
-commutator identity with both root parameters arbitrary over every field.
-Its integer polynomial transport retains the original Geck matrices, including
-characteristics two and three. The global Bruhat and reverse-normalizer steps
-remain open. All these modules belong to the optional CFSG backend: T1 still
-has exactly the ten published inputs listed above.
-
-
-The original B index result now holds in every positive rank over an odd finite
-field (`CFSGOrthogonalBSpecialIsometryIndex.lean`): the same original elementary
-subgroup has index at most two in the literal determinant-one Gram-isometry
-group. Actual inverse maximal-space normalization, right-hand parabolic
-factorization and last-pair square words prove the cover. No named SO/Omega
-recognition or group-order formula is assumed. Whole-space polar semilinearity
-and the resulting odd-B outer bound are still open.
+The exceptional Geck infrastructure proves arbitrary-parameter collecting,
+actual positive-complement factorization, rank-one parabolic cells and torus
+normalization over all fields. Integral lattice gradings detect membership
+in the actual complement or simple-root subgroup and are transported by the
+actual Weyl matrices. The whole Bruhat cover and global reverse-normalizer
+containment remain open. These modules belong to the optional CFSG backend:
+T1 still has exactly the ten published inputs listed above.

@@ -97,6 +97,10 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalBIsometryIndexRankOne
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBSpecialIsometryIndex
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexSingularSubspaceSemilinear
 import SymmetricSubgroupAsymptotics.CFSGNormTwoGeckParameterizedCollecting
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBSimpleIndexReduction
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexTrialityD4TwinQuotient
+import SymmetricSubgroupAsymptotics.CFSGNormTwoCoordinateExcludedHeight
+import SymmetricSubgroupAsymptotics.CFSGNormTwoGeckWeylDegreeTransport
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
 
@@ -362,52 +366,26 @@ has a soluble normalizer and generates with the displayed conjugate.
 The other model tags remain in the explicit callback, so this is not a
 CFSG-only proof of the whole published soluble-generation input. -/
 
-/-! Original odd-B singular points now satisfy the proved incidence-star
-axioms for intersecting nonadjacent singular two-planes. Exact same-cone
-counts prove the local bridge, and the reconstructed faithful relation
-action preserves point orthogonality. The explicit R11 lower count is now
-proved on the original residual vectors and installs the actual faithful
-projective-group automorphism action in `originalPointAction`. No count
-or recognition premise remains in that action. Semilinear realization
-and the quantitative outer bound remain open.
+/-! The whole original B family now satisfies both required simple-index
+bounds. Its actual point/plane geometry, unique global field component,
+linear normalization, common opposed scalar, genuine square obstruction,
+and special-isometry kernel prove the whole odd-B polar realization.
+The actual SO/elementary index gives |Out| <= 2 |Aut(K)|. Together with
+characteristic-two B-to-C transport, every B tag leaves the exact residual
+in `CFSGOrthogonalBSimpleIndexReduction`. No independent orthogonal-group
+recognition or automorphism theorem is a premise.
 
-Original D singular vector/pair/plane normalization and the intrinsic
-root-product adjacency relation are now proved in every characteristic.
-Four/six-form joint-fixed vectors lift these particular quotient
-commutation/product relations; arbitrary quotient automorphisms are not
-lifted. D4 triality and the outer bound remain separate obligations.
+For original D of rank at least five, the faithful point action extends
+to Q-singular subspaces and has proved local semilinearity, retaining Q=0
+in characteristic two. The original D4 neighbour graph has genuine
+q-clique fibres and a reversible true-twin quotient with three literal
+projective parameters. Global type coherence and all D Out remain open.
 
-For the actual E6/E7/E8 models, positive and negative p-subgroups generate,
-giving two conjugate Sylow generators. Their literal torus envelope B is
-soluble, contains U+, and normalizes U+; every defining-p element of B
-lies in U+. The global containment N_G(U+) <= B is not proved here, so
-no exceptional good-Sylow or whole published input is removed. -/
-
-
-/-! The original odd-B inner action now agrees with its literal matrices on
-points and every singular subspace. Actual root words align every full-rank
-singular image with the positive coordinate space. On each original singular
-subspace of dimension at least three, the reconstructed action has a proved
-semilinear projective restriction; this is not yet a whole-polar-space
-semilinear theorem. Restricted functionals and opposition rigidity are proved.
-The actual rank-one elementary B group has index at most two in the literal
-special isometry group, without a named-group recognition input.
-
-For original D in rank at least five, the R11 neighbour gap reconstructs the
-faithful original point action over every finite field. Its singular-subspace
-extension retains Q=0, not just polar-self-orthogonality in characteristic two.
-Local semilinearity on each Q-singular subspace is proved. Rank-four triality
-and whole-space semilinearity remain open.
-
-The actual exceptional adjacent collecting word now holds with arbitrary two
-parameters over every field, via exact integer polynomial identities. These
-local collecting identities do not yet prove global Bruhat decomposition or
-the reverse Sylow-normalizer containment. No further public input is removed.
+For original E6/E7/E8, actual complementary positive-root subgroups,
+arbitrary-parameter collecting words, self-root Weyl conjugation and
+rank-one parabolic covers are proved. Integral lattice gradings detect
+the actual complement and simple subgroup, and literal Weyl words carry
+the original quadratic degrees. Whole Bruhat decomposition and the global
+reverse Sylow-normalizer containment remain open. These are optional CFSG
+infrastructure results; the public T1 endpoint still has ten published inputs.
 -/
-
-
-/-! The special-isometry index bound is now proved in EVERY positive
-original B rank over an odd finite field. The actual inverse maximal-space
-normalization and right-hand parabolic factorization give a one-sided cover;
-actual last-pair square words give index at most two. No SO/Omega recognition,
-order formula, or unproved elementary normality premise is used. -/
