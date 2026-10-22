@@ -73,6 +73,7 @@ import SymmetricSubgroupAsymptotics.CFSGPrimitiveCoarseDegreeBounds
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexUnipotentCenter
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexUnipotentFixedSpace
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBProjectiveLongRoots
+import SymmetricSubgroupAsymptotics.CFSGPrimitiveSublinearBounds
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -292,3 +293,9 @@ flag Borel, and Z(U) is exactly the highest long-root field line. Its
 conjugate root elements are therefore intrinsically preserved by every
 actual projective automorphism. This element recognition does not yet
 assert polar two-plane reconstruction or the remaining outer bound. -/
+
+/-! Those coarse primitive bounds are now uniformly sublinear in degree.
+Their first checked applications are the eventual c=1 relative-character
+tail and the eventual primitive three-tenths chief-weight tail. They retain
+only the displayed simple-group inputs, not the sharp primitive inputs.
+No fixed cutoff 34 or45, or coverage below a new cutoff, is asserted. -/
