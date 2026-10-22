@@ -57,6 +57,7 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalBGenerationCharTwoReduction
 import SymmetricSubgroupAsymptotics.CFSGExceptionalNormTwoBases
 import SymmetricSubgroupAsymptotics.CFSGNormTwoRootStrings
 import SymmetricSubgroupAsymptotics.CFSGSymplecticSimpleIndexReduction
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalBGenerationReduction
 
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
@@ -198,8 +199,12 @@ published input of T1 by an unproved concrete-model assertion.
 hyperbolic block is an isomorphism with the literal elementary C group.
 The invariant transpose-quadratic form proves its kernel trivial. The
 original simple Serre source therefore inherits two-generation, and only
-these B tags leave the exact generation residual. Odd-characteristic B
-generation remains open at this checkpoint. -/
+these B tags leave the exact generation residual. The subsequent odd-field
+pair uses actual quadratic short roots, a fork torus, scalar filtering
+and a cleaned signed Coxeter orbit. The coefficient two is inverted
+only in odd characteristic, including field order three. Thus every
+original B model of rank at least three is two-generated, and the
+entire B branch leaves the exact generation residual. -/
 
 /-! The actual E6/E7/E8 norm-two integer lattices now supply finite,
 reduced, irreducible crystallographic root pairings, literal coordinate
