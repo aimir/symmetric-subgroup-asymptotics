@@ -467,13 +467,13 @@ The optional CFSG route also includes `CFSGOrthogonalBGenerationCharTwoReduction
 
 The optional exceptional infrastructure constructs the actual E6/E7/E8 norm-two lattices and derives finiteness, a coordinate base, reducedness, irreducibility and the exact transposed Cartan matrices (`CFSGExceptionalNormTwoBases.lean`). It maps each original rational Lie presentation to its literal Geck matrices. `CFSGNormTwoRootStrings.lean` derives the simply-laced ordinary string coefficients from positive integer norms. `CFSGExceptionalGeckIntegralData.lean` now supplies integral divided powers and same-image fourth-coefficient cancellation for all three original Cartan sources over every coefficient ring. The actual same-image Weyl word is now proved noncentral of fourth power one in every characteristic (`CFSGExceptionalGeckEvenOrderRefinement.lean`), giving even order on all three original simple projective models. Those three untwisted tags leave the parity residual; generation and automorphism bounds remain open.
 
-`CFSGOrthogonalBCharTwoSimpleIndexReduction.lean` transfers both simple-index bounds from the actual natural projective C group to the original characteristic-two B model. The original B image kernel is proved trivial by an actual fixed-vector orbit argument; the same centre quotients are transported before transferring simplicity. No C-source simplicity or characteristic-two B scalar-commutant hypothesis is assumed. Odd-characteristic B remains in the simple-index residual.
+`CFSGOrthogonalBCharTwoSimpleIndexReduction.lean` transfers both simple-index bounds from the actual natural projective C group to the original characteristic-two B model. The original B image kernel is proved trivial by an actual fixed-vector orbit argument; the same centre quotients are transported before transferring simplicity. No C-source simplicity or characteristic-two B scalar-commutant hypothesis is assumed. The whole B family now leaves the simple-index residual, by the odd-characteristic continuation described below.
 
 The generic primitive-input foundations (`CFSGCompositionLengthCardinality.lean`, `CFSGSubnormalSimpleProduct.lean`, `CFSGSimpleProductCompositionLength.lean`) now prove that every actual composition series has length at most log₂ of the original group order; every subnormal subgroup of a finite product of nonabelian simple groups is a literal coordinate product; and every composition series of that product has length at most its number of original factors. These are proved without CFSG or a Jordan–Hölder input. They do not discharge the sharper primitive composition-length or normal-generation bounds.
 
 The original type-D models now have proved least-index bounds (`CFSGOrthogonalDIndexSquare.lean`, `CFSGOrthogonalDIndexStarLower.lean`): for rank r ≥ 4, q^(r−1) ≤ ℓ, ℓ(q−1) ≤ q^(2r)−1, and ℓ² < |D_r(q)|. The lower bound uses a literal projective root-star and actual conjugators; the upper and squared bounds use the actual point action and an injective matrix cell. This holds in every characteristic. The D outer-automorphism bound remains open, including the rank-four triality issue, so D is still present in the simple-index/Out residual.
 
-Odd-characteristic B now also satisfies the original-model squared-index bound and explicit index bounds (`CFSGOrthogonalBIndexBounds.lean`): q ≤ ℓ, ℓ(q−1) ≤ q^(2r+1)−1, and ℓ² < |B_r(q)| for r ≥ 3. The proof retains the actual quadratic short roots, establishes centre one from the preserved form and determinant, and counts an injective shear/SL cell. This includes r=3, q=3. The odd B outer-automorphism estimate remains open; the combined simple-index/Out input is not yet discharged for these tags.
+Odd-characteristic B now also satisfies the original-model squared-index bound and explicit index bounds (`CFSGOrthogonalBIndexBounds.lean`): q ≤ ℓ, ℓ(q−1) ≤ q^(2r+1)−1, and ℓ² < |B_r(q)| for r ≥ 3. The proof retains the actual quadratic short roots, establishes centre one from the preserved form and determinant, and counts an injective shear/SL cell. This includes r=3, q=3. The subsequent polar realization and actual SO/elementary index now prove the outer bound as well; both characteristics leave the exact B residual below.
 
 The optional generic primitive route also proves bounds on the same actual series and subgroups (`CFSGCompositionExtension.lean`, `CFSGAffineCoarseComposition.lean`, `CFSGNonaffineCoarseComposition.lean`, `CFSGNonaffineNormalRank.lean`). For S=T^k, every original composition series satisfies a(G) ≤ k+log₂|G/S|; the actual outer-wreath embedding bounds |G/S| by |Out(T)|^k k!. Every faithful affine profile of degree n has composition length and ordinary subgroup rank at most (1+⌊log₂n⌋)log₂n. For normal N in the nonaffine group, d(N) ≤ 2k+log₂|G/S| follows under the explicitly displayed d(T) ≤ 2 premise. These coarse bounds and ordinary-rank extension lemmas do not discharge the sharp primitive published inputs or add new public assumptions.
 
@@ -481,7 +481,7 @@ The optional generic primitive route also proves bounds on the same actual serie
 
 The type-D intrinsic infrastructure (`CFSGOrthogonalDIndexUnipotentCenter.lean`, `CFSGOrthogonalDIndexUnipotentFixedSpace.lean`) identifies the centre of the actual flag-unitriangular subgroup with its highest paired-root line and the additive group of the same field, in every characteristic. Its fixed vectors are exactly the first natural line. The proof preserves the actual split quadratic form, excluding the spurious diagonal shear in characteristic two. The continuation (`CFSGOrthogonalDIndexOddSylow.lean`) proves that this same subgroup is Sylow in odd characteristic, using its actual partial-flag normalizer and middle two-plane action. The all-characteristic continuation is now proved in `CFSGOrthogonalDIndexSylow.lean`: parity of three maximal singular-space distances excludes the final-pair swap from the actual unipotent normalizer. Subsequent polar/triality automorphism reconstruction remains open.
 
-The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now proves that the literal flag-unitriangular subgroup is Sylow, its normalizer is the actual flag Borel, and its centre is exactly the highest long-root field line. Actual projective automorphisms preserve the conjugate root lines (`CFSGOrthogonalBProjectiveRootLines.lean`). Each line has a well-defined natural two-plane label, recovered as range(x-I) from any nonidentity root element. All statements retain the same original matrix subgroup and projective quotient. The continuation `CFSGOrthogonalBSingularPlaneAction.lean` now proves coverage of all totally singular two-planes and the exact projective automorphism action on them, using actual pair normalization and the literal tail embedding. The actual polar-point action is proved below; semilinear realization and the odd-B outer-automorphism bound remain open.
+The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now proves that the literal flag-unitriangular subgroup is Sylow, its normalizer is the actual flag Borel, and its centre is exactly the highest long-root field line. Actual projective automorphisms preserve the conjugate root lines (`CFSGOrthogonalBProjectiveRootLines.lean`). Each line has a well-defined natural two-plane label, recovered as range(x-I) from any nonidentity root element. All statements retain the same original matrix subgroup and projective quotient. The continuation `CFSGOrthogonalBSingularPlaneAction.lean` now proves coverage of all totally singular two-planes and the exact projective automorphism action on them, using actual pair normalization and the literal tail embedding. The polar-point action, semilinear realization and odd-B outer bound are now proved by the continuation below.
 
 `CFSGPrimitiveSublinearBounds.lean` proves that those estimates are uniformly sublinear across all actual primitive actions. Its first applications are an eventual c=1 relative-character tail and an eventual three-tenths primitive chief-weight tail. The statements retain only the displayed simple-index/Out and, where used, simple-two-generation inputs; they do not invoke the sharp primitive inputs. These are infinite-tail replacements with a uniform eventual threshold, not proofs of the existing cutoffs 34/45 or of the intervening bounded ranges. The public T1 premises are unchanged.
 
@@ -505,7 +505,7 @@ derived fixed subgroup. This removes precisely twisted E₆ from the parity
 residual. Other exceptional/twisted families and all ten public inputs remain. Actual odd-B singular-vector normalization is
 also proved (`CFSGOrthogonalBSingularVectorOrbit.lean`), in rank at least
 two, using original matrix elements. It supplies the original-vector input to the point reconstruction below;
-the B outer bound remains open.
+the B outer bound is proved by the later polar continuation.
 
 The original odd-B local point reconstruction is now proved in
 `CFSGOrthogonalBPointStars.lean`. Exact counts of the same original
@@ -516,8 +516,8 @@ orthogonality (`CFSGOrthogonalBPointOrthogonality.lean`). The actual R11
 lower common-neighbour count is now proved on the original residual vectors
 in `CFSGOrthogonalBR11CommonNeighbourCount.lean`. The resulting
 `CFSGOrthogonalBPointAction.lean` installs the faithful original projective-group
-automorphism action, with no count or recognition hypothesis. Semilinear
-realization and the odd-B outer-automorphism bound remain open.
+automorphism action, with no count or recognition hypothesis. The later
+semilinear realization and actual SO/elementary index now close the B outer bound.
 
 `CFSGOrthogonalDIndexSingularPlaneOrbit.lean` now proves the full original
 singular-vector, pair and two-plane orbit in every characteristic.
@@ -555,15 +555,31 @@ constructs the faithful original point action from the proved R11 neighbour
 gap. `CFSGOrthogonalDIndexSingularSubspaceSemilinear.lean` extends it to actual
 quadratic singular subspaces and proves their local projective semilinearity.
 The carriers require Q=0 over every field, including characteristic two.
+`CFSGOrthogonalDGlobalField.lean` now proves ONE global field component and
+actual linear normalization on all maximal singular spaces. The proof uses
+the checked rank-two base, genuine two-component maximal-space normalization,
+and codimension-two root overlaps. `CFSGOrthogonalDNegativeDilation.lean`
+proves that linear pieces fixing both opposed halves give one actual
+quadratic dilation on every singular point. Whole linear realization and
+the quantitative outer bound remain open.
 For D4, `CFSGOrthogonalDIndexTrialityD4TwinQuotient.lean` proves the reversible
 local quotient by true twins, with exact q-element original neighbour fibres
-and three literal projective parameters. Global triality coherence and all
-D-family outer bounds remain open.
+and three literal projective parameters. The actual root-plane stabilizer
+now has a proved local direction homomorphism with kernel index at most six
+(`CFSGOrthogonalDIndexTrialityD4LocalDirectionIndex.lean`). The original plane
+graph is connected, and its local maximal cliques are exactly the literal
+tops and the two sorts of point/maximal-space stars. Global triality
+coherence and the D-family outer bounds remain open.
 
 The exceptional Geck infrastructure proves arbitrary-parameter collecting,
 actual positive-complement factorization, rank-one parabolic cells and torus
 normalization over all fields. Integral lattice gradings detect membership
 in the actual complement or simple-root subgroup and are transported by the
-actual Weyl matrices. The whole Bruhat cover and global reverse-normalizer
-containment remain open. These modules belong to the optional CFSG backend:
-T1 still has exactly the ten published inputs listed above.
+actual Weyl matrices. `CFSGNormTwoCoordinateBruhatCover.lean` proves the
+unconditional whole Bruhat cover in the SAME actual Geck group.
+`CFSGNormTwoCoordinateNormalizerDiagram.lean` reduces its actual normalizing
+Weyl words to integral diagram permutations. The remaining global
+Sylow-normalizer solubility argument must still bind the actual word kernel;
+the cover and diagram reduction alone do not discharge it. These modules
+belong to the optional CFSG backend: T1 still has exactly the ten published
+inputs listed above.

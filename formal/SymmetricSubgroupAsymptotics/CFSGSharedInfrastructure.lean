@@ -99,6 +99,12 @@ import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexSingularSubspaceSemiline
 import SymmetricSubgroupAsymptotics.CFSGNormTwoGeckParameterizedCollecting
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBSimpleIndexReduction
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexTrialityD4TwinQuotient
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDGlobalField
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDNegativeDilation
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexTrialityD4LocalDirectionIndex
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexTrialityD4PlaneConnectivity
+import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexTrialityD4NeighborAxisMaximality
+import SymmetricSubgroupAsymptotics.CFSGNormTwoCoordinateNormalizerDiagram
 import SymmetricSubgroupAsymptotics.CFSGNormTwoCoordinateExcludedHeight
 import SymmetricSubgroupAsymptotics.CFSGNormTwoGeckWeylDegreeTransport
 /-!
@@ -376,16 +382,23 @@ in `CFSGOrthogonalBSimpleIndexReduction`. No independent orthogonal-group
 recognition or automorphism theorem is a premise.
 
 For original D of rank at least five, the faithful point action extends
-to Q-singular subspaces and has proved local semilinearity, retaining Q=0
-in characteristic two. The original D4 neighbour graph has genuine
-q-clique fibres and a reversible true-twin quotient with three literal
-projective parameters. Global type coherence and all D Out remain open.
+to Q-singular subspaces, with ONE proved global field component and actual
+linear normalization, retaining Q=0 in characteristic two. Linear pieces
+fixing both opposed halves give one actual quadratic dilation on all
+singular points. Whole linear realization and D Out remain open. The
+original D4 neighbour graph has genuine q-clique fibres, a reversible
+three-projective-parameter twin quotient, and an actual local direction
+homomorphism of index at most six. Its original plane graph is connected
+and its local maximal cliques are exactly the three geometric sorts.
+Global type coherence remains open.
 
 For original E6/E7/E8, actual complementary positive-root subgroups,
 arbitrary-parameter collecting words, self-root Weyl conjugation and
 rank-one parabolic covers are proved. Integral lattice gradings detect
 the actual complement and simple subgroup, and literal Weyl words carry
-the original quadratic degrees. Whole Bruhat decomposition and the global
-reverse Sylow-normalizer containment remain open. These are optional CFSG
+the original quadratic degrees. The whole actual Bruhat cover is proved,
+and genuine normalizing words reduce to integral diagram permutations.
+The global Sylow-normalizer solubility proof still needs its actual word
+kernel. These are optional CFSG
 infrastructure results; the public T1 endpoint still has ten published inputs.
 -/
