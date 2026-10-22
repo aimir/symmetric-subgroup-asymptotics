@@ -110,6 +110,9 @@ import SymmetricSubgroupAsymptotics.CFSGNormTwoCoordinateExcludedHeight
 import SymmetricSubgroupAsymptotics.CFSGNormTwoGeckWeylDegreeTransport
 import SymmetricSubgroupAsymptotics.CFSGExceptionalGoodSylowReduction
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalDIndexTrialityD4PointTypeStabilizer
+import SymmetricSubgroupAsymptotics.CFSGClassicalSufficientSimpleIndexReduction
+import SymmetricSubgroupAsymptotics.CFSGSufficientPrimitiveComponentExhaustion
+import SymmetricSubgroupAsymptotics.CFSGE6GenerationFirstRootRecovery
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
 
@@ -288,7 +291,8 @@ separate obligations. -/
 inequality, an explicit projective-point upper bound, and the stronger
 root-star lower bound q^(r-1) <= ell. All are proved through actual matrix
 subgroups and the same original central quotient. The continuation below proves the D outer-group
-bound in every rank at least five; D4 remains separate. -/
+bound in every rank at least five. The D4 continuation below proves
+actual outer cardinality bounds and the sufficient internal boundary. -/
 
 /-! Odd-characteristic B now has the required squared least-index
 inequality and explicit lower/upper index bounds on the original model.
@@ -393,14 +397,25 @@ semilinear realization on every original automorphism. The actual O/E
 index, GO point-image cardinality and centre bound yield |Out|<=8|Aut(K)|.
 The original q^(r-1) index lower bound closes both required simple-index
 inequalities for EVERY D rank at least five, in every characteristic;
-these tags leave the exact residual. D4 remains open. The
+these tags leave the exact residual of the stronger published theorem. The
 original D4 neighbour graph has genuine q-clique fibres, a reversible
 three-projective-parameter twin quotient, and an actual local direction
 homomorphism of index at most six. Its original plane graph is connected
 and its local maximal cliques are exactly the three geometric sorts.
 The actual global type homomorphism and natural POINT-type stabilizer
-index at most THREE are proved. Point reconstruction and the D4 outer
-bound remain open; the two maximal-space types may still be interchanged.
+index at most THREE are proved. The connected classes of actual star
+cliques recover the original quadratic points. Their point-type stabilizer
+acts faithfully and preserves actual incidence and orthogonality, including
+in characteristic two. The rank-four polar theorem and literal inner/outer
+cancellation give |Out(D4)|<=24|Aut(K)|, sharpened to6|Aut(K)| in
+characteristic two. The two maximal-space types may still be interchanged.
+Every original untwisted classical family and Suzuki now leaves the exact
+SUFFICIENT simple-index residual. This internal boundary keeps coefficient
+three below degree27 and uses coefficient six beyond it, with the proved
+finite Out<=24 safeguard below30. The original primitive chief-weight,
+strict-head and component-compression conclusions are preserved by checked
+consumers. Whole public T1 forwarding from this boundary is still separate;
+the stronger published coefficient-three theorem is unchanged.
 
 For original E6/E7/E8, actual complementary positive-root subgroups,
 arbitrary-parameter collecting words, self-root Weyl conjugation and
@@ -416,6 +431,9 @@ normalizers, so the original E6/E7/E8 good-Sylow endpoints now hold in every
 characteristic. Exactly these three tags leave the narrowed AG residual in
 `CFSGExceptionalGoodSylowReduction`; other exceptional and twisted tags
 remain explicit. Two-element generation and outer bounds are separate.
-These are optional CFSG
+A concrete candidate pair also recovers the full original E6 root lines
+U3,U4,U5 over every finite field of order at least three, using actual
+parameter extraction and Weyl-word identities. Full two-element generation,
+including the two-element field, remains open. These are optional CFSG
 infrastructure results; the public T1 endpoint still has ten published inputs.
 -/
