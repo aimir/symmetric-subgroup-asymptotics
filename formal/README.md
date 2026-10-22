@@ -665,13 +665,20 @@ actual group automorphism, and full unit scaling proves that each proper
 subgroup index is at least the field order
 ([`CFSGExceptionalOriginalIntrinsicRootFamily`](SymmetricSubgroupAsymptotics/CFSGExceptionalOriginalIntrinsicRootFamily.lean),
 [`CFSGExceptionalRootDegree`](SymmetricSubgroupAsymptotics/CFSGExceptionalRootDegree.lean)).
-These facts do not yet give the exceptional outer-automorphism bound.
+The original projective order is at least q^(2N), with N the number of
+positive roots, and the strict least-index inequality ell² < |G| is now
+proved for all three exceptional families
+([`CFSGExceptionalIndexSquare`](SymmetricSubgroupAsymptotics/CFSGExceptionalIndexSquare.lean)).
+A common lattice argument gives at most 512 roots and at least ten
+positive commuting roots for every root. The exceptional outer-automorphism
+bound remains open in this backend.
 
-[`CFSGSevenTargetsGTwoResidualModels`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsGTwoResidualModels.lean)
+[`CFSGSevenTargetsExceptionalSquares`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsExceptionalSquares.lean)
 threads these completed good-Sylow model cases, including G2, into T1 and AllTargets.
 Its parameters are CFSG, five published inputs (general class count, the
 two Tracey inputs, labelled transitive count, and ordinary permutation
 rank), and **two still-unproved model callbacks**: the remaining good-Sylow
-cases and the remaining sufficient simple-index/outer bounds. This residual
+cases and the remaining sufficient simple-index/outer bounds. For E6/E7/E8,
+the latter callback now requires only the outer-order budget. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
 continues to have seven published inputs.
