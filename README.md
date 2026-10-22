@@ -10,7 +10,7 @@ Read the [statement and normalization](SPEC.md),
 [assumptions and evidence boundary](ASSUMPTIONS.md).
 
 The [Lean proof](formal/README.md) establishes T1 and its T2/T3 consequences
-relative to eight explicitly named published mathematical inputs. The coarse
+relative to seven explicitly named published mathematical inputs. The coarse
 all-subgroup count is derived from soluble generation through proved bounded
 nilpotent counts. The primitive relative-head and simple automorphism bounds
 are proved internally, so neither primitive normal generation nor simple

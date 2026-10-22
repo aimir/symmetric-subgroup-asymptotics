@@ -32,7 +32,7 @@ reusing only matching successful receipts from that log directory. It preserves
 previous receipts and logs before reruns and stops on a failed check. Each
 compiler invocation uses `check_lean.py`, with 16 GiB limits and a one-hour
 wall timeout. To select only the final theorem's dependencies, add
-`--root SymmetricSubgroupAsymptotics.MarkedC4PublishedEightTargets`.
+`--root SymmetricSubgroupAsymptotics.MarkedC4PublishedSevenTargets`.
 The public root imports that proof facade and the specification's equivalent
 shared-threshold statements. Optional regression fixtures and alternative
 certificates can be selected through their own `--root` module names.
@@ -176,13 +176,13 @@ The concrete CFSG statement is pinned at commit
 infrastructure keeps its remaining model cases explicit. An exhaustiveness
 isomorphism supplies no quantitative property of a model without a proof of
 that property. In particular, importing this infrastructure does not discharge
-the remaining eight published inputs in the T1 facade below.
+the remaining seven published inputs in the T1 facade below.
 
 ## Explicit input boundary
 
 The final exports are
-[T1_of_eight_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedEightTargets.lean)
-and `allTargets_of_eight_published_inputs`. Their **eight named inputs** are listed
+[T1_of_seven_published_inputs](SymmetricSubgroupAsymptotics/MarkedC4PublishedSevenTargets.lean)
+and `allTargets_of_seven_published_inputs`. Their **seven named inputs** are listed
 below. The character bundle has one published general class-number field. Both
 abelian-quotient statements are now supplied by checked proofs. These are explicit theorem parameters,
 not new Lean axioms. The kernel audit of both exports uses only `propext`,
@@ -214,13 +214,13 @@ or proved consumer replacements on the same pinned toolchain:
 | Uniform refined induced-module bounds, with one tuple length satisfying the half, logarithmic, coprime, primary and prime-power ceilings simultaneously. | [`traceyRefinedInducedModuleInput_proved`](SymmetricSubgroupAsymptotics/TraceyRefinedInducedModuleProof.lean), through actual Sylow/Mackey pieces, finite chain widths, Nakayama and coprime semisimplicity. The least actual uniform capacity satisfies every field; no induced-module theorem is assumed. |
 | The two actual consumers of the soluble-orbit input. | [`traceySolublePermutationFormulaRawInput_proved`](SymmetricSubgroupAsymptotics/TraceySolublePermutationFormulaProof.lean) proves the exact soluble permutation formula using actual mixed-prime chains and an odd Hall subgroup. [`degreeFourCoreInduced_uniform_half`](SymmetricSubgroupAsymptotics/PrimitiveAffineDegreeFourCoreCapacityProof.lean) retains the actual globally normal ternary core and cyclic derangement quotient. The stronger arbitrary-local per-orbit input is unused and is not claimed as proved. |
 | The actual strict-head and degree-eighteen consumers. | [Actual primitive consumers](SymmetricSubgroupAsymptotics/MarkedMomentComponentExhaustionWithoutCatalogue.lean) use the strict head bound away from degrees 10 and 12 and pay those two actual semisimple branches in the complete physical C3 source. [The degree-eighteen bound](SymmetricSubgroupAsymptotics/DegreeEighteenHeadFromActualSmallConsumers.lean) uses actual small heads. The stronger global strict-head statement and the 253-row correspondence are unused. |
-| The actual small-affine consumers in degrees 16 and 27. | [Actual finite data](SymmetricSubgroupAsymptotics/PrimitiveAffineActualFiniteDataConstruction.lean) and [the actual consumer assembly](SymmetricSubgroupAsymptotics/PrimitiveAffineActualConsumerAssembly.lean) use the full original translation kernel at degree 16, the proved linear structure at degree 27, and the retained composition-length theorem. No primitive-16 or small-affine carrier correspondence is assumed or asserted as proved. |
+| Complete actual primitive and imprimitive affine consumers. | [The order-based assembly](SymmetricSubgroupAsymptotics/CFSGSufficientAffineConsumerOrderAssembly.lean) retains every original block, normal denominator and translation kernel. Literal order divisors settle the general ranges; degree 32 uses the faithful binary five-dimensional representation, and degree 64 uses actual Clifford blocks, scalar fields and simple normal subgroups. No primitive composition theorem or affine-catalogue correspondence is a parameter. |
 | The actual semisimple primitive-component compression. | [`primitiveComponentExhaustion_without_composition`](SymmetricSubgroupAsymptotics/PrimitiveComponentExhaustionWithoutComposition.lean) retains the actual full socle, quotient and block system with the sufficient margin `3q ≤ 2r`. Actual semisimple sources replace the bounded 116-row correspondence and the stronger unused degree-six/twelve classifiers. |
 
 
 | Exact binary excess classification, including all degree bounds and proper-normal restrictions. | [`publishedProposition53Binary_proved`](SymmetricSubgroupAsymptotics/BinaryExcessProposition53Proof.lean) has no hypotheses. It retains the original pair kernels, joint parity and square carries, and proves the full abelianization and proper-normal consequences. |
 | Full binary normal-F quotient theorem, including the exceptional degree-eight case. | [`publishedTheorem57Binary_proved`](SymmetricSubgroupAsymptotics/BinaryNormalFTheorem57Proof.lean) has no hypotheses. All original actions, normal denominators, ambient commutators `[F,Q]`, centralizers and excess/rank alternatives are retained. The degree-32 critical cases use actual joint capacities and annihilator-aware invariant intervals, with selected cocycle lifts proved internally. |
-| Primitive ternary chief weight and the 3/10 weight bound, without bounded primitive correspondence. | [Chief weight](SymmetricSubgroupAsymptotics/PrimitiveChiefWeightWithoutCatalogue.lean) and [the 3/10 bound](SymmetricSubgroupAsymptotics/PrimitiveThreeTenthsWeightWithoutCatalogue.lean) follow from actual linear/socle structure, the retained composition-length theorem and simple-index bound. The same structural route proves [Dixon's order bound](SymmetricSubgroupAsymptotics/ElementaryDixonOrderWithoutCatalogue.lean). No 336-row coverage premise is used. |
+| Primitive ternary chief weight and the 3/10 weight bound. | [Both order-based bounds](SymmetricSubgroupAsymptotics/CFSGSufficientPrimitiveWeightsOrder.lean) retain every original chief series and use the literal affine-order divisor or full-socle quotient, with the sufficient simple-index bound. No primitive composition-length theorem or 336-row correspondence is required. |
 | Complete twelve-pair sources without the transitive-twelve catalogue. | [Actual pair-source assembly](SymmetricSubgroupAsymptotics/DegreeTwoSourceWithoutTwelveOrSixteenCatalogue.lean) keeps all original axes and quotient fibres through actual minimal-block geometry. No 301-action correspondence is required. |
 | Complete sixteen-pair and degree-four affine sources without primitive-sixteen correspondence. | [The actual affine consumer assembly](SymmetricSubgroupAsymptotics/PrimitiveAffineActualConsumerAssembly.lean) uses actual elementary translation kernels and the proved `GL₄(F₂) ≃ A₈` geometry. It constructs the required source, rather than assuming or asserting a stronger finite classifier. |
 
@@ -275,20 +275,16 @@ abelianization theorem.
 The separate Dixon and soluble-linear cube inputs are removed.
 [Dixon's order bound](SymmetricSubgroupAsymptotics/ElementaryDixonOrderWithoutCatalogue.lean)
 uses actual primitive linear/socle structure and block and orbit induction.
-At degree 81, the retained composition-length theorem bounds the soluble
-complement's number of prime factors by eleven; its order divides
-`|GL₄(F₃)| = 24261120`, and the checked divisor budget gives `|R| ≤ 81³`.
-These consumer replacements do not assert the general Halasi–Maróti theorem.
+At degree 81, every complement has an original chief-charge budget at most 17 from `|GL₄(F₃)| = 24261120`. The full Schur bottom layer adds at most one unit, so the complete exponent is at most `18 log₂(3)/3 < 9.6` and fits the physical window. This constructs the required source without asserting the stronger soluble-complement cube bound or the general Halasi–Maróti theorem.
 
-Two further input reductions use weaker or already retained results.
-[`publishedProposition62_of_retained_inputs`](SymmetricSubgroupAsymptotics/LargeOrbitGeneratorConsequencesFinal.lean)
-derives the large-orbit soluble generator theorem from `hPrimitiveGen`,
-`hcomp`, and the internally proved refined induced-module theorem. Its stronger checked estimate is
-`d(G) ≤ 128 ∑ n_i / sqrt(log₂ n_i)` on the actual nontrivial orbits.
-The proof keeps correlated orbit actions in the whole quotient, uses ordinary
-lifting only across actual abelian kernels, and charges each literal local
-chief series through the primitive composition theorem. No generic soluble
-normal-closure-to-ordinary-generation step is used.
+The large-orbit soluble generation estimate is proved without either sharp primitive input in
+[`CFSGSolubleOrbitFinal`](SymmetricSubgroupAsymptotics/CFSGSolubleOrbitFinal.lean).
+The proof uses unconditional soluble primitive order and rank bounds and
+preserves the original correlated orbit actions. The actual full affine
+consumer is assembled in
+[`CFSGSufficientAffineConsumerOrderAssembly`](SymmetricSubgroupAsymptotics/CFSGSufficientAffineConsumerOrderAssembly.lean).
+The stronger ordinary primitive composition-length theorem remains a
+compatibility interface and is not claimed proved by these replacements.
 
 The Pyber representative input is unnecessary for the final marked moment.
 The [constructed soluble cover](SymmetricSubgroupAsymptotics/CFSGSolubleWreathContainersRate.lean)
@@ -347,12 +343,11 @@ transitive-count theorem remains a counting input. The coarse
 all-subgroup upper bound is proved from `hAG` alone. The actual soluble
 primitive bounds and large-orbit generation theorem are now unconditional
 (`CFSGSolublePrimitiveCoarse.lean`, `CFSGSolubleOrbitFinal.lean`).
-The sharp primitive inputs remain necessary in other T1 consumers.
+The primitive composition-length and ordinary normal-generator theorems are no longer T1 parameters; the required actual consumers are proved from orders and the retained simple-index inequalities.
 
 | Lean parameter and definition | Mathematical input | Published source or correspondence |
 |---|---|---|
 | [lit : PreE7CharacterPublishedInputs](SymmetricSubgroupAsymptotics/CharacterLiteratureProvedBinary.lean) | One field: permutation class number ≤5^((b−1)/3) for b≥4. | Garonzi–Maróti, Theorem1.1. The two abelian-quotient fields and nilpotent class-number field of the older internal API are proved and filled internally. |
-| [hcomp : PrimitiveCompositionLengthInput](SymmetricSubgroupAsymptotics/PrimitiveCompositionLengthInput.lean) | Every actual composition series of primitive degree r≥2 has length ≤(8/3)log₂r−4/3. | GPRV Thm1.3. |
 | [hAG : PublishedAschbacherGuralnickSolubleGeneration](SymmetricSubgroupAsymptotics/MarkedC4AschbacherGuralnickSolubleGeneration.lean) | Every finite group generated by a soluble subgroup and one element. | Aschbacher–Guralnick, J.Algebra77 (1982),189–201; RDT Thm8.4 p32. Ambient-recovery field internal. |
 | [hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput](SymmetricSubgroupAsymptotics/TraceyCorollaryThreeTwelveRaw.lean) | Exceptional degree3·2^m action has actual soluble subgroup and full binomial orbit partition, Mersenne exponent≥3. | TR Cor3.12 p17 PLUS preceding nonabelian PSL₂(p) construction Thm1.8/Cor3.11 excluding p=3. Cor3.12 alone is insufficient for exponent≥3. |
 | [hLMM : LucchiniMenegazzoMorigiTransitiveCountInput](SymmetricSubgroupAsymptotics/Non2PreE7MenuMassAggregation.lean) | Labelled transitive subgroup count is subquadratic-exponential. | Lucchini–Menegazzo–Morigi, BLMS32 (2000),191–195; exact labelled2^(Cn²/√logn) statement is sourced through RDT introductionp2. ID LIT-TRANSITIVE-COUNT. |
@@ -404,7 +399,7 @@ The final composition follows this chain:
 |---|---|---|
 | Definitions | [Statements](SymmetricSubgroupAsymptotics/Statements.lean), [DefinitionsVerified](SymmetricSubgroupAsymptotics/DefinitionsVerified.lean) | Literal subgroup counts, explicit benchmarks, and definition checks. |
 | Analysis | [ShiftedCoefficientRatio](SymmetricSubgroupAsymptotics/ShiftedCoefficientRatio.lean), [SaddleBenchmarkEstimates](SymmetricSubgroupAsymptotics/SaddleBenchmarkEstimates.lean), [ElementaryBenchmarkEstimates](SymmetricSubgroupAsymptotics/ElementaryBenchmarkEstimates.lean) | Uniform coefficient estimates and the transfers from T1 to T2 and T3. |
-| Final composition | [T1RelativeClosure](SymmetricSubgroupAsymptotics/T1RelativeClosure.lean), [MarkedC4PublishedEightTargets](SymmetricSubgroupAsymptotics/MarkedC4PublishedEightTargets.lean) | Complete remainder estimate and final T1/AllTargets exports. |
+| Final composition | [T1RelativeClosure](SymmetricSubgroupAsymptotics/T1RelativeClosure.lean), [MarkedC4PublishedSevenTargets](SymmetricSubgroupAsymptotics/MarkedC4PublishedSevenTargets.lean) | Complete remainder estimate and final T1/AllTargets exports. |
 | Affine consumers | [PrimitiveAffinePrimitiveConsumer](SymmetricSubgroupAsymptotics/PrimitiveAffinePrimitiveConsumer.lean), [PrimitiveAffineImprimitiveComponentTransfer](SymmetricSubgroupAsymptotics/PrimitiveAffineImprimitiveComponentTransfer.lean) | Transfer through actual block systems, including small and binary component groups. |
 | Finite affine structure | [SmallAffineCanonicalReceipt](SymmetricSubgroupAsymptotics/SmallAffineCanonicalReceipt.lean), [DegreeTwentyFiveActualProjectiveData](SymmetricSubgroupAsymptotics/DegreeTwentyFiveActualProjectiveData.lean), [PrimitiveAffineCanonicalFiniteLiterature](SymmetricSubgroupAsymptotics/PrimitiveAffineCanonicalFiniteLiterature.lean) | Construct all 34 receipts, the actual scalar datum and every-chief bound, and the full finite affine package. |
 | Nonaffine structure | [PrimitiveSocleRawDichotomy](SymmetricSubgroupAsymptotics/PrimitiveSocleRawDichotomy.lean), [PrimitiveSocleRawProfile](SymmetricSubgroupAsymptotics/PrimitiveSocleRawProfile.lean) | Construct the profile on the actual full socle and exact original quotient from ordinary published structure. |
@@ -458,8 +453,8 @@ All sources in this closure are tracked in the main checkout and match the
 audited bytes. Optional modules outside this public closure are not covered
 by this release claim.
 
-A fresh axiom audit of `T1_of_eight_published_inputs`,
-`allTargets_of_eight_published_inputs`, `T2_of_T1`, `T3_of_T1`,
+A fresh axiom audit of `T1_of_seven_published_inputs`,
+`allTargets_of_seven_published_inputs`, `T2_of_T1`, `T3_of_T1`,
 `allTargets_iff_T1`, and `definitionChecks` reports exactly `propext`,
 `Classical.choice`, and `Quot.sound`. The final audit used the serialized
 runner with 16 GiB allocator and RSS limits. Logs, receipts, relocation
@@ -514,7 +509,7 @@ commutators in its derived fixed subgroup. At prime two, the actual A₂
 Singer-seven and Weyl-braid identities yield both root signs in the derived
 image; exact commutator-image transport returns preimages in the original
 derived fixed subgroup. This removes precisely twisted E₆ from the parity
-residual. Other exceptional/twisted families and all ten public inputs remain. Actual odd-B singular-vector normalization is
+residual. This optional family result does not discharge another entire public input. Actual odd-B singular-vector normalization is
 also proved (`CFSGOrthogonalBSingularVectorOrbit.lean`), in rank at least
 two, using original matrix elements. It supplies the original-vector input to the point reconstruction below;
 the B outer bound is proved by the later polar continuation.

@@ -296,9 +296,7 @@ subdirect correlations: actual ambient-normal coordinate images are zero
 or full, then jointly faithful simple perfect quotients prove perfectness.
 `RelativeSecondIsomorphism` keeps the original ambient action on the top
 section. Lemma5.8, pp.35–36, gives a related wreath-product construction,
-but is not an external premise for this project recurrence. Identification
-of the sum of ternary chief weights with the manuscript's composition
-multiplicity is a separate formalization obligation. The affine full-fibre
+but is not an external premise for this project recurrence. The final source retains every original chief series and proves its ternary weight from the literal affine-order divisor or full-socle quotient. The affine full-fibre
 argument cites the related local-chief construction separately; the head
 recurrence alone does not formalize that complete counting argument.
 
@@ -414,7 +412,7 @@ LIT-SIMPLE-INDEX inequalities to prove `|Aut(S)| <= |S|^2` for each actual
 nonabelian simple factor, by counting its literal inner subgroup and outer
 quotient. `SemisimpleOuterFactorAutSquare.lean` and the actual affine-wreath
 AutSquare consumers preserve the same coefficient three. Neither LIT-PRIM-GEN
-nor LIT-SIMPLE-2GEN is a parameter of `T1_of_eight_published_inputs`.
+nor LIT-SIMPLE-2GEN is a parameter of `T1_of_seven_published_inputs`.
 The direct primitive relative-three-head tail similarly uses actual affine
 orders and full-socle quotients (`CFSGPrimitiveRelativeThreeHeadTail.lean`).
 This removes the need for ordinary primitive normal generation without
@@ -762,7 +760,7 @@ a finite simple centerless group has a generating finset of cardinality at
 most two. The automorphism count and affine-wreath consequences are proved
 internally; no such consequences are part of this literature input.
 This stronger theorem remains a compatibility interface, but is no longer
-a parameter of the final eight-input T1/AllTargets exports: the needed
+a parameter of the final seven-input T1/AllTargets exports: the needed
 automorphism-square consequence follows directly from LIT-SIMPLE-INDEX.
 
 
@@ -785,13 +783,10 @@ and exceptional-orbit inputs listed in formal/README.md remain explicit.
 
 
 **Further checked specializations of retained published inputs.**
-The final facade derives `PublishedPrimitiveDegreeNineClassification` and
-`PublishedPrimitiveDegreeSixClassification` from the already retained
-`PublishedPrimitiveCompositionCatalogueCorrespondence`. The former checks
+An older compatibility construction derives `PublishedPrimitiveDegreeNineClassification` and `PublishedPrimitiveDegreeSixClassification` from `PublishedPrimitiveCompositionCatalogueCorrespondence`. The final facade instead uses actual source constructions and takes no such correspondence input. The former checks
 the degree-nine order list; the latter also excludes a primitive order-720
 coset action at degree twelve and proves the needed subgroup recognition
-through actual maximal overgroups. The broader primitive catalogue
-correspondence remains a published assumption, with the same pinned rows.
+through actual maximal overgroups. The broader primitive catalogue correspondence is retained as an optional interface, not a final T1 assumption.
 
 `TraceyPermutationFormulaConsequences.lean` derives the binary head formula
 from the now-proved refined theorem. `SolubleOddHall.lean` constructs the
@@ -830,10 +825,7 @@ proves the ordinary soluble permutation order inequality from actual
 primitive linear/socle structure and block and orbit induction. The large
 affine step uses `|G| ≤ n^(d+1)` and `2^d ≤ n`, rather than a linear base-size
 theorem. Actual minimal-block wreath embeddings and orbit images complete
-the induction. `primitiveAffineEightyOne_complement_le_cube` handles the
-other former Halasi–Maróti consumer from retained GPRV composition length:
-solubility gives Ω(|G|) ≤ 15, hence Ω(|R|) ≤ 11; the actual embedding into
-GL₄(F₃), of order 24261120, then gives `|R| ≤ 81³` by a checked divisor budget.
+the induction. The final degree-81 source instead uses the actual divisor `|R| | |GL₄(F₃)|`, whose prime-factor charge is seventeen; the full bottom layer adds at most one gamma unit. `CFSGPrimitiveAffineEightyOneOrderSource` proves the needed complete source directly. The stronger cube theorem is an older compatibility route and is not required by T1.
 LIT-AFFINE-BASE remains historical provenance; its general theorem is no
 longer an input to the final facade. This does not formalize that theorem.
 
@@ -847,10 +839,7 @@ ordinary mixed-prime KP theorem is now proved from a nilpotent supplement,
 full prime-power abelianizations and actual disjoint coprime supports. Both
 KP fields and the nilpotent class-number bound are supplied internally;
 the character bundle retains only the Garonzi–Maróti general class bound.
-`LargeOrbitGeneratorConsequencesFinal` derives Proposition 6.2's exact
-interface from the retained HRD primitive normal-generator and GPRV
-composition-length inputs, together with the internally proved refined
-induced-module theorem. The Pyber/Theorem 8.6 representative
+`CFSGSolubleOrbitFinal` proves Proposition 6.2's exact interface from unconditional soluble primitive bounds and the internally proved refined induced-module theorem; no sharp primitive composition or normal-generator input is used. The Pyber/Theorem 8.6 representative
 estimate remains a valid historical reference but is not required by the
 current T1 signature: `LMMSubquadraticSolubleContainers` supplies the weaker
 subquadratic container count from the already retained labelled transitive
@@ -894,3 +883,14 @@ the degree-eight exception. In the last degree-32 cases, joint order bounds
 and invariant-interval constructions retain actual annihilators and
 original affine cocycles. The ten remaining published inputs are stated
 explicitly in [formal/README.md](../formal/README.md).
+
+
+**Primitive composition-length input removed from the final facade.**
+`CFSGSufficientPrimitiveWeightsOrder` proves the two actual chief-weight
+consumers from literal affine orders and full-socle quotients.
+`CFSGSufficientAffineConsumerOrderAssembly` supplies every original
+primitive owner and imprimitive component source. Its degree-32 and degree-64
+arguments retain the original Clifford constituents, scalar fields, minimal
+normal subgroups and arbitrary chief traces. The seven-input final facade
+therefore takes no `PrimitiveCompositionLengthInput`. This replaces its
+needed consumers; it does not assert the stronger sharp composition theorem.

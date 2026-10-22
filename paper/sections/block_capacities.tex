@@ -153,7 +153,19 @@ $\rho=1/4096$, except possibly at
 \]
 \end{theorem}
 \begin{proof}
-Let $H(s,p,a)$ be the minimum in Lemma~\ref{lem:refined-induced-capacity},
+For $r=16$, retain the actual correlated translation module inside
+$(\F_2^4)^s$. The faithful quotient acts on $8s$ original comparator
+points, using $\GL_4(2)\cong A_8$. The refined capacities give
+$H(s,2,4)\leq19s/10$ outside $s=2,4$. Hence the original translation
+fibre has exponent at most $H/2$ and its margin is
+\[
+ \frac{16s-8s}{8}-\frac H2\geq\frac{s}{20}
+     >\frac{16s}{4096}.
+\]
+The two remaining block counts use the actual cold-rank sources below.
+Thus no bound on the number of stabilizer composition factors is needed.
+
+For $r=5,8,9$, let $H(s,p,a)$ be the minimum in Lemma~\ref{lem:refined-induced-capacity},
 using the soluble entries only for prime-power $s$ and omitting the
 logarithmic cutoff. It has the form $\lfloor ax(s,p)\rfloor$,
 so $\sum_jH(s,p,a_j)\leq H(s,p,\sum_ja_j)$. Floors are taken
@@ -164,19 +176,10 @@ retain the true translation dimension:
 \begin{align*}
  E_5&=t_5H_{51}+\tfrac12H_{22},\\
  E_8&=\tfrac12H_{23}+t_3H_{31}+t_7H_{71},\\
- E_9&=\tfrac12H_{24}+t_3(H_{32}+H_{31}),\\
- E_{16}&=\tfrac12H_{24}+
-   \max_{\boldsymbol n\in V}\sum_{p=2,3,5,7}t_pH_{p n_p},
+ E_9&=\tfrac12H_{24}+t_3(H_{32}+H_{31}).
 \end{align*}
-where
-$V=\{0\leq\boldsymbol n\leq(6,2,1,1):\sum n_p\leq5\}$.
 Indeed the stabilizers at degrees five and nine divide $C_4$ and
-$\mathrm{GL}_2(3)$, respectively. At degree sixteen the order
-$|\mathrm{GL}_4(2)|=2^6 3^2\cdot5\cdot7$ gives the coordinate
-bounds, and \cite[Theorem~1.3]{GlasbyPraegerRosaVerret2018}
-gives at most five stabilizer composition factors after subtracting
-the four translation factors.
-
+$\mathrm{GL}_2(3)$, respectively.
 For degree eight, a proper subgroup of the simple group
 $\mathrm{GL}_3(2)$ has index at least seven, since an index below
 seven would embed the group in $S_6$. Its order divides 168 and is
@@ -198,7 +201,7 @@ a binary exponent cutoff are
  5&1&0&7/15&0&5\\
  8&3/2&17/32&0&3/7&3\\
  9&2&51/32&0&0&4\\
- 16&9/2&17/16&7/15&3/7&5.
+
  \end{array}
 \]
 The reserve per $s$ is at least $B_r=(r-1)/8-1/16$ for odd $r$,
@@ -207,7 +210,7 @@ dimension at $p=5$ is less than $5s/12$, and at the other primes
 at most $s/5$. If $7\mid s$, use $s/3$ at seven and $s/7$
 elsewhere. A prime divisor at least eleven gives $s/11$ everywhere.
 If $9\mid s$, use $5s/12$ at three and $s/9$ elsewhere.
-If $2^{a_0}\mid s$, use $3s/8$ at two for $r=5,16$, $s/2$
+If $2^{a_0}\mid s$, use $3s/8$ at two for $r=5$, $s/2$
 for $r=8$, and $5s/12$ for $r=9$; other primes get $s/2^{a_0}$.
 Substitution gives these lower gaps per $s$, respectively:
 \[
@@ -216,7 +219,7 @@ r&5\mid s&7\mid s&q\geq11&9\mid s&2^{a_0}\mid s\\\hline
 5&31/720&383/1680&73/240&593/2160&23/480\\
 8&429/1120&99/224&1605/2464&1181/2688&9/1792\\
 9&7/32&95/224&215/352&59/1152&7/1536\\
-16&2431/5040&209/240&23801/18480&50369/60480&6791/53760.
+
 \end{array}
 \]
 Every entry exceeds $r/4096$. The complement is exactly
@@ -227,12 +230,11 @@ The accepted cells there, with exact gaps $(h(rs)-s)/8-E_r$, are
 5&(6,1/15),(8,8/15),(12,3/5),(16,23/15),(24,13/5),(48,33/5)\\
 8&(3,37/224),(12,363/224)\\
 9&(8,13/32),(24,103/32)\\
-16&(3,17/32),(6,17/16),(8,3/2),(12,9/2),(16,3),(24,9),(48,18).
+
 \end{array}
 \]
 Direct substitution into the displayed integer formula proves each
-entry; each exceeds $rs/4096$. The thirteen remaining cells are
-exactly the exceptions in the theorem. Taking the logarithmic
+entry; each exceeds $rs/4096$. Together with the two degree-sixteen cells, the eleven remaining cells are exactly the exceptions in the theorem. Taking the logarithmic
 cutoff again restores the uniform error estimates and cannot worsen
 any margin.
 \end{proof}

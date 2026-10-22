@@ -144,37 +144,24 @@ and using $d(J)\leq b/2+1$ gives
 $Z_J(R)\leq D_R2^{(\log48)b/2}$.
 Its exponent is strictly below $h(25)/8=3$.
 
-At degree twenty-seven the complete irreducible-subgroup
-classification of Roney--Dougal and Unger
-\cite{RoneyDougalUnger2003Affine}, in the pinned PrimGrp ordering
-\cite{PrimGrp344}, has nine soluble affine rows.  Their point-stabilizer
-orders are
-\[
-  12,13,24,24,24,26,39,48,78.
-\]
-Thus every soluble irreducible $R\leq\GL_3(3)$ has order at most
-seventy-eight. The formal proof needs only the exact orders in the retained
-primitive composition catalogue and the actual embedding in $\GL_3(3)$.
-The small orders imply solubility; the two large orders identify the actual
-image with $\operatorname{SL}_3(3)$ or $\GL_3(3)$. No separate isomorphism locator for the
-nine soluble complements is assumed.
-Hence $Z_J(R)\leq D_R2^{(\log78)b/2}$, with
-$(\log78)/2<26/8$.
+At degree twenty-seven the actual faithful irreducible soluble
+complement in $\GL_3(3)$ has order at most seventy-eight. The direct
+linear proof separates a monomial action from the homogeneous restriction
+to a minimal normal subgroup; the latter gives the field $\F_{27}$
+and its scalar normalizer of order $3(27-1)=78$.
+Thus $Z_J(R)\leq D_R2^{(\log78)b/2}$, with
+$(\log78)/2<26/8$. No primitive-catalogue correspondence is needed.
 
 For the remaining odd prime-power degrees, elementary linear-map
-counting gives $|R|\leq p^{d^2}$ when $w=p^d$. At $w=49$, this is
-$|R|\leq49^2$. At $w=81$, apply the primitive composition-length theorem
-\cite[Theorem 1.3]{GlasbyPraegerRosaVerret2018} to $G=V\rtimes R$. Solubility makes every
-composition factor cyclic of prime order, and
-\[
- c(G)\leq (8/3)\log81-4/3<16.
-\]
-Thus $\Omega(|R|)\leq11$, where $\Omega$ counts prime factors with
-multiplicity. The actual complement embeds into $\GL_4(3)$, whose order is
-$24261120=2^9 3^6\cdot5\cdot13$. Checking its divisors with at most eleven
-prime factors gives $|R|\leq81^3$. These are finite integer inequalities,
-not a soluble linear base-size assumption. The inequalities
-$49^8<2^{48}$ and $81^{12}<2^{80}$ give the required strict physical gaps.
+counting gives $|R|\leq p^{d^2}$ when $w=p^d$. At $w=49$, this gives
+$|R|\leq49^2$. At $w=81$, use instead the actual order divisor
+$|R|\mid|\GL_4(3)|=2^9 3^6\cdot5\cdot13$.
+Every chosen chief series therefore has abelian charge at most seventeen.
+The complete bottom fibre costs at most one additional
+$\gamma=(\log3)/3$ unit, even without solubility. Consequently the
+complete source exponent is at most $18\gamma<9.6<h(81)/8=10$.
+This proves the needed source directly; a soluble-complement cube bound
+is unnecessary.
 For all other remaining pairs $(p,d)$ below the large-degree cutoff,
 the elementary bound $p^{d^2}$ gives the gap directly; the previously
 proved large-degree capacity estimates handle the infinite range.
@@ -278,29 +265,56 @@ otherwise the faithful image would be scalar over its commuting
 field. Thus $d\geq2$ and $\eta_U\leq\log(p)/(2p)$.
 Write $\gamma=\log(3)/3<17/32$.
 
-The primitive composition bound
-\cite[Theorem 1.3]{GlasbyPraegerRosaVerret2018} gives
-$c(U)\leq(8/3)\log w-4/3$. Since $c(U)=d+c(R)$ and
-$R$ has a nonabelian composition factor, the number of abelian
-composition factors of $R$ is at most
-$(8/3)\log w-7/3-d$. Hence
+The actual chief traces give the following abelian charge budgets:
 \[
- \kappa(R)+\eta_U
- \leq\gamma\bigl((8/3)\log w-11/6-d\bigr)
- \leq\frac{17}{32}\bigl((8/3)\log w-23/6\bigr).
+\begin{array}{c|rrrrr}
+ w&32&49&64&128&256\\\hline
+ c_{\rm ab}(R)&4&8&14&29&40.
+\end{array}
 \]
-For $x\geq64$, the difference between $(x-1)/8$ and the
-last expression is increasing: using $\log_e2>1/2$, its
-derivative exceeds $1/8-17/(6x)>0$. At $x=64$ it is
-$271/192>1/4$. Thus
-$h(w)/8-\kappa(R)-\eta_U>1/4$ throughout that range.
+The entries at $49$ and $256$ follow from the literal full-linear
+orders. At $128$ the full order has thirty prime factors with
+multiplicity, and a nonabelian chief factor saves at least one unit.
 
-At $w=32$, the integer composition bound gives at most six
-abelian factors in $R$, so the exponent is at most
-$6(17/32)+1/4=55/16$, leaving gap $9/16$.
-At $w=49$, use $7^{16}<2^{45}$ to obtain at most ten
-abelian factors, giving exponent at most $357/64$ and
-gap $27/64$.
+For $32$, Clifford restriction to a nontrivial normal subgroup is
+irreducible: constituent dimension divides five, and dimension one over
+$\F_2$ would give a trivial restriction. An abelian normal subgroup
+has cyclic scalar centralizer of order thirty-one, and the conjugation quotient embeds in the cyclic automorphism group of that normal subgroup. It would therefore make the whole group soluble. A nonabelian minimal normal
+subgroup is simple; the other product factors would lie in its cyclic
+linear centralizer. Its ambient centralizer is trivial. The actual
+quotient embeds in the outer automorphism group of this simple subgroup,
+whose order is at most thirty by the retained index inequalities.
+The quotient therefore spends at most four abelian order units.
+
+For $64$, nonhomogeneous Clifford restriction gives actual block
+patterns $(2,3),(3,2),(6,1)$. The corresponding order divisors are
+$|\GL_3(2)|^2\,2!$, $|\GL_2(2)|^3\,3!$, and $6!$;
+their prime-factor budgets are eleven, eight and seven.
+A homogeneous abelian normal subgroup gives an actual scalar field
+of degree $e=2,3,6$ on the same module. The scalar-linear kernels give
+order divisors $|\GL_3(4)|\,2$, $|\GL_2(8)|\,3$ and
+$|\GL_1(64)|\,6$, with budgets thirteen, eight and five.
+If there is no abelian normal subgroup, every soluble normal subgroup
+is trivial. A nonabelian minimal normal subgroup is a product of simple
+groups. Each faithful homogeneous simple constituent has dimension
+three or six. Its linear centralizer is soluble: the irreducible cases
+have order dividing seven or sixty-three, and the repeated
+three-dimensional case has centralizer order dividing six.
+Thus there is only one simple factor and its ambient centralizer is
+trivial. The original quotient embeds in its outer automorphism group,
+whose order is at most thirty-six, costing at most five units.
+These cases prove the displayed uniform bound fourteen while retaining
+the original chief series.
+
+Using $\gamma<8/15$ and $\eta_U\leq1/4$ in the binary cases, and
+$\eta_U\leq\gamma/2$ otherwise, all five displayed budgets leave a
+physical gap greater than $1/4$. Degree $81$ uses the complete
+$18\gamma$ source above. For $343\leq w<1024$, the elementary original
+affine-order ceiling has exponent $(\lfloor\log w\rfloor+1)^2$;
+its half-log slope is at most $81/2$ below $512$ and $50$ thereafter,
+again leaving more than $1/4$. The remaining medium odd degrees use
+their actual linear-order ceilings.
+
 At $w=25$, quotient the scalar subgroup of order dividing four.
 The projective image is a nonsoluble subgroup of
 $\operatorname{PGL}_2(5)\cong S_5$, hence $A_5$ or $S_5$.
@@ -345,7 +359,7 @@ bounds $1/4,21/16,51/64$, all with physical gap greater than $1/4$.
 For the formal proof, degree eight is covered by checked subgroup and
 linear-intertwiner certificates in $\GL_3(2)$, degree sixteen keeps the original translation kernel and uses the proved
 $\operatorname{GL}_4(\mathbf F_2)\cong A_8$ geometry, and degree twenty-seven
-uses proved linear structure and the retained composition-length bound.
+uses proved linear structure. The bounded classifiers in the displayed table are an alternative verification; the final source construction needs no primitive composition-length premise.
 These are sufficient actual-source consumers; the stronger small-affine
 carrier correspondence and the primitive-sixteen locator are unused. The other ranges
 were covered analytically.

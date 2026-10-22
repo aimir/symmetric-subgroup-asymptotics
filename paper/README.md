@@ -30,10 +30,8 @@ The [final formal exports](../formal/README.md) now construct degree-two
 coverage, the four-pair source, marked-C₄ encodings, affine consumers, and
 quantitative socle profiles internally. Their explicit remaining mathematical
 inputs are the published theorems and structural classifications listed in
-that README. The canonical eight-input exports omit both ordinary primitive normal
-generation and simple two-generation. Their needed relative-head and
-automorphism estimates follow from actual orders and the retained simple-index
-inequalities. The current source/object and final-target axiom audits are
+that README. The canonical seven-input exports omit ordinary primitive normal
+generation, simple two-generation and primitive composition length. Their needed relative-head, chief-weight, affine-source and automorphism estimates follow from actual orders, original Clifford data and the retained simple-index inequalities. The current source/object and final-target axiom audits are
 described precisely in the formal README.
 This verifies the three targets relative to those explicit published inputs;
 it does not formalize the retained literature itself.
