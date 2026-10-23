@@ -17,8 +17,8 @@ nonbinary transitive classification and primitive classification have distinct
 scopes.
 
 The current optional CFSG endpoint is
-`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_GTwo_index_square`
-in [`CFSGSevenTargetsGTwoIndexSquare.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsGTwoIndexSquare.lean).
+`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_GTwo_outer`
+in [`CFSGSevenTargetsGTwoOuter.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsGTwoOuter.lean).
 It still requires five published inputs and two explicit residual model
 callbacks in addition to the pinned classification. Every admissible
 unitary index square and the lower bound `q^r <= ell` are proved internally;
@@ -31,8 +31,9 @@ tag remains in either callback. Original triality, F4 and twisted E6 now
 also have proved good-Sylow data, least-index squares and complete
 outer-order budgets, including q=2. These three tags are absent from
 both callbacks. Their original-model outer bounds are respectively
-`3*f`, `2*f`, and `6*f` for `q=p^f`. The effective remaining model families
-are G2 (outer budget only), ReeG2, ReeF4, Tits and the 26 sporadic
+`3*f`, `2*f`, and `6*f` for `q=p^f`. Original G2 now also has its
+proved index square and complete outer budget, with `|Out| <= 2*f`.
+The effective remaining model families are ReeG2, ReeF4, Tits and the 26 sporadic
 tags. No general theorem about these remaining families is supplied by
 the classification proposition alone. This optional endpoint is not a
 theorem from CFSG alone.
@@ -46,8 +47,12 @@ give `q^12 <= |G|` on that same original model. Together these imply
 ([`CFSGGTwoOriginalIndexSquare.lean`](formal/SymmetricSubgroupAsymptotics/CFSGGTwoOriginalIndexSquare.lean)).
 The original natural-image kernel, natural centre and folded central
 quotient are all discharged; no group-order or model-recognition input
-is retained. The original torus also gives `q <= ell` for the remaining
-outer-budget work.
+is retained. The original torus also gives `q <= ell`. The completed
+outer bound uses the actual signed root charts, one common field
+automorphism and the full product torus, allowing the root swap in
+characteristic three. Its scalar and field count proves `|Out| <= 2*f`
+([`CFSGGTwoD4GeckOriginalOuterBound.lean`](formal/SymmetricSubgroupAsymptotics/CFSGGTwoD4GeckOriginalOuterBound.lean));
+the resulting outer-order budget is threaded through the endpoint above.
 
 Further checked infrastructure narrows the work behind these callbacks.
 For higher unitary ranks, actual local semilinear representatives now have
