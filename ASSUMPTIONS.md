@@ -17,8 +17,8 @@ nonbinary transitive classification and primitive classification have distinct
 scopes.
 
 The current optional CFSG endpoint is
-`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_twistedE6_goodSylow`
-in [`CFSGSevenTargetsTwistedE6GoodSylow.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedE6GoodSylow.lean).
+`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_fFour_twistedE6_index_squares`
+in [`CFSGSevenTargetsFFourTwistedE6IndexSquares.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsFFourTwistedE6IndexSquares.lean).
 It still requires five published inputs and two explicit residual model
 callbacks in addition to the pinned classification. Every admissible
 unitary index square and the lower bound `q^r <= ell` are proved internally;
@@ -33,8 +33,9 @@ square is also proved; only its outer-order budget remains in the second
 callback. The original F4 good-Sylow
 case is now also proved and absent from that callback. The original
 twisted E6 good-Sylow case is also proved in every field and characteristic
-and is absent from the first callback; its simple-index and outer-order
-obligations are still retained in the second. This optional
+and is absent from the first callback. The original F4 and twisted E6
+least-index squares are now also proved, including q=2; only their
+outer-order obligations remain in the second callback. This optional
 endpoint is not a theorem from CFSG alone.
 The canonical public seven-input boundary remains unchanged.
 
@@ -100,7 +101,7 @@ element and uniqueness of its ambient Sylow identify an actual F4 Sylow
 with soluble normalizer. The two signed folded p-subgroups generate the
 same original action image, proving its good-Sylow theorem
 (`CFSGFFourOriginalGoodSylow.lean`). No identification with an externally
-named F4 matrix group is assumed. F4's simple-index/outer bounds remain open.
+named F4 matrix group is assumed. F4's least-index square is now proved; its outer-order bound remains open.
 
 For twisted E6, the entire fixed upper matrix group has preimages in the
 original derived fixed source. An actual relative Bruhat cover retains
@@ -523,7 +524,7 @@ The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now prove
 
 `CFSGPrimitiveSublinearBounds.lean` proves that those estimates are uniformly sublinear across all actual primitive actions. Its first applications are an eventual c=1 relative-character tail and an eventual three-tenths primitive chief-weight tail. The statements retain only the displayed simple-index/Out and, where used, simple-two-generation inputs; they do not invoke the sharp primitive inputs. These are infinite-tail replacements with a uniform eventual threshold, not proofs of the existing cutoffs 34/45 or of the intervening bounded ranges. The public T1 premises are unchanged.
 
-The original untwisted F₄ parity branch is now proved (`CFSGFFourEvenOrderRefinement.lean`). The actual E₆ fold satisfies the pinned F₄ Serre relations; a long-root Weyl word has fourth power one and is noncentral on the same original image, in every characteristic. This removes precisely F₄ from the optional parity residual. The original F₄ good-Sylow theorem is also proved (`CFSGFFourOriginalGoodSylow.lean`); its simple-index/outer-order bounds remain open, and the public seven-input boundary is unchanged.
+The original untwisted F₄ parity branch is now proved (`CFSGFFourEvenOrderRefinement.lean`). The actual E₆ fold satisfies the pinned F₄ Serre relations; a long-root Weyl word has fourth power one and is noncentral on the same original image, in every characteristic. This removes precisely F₄ from the optional parity residual. The original F₄ good-Sylow theorem is also proved (`CFSGFFourOriginalGoodSylow.lean`); its least-index square is now proved, its outer-order bound remains open, and the public seven-input boundary is unchanged.
 
 The coarse all-subgroup upper bound is now derived from the retained
 Aschbacher–Guralnick input alone (`CFSGOrdinarySubgroupUpperFromSoluble`).

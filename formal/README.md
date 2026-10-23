@@ -492,7 +492,7 @@ The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now prove
 
 `CFSGPrimitiveSublinearBounds.lean` proves that those estimates are uniformly sublinear across all actual primitive actions. Its first applications are an eventual c=1 relative-character tail and an eventual three-tenths primitive chief-weight tail. The statements retain only the displayed simple-index/Out and, where used, simple-two-generation inputs; they do not invoke the sharp primitive inputs. These are infinite-tail replacements with a uniform eventual threshold, not proofs of the existing cutoffs 34/45 or of the intervening bounded ranges. The public T1 premises are unchanged.
 
-The original untwisted F₄ parity branch is now proved (`CFSGFFourEvenOrderRefinement.lean`). The actual E₆ fold satisfies the pinned F₄ Serre relations; a long-root Weyl word has fourth power one and is noncentral on the same original image, in every characteristic. This removes precisely F₄ from the optional parity residual. The original F₄ good-Sylow theorem is also proved (`CFSGFFourOriginalGoodSylow.lean`); its simple-index/outer-order bounds remain open, and the public seven-input boundary is unchanged.
+The original untwisted F₄ parity branch is now proved (`CFSGFFourEvenOrderRefinement.lean`). The actual E₆ fold satisfies the pinned F₄ Serre relations; a long-root Weyl word has fourth power one and is noncentral on the same original image, in every characteristic. This removes precisely F₄ from the optional parity residual. The original F₄ good-Sylow theorem is also proved (`CFSGFFourOriginalGoodSylow.lean`); its least-index square is now proved, its outer-order bound remains open, and the public seven-input boundary is unchanged.
 
 The optional soluble-generation reduction now proves actual good-Sylow
 data for every original A, B, C, D and Suzuki model
@@ -804,10 +804,10 @@ same original quotient gives `q^(r-2) <= ell`
 The complete bound removes this family from the simple-index callback
 ([`CFSGTwistedDOuterBudget`](SymmetricSubgroupAsymptotics/CFSGTwistedDOuterBudget.lean)).
 
-[`CFSGSevenTargetsTwistedE6GoodSylow`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedE6GoodSylow.lean)
+[`CFSGSevenTargetsFFourTwistedE6IndexSquares`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsFFourTwistedE6IndexSquares.lean)
 threads these completed model cases, including the entire unitary and
 twisted-D branches and the original twisted E6 good-Sylow data, all unitary and twisted-D index squares,
-their full outer-order budgets, the original triality index square, and the
+their full outer-order budgets, the original triality, F4 and twisted E6 index squares, and the
 sufficient E6/E7/E8 simple-index bounds into T1 and AllTargets.
 Its parameters are CFSG, five published inputs (general class count, the
 two Tracey inputs, labelled transitive count, and ordinary permutation
@@ -816,9 +816,9 @@ cases and the remaining sufficient simple-index/outer bounds. E6/E7/E8
 are absent from both callbacks, and all twisted-A and twisted-D tags are
 absent from the good-Sylow callback. The original triality case is now also
 absent from that callback, as are the original F4 and twisted E6 cases. All twisted-A and
-twisted-D tags are also absent from the simple-index callback. For triality
-that callback now asks only for the outer-order budget; its index square
-is supplied internally.
+twisted-D tags are also absent from the simple-index callback. For triality, F4 and twisted E6
+that callback now asks only for the outer-order budget; their index squares
+are supplied internally.
 The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
@@ -834,8 +834,20 @@ two fixed p-subgroups. A relative Bruhat cover keeps central differences
 in an abelian diagonal factor, without identifying that factor with the
 literal torus or assuming arbitrary fixed-point lifts. The checked
 soluble Sylow normalizer and original projective equivalence complete
-the transfer. The separate twisted E6 simple-index/outer-order callback
-remains open.
+the transfer. The separate twisted E6 outer-order callback remains open;
+its least-index square is now proved.
+
+The original F4 and twisted E6 least-index squares use one shared count
+([`CFSGFFourE6OriginalIndexSquare`](SymmetricSubgroupAsymptotics/CFSGFFourE6OriginalIndexSquare.lean),
+[`CFSGTwistedE6GeckOriginalIndexSquare`](SymmetricSubgroupAsymptotics/CFSGTwistedE6GeckOriginalIndexSquare.lean)).
+A literal relative-root menu has at most 512 seeds. Nine independent
+base-field parameters in each retained centralizer absorb this menu,
+including at q=2. The base-field factors centralize the full extension-field
+root line before their semilinear fixedness is used. The fixed-upper
+cardinal stays symbolic, and strictness comes from its proved square being
+less than the original group order. No supplied order formula, root-family
+recognition, or centralizer-capacity hypothesis remains in these theorems.
+Their outer-order bounds remain open.
 
 The complete unitary geometry is checked on the original action.
 [`CFSGTwistedAUnitarySemilinearPieces`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitarySemilinearPieces.lean)
@@ -977,8 +989,8 @@ The signed folded p-subgroups generate the literal matrix group. Their
 regular element lies in a unique ambient E6 Sylow, whose intersection
 gives an F4 Sylow with soluble normalizer. The checked original action
 range transfers generation and the Sylow data to the original model.
-No externally named matrix-group recognition is assumed. F4's remaining
-simple-index and outer-order obligations are unchanged.
+No externally named matrix-group recognition is assumed. F4's least-index
+square is now proved; its outer-order obligation remains open.
 For three orthogonal roots the integral operator formula retains its genuine
 cubic coefficient, with three independent parameters
 ([`CFSGNormTwoCoordinateOriginalParameterizedTriple`](SymmetricSubgroupAsymptotics/CFSGNormTwoCoordinateOriginalParameterizedTriple.lean)).
