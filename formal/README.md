@@ -804,7 +804,7 @@ same original quotient gives `q^(r-2) <= ell`
 The complete bound removes this family from the simple-index callback
 ([`CFSGTwistedDOuterBudget`](SymmetricSubgroupAsymptotics/CFSGTwistedDOuterBudget.lean)).
 
-[`CFSGSevenTargetsReeGTwoGoodSylow`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsReeGTwoGoodSylow.lean)
+[`CFSGSevenTargetsReeGTwoOuter`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsReeGTwoOuter.lean)
 threads these completed model cases, including the entire unitary and
 twisted-D branches and the original twisted E6 good-Sylow data, all unitary and twisted-D index squares,
 their full outer-order budgets, the original G2, triality, F4 and twisted E6 index squares, and the
@@ -823,8 +823,10 @@ Original G2 is now absent from both callbacks: its least-index square
 and full outer-order budget are proved. The actual original ReeG2
 good-Sylow theorem is now also threaded through this endpoint: the
 good-Sylow callback retains only ReeF4, Tits and the 26 sporadic tags.
-The independent simple-index/outer-order callback still retains ReeG2,
-ReeF4, Tits and those sporadic tags.
+ReeG2 is now absent from the simple-index/outer-order callback as well:
+its actual outer bound is `|Out| <= 2*(2*m+1)` and its defining field
+has size at most every proper permutation degree. Both callbacks retain
+only ReeF4, Tits and the 26 sporadic tags, with their respective full payloads.
 The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
@@ -1098,8 +1100,22 @@ pinned derived/central quotient is therefore the whole quotient. This
 proves the original good-Sylow theorem without asserting perfectness or
 simplicity of the full fixed group
 ([`CFSGReeGTwoOriginalGoodSylow`](SymmetricSubgroupAsymptotics/CFSGReeGTwoOriginalGoodSylow.lean)).
-ReeG2 no longer occurs in the good-Sylow callback; its separate index and
-automorphism bounds still remain in the other T1 model callback.
+The Borel point action has degree `q^3+1`, the derived index in the fixed
+group is at most four, and the full derived centre is trivial. These actual
+bounds prove `ell^2 < |ReeG2(q)|` for the least proper subgroup index
+([`CFSGReeGTwoOriginalIndexSquare`](SymmetricSubgroupAsymptotics/CFSGReeGTwoOriginalIndexSquare.lean)).
+The actual central root line and square torus prove `q <= ell` for
+every proper permutation degree. The positive subgroup's intrinsic
+characteristic layers and its cubing map show that an automorphism
+fixing the central axis and commuting with the square torus is trivial.
+The opposed-pair stabilizer restricts faithfully to that positive subgroup.
+Its central action embeds in the square-scalar normalizer; charging the
+same actual inner derived torus gives `|Out(ReeG2(3^(2*m+1)))| <= 2*(2*m+1)`
+([`CFSGReeGTwoOriginalOuterBound`](SymmetricSubgroupAsymptotics/CFSGReeGTwoOriginalOuterBound.lean)).
+The proof does not identify the derived torus with the full fixed torus
+or assume that the full fixed group is perfect. The numerical outer
+budget and the complete T1 integration are checked, so ReeG2 no longer
+occurs in either residual callback.
 The actual positive subgroup and torus also form a faithful soluble
 semidirect product of order `q^3*(q-1)` in the original fixed group.
 The positive centre is exactly its last free coordinate, of order `q`;
@@ -1118,8 +1134,18 @@ root generators is proved on these same two actions, with the field
 parameter squared exactly on the short-root side
 ([`CFSGFFourE6NormQuotientSelectedCovariance`](SymmetricSubgroupAsymptotics/CFSGFFourE6NormQuotientSelectedCovariance.lean),
 [`CFSGFFourE6NormQuotientOuterCovariance`](SymmetricSubgroupAsymptotics/CFSGFFourE6NormQuotientOuterCovariance.lean)).
-Negative-root transport and unconditional correspondence with the original
-F4 source still require proof
+Actual integral opposition transports these identities to all four
+negative generators, giving all eight signed identities
+([`CFSGFFourE6NormQuotientNegativeCovariance`](SymmetricSubgroupAsymptotics/CFSGFFourE6NormQuotientNegativeCovariance.lean)).
+The norm action is now proved faithful: its kernel lies in the actual
+diagonal pair normalizer, its simple-root scalars are one, and a checked
+26-edge propagation through the remaining coordinates kills the kernel
+([`CFSGFFourE6NormActionFaithful`](SymmetricSubgroupAsymptotics/CFSGFFourE6NormActionFaithful.lean)).
+The equal norm and transported quotient action ranges then give an actual
+exceptional automorphism of this same folded group, whose square sends
+root parameters to their squares
+([`CFSGFFourE6ExceptionalFoldedAutomorphism`](SymmetricSubgroupAsymptotics/CFSGFFourE6ExceptionalFoldedAutomorphism.lean)).
+Unconditional correspondence with the original F4 source still requires proof
 ([`CFSGFFourE6CharacteristicTwoNormBasis`](SymmetricSubgroupAsymptotics/CFSGFFourE6CharacteristicTwoNormBasis.lean),
 [`CFSGFFourE6CharacteristicTwoQuotientAction`](SymmetricSubgroupAsymptotics/CFSGFFourE6CharacteristicTwoQuotientAction.lean)).
 
