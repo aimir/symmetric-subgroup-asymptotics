@@ -486,7 +486,7 @@ The optional generic primitive route also proves bounds on the same actual serie
 
 `CFSGPrimitiveCoarseDegreeBounds.lean` combines those actual affine and full-socle constructions into degree-only bounds for every faithful nontrivial finite primitive action: a(G) ≤ L²+3L for every original composition series, and d(N) ≤ L²+4L for each actual normal subgroup, where L=log₂(degree). The first theorem displays only `PublishedSimpleIndexBounds`; the second also displays `FiniteSimpleTwoGeneratorBound`. Neither uses the sharp primitive composition or primitive normal-generation input. These coarse conclusions do not replace those sharper public T1 premises yet.
 
-The type-D intrinsic infrastructure (`CFSGOrthogonalDIndexUnipotentCenter.lean`, `CFSGOrthogonalDIndexUnipotentFixedSpace.lean`) identifies the centre of the actual flag-unitriangular subgroup with its highest paired-root line and the additive group of the same field, in every characteristic. Its fixed vectors are exactly the first natural line. The proof preserves the actual split quadratic form, excluding the spurious diagonal shear in characteristic two. The continuation (`CFSGOrthogonalDIndexOddSylow.lean`) proves that this same subgroup is Sylow in odd characteristic, using its actual partial-flag normalizer and middle two-plane action. The all-characteristic continuation is now proved in `CFSGOrthogonalDIndexSylow.lean`: parity of three maximal singular-space distances excludes the final-pair swap from the actual unipotent normalizer. Subsequent polar/triality automorphism reconstruction remains open.
+The type-D intrinsic infrastructure (`CFSGOrthogonalDIndexUnipotentCenter.lean`, `CFSGOrthogonalDIndexUnipotentFixedSpace.lean`) identifies the centre of the actual flag-unitriangular subgroup with its highest paired-root line and the additive group of the same field, in every characteristic. Its fixed vectors are exactly the first natural line. The proof preserves the actual split quadratic form, excluding the spurious diagonal shear in characteristic two. The continuation (`CFSGOrthogonalDIndexOddSylow.lean`) proves that this same subgroup is Sylow in odd characteristic, using its actual partial-flag normalizer and middle two-plane action. The all-characteristic continuation is now proved in `CFSGOrthogonalDIndexSylow.lean`: parity of three maximal singular-space distances excludes the final-pair swap from the actual unipotent normalizer. The completed polar and D4 triality automorphism continuations are described below.
 
 The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now proves that the literal flag-unitriangular subgroup is Sylow, its normalizer is the actual flag Borel, and its centre is exactly the highest long-root field line. Actual projective automorphisms preserve the conjugate root lines (`CFSGOrthogonalBProjectiveRootLines.lean`). Each line has a well-defined natural two-plane label, recovered as range(x-I) from any nonidentity root element. All statements retain the same original matrix subgroup and projective quotient. The continuation `CFSGOrthogonalBSingularPlaneAction.lean` now proves coverage of all totally singular two-planes and the exact projective automorphism action on them, using actual pair normalization and the literal tail embedding. The polar-point action, semilinear realization and odd-B outer bound are now proved by the continuation below.
 
@@ -804,11 +804,11 @@ same original quotient gives `q^(r-2) <= ell`
 The complete bound removes this family from the simple-index callback
 ([`CFSGTwistedDOuterBudget`](SymmetricSubgroupAsymptotics/CFSGTwistedDOuterBudget.lean)).
 
-[`CFSGSevenTargetsUnitaryOuter`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsUnitaryOuter.lean)
+[`CFSGSevenTargetsTrialityIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTrialityIndexSquare.lean)
 threads these completed model cases, including the entire unitary and
 twisted-D branches of good-Sylow data, all unitary and twisted-D index squares,
-their full outer-order budgets, and the sufficient E6/E7/E8 simple-index bounds,
-into T1 and AllTargets.
+their full outer-order budgets, the original triality index square, and the
+sufficient E6/E7/E8 simple-index bounds into T1 and AllTargets.
 Its parameters are CFSG, five published inputs (general class count, the
 two Tracey inputs, labelled transitive count, and ordinary permutation
 rank), and **two still-unproved model callbacks**: the remaining good-Sylow
@@ -816,7 +816,9 @@ cases and the remaining sufficient simple-index/outer bounds. E6/E7/E8
 are absent from both callbacks, and all twisted-A and twisted-D tags are
 absent from the good-Sylow callback. The original triality case is now also
 absent from that callback, as is the original F4 case. All twisted-A and
-twisted-D tags are also absent from the simple-index callback.
+twisted-D tags are also absent from the simple-index callback. For triality
+that callback now asks only for the outer-order budget; its index square
+is supplied internally.
 The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
@@ -937,6 +939,16 @@ diagonal factor. Actual opposition words then identify the generated
 root action with the original derived action. This removes triality
 from the optional good-Sylow callback above; it asserts no triality
 outer-order bound.
+
+The original triality least-index square is now also proved
+([`CFSGTrialityGeckOriginalIndexSquare`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckOriginalIndexSquare.lean)).
+The full fixed-matrix long-root family satisfies `M*q^3 <= 6*q^12`:
+each of six signed root-line orbits retains a literal q-cubed centralizer.
+Opposite disjoint Sylows give `q^24 <= |G|` through the actual central
+quotient. The original q-element root subgroup is nontrivial and proper;
+its conjugate family is a cardinality factor of the counted matrix family.
+Thus `ell^2 < |G|` in every field, including `q=2`, without a supplied
+exceptional group-order formula. Its outer-order budget remains open.
 
 
 The shared folded-root continuation proves that the same generated Geck Lie

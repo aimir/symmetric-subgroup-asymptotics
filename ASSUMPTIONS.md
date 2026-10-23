@@ -17,8 +17,8 @@ nonbinary transitive classification and primitive classification have distinct
 scopes.
 
 The current optional CFSG endpoint is
-`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_unitary_outer`
-in [`CFSGSevenTargetsUnitaryOuter.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsUnitaryOuter.lean).
+`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_triality_index_square`
+in [`CFSGSevenTargetsTrialityIndexSquare.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsTrialityIndexSquare.lean).
 It still requires five published inputs and two explicit residual model
 callbacks in addition to the pinned classification. Every admissible
 unitary index square and the lower bound `q^r <= ell` are proved internally;
@@ -28,8 +28,9 @@ also proved, including the central-cocycle preimage and generation by two
 p-subgroups; no twisted-D tag remains in that callback. Its least-index
 square and full outer-order budget are also proved internally. No twisted-D
 tag remains in either callback. The original triality group now also has proved
-good-Sylow data, so triality is absent from that callback. Its numerical
-index and outer-order obligations are unchanged. The original F4 good-Sylow
+good-Sylow data, so triality is absent from that callback. Its least-index
+square is also proved; only its outer-order budget remains in the second
+callback. The original F4 good-Sylow
 case is now also proved and absent from that callback. This optional
 endpoint is not a theorem from CFSG alone.
 The canonical public seven-input boundary remains unchanged.
@@ -83,7 +84,14 @@ the fixed action range and its derived subgroup. Centrally twisted Bruhat
 coordinates place the actual central difference in the diagonal factor;
 the root coordinates are fixed. This discharges the triality good-Sylow
 case without assuming fixed matrix lifts for arbitrary fixed actions.
-It does not remove another whole published input.
+The same original model now satisfies `ell^2 < |G|`. Six signed long-root
+orbits have the joint bound `M*q^3 <= 6*q^12`; two disjoint Sylow images
+give `q^24 <= |G|`. The actual q-element root line survives the central
+quotient, and its conjugate family factors through the counted matrix
+family (`CFSGTrialityGeckOriginalIndexSquare.lean`). This includes `q=2`
+and does not assume an exceptional group-order formula. Triality's
+outer-order budget remains open; another whole published input has not
+been removed.
 For F4, the literal folded root matrices embed into E6. A regular positive
 element and uniqueness of its ambient Sylow identify an actual F4 Sylow
 with soluble normalizer. The two signed folded p-subgroups generate the
