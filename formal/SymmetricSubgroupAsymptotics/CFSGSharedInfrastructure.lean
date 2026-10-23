@@ -116,6 +116,13 @@ import SymmetricSubgroupAsymptotics.CFSGE6GenerationFirstRootRecovery
 /-!
 # Shared infrastructure for the reduction to concrete CFSG
 
+The current canonical T1 theorem has seven published inputs. The stronger
+optional endpoint is `CFSGSevenTargetsGTwoOuter`: pinned CFSG, five
+published inputs and two explicit residual model callbacks. Their effective
+model families are ReeG2, ReeF4, Tits and the sporadics. The later family
+modules referenced in `formal/README.md` supersede the intermediate
+residuals described below. No CFSG-only T1 theorem is claimed.
+
 The classification proposition is supplied by the frozen external statement.
 It asserts existence of an isomorphism to an explicit model. Transport of
 finiteness, simplicity, generation, least subgroup index and the actual outer
@@ -415,7 +422,7 @@ three below degree27 and uses coefficient six beyond it, with the proved
 finite Out<=24 safeguard below30. The original primitive chief-weight,
 strict-head and component-compression conclusions are preserved by checked
 consumers. Whole T1/AllTargets forwarding from this boundary is now proved in
-CFSGSufficientPublishedTargetsCombined. The public eight-input facade fills
+CFSGSufficientPublishedTargetsCombined. The public facade fills
 this sufficient boundary from the retained stronger published coefficient-three
 theorem. No normal-generator or finite-simple two-generator input remains.
 
@@ -437,7 +444,7 @@ A concrete candidate pair also recovers the full original E6 root lines
 U3,U4,U5 over every finite field of order at least three, using actual
 parameter extraction and Weyl-word identities. Full two-element generation,
 including the two-element field, remains open. These are optional CFSG
-infrastructure results. The public T1 endpoint now has eight published inputs: the
+infrastructure results. The canonical T1 endpoint now has seven published inputs: the
 needed simple automorphism count follows from sufficient SI, and the primitive
 relative-head tail follows from actual affine/full-socle quotient orders. The
 stronger ordinary generation theorems are neither asserted nor needed here.

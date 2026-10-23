@@ -7,6 +7,9 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalDClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTwistedDClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleGTwoClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalBClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveSocleSuzukiClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveSocleTrialityClassBound
 
 /-! Exact remaining simple types for the large primitive SUBNORMAL
 class-count target. All affine degrees and both raw socle degree forms
@@ -19,8 +22,8 @@ namespace SymmetricSubgroupAsymptotics.PrimitiveLargeSubnormalCFSGReduction
 open PrimitiveSocleRawStructure CFSGReduction
 
 def RemainingLargePrimitiveSimpleType : CFSG.Index → Prop
-  | .cyclic _ _ | .alternating _ _ | .A _ _ _ _ | .C _ _ _ _ | .D _ _ _
-  | .twistedA _ _ _ _ | .twistedD _ _ _ | .G2 _ _ => False
+  | .cyclic _ _ | .alternating _ _ | .A _ _ _ _ | .B _ _ _ | .C _ _ _ _ | .D _ _ _
+  | .twistedA _ _ _ _ | .twistedD _ _ _ | .G2 _ _ | .suzuki _ _ | .trialityD4 _ => False
   | _ => True
 
 theorem primitive_subnormal_cube_or_actual_remaining_model
@@ -57,6 +60,10 @@ theorem primitive_subnormal_cube_or_actual_remaining_model
       have e : D.Simple ≃* CFSG.Models.C r q := by
         exact Eq.mp (congrArg (fun j : CFSG.Index => D.Simple ≃* j.Model) hi) W.equiv
       exact Or.inl (D.subgroup_class_cube_le_of_symplectic r hr q e hn H)
+    case B r q hr =>
+      have e : D.Simple ≃* CFSG.Models.B r q := by
+        exact Eq.mp (congrArg (fun j : CFSG.Index => D.Simple ≃* j.Model) hi) W.equiv
+      exact Or.inl (D.subgroup_class_cube_le_of_orthogonalB r hr q e hn H)
     case D r q hr =>
       have e : D.Simple ≃* CFSG.Models.D r q := by
         exact Eq.mp (congrArg (fun j : CFSG.Index => D.Simple ≃* j.Model) hi) W.equiv
@@ -73,6 +80,14 @@ theorem primitive_subnormal_cube_or_actual_remaining_model
       have e : D.Simple ≃* CFSG.Models.G2 q := by
         exact Eq.mp (congrArg (fun j : CFSG.Index => D.Simple ≃* j.Model) hi) W.equiv
       exact Or.inl (D.subgroup_class_cube_le_of_gTwo q hs e hn H)
+    case suzuki m hm =>
+      have e : D.Simple ≃* CFSG.Models.Suzuki m := by
+        exact Eq.mp (congrArg (fun j : CFSG.Index => D.Simple ≃* j.Model) hi) W.equiv
+      exact Or.inl (D.subgroup_class_cube_le_of_suzuki m hm e hn H)
+    case trialityD4 q =>
+      have e : D.Simple ≃* CFSG.Models.TrialityD4 q := by
+        exact Eq.mp (congrArg (fun j : CFSG.Index => D.Simple ≃* j.Model) hi) W.equiv
+      exact Or.inl (D.subgroup_class_cube_le_of_triality q e hn H)
     all_goals
       exact Or.inr ⟨D,K,hK,hdegree,W.index,by simp [RemainingLargePrimitiveSimpleType,hi],
         ⟨W.equiv⟩⟩

@@ -919,8 +919,47 @@ The original socle and outer-wreath quotient bound the group order by
 most `5^(m^k-1)` for `m >= 5` and `k >= 2`. The actual proper index is
 at least `m`, so the bound applies without identifying a product action
 ([`PrimitiveSocleAlternatingProductClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleAlternatingProductClassBound.lean)).
-The remaining nonaffine cases and general transitive assembly are still
-open; the general published class-count input is retained.
+For the single alternating factor, actual subnormal subgroups have at
+most `8*fib(m+1)` classes. A uniform Fibonacci induction pays the cube
+bound at degree at least 1024, including all smaller alternating ranks
+without a group census
+([`PrimitiveSocleAlternatingSubnormalClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleAlternatingSubnormalClassBound.lean)).
+Consequently the entire alternating simple type is covered for subnormal
+subgroups in this large primitive range. The single-factor statement
+does not bound arbitrary subgroups of an alternating group.
+
+The type-A, type-B, unitary, symplectic, type-D, twisted-D, G2, Suzuki and
+triality simple types are
+also covered at every socle factor count, for every original subgroup
+and both raw degree forms, when the primitive degree is at least 1024
+([`PrimitiveSocleTypeAClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleTypeAClassBound.lean),
+[`PrimitiveSocleUnitaryClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleUnitaryClassBound.lean),
+[`PrimitiveSocleSymplecticClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleSymplecticClassBound.lean),
+[`PrimitiveSocleOrthogonalBClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleOrthogonalBClassBound.lean),
+[`PrimitiveSocleOrthogonalDClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleOrthogonalDClassBound.lean),
+[`PrimitiveSocleTwistedDClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleTwistedDClassBound.lean),
+[`PrimitiveSocleGTwoClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleGTwoClassBound.lean),
+[`PrimitiveSocleSuzukiClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleSuzukiClassBound.lean),
+[`PrimitiveSocleTrialityClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleTrialityClassBound.lean)).
+The actual natural representations give order ceilings, while literal
+root stars give lower bounds for each proper subgroup's index. One
+shared estimate transports the component and outer orders through the
+original full socle and outer-wreath quotient, retaining its factorial.
+Twisted D uses its actual faithful action on the fixed space over the
+fixed field, avoiding a larger matrix-space ceiling over the quadratic
+extension. G2 uses its faithful natural eight-dimensional matrices and
+the proved original outer bound. None of these consumers requires an
+order, representation-recognition or class-count callback.
+For triality an actual twelve-word Bruhat cover, its four-parameter
+pair-normalizer bound and its positive subgroup of order `q^12` give
+the original order ceiling `q^32`. Together with the proved outer bound
+and proper-index estimate, this supplies the same component budget.
+The exact CFSG dispatcher retains the original surviving simple-model
+witness
+([`PrimitiveLargeSubnormalCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveLargeSubnormalCFSGReduction.lean)).
+The other nonaffine types, bounded primitive degrees below 1024 and the
+general transitive assembly remain open; the general published
+class-count input is retained.
 
 For the original simple G2 model over every finite field with `q >= 3`,
 the natural root group is now proved equivalent to that same model.
@@ -942,6 +981,20 @@ Together with `q <= ell`, this proves the full outer-order budget.
 Both bounds are threaded through the optional T1 endpoint, removing G2
 from its residual model callbacks. No abstract automorphism lift or
 model-recognition input is retained.
+
+The Ree continuation now has proved Frobenius parameter arithmetic on
+the original field, together with the corresponding scalar tuples
+([`CFSGReeGTwoFieldParameters`](SymmetricSubgroupAsymptotics/CFSGReeGTwoFieldParameters.lean),
+[`CFSGReeGTwoFixedScalarTuples`](SymmetricSubgroupAsymptotics/CFSGReeGTwoFixedScalarTuples.lean)).
+On the original rational G2 Serre quotient, fourteen explicit integral
+vectors span the entire Lie algebra
+([`CFSGGTwoOriginalFourteenFamily`](SymmetricSubgroupAsymptotics/CFSGGTwoOriginalFourteenFamily.lean)).
+The integral divided-power equations also prove the required vanishing
+on the second root-string vector after characteristic-three base change
+([`CFSGGTwoOriginalCharacteristicThreeString`](SymmetricSubgroupAsymptotics/CFSGGTwoOriginalCharacteristicThreeString.lean)).
+Linear independence, a complete integral basis and the actual exceptional
+isogeny/fixed-root correspondence are not yet proved by these statements;
+no Ree family is removed from the T1 callbacks at this stage.
 
 The original twisted E6 good-Sylow theorem is
 [`CFSGTwistedE6OriginalGoodSylow.typeTwistedE6_goodSylowPrime`](SymmetricSubgroupAsymptotics/CFSGTwistedE6OriginalGoodSylow.lean).
