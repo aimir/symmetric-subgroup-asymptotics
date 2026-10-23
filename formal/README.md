@@ -817,6 +817,60 @@ The current family and endpoint audits use only
 interface is not a theorem from CFSG alone; the canonical public endpoint
 continues to have seven published inputs.
 
+The next unitary geometry stage is checked on the original action.
+[`CFSGTwistedAUnitarySemilinearPieces`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitarySemilinearPieces.lean)
+constructs representatives on every singular subspace of dimension at
+least three. The shared maximal-space exchange and connected gallery
+propagate their common-plane field agreement, giving one common field
+component on all maximal spaces when the Witt rank is at least three
+([`CFSGTwistedAUnitaryGlobalFieldComponent`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryGlobalFieldComponent.lean)).
+Global vector-space gluing and the higher-rank outer-order budget remain
+open. Independently,
+[`CFSGHermitianTwoByTwoCentroid`](SymmetricSubgroupAsymptotics/CFSGHermitianTwoByTwoCentroid.lean)
+proves the all-characteristic additive rank-one-cone scalar theorem
+without assuming fixed-field linearity; its actual automorphism and
+semilinear reconstruction applications are being installed separately.
+The actual intrinsic root star is now exactly the literal Hermitian
+coefficient group
+([`CFSGTwistedAUnitaryProjectiveStarParameters`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryProjectiveStarParameters.lean)),
+and arbitrary original plane-stabilizing automorphisms transport its
+fixed scalar action
+([`CFSGTwistedAUnitaryStarScalarTransport`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryStarScalarTransport.lean)).
+Every resulting base-field automorphism extends to the same original
+quadratic extension by a proved Frobenius power
+([`CFSGTwistedAFixedFieldAutomorphismLift`](SymmetricSubgroupAsymptotics/CFSGTwistedAFixedFieldAutomorphismLift.lean)).
+These are intermediate reconstruction theorems, not the final outer bound.
+
+For twisted D,
+[`CFSGTwistedDRelativeUnipotentCenter`](SymmetricSubgroupAsymptotics/CFSGTwistedDRelativeUnipotentCenter.lean)
+identifies the actual Sylow centre with the fixed-field additive group,
+and
+[`CFSGTwistedDProjectiveRootFamily`](SymmetricSubgroupAsymptotics/CFSGTwistedDProjectiveRootFamily.lean)
+proves that arbitrary original projective automorphisms preserve its
+conjugate root family. The actual fixed-field singular pair frames are
+constructed in
+[`CFSGTwistedDSingularPairOrbit`](SymmetricSubgroupAsymptotics/CFSGTwistedDSingularPairOrbit.lean).
+Exact fixed-field plane labels and faithfulness of the original
+automorphism action are now proved
+([`CFSGTwistedDPlaneActionFaithful`](SymmetricSubgroupAsymptotics/CFSGTwistedDPlaneActionFaithful.lean)).
+Incidence and point reconstruction and the outer-order count remain open.
+
+For triality,
+[`CFSGTrialityGeckFixedDerivedMatrixLift`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckFixedDerivedMatrixLift.lean)
+constructs actual fixed matrix lifts of derived fixed actions. This uses
+the checked central kernel and a general central-difference argument;
+it does not assert fixed lifts for arbitrary fixed elements.
+[`CFSGTrialityGeckFixedPositiveSylow`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckFixedPositiveSylow.lean)
+constructs a Sylow subgroup with soluble normalizer in the actual matrix
+fixed group, including characteristics two and three. The proof uses
+actual Bruhat uniqueness for an element with nonzero simple leading
+coordinates. The original projective transfer is now proved in
+[`CFSGTrialityGeckDerivedProjectiveImage`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckDerivedProjectiveImage.lean):
+the same original triality model has a Sylow subgroup with soluble
+normalizer, conditional only on its original simplicity. Generation by
+two conjugate Sylows is still open; the optional T1 callback boundary
+above is unchanged.
+
 
 The shared folded-root continuation proves that the same generated Geck Lie
 algebra is spanned by its own homogeneous elements. Integer norm bounds and

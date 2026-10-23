@@ -31,6 +31,22 @@ only for the outer-order budget. Higher unitary ranks likewise still require
 their outer-order budget. This optional endpoint is not a theorem from CFSG alone.
 The canonical public seven-input boundary remains unchanged.
 
+Further checked infrastructure narrows the work behind these callbacks.
+For higher unitary ranks, actual local semilinear representatives now have
+one common field component on all maximal singular spaces, by a proved
+maximal-space exchange and gallery argument
+(`CFSGTwistedAUnitaryGlobalFieldComponent.lean`). This does not yet give a
+global vector-space representative or the remaining outer-order bound.
+The twisted-D continuation identifies the actual Sylow centre with the
+fixed field, its projective root family, and actual singular pair frames.
+For triality, derived fixed actions admit fixed matrix lifts through the
+proved central kernel. A Sylow subgroup with soluble normalizer is now
+constructed in the actual matrix fixed group and transferred to the same
+original projective model in every characteristic
+(`CFSGTrialityGeckDerivedProjectiveImage.lean`). Generation by two such
+Sylows remains a separate obligation; these intermediate theorems do not
+remove another published input.
+
 Every application of an external bound retains its actual group action,
 faithful degree, normality and coefficient-field hypotheses. An abstract
 quotient need not inherit the faithful permutation degree of its source.
