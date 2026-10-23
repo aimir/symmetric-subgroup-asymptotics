@@ -992,8 +992,16 @@ vectors span the entire Lie algebra
 The integral divided-power equations also prove the required vanishing
 on the second root-string vector after characteristic-three base change
 ([`CFSGGTwoOriginalCharacteristicThreeString`](SymmetricSubgroupAsymptotics/CFSGGTwoOriginalCharacteristicThreeString.lean)).
-Linear independence, a complete integral basis and the actual exceptional
-isogeny/fixed-root correspondence are not yet proved by these statements;
+Fourteen unit-entry matrix coordinates now prove a complete integral
+basis and its base change in every field. The same original tensor
+action is faithful, giving an unconditional equivalence of the original
+G2 group with its native matrix group and, for field order at least
+three, its projective version
+([`CFSGGTwoOriginalIntegralBasis`](SymmetricSubgroupAsymptotics/CFSGGTwoOriginalIntegralBasis.lean),
+[`CFSGGTwoOriginalFieldBasis`](SymmetricSubgroupAsymptotics/CFSGGTwoOriginalFieldBasis.lean),
+[`CFSGGTwoOriginalProjectiveNaturalEquivalence`](SymmetricSubgroupAsymptotics/CFSGGTwoOriginalProjectiveNaturalEquivalence.lean)).
+This bridge does not assume simplicity of the ordinary G2 model.
+The exceptional isogeny and fixed-root correspondence remain open;
 no Ree family is removed from the T1 callbacks at this stage.
 
 The original twisted E6 good-Sylow theorem is
