@@ -804,7 +804,7 @@ same original quotient gives `q^(r-2) <= ell`
 The complete bound removes this family from the simple-index callback
 ([`CFSGTwistedDOuterBudget`](SymmetricSubgroupAsymptotics/CFSGTwistedDOuterBudget.lean)).
 
-[`CFSGSevenTargetsGTwoOuter`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsGTwoOuter.lean)
+[`CFSGSevenTargetsReeGTwoGoodSylow`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsReeGTwoGoodSylow.lean)
 threads these completed model cases, including the entire unitary and
 twisted-D branches and the original twisted E6 good-Sylow data, all unitary and twisted-D index squares,
 their full outer-order budgets, the original G2, triality, F4 and twisted E6 index squares, and the
@@ -820,8 +820,11 @@ twisted-D tags are also absent from the simple-index callback. Original
 twisted E6, triality and F4 are now absent from that callback as well:
 their full outer-order budgets and index squares are proved.
 Original G2 is now absent from both callbacks: its least-index square
-and full outer-order budget are proved. The effective remaining model
-families are ReeG2, ReeF4, Tits and the 26 sporadic tags.
+and full outer-order budget are proved. The actual original ReeG2
+good-Sylow theorem is now also threaded through this endpoint: the
+good-Sylow callback retains only ReeF4, Tits and the 26 sporadic tags.
+The independent simple-index/outer-order callback still retains ReeG2,
+ReeF4, Tits and those sporadic tags.
 The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
@@ -1010,6 +1013,11 @@ complete alternating and E6/E7/E8 consumers, retaining the literal
 surviving simple-model witness and its original degree form in every
 remaining bounded case
 ([`PrimitiveAllDegreeSubnormalCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeSubnormalCFSGReduction.lean)).
+A further actual-model refinement leaves only finite field/rank parameter
+sets for the bounded classical branches, retaining the same original
+subnormal subgroup and degree witness
+([`PrimitiveAllDegreeFiniteClassicalCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeFiniteClassicalCFSGReduction.lean)).
+The parameter bounds themselves do not discharge those finite cases.
 The remaining nonaffine types, bounded cases of the other primitive
 simple types below 1024, and the general transitive assembly remain open; the general published
 class-count input is retained.
@@ -1078,8 +1086,20 @@ group. A regular such square excludes every nonidentity positive element
 from the full centre of the derived group. The positive 3-group therefore
 embeds faithfully in the actual pinned Ree group, still with order `q^3`
 ([`CFSGReeGTwoPositiveCentralQuotient`](SymmetricSubgroupAsymptotics/CFSGReeGTwoPositiveCentralQuotient.lean)).
-The full fixed Bruhat and automorphism bounds remain open;
-ReeG2 is still retained in the T1 model callbacks.
+The full original fixed Bruhat decomposition is now proved by unique
+native-flag factorization, without assuming fixed-point lifting. It gives
+the exact fixed-group order `q^3*(q-1)*(q^3+1)`, proves that the positive
+group is Sylow, and identifies its normalizer with the soluble Borel
+([`CFSGReeGTwoFixedFactorDescent`](SymmetricSubgroupAsymptotics/CFSGReeGTwoFixedFactorDescent.lean),
+[`CFSGReeGTwoFixedCardinalitySylow`](SymmetricSubgroupAsymptotics/CFSGReeGTwoFixedCardinalitySylow.lean)).
+The two-root subgroup is normal in the full fixed group and contained in
+its derived subgroup. Its nontrivial normal image in the actual simple
+pinned derived/central quotient is therefore the whole quotient. This
+proves the original good-Sylow theorem without asserting perfectness or
+simplicity of the full fixed group
+([`CFSGReeGTwoOriginalGoodSylow`](SymmetricSubgroupAsymptotics/CFSGReeGTwoOriginalGoodSylow.lean)).
+ReeG2 no longer occurs in the good-Sylow callback; its separate index and
+automorphism bounds still remain in the other T1 model callback.
 The actual positive subgroup and torus also form a faithful soluble
 semidirect product of order `q^3*(q-1)` in the original fixed group.
 The positive centre is exactly its last free coordinate, of order `q`;
@@ -1093,8 +1113,13 @@ two actual 26-dimensional actions of the same folded F4 group on its
 E6 Geck module: the image of `1+P`, and the quotient
 `Fix(P)/range(1+P)` for the actual diagram involution. Explicit bases
 and their root-label bijection are checked. This is representation
-infrastructure; exceptional covariance and unconditional correspondence
-with the original F4 source still require proof
+infrastructure. Exceptional covariance for all four positive simple
+root generators is proved on these same two actions, with the field
+parameter squared exactly on the short-root side
+([`CFSGFFourE6NormQuotientSelectedCovariance`](SymmetricSubgroupAsymptotics/CFSGFFourE6NormQuotientSelectedCovariance.lean),
+[`CFSGFFourE6NormQuotientOuterCovariance`](SymmetricSubgroupAsymptotics/CFSGFFourE6NormQuotientOuterCovariance.lean)).
+Negative-root transport and unconditional correspondence with the original
+F4 source still require proof
 ([`CFSGFFourE6CharacteristicTwoNormBasis`](SymmetricSubgroupAsymptotics/CFSGFFourE6CharacteristicTwoNormBasis.lean),
 [`CFSGFFourE6CharacteristicTwoQuotientAction`](SymmetricSubgroupAsymptotics/CFSGFFourE6CharacteristicTwoQuotientAction.lean)).
 
