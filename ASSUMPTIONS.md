@@ -16,6 +16,16 @@ inputs. The argument is not claimed to be CFSG-free. Binary action coverage,
 nonbinary transitive classification and primitive classification have distinct
 scopes.
 
+The current optional CFSG endpoint is
+`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_unitary_square`
+in [`CFSGSevenTargetsUnitarySquare.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsUnitarySquare.lean).
+It still requires five published inputs and two explicit residual model
+callbacks in addition to the pinned classification. Every admissible
+unitary index square and the lower bound `q^r <= ell` are proved internally;
+the unitary part of the remaining simple-index callback asks only for its
+outer-order budget. This optional endpoint is not a theorem from CFSG alone.
+The canonical public seven-input boundary remains unchanged.
+
 Every application of an external bound retains its actual group action,
 faithful degree, normality and coefficient-field hypotheses. An abstract
 quotient need not inherit the faithful permutation degree of its source.

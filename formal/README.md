@@ -734,8 +734,22 @@ Rank three is also proved, including q=2
 Its actual first-point orbit lies on a nonzero Hermitian polynomial of
 degree q+1. The proved Schwartz--Zippel count, with every unit-scalar fibre
 retained, bounds that orbit by q^6; the actual quotient order is strictly
-greater than q^12. Rank two and the unitary outer-order budget remain open;
-the whole unitary simple-index callback is not discharged yet.
+greater than q^12. Rank two is also proved for every classifier-admissible
+field
+([`CFSGUnitaryRankTwoIndexSquare`](SymmetricSubgroupAsymptotics/CFSGUnitaryRankTwoIndexSquare.lean)).
+Its actual point orbit gives `ell*(q-1) <= q^4`; literal upper, opposite and
+torus images give `q^6*(q^2-1) <= 3*|G|`. The torus kernel bound is proved
+from its unipotent action, without assuming a centre or group-order formula.
+[`CFSGUnitaryAdmissibleIndexSquare`](SymmetricSubgroupAsymptotics/CFSGUnitaryAdmissibleIndexSquare.lean)
+combines every admissible rank and field. The unitary outer-order budget
+remains open.
+
+The same original groups satisfy `q^r <= ell` in every admissible rank
+([`CFSGTwistedAUnitaryAdmissibleIndexLower`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryAdmissibleIndexLower.lean)).
+The proof counts actual Heisenberg orbits and retains arbitrary proper
+prime-field central subspaces. Their actual upper centre is the literal
+q-element central root line
+([`CFSGTwistedAUnitaryUpperCenter`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryUpperCenter.lean)).
 
 The original twisted-D derived image also has a defining-characteristic
 Sylow subgroup with soluble normalizer
@@ -745,19 +759,26 @@ Its whole natural preimage is literally fixed by the twist
 Fixed-chain parameters, literal paired-root tori, and the complete
 nonzero singular-vector normalization are proved in that same derived image
 ([`CFSGTwistedDSingularVectorNormalization`](SymmetricSubgroupAsymptotics/CFSGTwistedDSingularVectorNormalization.lean)).
-The projective transport is also proved on this actual derived image;
-companion normalization and relative generation remain open. The twisted-D callback is not
-discharged by these prerequisites alone.
+The stronger normalization by literal relative-root words is also proved,
+including complete hyperbolic-pair normalization
+([`CFSGTwistedDRelativeHyperbolicPairNormalization`](SymmetricSubgroupAsymptotics/CFSGTwistedDRelativeHyperbolicPairNormalization.lean)).
+Its companion shear is a proved product of actual root words, including
+characteristic two. Frame induction and the remaining low-rank torus
+index are still open. The twisted-D callback is not discharged by these
+prerequisites alone.
 
-[`CFSGSevenTargetsUnitaryExceptionalE`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsUnitaryExceptionalE.lean)
+[`CFSGSevenTargetsUnitarySquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsUnitarySquare.lean)
 threads these completed model cases, including the entire unitary branch
-and the sufficient E6/E7/E8 simple-index bounds, into T1 and AllTargets.
+of good-Sylow data, all unitary index squares, and the sufficient E6/E7/E8
+simple-index bounds, into T1 and AllTargets.
 Its parameters are CFSG, five published inputs (general class count, the
 two Tracey inputs, labelled transitive count, and ordinary permutation
 rank), and **two still-unproved model callbacks**: the remaining good-Sylow
 cases and the remaining sufficient simple-index/outer bounds. E6/E7/E8
 are absent from both callbacks, and all twisted-A tags are absent from the
-good-Sylow callback. The current family and endpoint audits use only
+good-Sylow callback. The simple-index callback asks only for the outer-order
+budget on twisted-A tags; their numerical index squares are proved.
+The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
 continues to have seven published inputs.
@@ -772,3 +793,9 @@ on the original F4 image, in every characteristic
 It proves the literal full-root action and equality of actual action ranges;
 it does not supply F4 group recognition, a good-Sylow theorem, or an outer
 bound. Those family obligations remain explicit.
+For three orthogonal roots the integral operator formula retains its genuine
+cubic coefficient, with three independent parameters
+([`CFSGNormTwoCoordinateOriginalParameterizedTriple`](SymmetricSubgroupAsymptotics/CFSGNormTwoCoordinateOriginalParameterizedTriple.lean)).
+Rational-to-integral transfer and the actual image submodule prove this on
+the original source in every characteristic, including three, without
+dividing by a factorial or assuming representation faithfulness.
