@@ -17,8 +17,8 @@ nonbinary transitive classification and primitive classification have distinct
 scopes.
 
 The current optional CFSG endpoint is
-`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_fFour_twistedE6_index_squares`
-in [`CFSGSevenTargetsFFourTwistedE6IndexSquares.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsFFourTwistedE6IndexSquares.lean).
+`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_fFour_outer`
+in [`CFSGSevenTargetsFFourOuter.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsFFourOuter.lean).
 It still requires five published inputs and two explicit residual model
 callbacks in addition to the pinned classification. Every admissible
 unitary index square and the lower bound `q^r <= ell` are proved internally;
@@ -27,16 +27,15 @@ in either callback. The whole twisted-D good-Sylow branch is
 also proved, including the central-cocycle preimage and generation by two
 p-subgroups; no twisted-D tag remains in that callback. Its least-index
 square and full outer-order budget are also proved internally. No twisted-D
-tag remains in either callback. The original triality group now also has proved
-good-Sylow data, so triality is absent from that callback. Its least-index
-square is also proved; only its outer-order budget remains in the second
-callback. The original F4 good-Sylow
-case is now also proved and absent from that callback. The original
-twisted E6 good-Sylow case is also proved in every field and characteristic
-and is absent from the first callback. The original F4 and twisted E6
-least-index squares are now also proved, including q=2; only their
-outer-order obligations remain in the second callback. This optional
-endpoint is not a theorem from CFSG alone.
+tag remains in either callback. Original triality, F4 and twisted E6 now
+also have proved good-Sylow data, least-index squares and complete
+outer-order budgets, including q=2. These three tags are absent from
+both callbacks. Their original-model outer bounds are respectively
+`3*f`, `2*f`, and `6*f` for `q=p^f`. The effective remaining model families
+are G2 (simple-index/outer only), ReeG2, ReeF4, Tits and the 26 sporadic
+tags. No general theorem about these remaining families is supplied by
+the classification proposition alone. This optional endpoint is not a
+theorem from CFSG alone.
 The canonical public seven-input boundary remains unchanged.
 
 Further checked infrastructure narrows the work behind these callbacks.
@@ -94,20 +93,27 @@ give `q^24 <= |G|`. The actual q-element root line survives the central
 quotient, and its conjugate family factors through the counted matrix
 family (`CFSGTrialityGeckOriginalIndexSquare.lean`). This includes `q=2`
 and does not assume an exceptional group-order formula. Triality's
-outer-order budget remains open; another whole published input has not
-been removed.
+complete outer-order budget is now proved: literal cubic norm
+surjectivity couples the field components, the actual signed simple
+charts determine the original automorphism, and inner normalization
+leaves at most `3*f` outer classes.
 The actual fixed positive commutator subgroup is now proved to be precisely
 the kernel of the original simple leading coordinates, including `q=2`
 and characteristic three
 (`CFSGTrialityGeckFixedPositiveDerivedKernel.lean`). This uses actual fixed
-word and commutator lifts, not a fixed-quotient lifting assumption; it does
-not yet discharge the outer-order budget.
+word and commutator lifts, not a fixed-quotient lifting assumption. The
+outer reconstruction uses these proved identities internally.
 For F4, the literal folded root matrices embed into E6. A regular positive
 element and uniqueness of its ambient Sylow identify an actual F4 Sylow
 with soluble normalizer. The two signed folded p-subgroups generate the
 same original action image, proving its good-Sylow theorem
 (`CFSGFFourOriginalGoodSylow.lean`). No identification with an externally
-named F4 matrix group is assumed. F4's least-index square is now proved; its outer-order bound remains open.
+named F4 matrix group is assumed. F4's least-index square and outer-order
+budget are now proved. The actual signed-root labels have index at most
+two, allowing path reversal in characteristic two. Their kernel has one
+common field automorphism; the actual product torus realizes all four
+scalar coordinates. Faithfulness of the original signed parameters
+proves `|Out| <= 2*f`, without an automorphism-lifting premise.
 
 For twisted E6, the entire fixed upper matrix group has preimages in the
 original derived fixed source. An actual relative Bruhat cover retains
@@ -119,7 +125,10 @@ inclusion. These two p-subgroups generate the same original derived
 action image, whose Sylow normalizer is already proved soluble. The
 original projective equivalence transports the resulting good-Sylow
 witness (`CFSGTwistedE6OriginalGoodSylow.lean`). No source-faithfulness,
-torus-recognition, or fixed-point lifting assumption is added.
+torus-recognition, or fixed-point lifting assumption is added. The
+complete original outer bound `|Out| <= 6*f` is also proved, using the
+actual scalar image of index at most three and one quadratic-field
+automorphism. It is threaded through the same T1 endpoint.
 
 Every application of an external bound retains its actual group action,
 faithful degree, normality and coefficient-field hypotheses. An abstract
@@ -530,7 +539,7 @@ The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now prove
 
 `CFSGPrimitiveSublinearBounds.lean` proves that those estimates are uniformly sublinear across all actual primitive actions. Its first applications are an eventual c=1 relative-character tail and an eventual three-tenths primitive chief-weight tail. The statements retain only the displayed simple-index/Out and, where used, simple-two-generation inputs; they do not invoke the sharp primitive inputs. These are infinite-tail replacements with a uniform eventual threshold, not proofs of the existing cutoffs 34/45 or of the intervening bounded ranges. The public T1 premises are unchanged.
 
-The original untwisted F₄ parity branch is now proved (`CFSGFFourEvenOrderRefinement.lean`). The actual E₆ fold satisfies the pinned F₄ Serre relations; a long-root Weyl word has fourth power one and is noncentral on the same original image, in every characteristic. This removes precisely F₄ from the optional parity residual. The original F₄ good-Sylow theorem is also proved (`CFSGFFourOriginalGoodSylow.lean`); its least-index square is now proved, its outer-order bound remains open, and the public seven-input boundary is unchanged.
+The original untwisted F₄ parity branch is now proved (`CFSGFFourEvenOrderRefinement.lean`). The actual E₆ fold satisfies the pinned F₄ Serre relations; a long-root Weyl word has fourth power one and is noncentral on the same original image, in every characteristic. This removes precisely F₄ from the optional parity residual. The original F₄ good-Sylow theorem is also proved (`CFSGFFourOriginalGoodSylow.lean`), as are its least-index square and complete outer-order budget. The optional endpoint removes this model from both callbacks; the canonical public seven-input boundary is unchanged.
 
 The coarse all-subgroup upper bound is now derived from the retained
 Aschbacher–Guralnick input alone (`CFSGOrdinarySubgroupUpperFromSoluble`).

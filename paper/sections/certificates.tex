@@ -85,6 +85,23 @@ final theorem. The project-specific source, capacity, marked-moment and
 summation statements are proved internally. Both final exports have only
 the standard logical axioms of Lean in addition to their stated parameters.
 
+An optional development starts from a pinned formulation of CFSG and
+proves model-specific inputs on its original concrete groups. In
+particular, for $q=p^f$ it establishes
+\[
+ |\operatorname{Out}(F_4(q))|\leq2f,\qquad
+ |\operatorname{Out}({}^3D_4(q))|\leq3f,\qquad
+ |\operatorname{Out}({}^2E_6(q))|\leq6f.
+\]
+The proofs include every characteristic, retain the actual signed root
+charts and inner scalar tori, and do not assume that arbitrary abstract
+automorphisms lift to the matrix source. Together with proved index and
+Sylow bounds, they remove these families from the optional reduction.
+That reduction still has explicit residual model hypotheses and five
+published counting or generation inputs; it is not a proof from CFSG
+alone. The seven-input theorem stated above remains the canonical
+formalization of the asymptotic results.
+
 The coarse all-subgroup estimate is derived internally from the retained
 soluble-generation input alone. For soluble primitive actions, the
 composition and subgroup-rank bounds used in its large-orbit step follow

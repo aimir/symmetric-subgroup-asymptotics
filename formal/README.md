@@ -492,7 +492,7 @@ The odd-B intrinsic packet (`CFSGOrthogonalBProjectiveLongRoots.lean`) now prove
 
 `CFSGPrimitiveSublinearBounds.lean` proves that those estimates are uniformly sublinear across all actual primitive actions. Its first applications are an eventual c=1 relative-character tail and an eventual three-tenths primitive chief-weight tail. The statements retain only the displayed simple-index/Out and, where used, simple-two-generation inputs; they do not invoke the sharp primitive inputs. These are infinite-tail replacements with a uniform eventual threshold, not proofs of the existing cutoffs 34/45 or of the intervening bounded ranges. The public T1 premises are unchanged.
 
-The original untwisted F₄ parity branch is now proved (`CFSGFFourEvenOrderRefinement.lean`). The actual E₆ fold satisfies the pinned F₄ Serre relations; a long-root Weyl word has fourth power one and is noncentral on the same original image, in every characteristic. This removes precisely F₄ from the optional parity residual. The original F₄ good-Sylow theorem is also proved (`CFSGFFourOriginalGoodSylow.lean`); its least-index square is now proved, its outer-order bound remains open, and the public seven-input boundary is unchanged.
+The original untwisted F₄ parity branch is now proved (`CFSGFFourEvenOrderRefinement.lean`). The actual E₆ fold satisfies the pinned F₄ Serre relations; a long-root Weyl word has fourth power one and is noncentral on the same original image, in every characteristic. This removes precisely F₄ from the optional parity residual. The original F₄ good-Sylow theorem is also proved (`CFSGFFourOriginalGoodSylow.lean`), as are its least-index square and complete outer-order budget. The public seven-input boundary is unchanged; the optional CFSG endpoint below removes this model from both residual callbacks.
 
 The optional soluble-generation reduction now proves actual good-Sylow
 data for every original A, B, C, D and Suzuki model
@@ -804,7 +804,7 @@ same original quotient gives `q^(r-2) <= ell`
 The complete bound removes this family from the simple-index callback
 ([`CFSGTwistedDOuterBudget`](SymmetricSubgroupAsymptotics/CFSGTwistedDOuterBudget.lean)).
 
-[`CFSGSevenTargetsTwistedE6Outer`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedE6Outer.lean)
+[`CFSGSevenTargetsFFourOuter`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsFFourOuter.lean)
 threads these completed model cases, including the entire unitary and
 twisted-D branches and the original twisted E6 good-Sylow data, all unitary and twisted-D index squares,
 their full outer-order budgets, the original triality, F4 and twisted E6 index squares, and the
@@ -817,9 +817,8 @@ are absent from both callbacks, and all twisted-A and twisted-D tags are
 absent from the good-Sylow callback. The original triality case is now also
 absent from that callback, as are the original F4 and twisted E6 cases. All twisted-A and
 twisted-D tags are also absent from the simple-index callback. Original
-twisted E6 is now absent from that callback as well: its full outer-order
-budget is proved. For triality and F4 that callback asks only for the
-outer-order budget; their index squares are supplied internally.
+twisted E6, triality and F4 are now absent from that callback as well:
+their full outer-order budgets and index squares are proved.
 The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
@@ -859,6 +858,18 @@ kernel when `b >= 12`
 An explicit shrink-and-restore injection on partitions proves the needed
 Fibonacci bound, so no finite partition census is assumed.
 
+For every actual affine profile, every subgroup now satisfies the
+class-count cube bound except possibly at degrees `4,8,9,16,32`
+([`AffineClassFiveDegreeResidual`](SymmetricSubgroupAsymptotics/AffineClassFiveDegreeResidual.lean)).
+The proof covers all degrees at least 64, all prime degrees, all degrees
+`p^2` for primes `p >= 5`, and all degrees `p^3` for primes `p >= 3`.
+The prime-degree argument proves the actual Frobenius class formula;
+the prime-power argument bounds automorphisms using an actual generating
+set of size at most `log_p(|V|)` in the original regular subgroup.
+Neither argument assumes a primitive catalogue or elementary abelianness.
+The five remaining affine degrees and the nonaffine class-count argument
+are still open; the general published class-count input is retained.
+
 The original twisted E6 good-Sylow theorem is
 [`CFSGTwistedE6OriginalGoodSylow.typeTwistedE6_goodSylowPrime`](SymmetricSubgroupAsymptotics/CFSGTwistedE6OriginalGoodSylow.lean).
 Its only parameters are the prime power and simplicity of the original
@@ -886,7 +897,8 @@ root line before their semilinear fixedness is used. The fixed-upper
 cardinal stays symbolic, and strictness comes from its proved square being
 less than the original group order. No supplied order formula, root-family
 recognition, or centralizer-capacity hypothesis remains in these theorems.
-Their outer-order bounds remain open.
+Their complete outer-order budgets are now proved and threaded into the
+optional endpoint above.
 
 The complete unitary geometry is checked on the original action.
 [`CFSGTwistedAUnitarySemilinearPieces`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitarySemilinearPieces.lean)
@@ -1012,7 +1024,8 @@ Opposite disjoint Sylows give `q^24 <= |G|` through the actual central
 quotient. The original q-element root subgroup is nontrivial and proper;
 its conjugate family is a cardinality factor of the counted matrix family.
 Thus `ell^2 < |G|` in every field, including `q=2`, without a supplied
-exceptional group-order formula. Its outer-order budget remains open.
+exceptional group-order formula. Its complete outer-order budget is
+proved below.
 
 The actual fixed positive group's commutator subgroup is also now identified
 with the kernel of its original four simple leading coordinates
@@ -1040,7 +1053,13 @@ same generated group
 Their square-scalar action on the injective original short-root chart
 also proves `q^3 <= 2*ell` for every proper subgroup index `ell`
 ([`CFSGTrialityGeckPermutationDegree`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckPermutationDegree.lean)).
-Automorphism reconstruction and the full outer-order count remain open.
+Actual cubic norm surjectivity couples the two field components, and the
+four signed simple charts determine the original automorphism. Counting
+inner-normalized representatives proves `|Out| <= 3*f` for `q = p^f`,
+including `q=2`
+([`CFSGTrialityGeckOriginalOuterBound`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckOriginalOuterBound.lean)).
+Together with the proved degree lower bound this discharges the complete
+outer budget and removes triality from both T1 model callbacks.
 
 
 The shared folded-root continuation proves that the same generated Geck Lie
@@ -1057,7 +1076,7 @@ regular element lies in a unique ambient E6 Sylow, whose intersection
 gives an F4 Sylow with soluble normalizer. The checked original action
 range transfers generation and the Sylow data to the original model.
 No externally named matrix-group recognition is assumed. F4's least-index
-square is now proved; its outer-order obligation remains open.
+square and complete outer-order budget are now proved.
 The two kernels from the same literal folded group are now proved central:
 first its restricted action on the original F4 image, then its projection
 to the original simple projective model
@@ -1072,6 +1091,16 @@ original automorphism can be adjusted by an inner automorphism to preserve
 the opposed Sylows and permute these four actual root charts
 ([`CFSGFFourE6OriginalRootAction`](SymmetricSubgroupAsymptotics/CFSGFFourE6OriginalRootAction.lean)).
 The statement allows root-length interchange in characteristic two.
+The actual signed root commutation graph restricts the label permutation
+to identity or path reversal. Its kernel acts by one common field
+automorphism and four scalars; the literal product torus realizes every
+scalar tuple because the relative Cartan matrix has an integral inverse.
+The signed parameters determine the original automorphism, so counting
+modulo actual inner tori proves `|Out(F4(q))| <= 2*f` for `q=p^f`
+([`CFSGFFourE6OriginalOuterBound`](SymmetricSubgroupAsymptotics/CFSGFFourE6OriginalOuterBound.lean)).
+The same torus gives `q <= ell`; together these discharge the complete
+budget and remove original F4 from both T1 model callbacks, without a
+field-action or automorphism-reconstruction hypothesis.
 For three orthogonal roots the integral operator formula retains its genuine
 cubic coefficient, with three independent parameters
 ([`CFSGNormTwoCoordinateOriginalParameterizedTriple`](SymmetricSubgroupAsymptotics/CFSGNormTwoCoordinateOriginalParameterizedTriple.lean)).
