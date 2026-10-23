@@ -749,7 +749,7 @@ restriction to the actual radical bounds the pair stabilizer by
 `(q^2-1)*2*f`. The proved projective torus kernel costs at most three,
 and a single inner-torus cancellation gives the outer bound.
 No automorphism-lifting or group-recognition premise is used. The higher-rank
-unitary outer-order budget remains open. In those ranks the original
+unitary outer-order budget is now also proved. In those ranks the original
 automorphism group now acts faithfully on all literal singular point
 lines, preserving their full orthogonality relation
 ([`CFSGTwistedAUnitarySingularPointAction`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitarySingularPointAction.lean)).
@@ -804,33 +804,33 @@ same original quotient gives `q^(r-2) <= ell`
 The complete bound removes this family from the simple-index callback
 ([`CFSGTwistedDOuterBudget`](SymmetricSubgroupAsymptotics/CFSGTwistedDOuterBudget.lean)).
 
-[`CFSGSevenTargetsTwistedDOuter`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedDOuter.lean)
+[`CFSGSevenTargetsUnitaryOuter`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsUnitaryOuter.lean)
 threads these completed model cases, including the entire unitary and
-twisted-D branches of good-Sylow data, all unitary and twisted-D index squares, the rank-two unitary outer
-bound, and the sufficient E6/E7/E8 simple-index bounds, into T1 and AllTargets.
+twisted-D branches of good-Sylow data, all unitary and twisted-D index squares,
+their full outer-order budgets, and the sufficient E6/E7/E8 simple-index bounds,
+into T1 and AllTargets.
 Its parameters are CFSG, five published inputs (general class count, the
 two Tracey inputs, labelled transitive count, and ordinary permutation
 rank), and **two still-unproved model callbacks**: the remaining good-Sylow
 cases and the remaining sufficient simple-index/outer bounds. E6/E7/E8
 are absent from both callbacks, and all twisted-A and twisted-D tags are
 absent from the good-Sylow callback. The original triality case is now also
-absent from that callback, as is the original F4 case. Rank-two twisted-A tags are also absent from the
-simple-index callback, as are all twisted-D tags. On higher twisted-A tags
-it asks only for the outer-order budget; their numerical index squares are proved.
+absent from that callback, as is the original F4 case. All twisted-A and
+twisted-D tags are also absent from the simple-index callback.
 The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
 continues to have seven published inputs.
 
-The next unitary geometry stage is checked on the original action.
+The complete unitary geometry is checked on the original action.
 [`CFSGTwistedAUnitarySemilinearPieces`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitarySemilinearPieces.lean)
 constructs representatives on every singular subspace of dimension at
 least three. The shared maximal-space exchange and connected gallery
 propagate their common-plane field agreement, giving one common field
 component on all maximal spaces when the Witt rank is at least three
 ([`CFSGTwistedAUnitaryGlobalFieldComponent`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryGlobalFieldComponent.lean)).
-Global vector-space gluing and the higher-rank outer-order budget remain
-open. Independently,
+The global reconstruction uses these representatives together with the
+actual opposed-space extension and normalized point determination. Independently,
 [`CFSGHermitianTwoByTwoCentroid`](SymmetricSubgroupAsymptotics/CFSGHermitianTwoByTwoCentroid.lean)
 proves the all-characteristic additive rank-one-cone scalar theorem
 without assuming fixed-field linearity; its actual automorphism and
@@ -858,11 +858,19 @@ The literal opposed coordinate halves, their middle-coordinate
 decomposition and their nondegenerate cross-pairing are also proved
 ([`CFSGTwistedAUnitaryHalfDecomposition`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryHalfDecomposition.lean),
 [`CFSGTwistedAUnitaryOpposedPairing`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryOpposedPairing.lean)).
-The normalized five-dimensional middle action is now also proved from
-actual outside-point connectivity and local pieces, and realized by a
-constructed norm-one middle isometry
-([`CFSGTwistedAUnitaryRankFourMiddleDetermination`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryRankFourMiddleDetermination.lean)).
-Actual ambient reconstruction and the final higher-rank outer bound remain open.
+In every odd vector dimension, actual outside-point connectivity and local
+pieces determine a common norm-one middle multiplier
+([`CFSGTwistedAUnitaryOddMiddleDetermination`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryOddMiddleDetermination.lean)).
+The signed middle norm is retained and cancelled only after proving it nonzero.
+The even-dimensional kernel is proved separately in all ranks. The resulting
+[`CFSGTwistedAUnitarySemilinearFactorization`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitarySemilinearFactorization.lean)
+constructs a field automorphism and an actual ambient similitude for every
+original automorphism, with no geometric callback. Scalar-kernel cancellation
+bounds the projective similitude image by the original natural fixed group;
+counting its field factor gives `|Out| <= 2*(r+1)*f`.
+[`CFSGUnitaryCompleteOuterBudget`](SymmetricSubgroupAsymptotics/CFSGUnitaryCompleteOuterBudget.lean)
+combines this with `q^r <= ell` to discharge the outer budget for every
+classifier-admissible unitary tag, including higher-rank fields of order two.
 
 For twisted D,
 [`CFSGTwistedDRelativeUnipotentCenter`](SymmetricSubgroupAsymptotics/CFSGTwistedDRelativeUnipotentCenter.lean)

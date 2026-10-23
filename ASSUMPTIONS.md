@@ -17,18 +17,17 @@ nonbinary transitive classification and primitive classification have distinct
 scopes.
 
 The current optional CFSG endpoint is
-`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_twistedD_outer`
-in [`CFSGSevenTargetsTwistedDOuter.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedDOuter.lean).
+`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_unitary_outer`
+in [`CFSGSevenTargetsUnitaryOuter.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsUnitaryOuter.lean).
 It still requires five published inputs and two explicit residual model
 callbacks in addition to the pinned classification. Every admissible
 unitary index square and the lower bound `q^r <= ell` are proved internally;
-the actual rank-two unitary outer bound is also proved, so that tag is absent
-from the simple-index callback. The whole twisted-D good-Sylow branch is
+the actual outer bound is also proved in every rank, so no unitary tag occurs
+in either callback. The whole twisted-D good-Sylow branch is
 also proved, including the central-cocycle preimage and generation by two
 p-subgroups; no twisted-D tag remains in that callback. Its least-index
 square and full outer-order budget are also proved internally. No twisted-D
-tag remains in either callback. Higher unitary ranks still require their
-outer-order budget. The original triality group now also has proved
+tag remains in either callback. The original triality group now also has proved
 good-Sylow data, so triality is absent from that callback. Its numerical
 index and outer-order obligations are unchanged. The original F4 good-Sylow
 case is now also proved and absent from that callback. This optional
@@ -39,17 +38,22 @@ Further checked infrastructure narrows the work behind these callbacks.
 For higher unitary ranks, actual local semilinear representatives now have
 one common field component on all maximal singular spaces, by a proved
 maximal-space exchange and gallery argument
-(`CFSGTwistedAUnitaryGlobalFieldComponent.lean`). This does not yet give a
-global vector-space representative or the remaining outer-order bound.
+(`CFSGTwistedAUnitaryGlobalFieldComponent.lean`).
 The smaller unitary ranks three and four now also have constructed
 semilinear representatives on every actual maximal singular plane
 (`CFSGTwistedAUnitaryPlaneSemilinearity.lean`), including the smallest
 fields. A common field component on all those planes is also proved
 (`CFSGTwistedAUnitaryLowRankGlobalField.lean`), using actual common-opposite
-planes. The normalized five-dimensional middle action is now realized by
-a constructed norm-one middle isometry
-(`CFSGTwistedAUnitaryRankFourMiddleDetermination.lean`). Actual ambient
-reconstruction and the higher-rank outer bounds remain open.
+planes. Actual ambient reconstruction is now proved uniformly. Opposed
+pieces extend through a nondegenerate complement; mixed-ray normalization
+determines the even-dimensional action, while a connected outside graph
+determines one norm-one middle multiplier in every odd dimension
+(`CFSGTwistedAUnitaryOddMiddleDetermination.lean`). The resulting
+`CFSGTwistedAUnitarySemilinearFactorization.lean` has no geometric callback.
+Counting its actual projective similitude image and field factor gives
+`|Out| <= 2*(r+1)*f`; the existing `q^r <= ell` bound supplies the full
+outer-order budget (`CFSGUnitaryCompleteOuterBudget.lean`). No classical
+group-order or abstract model-recognition premise is added.
 The twisted-D continuation now reconstructs the actual singular points
 from root-product adjacency and common-neighbour counts. Its original
 automorphism action on these fixed-field points is faithful and preserves
