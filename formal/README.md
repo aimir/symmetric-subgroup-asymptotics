@@ -839,7 +839,19 @@ fixed scalar action
 Every resulting base-field automorphism extends to the same original
 quadratic extension by a proved Frobenius power
 ([`CFSGTwistedAFixedFieldAutomorphismLift`](SymmetricSubgroupAsymptotics/CFSGTwistedAFixedFieldAutomorphismLift.lean)).
-These are intermediate reconstruction theorems, not the final outer bound.
+The same coefficients now give actual semilinear maps on every point
+of a canonical two-dimensional star, including the smallest fields
+([`CFSGTwistedAUnitaryStarPointSemilinearity`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryStarPointSemilinearity.lean)).
+Original inner actions agree with the literal natural matrices, so
+actual maximal-plane normalization transports these maps to every
+maximal singular plane in ranks three and four
+([`CFSGTwistedAUnitaryPlaneSemilinearity`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryPlaneSemilinearity.lean)).
+The literal opposed coordinate halves, their middle-coordinate
+decomposition and their nondegenerate cross-pairing are also proved
+([`CFSGTwistedAUnitaryHalfDecomposition`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryHalfDecomposition.lean),
+[`CFSGTwistedAUnitaryOpposedPairing`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryOpposedPairing.lean)).
+These are intermediate reconstruction theorems; global vector-space
+gluing and the final outer bound remain open.
 
 For twisted D,
 [`CFSGTwistedDRelativeUnipotentCenter`](SymmetricSubgroupAsymptotics/CFSGTwistedDRelativeUnipotentCenter.lean)
@@ -853,7 +865,16 @@ constructed in
 Exact fixed-field plane labels and faithfulness of the original
 automorphism action are now proved
 ([`CFSGTwistedDPlaneActionFaithful`](SymmetricSubgroupAsymptotics/CFSGTwistedDPlaneActionFaithful.lean)).
-Incidence and point reconstruction and the outer-order count remain open.
+Actual root products now characterize fixed-field plane adjacency,
+and common-neighbour counts recognize the additional plane-intersection
+relation, including the nonsplit rank-four case
+([`CFSGTwistedDR11Recognition`](SymmetricSubgroupAsymptotics/CFSGTwistedDR11Recognition.lean)).
+Actual quadratic shell and star bridges then reconstruct the original
+singular-point action. It is faithful and preserves quadratic
+orthogonality in every characteristic
+([`CFSGTwistedDPointAction`](SymmetricSubgroupAsymptotics/CFSGTwistedDPointAction.lean),
+[`CFSGTwistedDPointOrthogonality`](SymmetricSubgroupAsymptotics/CFSGTwistedDPointOrthogonality.lean)).
+Global semilinear reconstruction and the outer-order count remain open.
 
 For triality,
 [`CFSGTrialityGeckFixedDerivedMatrixLift`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckFixedDerivedMatrixLift.lean)
@@ -868,7 +889,12 @@ coordinates. The original projective transfer is now proved in
 [`CFSGTrialityGeckDerivedProjectiveImage`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckDerivedProjectiveImage.lean):
 the same original triality model has a Sylow subgroup with soluble
 normalizer, conditional only on its original simplicity. Generation by
-two conjugate Sylows is still open; the optional T1 callback boundary
+two conjugate Sylows is still open. The actual Borel is twist-stable,
+block Bruhat permutations are unique even on the nontrivial Cartan
+block, and every fixed element has a triality-stable Bruhat cell
+([`CFSGTrialityGeckFixedBruhatCell`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckFixedBruhatCell.lean)).
+The cell statement does not assume or establish fixedness of its
+individual factors. The optional T1 callback boundary
 above is unchanged.
 
 
