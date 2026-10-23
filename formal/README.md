@@ -800,7 +800,7 @@ gives `ell <= q^(2*r)`. The strict square inequality follows for every
 `r >= 4` and `q >= 2`, without a supplied classical group-order formula.
 Only its outer-order budget remains in the simple-index callback.
 
-[`CFSGSevenTargetsTwistedDSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedDSquare.lean)
+[`CFSGSevenTargetsTriality`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTriality.lean)
 threads these completed model cases, including the entire unitary and
 twisted-D branches of good-Sylow data, all unitary and twisted-D index squares, the rank-two unitary outer
 bound, and the sufficient E6/E7/E8 simple-index bounds, into T1 and AllTargets.
@@ -809,7 +809,8 @@ two Tracey inputs, labelled transitive count, and ordinary permutation
 rank), and **two still-unproved model callbacks**: the remaining good-Sylow
 cases and the remaining sufficient simple-index/outer bounds. E6/E7/E8
 are absent from both callbacks, and all twisted-A and twisted-D tags are
-absent from the good-Sylow callback. Rank-two twisted-A tags are also absent from the
+absent from the good-Sylow callback. The original triality case is now also
+absent from that callback. Rank-two twisted-A tags are also absent from the
 simple-index callback. On higher twisted-A tags and all twisted-D tags it
 asks only for the outer-order budget; their numerical index squares are proved.
 The current family and endpoint audits use only
@@ -846,6 +847,9 @@ Original inner actions agree with the literal natural matrices, so
 actual maximal-plane normalization transports these maps to every
 maximal singular plane in ranks three and four
 ([`CFSGTwistedAUnitaryPlaneSemilinearity`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryPlaneSemilinearity.lean)).
+Constructed common-opposite planes now propagate the same field component
+to all these low-rank maximal planes, including the smallest fields
+([`CFSGTwistedAUnitaryLowRankGlobalField`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryLowRankGlobalField.lean)).
 The literal opposed coordinate halves, their middle-coordinate
 decomposition and their nondegenerate cross-pairing are also proved
 ([`CFSGTwistedAUnitaryHalfDecomposition`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryHalfDecomposition.lean),
@@ -874,7 +878,13 @@ singular-point action. It is faithful and preserves quadratic
 orthogonality in every characteristic
 ([`CFSGTwistedDPointAction`](SymmetricSubgroupAsymptotics/CFSGTwistedDPointAction.lean),
 [`CFSGTwistedDPointOrthogonality`](SymmetricSubgroupAsymptotics/CFSGTwistedDPointOrthogonality.lean)).
-Global semilinear reconstruction and the outer-order count remain open.
+The actual nonsplit maximal gallery also gives one common field component
+on all maximal singular spaces
+([`CFSGTwistedDGlobalFieldComponent`](SymmetricSubgroupAsymptotics/CFSGTwistedDGlobalFieldComponent.lean)).
+One actual relative-root word simultaneously aligns every opposed maximal
+pair, retaining the anisotropic tail
+([`CFSGTwistedDOpposedPairAlignment`](SymmetricSubgroupAsymptotics/CFSGTwistedDOpposedPairAlignment.lean)).
+Global vector reconstruction and the outer-order count remain open.
 
 For triality,
 [`CFSGTrialityGeckFixedDerivedMatrixLift`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckFixedDerivedMatrixLift.lean)
@@ -889,13 +899,19 @@ coordinates. The original projective transfer is now proved in
 [`CFSGTrialityGeckDerivedProjectiveImage`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckDerivedProjectiveImage.lean):
 the same original triality model has a Sylow subgroup with soluble
 normalizer, conditional only on its original simplicity. Generation by
-two conjugate Sylows is still open. The actual Borel is twist-stable,
+two conjugate Sylows is now proved in
+[`CFSGTrialityGeckGoodSylow`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckGoodSylow.lean).
+The actual Borel is twist-stable,
 block Bruhat permutations are unique even on the nontrivial Cartan
 block, and every fixed element has a triality-stable Bruhat cell
 ([`CFSGTrialityGeckFixedBruhatCell`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckFixedBruhatCell.lean)).
-The cell statement does not assume or establish fixedness of its
-individual factors. The optional T1 callback boundary
-above is unchanged.
+The continuation retains commutator membership in the full preimage of
+the fixed action range. For centrally twisted cells, uniqueness makes
+the root factors fixed and retains the actual central difference in the
+diagonal factor. Actual opposition words then identify the generated
+root action with the original derived action. This removes triality
+from the optional good-Sylow callback above; it asserts no triality
+outer-order bound.
 
 
 The shared folded-root continuation proves that the same generated Geck Lie

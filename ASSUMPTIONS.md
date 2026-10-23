@@ -17,8 +17,8 @@ nonbinary transitive classification and primitive classification have distinct
 scopes.
 
 The current optional CFSG endpoint is
-`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_twistedD_square`
-in [`CFSGSevenTargetsTwistedDSquare.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedDSquare.lean).
+`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_triality`
+in [`CFSGSevenTargetsTriality.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsTriality.lean).
 It still requires five published inputs and two explicit residual model
 callbacks in addition to the pinned classification. Every admissible
 unitary index square and the lower bound `q^r <= ell` are proved internally;
@@ -28,7 +28,9 @@ also proved, including the central-cocycle preimage and generation by two
 p-subgroups; no twisted-D tag remains in that callback. Its least-index
 square is now also proved internally, so its simple-index callback asks
 only for the outer-order budget. Higher unitary ranks likewise still require
-their outer-order budget. This optional endpoint is not a theorem from CFSG alone.
+their outer-order budget. The original triality group now also has proved
+good-Sylow data, so triality is absent from that callback. Its numerical
+index and outer-order obligations are unchanged. This optional endpoint is not a theorem from CFSG alone.
 The canonical public seven-input boundary remains unchanged.
 
 Further checked infrastructure narrows the work behind these callbacks.
@@ -40,23 +42,31 @@ global vector-space representative or the remaining outer-order bound.
 The smaller unitary ranks three and four now also have constructed
 semilinear representatives on every actual maximal singular plane
 (`CFSGTwistedAUnitaryPlaneSemilinearity.lean`), including the smallest
-fields. Their common-field and global reconstruction steps remain open.
+fields. A common field component on all those planes is also proved
+(`CFSGTwistedAUnitaryLowRankGlobalField.lean`), using actual common-opposite
+planes. Global vector reconstruction remains open.
 The twisted-D continuation now reconstructs the actual singular points
 from root-product adjacency and common-neighbour counts. Its original
 automorphism action on these fixed-field points is faithful and preserves
 quadratic orthogonality, including characteristic two
 (`CFSGTwistedDPointAction.lean`, `CFSGTwistedDPointOrthogonality.lean`).
-Semilinear reconstruction and the outer-order count remain open.
+Its local representatives now share one fixed-field component, and a
+single actual relative-root word aligns any opposed maximal pair
+(`CFSGTwistedDGlobalFieldComponent.lean`,
+`CFSGTwistedDOpposedPairAlignment.lean`). Global vector reconstruction
+and the outer-order count remain open.
 For triality, derived fixed actions admit fixed matrix lifts through the
 proved central kernel. A Sylow subgroup with soluble normalizer is now
 constructed in the actual matrix fixed group and transferred to the same
 original projective model in every characteristic
-(`CFSGTrialityGeckDerivedProjectiveImage.lean`). Generation by two such
-Sylows remains a separate obligation. Actual Borel stability, Weyl-block
-Bruhat uniqueness and triality-invariance of fixed elements' Bruhat cells
-are now proved (`CFSGTrialityGeckFixedBruhatCell.lean`); this does not
-assert that all factors are fixed. These intermediate theorems do not
-remove another published input.
+(`CFSGTrialityGeckDerivedProjectiveImage.lean`). Generation by two
+conjugate Sylows is now proved on the same original model
+(`CFSGTrialityGeckGoodSylow.lean`). The proof retains the full preimage of
+the fixed action range and its derived subgroup. Centrally twisted Bruhat
+coordinates place the actual central difference in the diagonal factor;
+the root coordinates are fixed. This discharges the triality good-Sylow
+case without assuming fixed matrix lifts for arbitrary fixed actions.
+It does not remove another whole published input.
 
 Every application of an external bound retains its actual group action,
 faithful degree, normality and coefficient-field hypotheses. An abstract
