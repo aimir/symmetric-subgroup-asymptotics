@@ -9,7 +9,6 @@ the emitter itself supplies no completeness assumption. -/
 set_option autoImplicit false
 set_option Elab.async false
 noncomputable section
-open scoped Classical
 namespace SymmetricSubgroupAsymptotics.CFSGNormTwoCoordinateFiniteRootMenu
 open CFSGIntegerMatrixPairing CFSGNormTwoRootPairing CFSGNormTwoGeckWeylLatticeLinear
 open CFSGNormTwoGeckRootWordOrbit CFSGNormTwoCoordinatePositiveRootGenerators
