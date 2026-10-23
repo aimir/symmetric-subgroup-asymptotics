@@ -722,15 +722,26 @@ Its rank-two induction includes the raw two-element-field base without
 asserting that this small base is perfect. Original derived-image and
 central-quotient transport close the whole classifier twisted-A branch,
 with no model-identification premise.
+The same literal groups now have the exact upper order
+`q^(r*(r+1)/2)`
+([`CFSGTwistedAUnitaryUpperCardinality`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryUpperCardinality.lean)).
+Disjoint opposite Sylows survive the actual central quotient. The original
+projective point stabilizer then proves `ell^2 < |G|` in every rank at least
+four
+([`CFSGTwistedAUnitaryHigherIndexSquare`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryHigherIndexSquare.lean)).
+The low-rank square cases and unitary outer-order budget are separate open
+obligations; the whole unitary simple-index callback is not discharged yet.
 
 The original twisted-D derived image also has a defining-characteristic
 Sylow subgroup with soluble normalizer
 ([`CFSGTwistedDDerivedSylowNormalizer`](SymmetricSubgroupAsymptotics/CFSGTwistedDDerivedSylowNormalizer.lean)).
 Its whole natural preimage is literally fixed by the twist
 ([`CFSGTwistedDDerivedFixed`](SymmetricSubgroupAsymptotics/CFSGTwistedDDerivedFixed.lean)).
-Fixed-chain parameters and folded-root vector clearing are proved in that
-same image. The projective transport is now proved on this actual derived
-image; relative generation remains open. The twisted-D callback is not
+Fixed-chain parameters, literal paired-root tori, and the complete
+nonzero singular-vector normalization are proved in that same derived image
+([`CFSGTwistedDSingularVectorNormalization`](SymmetricSubgroupAsymptotics/CFSGTwistedDSingularVectorNormalization.lean)).
+The projective transport is also proved on this actual derived image;
+companion normalization and relative generation remain open. The twisted-D callback is not
 discharged by these prerequisites alone.
 
 [`CFSGSevenTargetsUnitaryExceptionalE`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsUnitaryExceptionalE.lean)
@@ -745,3 +756,14 @@ good-Sylow callback. The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
 continues to have seven published inputs.
+
+
+The shared folded-root continuation proves that the same generated Geck Lie
+algebra is spanned by its own homogeneous elements. Integer norm bounds and
+its invariant Gram form yield cubic adjoint vanishing for two orthogonal
+root degrees. This discharges all short-root fourth-coefficient constraints
+on the original F4 image, in every characteristic
+([`CFSGFFourFullRootAction`](SymmetricSubgroupAsymptotics/CFSGFFourFullRootAction.lean)).
+It proves the literal full-root action and equality of actual action ranges;
+it does not supply F4 group recognition, a good-Sylow theorem, or an outer
+bound. Those family obligations remain explicit.
