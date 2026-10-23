@@ -928,8 +928,8 @@ Consequently the entire alternating simple type is covered for subnormal
 subgroups in this large primitive range. The single-factor statement
 does not bound arbitrary subgroups of an alternating group.
 
-The type-A, type-B, unitary, symplectic, type-D, twisted-D, G2, Suzuki and
-triality simple types are
+The type-A, type-B, unitary, symplectic, type-D, twisted-D, E6, E7, E8,
+G2, Suzuki and triality simple types are
 also covered at every socle factor count, for every original subgroup
 and both raw degree forms, when the primitive degree is at least 1024
 ([`PrimitiveSocleTypeAClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleTypeAClassBound.lean),
@@ -940,11 +940,22 @@ and both raw degree forms, when the primitive degree is at least 1024
 [`PrimitiveSocleTwistedDClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleTwistedDClassBound.lean),
 [`PrimitiveSocleGTwoClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleGTwoClassBound.lean),
 [`PrimitiveSocleSuzukiClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleSuzukiClassBound.lean),
-[`PrimitiveSocleTrialityClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleTrialityClassBound.lean)).
+[`PrimitiveSocleTrialityClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleTrialityClassBound.lean),
+[`PrimitiveSocleExceptionalClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleExceptionalClassBound.lean)).
 The actual natural representations give order ceilings, while literal
 root stars give lower bounds for each proper subgroup's index. One
 shared estimate transports the component and outer orders through the
 original full socle and outer-wreath quotient, retaining its factorial.
+For E6, E7 and E8, finite reflection certificates cover all original
+integral roots with 72, 126 and 240 entries, respectively. Their positive
+parts have 36, 63 and 120 entries. An actual `U-T-word-U` cover and a
+signed root-label bound on original word values give group-order
+ceilings `q^126`, `q^189` and `q^320`. Actual commuting root stars and
+their elementary-row conjugations give proper-index lower bounds
+`q^2`, `q^3` and `q^5`. Together with the proved outer bounds, these
+fit the same component budget in every characteristic, including `q=2`
+([`CFSGExceptionalOriginalOrderUpper`](SymmetricSubgroupAsymptotics/CFSGExceptionalOriginalOrderUpper.lean),
+[`CFSGExceptionalChainStarIndex`](SymmetricSubgroupAsymptotics/CFSGExceptionalChainStarIndex.lean)).
 Twisted D uses its actual faithful action on the fixed space over the
 fixed field, avoiding a larger matrix-space ceiling over the quadratic
 extension. G2 uses its faithful natural eight-dimensional matrices and
