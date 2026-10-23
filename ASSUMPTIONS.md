@@ -17,8 +17,8 @@ nonbinary transitive classification and primitive classification have distinct
 scopes.
 
 The current optional CFSG endpoint is
-`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_fFour`
-in [`CFSGSevenTargetsFFour.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsFFour.lean).
+`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_twistedD_outer`
+in [`CFSGSevenTargetsTwistedDOuter.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedDOuter.lean).
 It still requires five published inputs and two explicit residual model
 callbacks in addition to the pinned classification. Every admissible
 unitary index square and the lower bound `q^r <= ell` are proved internally;
@@ -26,9 +26,9 @@ the actual rank-two unitary outer bound is also proved, so that tag is absent
 from the simple-index callback. The whole twisted-D good-Sylow branch is
 also proved, including the central-cocycle preimage and generation by two
 p-subgroups; no twisted-D tag remains in that callback. Its least-index
-square is now also proved internally, so its simple-index callback asks
-only for the outer-order budget. Higher unitary ranks likewise still require
-their outer-order budget. The original triality group now also has proved
+square and full outer-order budget are also proved internally. No twisted-D
+tag remains in either callback. Higher unitary ranks still require their
+outer-order budget. The original triality group now also has proved
 good-Sylow data, so triality is absent from that callback. Its numerical
 index and outer-order obligations are unchanged. The original F4 good-Sylow
 case is now also proved and absent from that callback. This optional
@@ -46,7 +46,10 @@ semilinear representatives on every actual maximal singular plane
 (`CFSGTwistedAUnitaryPlaneSemilinearity.lean`), including the smallest
 fields. A common field component on all those planes is also proved
 (`CFSGTwistedAUnitaryLowRankGlobalField.lean`), using actual common-opposite
-planes. Global vector reconstruction remains open.
+planes. The normalized five-dimensional middle action is now realized by
+a constructed norm-one middle isometry
+(`CFSGTwistedAUnitaryRankFourMiddleDetermination.lean`). Actual ambient
+reconstruction and the higher-rank outer bounds remain open.
 The twisted-D continuation now reconstructs the actual singular points
 from root-product adjacency and common-neighbour counts. Its original
 automorphism action on these fixed-field points is faithful and preserves
@@ -55,8 +58,16 @@ quadratic orthogonality, including characteristic two
 Its local representatives now share one fixed-field component, and a
 single actual relative-root word aligns any opposed maximal pair
 (`CFSGTwistedDGlobalFieldComponent.lean`,
-`CFSGTwistedDOpposedPairAlignment.lean`). Global vector reconstruction
-and the outer-order count remain open.
+`CFSGTwistedDOpposedPairAlignment.lean`). Global reconstruction now proves
+that every original automorphism acts by an actual field automorphism
+and a linear quadratic similitude
+(`CFSGTwistedDAutomorphismGeometry.lean`). A direct full-isometry index
+of at most four, scalar-kernel cancellation, and the original central
+quotient give `|Out| <= 8f`, improved to `4f` in characteristic two.
+A literal root star in that same quotient gives `q^(r-2) <= ell`. Retaining
+the defining prime in the logarithmic estimate then proves the full
+outer-order budget, with no additional model hypothesis
+(`CFSGTwistedDOuterBudget.lean`).
 For triality, derived fixed actions admit fixed matrix lifts through the
 proved central kernel. A Sylow subgroup with soluble normalizer is now
 constructed in the actual matrix fixed group and transferred to the same

@@ -798,9 +798,13 @@ Two literal hyperbolic-frame charts give `|R| >= q^(8*r-12)`;
 its centre has at most two elements, and the actual fixed-vector orbit
 gives `ell <= q^(2*r)`. The strict square inequality follows for every
 `r >= 4` and `q >= 2`, without a supplied classical group-order formula.
-Only its outer-order budget remains in the simple-index callback.
+Its outer-order budget is now proved as well. A literal root star in the
+same original quotient gives `q^(r-2) <= ell`
+([`CFSGTwistedDIndexStarLower`](SymmetricSubgroupAsymptotics/CFSGTwistedDIndexStarLower.lean)).
+The complete bound removes this family from the simple-index callback
+([`CFSGTwistedDOuterBudget`](SymmetricSubgroupAsymptotics/CFSGTwistedDOuterBudget.lean)).
 
-[`CFSGSevenTargetsFFour`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsFFour.lean)
+[`CFSGSevenTargetsTwistedDOuter`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedDOuter.lean)
 threads these completed model cases, including the entire unitary and
 twisted-D branches of good-Sylow data, all unitary and twisted-D index squares, the rank-two unitary outer
 bound, and the sufficient E6/E7/E8 simple-index bounds, into T1 and AllTargets.
@@ -811,8 +815,8 @@ cases and the remaining sufficient simple-index/outer bounds. E6/E7/E8
 are absent from both callbacks, and all twisted-A and twisted-D tags are
 absent from the good-Sylow callback. The original triality case is now also
 absent from that callback, as is the original F4 case. Rank-two twisted-A tags are also absent from the
-simple-index callback. On higher twisted-A tags and all twisted-D tags it
-asks only for the outer-order budget; their numerical index squares are proved.
+simple-index callback, as are all twisted-D tags. On higher twisted-A tags
+it asks only for the outer-order budget; their numerical index squares are proved.
 The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
@@ -854,8 +858,11 @@ The literal opposed coordinate halves, their middle-coordinate
 decomposition and their nondegenerate cross-pairing are also proved
 ([`CFSGTwistedAUnitaryHalfDecomposition`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryHalfDecomposition.lean),
 [`CFSGTwistedAUnitaryOpposedPairing`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryOpposedPairing.lean)).
-These are intermediate reconstruction theorems; global vector-space
-gluing and the final outer bound remain open.
+The normalized five-dimensional middle action is now also proved from
+actual outside-point connectivity and local pieces, and realized by a
+constructed norm-one middle isometry
+([`CFSGTwistedAUnitaryRankFourMiddleDetermination`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryRankFourMiddleDetermination.lean)).
+Actual ambient reconstruction and the final higher-rank outer bound remain open.
 
 For twisted D,
 [`CFSGTwistedDRelativeUnipotentCenter`](SymmetricSubgroupAsymptotics/CFSGTwistedDRelativeUnipotentCenter.lean)
@@ -884,7 +891,17 @@ on all maximal singular spaces
 One actual relative-root word simultaneously aligns every opposed maximal
 pair, retaining the anisotropic tail
 ([`CFSGTwistedDOpposedPairAlignment`](SymmetricSubgroupAsymptotics/CFSGTwistedDOpposedPairAlignment.lean)).
-Global vector reconstruction and the outer-order count remain open.
+Global reconstruction now realizes every original automorphism by one
+actual field automorphism and linear quadratic similitude
+([`CFSGTwistedDAutomorphismGeometry`](SymmetricSubgroupAsymptotics/CFSGTwistedDAutomorphismGeometry.lean)).
+A direct elimination of full fixed-field isometries gives index at most
+four over the literal relative-root group
+([`CFSGTwistedDFixedIsometryIndex`](SymmetricSubgroupAsymptotics/CFSGTwistedDFixedIsometryIndex.lean)).
+Scalar-kernel cancellation and the original central quotient then prove
+`|Out| <= 8f`, and `|Out| <= 4f` in characteristic two. Together with the
+proved root-star degree lower bound, the exact prime logarithm proves the
+required outer budget in every admissible rank and field. No global
+reconstruction, isometry-recognition or degree-lower-bound premise remains.
 
 For triality,
 [`CFSGTrialityGeckFixedDerivedMatrixLift`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckFixedDerivedMatrixLift.lean)
