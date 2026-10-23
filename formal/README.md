@@ -800,7 +800,7 @@ gives `ell <= q^(2*r)`. The strict square inequality follows for every
 `r >= 4` and `q >= 2`, without a supplied classical group-order formula.
 Only its outer-order budget remains in the simple-index callback.
 
-[`CFSGSevenTargetsTriality`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTriality.lean)
+[`CFSGSevenTargetsFFour`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsFFour.lean)
 threads these completed model cases, including the entire unitary and
 twisted-D branches of good-Sylow data, all unitary and twisted-D index squares, the rank-two unitary outer
 bound, and the sufficient E6/E7/E8 simple-index bounds, into T1 and AllTargets.
@@ -810,7 +810,7 @@ rank), and **two still-unproved model callbacks**: the remaining good-Sylow
 cases and the remaining sufficient simple-index/outer bounds. E6/E7/E8
 are absent from both callbacks, and all twisted-A and twisted-D tags are
 absent from the good-Sylow callback. The original triality case is now also
-absent from that callback. Rank-two twisted-A tags are also absent from the
+absent from that callback, as is the original F4 case. Rank-two twisted-A tags are also absent from the
 simple-index callback. On higher twisted-A tags and all twisted-D tags it
 asks only for the outer-order budget; their numerical index squares are proved.
 The current family and endpoint audits use only
@@ -920,9 +920,15 @@ its invariant Gram form yield cubic adjoint vanishing for two orthogonal
 root degrees. This discharges all short-root fourth-coefficient constraints
 on the original F4 image, in every characteristic
 ([`CFSGFFourFullRootAction`](SymmetricSubgroupAsymptotics/CFSGFFourFullRootAction.lean)).
-It proves the literal full-root action and equality of actual action ranges;
-it does not supply F4 group recognition, a good-Sylow theorem, or an outer
-bound. Those family obligations remain explicit.
+It proves the literal full-root action and equality of actual action ranges.
+The continuation now proves the original F4 good-Sylow theorem
+([`CFSGFFourOriginalGoodSylow`](SymmetricSubgroupAsymptotics/CFSGFFourOriginalGoodSylow.lean)).
+The signed folded p-subgroups generate the literal matrix group. Their
+regular element lies in a unique ambient E6 Sylow, whose intersection
+gives an F4 Sylow with soluble normalizer. The checked original action
+range transfers generation and the Sylow data to the original model.
+No externally named matrix-group recognition is assumed. F4's remaining
+simple-index and outer-order obligations are unchanged.
 For three orthogonal roots the integral operator formula retains its genuine
 cubic coefficient, with three independent parameters
 ([`CFSGNormTwoCoordinateOriginalParameterizedTriple`](SymmetricSubgroupAsymptotics/CFSGNormTwoCoordinateOriginalParameterizedTriple.lean)).
