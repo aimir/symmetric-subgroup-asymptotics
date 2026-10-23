@@ -919,14 +919,21 @@ The original socle and outer-wreath quotient bound the group order by
 most `5^(m^k-1)` for `m >= 5` and `k >= 2`. The actual proper index is
 at least `m`, so the bound applies without identifying a product action
 ([`PrimitiveSocleAlternatingProductClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleAlternatingProductClassBound.lean)).
-For the single alternating factor, actual subnormal subgroups have at
-most `8*fib(m+1)` classes. A uniform Fibonacci induction pays the cube
-bound at degree at least 1024, including all smaller alternating ranks
-without a group census
-([`PrimitiveSocleAlternatingSubnormalClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleAlternatingSubnormalClassBound.lean)).
-Consequently the entire alternating simple type is covered for subnormal
-subgroups in this large primitive range. The single-factor statement
-does not bound arbitrary subgroups of an alternating group.
+For a single alternating factor, the actual conjugacy-class partition map
+has fibres of size at most two, with two classes possible only for a
+partition into distinct odd parts. A reversible injection from those
+split types to odd-sign partitions proves `k(A_m) <= p(m)` for every
+`m >= 2`. The partition Fibonacci bound pays its class-count cube at
+every `m >= 5`. The exceptional automorphisms at `m=6` are treated
+separately: a small kernel-checked partition menu proves `k(A_6) <= 7`,
+the actual faithful degree-six action identifies its original image,
+and the literal socle order 360 excludes degree seven.
+Together with the product estimate, this closes the alternating
+subnormal class-count consumer at every primitive degree, every socle
+factor count and both original degree forms
+([`AlternatingConjugacyPartitionBound`](SymmetricSubgroupAsymptotics/AlternatingConjugacyPartitionBound.lean),
+[`PrimitiveSocleAlternatingAllDegreesClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleAlternatingAllDegreesClassBound.lean)).
+The single-factor statement retains actual subnormality.
 
 The type-A, type-B, unitary, symplectic, type-D, twisted-D, F4, twisted E6, E6, E7, E8,
 G2, Suzuki and triality simple types are
@@ -998,8 +1005,13 @@ coupling or an additional finite catalogue
 The exact CFSG dispatcher retains the original surviving simple-model
 witness
 ([`PrimitiveLargeSubnormalCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveLargeSubnormalCFSGReduction.lean)).
-The remaining nonaffine types, remaining bounded primitive degrees below 1024 and the
-general transitive assembly remain open; the general published
+An all-degree dispatcher now combines that large-range result with the
+complete alternating and E6/E7/E8 consumers, retaining the literal
+surviving simple-model witness and its original degree form in every
+remaining bounded case
+([`PrimitiveAllDegreeSubnormalCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeSubnormalCFSGReduction.lean)).
+The remaining nonaffine types, bounded cases of the other primitive
+simple types below 1024, and the general transitive assembly remain open; the general published
 class-count input is retained.
 
 For the original simple G2 model over every finite field with `q >= 3`,
@@ -1050,11 +1062,41 @@ the pinned ReeG2 model, whose literal twist graph is proved to be the
 graph of that involution
 ([`CFSGReeGTwoOriginalAutomorphism`](SymmetricSubgroupAsymptotics/CFSGReeGTwoOriginalAutomorphism.lean),
 [`CFSGReeGTwoOriginalGraph`](SymmetricSubgroupAsymptotics/CFSGReeGTwoOriginalGraph.lean)).
-A separate division-free three-parameter chart counts the signed fixed
-coordinate tuples as `q^3`
-([`CFSGReeGTwoFixedCoordinateArithmetic`](SymmetricSubgroupAsymptotics/CFSGReeGTwoFixedCoordinateArithmetic.lean)).
-Binding that chart to the actual collected positive root words remains
-open; no Ree family is removed from the T1 callbacks at this stage.
+The signed six-root collecting law now binds the division-free
+three-parameter chart to a genuine subgroup of the same original fixed
+group. Its order is exactly `q^3`, and it is a 3-group
+([`CFSGReeGTwoOriginalPositiveSubgroup`](SymmetricSubgroupAsymptotics/CFSGReeGTwoOriginalPositiveSubgroup.lean)).
+The actual fixed torus has order `q-1`. Its three root characters show
+that a unit different from 1 and -1 has no nonidentity positive fixed
+point. A reusable finite Lang-map argument therefore places the whole
+positive subgroup in the original derived subgroup for `m >= 1`
+([`CFSGReeGTwoOriginalTorus`](SymmetricSubgroupAsymptotics/CFSGReeGTwoOriginalTorus.lean),
+[`CFSGReeGTwoPositiveDerived`](SymmetricSubgroupAsymptotics/CFSGReeGTwoPositiveDerived.lean)).
+The literal longest Weyl word is also a genuine fixed opposition
+involution. It inverts this torus, so torus squares belong to the derived
+group. A regular such square excludes every nonidentity positive element
+from the full centre of the derived group. The positive 3-group therefore
+embeds faithfully in the actual pinned Ree group, still with order `q^3`
+([`CFSGReeGTwoPositiveCentralQuotient`](SymmetricSubgroupAsymptotics/CFSGReeGTwoPositiveCentralQuotient.lean)).
+The full fixed Bruhat and automorphism bounds remain open;
+ReeG2 is still retained in the T1 model callbacks.
+The actual positive subgroup and torus also form a faithful soluble
+semidirect product of order `q^3*(q-1)` in the original fixed group.
+The positive centre is exactly its last free coordinate, of order `q`;
+the torus acts faithfully on this additive field axis through all
+nonzero scalars
+([`CFSGReeGTwoOriginalBorel`](SymmetricSubgroupAsymptotics/CFSGReeGTwoOriginalBorel.lean),
+[`CFSGReeGTwoPositiveCentre`](SymmetricSubgroupAsymptotics/CFSGReeGTwoPositiveCentre.lean)).
+
+For the ReeF4 and Tits continuation, characteristic two now supplies
+two actual 26-dimensional actions of the same folded F4 group on its
+E6 Geck module: the image of `1+P`, and the quotient
+`Fix(P)/range(1+P)` for the actual diagram involution. Explicit bases
+and their root-label bijection are checked. This is representation
+infrastructure; exceptional covariance and unconditional correspondence
+with the original F4 source still require proof
+([`CFSGFFourE6CharacteristicTwoNormBasis`](SymmetricSubgroupAsymptotics/CFSGFFourE6CharacteristicTwoNormBasis.lean),
+[`CFSGFFourE6CharacteristicTwoQuotientAction`](SymmetricSubgroupAsymptotics/CFSGFFourE6CharacteristicTwoQuotientAction.lean)).
 
 The original twisted E6 good-Sylow theorem is
 [`CFSGTwistedE6OriginalGoodSylow.typeTwistedE6_goodSylowPrime`](SymmetricSubgroupAsymptotics/CFSGTwistedE6OriginalGoodSylow.lean).
