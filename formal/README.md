@@ -729,8 +729,13 @@ Disjoint opposite Sylows survive the actual central quotient. The original
 projective point stabilizer then proves `ell^2 < |G|` in every rank at least
 four
 ([`CFSGTwistedAUnitaryHigherIndexSquare`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryHigherIndexSquare.lean)).
-The low-rank square cases and unitary outer-order budget are separate open
-obligations; the whole unitary simple-index callback is not discharged yet.
+Rank three is also proved, including q=2
+([`CFSGUnitaryRankThreeIndexSquare`](SymmetricSubgroupAsymptotics/CFSGUnitaryRankThreeIndexSquare.lean)).
+Its actual first-point orbit lies on a nonzero Hermitian polynomial of
+degree q+1. The proved Schwartz--Zippel count, with every unit-scalar fibre
+retained, bounds that orbit by q^6; the actual quotient order is strictly
+greater than q^12. Rank two and the unitary outer-order budget remain open;
+the whole unitary simple-index callback is not discharged yet.
 
 The original twisted-D derived image also has a defining-characteristic
 Sylow subgroup with soluble normalizer
