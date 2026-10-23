@@ -804,10 +804,10 @@ same original quotient gives `q^(r-2) <= ell`
 The complete bound removes this family from the simple-index callback
 ([`CFSGTwistedDOuterBudget`](SymmetricSubgroupAsymptotics/CFSGTwistedDOuterBudget.lean)).
 
-[`CFSGSevenTargetsFFourOuter`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsFFourOuter.lean)
+[`CFSGSevenTargetsGTwoIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsGTwoIndexSquare.lean)
 threads these completed model cases, including the entire unitary and
 twisted-D branches and the original twisted E6 good-Sylow data, all unitary and twisted-D index squares,
-their full outer-order budgets, the original triality, F4 and twisted E6 index squares, and the
+their full outer-order budgets, the original G2, triality, F4 and twisted E6 index squares, and the
 sufficient E6/E7/E8 simple-index bounds into T1 and AllTargets.
 Its parameters are CFSG, five published inputs (general class count, the
 two Tracey inputs, labelled transitive count, and ordinary permutation
@@ -819,6 +819,8 @@ absent from that callback, as are the original F4 and twisted E6 cases. All twis
 twisted-D tags are also absent from the simple-index callback. Original
 twisted E6, triality and F4 are now absent from that callback as well:
 their full outer-order budgets and index squares are proved.
+G2's remaining model payload asks only for the outer-order budget;
+its original least-index square is also proved.
 The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
@@ -859,16 +861,61 @@ An explicit shrink-and-restore injection on partitions proves the needed
 Fibonacci bound, so no finite partition census is assumed.
 
 For every actual affine profile, every subgroup now satisfies the
-class-count cube bound except possibly at degrees `4,8,9,16,32`
-([`AffineClassFiveDegreeResidual`](SymmetricSubgroupAsymptotics/AffineClassFiveDegreeResidual.lean)).
+class-count cube bound except possibly at degrees `8,16,32`
+([`AffineClassThreeDegreeResidual`](SymmetricSubgroupAsymptotics/AffineClassThreeDegreeResidual.lean)).
 The proof covers all degrees at least 64, all prime degrees, all degrees
 `p^2` for primes `p >= 5`, and all degrees `p^3` for primes `p >= 3`.
 The prime-degree argument proves the actual Frobenius class formula;
 the prime-power argument bounds automorphisms using an actual generating
 set of size at most `log_p(|V|)` in the original regular subgroup.
 Neither argument assumes a primitive catalogue or elementary abelianness.
-The five remaining affine degrees and the nonaffine class-count argument
+Degree four is proved for every faithful action: the transitive group is
+binary, A4 or S4, while the intransitive case splits through its actual
+kernel and image. Two sparse conjugacy covers settle the actual A4 and S4
+groups, without a subgroup census
+([`FourPointPermutationClassBound`](SymmetricSubgroupAsymptotics/FourPointPermutationClassBound.lean)).
+Degree nine is also proved for every original affine subgroup, with at
+most 54 conjugacy classes. The proof includes cyclic regular groups;
+otherwise a faithful action on the four projective rays of the actual
+ternary plane gives a complement class bound of 10. Retaining the actual
+translation kernel gives bounds of 30 for a proper kernel and 39 for a
+full kernel
+([`AffineDegreeNineSubgroupClassBound`](SymmetricSubgroupAsymptotics/AffineDegreeNineSubgroupClassBound.lean)).
+The three remaining affine degrees and the nonaffine class-count argument
 are still open; the general published class-count input is retained.
+For primitive affine actions, degree 32 is also proved, so that frontier
+contains only degrees 8 and 16
+([`PrimitiveAffineClassTwoDegreeResidual`](SymmetricSubgroupAsymptotics/PrimitiveAffineClassTwoDegreeResidual.lean)).
+A nonscalar linear automorphism has a sparse centralizer chart, recording
+one nonzero image and all but two remaining basis images. On the actual
+binary five-dimensional translation space this bounds every nonidentity
+centralizer by `31*32^3`. Counting commuting pairs then bounds the classes
+of every actual complement subgroup; retaining the proper or full
+translation kernel gives `k(H) <= 16252976`, whose cube is at most `5^31`
+([`PrimitiveAffineDegreeThirtyTwoClassBound`](SymmetricSubgroupAsymptotics/PrimitiveAffineDegreeThirtyTwoClassBound.lean)).
+Primitivity supplies the actual elementary translation module. No matrix
+or primitive-group census is assumed in this argument.
+For primitive degree at least 1024, the complete O'Nan--Scott power-degree
+branch is now proved for every actual subgroup. Its original socle and
+outer-wreath embedding give an order ceiling of
+`n^(4*floor(log_2(n))+2)`, which the uniform numerical tail converts into
+the class-count cube bound. The actual primitive dispatcher leaves the
+separate proper-simple-subgroup-index branch explicitly open
+([`PrimitiveClassIndexFormReduction`](SymmetricSubgroupAsymptotics/PrimitiveClassIndexFormReduction.lean)).
+
+For the original simple G2 model over every finite field with `q >= 3`,
+the natural root group is now proved equivalent to that same model.
+Its literal singular-ray action gives `ell < 3*q^5`, and the actual
+long-node torus gives `q <= ell` for every least proper index `ell`
+([`CFSGGTwoIndexPointUpper`](SymmetricSubgroupAsymptotics/CFSGGTwoIndexPointUpper.lean),
+[`CFSGGTwoPermutationDegree`](SymmetricSubgroupAsymptotics/CFSGGTwoPermutationDegree.lean)).
+The natural-image kernel and natural centre are both discharged, including
+characteristics two and three. Disjoint actual Sylow images with six
+independent field parameters also give `q^12 <= |G|` on the same original
+model, proving `ell^2 < |G|`, including `q=3`
+([`CFSGGTwoOriginalIndexSquare`](SymmetricSubgroupAsymptotics/CFSGGTwoOriginalIndexSquare.lean)).
+This square is threaded through the optional T1 endpoint. G2 remains in
+its model callback only for the outer-order budget.
 
 The original twisted E6 good-Sylow theorem is
 [`CFSGTwistedE6OriginalGoodSylow.typeTwistedE6_goodSylowPrime`](SymmetricSubgroupAsymptotics/CFSGTwistedE6OriginalGoodSylow.lean).

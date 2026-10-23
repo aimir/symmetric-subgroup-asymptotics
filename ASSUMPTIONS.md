@@ -17,8 +17,8 @@ nonbinary transitive classification and primitive classification have distinct
 scopes.
 
 The current optional CFSG endpoint is
-`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_fFour_outer`
-in [`CFSGSevenTargetsFFourOuter.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsFFourOuter.lean).
+`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_GTwo_index_square`
+in [`CFSGSevenTargetsGTwoIndexSquare.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsGTwoIndexSquare.lean).
 It still requires five published inputs and two explicit residual model
 callbacks in addition to the pinned classification. Every admissible
 unitary index square and the lower bound `q^r <= ell` are proved internally;
@@ -32,11 +32,22 @@ also have proved good-Sylow data, least-index squares and complete
 outer-order budgets, including q=2. These three tags are absent from
 both callbacks. Their original-model outer bounds are respectively
 `3*f`, `2*f`, and `6*f` for `q=p^f`. The effective remaining model families
-are G2 (simple-index/outer only), ReeG2, ReeF4, Tits and the 26 sporadic
+are G2 (outer budget only), ReeG2, ReeF4, Tits and the 26 sporadic
 tags. No general theorem about these remaining families is supplied by
 the classification proposition alone. This optional endpoint is not a
 theorem from CFSG alone.
 The canonical public seven-input boundary remains unchanged.
+
+For the original simple G2 model with `q >= 3`, the least-index square
+is now proved internally. The actual singular-ray action gives
+`ell < 3*q^5`; disjoint Sylow images with six independent field parameters
+give `q^12 <= |G|` on that same original model. Together these imply
+`ell^2 < |G|`, including `q=3`
+([`CFSGGTwoOriginalIndexSquare.lean`](formal/SymmetricSubgroupAsymptotics/CFSGGTwoOriginalIndexSquare.lean)).
+The original natural-image kernel, natural centre and folded central
+quotient are all discharged; no group-order or model-recognition input
+is retained. The original torus also gives `q <= ell` for the remaining
+outer-budget work.
 
 Further checked infrastructure narrows the work behind these callbacks.
 For higher unitary ranks, actual local semilinear representatives now have
