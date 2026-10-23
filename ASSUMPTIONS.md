@@ -17,16 +17,17 @@ nonbinary transitive classification and primitive classification have distinct
 scopes.
 
 The current optional CFSG endpoint is
-`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_twistedD`
-in [`CFSGSevenTargetsTwistedD.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedD.lean).
+`Non2UnipotentPrefixFiniteMenu.T1_of_five_published_inputs_cfsg_and_remaining_after_twistedD_square`
+in [`CFSGSevenTargetsTwistedDSquare.lean`](formal/SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedDSquare.lean).
 It still requires five published inputs and two explicit residual model
 callbacks in addition to the pinned classification. Every admissible
 unitary index square and the lower bound `q^r <= ell` are proved internally;
 the actual rank-two unitary outer bound is also proved, so that tag is absent
 from the simple-index callback. The whole twisted-D good-Sylow branch is
 also proved, including the central-cocycle preimage and generation by two
-p-subgroups; no twisted-D tag remains in that callback. Its simple-index
-and outer-order bounds remain open. Higher unitary ranks still require
+p-subgroups; no twisted-D tag remains in that callback. Its least-index
+square is now also proved internally, so its simple-index callback asks
+only for the outer-order budget. Higher unitary ranks likewise still require
 their outer-order budget. This optional endpoint is not a theorem from CFSG alone.
 The canonical public seven-input boundary remains unchanged.
 

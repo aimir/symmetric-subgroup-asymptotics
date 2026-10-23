@@ -791,12 +791,18 @@ whole group. The two-p-subgroup theorem therefore supplies two generating
 Sylow subgroups, with the previously proved soluble normalizer
 ([`CFSGTwistedDRelativeGoodSylow`](SymmetricSubgroupAsymptotics/CFSGTwistedDRelativeGoodSylow.lean)).
 This closes the twisted-D good-Sylow callback in every admissible rank and
-field, including characteristic two. Its simple-index and outer-order
-bounds remain separate obligations.
+field, including characteristic two. Its least-index square is also
+proved on the same original model
+([`CFSGTwistedDIndexSquare`](SymmetricSubgroupAsymptotics/CFSGTwistedDIndexSquare.lean)).
+Two literal hyperbolic-frame charts give `|R| >= q^(8*r-12)`;
+its centre has at most two elements, and the actual fixed-vector orbit
+gives `ell <= q^(2*r)`. The strict square inequality follows for every
+`r >= 4` and `q >= 2`, without a supplied classical group-order formula.
+Only its outer-order budget remains in the simple-index callback.
 
-[`CFSGSevenTargetsTwistedD`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedD.lean)
+[`CFSGSevenTargetsTwistedDSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedDSquare.lean)
 threads these completed model cases, including the entire unitary and
-twisted-D branches of good-Sylow data, all unitary index squares, the rank-two unitary outer
+twisted-D branches of good-Sylow data, all unitary and twisted-D index squares, the rank-two unitary outer
 bound, and the sufficient E6/E7/E8 simple-index bounds, into T1 and AllTargets.
 Its parameters are CFSG, five published inputs (general class count, the
 two Tracey inputs, labelled transitive count, and ordinary permutation
@@ -804,8 +810,8 @@ rank), and **two still-unproved model callbacks**: the remaining good-Sylow
 cases and the remaining sufficient simple-index/outer bounds. E6/E7/E8
 are absent from both callbacks, and all twisted-A and twisted-D tags are
 absent from the good-Sylow callback. Rank-two twisted-A tags are also absent from the
-simple-index callback. On higher twisted-A tags it asks only for the outer-order
-budget; their numerical index squares are proved.
+simple-index callback. On higher twisted-A tags and all twisted-D tags it
+asks only for the outer-order budget; their numerical index squares are proved.
 The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
