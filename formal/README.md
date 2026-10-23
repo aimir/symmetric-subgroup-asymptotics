@@ -928,7 +928,7 @@ Consequently the entire alternating simple type is covered for subnormal
 subgroups in this large primitive range. The single-factor statement
 does not bound arbitrary subgroups of an alternating group.
 
-The type-A, type-B, unitary, symplectic, type-D, twisted-D, F4, E6, E7, E8,
+The type-A, type-B, unitary, symplectic, type-D, twisted-D, F4, twisted E6, E6, E7, E8,
 G2, Suzuki and triality simple types are
 also covered at every socle factor count, for every original subgroup
 and both raw degree forms, when the primitive degree is at least 1024
@@ -942,6 +942,7 @@ and both raw degree forms, when the primitive degree is at least 1024
 [`PrimitiveSocleSuzukiClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleSuzukiClassBound.lean),
 [`PrimitiveSocleTrialityClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleTrialityClassBound.lean),
 [`PrimitiveSocleFFourClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleFFourClassBound.lean),
+[`PrimitiveSocleTwistedE6ClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleTwistedE6ClassBound.lean),
 [`PrimitiveSocleExceptionalClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleExceptionalClassBound.lean)).
 The actual natural representations give order ceilings, while literal
 root stars give lower bounds for each proper subgroup's index. One
@@ -975,6 +976,14 @@ The proved outer bound and proper-index lower bound then give the
 component budget `|F4(q)|*|Out(F4(q))| <= q^66 <= index^66`
 ([`CFSGFFourOriginalOrderUpper`](SymmetricSubgroupAsymptotics/CFSGFFourOriginalOrderUpper.lean)).
 This count does not identify the opposed-pair normalizer with a torus.
+The same checked fixed-height and finite Weyl machinery applies over the
+quadratic extension for twisted E6. Keeping all six ambient scalar
+coordinates gives the sufficient bounds `q^48` for each positive factor
+and `q^12` for the actual pair normalizer. The original group therefore
+has order at most `q^119`. Its proved outer bound and `q^2` proper-index
+lower bound pay the same component budget, without fixed-field scalar
+coupling or an additional finite catalogue
+([`CFSGTwistedE6OriginalOrderUpper`](SymmetricSubgroupAsymptotics/CFSGTwistedE6OriginalOrderUpper.lean)).
 The exact CFSG dispatcher retains the original surviving simple-model
 witness
 ([`PrimitiveLargeSubnormalCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveLargeSubnormalCFSGReduction.lean)).
