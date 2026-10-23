@@ -741,8 +741,15 @@ Its actual point orbit gives `ell*(q-1) <= q^4`; literal upper, opposite and
 torus images give `q^6*(q^2-1) <= 3*|G|`. The torus kernel bound is proved
 from its unipotent action, without assuming a centre or group-order formula.
 [`CFSGUnitaryAdmissibleIndexSquare`](SymmetricSubgroupAsymptotics/CFSGUnitaryAdmissibleIndexSquare.lean)
-combines every admissible rank and field. The unitary outer-order budget
-remains open.
+combines every admissible rank and field. The actual rank-two outer bound
+`|Out(G)| <= 6*f` is now proved
+([`CFSGTwistedA2OuterOrder`](SymmetricSubgroupAsymptotics/CFSGTwistedA2OuterOrder.lean)).
+The full Sylow-pair normalizer intersection is the literal torus; faithful
+restriction to the actual radical bounds the pair stabilizer by
+`(q^2-1)*2*f`. The proved projective torus kernel costs at most three,
+and a single inner-torus cancellation gives the outer bound.
+No automorphism-lifting or group-recognition premise is used. The higher-rank
+unitary outer-order budget remains open.
 
 The same original groups satisfy `q^r <= ell` in every admissible rank
 ([`CFSGTwistedAUnitaryAdmissibleIndexLower`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryAdmissibleIndexLower.lean)).
@@ -763,21 +770,28 @@ The stronger normalization by literal relative-root words is also proved,
 including complete hyperbolic-pair normalization
 ([`CFSGTwistedDRelativeHyperbolicPairNormalization`](SymmetricSubgroupAsymptotics/CFSGTwistedDRelativeHyperbolicPairNormalization.lean)).
 Its companion shear is a proved product of actual root words, including
-characteristic two. Frame induction and the remaining low-rank torus
-index are still open. The twisted-D callback is not discharged by these
-prerequisites alone.
+characteristic two. The normalization now works in every relative rank,
+including the rank-two and rank-three recursion bases
+([`CFSGTwistedDAllRankHyperbolicPairs`](SymmetricSubgroupAsymptotics/CFSGTwistedDAllRankHyperbolicPairs.lean)).
+Actual frame induction leaves a norm-one residual plane
+([`CFSGTwistedDFrameReduction`](SymmetricSubgroupAsymptotics/CFSGTwistedDFrameReduction.lean),
+[`CFSGTwistedDResidualPlane`](SymmetricSubgroupAsymptotics/CFSGTwistedDResidualPlane.lean)).
+The retained residual torus has index at most two. Transport from the fixed
+elementary subgroup through the actual central-cocycle preimage remains a
+separate generation obligation; the twisted-D callback is not yet discharged.
 
-[`CFSGSevenTargetsUnitarySquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsUnitarySquare.lean)
+[`CFSGSevenTargetsUnitaryRankTwo`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsUnitaryRankTwo.lean)
 threads these completed model cases, including the entire unitary branch
-of good-Sylow data, all unitary index squares, and the sufficient E6/E7/E8
-simple-index bounds, into T1 and AllTargets.
+of good-Sylow data, all unitary index squares, the rank-two unitary outer
+bound, and the sufficient E6/E7/E8 simple-index bounds, into T1 and AllTargets.
 Its parameters are CFSG, five published inputs (general class count, the
 two Tracey inputs, labelled transitive count, and ordinary permutation
 rank), and **two still-unproved model callbacks**: the remaining good-Sylow
 cases and the remaining sufficient simple-index/outer bounds. E6/E7/E8
 are absent from both callbacks, and all twisted-A tags are absent from the
-good-Sylow callback. The simple-index callback asks only for the outer-order
-budget on twisted-A tags; their numerical index squares are proved.
+good-Sylow callback. Rank-two twisted-A tags are also absent from the
+simple-index callback. On higher twisted-A tags it asks only for the outer-order
+budget; their numerical index squares are proved.
 The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
