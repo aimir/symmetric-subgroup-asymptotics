@@ -20,4 +20,16 @@ theorem square_lt_of_double_sylow_and_centralizer (M c R u B : ℕ)
   have hs : M^2 < u^2 := by nlinarith
   exact hs.trans_le hB
 
+theorem family_le_sylow (M c R u : ℕ) (hc : 0 < c) (hR : R ≤ c)
+    (hM : M*c ≤ R*u) : M ≤ u := by
+  have hprod : M*c ≤ u*c :=
+    hM.trans (by simpa only [Nat.mul_comm c u] using Nat.mul_le_mul_right u hR)
+  exact Nat.le_of_mul_le_mul_right hprod hc
+
+theorem square_lt_of_strict_double_sylow_and_centralizer (M c R u B : ℕ)
+    (hc : 0 < c) (hR : R ≤ c) (hM : M*c ≤ R*u) (hB : u^2 < B) : M^2 < B := by
+  have hle := family_le_sylow M c R u hc hR hM
+  have hs : M^2 ≤ u^2 := by nlinarith
+  exact hs.trans_lt hB
+
 end SymmetricSubgroupAsymptotics.CFSGCentralizerFamilySquare
