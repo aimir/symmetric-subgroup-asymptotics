@@ -1,3 +1,4 @@
+import SymmetricSubgroupAsymptotics.CFSGFiniteFieldSignedSquares
 import SymmetricSubgroupAsymptotics.CFSGEqualClassPermutationDegree
 import SymmetricSubgroupAsymptotics.CFSGUniformCosetSum
 import Mathlib.FieldTheory.Finite.Basic
@@ -106,5 +107,47 @@ theorem card_le_twice_of_square_fixedBy
     simp only [Nat.card_eq_fintype_card,Fintype.card_multiplicative]
   rw [hp] at hh
   exact hh.trans (Nat.mul_le_mul_right (Nat.card X) hk)
+
+end SymmetricSubgroupAsymptotics.CFSGSquareScalarPermutationDegree
+
+/-! The three-modulo-four refinement preserves the two-class API above. -/
+namespace SymmetricSubgroupAsymptotics.CFSGSquareScalarPermutationDegree
+open MulAction CFSGConjugateSubgroupDegree CFSGFiniteFieldSignedSquares
+
+theorem field_card_le_of_root_movement {K G X : Type*}
+    [Field K] [Finite K] [Group G] [Finite X] [MulAction G X]
+    (hcard : Nat.card K % 4=3) (root : Multiplicative K→*G)
+    (torus : Kˣ→G)
+    (hact : ∀t a, torus t*root (Multiplicative.ofAdd a)*(torus t)⁻¹=
+      root (Multiplicative.ofAdd (a*(t:K)^2)))
+    (hmove : ∃x : X, root (Multiplicative.ofAdd 1) • x≠x) :
+    Nat.card K≤Nat.card X := by
+  classical
+  letI : MulAction (Multiplicative K) X := MulAction.compHom X root
+  rw [←show Nat.card (Multiplicative K)=Nat.card K from Nat.card_congr Multiplicative.toAdd]
+  apply card_le_of_constant_fixedBy
+    (Nat.card (fixedBy X (root (Multiplicative.ofAdd 1))))
+  · intro a ha
+    have ha0 : a.toAdd≠0 := by
+      intro he
+      exact ha (congrArg Multiplicative.ofAdd he)
+    obtain ⟨t,ht⟩ := eq_square_or_neg_square K hcard a.toAdd ha0
+    have he := Nat.card_congr (fixedByConjugateEquiv (X:=X)
+      (root (Multiplicative.ofAdd 1)) (torus t))
+    rw [hact,one_mul] at he
+    have hf : Nat.card (fixedBy X (root a))=
+        Nat.card (fixedBy X (root (Multiplicative.ofAdd 1))) := by
+      rcases ht with ht | ht
+      · have heq : root a=root (Multiplicative.ofAdd ((t:K)^2)) :=
+          congrArg (fun z:K=>root (Multiplicative.ofAdd z)) ht
+        exact (congrArg (fun g:G=>Nat.card (fixedBy X g)) heq).trans he.symm
+      · have heq : root a=(root (Multiplicative.ofAdd ((t:K)^2)))⁻¹ := by
+          rw [←map_inv]
+          exact congrArg (fun z:K=>root (Multiplicative.ofAdd z)) ht
+        rw [heq,fixedBy_inv]
+        exact he.symm
+    simpa only [MulAction.fixedBy,MulAction.compHom_smul_def] using hf
+  · obtain ⟨x,hx⟩ := hmove
+    exact ⟨Multiplicative.ofAdd 1,x,hx⟩
 
 end SymmetricSubgroupAsymptotics.CFSGSquareScalarPermutationDegree
