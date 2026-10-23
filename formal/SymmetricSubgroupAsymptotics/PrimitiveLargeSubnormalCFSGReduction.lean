@@ -11,6 +11,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalBClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSuzukiClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTrialityClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleExceptionalClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveSocleFFourClassBound
 
 /-! Exact remaining simple types for the large primitive SUBNORMAL
 class-count target. All affine degrees and both raw socle degree forms
@@ -25,7 +26,7 @@ open PrimitiveSocleRawStructure CFSGReduction
 def RemainingLargePrimitiveSimpleType : CFSG.Index → Prop
   | .cyclic _ _ | .alternating _ _ | .A _ _ _ _ | .B _ _ _ | .C _ _ _ _ | .D _ _ _
   | .twistedA _ _ _ _ | .twistedD _ _ _ | .G2 _ _ | .suzuki _ _ | .trialityD4 _
-  | .E6 _ | .E7 _ | .E8 _ => False
+  | .E6 _ | .E7 _ | .E8 _ | .F4 _ => False
   | _ => True
 
 theorem primitive_subnormal_cube_or_actual_remaining_model
@@ -102,6 +103,10 @@ theorem primitive_subnormal_cube_or_actual_remaining_model
       have e : D.Simple ≃* CFSG.Models.E8 q := by
         exact Eq.mp (congrArg (fun j : CFSG.Index => D.Simple ≃* j.Model) hi) W.equiv
       exact Or.inl (D.subgroup_class_cube_le_of_typeE8 q e hn H)
+    case F4 q =>
+      have e : D.Simple ≃* CFSG.Models.F4 q := by
+        exact Eq.mp (congrArg (fun j : CFSG.Index => D.Simple ≃* j.Model) hi) W.equiv
+      exact Or.inl (D.subgroup_class_cube_le_of_fFour q e hn H)
     all_goals
       exact Or.inr ⟨D,K,hK,hdegree,W.index,by simp [RemainingLargePrimitiveSimpleType,hi],
         ⟨W.equiv⟩⟩

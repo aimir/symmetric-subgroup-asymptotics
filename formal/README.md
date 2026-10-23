@@ -928,7 +928,7 @@ Consequently the entire alternating simple type is covered for subnormal
 subgroups in this large primitive range. The single-factor statement
 does not bound arbitrary subgroups of an alternating group.
 
-The type-A, type-B, unitary, symplectic, type-D, twisted-D, E6, E7, E8,
+The type-A, type-B, unitary, symplectic, type-D, twisted-D, F4, E6, E7, E8,
 G2, Suzuki and triality simple types are
 also covered at every socle factor count, for every original subgroup
 and both raw degree forms, when the primitive degree is at least 1024
@@ -941,6 +941,7 @@ and both raw degree forms, when the primitive degree is at least 1024
 [`PrimitiveSocleGTwoClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleGTwoClassBound.lean),
 [`PrimitiveSocleSuzukiClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleSuzukiClassBound.lean),
 [`PrimitiveSocleTrialityClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleTrialityClassBound.lean),
+[`PrimitiveSocleFFourClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleFFourClassBound.lean),
 [`PrimitiveSocleExceptionalClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleExceptionalClassBound.lean)).
 The actual natural representations give order ceilings, while literal
 root stars give lower bounds for each proper subgroup's index. One
@@ -965,6 +966,15 @@ For triality an actual twelve-word Bruhat cover, its four-parameter
 pair-normalizer bound and its positive subgroup of order `q^12` give
 the original order ceiling `q^32`. Together with the proved outer bound
 and proper-index estimate, this supplies the same component budget.
+For F4, the actual diagram-fixed positive subgroup has at most `q^24`
+elements. The successive orthogonal-root frame fibres have sizes at most
+24, 6, 4 and 2, so the actual relative Weyl actions have at most 1152
+values. The resulting original four-factor cover, with the actual
+opposed-pair normalizer of size at most `q^4`, gives order at most `q^63`.
+The proved outer bound and proper-index lower bound then give the
+component budget `|F4(q)|*|Out(F4(q))| <= q^66 <= index^66`
+([`CFSGFFourOriginalOrderUpper`](SymmetricSubgroupAsymptotics/CFSGFFourOriginalOrderUpper.lean)).
+This count does not identify the opposed-pair normalizer with a torus.
 The exact CFSG dispatcher retains the original surviving simple-model
 witness
 ([`PrimitiveLargeSubnormalCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveLargeSubnormalCFSGReduction.lean)).
@@ -1012,8 +1022,19 @@ three, its projective version
 [`CFSGGTwoOriginalFieldBasis`](SymmetricSubgroupAsymptotics/CFSGGTwoOriginalFieldBasis.lean),
 [`CFSGGTwoOriginalProjectiveNaturalEquivalence`](SymmetricSubgroupAsymptotics/CFSGGTwoOriginalProjectiveNaturalEquivalence.lean)).
 This bridge does not assume simplicity of the ordinary G2 model.
-The exceptional isogeny and fixed-root correspondence remain open;
-no Ree family is removed from the T1 callbacks at this stage.
+All signed divided-power coefficients now prove the actual exceptional
+root covariance on this original tensor space. Its seven-dimensional
+quotient yields an automorphism of the whole original G2 group. Composing
+it with the field automorphism gives the exact involution prescribed by
+the pinned ReeG2 model, whose literal twist graph is proved to be the
+graph of that involution
+([`CFSGReeGTwoOriginalAutomorphism`](SymmetricSubgroupAsymptotics/CFSGReeGTwoOriginalAutomorphism.lean),
+[`CFSGReeGTwoOriginalGraph`](SymmetricSubgroupAsymptotics/CFSGReeGTwoOriginalGraph.lean)).
+A separate division-free three-parameter chart counts the signed fixed
+coordinate tuples as `q^3`
+([`CFSGReeGTwoFixedCoordinateArithmetic`](SymmetricSubgroupAsymptotics/CFSGReeGTwoFixedCoordinateArithmetic.lean)).
+Binding that chart to the actual collected positive root words remains
+open; no Ree family is removed from the T1 callbacks at this stage.
 
 The original twisted E6 good-Sylow theorem is
 [`CFSGTwistedE6OriginalGoodSylow.typeTwistedE6_goodSylowPrime`](SymmetricSubgroupAsymptotics/CFSGTwistedE6OriginalGoodSylow.lean).
