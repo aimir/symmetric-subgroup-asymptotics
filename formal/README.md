@@ -804,7 +804,7 @@ same original quotient gives `q^(r-2) <= ell`
 The complete bound removes this family from the simple-index callback
 ([`CFSGTwistedDOuterBudget`](SymmetricSubgroupAsymptotics/CFSGTwistedDOuterBudget.lean)).
 
-[`CFSGSevenTargetsFFourTwistedE6IndexSquares`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsFFourTwistedE6IndexSquares.lean)
+[`CFSGSevenTargetsTwistedE6Outer`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedE6Outer.lean)
 threads these completed model cases, including the entire unitary and
 twisted-D branches and the original twisted E6 good-Sylow data, all unitary and twisted-D index squares,
 their full outer-order budgets, the original triality, F4 and twisted E6 index squares, and the
@@ -816,9 +816,10 @@ cases and the remaining sufficient simple-index/outer bounds. E6/E7/E8
 are absent from both callbacks, and all twisted-A and twisted-D tags are
 absent from the good-Sylow callback. The original triality case is now also
 absent from that callback, as are the original F4 and twisted E6 cases. All twisted-A and
-twisted-D tags are also absent from the simple-index callback. For triality, F4 and twisted E6
-that callback now asks only for the outer-order budget; their index squares
-are supplied internally.
+twisted-D tags are also absent from the simple-index callback. Original
+twisted E6 is now absent from that callback as well: its full outer-order
+budget is proved. For triality and F4 that callback asks only for the
+outer-order budget; their index squares are supplied internally.
 The current family and endpoint audits use only
 `propext`, `Classical.choice`, and `Quot.sound`. This residual
 interface is not a theorem from CFSG alone; the canonical public endpoint
@@ -840,6 +841,24 @@ that same `N`. The proof compares each joint quotient fibre of commuting
 pairs, including nonsplit extensions. It does not replace `N` by a larger
 permutation base group.
 
+The binary full-wreath continuation now injects actual conjugacy classes
+into pairs of partitions with their common total size retained. It proves
+`k(C2 wreath S_b) <= (b+1)*2^b` and its required class-count cube bound for
+every `b >= 7`
+([`BinaryFullWreathClassBound`](SymmetricSubgroupAsymptotics/BinaryFullWreathClassBound.lean)).
+The original saturated-kernel, full-symmetric-top consumer is also proved.
+For an arbitrary correlated binary kernel, the two valid codimension
+bounds instead give
+`k(A)^2 <= 2^b*k(actualTop)*k(actualFullWreath)`
+([`BinaryBlockClassGeometricMean`](SymmetricSubgroupAsymptotics/BinaryBlockClassGeometricMean.lean)).
+These estimates retain the actual top group; they assert no monotonicity
+under enlargement of the abelian kernel.
+The full-symmetric-top estimate is now proved for every correlated binary
+kernel when `b >= 12`
+([`BinarySymmetricTopClassBound`](SymmetricSubgroupAsymptotics/BinarySymmetricTopClassBound.lean)).
+An explicit shrink-and-restore injection on partitions proves the needed
+Fibonacci bound, so no finite partition census is assumed.
+
 The original twisted E6 good-Sylow theorem is
 [`CFSGTwistedE6OriginalGoodSylow.typeTwistedE6_goodSylowPrime`](SymmetricSubgroupAsymptotics/CFSGTwistedE6OriginalGoodSylow.lean).
 Its only parameters are the prime power and simplicity of the original
@@ -850,8 +869,12 @@ two fixed p-subgroups. A relative Bruhat cover keeps central differences
 in an abelian diagonal factor, without identifying that factor with the
 literal torus or assuming arbitrary fixed-point lifts. The checked
 soluble Sylow normalizer and original projective equivalence complete
-the transfer. The separate twisted E6 outer-order callback remains open;
-its least-index square is now proved.
+the transfer. The original outer-order theorem now proves `|Out| <= 6*f`
+for `q = p^f`
+([`CFSGTwistedE6CompleteOuterBudget`](SymmetricSubgroupAsymptotics/CFSGTwistedE6CompleteOuterBudget.lean)).
+The actual paired torus gives `q^2 <= ell`; together these prove every
+required logarithmic and small-degree clause. Both twisted E6 model
+callbacks are discharged in the endpoint above.
 
 The original F4 and twisted E6 least-index squares use one shared count
 ([`CFSGFFourE6OriginalIndexSquare`](SymmetricSubgroupAsymptotics/CFSGFFourE6OriginalIndexSquare.lean),
@@ -1011,8 +1034,13 @@ The literal cubic norm also gives every pair of scalar coordinates
 `(c^2/a, a^2/Norm(c))` over the actual cubic extension and its fixed field
 ([`CFSGTrialityNormTorusScalars`](SymmetricSubgroupAsymptotics/CFSGTrialityNormTorusScalars.lean)).
 The proof retains a norm-one square correction and works at `q=2`.
-This supplies the scalar algebra; the full original torus-action and
-automorphism reconstruction remain separate obligations.
+The literal torus words now realize all these scalar pairs inside the
+same generated group
+([`CFSGTrialityGeckRelativeScalarTorus`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckRelativeScalarTorus.lean)).
+Their square-scalar action on the injective original short-root chart
+also proves `q^3 <= 2*ell` for every proper subgroup index `ell`
+([`CFSGTrialityGeckPermutationDegree`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckPermutationDegree.lean)).
+Automorphism reconstruction and the full outer-order count remain open.
 
 
 The shared folded-root continuation proves that the same generated Geck Lie
@@ -1038,6 +1066,12 @@ to the original simple projective model
 Actual strict upper overgroups supply simple Weyl words, while positive
 injectivity and disjoint opposed images exclude a noncentral kernel.
 The proof does not assume faithfulness of the restricted representation.
+This central kernel now transfers the four minimal simple parabolics and
+their opposite root intersections to the original F4 model. An arbitrary
+original automorphism can be adjusted by an inner automorphism to preserve
+the opposed Sylows and permute these four actual root charts
+([`CFSGFFourE6OriginalRootAction`](SymmetricSubgroupAsymptotics/CFSGFFourE6OriginalRootAction.lean)).
+The statement allows root-length interchange in characteristic two.
 For three orthogonal roots the integral operator formula retains its genuine
 cubic coefficient, with three independent parameters
 ([`CFSGNormTwoCoordinateOriginalParameterizedTriple`](SymmetricSubgroupAsymptotics/CFSGNormTwoCoordinateOriginalParameterizedTriple.lean)).
@@ -1057,5 +1091,15 @@ the two induced permutations of the positive and negative simple root
 charts agree
 ([`CFSGTwistedE6GeckOriginalSignedRootAction`](SymmetricSubgroupAsymptotics/CFSGTwistedE6GeckOriginalSignedRootAction.lean)).
 Distinct-label cross commutation and actual same-label rank-one words
-prove the agreement in every characteristic. The outer-order bound is
-still open.
+prove the agreement in every characteristic. The paired and singleton
+field components now agree on the actual fixed coefficient field
+([`CFSGTwistedE6GeckOriginalFieldAgreement`](SymmetricSubgroupAsymptotics/CFSGTwistedE6GeckOriginalFieldAgreement.lean)).
+The actual signed simple charts generate the whole root-generated group;
+surjectivity to the original model then proves that its pair stabilizer
+acts faithfully on the positive simple parameters
+([`CFSGTwistedE6GeckOriginalParameterFaithful`](SymmetricSubgroupAsymptotics/CFSGTwistedE6GeckOriginalParameterFaithful.lean)).
+The compatible Cartan scalar image now has proved index at most three,
+realized by literal inner torus words. Counting one extension-field
+automorphism factor therefore gives `|Out| <= 3*|Aut(F_(q^2))| = 6*f`
+([`CFSGTwistedE6OriginalOuterBound`](SymmetricSubgroupAsymptotics/CFSGTwistedE6OriginalOuterBound.lean)).
+The complete budget and T1 splice above retain no twisted E6 callback.
