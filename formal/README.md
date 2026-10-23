@@ -749,7 +749,13 @@ restriction to the actual radical bounds the pair stabilizer by
 `(q^2-1)*2*f`. The proved projective torus kernel costs at most three,
 and a single inner-torus cancellation gives the outer bound.
 No automorphism-lifting or group-recognition premise is used. The higher-rank
-unitary outer-order budget remains open.
+unitary outer-order budget remains open. In those ranks the original
+automorphism group now acts faithfully on all literal singular point
+lines, preserving their full orthogonality relation
+([`CFSGTwistedAUnitarySingularPointAction`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitarySingularPointAction.lean)).
+The carrier equality is proved by actual vector-clearing words; neither
+semilinear reconstruction nor its eventual outer-order count is assumed
+by this point-action theorem.
 
 The same original groups satisfy `q^r <= ell` in every admissible rank
 ([`CFSGTwistedAUnitaryAdmissibleIndexLower`](SymmetricSubgroupAsymptotics/CFSGTwistedAUnitaryAdmissibleIndexLower.lean)).
@@ -776,20 +782,28 @@ including the rank-two and rank-three recursion bases
 Actual frame induction leaves a norm-one residual plane
 ([`CFSGTwistedDFrameReduction`](SymmetricSubgroupAsymptotics/CFSGTwistedDFrameReduction.lean),
 [`CFSGTwistedDResidualPlane`](SymmetricSubgroupAsymptotics/CFSGTwistedDResidualPlane.lean)).
-The retained residual torus has index at most two. Transport from the fixed
-elementary subgroup through the actual central-cocycle preimage remains a
-separate generation obligation; the twisted-D callback is not yet discharged.
+The retained residual torus has index at most two. Transport through the
+actual central-cocycle preimage is now proved, and the original derived
+projective image equals the image of the literal relative-root group
+([`CFSGTwistedDRelativeDerivedImage`](SymmetricSubgroupAsymptotics/CFSGTwistedDRelativeDerivedImage.lean)).
+Its positive and negative root closures are p-groups and generate that
+whole group. The two-p-subgroup theorem therefore supplies two generating
+Sylow subgroups, with the previously proved soluble normalizer
+([`CFSGTwistedDRelativeGoodSylow`](SymmetricSubgroupAsymptotics/CFSGTwistedDRelativeGoodSylow.lean)).
+This closes the twisted-D good-Sylow callback in every admissible rank and
+field, including characteristic two. Its simple-index and outer-order
+bounds remain separate obligations.
 
-[`CFSGSevenTargetsUnitaryRankTwo`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsUnitaryRankTwo.lean)
-threads these completed model cases, including the entire unitary branch
-of good-Sylow data, all unitary index squares, the rank-two unitary outer
+[`CFSGSevenTargetsTwistedD`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTwistedD.lean)
+threads these completed model cases, including the entire unitary and
+twisted-D branches of good-Sylow data, all unitary index squares, the rank-two unitary outer
 bound, and the sufficient E6/E7/E8 simple-index bounds, into T1 and AllTargets.
 Its parameters are CFSG, five published inputs (general class count, the
 two Tracey inputs, labelled transitive count, and ordinary permutation
 rank), and **two still-unproved model callbacks**: the remaining good-Sylow
 cases and the remaining sufficient simple-index/outer bounds. E6/E7/E8
-are absent from both callbacks, and all twisted-A tags are absent from the
-good-Sylow callback. Rank-two twisted-A tags are also absent from the
+are absent from both callbacks, and all twisted-A and twisted-D tags are
+absent from the good-Sylow callback. Rank-two twisted-A tags are also absent from the
 simple-index callback. On higher twisted-A tags it asks only for the outer-order
 budget; their numerical index squares are proved.
 The current family and endpoint audits use only
