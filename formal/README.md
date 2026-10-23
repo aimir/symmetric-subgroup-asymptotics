@@ -975,6 +975,15 @@ its conjugate family is a cardinality factor of the counted matrix family.
 Thus `ell^2 < |G|` in every field, including `q=2`, without a supplied
 exceptional group-order formula. Its outer-order budget remains open.
 
+The actual fixed positive group's commutator subgroup is also now identified
+with the kernel of its original four simple leading coordinates
+([`CFSGTrialityGeckFixedPositiveDerivedKernel`](SymmetricSubgroupAsymptotics/CFSGTrialityGeckFixedPositiveDerivedKernel.lean)).
+The proof constructs fixed words for every middle-layer tensor coordinate
+and actual commutators for the seven raised coordinates. Fixed long-root
+commutators supply the remaining highest-root kernel. This includes `q=2`
+and characteristic three, without assuming that fixed points surject onto
+a fixed quotient. It is structural input to the remaining outer-order proof.
+
 
 The shared folded-root continuation proves that the same generated Geck Lie
 algebra is spanned by its own homogeneous elements. Integer norm bounds and
@@ -997,3 +1006,11 @@ cubic coefficient, with three independent parameters
 Rational-to-integral transfer and the actual image submodule prove this on
 the original source in every characteristic, including three, without
 dividing by a factorial or assuming representation faithfulness.
+
+For the original twisted E6 group, the positive Sylow normalizer has exactly
+four minimal strict overgroups, given by the literal folded simple parabolics
+([`CFSGTwistedE6GeckOriginalMinimalParabolics`](SymmetricSubgroupAsymptotics/CFSGTwistedE6GeckOriginalMinimalParabolics.lean)).
+Integral grading flags prove the matrix-group minimality. A proved central
+kernel and the surjective subgroup correspondence transport it to the
+original projective model. This correspondence does not assume that an
+automorphism of the original group lifts to the matrix source.

@@ -96,6 +96,12 @@ family (`CFSGTrialityGeckOriginalIndexSquare.lean`). This includes `q=2`
 and does not assume an exceptional group-order formula. Triality's
 outer-order budget remains open; another whole published input has not
 been removed.
+The actual fixed positive commutator subgroup is now proved to be precisely
+the kernel of the original simple leading coordinates, including `q=2`
+and characteristic three
+(`CFSGTrialityGeckFixedPositiveDerivedKernel.lean`). This uses actual fixed
+word and commutator lifts, not a fixed-quotient lifting assumption; it does
+not yet discharge the outer-order budget.
 For F4, the literal folded root matrices embed into E6. A regular positive
 element and uniqueness of its ambient Sylow identify an actual F4 Sylow
 with soluble normalizer. The two signed folded p-subgroups generate the
