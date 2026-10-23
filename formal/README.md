@@ -958,6 +958,17 @@ their elementary-row conjugations give proper-index lower bounds
 fit the same component budget in every characteristic, including `q=2`
 ([`CFSGExceptionalOriginalOrderUpper`](SymmetricSubgroupAsymptotics/CFSGExceptionalOriginalOrderUpper.lean),
 [`CFSGExceptionalChainStarIndex`](SymmetricSubgroupAsymptotics/CFSGExceptionalChainStarIndex.lean)).
+The bounded-degree E6/E7/E8 cases are also closed uniformly. One literal
+21-root configuration, padded from E6 into E7 and E8, embeds the
+prime-field Heisenberg group of order `p^21` into each original model.
+The actual commutator pairing bounds a point stabilizer missing its
+prime-order centre by `p^10`. Simplicity makes a nonidentity central
+element move some coset, proving every proper index is at least
+`p^11 >= 2048`. Both raw socle degree forms inherit that lower bound.
+Thus the three class-count consumers apply at every degree, with no
+small-field or action census
+([`CFSGExceptionalHeisenbergIndex`](SymmetricSubgroupAsymptotics/CFSGExceptionalHeisenbergIndex.lean),
+[`PrimitiveSocleExceptionalAllDegreesClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleExceptionalAllDegreesClassBound.lean)).
 Twisted D uses its actual faithful action on the fixed space over the
 fixed field, avoiding a larger matrix-space ceiling over the quadratic
 extension. G2 uses its faithful natural eight-dimensional matrices and
@@ -987,7 +998,7 @@ coupling or an additional finite catalogue
 The exact CFSG dispatcher retains the original surviving simple-model
 witness
 ([`PrimitiveLargeSubnormalCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveLargeSubnormalCFSGReduction.lean)).
-The other nonaffine types, bounded primitive degrees below 1024 and the
+The remaining nonaffine types, remaining bounded primitive degrees below 1024 and the
 general transitive assembly remain open; the general published
 class-count input is retained.
 

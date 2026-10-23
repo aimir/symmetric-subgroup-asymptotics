@@ -15,9 +15,9 @@ open CFSG.Models.Chevalley CFSGIntegerMatrixPairing CFSGNormTwoRootPairing
 open CFSGGeckSerreRepresentation CFSGExceptionalCartanPositiveDefinite
 open CFSGExceptionalChainStarData
 open CFSGExceptionalLongChainStarData
-local instance : DecidableEq (Roots CartanMatrix.E₆) := Classical.decEq _
-local instance : DecidableEq (Roots CartanMatrix.E₇) := Classical.decEq _
-local instance : DecidableEq (Roots CartanMatrix.E₈) := Classical.decEq _
+local instance longChainE6RootsDecidableEq : DecidableEq (Roots CartanMatrix.E₆) := Classical.decEq _
+local instance longChainE7RootsDecidableEq : DecidableEq (Roots CartanMatrix.E₇) := Classical.decEq _
+local instance longChainE8RootsDecidableEq : DecidableEq (Roots CartanMatrix.E₈) := Classical.decEq _
 
 private theorem chain_star_index_of_coordinate_cartan_eq {r n : ℕ}
     (A : Matrix (Fin r) (Fin r) ℤ) (hd : ∀i,A i i=2)
