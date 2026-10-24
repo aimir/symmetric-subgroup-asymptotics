@@ -1137,8 +1137,15 @@ the prime-field annihilator and the tail stabilizer of the same subgroup.
 The common component budget pays every field order at least three and
 every rank at least five, leaving only `twistedD4(2)`
 ([`PrimitiveSocleTwistedDPointRadicalClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleTwistedDPointRadicalClassBound.lean)).
-The literal guarded classical frontier has 15 field/rank pairs (0 A, 2 B, 3 C, 1 D,
-8 unitary and 1 twisted D), down from 187. These are parameter counts,
+For unitary rank two, the actual nonabelian radical retains its central
+intersection, vector image and projected torus subgroup from the same
+stabilizer. Their coupled cardinal identity and orbit bounds give proper
+index at least `27`, `40` and `50` at field orders `3`, `4` and `5`.
+The shared class-equation division test pays all three using the existing
+coarse outer bound `6*f`
+([`PrimitiveSocleUnitaryRankTwoCoupledClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleUnitaryRankTwoCoupledClassBound.lean)).
+The literal guarded classical frontier has 12 field/rank pairs (0 A, 2 B, 3 C, 1 D,
+5 unitary and 1 twisted D), down from 187. These are parameter counts,
 not an action census or proofs of the surviving cases.
 The parameter bounds themselves do not discharge those finite cases.
 The remaining nonaffine types, bounded cases of the other primitive
@@ -1244,8 +1251,15 @@ the coarse ceiling only for its strictly smaller top action of degree `2^e`.
 The proof uses actual characteristic-chief costs and defining-prime GL
 valuations; it does not assume that the top is a 2-group
 ([`OriginalBinaryAffineTraceyWedgeStep`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineTraceyWedgeStep.lean)).
-Arbitrary top degrees and the remaining small binary-affine windows are
-still obligations of this independent coarse-generator route.
+Jointly charging the characteristic layers against the actual complement
+order and checking the remaining integer window reduces this route to
+four configurations: `(d,e) = (2,2), (4,1), (4,2), (5,1)`.
+The smaller three configurations are discharged through the actual
+degree-two top and degree-eight local subnormal bounds. This theorem
+still assumes only the genuine smaller top ceiling
+([`OriginalBinaryAffineFourResidualSteps`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineFourResidualSteps.lean)).
+Arbitrary top degrees and these four configurations remain obligations
+of this independent coarse-generator route.
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
