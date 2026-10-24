@@ -1202,11 +1202,24 @@ on nonzero vectors. The isometry group is the same literal definition
 used by the split and twisted orthogonal models; no quadratic-type
 classification is a premise
 ([`QuadraticIsometryPolarStabilizer`](SymmetricSubgroupAsymptotics/QuadraticIsometryPolarStabilizer.lean)).
-The required numerical symplectic and point-stabilizer class bounds
-remain open. Separately, a constructive finite iteration proves norm
-existence for every selfadjoint unit in a finite commutative
-characteristic-two star ring with a trace-one element
-([`FiniteTraceOneUnitNorm`](SymmetricSubgroupAsymptotics/FiniteTraceOneUnitNorm.lean)).
+The actual point stabilizer now maps onto the smaller affine symplectic
+group with kernel of order at most the field order `q`. Exact affine
+inertia counting gives the recurrence `p(r+1) <= q*(s(r)+p(r))`, where
+`s(r)` counts classes of the symplectic group on `2r` coordinates and
+`p(r)` counts classes of its nonzero-vector stabilizer; the base satisfies
+`p(1) <= q`
+([`CFSGSymplecticPointClassRecurrence`](SymmetricSubgroupAsymptotics/CFSGSymplecticPointClassRecurrence.lean)).
+In characteristic two, a constructive norm lift proves that two
+fixed-point-free elements of the literal polar-preserver group are
+conjugate there whenever they are conjugate in the general linear group
+([`BilinearFixedFreeConjugacyFusion`](SymmetricSubgroupAsymptotics/BilinearFixedFreeConjugacyFusion.lean)).
+The actual symplectic characteristic polynomial is self-reciprocal, and
+its values on `2r` coordinates have cardinality at most `q^r`
+([`SymplecticSelfReciprocalCode`](SymmetricSubgroupAsymptotics/SymplecticSelfReciprocalCode.lean)).
+This last statement bounds polynomial values, not conjugacy classes.
+The required numerical class bounds still need the remaining module
+multiplicity count. No class-count hypothesis is introduced by these
+structural steps.
 The remaining nonaffine types, bounded cases of the other primitive
 simple types below 1024, and the general transitive assembly remain open; the general published
 class-count input is retained.
@@ -1340,6 +1353,16 @@ guard is an actual dominant power below 64, or a binary dominant power
 The top degree is still unrestricted; neither remaining guard is a proof
 of its cases
 ([`OriginalBinaryAffineBinaryDominantFrontier`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineBinaryDominantFrontier.lean)).
+The actual four-point component now shares its original translation head
+across the zero and nonzero odd-image branches. In the zero branch the
+compressed linear image is faithfully the actual top; in the nonzero
+branch the genuine translation kernel costs at most half the block count
+([`OriginalFourPointSharedChooseCost`](SymmetricSubgroupAsymptotics/OriginalFourPointSharedChooseCost.lean)).
+This closes the original binary-exponent 6--7 interval whenever all
+other prime-power divisors of the top degree are at most three, using
+only the strictly smaller top's coarse ceiling
+([`OriginalBinaryAffineSharedThreeComplementInterval`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineSharedThreeComplementInterval.lean)).
+This is a proved part of the remaining guard, not its complete exhaustion.
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
@@ -1512,8 +1535,24 @@ Their normalizers intersect in the actual fixed diagonal subgroup.
 The two simple paired Weyl elements also give an exhaustive, distinct
 minimal-parabolic family above the actual Borel
 ([`CFSGReeFFourMinimalParabolics`](SymmetricSubgroupAsymptotics/CFSGReeFFourMinimalParabolics.lean)).
-Intrinsic root-group recognition and the outer-order count remain to
-be proved; no automorphism lift to the ambient F4 group is assumed.
+Intersecting the original Sylows with the opposite minimal parabolics
+recovers both signed simple root blocks intrinsically. Their orders `q`
+and `q^2` distinguish the two labels. Thus the adjusted automorphism
+preserves all four literal signed blocks
+([`CFSGReeFFourOriginalSignedRootAction`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalSignedRootAction.lean)).
+The actual middle block is also identified with the existing Suzuki
+unipotent coordinate group, and reversing the eight actual peels proves
+that the two positive blocks together with the two simple Weyl elements
+generate the positive Sylow. These statements identify the unipotent
+coordinates, not the whole Suzuki rank-one group
+([`CFSGReeFFourMiddleSuzukiCoordinates`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleSuzukiCoordinates.lean),
+[`CFSGReeFFourSimpleBlockPeelingGeneration`](SymmetricSubgroupAsymptotics/CFSGReeFFourSimpleBlockPeelingGeneration.lean)).
+The four signed simple blocks now generate the same original quotient,
+so agreement on them implies equality of original homomorphisms or
+automorphisms
+([`CFSGReeFFourOriginalSignedBlockGeneration`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalSignedBlockGeneration.lean)).
+The field/scalar reconstruction and outer-order count remain open; no
+automorphism lift to the ambient F4 group is assumed.
 
 For the original simple G2 model over every finite field with `q >= 3`,
 the natural root group is now proved equivalent to that same model.
