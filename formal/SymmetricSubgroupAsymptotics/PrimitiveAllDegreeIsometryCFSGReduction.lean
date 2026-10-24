@@ -9,6 +9,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeABinaryCyclicClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticOddRankTwoClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticOddHigherRankClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticBinaryHigherRankClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticBinaryPointRankFourClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalDPointRadicalClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalBPointRadicalClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTwistedDPointRadicalClassBound
@@ -30,15 +31,27 @@ namespace SymmetricSubgroupAsymptotics.PrimitiveAllDegreeIsometryCFSGReduction
 open PrimitiveSocleRawStructure CFSGReduction WeakClassicalOrderCubeNumerics
 open PrimitiveAllDegreeSubnormalCFSGReduction PrimitiveLargeSubnormalCFSGReduction
 
+private theorem binary_order_eq_two (q : CFSG.PrimePower) (hprime : q.prime=2)
+    (hfour : ¬4≤q.order) : q.order=2 := by
+  have he : q.exponent=1 := by
+    by_contra hh
+    have htwo : 2≤q.exponent := by have := q.exponent_pos; omega
+    apply hfour
+    change 4≤q.prime^q.exponent
+    rw [hprime]
+    exact Nat.pow_le_pow_right (by decide : 0<(2 : ℕ)) htwo
+  change q.prime^q.exponent=2
+  rw [hprime,he,pow_one]
+
 def RemainingBoundedPrimitiveParameters : CFSG.Index → Prop
   | .cyclic _ _ | .alternating _ _ | .E6 _ | .E7 _ | .E8 _ => False
   | .A _ _ _ _ => False
   | .B r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1) ∧
       ¬ClassicalClassEquationCapacity.typeB r q ∧
-      q.prime=2 ∧ ¬(4≤q.order ∨ 5≤r)
+      q.prime=2 ∧ ¬(4≤q.order ∨ 5≤r) ∧ r≠4
   | .C r q _ _ => (r=2 ∧ q.order≤7 ∧ q.prime=2) ∨
       (3≤r ∧ SymplecticSharpOrderCubeNumerics.SmallParameters q.order (r-1) ∧
-        q.prime=2 ∧ ¬(4≤q.order ∨ 5≤r))
+        q.prime=2 ∧ ¬(4≤q.order ∨ 5≤r) ∧ r≠4)
   | .D r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1) ∧
       ¬ClassicalClassEquationCapacity.typeD r q ∧ ¬(3≤q.order ∨ 5≤r)
   | .twistedA _ _ _ _ => False
@@ -105,8 +118,13 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
             · by_cases hwindow : 4≤q.order ∨ 5≤r
               · exact Or.inl (D.subgroup_class_cube_le_of_typeB_binary_higher_rank
                   r hr q hbinary e hwindow H)
-              · exact Or.inr ⟨D, .B r q hr, ⟨e⟩,
-                  Or.inl ⟨hsmall, hp, hb, hbinary, hwindow⟩, hform⟩
+              · by_cases hr4 : r=4
+                · subst r
+                  have hq := binary_order_eq_two q hbinary (fun h => hwindow (Or.inl h))
+                  exact Or.inl (D.subgroup_class_cube_le_of_typeB_binary_point_rank_four
+                    q hbinary hq e H)
+                · exact Or.inr ⟨D, .B r q hr, ⟨e⟩,
+                    Or.inl ⟨hsmall, hp, hb, hbinary, hwindow, hr4⟩, hform⟩
             · exact Or.inl (D.subgroup_class_cube_le_of_typeB_point_radical
                 r hr q hbinary e H)
       | C r q hr hs =>
@@ -123,8 +141,12 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
             · by_cases hwindow : 4≤q.order ∨ 5≤r
               · exact Or.inl (D.subgroup_class_cube_le_of_typeC_binary_higher_rank
                   r hp.1 q hbinary e hwindow H)
-              · exact Or.inr ⟨D, .C r q hr hs, ⟨e⟩,
-                  Or.inl ⟨hsmall, Or.inr ⟨hp.1, hp.2, hbinary, hwindow⟩⟩, hform⟩
+              · by_cases hr4 : r=4
+                · subst r
+                  have hq := binary_order_eq_two q hbinary (fun h => hwindow (Or.inl h))
+                  exact Or.inl (D.subgroup_class_cube_le_of_typeC_binary_point_rank_four q hq e H)
+                · exact Or.inr ⟨D, .C r q hr hs, ⟨e⟩,
+                    Or.inl ⟨hsmall, Or.inr ⟨hp.1, hp.2, hbinary, hwindow, hr4⟩⟩, hform⟩
             · exact Or.inl (D.subgroup_class_cube_le_of_typeC_odd_higher_rank r hp.1 q hbinary e H)
       | D r q hr =>
         rcases D.subgroup_class_cube_or_typeD_bilinear_finite_parameters r hr q e H with hc | hp
