@@ -843,6 +843,12 @@ The newer endpoint
 therefore retains only Tits and the 26 sporadic tags in its good-Sylow
 callback. Its separate simple-index/outer callback still retains ReeF4,
 Tits and the sporadic tags.
+The further endpoint
+[`CFSGSevenTargetsReeFFourIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsReeFFourIndexSquare.lean)
+also installs the proved original ReeF4 least-index square. Its ReeF4
+numerical payload retains only `SufficientOuterOrderBudget`; the Tits
+and sporadic payloads remain unchanged. The four published bundles,
+CFSG and both residual model callbacks are still explicit parameters.
 
 A further optional endpoint,
 [`CFSGSevenTargetsTraceyPublished2018Bundle`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTraceyPublished2018Bundle.lean),
@@ -1123,6 +1129,14 @@ with the same kernel quotient. This pays the component capacity whenever
 same theorem to characteristic-two B models, inheriting simplicity from
 that B model rather than assuming it for an independent C model
 ([`PrimitiveSocleSymplecticBinaryHigherRankClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleSymplecticBinaryHigherRankClassBound.lean)).
+Over the two-element field, a second point-radical argument retains the
+same kernel, projected stabilizer and normalized value-one annihilator
+slice. Actual tail transvections give the proper-index lower bound
+`2^(r-1)*(2^(r-1)-1)` for every rank at least three. At rank four this is
+`56`; the literal component cube is at most `2^117 <= 5^55`. This pays
+both original `C4(2)` and `B4(2)`, with simplicity inherited from the
+original model in each case
+([`PrimitiveSocleSymplecticBinaryPointRankFourClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleSymplecticBinaryPointRankFourClassBound.lean)).
 For split orthogonal D in rank `r >= 4`, actual elementary words are now
 transitive on every nonzero quadratic level, in every characteristic.
 Counting a positive-nonzero level slice and retaining the genuine
@@ -1135,7 +1149,7 @@ In odd characteristic the actual type-B point radical gives
 `(q^(r-1)-1)*q^(r-1) <= [S:H]` for every rank `r >= 3` and every proper
 subgroup of the original model. The common order budget pays all these
 cases, for every original factor count and both degree forms. The type-B
-frontier consists only of `B3(2)` and `B4(2)`
+frontier consists only of `B3(2)` after the binary rank-four result above
 ([`PrimitiveSocleOrthogonalBPointRadicalClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleOrthogonalBPointRadicalClassBound.lean)).
 The family-independent class-equation test also closes seven further
 orthogonal, twisted-orthogonal and unitary parameter cases, combining the actual matrix
@@ -1174,7 +1188,7 @@ the rank-two and higher-rank results, and the general isometry estimate
 now prove the required class-count capacity for every admissible unitary
 rank and field
 ([`PrimitiveSocleUnitaryCompleteClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleUnitaryCompleteClassBound.lean)).
-The literal guarded classical frontier has 7 field/rank pairs (0 A, 2 B, 3 C, 1 D,
+The literal guarded classical frontier has 5 field/rank pairs (0 A, 1 B, 2 C, 1 D,
 0 unitary and 1 twisted D), down from 187. These are parameter counts,
 not an action census or proofs of the surviving cases.
 The parameter bounds themselves do not discharge those finite cases.
@@ -1295,6 +1309,13 @@ then combines the half-degree and logarithmic capacities
 Translation dimensions one through six at other top degrees, the
 nonaffine primitive branch, and the global coarse-generator assembly
 remain obligations of this independent route.
+The six small dimensions now admit a finite numerical reduction on the
+same original action. Unless its coarse ceiling already holds, an actual
+maximal prime-power divisor `q^a` of the top degree has either
+`q` in `{2,3,5,7,31}` and `a < 128`, or `q < 64` and `a < 6`.
+This retains the real top action and does not bound or enumerate its
+degree; these guards are not proofs of the surviving parameters
+([`OriginalBinaryAffineReducedFiniteDominantFrontier`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineReducedFiniteDominantFrontier.lean)).
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
@@ -1427,27 +1448,38 @@ quotient to the original Ree model
 ([`CFSGReeFFourPositiveDerived`](SymmetricSubgroupAsymptotics/CFSGReeFFourPositiveDerived.lean),
 [`CFSGReeFFourOriginalGoodSylow`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalGoodSylow.lean)).
 The field-order-two Tits derived subgroup remains separate.
-Sixteen literal paired-word lattice actions now give a finite Bruhat
-cover of the same fixed group, retaining the actual fixed diagonal
-residual. The proved ambient positive bound `|U| <= q^24` and exact
-diagonal order `(q-1)^2` give a coarse order ceiling `q^54`, which also
-descends to the original Ree derived-center quotient, including at
-field order two. This uses no simplicity or perfectness premise
-([`CFSGReeFFourFixedOrderUpper`](SymmetricSubgroupAsymptotics/CFSGReeFFourFixedOrderUpper.lean)).
 The actual outer and middle fixed inversion blocks have now been counted:
 their cardinalities are `q` and `q^2`. The equalities hold inside the
 original fixed group for every parameter, including field order two
 ([`CFSGReeFFourOuterFixedInversion`](SymmetricSubgroupAsymptotics/CFSGReeFFourOuterFixedInversion.lean),
 [`CFSGReeFFourMiddleFixedInversion`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleFixedInversion.lean)).
-The whole positive group has not yet been counted by these statements.
-The ReeF4 numerical index, outer-order and class-count bounds remain open,
+Eight genuine opposed-subgroup peels now count the whole positive group:
+`|U| = q^12`. Every recursive residual retains all earlier intersection
+conditions; the actual final opposition makes the terminal residual trivial
+([`CFSGReeFFourFixedPositiveCardinality`](SymmetricSubgroupAsymptotics/CFSGReeFFourFixedPositiveCardinality.lean)).
+The sixteen short paired-word actions give a cover retaining the actual
+fixed diagonal residual. Its right-factor costs sum to
+`(1+q)*(1+q^2)*(1+q^3)*(1+q^6)`. Together with the exact diagonal order
+`(q-1)^2`, the weighted cover proves an order ceiling `q^26` for the full
+fixed group and its original derived-center quotient, including at field
+order two. This uses no simplicity or perfectness premise
+([`CFSGReeFFourWeightedFixedOrderUpper`](SymmetricSubgroupAsymptotics/CFSGReeFFourWeightedFixedOrderUpper.lean)).
+For positive parameters, the two opposed Sylows also give
+`q^24 <= |ReeF4(q)|` in the original full-center quotient. The proved
+central p-element argument preserves their mutual disjointness there
+([`CFSGReeFFourOriginalOrderLower`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalOrderLower.lean)).
+The ReeF4 outer-order and class-count bounds remain open,
 as do the required Tits model bounds.
 An actual outer-root translation and its square-scalar torus action now
 give `q <= [S : H]` for every proper subgroup of the original simple ReeF4
 model, for `m > 0`
 ([`CFSGReeFFourPermutationDegree`](SymmetricSubgroupAsymptotics/CFSGReeFFourPermutationDegree.lean)).
-This field-size lower bound does not yet supply the required index-square
-or outer-order conclusions.
+An actual proper middle parabolic, transported with the full quotient
+kernel retained, now gives least proper index at most
+`(1+q)*(1+q^3)*(1+q^6)`. Its square is strictly below the original-model
+order lower bound `q^24`, proving the required least-index square
+([`CFSGReeFFourOriginalIndexSquare`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalIndexSquare.lean)).
+The outer-order conclusion remains open.
 
 For the original simple G2 model over every finite field with `q >= 3`,
 the natural root group is now proved equivalent to that same model.

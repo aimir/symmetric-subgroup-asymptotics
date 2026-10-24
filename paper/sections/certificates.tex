@@ -126,8 +126,9 @@ This discharges the outer-order budget as well, so both residual model
 hypotheses exclude ${}^2G_2$. The ${}^2F_4$ good-Sylow case is now also
 proved on its original derived-centre model, by the torus-filtration
 argument below. The newest good-Sylow callback therefore retains only
-Tits and sporadic groups. The separate numerical simple-index/outer
-callback still retains ${}^2F_4$, Tits and sporadic groups.
+Tits and sporadic groups. The separate numerical callback retains only
+the outer-order budget for ${}^2F_4$, whose least-index square is proved
+below; it retains the full payloads for Tits and sporadic groups.
 The newest optional endpoint uses the explicit published Tracey 2018
 bundle and retains four published inputs, CFSG and two residual model
 hypotheses; it is not a proof from CFSG alone. The seven-input theorem stated above remains the canonical
@@ -201,7 +202,13 @@ $r\geq5$; at field order two it retains
 $2^{r-3}(2^r-2)\leq[S:H]$.
 The actual symplectic realization transfers the same result to
 characteristic-two type-$B$ models, inheriting simplicity from that
-original model. For split orthogonal type $D$, actual elementary words
+original model. Over the two-element field, retaining the same point-radical
+kernel, projected stabilizer and normalized value-one annihilator slice
+gives the further bound $2^{r-1}(2^{r-1}-1)\leq[S:H]$ for $r\geq3$.
+Actual tail transvections supply the orbit count. At rank four the index
+is at least $56$, and the literal component cube is bounded by
+$2^{117}\leq5^{55}$. This pays both original $C_4(2)$ and $B_4(2)$.
+For split orthogonal type $D$, actual elementary words
 are transitive on every nonzero quadratic level. The common level-slice
 count and the same genuine prime-field annihilator give
 $(q^{r-1}-1)q^{r-2}\leq[S:H]$, with no extra prime multiplier.
@@ -209,8 +216,8 @@ This pays every field order at least three and every rank at least five,
 leaving only $D_4(2)$ in this family.
 In odd characteristic the actual type-$B$ point radical gives
 $(q^{r-1}-1)q^{r-1}\leq[S:H]$ in every rank $r\geq3$.
-This pays all such original component capacities, leaving only
-$B_3(2)$ and $B_4(2)$ in type $B$.
+This pays all such original component capacities; together with the binary
+rank-four result above, only $B_3(2)$ remains in type $B$.
 For twisted orthogonal type $D$, the actual point radical, including its
 rank-three anisotropic-tail base, gives
 $(q^{r-2}-1)q^{r-1}\leq[S:H]$ in every characteristic. The retained
@@ -237,7 +244,7 @@ column to sharpen the original model's order bound. Together with the
 rank-two, higher-rank and general isometry estimates, this proves the
 required class-count capacity for every admissible unitary rank and field.
 The guarded classical parameter frontier consequently
-has 7 pairs: 2 type $B$, 3 type $C$, 1 type $D$, no unitary and 1
+has 5 pairs: 1 type $B$, 2 type $C$, 1 type $D$, no unitary and 1
 twisted orthogonal. These are parameter counts, not an action census
 or proofs of the surviving cases.
 Separately, the half-degree ordinary-generator bound is proved for every
@@ -281,6 +288,10 @@ prove the coarse step for arbitrary top degrees in every translation
 dimension at least seven. Dimensions one through six at other top
 degrees, the nonaffine primitive branch and the global coarse
 assembly remain open.
+The six small translation dimensions now reduce to explicit finite
+guards on an actual dominant prime-power divisor of the top degree.
+This reduction retains the original action and does not enumerate or
+bound the top degree; the surviving numerical guards still require proof.
 For product actions with at least two
 socle factors, the component order budget pays the generator bound with
 the full factorial retained. The general class-count and nonnilpotent
@@ -338,8 +349,7 @@ derived subgroup of this fixed group modulo its full center.
 Collected middle-root words also construct an actual subgroup of order
 $q^2$ inside the literal fixed group, with injective parameters and
 proved multiplication and inverse laws. This is a bounded subgroup;
-it does not yet identify the whole positive group or its derived-center
-quotient.
+the whole positive group is counted below by opposed-subgroup peeling.
 
 
 Actual relative Weyl words conjugate the literal fixed positive subgroup
@@ -347,8 +357,8 @@ onto the fixed negative subgroup. A constructed fixed-positive element
 has all six ambient simple-root leading coordinates equal to one.
 The fixed-positive subgroup is proved Sylow in the full fixed group,
 with soluble normalizer, using its faithful ambient preimage and that
-regular element. The Tits good-Sylow case and the numerical bounds for
-the original derived Ree/Tits models remain open.
+regular element. The Tits good-Sylow case and the remaining outer-order
+and Tits numerical bounds require separate arguments.
 For Ree field order $q\geq8$, an actual torus commutator places a
 regular positive element in the derived subgroup itself. This gives a
 Sylow subgroup with soluble normalizer in the pinned original model;
@@ -387,20 +397,32 @@ Opposite generation makes the fixed group perfect, and its actual
 full-centre quotient receives the required good-Sylow data. This proves
 the original ${}^2F_4$ good-Sylow theorem for every positive parameter;
 the Tits parameter remains separate.
-Sixteen literal lattice actions also give a finite Bruhat cover of the
-same fixed group. Keeping the actual fixed diagonal residual, its order
-is at most $16q^{48}(q-1)^2\leq q^{54}$, using the proved ambient positive
-bound $|U|\leq q^{24}$. This coarse polynomial ceiling descends to the
-original derived-center quotient, including at field order two, and
-requires neither simplicity nor perfectness.
+Eight genuine opposed-subgroup peels count the whole fixed positive group,
+giving $|U|=q^{12}$. Each recursive residual keeps all earlier intersection
+conditions, and the actual final opposition makes the terminal residual
+trivial. Sixteen short paired-word actions give a finite Bruhat cover of
+the same fixed group, keeping the actual fixed diagonal residual. The
+proved right-factor costs sum to
+$(1+q)(1+q^2)(1+q^3)(1+q^6)$. With diagonal order $(q-1)^2$, the weighted
+cover bounds the full fixed group and its original derived-center
+quotient by $q^{26}$, including at field order two. This requires neither
+simplicity nor perfectness.
+For $q\geq8$, opposed actual Sylows remain mutually disjoint after the
+full-center quotient, giving $q^{24}\leq|{}^2F_4(q)|\leq q^{26}$.
 For $q\geq8$, the actual outer-root translation and its square-scalar
 torus action also give $q\leq[S:H]$ for every proper subgroup of the
-original simple model. The stronger index-square and outer-order
-conclusions are still open.
+original simple model. An actual proper middle parabolic, transported
+with the full quotient kernel retained, gives
+$\ell\leq(1+q)(1+q^3)(1+q^6)$. This squares strictly below $q^{24}$,
+proving the required least-index square on the original model.
+The outer-order conclusion remains open. A checked optional T1 endpoint
+therefore retains only the outer-order budget in its ReeF4 numerical
+payload; the other model callbacks and four published bundles remain
+explicit parameters.
 The actual outer and middle fixed inversion blocks now have cardinalities
 $q$ and $q^2$, respectively. These statements hold inside the original
-fixed group, including at the Tits parameter. They do not yet count the
-whole positive group or prove the remaining numerical conclusions.
+fixed group, including at the Tits parameter. The Tits model and the
+Ree outer-order obligations remain separate.
 
 The coarse all-subgroup estimate is derived internally from the retained
 soluble-generation input alone. For soluble primitive actions, the
