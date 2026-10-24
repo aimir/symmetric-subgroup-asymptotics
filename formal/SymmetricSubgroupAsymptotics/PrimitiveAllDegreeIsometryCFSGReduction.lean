@@ -5,6 +5,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeARankOneCompleteClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeARankTwoCompleteClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeAClassEquationCapacity
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeASmallOrderClassEquation
+import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeABinaryCyclicClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticOddRankTwoClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticSmallOddPrimeClassBound
 
@@ -23,7 +24,7 @@ open PrimitiveAllDegreeSubnormalCFSGReduction PrimitiveLargeSubnormalCFSGReducti
 
 def RemainingBoundedPrimitiveParameters : CFSG.Index → Prop
   | .cyclic _ _ | .alternating _ _ | .E6 _ | .E7 _ | .E8 _ => False
-  | .A r q _ _ => (r=3 ∨ r=5) ∧ q.order=2
+  | .A _ _ _ _ => False
   | .B r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1)
   | .C r q _ _ => (r=2 ∧ q.order≤127 ∧ q.prime=2) ∨
       (3≤r ∧ SymplecticSharpOrderCubeNumerics.SmallParameters q.order (r-1))
@@ -81,9 +82,8 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
                       (by omega) e H hH)
                   · have hqlo : 2 ≤ q.order := q.prime_isPrime.two_le.trans
                       (Nat.le_self_pow q.exponent_pos.ne' q.prime)
-                    exact Or.inr ⟨D, .A r q hr hs, ⟨e⟩,
-                      Or.inl ⟨hsmall, by simpa only [RemainingBoundedPrimitiveParameters] using
-                        (show (r=3 ∨ r=5) ∧ q.order=2 from by omega)⟩, hform⟩
+                    exact Or.inl (D.subnormal_class_cube_le_of_typeA_binary_cyclic r
+                      (by omega) q (by omega) e H hH)
       | B r q hr =>
         rcases D.subgroup_class_cube_or_typeB_bilinear_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
