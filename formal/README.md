@@ -1222,8 +1222,38 @@ central quotient and projected torus together. The resulting index,
 exact original order and proved outer bound pay the full component
 order cube, including `m=1`, and both original primitive degree forms
 ([`PrimitiveSocleSuzukiCompleteClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleSuzukiCompleteClassBound.lean)).
-Other exceptional families, Tits and sporadic cases remain explicit in
-the frontier.
+The actual four-pair fixed-root Heisenberg subgroup also pays every
+F4 field order at least three. It gives proper index `p*q^4`, and its
+injection proves original order at least `q^9`. One scalar seed and a
+uniform polynomial tail pay the full component order cube
+([`PrimitiveAllDegreeFFourHeisenbergCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeFFourHeisenbergCFSGReduction.lean)).
+Only the binary field remains in this family.
+The entire ReeG2 family is now discharged at every parameter as well
+([`PrimitiveAllDegreeReeGTwoCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeReeGTwoCFSGReduction.lean)).
+For an arbitrary subgroup of its actual positive group, the first image,
+middle image of the first-kernel intersection, and central intersection
+are retained together. Their literal commutator implies multiplication
+orthogonality over the prime field. Exact layer cardinalities then give
+proper index at least `3*q`, without torus invariance or full-field
+linearity of the subgroup. The same original fixed/derived group and
+proved outer bound pay the order cube through both primitive degree forms.
+The bounded frontier therefore retains F4 at field order two, G2,
+triality, ReeF4, Tits and sporadic branches. The global general class-count
+input remains explicit.
+A reusable central-extension theorem now proves the sharp bound
+`p*q^m <= [N:L]` from the actual scalar commutator pairing on a
+`2*m`-dimensional quotient, whenever the same subgroup `L` does not
+contain the central field line. Exact kernel/image cardinalities and
+prime-field annihilators supply the proof; no Heisenberg recognition
+isomorphism or full-field linearity of `L` is required
+([`CentralExtensionScalarPairingIndex`](SymmetricSubgroupAsymptotics/CentralExtensionScalarPairingIndex.lean)).
+The actual triality cube pairing, complementary coefficient separation,
+fixed tensor coordinates and scalar-valued raw commutator are checked.
+Their final fixed-field extension binding and primitive index application
+are still in progress. Separately, an actual twelve-word fixed Bruhat
+cover improves the original G2 order ceiling to
+`24*f*q^12*(q-1)^2`, with no group-order formula assumed
+([`CFSGGTwoD4GeckFixedBruhatOrderUpper`](SymmetricSubgroupAsymptotics/CFSGGTwoD4GeckFixedBruhatOrderUpper.lean)).
 The shared class-count route now constructs the literal fixed-polar
 quadratic-refinement torsor and its actual contragredient affine action.
 Burnside counting of joint fixed sets proves affine inertia domination.
@@ -1383,9 +1413,28 @@ degrees, then installs the result on the original block action
 ([`TraceyStrictlySmallerTransitiveActions`](SymmetricSubgroupAsymptotics/TraceyStrictlySmallerTransitiveActions.lean),
 [`OriginalBinaryAffineCoarseDegreeInduction`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineCoarseDegreeInduction.lean)).
 This closes the binary-affine imprimitive branch of the independent
-coarse induction. Primitive actions, odd-affine and nonaffine components,
-and the global coarse-generator assembly remain open. It does not use
-the global Tracey or McIver--Neumann conclusion to prove its own premise.
+coarse induction. The odd-affine branch is also proved for every actual
+local degree at least `11`
+([`OriginalOddAffineLargeLocalOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalOddAffineLargeLocalOrdinaryStep.lean)).
+Its actual translation head and complement quotient are charged
+separately; faithful affine order bounds, uniform numerical bands and
+a prime-power dimension exhaustion pay every top degree from the strictly
+smaller transitive IH. Only local degrees `3`, `5`, `7` and `9` remain in
+this odd-affine branch. Primitive actions, nonaffine components and the
+global coarse-generator assembly remain open.
+These proofs do not use the global Tracey or McIver--Neumann conclusion
+to establish their own premise.
+The simultaneous characteristic-primary and prime-to-characteristic
+capacity fields also yield logarithmic coefficient `1`: the coupled
+quadratic lcm entropy gives the squared budget `2/3+1/3=1`
+([`TraceyQuadraticLcmEntropy`](SymmetricSubgroupAsymptotics/TraceyQuadraticLcmEntropy.lean),
+[`InducedMinimumUnitLogarithmic`](SymmetricSubgroupAsymptotics/InducedMinimumUnitLogarithmic.lean)).
+It is bound to the same actual chief trace with ordinary prime-multiplicity
+costs, then to the original affine quotient; the resulting coefficient is
+`d+Omega(|Component/V|)`. Literal linear-order divisibility proves these
+costs, including `Omega(GL(3,3))=9`
+([`OriginalAffineUnitMultiplicityCost`](SymmetricSubgroupAsymptotics/OriginalAffineUnitMultiplicityCost.lean),
+[`OriginalAffineQuotientPrimeMultiplicity`](SymmetricSubgroupAsymptotics/OriginalAffineQuotientPrimeMultiplicity.lean)).
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
