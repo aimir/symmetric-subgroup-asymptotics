@@ -12,8 +12,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticBinaryHigherRankClas
 import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalDPointRadicalClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalBPointRadicalClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTwistedDPointRadicalClassBound
-import SymmetricSubgroupAsymptotics.PrimitiveSocleUnitaryRankTwoCoupledClassBound
-import SymmetricSubgroupAsymptotics.PrimitiveSocleUnitaryHigherCoupledClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveSocleUnitaryCompleteClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticSmallOddPrimeClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticBinaryRankTwoClassBound
 import SymmetricSubgroupAsymptotics.ClassicalClassEquationSmallParameters
@@ -42,9 +41,7 @@ def RemainingBoundedPrimitiveParameters : CFSG.Index → Prop
         q.prime=2 ∧ ¬(4≤q.order ∨ 5≤r))
   | .D r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1) ∧
       ¬ClassicalClassEquationCapacity.typeD r q ∧ ¬(3≤q.order ∨ 5≤r)
-  | .twistedA r q _ _ => ((r=2 ∧ q.order≤7) ∨ (r=3 ∧ q.order≤3)) ∧
-        ¬ClassicalClassEquationCapacity.unitary r q ∧
-        ¬(r=2 ∧ (q.order=3 ∨ q.order=4 ∨ q.order=5))
+  | .twistedA _ _ _ _ => False
   | .twistedD r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-2) ∧
       ¬ClassicalClassEquationCapacity.twistedD r q ∧ ¬(3≤q.order ∨ 5≤r)
   | _ => True
@@ -144,20 +141,7 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
         exact Or.inr ⟨D, .G2 q hs, ⟨e⟩,
           Or.inl ⟨hsmall, trivial⟩, hform⟩
       | twistedA r q hr hs =>
-        rcases D.subgroup_class_cube_or_unitary_isometry_small_parameters r hr q hs e H with hc | hp
-        · exact Or.inl hc
-        · by_cases hb : ClassicalClassEquationCapacity.unitary r q
-          · exact Or.inl (D.subnormal_class_cube_le_of_unitary_class_equation r hr q hs e hb H hH)
-          · by_cases hclosed : r=2 ∧ (q.order=3 ∨ q.order=4 ∨ q.order=5)
-            · rcases hclosed with ⟨rfl,hq⟩
-              exact Or.inl (D.subnormal_class_cube_le_of_unitary_rank_two_coupled q e hq H hH)
-            · rcases hp with htwo | hthree | hhigher
-              · exact Or.inr ⟨D, .twistedA r q hr hs, ⟨e⟩,
-                  Or.inl ⟨hsmall, Or.inl htwo, hb, hclosed⟩, hform⟩
-              · exact Or.inr ⟨D, .twistedA r q hr hs, ⟨e⟩,
-                  Or.inl ⟨hsmall, Or.inr hthree, hb, hclosed⟩, hform⟩
-              · exact Or.inl (D.subnormal_class_cube_le_of_unitary_higher_binary_coupled
-                  r (by omega) q hhigher.2.2 e H hH)
+        exact Or.inl (D.subnormal_class_cube_le_of_unitary_all_fields r hr q hs e H hH)
       | twistedD r q hr =>
         rcases D.subgroup_class_cube_or_typeTwistedD_bilinear_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
