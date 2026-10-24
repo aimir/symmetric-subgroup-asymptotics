@@ -2,6 +2,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveAllDegreeSharpClassicalCFSGReductio
 import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalBilinearClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleUnitaryIsometryOrderCubeClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeARankOneCompleteClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeARankTwoCompleteClassBound
 
 /-! An exact all-degree refinement retaining the original raw socle,
 model equivalence and degree witness. Every bounded classical residual
@@ -18,8 +19,7 @@ open PrimitiveAllDegreeSubnormalCFSGReduction PrimitiveLargeSubnormalCFSGReducti
 
 def RemainingBoundedPrimitiveParameters : CFSG.Index → Prop
   | .cyclic _ _ | .alternating _ _ | .E6 _ | .E7 _ | .E8 _ => False
-  | .A r q _ _ => (r=2 ∧ q.order≤6) ∨
-      (r=3 ∧ q.order≤3) ∨ (4≤r ∧ r≤6 ∧ q.order=2)
+  | .A r q _ _ => (r=3 ∧ q.order≤3) ∨ (4≤r ∧ r≤6 ∧ q.order=2)
   | .B r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1)
   | .C r q _ _ => (r=2 ∧ q.order≤127) ∨ (3≤r ∧ SymplecticSharpOrderCubeNumerics.SmallParameters q.order (r-1))
   | .D r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1)
@@ -56,9 +56,14 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
       | E8 q =>
         exact (show False from hremaining).elim
       | A r q hr hs =>
-        rcases D.subnormal_class_cube_or_typeA_higher_rank_parameters r hr q hs e H hH with hc | hp
-        · exact Or.inl hc
-        · exact Or.inr ⟨D, .A r q hr hs, ⟨e⟩, Or.inl ⟨hsmall, hp⟩, hform⟩
+        by_cases htwo:r=2
+        · subst r
+          exact Or.inl (D.subnormal_class_cube_le_of_typeA_rank_two_all_fields q e H hH)
+        · rcases D.subnormal_class_cube_or_typeA_higher_rank_parameters r hr q hs e H hH with hc | hp
+          · exact Or.inl hc
+          · rcases hp with ⟨h2,_⟩ | hp
+            · exact (htwo h2).elim
+            · exact Or.inr ⟨D, .A r q hr hs, ⟨e⟩, Or.inl ⟨hsmall, hp⟩, hform⟩
       | B r q hr =>
         rcases D.subgroup_class_cube_or_typeB_bilinear_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
