@@ -832,6 +832,18 @@ The current family and endpoint audits use only
 interface is not a theorem from CFSG alone; the canonical public endpoint
 continues to have seven published inputs.
 
+The original ReeF4 good-Sylow case is now also proved for every `m > 0`.
+A single finite odd torus average matches all coordinates of each actual
+positive height layer by a product of genuine commutators. The exact
+kernel and terminal filtration then put the full positive subgroup in
+the derived subgroup. Opposite generation and the actual full-centre
+quotient give the original-model good-Sylow witness.
+The newer endpoint
+[`CFSGSevenTargetsReeFFourGoodSylow`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsReeFFourGoodSylow.lean)
+therefore retains only Tits and the 26 sporadic tags in its good-Sylow
+callback. Its separate simple-index/outer callback still retains ReeF4,
+Tits and the sporadic tags.
+
 A further optional endpoint,
 [`CFSGSevenTargetsTraceyPublished2018Bundle`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTraceyPublished2018Bundle.lean),
 consolidates the separate ordinary-generator parameter into a **stronger,
@@ -840,8 +852,9 @@ Its bundle retains the old coarse conclusion and the sharper floor bound
 only for degrees 4 through 21, where Theorem 1.1(2)'s exceptional degrees
 cannot occur. A proved numerical adapter and the original small-degree
 bases derive the full McIver--Neumann conclusion from that bundle.
-This endpoint has four published parameters, CFSG and the same two
-residual model callbacks. The additional sharp field is published input;
+This endpoint has four published parameters, CFSG and two
+residual model callbacks; the newer ReeF4 endpoint above uses the same
+published bundle and the reduced good-Sylow callback. The additional sharp field is published input;
 it is not proved from the old coarse field or from CFSG. Future proofs
 must also avoid using the global MN consequence to establish its own
 Tracey premise. The canonical endpoint and its seven-input table remain
@@ -1144,8 +1157,17 @@ index at least `27`, `40` and `50` at field orders `3`, `4` and `5`.
 The shared class-equation division test pays all three using the existing
 coarse outer bound `6*f`
 ([`PrimitiveSocleUnitaryRankTwoCoupledClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleUnitaryRankTwoCoupledClassBound.lean)).
-The literal guarded classical frontier has 12 field/rank pairs (0 A, 2 B, 3 C, 1 D,
-5 unitary and 1 twisted D), down from 187. These are parameter counts,
+For unitary ranks at least four, the same nonabelian radical retains its
+central intersection and vector image together with the actual middle
+special-unitary action. Genuine prime-field isotropy and a counted
+same-norm vector orbit give
+`p*(q^2-1)*q^(2*r-5) <= [S:H]`. The actual original model supplies the
+central element moving a coset. At binary ranks four, five and six,
+the resulting bounds `48`, `192` and `768` pay the shared class-equation
+capacity and are installed in the native dispatcher
+([`PrimitiveSocleUnitaryHigherCoupledClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleUnitaryHigherCoupledClassBound.lean)).
+The literal guarded classical frontier has 9 field/rank pairs (0 A, 2 B, 3 C, 1 D,
+2 unitary and 1 twisted D), down from 187. These are parameter counts,
 not an action census or proofs of the surviving cases.
 The parameter bounds themselves do not discharge those finite cases.
 The remaining nonaffine types, bounded cases of the other primitive
@@ -1253,13 +1275,24 @@ valuations; it does not assume that the top is a 2-group
 ([`OriginalBinaryAffineTraceyWedgeStep`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineTraceyWedgeStep.lean)).
 Jointly charging the characteristic layers against the actual complement
 order and checking the remaining integer window reduces this route to
-four configurations: `(d,e) = (2,2), (4,1), (4,2), (5,1)`.
-The smaller three configurations are discharged through the actual
-degree-two top and degree-eight local subnormal bounds. This theorem
+three configurations: `(d,e) = (4,1), (4,2), (5,1)`.
+The smaller configurations are discharged through the actual degree-two
+top and degree-eight local subnormal bounds. A catalogue-free four-point
+argument then pays `(2,2)`: it gives rank at most eight over four
+transitive labels without a smaller-degree hypothesis. The installer
 still assumes only the genuine smaller top ceiling
-([`OriginalBinaryAffineFourResidualSteps`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineFourResidualSteps.lean)).
-Arbitrary top degrees and these four configurations remain obligations
+([`OriginalBinaryAffineThreeResidualSteps`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineThreeResidualSteps.lean)).
+Arbitrary top degrees and these three configurations remain obligations
 of this independent coarse-generator route.
+The three configurations are now also paid whenever the actual
+translation quotient `block.Component / P.V` is soluble. The same chief
+trace then has no nonabelian factors; its other-prime dimensions are
+charged jointly against the literal GL order, giving budgets four and
+five in dimensions four and five. This closes all binary top degrees
+on that soluble branch using the unchanged smaller-top ceiling
+([`OriginalBinaryAffineSolvableResidualSteps`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineSolvableResidualSteps.lean)).
+Nonsoluble translation quotients in those three configurations remain
+open, along with the arbitrary-top assembly.
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
@@ -1351,8 +1384,8 @@ injects through the full-center quotient
 Whole-positive stability under the exceptional automorphism and the
 original Bruhat-cell cover are also proved, without assuming that four
 simple root charts generate the whole positive group. Generation of
-the full fixed group is now proved below; passage to the derived model
-and the Tits field-order-two case remain separate.
+the full fixed group and passage to the original derived-centre model
+are now proved below for `m > 0`; the Tits field-order-two case remains separate.
 The word action in every actual fixed Bruhat cell is now generated by
 the two paired words. The proof uses three- and six-step inversion drops
 and preserves the actual reversed-letter action. Equal word actions
@@ -1381,9 +1414,17 @@ the root-degree cone. Together with the fixed Bruhat cover, this proves
 [`CFSGReeFFourMiddleTorusSquareReduction`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleTorusSquareReduction.lean),
 [`CFSGReeFFourMiddleTorusInversion`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleTorusInversion.lean),
 [`CFSGReeFFourFixedOppositeGeneration`](SymmetricSubgroupAsymptotics/CFSGReeFFourFixedOppositeGeneration.lean)).
-This theorem concerns the full fixed group; it does not identify that
-group with its derived subgroup or assert generation in the original
-derived-center quotient.
+For `m > 0`, actual torus conjugation acts diagonally on each literal
+positive height quotient, and every root character is proved nontrivial,
+including a checked field-order-eight base. One common finite odd torus
+average constructs a genuine product of commutators with the same entire
+coordinate vector. Peeling the exact kernels proves that the full
+positive subgroup lies in the derived subgroup. Consequently the fixed
+group is perfect and the good-Sylow data descends through its full-centre
+quotient to the original Ree model
+([`CFSGReeFFourPositiveDerived`](SymmetricSubgroupAsymptotics/CFSGReeFFourPositiveDerived.lean),
+[`CFSGReeFFourOriginalGoodSylow`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalGoodSylow.lean)).
+The field-order-two Tits derived subgroup remains separate.
 Sixteen literal paired-word lattice actions now give a finite Bruhat
 cover of the same fixed group, retaining the actual fixed diagonal
 residual. The proved ambient positive bound `|U| <= q^24` and exact
@@ -1391,8 +1432,14 @@ diagonal order `(q-1)^2` give a coarse order ceiling `q^54`, which also
 descends to the original Ree derived-center quotient, including at
 field order two. This uses no simplicity or perfectness premise
 ([`CFSGReeFFourFixedOrderUpper`](SymmetricSubgroupAsymptotics/CFSGReeFFourFixedOrderUpper.lean)).
-The required good-Sylow, outer-order and class-count bounds on the
-original derived-center-quotient ReeF4/Tits models remain open.
+The ReeF4 numerical index, outer-order and class-count bounds remain open,
+as do the required Tits model bounds.
+An actual outer-root translation and its square-scalar torus action now
+give `q <= [S : H]` for every proper subgroup of the original simple ReeF4
+model, for `m > 0`
+([`CFSGReeFFourPermutationDegree`](SymmetricSubgroupAsymptotics/CFSGReeFFourPermutationDegree.lean)).
+This field-size lower bound does not yet supply the required index-square
+or outer-order conclusions.
 
 For the original simple G2 model over every finite field with `q >= 3`,
 the natural root group is now proved equivalent to that same model.
