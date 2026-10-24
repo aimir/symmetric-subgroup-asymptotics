@@ -1,0 +1,44 @@
+import SymmetricSubgroupAsymptotics.PrimitiveAllDegreeSuzukiCFSGReduction
+import SymmetricSubgroupAsymptotics.PrimitiveSocleFFourHeisenbergClassBound
+
+/-! The actual primitive class-count frontier after all F4 field orders
+at least three are discharged. Only the binary F4 field remains in that
+family, with its original action and socle data still explicit. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace SymmetricSubgroupAsymptotics.PrimitiveAllDegreeFFourHeisenbergCFSGReduction
+open PrimitiveSocleRawStructure CFSGReduction
+open PrimitiveAllDegreeSubnormalCFSGReduction PrimitiveLargeSubnormalCFSGReduction
+
+def RemainingBoundedPrimitiveParameters : CFSG.Index → Prop
+  | .F4 q => q.order=2 ∧ PrimitiveAllDegreeSuzukiCFSGReduction.RemainingBoundedPrimitiveParameters (.F4 q)
+  | i => PrimitiveAllDegreeSuzukiCFSGReduction.RemainingBoundedPrimitiveParameters i
+
+theorem primitive_subnormal_cube_or_actual_remaining_parameters
+    (hCFSG : CFSG.CFSGClassification)
+    (G X : Type) [Group G] [Finite G] [Finite X] [MulAction G X]
+    [FaithfulSMul G X] [Nontrivial X] [MulAction.IsPreprimitive G X]
+    (hn : 4 ≤ Nat.card X) (H : Subgroup G) (hH : H.IsSubnormal) :
+    Nat.card (ConjClasses H)^3 ≤ 5^(Nat.card X-1) ∨
+      ∃ D : NonaffineData G X, ∃ i : CFSG.Index,
+        Nonempty (D.Simple ≃* i.Model) ∧
+        ((Nat.card X < 1024 ∧ RemainingBoundedPrimitiveParameters i) ∨
+          (1024 ≤ Nat.card X ∧ RemainingLargePrimitiveSimpleType i)) ∧
+        ((∃ K : Subgroup D.Simple, K ≠ ⊤ ∧ Nat.card X = K.index^D.factorCount) ∨
+          (∃ a : ℕ, D.factorCount ≤ 2*a ∧ Nat.card X = (Nat.card D.Simple)^a)) := by
+  rcases PrimitiveAllDegreeSuzukiCFSGReduction.primitive_subnormal_cube_or_actual_remaining_parameters
+    hCFSG G X hn H hH with hc | ⟨D,i,⟨e⟩,hstate,hform⟩
+  · exact Or.inl hc
+  · rcases hstate with ⟨hsmall,hremaining⟩ | hlarge
+    · cases i
+      case F4 q =>
+        by_cases hq : 3 ≤ q.order
+        · exact Or.inl (D.subgroup_class_cube_le_of_fFour_field_ge_three q hq e H)
+        · have htwo : 2 ≤ q.order := q.prime_isPrime.two_le.trans
+            (Nat.le_self_pow (Nat.ne_of_gt q.exponent_pos) q.prime)
+          exact Or.inr ⟨D,.F4 q,⟨e⟩,Or.inl ⟨hsmall,⟨by omega,hremaining⟩⟩,hform⟩
+      all_goals exact Or.inr ⟨D,_,⟨e⟩,Or.inl ⟨hsmall,hremaining⟩,hform⟩
+    · exact Or.inr ⟨D,i,⟨e⟩,Or.inr hlarge,hform⟩
+
+end SymmetricSubgroupAsymptotics.PrimitiveAllDegreeFFourHeisenbergCFSGReduction
