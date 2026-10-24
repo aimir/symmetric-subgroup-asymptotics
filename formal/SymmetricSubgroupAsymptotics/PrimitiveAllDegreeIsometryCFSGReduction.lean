@@ -7,6 +7,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeAClassEquationCapacity
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeASmallOrderClassEquation
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeABinaryCyclicClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticOddRankTwoClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticOddHigherRankClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticSmallOddPrimeClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticBinaryRankTwoClassBound
 import SymmetricSubgroupAsymptotics.ClassicalClassEquationSmallParameters
@@ -30,7 +31,7 @@ def RemainingBoundedPrimitiveParameters : CFSG.Index → Prop
   | .B r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1) ∧
       ¬ClassicalClassEquationCapacity.typeB r q
   | .C r q _ _ => (r=2 ∧ q.order≤7 ∧ q.prime=2) ∨
-      (3≤r ∧ SymplecticSharpOrderCubeNumerics.SmallParameters q.order (r-1))
+      (3≤r ∧ SymplecticSharpOrderCubeNumerics.SmallParameters q.order (r-1) ∧ q.prime=2)
   | .D r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1) ∧
       ¬ClassicalClassEquationCapacity.typeD r q
   | .twistedA r q _ _ => ((r=2 ∧ q.order≤7) ∨ (r=3 ∧ q.order≤3) ∨
@@ -105,7 +106,10 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
               · exact Or.inr ⟨D, .C 2 q hr hs, ⟨e⟩,
                   Or.inl ⟨hsmall, Or.inl ⟨rfl, by omega, hbinary⟩⟩, hform⟩
             · exact Or.inl (D.subnormal_class_cube_le_of_typeC_odd_rank_two_all_fields q hbinary e H hH)
-          · exact Or.inr ⟨D, .C r q hr hs, ⟨e⟩, Or.inl ⟨hsmall, Or.inr hp⟩, hform⟩
+          · by_cases hbinary : q.prime=2
+            · exact Or.inr ⟨D, .C r q hr hs, ⟨e⟩,
+                Or.inl ⟨hsmall, Or.inr ⟨hp.1, hp.2, hbinary⟩⟩, hform⟩
+            · exact Or.inl (D.subgroup_class_cube_le_of_typeC_odd_higher_rank r hp.1 q hbinary e H)
       | D r q hr =>
         rcases D.subgroup_class_cube_or_typeD_bilinear_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
