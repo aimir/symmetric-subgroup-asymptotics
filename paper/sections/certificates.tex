@@ -186,10 +186,9 @@ general-linear normalizer give the $q^2$ proper-index bound for $q\geq8$
 as well. This argument retains the genuine prime-field annihilator of
 the actual stabilizer kernel, without asserting extension-field
 linearity. The same component budget therefore closes these $C_2$
-capacities; field order four remains open. A sharper projective-level
+capacities; field order four uses the primary class count below. A sharper projective-level
 argument proves $q(q-1)^2\leq2[S:H]$ in characteristic two, giving index
-at least 18 at field order four, but this does not yet pay that case's
-class-count capacity.
+at least 18 at field order four, as used in that class-count application.
 In higher rank $r\geq3$, the characteristic-two argument now proves
 \[
   (q-1)q^{r-2}(q^r-q)\leq 2[S:H]
@@ -213,17 +212,18 @@ are transitive on every nonzero quadratic level. The common level-slice
 count and the same genuine prime-field annihilator give
 $(q^{r-1}-1)q^{r-2}\leq[S:H]$, with no extra prime multiplier.
 This pays every field order at least three and every rank at least five,
-leaving only $D_4(2)$ in this family.
+with $D_4(2)$ settled by the quadratic class count below.
 In odd characteristic the actual type-$B$ point radical gives
 $(q^{r-1}-1)q^{r-1}\leq[S:H]$ in every rank $r\geq3$.
-This pays all such original component capacities; together with the binary
-rank-four result above, only $B_3(2)$ remains in type $B$.
+This pays all such original component capacities; the binary rank-four
+case is covered above and rank three uses the primary class count below.
 For twisted orthogonal type $D$, the actual point radical, including its
 rank-three anisotropic-tail base, gives
 $(q^{r-2}-1)q^{r-1}\leq[S:H]$ in every characteristic. The retained
 prime-field annihilator and the tail stabilizer belong to the same subgroup;
 there is no additional prime multiplier. This pays all field orders at
-least three and all ranks at least five, leaving only ${}^2D_4(2)$.
+least three and all ranks at least five; ${}^2D_4(2)$ uses the quadratic
+class count below.
 For unitary rank two, the actual nonabelian radical's central intersection,
 vector image and projected torus subgroup are retained from the same
 stabilizer. Their coupled cardinal and orbit bounds give proper index at
@@ -243,10 +243,9 @@ orders two and three. The binary case also counts the first isotropic
 column to sharpen the original model's order bound. Together with the
 rank-two, higher-rank and general isometry estimates, this proves the
 required class-count capacity for every admissible unitary rank and field.
-The guarded classical parameter frontier consequently
-has 5 pairs: 1 type $B$, 2 type $C$, 1 type $D$, no unitary and 1
-twisted orthogonal. These are parameter counts, not an action census
-or proofs of the surviving cases.
+The guarded classical parameter frontier is now empty: all classical
+models are discharged by the native dispatcher on the same original
+primitive action, retaining all socle factors and both degree forms.
 For a shared class-count route, the literal quadratic refinements of a
 fixed polar form are now identified with an affine torsor for the dual.
 Counting joint fixed sets proves affine inertia domination. Over the
@@ -264,8 +263,23 @@ A constructive norm lift also proves that fixed-point-free conjugacy
 inside the full polar-preserver group agrees with general-linear
 conjugacy in characteristic two. Its actual characteristic polynomial
 is self-reciprocal, with at most $q^r$ polynomial values in dimension
-$2r$. This counts polynomial values, not conjugacy classes; the
-remaining module multiplicity count and numerical bounds are obligations.
+$2r$. A finite primary code now also counts the module multiplicities:
+partitions with total exponent mass at most $N$ have at most
+$2^{N-1}$ values per actual polynomial, and equal codes give actual
+general-linear conjugacy. In the binary fixed-point-free branch,
+irreducible factors have degree at least two, so $N=r$ suffices.
+Together with the point-stabilizer recurrence, this proves
+$k(\mathrm{Sp}_6(2))\leq96$, $k(\mathrm{Sp}_8(2))\leq448$ and
+$k(\mathrm{Sp}_4(4))\leq192$, without a class table or a new
+class-count hypothesis. These bounds discharge the original primitive
+$B_3(2)$, $C_3(2)$ and $C_2(4)$ cases with all socle factors retained.
+The binary rank-four nonzero-vector stabilizer has class count at most
+$320$. Literal split and twisted polar coordinates transport the sum
+$448+320=768$ to both full eight-dimensional quadratic isometry
+groups. The proved indices of the actual elementary images give class
+counts at most $1536$ and $3072$ for the original split and twisted
+projective models. Together with their outer and proper-index bounds,
+these close the original $D_4(2)$ and twisted $D_4(2)$ cases.
 Separately, the half-degree ordinary-generator bound is proved for every
 finite nilpotent $J\leq S_n$, by sharing generators across its actual
 Sylow factors. The whole primitive-affine branch of the sharp generator
@@ -313,17 +327,24 @@ This reduction retains the original action and does not enumerate or
 bound the top degree; the surviving numerical guards still require proof.
 The exact normalized central-binomial rate now applies even when a
 primary power is only a divisor of the top degree. Shared complementary
-intervals discharge every odd dominant power at least $64$. The surviving
-guard is a dominant power below $64$, or a binary dominant power $2^a$
-with $6\leq a<128$ and every other prime-power divisor below $16$.
+intervals discharge every odd dominant power at least $64$. Shared intervals also discharge the binary-dominant case with
+complementary powers from $7$ through $15$, then $5$, then $3$.
 The actual four-point component now shares its original translation head
 between zero and nonzero odd-image branches. The zero branch has a
 faithful actual top image; the nonzero branch pays at most half the
 block count for the actual translation kernel. This closes the original
 binary-exponent $6$--$7$ interval when every other prime-power divisor is
-at most three, using only the smaller top's coarse ceiling. The rest of
-the surviving guard remains an obligation.
-These are residual guards, not completed cases.
+at most three, using only the smaller top's coarse ceiling. Combined
+with the complementary intervals, this proves the original coarse
+ceiling whenever the top degree has any prime-power divisor at least
+$64$. The surviving guard therefore requires every actual prime-power
+divisor to be below $64$. The top action is retained; this guard is
+neither a census nor a proof of its remaining cases.
+A shared least-common-multiple entropy bound also discharges any
+remaining dominant prime outside $\{2,3,5,7,31\}$, using its literal
+zero matching coefficient in the same GL order. Only a dominant prime
+in that set with power below $64$ remains; its other prime factors
+are still retained.
 For product actions with at least two
 socle factors, the component order budget pays the generator bound with
 the full factorial retained. The general class-count and nonnilpotent
@@ -464,9 +485,18 @@ law. Reversing the eight actual peels shows that the two positive blocks
 and the two simple Weyl elements generate the positive Sylow.
 The four signed simple blocks also generate the same original quotient,
 so agreement on them determines an original automorphism uniquely.
-These are structural steps towards field/scalar reconstruction and the
-remaining outer-order count; they assume neither a whole rank-one Suzuki
-identification nor a lift of an automorphism to the ambient $F_4$ group.
+The positive outer-root action and first middle coordinate are now
+proved semilinear. The actual torus realizes every pair of scalar
+coefficients, so one original inner adjustment makes both coefficients
+one. The two field automorphisms are now proved equal: the actual
+outer Weyl image lies in its diagonal coset, the original torus scalar
+coordinates are faithful, and the resulting shear reflection forces a
+common field map. Unique actual Bruhat factors and the trivial
+positive torus centralizer put each fixed diagonal-normalizing element
+in a diagonal times a genuine paired Weyl word. Signed Weyl recovery,
+negative-root reconstruction and the outer-order count remain open.
+No whole rank-one Suzuki identification or lift to the ambient $F_4$
+automorphism group is assumed.
 The actual outer and middle fixed inversion blocks now have cardinalities
 $q$ and $q^2$, respectively. These statements hold inside the original
 fixed group, including at the Tits parameter. The Tits model and the

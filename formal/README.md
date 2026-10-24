@@ -1052,7 +1052,7 @@ remaining bounded case
 A further actual-model refinement leaves only finite field/rank parameter
 sets for the bounded classical branches, retaining the same original
 subnormal subgroup and degree witness
-([`PrimitiveAllDegreeIsometryCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeIsometryCFSGReduction.lean)).
+([`PrimitiveAllDegreePrimaryClassCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreePrimaryClassCFSGReduction.lean)).
 A shared basis-prefix argument bounds every finite faithful linear group
 preserving a nonsingular bilinear form by `q^(n*(n+1)/2)`. The same
 argument accepts a separating sesquilinear pairing. On the original
@@ -1111,12 +1111,12 @@ general-linear normalizer yield the same `q^2` proper-index bound for
 `q >= 8`. The coupled argument retains an arbitrary prime-field
 annihilator of the actual stabilizer kernel, with no extension-field
 linearity assumption. The shared numerical budget closes these C2
-capacities as well; only field order four remains in rank two
+capacities as well; field order four uses the primary class-count proof below
 ([`PrimitiveSocleSymplecticBinaryRankTwoClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleSymplecticBinaryRankTwoClassBound.lean)).
 A sharper actual quadratic-level argument proves
 `q*(q-1)^2 <= 2*[S:H]` for every proper original binary C2 subgroup,
-including index at least 18 at field order four. The field-four
-class-count capacity remains open
+including index at least 18 at field order four, as used in the
+field-four primary class-count application below
 ([`CFSGSymplecticBinaryRankTwoSharpIndex`](SymmetricSubgroupAsymptotics/CFSGSymplecticBinaryRankTwoSharpIndex.lean)).
 The same-annihilator argument now works in every characteristic-two rank
 `r >= 3`: the actual symmetric shear kernel, its projected general-linear
@@ -1143,13 +1143,13 @@ Counting a positive-nonzero level slice and retaining the genuine
 prime-field annihilator of the same point-radical stabilizer gives
 `(q^(r-1)-1)*q^(r-2) <= [S:H]`. There is no additional prime multiplier.
 The shared order budget pays every field order at least three and every
-rank at least five; only `D4(2)` remains in this family
+rank at least five; `D4(2)` uses the quadratic class-count proof below
 ([`PrimitiveSocleOrthogonalDPointRadicalClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleOrthogonalDPointRadicalClassBound.lean)).
 In odd characteristic the actual type-B point radical gives
 `(q^(r-1)-1)*q^(r-1) <= [S:H]` for every rank `r >= 3` and every proper
 subgroup of the original model. The common order budget pays all these
 cases, for every original factor count and both degree forms. The type-B
-frontier consists only of `B3(2)` after the binary rank-four result above
+binary rank-three case uses the primary class-count proof below
 ([`PrimitiveSocleOrthogonalBPointRadicalClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleOrthogonalBPointRadicalClassBound.lean)).
 The family-independent class-equation test also closes seven further
 orthogonal, twisted-orthogonal and unitary parameter cases, combining the actual matrix
@@ -1162,7 +1162,7 @@ The twisted-D point radical now gives the actual unmultiplied bound
 Its construction includes the rank-three anisotropic-tail base and keeps
 the prime-field annihilator and the tail stabilizer of the same subgroup.
 The common component budget pays every field order at least three and
-every rank at least five, leaving only `twistedD4(2)`
+every rank at least five; `twistedD4(2)` uses the quadratic class-count proof below
 ([`PrimitiveSocleTwistedDPointRadicalClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleTwistedDPointRadicalClassBound.lean)).
 For unitary rank two, the actual nonabelian radical retains its central
 intersection, vector image and projected torus subgroup from the same
@@ -1188,10 +1188,11 @@ the rank-two and higher-rank results, and the general isometry estimate
 now prove the required class-count capacity for every admissible unitary
 rank and field
 ([`PrimitiveSocleUnitaryCompleteClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleUnitaryCompleteClassBound.lean)).
-The literal guarded classical frontier has 5 field/rank pairs (0 A, 1 B, 2 C, 1 D,
-0 unitary and 1 twisted D), down from 187. These are parameter counts,
-not an action census or proofs of the surviving cases.
-The parameter bounds themselves do not discharge those finite cases.
+The guarded classical frontier is now empty, down from 187 literal
+field/rank pairs. Every admissible classical model is discharged by the
+native dispatcher on the same original primitive action
+([`PrimitiveAllDegreeClassicalCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeClassicalCFSGReduction.lean)).
+This is a theorem for the original action, rather than an action census.
 The shared class-count route now constructs the literal fixed-polar
 quadratic-refinement torsor and its actual contragredient affine action.
 Burnside counting of joint fixed sets proves affine inertia domination.
@@ -1216,10 +1217,27 @@ conjugate there whenever they are conjugate in the general linear group
 The actual symplectic characteristic polynomial is self-reciprocal, and
 its values on `2r` coordinates have cardinality at most `q^r`
 ([`SymplecticSelfReciprocalCode`](SymmetricSubgroupAsymptotics/SymplecticSelfReciprocalCode.lean)).
-This last statement bounds polynomial values, not conjugacy classes.
-The required numerical class bounds still need the remaining module
-multiplicity count. No class-count hypothesis is introduced by these
-structural steps.
+The module multiplicity count is now proved by a finite primary code:
+for each actual polynomial, partitions of its primary multiplicities
+have at most `2^(N-1)` values when the total exponent mass is at most
+`N`. Equality of codes gives actual general-linear conjugacy. On the
+binary fixed-free branch every irreducible factor has degree at least
+two, so `N = r` suffices. Combining this with the point-stabilizer
+recurrence proves `k(Sp6(2)) <= 96`, `k(Sp8(2)) <= 448`, and
+`k(Sp4(4)) <= 192`, without a class table or a new class-count premise
+([`CFSGSymplecticSmallClassBounds`](SymmetricSubgroupAsymptotics/CFSGSymplecticSmallClassBounds.lean)).
+The same original primitive actions and all socle factors therefore
+satisfy the required class-cube estimate in the former `B3(2)`,
+`C3(2)` and `C2(4)` cases
+([`PrimitiveSocleSymplecticSmallPrimaryClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleSymplecticSmallPrimaryClassBound.lean)).
+The binary rank-four nonzero-vector stabilizer also has class count at
+most `320`. Literal coordinates transport the sum `448 + 320 = 768`
+to both the split and twisted eight-dimensional quadratic isometry
+groups. The proved indices of the actual elementary images then give
+class counts at most `1536` and `3072` for the original split and
+twisted projective models. Their outer bounds and actual proper-index
+lower bounds close both former rank-four binary cases
+([`PrimitiveSocleOrthogonalBinaryRankFourClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleOrthogonalBinaryRankFourClassBound.lean)).
 The remaining nonaffine types, bounded cases of the other primitive
 simple types below 1024, and the general transitive assembly remain open; the general published
 class-count input is retained.
@@ -1337,32 +1355,29 @@ then combines the half-degree and logarithmic capacities
 Translation dimensions one through six at other top degrees, the
 nonaffine primitive branch, and the global coarse-generator assembly
 remain obligations of this independent route.
-The six small dimensions now admit a finite numerical reduction on the
-same original action. Unless its coarse ceiling already holds, an actual
-maximal prime-power divisor `q^a` of the top degree has either
-`q` in `{2,3,5,7,31}` and `a < 128`, or `q < 64` and `a < 6`.
-This retains the real top action and does not bound or enumerate its
-degree; these guards are not proofs of the surviving parameters
-([`OriginalBinaryAffineReducedFiniteDominantFrontier`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineReducedFiniteDominantFrontier.lean)).
-The actual divisor capacities now retain the exact normalized central
-binomial coefficient even when the primary power is only a divisor of
-the top degree. Uniform complementary-power estimates then discharge
-every odd dominant power at least 64. The remaining original-action
-guard is an actual dominant power below 64, or a binary dominant power
-`2^a` with `6 <= a < 128` and every other prime-power divisor below 16.
-The top degree is still unrestricted; neither remaining guard is a proof
-of its cases
-([`OriginalBinaryAffineBinaryDominantFrontier`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineBinaryDominantFrontier.lean)).
-The actual four-point component now shares its original translation head
-across the zero and nonzero odd-image branches. In the zero branch the
-compressed linear image is faithfully the actual top; in the nonzero
-branch the genuine translation kernel costs at most half the block count
-([`OriginalFourPointSharedChooseCost`](SymmetricSubgroupAsymptotics/OriginalFourPointSharedChooseCost.lean)).
-This closes the original binary-exponent 6--7 interval whenever all
-other prime-power divisors of the top degree are at most three, using
-only the strictly smaller top's coarse ceiling
-([`OriginalBinaryAffineSharedThreeComplementInterval`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineSharedThreeComplementInterval.lean)).
-This is a proved part of the remaining guard, not its complete exhaustion.
+The six small dimensions now admit an actual small-primary frontier.
+The exact normalized central-binomial rate applies even when a primary
+power is only a divisor of the top degree. Shared complementary-power
+estimates discharge every odd dominant power at least `64`. For a
+binary dominant power, common intervals cover every other prime-power
+divisor from `7` through `15`, the `5` case, and the `3` case. The
+critical four-point component shares its original translation head
+between zero and nonzero odd-image branches: the zero branch has a
+faithful actual top image, and the nonzero branch costs at most half
+the block count for its genuine translation kernel.
+Consequently, unless the original group's coarse ceiling already
+holds, **every actual prime-power divisor of the top degree is below
+`64`**
+([`OriginalBinaryAffineSmallPrimaryFrontier`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineSmallPrimaryFrontier.lean)).
+The actual top is retained and only its strictly smaller-degree coarse
+ceiling is assumed. This is neither an action census nor a proof of the
+remaining small-primary cases.
+A shared least-common-multiple entropy bound now also pays every
+remaining dominant prime outside `{2,3,5,7,31}`, since its literal GL
+matching coefficient is zero. The residual dominant prime therefore
+lies in that set and its power is below `64`; other prime factors of
+the actual top remain unrestricted by that support condition
+([`OriginalBinaryAffineSmallZeroMatchingStep`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineSmallZeroMatchingStep.lean)).
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
@@ -1551,8 +1566,25 @@ The four signed simple blocks now generate the same original quotient,
 so agreement on them implies equality of original homomorphisms or
 automorphisms
 ([`CFSGReeFFourOriginalSignedBlockGeneration`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalSignedBlockGeneration.lean)).
-The field/scalar reconstruction and outer-order count remain open; no
-automorphism lift to the ambient F4 group is assumed.
+The positive outer-root action and the first coordinate of the actual
+Suzuki middle block are now proved semilinear. Surjectivity of the
+actual pair of torus scalars adjusts both scalar coefficients to one by
+one original inner automorphism
+([`CFSGReeFFourOriginalPositiveNormalization`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalPositiveNormalization.lean)).
+The adjusted action is now proved to use one common field automorphism
+on the positive outer-root block and the middle first coordinate
+([`CFSGReeFFourOriginalCommonPositiveField`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalCommonPositiveField.lean)).
+The coupling uses the actual outer Weyl image in its diagonal coset,
+faithful original torus scalar coordinates, and the generic
+shear-reflection rigidity theorem. No field-coupling hypothesis remains
+in this result.
+Unique actual Bruhat factors and the proved trivial positive torus
+centralizer also identify every fixed diagonal-normalizing element as
+a diagonal times a genuine paired Weyl word
+([`CFSGReeFFourFixedDiagonalNormalizer`](SymmetricSubgroupAsymptotics/CFSGReeFFourFixedDiagonalNormalizer.lean)).
+Signed Weyl recovery, negative-root reconstruction and the outer-order
+count remain open; no automorphism lift to the ambient F4 group is
+assumed.
 
 For the original simple G2 model over every finite field with `q >= 3`,
 the natural root group is now proved equivalent to that same model.
