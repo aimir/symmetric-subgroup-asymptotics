@@ -10,6 +10,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticOddRankTwoClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticOddHigherRankClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticBinaryHigherRankClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalDPointRadicalClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalBPointRadicalClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticSmallOddPrimeClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticBinaryRankTwoClassBound
 import SymmetricSubgroupAsymptotics.ClassicalClassEquationSmallParameters
@@ -32,7 +33,7 @@ def RemainingBoundedPrimitiveParameters : CFSG.Index → Prop
   | .A _ _ _ _ => False
   | .B r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1) ∧
       ¬ClassicalClassEquationCapacity.typeB r q ∧
-      ¬(q.prime=2 ∧ (4≤q.order ∨ 5≤r))
+      q.prime=2 ∧ ¬(4≤q.order ∨ 5≤r)
   | .C r q _ _ => (r=2 ∧ q.order≤7 ∧ q.prime=2) ∨
       (3≤r ∧ SymplecticSharpOrderCubeNumerics.SmallParameters q.order (r-1) ∧
         q.prime=2 ∧ ¬(4≤q.order ∨ 5≤r))
@@ -99,10 +100,14 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
         · exact Or.inl hc
         · by_cases hb : ClassicalClassEquationCapacity.typeB r q
           · exact Or.inl (D.subnormal_class_cube_le_of_typeB_class_equation r hr q e hb H hH)
-          · by_cases hbinary : q.prime=2 ∧ (4≤q.order ∨ 5≤r)
-            · exact Or.inl (D.subgroup_class_cube_le_of_typeB_binary_higher_rank
-                r hr q hbinary.1 e hbinary.2 H)
-            · exact Or.inr ⟨D, .B r q hr, ⟨e⟩, Or.inl ⟨hsmall, hp, hb, hbinary⟩, hform⟩
+          · by_cases hbinary : q.prime=2
+            · by_cases hwindow : 4≤q.order ∨ 5≤r
+              · exact Or.inl (D.subgroup_class_cube_le_of_typeB_binary_higher_rank
+                  r hr q hbinary e hwindow H)
+              · exact Or.inr ⟨D, .B r q hr, ⟨e⟩,
+                  Or.inl ⟨hsmall, hp, hb, hbinary, hwindow⟩, hform⟩
+            · exact Or.inl (D.subgroup_class_cube_le_of_typeB_point_radical
+                r hr q hbinary e H)
       | C r q hr hs =>
         rcases D.subgroup_class_cube_or_typeC_sharp_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
