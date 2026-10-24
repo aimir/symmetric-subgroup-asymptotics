@@ -1166,8 +1166,16 @@ central element moving a coset. At binary ranks four, five and six,
 the resulting bounds `48`, `192` and `768` pay the shared class-equation
 capacity and are installed in the native dispatcher
 ([`PrimitiveSocleUnitaryHigherCoupledClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleUnitaryHigherCoupledClassBound.lean)).
-The literal guarded classical frontier has 9 field/rank pairs (0 A, 2 B, 3 C, 1 D,
-2 unitary and 1 twisted D), down from 187. These are parameter counts,
+For unitary rank three at field orders two and three, actual middle-group
+orbits and the same radical annihilator give proper indices at least
+`24` and `48`. The binary case also retains a counted first isotropic
+column, sharpening the original model's order bound. These estimates,
+the rank-two and higher-rank results, and the general isometry estimate
+now prove the required class-count capacity for every admissible unitary
+rank and field
+([`PrimitiveSocleUnitaryCompleteClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleUnitaryCompleteClassBound.lean)).
+The literal guarded classical frontier has 7 field/rank pairs (0 A, 2 B, 3 C, 1 D,
+0 unitary and 1 twisted D), down from 187. These are parameter counts,
 not an action census or proofs of the surviving cases.
 The parameter bounds themselves do not discharge those finite cases.
 The remaining nonaffine types, bounded cases of the other primitive
@@ -1263,36 +1271,30 @@ the actual top image is proper, retaining the precise symmetric-group
 exception. A separate actual-component-order argument proves the whole
 binary-affine block tail in dimensions at least seven (fibre size at
 least 128), including a full symmetric-group top on three points. The
-finite binary-affine block degrees still open on this generator track
+finite binary-affine block degrees still open on this sharp half-degree track
 are 16, 32 and 64
 ([`BinaryAffineBlockOrderTailOrdinaryGenerators`](SymmetricSubgroupAsymptotics/BinaryAffineBlockOrderTailOrdinaryGenerators.lean)).
-An independent coarse-generator induction now pays two infinite binary-affine
-ranges: translation dimension `d >= 10`, or binary top exponent `e >= 20`
-with `12*d <= e`. It retains the actual original block action and assumes
-the coarse ceiling only for its strictly smaller top action of degree `2^e`.
-The proof uses actual characteristic-chief costs and defining-prime GL
-valuations; it does not assume that the top is a 2-group
-([`OriginalBinaryAffineTraceyWedgeStep`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineTraceyWedgeStep.lean)).
-Jointly charging the characteristic layers against the actual complement
-order and checking the remaining integer window reduces this route to
-three configurations: `(d,e) = (4,1), (4,2), (5,1)`.
-The smaller configurations are discharged through the actual degree-two
-top and degree-eight local subnormal bounds. A catalogue-free four-point
-argument then pays `(2,2)`: it gives rank at most eight over four
-transitive labels without a smaller-degree hypothesis. The installer
-still assumes only the genuine smaller top ceiling
-([`OriginalBinaryAffineThreeResidualSteps`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineThreeResidualSteps.lean)).
-Arbitrary top degrees and these three configurations remain obligations
-of this independent coarse-generator route.
-The three configurations are now also paid whenever the actual
-translation quotient `block.Component / P.V` is soluble. The same chief
-trace then has no nonabelian factors; its other-prime dimensions are
-charged jointly against the literal GL order, giving budgets four and
-five in dimensions four and five. This closes all binary top degrees
-on that soluble branch using the unchanged smaller-top ceiling
-([`OriginalBinaryAffineSolvableResidualSteps`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineSolvableResidualSteps.lean)).
-Nonsoluble translation quotients in those three configurations remain
-open, along with the arbitrary-top assembly.
+An independent coarse-generator induction now pays **every binary-affine
+block dimension and every binary top degree** `2^e`, for `e >= 1`. It retains
+the actual original block action and assumes the coarse ceiling only for
+its genuinely smaller top action. The top need not be a 2-group
+([`OriginalBinaryAffinePrimeMultiplicitySteps`](SymmetricSubgroupAsymptotics/OriginalBinaryAffinePrimeMultiplicitySteps.lean)).
+The shared bound `d(G) <= Omega(|G|)`, counting prime factors with
+multiplicity, charges every nonabelian chief factor through the same
+actual chief trace. Its joint cost is bounded by
+`v_2(|D|)*(choose(e,e/2)-1) + Omega(|D|)` for the actual complement
+quotient `D`. Together with the original translation head and exact
+linear-order divisibility, this pays the entire bounded window as well
+as the infinite ranges. In particular, the former configurations
+`(d,e) = (4,1), (4,2), (5,1)` need neither solvability nor small-group
+classification. A second coarse step now covers arbitrary top degrees
+in every translation dimension at least seven. It constructs weighted
+chief costs from literal prime-power divisors of the actual top degree,
+then combines the half-degree and logarithmic capacities
+([`OriginalBinaryAffineArbitraryTopTail`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineArbitraryTopTail.lean)).
+Translation dimensions one through six at other top degrees, the
+nonaffine primitive branch, and the global coarse-generator assembly
+remain obligations of this independent route.
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
@@ -1432,6 +1434,12 @@ diagonal order `(q-1)^2` give a coarse order ceiling `q^54`, which also
 descends to the original Ree derived-center quotient, including at
 field order two. This uses no simplicity or perfectness premise
 ([`CFSGReeFFourFixedOrderUpper`](SymmetricSubgroupAsymptotics/CFSGReeFFourFixedOrderUpper.lean)).
+The actual outer and middle fixed inversion blocks have now been counted:
+their cardinalities are `q` and `q^2`. The equalities hold inside the
+original fixed group for every parameter, including field order two
+([`CFSGReeFFourOuterFixedInversion`](SymmetricSubgroupAsymptotics/CFSGReeFFourOuterFixedInversion.lean),
+[`CFSGReeFFourMiddleFixedInversion`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleFixedInversion.lean)).
+The whole positive group has not yet been counted by these statements.
 The ReeF4 numerical index, outer-order and class-count bounds remain open,
 as do the required Tits model bounds.
 An actual outer-root translation and its square-scalar torus action now
