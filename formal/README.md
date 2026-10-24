@@ -1237,9 +1237,10 @@ orthogonality over the prime field. Exact layer cardinalities then give
 proper index at least `3*q`, without torus invariance or full-field
 linearity of the subgroup. The same original fixed/derived group and
 proved outer bound pay the order cube through both primitive degree forms.
-The bounded frontier therefore retains F4 at field order two, G2,
-triality, ReeF4, Tits and sporadic branches. The global general class-count
-input remains explicit.
+The bounded frontier retains F4 and triality at field order two, G2 in
+characteristic three or at field order four, ReeF4, Tits and sporadic
+branches. The global general class-count input
+remains explicit.
 A reusable central-extension theorem now proves the sharp bound
 `p*q^m <= [N:L]` from the actual scalar commutator pairing on a
 `2*m`-dimensional quotient, whenever the same subgroup `L` does not
@@ -1249,11 +1250,26 @@ isomorphism or full-field linearity of `L` is required
 ([`CentralExtensionScalarPairingIndex`](SymmetricSubgroupAsymptotics/CentralExtensionScalarPairingIndex.lean)).
 The actual triality cube pairing, complementary coefficient separation,
 fixed tensor coordinates and scalar-valued raw commutator are checked.
-Their final fixed-field extension binding and primitive index application
-are still in progress. Separately, an actual twelve-word fixed Bruhat
+Their fixed-field binding is now complete, including characteristic
+three without averaging: the actual fixed middle radical has order
+`q^9` and injects into the same original model, giving proper index
+`p*q^4`. This pays every original triality primitive component at
+`q>=3`, with all socle factors and both raw degree forms retained
+([`PrimitiveAllDegreeTrialityHeisenbergCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeTrialityHeisenbergCFSGReduction.lean)).
+Only binary triality remains in that family. Separately, an actual twelve-word fixed Bruhat
 cover improves the original G2 order ceiling to
 `24*f*q^12*(q-1)^2`, with no group-order formula assumed
 ([`CFSGGTwoD4GeckFixedBruhatOrderUpper`](SymmetricSubgroupAsymptotics/CFSGGTwoD4GeckFixedBruhatOrderUpper.lean)).
+The actual diagram-fixed middle pairing is also nondegenerate in
+characteristic other than three. A proved finite-order defect argument
+gives genuine fixed-word lifts, and the actual radical has order `q^5`.
+Its injection into the same original model gives proper index `p*q^2`.
+Together with the sharper component order ceiling, this pays every
+`q>=5` in characteristic other than three, with the full original socle
+and both degree forms retained
+([`PrimitiveAllDegreeGTwoGoodCharacteristicCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeGTwoGoodCharacteristicCFSGReduction.lean)).
+The characteristic-three degeneration and field order four remain open;
+no averaging argument is applied in characteristic three.
 The shared class-count route now constructs the literal fixed-polar
 quadratic-refinement torsor and its actual contragredient affine action.
 Burnside counting of joint fixed sets proves affine inertia domination.
@@ -1419,9 +1435,20 @@ local degree at least `11`
 Its actual translation head and complement quotient are charged
 separately; faithful affine order bounds, uniform numerical bands and
 a prime-power dimension exhaustion pay every top degree from the strictly
-smaller transitive IH. Only local degrees `3`, `5`, `7` and `9` remain in
-this odd-affine branch. Primitive actions, nonaffine components and the
-global coarse-generator assembly remain open.
+smaller transitive IH. The entire original degree-three block branch is
+also proved by one correlated local-order-dividing-six recurrence,
+using the same actual chief trace for both prime contributions
+([`OriginalTernaryCoarseOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalTernaryCoarseOrdinaryStep.lean)).
+The remaining local degrees `5`, `7` and `9` are now paid by one shared
+literal-order multiplicity argument: the actual component orders divide
+`20`, `42` and `432`. A uniform two-rate bound covers large primary
+divisors, and exact arithmetic on the nontrivial divisors of `420` covers
+the remaining scalar degrees. The resulting dispatcher closes the entire
+original affine imprimitive branch for every prime, translation dimension
+and top action, using only strictly smaller transitive cases
+([`OriginalAffineArbitraryTopOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalAffineArbitraryTopOrdinaryStep.lean)).
+Primitive actions, nonaffine components and the global coarse-generator
+assembly remain open.
 These proofs do not use the global Tracey or McIver--Neumann conclusion
 to establish their own premise.
 The simultaneous characteristic-primary and prime-to-characteristic
@@ -1435,6 +1462,17 @@ costs, then to the original affine quotient; the resulting coefficient is
 costs, including `Omega(GL(3,3))=9`
 ([`OriginalAffineUnitMultiplicityCost`](SymmetricSubgroupAsymptotics/OriginalAffineUnitMultiplicityCost.lean),
 [`OriginalAffineQuotientPrimeMultiplicity`](SymmetricSubgroupAsymptotics/OriginalAffineQuotientPrimeMultiplicity.lean)).
+The nonaffine structural continuation now compresses the same original
+full socle to cost at most `2*d(T)+d(G/socle(G))`, independently of its
+factor count. It proves the actual one/two-minimal-normal cover first,
+retains each supported factor's original coordinate and marks the actual
+quotient lifts. The faithful least-index coset action supplies `d(T)`
+from the strictly smaller transitive IH when that degree is smaller;
+the almost-simple minimum-degree case remains explicit
+([`PrimitiveSocleIsotypicOrdinaryCompression`](SymmetricSubgroupAsymptotics/PrimitiveSocleIsotypicOrdinaryCompression.lean),
+[`SimpleLeastIndexStrictOrdinaryGenerators`](SymmetricSubgroupAsymptotics/SimpleLeastIndexStrictOrdinaryGenerators.lean)).
+No simple two-generation or global generator bound is assumed in these
+structural theorems.
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
