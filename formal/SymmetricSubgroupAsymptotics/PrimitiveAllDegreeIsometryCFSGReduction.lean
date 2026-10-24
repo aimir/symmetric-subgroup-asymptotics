@@ -4,6 +4,8 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleUnitaryIsometryOrderCubeClassB
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeARankOneCompleteClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeARankTwoCompleteClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeAClassEquationCapacity
+import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeASmallOrderClassEquation
+import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticOddRankTwoClassBound
 
 /-! An exact all-degree refinement retaining the original raw socle,
 model equivalence and degree witness. Every bounded classical residual
@@ -20,9 +22,10 @@ open PrimitiveAllDegreeSubnormalCFSGReduction PrimitiveLargeSubnormalCFSGReducti
 
 def RemainingBoundedPrimitiveParameters : CFSG.Index → Prop
   | .cyclic _ _ | .alternating _ _ | .E6 _ | .E7 _ | .E8 _ => False
-  | .A r q _ _ => (r=3 ∧ q.order≤3) ∨ (4≤r ∧ r≤5 ∧ q.order=2)
+  | .A r q _ _ => (r=3 ∨ r=5) ∧ q.order=2
   | .B r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1)
-  | .C r q _ _ => (r=2 ∧ q.order≤127) ∨ (3≤r ∧ SymplecticSharpOrderCubeNumerics.SmallParameters q.order (r-1))
+  | .C r q _ _ => (r=2 ∧ q.order≤127 ∧ (q.prime=2 ∨ q.order≤6)) ∨
+      (3≤r ∧ SymplecticSharpOrderCubeNumerics.SmallParameters q.order (r-1))
   | .D r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1)
   | .twistedA r q _ _ => (r=2 ∧ q.order≤7) ∨ (r=3 ∧ q.order≤3) ∨
       (4≤r ∧ r≤6 ∧ q.order=2)
@@ -68,9 +71,18 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
               · subst r
                 exact Or.inl (D.subnormal_class_cube_le_of_typeA_rank_six_card_two q
                   (by omega) e H hH)
-              · exact Or.inr ⟨D, .A r q hr hs, ⟨e⟩,
-                  Or.inl ⟨hsmall, by simpa only [RemainingBoundedPrimitiveParameters] using
-                    (show (r=3 ∧ q.order≤3) ∨ (4≤r ∧ r≤5 ∧ q.order=2) from by omega)⟩, hform⟩
+              · by_cases hthree : r=3 ∧ q.order=3
+                · rcases hthree with ⟨rfl, hq⟩
+                  exact Or.inl (D.subnormal_class_cube_le_of_typeA_rank_three_card_three q hq e H hH)
+                · by_cases hfour : r=4
+                  · subst r
+                    exact Or.inl (D.subnormal_class_cube_le_of_typeA_rank_four_card_two q
+                      (by omega) e H hH)
+                  · have hqlo : 2 ≤ q.order := q.prime_isPrime.two_le.trans
+                      (Nat.le_self_pow q.exponent_pos.ne' q.prime)
+                    exact Or.inr ⟨D, .A r q hr hs, ⟨e⟩,
+                      Or.inl ⟨hsmall, by simpa only [RemainingBoundedPrimitiveParameters] using
+                        (show (r=3 ∨ r=5) ∧ q.order=2 from by omega)⟩, hform⟩
       | B r q hr =>
         rcases D.subgroup_class_cube_or_typeB_bilinear_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
@@ -78,7 +90,12 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
       | C r q hr hs =>
         rcases D.subgroup_class_cube_or_typeC_sharp_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
-        · exact Or.inr ⟨D, .C r q hr hs, ⟨e⟩, Or.inl ⟨hsmall, hp⟩, hform⟩
+        · rcases hp with ⟨rfl, hq⟩ | hp
+          · by_cases hcap : q.prime≠2 ∧ 7≤q.order
+            · exact Or.inl (D.subgroup_class_cube_le_of_typeC_odd_rank_two q hcap.2 hcap.1 e H)
+            · exact Or.inr ⟨D, .C 2 q hr hs, ⟨e⟩,
+                Or.inl ⟨hsmall, Or.inl ⟨rfl, hq, by omega⟩⟩, hform⟩
+          · exact Or.inr ⟨D, .C r q hr hs, ⟨e⟩, Or.inl ⟨hsmall, Or.inr hp⟩, hform⟩
       | D r q hr =>
         rcases D.subgroup_class_cube_or_typeD_bilinear_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
