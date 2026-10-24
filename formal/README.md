@@ -832,6 +832,21 @@ The current family and endpoint audits use only
 interface is not a theorem from CFSG alone; the canonical public endpoint
 continues to have seven published inputs.
 
+A further optional endpoint,
+[`CFSGSevenTargetsTraceyPublished2018Bundle`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTraceyPublished2018Bundle.lean),
+consolidates the separate ordinary-generator parameter into a **stronger,
+explicit retention of the same published Tracey 2018 theorem**.
+Its bundle retains the old coarse conclusion and the sharper floor bound
+only for degrees 4 through 21, where Theorem 1.1(2)'s exceptional degrees
+cannot occur. A proved numerical adapter and the original small-degree
+bases derive the full McIver--Neumann conclusion from that bundle.
+This endpoint has four published parameters, CFSG and the same two
+residual model callbacks. The additional sharp field is published input;
+it is not proved from the old coarse field or from CFSG. Future proofs
+must also avoid using the global MN consequence to establish its own
+Tracey premise. The canonical endpoint and its seven-input table remain
+unchanged.
+
 For the general class-count reduction,
 [`SmallTopGaronziMarotiCubes`](SymmetricSubgroupAsymptotics/SmallTopGaronziMarotiCubes.lean)
 proves `k(A)^3 <= 5^(n-1)` for every faithful action on its original
@@ -1084,13 +1099,24 @@ A sharper actual quadratic-level argument proves
 including index at least 18 at field order four. The field-four
 class-count capacity remains open
 ([`CFSGSymplecticBinaryRankTwoSharpIndex`](SymmetricSubgroupAsymptotics/CFSGSymplecticBinaryRankTwoSharpIndex.lean)).
+The same-annihilator argument now works in every characteristic-two rank
+`r >= 3`: the actual symmetric shear kernel, its projected general-linear
+stabilizer and the original coset action give
+`(q-1)*q^(r-2)*(q^r-q) <= 2*[S:H]`. A genuine prime-field functional
+reconstructs a quadratic form; its two-frame orbit is counted jointly
+with the same kernel quotient. This pays the component capacity whenever
+`q >= 4` or `r >= 5`. The field-two budget retains the exact lower bound
+`2^(r-3)*(2^r-2)`. The literal symplectic realization also transfers the
+same theorem to characteristic-two B models, inheriting simplicity from
+that B model rather than assuming it for an independent C model
+([`PrimitiveSocleSymplecticBinaryHigherRankClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleSymplecticBinaryHigherRankClassBound.lean)).
 The family-independent class-equation test also closes seven further
 orthogonal, twisted-orthogonal and unitary parameter cases, combining the actual matrix
 order and outer-order estimates before taking the cube. The twisted-D
 application retains the proved outer bound `8*f`, rather than enlarging
 it to a power of the field order
 ([`ClassicalClassEquationSmallParameters`](SymmetricSubgroupAsymptotics/ClassicalClassEquationSmallParameters.lean)).
-The literal guarded classical frontier has 60 field/rank pairs (0 A, 16 B, 10 C, 8 D,
+The literal guarded classical frontier has 46 field/rank pairs (0 A, 9 B, 3 C, 8 D,
 8 unitary and 18 twisted D), down from 187. These are parameter counts,
 not an action census or proofs of the surviving cases.
 The parameter bounds themselves do not discharge those finite cases.
@@ -1106,6 +1132,14 @@ constructs a finite generating set `S` with `2*S.card <= Nat.card X`
 The proof applies the prime-character rank bound and actual Burnside lifts
 to each literal Sylow subgroup, then shares generators across the coprime
 normal factors of the same group. It does not assume McIver--Neumann.
+Independently, every actual transitive 2-group of degree `2^k` now has
+ordinary generator rank at most
+`sum_(j<k) choose(j, floor(j/2)) <= 2^k/sqrt(k)` for `k >= 1`.
+Prime-index covers construct each binary block step on the original
+point-stabilizer lattice; the actual top remains a 2-group. This proves
+the retained coarse Tracey ceiling on the whole transitive 2-group branch,
+without a Tracey, McIver--Neumann or supplied-chain premise
+([`TransitiveBinaryGroupOrdinaryRecurrence`](SymmetricSubgroupAsymptotics/TransitiveBinaryGroupOrdinaryRecurrence.lean)).
 The complete primitive-affine branch of the sharp ordinary-generator
 induction is also proved, including every small degree, in
 [`PrimitiveAffineOrdinaryInduction`](SymmetricSubgroupAsymptotics/PrimitiveAffineOrdinaryInduction.lean).
@@ -1173,19 +1207,20 @@ actual linear conjugator, and the checked models of orders 7, 21 and
 168 supply the inherited action and irreducibility. The resulting block
 installer uses only the strictly smaller-degree induction premise
 ([`PrimitiveAffineDegreeEightSubnormalOrdinaryGenerators`](SymmetricSubgroupAsymptotics/PrimitiveAffineDegreeEightSubnormalOrdinaryGenerators.lean)).
-There is also a shared-dependency reduction: the already retained Tracey
+There is also a shared-dependency reduction: the unchanged coarse Tracey
 permutation input pays the sharp ordinary bound in every transitive
-degree at least 22. Strong induction and the proved intransitive step
-therefore reduce the full McIver--Neumann input to literal transitive
-degrees below 22
+degree at least 22 and in every even degree at least 16. Strong induction
+and the proved intransitive step reduce the full McIver--Neumann input
+to transitive degrees below 16 or equal to 17, 19 or 21
 ([`McIverNeumannFromTraceyBounded`](SymmetricSubgroupAsymptotics/McIverNeumannFromTraceyBounded.lean)).
-That bounded input remains unproved, so this reduction does not remove
-the published McIver--Neumann parameter from T1. With the degree-eight
-block theorem, every remaining imprimitive possibility below 22 has a
-nonaffine component: fibre/top degrees `(6,2)`, `(6,3)`, `(8,2)`,
-`(10,2)`, and `(5,3)` or `(7,3)` with the actual full symmetric
-three-point top. This degree list is not a classification of its actions.
-The bounded primitive nonaffine branch also remains open.
+Under that unchanged coarse input, the unpaid imprimitive possibilities
+have nonaffine fibre/top degrees `(6,2)`, `(5,3)` and `(7,3)`; the latter
+two require the actual full symmetric three-point top. This degree list
+is not a classification of its actions. The bounded primitive nonaffine
+branch also remains open.
+The separately defined published-2018 bundle above pays these remaining
+cases through its sharper floor field. That consolidates published
+inputs; proving the bundle from CFSG remains a separate obligation.
 
 Two further shared ordinary-generation lemmas are proved. A group
 actually generated by a Sylow subgroup and one conjugate needs at most
@@ -1246,6 +1281,18 @@ The literal fixed-positive subgroup is also proved Sylow in the full
 fixed group, with soluble normalizer, by its faithful ambient preimage
 and that regular element
 ([`CFSGReeFFourFixedPositiveSylow`](SymmetricSubgroupAsymptotics/CFSGReeFFourFixedPositiveSylow.lean)).
+For Ree field order `q >= 8`, an actual torus commutator constructs a
+regular positive element in the derived subgroup itself. Its preimage
+gives a Sylow subgroup with soluble normalizer in the pinned original
+Ree model. Disjoint opposed Sylows prove that the positive subgroup
+injects through the full-center quotient
+([`CFSGReeFFourOriginalPositiveSylow`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalPositiveSylow.lean),
+[`CFSGReeFFourPositiveCentralQuotient`](SymmetricSubgroupAsymptotics/CFSGReeFFourPositiveCentralQuotient.lean)).
+Whole-positive stability under the exceptional automorphism and the
+original Bruhat-cell cover are also proved, without assuming that four
+simple root charts generate the whole positive group. Two-conjugate
+generation is still required; the Tits field-order-two case remains
+separate.
 The required good-Sylow, outer-order and class-count bounds on the
 original derived-center-quotient ReeF4/Tits models remain open.
 
