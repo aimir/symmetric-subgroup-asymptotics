@@ -1192,6 +1192,21 @@ The literal guarded classical frontier has 5 field/rank pairs (0 A, 1 B, 2 C, 1 
 0 unitary and 1 twisted D), down from 187. These are parameter counts,
 not an action census or proofs of the surviving cases.
 The parameter bounds themselves do not discharge those finite cases.
+The shared class-count route now constructs the literal fixed-polar
+quadratic-refinement torsor and its actual contragredient affine action.
+Burnside counting of joint fixed sets proves affine inertia domination.
+Consequently a quadratic isometry group over a field of order two has
+class count at most that of its full polar-preserver group plus one
+nonzero-vector stabilizer, whenever that natural action is transitive
+on nonzero vectors. The isometry group is the same literal definition
+used by the split and twisted orthogonal models; no quadratic-type
+classification is a premise
+([`QuadraticIsometryPolarStabilizer`](SymmetricSubgroupAsymptotics/QuadraticIsometryPolarStabilizer.lean)).
+The required numerical symplectic and point-stabilizer class bounds
+remain open. Separately, a constructive finite iteration proves norm
+existence for every selfadjoint unit in a finite commutative
+characteristic-two star ring with a trace-one element
+([`FiniteTraceOneUnitNorm`](SymmetricSubgroupAsymptotics/FiniteTraceOneUnitNorm.lean)).
 The remaining nonaffine types, bounded cases of the other primitive
 simple types below 1024, and the general transitive assembly remain open; the general published
 class-count input is retained.
@@ -1316,6 +1331,15 @@ maximal prime-power divisor `q^a` of the top degree has either
 This retains the real top action and does not bound or enumerate its
 degree; these guards are not proofs of the surviving parameters
 ([`OriginalBinaryAffineReducedFiniteDominantFrontier`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineReducedFiniteDominantFrontier.lean)).
+The actual divisor capacities now retain the exact normalized central
+binomial coefficient even when the primary power is only a divisor of
+the top degree. Uniform complementary-power estimates then discharge
+every odd dominant power at least 64. The remaining original-action
+guard is an actual dominant power below 64, or a binary dominant power
+`2^a` with `6 <= a < 128` and every other prime-power divisor below 16.
+The top degree is still unrestricted; neither remaining guard is a proof
+of its cases
+([`OriginalBinaryAffineBinaryDominantFrontier`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineBinaryDominantFrontier.lean)).
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
@@ -1480,6 +1504,16 @@ kernel retained, now gives least proper index at most
 order lower bound `q^24`, proving the required least-index square
 ([`CFSGReeFFourOriginalIndexSquare`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalIndexSquare.lean)).
 The outer-order conclusion remains open.
+For its structural reduction, every automorphism of the original ReeF4
+quotient can now be adjusted by an inner automorphism to preserve the
+literal positive and negative Sylow images
+([`CFSGReeFFourOriginalPairAlignment`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalPairAlignment.lean)).
+Their normalizers intersect in the actual fixed diagonal subgroup.
+The two simple paired Weyl elements also give an exhaustive, distinct
+minimal-parabolic family above the actual Borel
+([`CFSGReeFFourMinimalParabolics`](SymmetricSubgroupAsymptotics/CFSGReeFFourMinimalParabolics.lean)).
+Intrinsic root-group recognition and the outer-order count remain to
+be proved; no automorphism lift to the ambient F4 group is assumed.
 
 For the original simple G2 model over every finite field with `q >= 3`,
 the natural root group is now proved equivalent to that same model.
