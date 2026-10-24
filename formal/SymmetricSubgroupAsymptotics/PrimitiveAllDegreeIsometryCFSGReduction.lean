@@ -9,6 +9,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeABinaryCyclicClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticOddRankTwoClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticSmallOddPrimeClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticBinaryRankTwoClassBound
+import SymmetricSubgroupAsymptotics.ClassicalClassEquationSmallParameters
 
 /-! An exact all-degree refinement retaining the original raw socle,
 model equivalence and degree witness. Every bounded classical residual
@@ -26,12 +27,14 @@ open PrimitiveAllDegreeSubnormalCFSGReduction PrimitiveLargeSubnormalCFSGReducti
 def RemainingBoundedPrimitiveParameters : CFSG.Index → Prop
   | .cyclic _ _ | .alternating _ _ | .E6 _ | .E7 _ | .E8 _ => False
   | .A _ _ _ _ => False
-  | .B r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1)
+  | .B r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1) ∧
+      ¬ClassicalClassEquationCapacity.typeB r q
   | .C r q _ _ => (r=2 ∧ q.order≤7 ∧ q.prime=2) ∨
       (3≤r ∧ SymplecticSharpOrderCubeNumerics.SmallParameters q.order (r-1))
-  | .D r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1)
-  | .twistedA r q _ _ => (r=2 ∧ q.order≤7) ∨ (r=3 ∧ q.order≤3) ∨
-      (4≤r ∧ r≤6 ∧ q.order=2)
+  | .D r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1) ∧
+      ¬ClassicalClassEquationCapacity.typeD r q
+  | .twistedA r q _ _ => ((r=2 ∧ q.order≤7) ∨ (r=3 ∧ q.order≤3) ∨
+      (4≤r ∧ r≤6 ∧ q.order=2)) ∧ ¬ClassicalClassEquationCapacity.unitary r q
   | .twistedD r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-2)
   | _ => True
 
@@ -88,7 +91,9 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
       | B r q hr =>
         rcases D.subgroup_class_cube_or_typeB_bilinear_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
-        · exact Or.inr ⟨D, .B r q hr, ⟨e⟩, Or.inl ⟨hsmall, hp⟩, hform⟩
+        · by_cases hb : ClassicalClassEquationCapacity.typeB r q
+          · exact Or.inl (D.subnormal_class_cube_le_of_typeB_class_equation r hr q e hb H hH)
+          · exact Or.inr ⟨D, .B r q hr, ⟨e⟩, Or.inl ⟨hsmall, hp, hb⟩, hform⟩
       | C r q hr hs =>
         rcases D.subgroup_class_cube_or_typeC_sharp_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
@@ -103,7 +108,9 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
       | D r q hr =>
         rcases D.subgroup_class_cube_or_typeD_bilinear_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
-        · exact Or.inr ⟨D, .D r q hr, ⟨e⟩, Or.inl ⟨hsmall, hp⟩, hform⟩
+        · by_cases hb : ClassicalClassEquationCapacity.typeD r q
+          · exact Or.inl (D.subnormal_class_cube_le_of_typeD_class_equation r hr q e hb H hH)
+          · exact Or.inr ⟨D, .D r q hr, ⟨e⟩, Or.inl ⟨hsmall, hp, hb⟩, hform⟩
       | F4 q =>
         exact Or.inr ⟨D, .F4 q, ⟨e⟩,
           Or.inl ⟨hsmall, trivial⟩, hform⟩
@@ -113,7 +120,9 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
       | twistedA r q hr hs =>
         rcases D.subgroup_class_cube_or_unitary_isometry_small_parameters r hr q hs e H with hc | hp
         · exact Or.inl hc
-        · exact Or.inr ⟨D, .twistedA r q hr hs, ⟨e⟩, Or.inl ⟨hsmall, hp⟩, hform⟩
+        · by_cases hb : ClassicalClassEquationCapacity.unitary r q
+          · exact Or.inl (D.subnormal_class_cube_le_of_unitary_class_equation r hr q hs e hb H hH)
+          · exact Or.inr ⟨D, .twistedA r q hr hs, ⟨e⟩, Or.inl ⟨hsmall, hp, hb⟩, hform⟩
       | twistedD r q hr =>
         rcases D.subgroup_class_cube_or_typeTwistedD_bilinear_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
