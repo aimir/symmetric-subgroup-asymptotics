@@ -109,4 +109,33 @@ theorem minus_binary_order_cube (r : ℕ) (hr : 5 ≤ r) :
     · exact (Nat.pow_le_pow_left (by decide : (2 : ℕ) ≤ 5) _).trans
         (Nat.pow_le_pow_right (by decide) (by decide))
 
+/-- The split even-dimensional slice is at least the smaller minus-type
+slice, without any extra characteristic-prime factor. -/
+theorem minusIndex_le_split (q r : ℕ) (hq : 2 ≤ q) (hr : 4 ≤ r) :
+    minusIndex q r ≤ (q^(r-1)-1)*q^(r-2) := by
+  have ha : 1 ≤ q^(r-2) := Nat.one_le_pow _ _ (by omega)
+  have hp : q^(r-1) = q^(r-2)*q := by
+    rw [← pow_succ]
+    congr 1
+    omega
+  have hb : 1 ≤ q^(r-1) := Nat.one_le_pow _ _ (by omega)
+  have hmul : q^(r-2) ≤ q^(r-1) :=
+    Nat.pow_le_pow_right (by omega) (by omega)
+  unfold minusIndex
+  have hsuba : q^(r-2)-1+1 = q^(r-2) := by omega
+  have hsubb : q^(r-1)-1+1 = q^(r-1) := by omega
+  nlinarith
+
+theorem minusIndex_ge_thirtyTwo (q r : ℕ) (hq : 2 ≤ q) (hr : 4 ≤ r)
+    (hwindow : 3 ≤ q ∨ 5 ≤ r) : 32 ≤ minusIndex q r := by
+  have hstar : q^r ≤ minusIndex q r :=
+    star_le_product q r (r-2) hq (by omega) (by omega)
+  rcases hwindow with hq3 | hr5
+  · exact ((by decide : 32 ≤ (3 : ℕ)^4).trans
+      ((Nat.pow_le_pow_left hq3 4).trans
+        (Nat.pow_le_pow_right (by omega) hr))).trans hstar
+  · exact ((by decide : 32 ≤ (2 : ℕ)^5).trans
+      ((Nat.pow_le_pow_left hq 5).trans
+        (Nat.pow_le_pow_right (by omega) hr5))).trans hstar
+
 end SymmetricSubgroupAsymptotics.OrthogonalPointRadicalOrderCubeNumerics

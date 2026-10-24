@@ -9,6 +9,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeABinaryCyclicClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticOddRankTwoClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticOddHigherRankClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticBinaryHigherRankClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalDPointRadicalClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticSmallOddPrimeClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleSymplecticBinaryRankTwoClassBound
 import SymmetricSubgroupAsymptotics.ClassicalClassEquationSmallParameters
@@ -36,7 +37,7 @@ def RemainingBoundedPrimitiveParameters : CFSG.Index → Prop
       (3≤r ∧ SymplecticSharpOrderCubeNumerics.SmallParameters q.order (r-1) ∧
         q.prime=2 ∧ ¬(4≤q.order ∨ 5≤r))
   | .D r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1) ∧
-      ¬ClassicalClassEquationCapacity.typeD r q
+      ¬ClassicalClassEquationCapacity.typeD r q ∧ ¬(3≤q.order ∨ 5≤r)
   | .twistedA r q _ _ => ((r=2 ∧ q.order≤7) ∨ (r=3 ∧ q.order≤3) ∨
       (4≤r ∧ r≤6 ∧ q.order=2)) ∧ ¬ClassicalClassEquationCapacity.unitary r q
   | .twistedD r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-2) ∧
@@ -124,7 +125,9 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
         · exact Or.inl hc
         · by_cases hb : ClassicalClassEquationCapacity.typeD r q
           · exact Or.inl (D.subnormal_class_cube_le_of_typeD_class_equation r hr q e hb H hH)
-          · exact Or.inr ⟨D, .D r q hr, ⟨e⟩, Or.inl ⟨hsmall, hp, hb⟩, hform⟩
+          · by_cases hwindow : 3≤q.order ∨ 5≤r
+            · exact Or.inl (D.subgroup_class_cube_le_of_typeD_point_radical r hr q e hwindow H)
+            · exact Or.inr ⟨D, .D r q hr, ⟨e⟩, Or.inl ⟨hsmall, hp, hb, hwindow⟩, hform⟩
       | F4 q =>
         exact Or.inr ⟨D, .F4 q, ⟨e⟩,
           Or.inl ⟨hsmall, trivial⟩, hform⟩
