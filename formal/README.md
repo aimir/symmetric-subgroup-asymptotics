@@ -1193,6 +1193,18 @@ field/rank pairs. Every admissible classical model is discharged by the
 native dispatcher on the same original primitive action
 ([`PrimitiveAllDegreeClassicalCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeClassicalCFSGReduction.lean)).
 This is a theorem for the original action, rather than an action census.
+The entire twisted-E6 family is now discharged at every degree as well
+([`PrimitiveAllDegreeTwistedE6CFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeTwistedE6CFSGReduction.lean)).
+Two actual diagram-stable commuting root families give an injective
+Heisenberg group over the literal quadratic fixed field, with ten
+coordinates in each half. Its signed pairing is nondegenerate even in
+characteristic two, using trace surjectivity rather than averaging.
+The injection survives the original central quotient. Every proper
+subgroup therefore has index at least `p*q^10 >= 2048`
+([`CFSGTwistedE6HeisenbergIndex`](SymmetricSubgroupAsymptotics/CFSGTwistedE6HeisenbergIndex.lean)).
+This excludes the whole bounded branch; the existing large-degree bound
+then applies through both original socle degree forms. Other exceptional
+families, Tits and sporadic cases remain explicit in the frontier.
 The shared class-count route now constructs the literal fixed-polar
 quadratic-refinement torsor and its actual contragredient affine action.
 Burnside counting of joint fixed sets proves affine inertia domination.
@@ -1378,6 +1390,21 @@ matching coefficient is zero. The residual dominant prime therefore
 lies in that set and its power is below `64`; other prime factors of
 the actual top remain unrestricted by that support condition
 ([`OriginalBinaryAffineSmallZeroMatchingStep`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineSmallZeroMatchingStep.lean)).
+The shared complementary-factor estimate now covers all six translation
+dimensions whenever the largest other prime-power divisor is at least
+`5`. Consequently the remaining actual top degree has the form
+`t = M*k`, where `M < 64` is its dominant prime power, `k` divides `12`,
+and `M` and `k` are coprime; in particular `t <= 756`
+([`OriginalBinaryAffineTinyComplementFrontier`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineTinyComplementFrontier.lean)).
+This is a proved bounded reduction on the original action, with its
+actual top ceiling retained. The remaining small numerical aggregate
+and the general coarse-generator assembly are still open.
+Within this bounded state the original bound now also holds in
+dimensions four through six for every odd primary divisor at least `5`,
+and in dimensions two and three for every odd primary divisor at least
+`7`
+([`OriginalBinaryAffineTinyOddHigherStep`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineTinyOddHigherStep.lean),
+[`OriginalBinaryAffineTinyOddLowerStep`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineTinyOddLowerStep.lean)).
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
@@ -1578,13 +1605,29 @@ The coupling uses the actual outer Weyl image in its diagonal coset,
 faithful original torus scalar coordinates, and the generic
 shear-reflection rigidity theorem. No field-coupling hypothesis remains
 in this result.
+The full positive middle action is also proved to be entrywise application
+of this same field automorphism, by the faithful first-coordinate
+normalizer map
+([`CFSGReeFFourOriginalCommonPositiveActions`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalCommonPositiveActions.lean)).
+For the outer pair, the actual three-factor Weyl identity forces the
+negative parameter at one, and Weyl conjugation then proves the same
+field action on the entire negative outer block
+([`CFSGReeFFourOriginalSignedOuterField`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalSignedOuterField.lean)).
 Unique actual Bruhat factors and the proved trivial positive torus
 centralizer also identify every fixed diagonal-normalizing element as
 a diagonal times a genuine paired Weyl word
 ([`CFSGReeFFourFixedDiagonalNormalizer`](SymmetricSubgroupAsymptotics/CFSGReeFFourFixedDiagonalNormalizer.lean)).
-Signed Weyl recovery, negative-root reconstruction and the outer-order
-count remain open; no automorphism lift to the ambient F4 group is
-assumed.
+The actual negative middle block is also identified with the native
+Suzuki unipotent group. Its induced action normalizes the literal torus
+and is proved to act by a scalar times a field automorphism on its first
+coordinate
+([`CFSGReeFFourOriginalNegativeMiddleSemilinear`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalNegativeMiddleSemilinear.lean)).
+Its field is now proved equal to the common positive field, using the
+actual negative torus character, the exact original torus field action
+and surjectivity of the literal middle scalar on the slice `T(1,b)`
+([`CFSGReeFFourOriginalNegativeMiddleField`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalNegativeMiddleField.lean)).
+The negative middle scalar, middle Weyl normalization and outer-order
+count remain open; no automorphism lift to the ambient F4 group is assumed.
 
 For the original simple G2 model over every finite field with `q >= 3`,
 the natural root group is now proved equivalent to that same model.
