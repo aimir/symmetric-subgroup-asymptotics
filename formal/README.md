@@ -847,8 +847,14 @@ The further endpoint
 [`CFSGSevenTargetsReeFFourIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsReeFFourIndexSquare.lean)
 also installs the proved original ReeF4 least-index square. Its ReeF4
 numerical payload retains only `SufficientOuterOrderBudget`; the Tits
-and sporadic payloads remain unchanged. The four published bundles,
-CFSG and both residual model callbacks are still explicit parameters.
+and sporadic payloads remain unchanged.
+The current endpoint
+[`CFSGSevenTargetsReeFFourOuter`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsReeFFourOuter.lean)
+also installs the actual original outer bound `|Out(ReeF4(m))| <= 2*m+1`
+and its sufficient numerical budget. Both callbacks now retain only
+**Tits and the 26 sporadic tags**. The four published bundles and CFSG
+remain explicit parameters, as do those residual model obligations;
+this is not a CFSG-only endpoint.
 
 A further optional endpoint,
 [`CFSGSevenTargetsTraceyPublished2018Bundle`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTraceyPublished2018Bundle.lean),
@@ -1203,8 +1209,21 @@ The injection survives the original central quotient. Every proper
 subgroup therefore has index at least `p*q^10 >= 2048`
 ([`CFSGTwistedE6HeisenbergIndex`](SymmetricSubgroupAsymptotics/CFSGTwistedE6HeisenbergIndex.lean)).
 This excludes the whole bounded branch; the existing large-degree bound
-then applies through both original socle degree forms. Other exceptional
-families, Tits and sporadic cases remain explicit in the frontier.
+then applies through both original socle degree forms.
+The entire Suzuki family is also discharged at every degree
+([`PrimitiveAllDegreeSuzukiCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeSuzukiCFSGReduction.lean)).
+For `q = 2^(2*m+1)` and `m >= 1`, every proper original subgroup has
+index at least `(q-1)*2^(m+1)`
+([`CFSGSuzukiQuadraticTorusIndex`](SymmetricSubgroupAsymptotics/CFSGSuzukiQuadraticTorusIndex.lean)).
+The proof couples the same subgroup's central intersection, vector image
+and projected torus. An arbitrary prime-field annihilator and actual
+square isotropy bound the vector image; its scalar dual orbit pays the
+central quotient and projected torus together. The resulting index,
+exact original order and proved outer bound pay the full component
+order cube, including `m=1`, and both original primitive degree forms
+([`PrimitiveSocleSuzukiCompleteClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleSuzukiCompleteClassBound.lean)).
+Other exceptional families, Tits and sporadic cases remain explicit in
+the frontier.
 The shared class-count route now constructs the literal fixed-polar
 quadratic-refinement torsor and its actual contragredient affine action.
 Burnside counting of joint fixed sets proves affine inertia domination.
@@ -1347,64 +1366,26 @@ finite binary-affine block degrees still open on this sharp half-degree track
 are 16, 32 and 64
 ([`BinaryAffineBlockOrderTailOrdinaryGenerators`](SymmetricSubgroupAsymptotics/BinaryAffineBlockOrderTailOrdinaryGenerators.lean)).
 An independent coarse-generator induction now pays **every binary-affine
-block dimension and every binary top degree** `2^e`, for `e >= 1`. It retains
-the actual original block action and assumes the coarse ceiling only for
-its genuinely smaller top action. The top need not be a 2-group
-([`OriginalBinaryAffinePrimeMultiplicitySteps`](SymmetricSubgroupAsymptotics/OriginalBinaryAffinePrimeMultiplicitySteps.lean)).
-The shared bound `d(G) <= Omega(|G|)`, counting prime factors with
-multiplicity, charges every nonabelian chief factor through the same
-actual chief trace. Its joint cost is bounded by
-`v_2(|D|)*(choose(e,e/2)-1) + Omega(|D|)` for the actual complement
-quotient `D`. Together with the original translation head and exact
-linear-order divisibility, this pays the entire bounded window as well
-as the infinite ranges. In particular, the former configurations
-`(d,e) = (4,1), (4,2), (5,1)` need neither solvability nor small-group
-classification. A second coarse step now covers arbitrary top degrees
-in every translation dimension at least seven. It constructs weighted
-chief costs from literal prime-power divisors of the actual top degree,
-then combines the half-degree and logarithmic capacities
-([`OriginalBinaryAffineArbitraryTopTail`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineArbitraryTopTail.lean)).
-Translation dimensions one through six at other top degrees, the
-nonaffine primitive branch, and the global coarse-generator assembly
-remain obligations of this independent route.
-The six small dimensions now admit an actual small-primary frontier.
-The exact normalized central-binomial rate applies even when a primary
-power is only a divisor of the top degree. Shared complementary-power
-estimates discharge every odd dominant power at least `64`. For a
-binary dominant power, common intervals cover every other prime-power
-divisor from `7` through `15`, the `5` case, and the `3` case. The
-critical four-point component shares its original translation head
-between zero and nonzero odd-image branches: the zero branch has a
-faithful actual top image, and the nonzero branch costs at most half
-the block count for its genuine translation kernel.
-Consequently, unless the original group's coarse ceiling already
-holds, **every actual prime-power divisor of the top degree is below
-`64`**
-([`OriginalBinaryAffineSmallPrimaryFrontier`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineSmallPrimaryFrontier.lean)).
-The actual top is retained and only its strictly smaller-degree coarse
-ceiling is assumed. This is neither an action census nor a proof of the
-remaining small-primary cases.
-A shared least-common-multiple entropy bound now also pays every
-remaining dominant prime outside `{2,3,5,7,31}`, since its literal GL
-matching coefficient is zero. The residual dominant prime therefore
-lies in that set and its power is below `64`; other prime factors of
-the actual top remain unrestricted by that support condition
-([`OriginalBinaryAffineSmallZeroMatchingStep`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineSmallZeroMatchingStep.lean)).
-The shared complementary-factor estimate now covers all six translation
-dimensions whenever the largest other prime-power divisor is at least
-`5`. Consequently the remaining actual top degree has the form
-`t = M*k`, where `M < 64` is its dominant prime power, `k` divides `12`,
-and `M` and `k` are coprime; in particular `t <= 756`
-([`OriginalBinaryAffineTinyComplementFrontier`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineTinyComplementFrontier.lean)).
-This is a proved bounded reduction on the original action, with its
-actual top ceiling retained. The remaining small numerical aggregate
-and the general coarse-generator assembly are still open.
-Within this bounded state the original bound now also holds in
-dimensions four through six for every odd primary divisor at least `5`,
-and in dimensions two and three for every odd primary divisor at least
-`7`
-([`OriginalBinaryAffineTinyOddHigherStep`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineTinyOddHigherStep.lean),
-[`OriginalBinaryAffineTinyOddLowerStep`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineTinyOddLowerStep.lean)).
+block dimension and every actual top degree**. The original group, its
+point degree and actual chief-order coefficients are retained; the top
+need not be a 2-group. Its only generator premise is the coarse ceiling
+for that genuinely smaller top action
+([`OriginalBinaryAffineArbitraryTopOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineArbitraryTopOrdinaryStep.lean)).
+The shared bound `d(G) <= Omega(|G|)` charges the nonabelian chief factors.
+Weighted costs from literal prime-power divisors and exact linear-order
+divisibility pay the infinite ranges. Shared complementary-factor and
+small-primary estimates reduce the remaining six dimensions to a finite
+arithmetic exhaustion, now fully proved. No fitted aggregate, solvability
+or small-group census remains in this binary-affine step.
+A faithful-transitive coordinate transport derives its top premise from
+ordinary generators of literal transitive subgroups in strictly smaller
+degrees, then installs the result on the original block action
+([`TraceyStrictlySmallerTransitiveActions`](SymmetricSubgroupAsymptotics/TraceyStrictlySmallerTransitiveActions.lean),
+[`OriginalBinaryAffineCoarseDegreeInduction`](SymmetricSubgroupAsymptotics/OriginalBinaryAffineCoarseDegreeInduction.lean)).
+This closes the binary-affine imprimitive branch of the independent
+coarse induction. Primitive actions, odd-affine and nonaffine components,
+and the global coarse-generator assembly remain open. It does not use
+the global Tracey or McIver--Neumann conclusion to prove its own premise.
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
@@ -1464,7 +1445,8 @@ exceptional automorphism transfers along this equivalence with its exact
 signed root parameters and its square equal to field Frobenius
 ([`CFSGFFourOriginalExceptionalModel`](SymmetricSubgroupAsymptotics/CFSGFFourOriginalExceptionalModel.lean)).
 This argument does not assume simplicity of an ambient ordinary F4
-group. The remaining ReeF4/Tits fixed-group bounds are still open.
+group. The later original ReeF4 results below discharge that family's
+model callbacks; the separate Tits bounds remain open.
 The pinned ReeF4 and Tits definitions are now bound to the literal fixed
 group of this automorphism, retaining the actual derived subgroup and
 its full-center quotient
@@ -1557,8 +1539,9 @@ For positive parameters, the two opposed Sylows also give
 `q^24 <= |ReeF4(q)|` in the original full-center quotient. The proved
 central p-element argument preserves their mutual disjointness there
 ([`CFSGReeFFourOriginalOrderLower`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalOrderLower.lean)).
-The ReeF4 outer-order and class-count bounds remain open,
-as do the required Tits model bounds.
+The later signed-root argument below proves the ReeF4 outer-order bound.
+Its bounded primitive class-count branch and the required Tits model
+bounds remain open.
 An actual outer-root translation and its square-scalar torus action now
 give `q <= [S : H]` for every proper subgroup of the original simple ReeF4
 model, for `m > 0`
@@ -1568,8 +1551,7 @@ kernel retained, now gives least proper index at most
 `(1+q)*(1+q^3)*(1+q^6)`. Its square is strictly below the original-model
 order lower bound `q^24`, proving the required least-index square
 ([`CFSGReeFFourOriginalIndexSquare`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalIndexSquare.lean)).
-The outer-order conclusion remains open.
-For its structural reduction, every automorphism of the original ReeF4
+For the outer-order proof below, every automorphism of the original ReeF4
 quotient can now be adjusted by an inner automorphism to preserve the
 literal positive and negative Sylow images
 ([`CFSGReeFFourOriginalPairAlignment`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalPairAlignment.lean)).
@@ -1626,8 +1608,22 @@ Its field is now proved equal to the common positive field, using the
 actual negative torus character, the exact original torus field action
 and surjectivity of the literal middle scalar on the slice `T(1,b)`
 ([`CFSGReeFFourOriginalNegativeMiddleField`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalNegativeMiddleField.lean)).
-The negative middle scalar, middle Weyl normalization and outer-order
-count remain open; no automorphism lift to the ambient F4 group is assumed.
+The remaining negative middle scalar is now proved equal to one
+([`CFSGReeFFourOriginalSignedMiddleField`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalSignedMiddleField.lean)).
+The image of the actual middle Weyl element lies in its diagonal coset.
+A genuine residual word therefore belongs to the original diagonal,
+whose off-diagonal matrix entry is zero. The same entry is proved to be
+`c+c^2` by 68 kernel-checked sparse polynomial transitions. Since `c`
+is a unit in characteristic two, this forces `c=1`.
+All four signed root blocks consequently have the same full field
+map, and they generate the original group. Counting actual inner-normalized
+automorphisms by that map proves `|Out| <= 2*m+1`
+([`CFSGReeFFourOriginalOuterBound`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalOuterBound.lean)).
+The original proper-index lower bound then gives the full outer budget,
+now threaded through T1 and AllTargets
+([`CFSGSevenTargetsReeFFourOuter`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsReeFFourOuter.lean)).
+No automorphism lift to the ambient F4 group is assumed. The Tits
+parameter remains a separate obligation.
 
 For the original simple G2 model over every finite field with `q >= 3`,
 the natural root group is now proved equivalent to that same model.
@@ -1925,7 +1921,7 @@ The proof constructs fixed words for every middle-layer tensor coordinate
 and actual commutators for the seven raised coordinates. Fixed long-root
 commutators supply the remaining highest-root kernel. This includes `q=2`
 and characteristic three, without assuming that fixed points surject onto
-a fixed quotient. It is structural input to the remaining outer-order proof.
+a fixed quotient. It supplies the outer-order proof below.
 
 The original triality Sylow normalizer now has exactly two minimal strict
 overgroups, the two literal relative simple parabolics
