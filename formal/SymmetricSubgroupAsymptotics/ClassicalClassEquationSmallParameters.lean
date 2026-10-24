@@ -33,4 +33,10 @@ theorem unitary_rank_two_seven (q : CFSG.PrimePower) (hq : q.order = 7) :
   simp only [unitary, hq, he]
   decide
 
+theorem twistedD_rank_four_thirteen (q : CFSG.PrimePower) (hq : q.order = 13) :
+    twistedD 4 q := by
+  have he := exponent_eq_one_of_prime_order q (by rw [hq]; decide)
+  simp only [twistedD, hq, he]
+  decide
+
 end SymmetricSubgroupAsymptotics.ClassicalClassEquationCapacity

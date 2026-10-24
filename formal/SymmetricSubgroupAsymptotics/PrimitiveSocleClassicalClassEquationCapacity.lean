@@ -2,7 +2,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleClassEquationCapacity
 import SymmetricSubgroupAsymptotics.CFSGOrthogonalBilinearComponentOrderCube
 import SymmetricSubgroupAsymptotics.CFSGUnitaryIsometryComponentOrderCube
 
-/-! One class-equation test refines the original B, D and unitary
+/-! One class-equation test refines the original B, D, twisted-D and unitary
 component budgets. No new group classification or numerical hypothesis
 is hidden: each sufficient arithmetic condition is displayed literally. -/
 set_option autoImplicit false
@@ -16,6 +16,10 @@ def typeB (r : ℕ) (q : CFSG.PrimePower) : Prop :=
 def typeD (r : ℕ) (q : CFSG.PrimePower) : Prop :=
   ((q.order^(2*r^2+r) / q.order^(r-1) + 1) * (24*q.exponent))^3 ≤
     5^(q.order^(r-1)-1)
+
+def twistedD (r : ℕ) (q : CFSG.PrimePower) : Prop :=
+  ((q.order^(2*r^2+r) / q.order^(r-2) + 1) * (8*q.exponent))^3 ≤
+    5^(q.order^(r-2)-1)
 
 def unitary (r : ℕ) (q : CFSG.PrimePower) : Prop :=
   ((q.order^((r+1)*(r+2)) / q.order^r + 1) * (2*(r+1)*q.exponent))^3 ≤
@@ -60,6 +64,28 @@ theorem NonaffineData.subnormal_class_cube_le_of_typeD_class_equation
     (CFSGOrthogonalBilinearOrderUpper.typeD_order_le_bilinear_power r hr q)
     (CFSGOrthogonalDProperIndexOrderBudget.typeD_outer_card_le_twentyFour_exponent r hr q)
     (typeD_leastProperIndex_square_lt_card r q hr) hbudget H hH
+  exact (by decide : 3 ≤ 2^2).trans
+    ((Nat.pow_le_pow_left (field_two_le q) 2).trans
+      (Nat.pow_le_pow_right (by have := field_two_le q; omega) (by omega)))
+
+theorem NonaffineData.subnormal_class_cube_le_of_twistedD_class_equation
+    (D : NonaffineData G X) (r : ℕ) (hr : 4 ≤ r) (q : CFSG.PrimePower)
+    (e : D.Simple ≃* CFSG.Models.TwistedD r q) (hbudget : twistedD r q)
+    (H : Subgroup G) (hH : H.IsSubnormal) :
+    Nat.card (ConjClasses H)^3 ≤ 5^(Nat.card X-1) := by
+  letI : IsSimpleGroup (CFSG.Models.TwistedD r q) := e.symm.isSimpleGroup
+  letI : Finite (CFSG.Models.TwistedD r q) := Finite.of_equiv D.Simple e.toEquiv
+  have hnc : ¬IsMulCommutative (CFSG.Models.TwistedD r q) :=
+    fun h => D.noncommutative ((isMulCommutative_congr e).mpr h)
+  have houter : Nat.card (Outer (CFSG.Models.TwistedD r q)) ≤ 8*q.exponent := by
+    obtain ⟨s, rfl⟩ : ∃ s : ℕ, r = s+4 := ⟨r-4, by omega⟩
+    exact CFSGTwistedDOuterCardinality.original_outer_card_le_eight_exponent s q hnc
+  refine D.subnormal_class_cube_le_of_model_class_equation_budget
+    (CFSG.Models.TwistedD r q) e (q.order^(r-2)) (q.order^(2*r^2+r))
+    (8*q.exponent) ?_
+    (CFSGTwistedDProperIndexOrderBudget.typeTwistedD_field_power_le_proper_index r hr q)
+    (CFSGOrthogonalBilinearOrderUpper.typeTwistedD_order_le_bilinear_power r hr q)
+    houter (typeTwistedD_leastProperIndex_square_lt_card r q hr) hbudget H hH
   exact (by decide : 3 ≤ 2^2).trans
     ((Nat.pow_le_pow_left (field_two_le q) 2).trans
       (Nat.pow_le_pow_right (by have := field_two_le q; omega) (by omega)))

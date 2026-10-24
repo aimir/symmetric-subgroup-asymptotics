@@ -35,7 +35,8 @@ def RemainingBoundedPrimitiveParameters : CFSG.Index → Prop
       ¬ClassicalClassEquationCapacity.typeD r q
   | .twistedA r q _ _ => ((r=2 ∧ q.order≤7) ∨ (r=3 ∧ q.order≤3) ∨
       (4≤r ∧ r≤6 ∧ q.order=2)) ∧ ¬ClassicalClassEquationCapacity.unitary r q
-  | .twistedD r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-2)
+  | .twistedD r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-2) ∧
+      ¬ClassicalClassEquationCapacity.twistedD r q
   | _ => True
 
 theorem primitive_subnormal_cube_or_actual_remaining_parameters
@@ -126,7 +127,9 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
       | twistedD r q hr =>
         rcases D.subgroup_class_cube_or_typeTwistedD_bilinear_finite_parameters r hr q e H with hc | hp
         · exact Or.inl hc
-        · exact Or.inr ⟨D, .twistedD r q hr, ⟨e⟩, Or.inl ⟨hsmall, hp⟩, hform⟩
+        · by_cases hb : ClassicalClassEquationCapacity.twistedD r q
+          · exact Or.inl (D.subnormal_class_cube_le_of_twistedD_class_equation r hr q e hb H hH)
+          · exact Or.inr ⟨D, .twistedD r q hr, ⟨e⟩, Or.inl ⟨hsmall, hp, hb⟩, hform⟩
       | twistedE6 q =>
         exact Or.inr ⟨D, .twistedE6 q, ⟨e⟩,
           Or.inl ⟨hsmall, trivial⟩, hform⟩
