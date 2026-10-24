@@ -1,7 +1,7 @@
 import SymmetricSubgroupAsymptotics.PrimitiveAllDegreeSharpClassicalCFSGReduction
 import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalBilinearClassBound
 import SymmetricSubgroupAsymptotics.PrimitiveSocleUnitaryIsometryOrderCubeClassBound
-import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeARankOneSharpClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveSocleTypeARankOneClassCubeClassBound
 
 /-! An exact all-degree refinement retaining the original raw socle,
 model equivalence and degree witness. Every bounded classical residual
@@ -18,7 +18,7 @@ open PrimitiveAllDegreeSubnormalCFSGReduction PrimitiveLargeSubnormalCFSGReducti
 
 def RemainingBoundedPrimitiveParameters : CFSG.Index → Prop
   | .cyclic _ _ | .alternating _ _ | .E6 _ | .E7 _ | .E8 _ => False
-  | .A r q _ _ => (r=1 ∧ q.order≤63) ∨ (r=2 ∧ q.order≤6) ∨
+  | .A r q _ _ => (r=1 ∧ q.order≤26) ∨ (r=2 ∧ q.order≤6) ∨
       (r=3 ∧ q.order≤3) ∨ (4≤r ∧ r≤6 ∧ q.order=2)
   | .B r q _ => OrthogonalBilinearOrderCubeNumerics.SmallParameters q.order (r-1)
   | .C r q _ _ => (r=2 ∧ q.order≤127) ∨ (3≤r ∧ SymplecticSharpOrderCubeNumerics.SmallParameters q.order (r-1))
@@ -56,7 +56,7 @@ theorem primitive_subnormal_cube_or_actual_remaining_parameters
       | E8 q =>
         exact (show False from hremaining).elim
       | A r q hr hs =>
-        rcases D.subgroup_class_cube_or_typeA_sharp_finite_parameters r hr q e H with hc | hp
+        rcases D.subnormal_class_cube_or_typeA_class_finite_parameters r hr q e H hH with hc | hp
         · exact Or.inl hc
         · exact Or.inr ⟨D, .A r q hr hs, ⟨e⟩, Or.inl ⟨hsmall, hp⟩, hform⟩
       | B r q hr =>
