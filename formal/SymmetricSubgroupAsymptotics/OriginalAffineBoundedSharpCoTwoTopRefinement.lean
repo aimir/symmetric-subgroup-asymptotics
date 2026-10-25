@@ -1,14 +1,18 @@
 import SymmetricSubgroupAsymptotics.OriginalAffineBoundedSharpMathieuTopRefinement
 import SymmetricSubgroupAsymptotics.PrimitiveSocleCoTwoElementarySylowExclusion
 import SymmetricSubgroupAsymptotics.PrimitiveSocleCoThreeDegreeEightExclusion
+import SymmetricSubgroupAsymptotics.PrimitiveSocleCoThreeSmallActionExclusion
 
 /-! The SAME elementary-Sylow top obstruction also excludes the pinned
 Co2 factor: its actual cyclic involution orbit would force solvability.
 The Mathieu22 and nine prime-product exclusions remain attached to the
 same witness. The final cumulative predicate additionally excludes actual Co3 on8points
 using its checked period14 word. The old Co2 APIs remain compatible.
-The global failed-half witness is unchanged; it carries no inferred
-elementary-Sylow property, Co2 exclusion or degree8 assumption. -/
+The separate cumulative global predicate now excludes Co3 by the checked
+even-permutation period14 obstruction on at most10points. It preserves
+the SAME global failed-half action, without an inferred elementary-Sylow
+property, Co2 exclusion or degree8 assumption. All earlier APIs remain
+compatible. -/
 set_option autoImplicit false
 noncomputable section
 namespace SymmetricSubgroupAsymptotics.OriginalAffineBoundedSharpCoTwoTopRefinement
@@ -125,6 +129,55 @@ theorem exists_generating_finset_or_cumulative_actual_top_or_refined_global
       (n = 16 ∧ Nonempty (CumulativeActualTopObstruction (G := block.Top) (X := block.Points))) ∨
       Nonempty (RefinedGlobalCounterexample 10) := by
   rcases genRank_le_sharpFloor_or_cumulative_actual_top_or_refined_global J block P hCFSG hsmall with
+    hpaid | htop | hglobal
+  · obtain ⟨S,hcard,hgen⟩ := MarkedC4.genRank_spec (G := J)
+    exact Or.inl ⟨S,hgen,hcard.le.trans hpaid⟩
+  · exact Or.inr (Or.inl htop)
+  · exact Or.inr (Or.inr hglobal)
+
+/-- Only exclusions proved for arbitrary faithful actions on at most10
+points belong to the global predicate. The additional Mathieu22/Co2 top
+exclusions require elementary Sylows and do not occur here. -/
+def GlobalExcluded (s : CFSG.Sporadic) : Prop :=
+  CFSGSmallActionPrimeProductExclusion.Excluded s ∨ s = CFSG.Sporadic.co3
+
+abbrev CumulativeGlobalCounterexample (b : ℕ) :=
+  {w : EightPointHalfDegreeFiniteModelReduction.PrimitiveSporadicCounterexample b //
+    ¬GlobalExcluded w.sporadic}
+
+def refine_global_cumulative {b : ℕ} (hb : b ≤ 10) (w : RefinedGlobalCounterexample b) :
+    CumulativeGlobalCounterexample b :=
+  ⟨w.val,by
+    let v := w.val
+    intro hs
+    change GlobalExcluded v.sporadic at hs
+    rcases hs with hprime | hco3
+    · exact w.property hprime
+    · let e : v.socle.Simple ≃* CFSG.Models.MatrixGroups.Co3.Model :=
+        v.equiv.trans (modelEquivCoThree v.sporadic hco3)
+      exact PrimitiveSocleCoThreeSmallActionExclusion.not_co_three v.socle
+        (by simpa only [Nat.card_fin] using v.degree_le.trans hb) e⟩
+
+include P in
+theorem genRank_le_sharpFloor_or_cumulative_sporadic_obstructions
+    (hCFSG : CFSG.CFSGClassification) (hsmall : n < 22) :
+    MarkedC4.genRank J ≤ sharpFloor n ∨
+      (n = 16 ∧ Nonempty (CumulativeActualTopObstruction (G := block.Top) (X := block.Points))) ∨
+      Nonempty (CumulativeGlobalCounterexample 10) := by
+  rcases genRank_le_sharpFloor_or_cumulative_actual_top_or_refined_global
+    J block P hCFSG hsmall with hpaid | htop | hglobal
+  · exact Or.inl hpaid
+  · exact Or.inr (Or.inl htop)
+  · obtain ⟨w⟩ := hglobal
+    exact Or.inr (Or.inr ⟨refine_global_cumulative (by decide : 10 ≤ 10) w⟩)
+
+include P in
+theorem exists_generating_finset_or_cumulative_sporadic_obstructions
+    (hCFSG : CFSG.CFSGClassification) (hsmall : n < 22) :
+    (∃ S : Finset J, Subgroup.closure (S : Set J) = ⊤ ∧ S.card ≤ sharpFloor n) ∨
+      (n = 16 ∧ Nonempty (CumulativeActualTopObstruction (G := block.Top) (X := block.Points))) ∨
+      Nonempty (CumulativeGlobalCounterexample 10) := by
+  rcases genRank_le_sharpFloor_or_cumulative_sporadic_obstructions J block P hCFSG hsmall with
     hpaid | htop | hglobal
   · obtain ⟨S,hcard,hgen⟩ := MarkedC4.genRank_spec (G := J)
     exact Or.inl ⟨S,hgen,hcard.le.trans hpaid⟩
