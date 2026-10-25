@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.SmallFibreKnownModelClassGap
 import SymmetricSubgroupAsymptotics.CFSGPrimePowerSmallOrders
+import SymmetricSubgroupAsymptotics.CFSGPSLTwoSmallFieldParameters
 
 /-! Bounded rank/field parameters and complete small-fibre profiles.
 These are parameter pairs, not actions or subgroup-catalogue rows.
@@ -26,6 +27,16 @@ variable {S : Type} [Group S]
 theorem unitary_closed (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
     (hsmall : r=2 → q.order≠2) (e : S ≃* CFSG.Models.TwistedA r q) : Profile S :=
   .unitaryComplete r hr q hsmall e
+
+theorem pslTwo_parameters_of_not_closed (q : CFSG.PrimePower) (hq : 4≤q.order)
+    (e : S ≃* CFSG.Models.A 1 q) (h : ¬Profile S) :
+    q.order∈CFSGPSLTwoSmallFieldParameters.tinyOrders := by
+  have hupper : q.order<51 := by
+    by_contra hh
+    exact h (.pslTwo q (by omega) e)
+  rcases CFSGPSLTwoSmallFieldParameters.improved_or_tiny q hq hupper with hp | ht
+  · exact (h (.pslTwoImproved q hp e)).elim
+  · exact ht
 
 theorem typeB_closed (r : ℕ) (hr : 3 ≤ r) (q : CFSG.PrimePower)
     (e : S ≃* CFSG.Models.B r q) : Profile S := by
