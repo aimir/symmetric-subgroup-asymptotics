@@ -925,6 +925,13 @@ ten points**. The former is the same original top and need not fail the
 half-degree bound. Thus no unexplained affine degree-16 shape remains,
 but these sporadic alternatives are still open
 ([`OriginalAffineBoundedSharpSporadicReduction`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpSporadicReduction.lean)).
+A shared prime-product argument now excludes nine pinned sporadic tags
+from faithful actions on at most ten points. A selected actual
+Mathieu22 order-four witness also excludes that model from the
+**elementary-Sylow top**, without excluding it from the separate global
+failed-half witness. This leaves 16 possible tags in the actual-top
+obstruction and 17 in the global small-action obstruction
+([`OriginalAffineBoundedSharpMathieuTopRefinement`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpMathieuTopRefinement.lean)).
 All actual transitive 2-groups of degree sixteen separately satisfy the
 six-generator bound
 ([`BinarySixteenTwoGroupSharpStep`](SymmetricSubgroupAsymptotics/BinarySixteenTwoGroupSharpStep.lean)). The small sporadic witness is global and is not asserted
@@ -976,11 +983,21 @@ frontier remain separate
 This is now threaded into the actual global least-counterexample
 argument. Its bounded imprimitive alternatives retain either a literal
 fibre of size 2 or 3 at total degree at most 36855, or a literal
-**nonaffine** component of degree 5 through 4095 under two or three
-blocks, at total degree at most 12285. The other alternative retains
+**nonaffine, nonsimple** component of degree 5 through 4095 under two
+or three blocks, at total degree at most 12285. The other alternative retains
 actual Tits/sporadic data in the original component or top. No bounded
 class-count callback is introduced
 ([`GaronziMarotiGlobalNonaffineShapeCounterexample`](SymmetricSubgroupAsymptotics/GaronziMarotiGlobalNonaffineShapeCounterexample.lean)).
+
+A separate generic proper-subnormal argument pays **every actual
+simple component** of degree at least four. A deficient correlated
+kernel saves one proper-subnormal power; a saturated kernel is the
+actual full wreath product and uses its proved two/three-block class
+count. Proper subnormal subgroups of a simple component are trivial,
+so this needs no extra class-capacity premise. The native theorem uses
+only strict-smaller general permutation-degree induction and is
+threaded into the existing global frontier above
+([`OriginalMinimalBlockSimpleComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockSimpleComponentClassBound.lean)).
 
 For the general class-count reduction,
 [`SmallTopGaronziMarotiCubes`](SymmetricSubgroupAsymptotics/SmallTopGaronziMarotiCubes.lean)
@@ -989,7 +1006,7 @@ proves `k(A)^3 <= 5^(n-1)` for every faithful action on its original
 of size two or three, and transitive block action. All four size pairs
 are covered. The proof retains actual block kernels and nonsplit lifts;
 ternary kernels are not assumed abelian. The global class-count theorem
-remains one of the five published inputs above.
+remains one of the explicit published inputs above.
 
 [`AbelianExtensionClassComparison`](SymmetricSubgroupAsymptotics/AbelianExtensionClassComparison.lean)
 proves `k(G) <= k(N semidirect (G/N))` for every finite group and normal
@@ -1822,8 +1839,12 @@ above eliminates primitive multifactor failures and nonaffine block
 failures of fibre degree at least 32. The displayed generating pairs
 of twenty sporadic models now pay **every primitive degree and every
 original block component/top**, including small actions. The remaining
-primitive possibilities are J4 below degree 32, Fi22/Fi23/Fi24' and the
-Baby Monster below degree 64, Tits below degree 128, and the Monster.
+primitive possibilities are Fi22/Fi23/Fi24' and the Baby Monster
+below degree 64, Tits below degree 128, and the Monster. The primitive
+J4 branch is now paid at every degree: its literal order-23 witness
+excludes smaller actions, and bounding the actual outer order before
+its logarithm pays the remaining degree-23 through degree-31 band
+([`PrimitiveSocleJFourCompleteOrdinary`](SymmetricSubgroupAsymptotics/PrimitiveSocleJFourCompleteOrdinary.lean)).
 The four Y-section presentations supply at most ten generators, and
 the actual proved Tits order upper bound supplies at most 26; these
 pay their respective tails. Thus **only the Monster remains in the
