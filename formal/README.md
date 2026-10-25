@@ -1523,11 +1523,16 @@ and its original norm-two projection. The pinned-field adapter retains
 the actual Cartan equality; it does not identify the pinned natural PSL
 model with a Serre model by name
 ([`CFSGNormTwoPrimePowerOrdinaryGenerators`](SymmetricSubgroupAsymptotics/CFSGNormTwoPrimePowerOrdinaryGenerators.lean)).
-The actual one-factor type-D consumer also closes every rank at least
-four and degree at least 128, supplying its proved generating pair,
-root-index bound and outer-order budget internally. This is a family
-result, not a global simple two-generation assumption
-([`PrimitiveSocleTypeDCompleteOneFactorOrdinaryTail`](SymmetricSubgroupAsymptotics/PrimitiveSocleTypeDCompleteOneFactorOrdinaryTail.lean)).
+For a one-factor primitive group, a shared displayed-pair recurrence gives
+ordinary rank at most `log_2(n)+5`. The actual pairs and local outer budgets
+are now supplied internally for every valid untwisted classical A/B/C/D
+model and the whole Suzuki family. A sharper dyadic estimate pays every
+degree `n>=32`. The type-D rank-four outer budget stays in its proved
+sufficient form; no stronger sharp bound is assumed
+([`PrimitiveSocleClassicalABCOneFactorOrdinaryTail`](SymmetricSubgroupAsymptotics/PrimitiveSocleClassicalABCOneFactorOrdinaryTail.lean),
+[`PrimitiveSocleTypeDCompleteOneFactorOrdinaryTail`](SymmetricSubgroupAsymptotics/PrimitiveSocleTypeDCompleteOneFactorOrdinaryTail.lean),
+[`PrimitiveSocleSuzukiOneFactorOrdinaryTail`](SymmetricSubgroupAsymptotics/PrimitiveSocleSuzukiOneFactorOrdinaryTail.lean)).
+These family results introduce no global simple two-generation assumption.
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
