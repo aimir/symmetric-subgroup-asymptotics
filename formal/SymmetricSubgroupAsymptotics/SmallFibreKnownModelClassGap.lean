@@ -6,6 +6,8 @@ import SymmetricSubgroupAsymptotics.SmallFibreFFourTrialityClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreSuzukiClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreGTwoCompleteClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreReeFFourLargeParameterGap
+import SymmetricSubgroupAsymptotics.SmallFibreOrthogonalDClassGap
+import SymmetricSubgroupAsymptotics.SmallFibrePSLTwoClassGap
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockComponentTransport
 
 /-! Concrete original model profiles whose actual binary/ternary-fibre
@@ -31,7 +33,7 @@ inductive Profile (S : Type) [Group S] : Prop
   | reeFFourLarge (m : ℕ) (hm : 2 ≤ m) (e : S ≃* CFSG.Models.ReeF4 m) : Profile S
   | higherA (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
       (hlarge : 2048 ≤ q.order^r) (e : S ≃* CFSG.Models.A r q) : Profile S
-  | pslTwo (q : CFSG.PrimePower) (hlarge : 4096 ≤ q.order)
+  | pslTwo (q : CFSG.PrimePower) (hlarge : 51 ≤ q.order)
       (e : S ≃* CFSG.Models.A 1 q) : Profile S
   | unitary (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
       (hsmall : r=2 → q.order≠2) (hlarge : 2048 ≤ q.order^r)
@@ -42,9 +44,9 @@ inductive Profile (S : Type) [Group S] : Prop
       (hsmall : r=2 → q.order≠2) (hlarge : 2048 ≤ q.order^(r-1))
       (e : S ≃* CFSG.Models.C r q) : Profile S
   | typeD (r : ℕ) (hr : 4 ≤ r) (q : CFSG.PrimePower)
-      (hlarge : 2048 ≤ q.order^(r-1)) (e : S ≃* CFSG.Models.D r q) : Profile S
+      (e : S ≃* CFSG.Models.D r q) : Profile S
   | twistedD (r : ℕ) (hr : 4 ≤ r) (q : CFSG.PrimePower)
-      (hlarge : 2048 ≤ q.order^(r-2)) (e : S ≃* CFSG.Models.TwistedD r q) : Profile S
+      (hhead : ¬(r=4 ∧ q.order=2)) (e : S ≃* CFSG.Models.TwistedD r q) : Profile S
 
 theorem subnormal_class_cube_gap
     {A Ω X : Type} [Group A] [MulAction A Ω] [MulAction A X]
@@ -92,10 +94,8 @@ theorem subnormal_class_cube_gap
     · exact h
     · omega
   | pslTwo q hlarge e =>
-    rcases SmallFibreTypeAUnitaryLargeParameterGap.subnormal_gap_or_pslTwo_small_field
-      pi hpi c hc hsize E q (by omega) e H hH with h | h
-    · exact h
-    · omega
+    exact SmallFibrePSLTwoClassGap.subnormal_class_cube_gap_of_pslTwo
+      pi hpi c hc hsize E q hlarge e H hH
   | unitary r hr q hsmall hlarge e =>
     rcases SmallFibreTypeAUnitaryLargeParameterGap.subnormal_gap_or_unitary_small_parameter
       pi hpi c hc hsize E r hr q hsmall e H hH with h | h
@@ -111,16 +111,14 @@ theorem subnormal_class_cube_gap
       pi hpi c hc hsize E r hr q hsmall e H hH with h | h
     · exact h
     · omega
-  | typeD r hr q hlarge e =>
-    rcases SmallFibreClassicalLargeParameterGap.subnormal_gap_or_typeD_small_parameter
+  | typeD r hr q e =>
+    exact SmallFibreOrthogonalDClassGap.subnormal_class_cube_gap_of_typeD
+      pi hpi c hc hsize E r hr q e H hH
+  | twistedD r hr q hhead e =>
+    rcases SmallFibreOrthogonalDClassGap.subnormal_gap_or_twistedD_binary_rank_four
       pi hpi c hc hsize E r hr q e H hH with h | h
     · exact h
-    · omega
-  | twistedD r hr q hlarge e =>
-    rcases SmallFibreClassicalLargeParameterGap.subnormal_gap_or_twistedD_small_parameter
-      pi hpi c hc hsize E r hr q e H hH with h | h
-    · exact h
-    · omega
+    · exact (hhead h).elim
 
 variable {A Ω : Type} [Group A] [MulAction A Ω] [MulAction.IsPretransitive A Ω]
     [Finite A] [Finite Ω] [FaithfulSMul A Ω]
