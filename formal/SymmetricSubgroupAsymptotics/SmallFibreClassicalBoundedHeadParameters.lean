@@ -1,10 +1,11 @@
 import SymmetricSubgroupAsymptotics.SmallFibreKnownModelClassGap
 import SymmetricSubgroupAsymptotics.CFSGPrimePowerSmallOrders
 
-/-! Exact rank/field complements of the proved small-fibre profiles.
+/-! Bounded rank/field parameters and complete small-fibre profiles.
 These are parameter pairs, not actions or subgroup-catalogue rows.
-The statements do not assert that any of the remaining pairs fails the
-class bound; they identify what the current profiles have not excluded. -/
+The eleven higher-A pairs remain outside the proved profile. All B/C
+and unitary parameters are now covered. The former ten unitary heads
+and older conditional exclusions remain available for compatibility. -/
 set_option autoImplicit false
 set_option Elab.async false
 namespace SymmetricSubgroupAsymptotics.SmallFibreClassicalBoundedHeadParameters
@@ -21,6 +22,10 @@ theorem typeAHeads_card : typeAHeads.card=11 := by decide +kernel
 theorem unitaryHeads_card : unitaryHeads.card=10 := by decide +kernel
 
 variable {S : Type} [Group S]
+
+theorem unitary_closed (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
+    (hsmall : r=2 → q.order≠2) (e : S ≃* CFSG.Models.TwistedA r q) : Profile S :=
+  .unitaryComplete r hr q hsmall e
 
 theorem typeB_closed (r : ℕ) (hr : 3 ≤ r) (q : CFSG.PrimePower)
     (e : S ≃* CFSG.Models.B r q) : Profile S := by

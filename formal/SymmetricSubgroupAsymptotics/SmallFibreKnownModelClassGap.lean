@@ -15,6 +15,7 @@ import SymmetricSubgroupAsymptotics.SmallFibreBinaryRankTwoClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreUnitaryHigherCoupledClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreTypeAScaledClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreUnitaryLowRankClassGap
+import SymmetricSubgroupAsymptotics.SmallFibreUnitaryCompleteClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreCharTwoCompleteClassGap
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockComponentTransport
 
@@ -55,6 +56,8 @@ inductive Profile (S : Type) [Group S] : Prop
   | unitaryLowRankTail (r : ℕ) (q : CFSG.PrimePower)
       (hwindow : (r=2 ∧ 11 ≤ q.order) ∨ (r=3 ∧ 5 ≤ q.order))
       (e : S ≃* CFSG.Models.TwistedA r q) : Profile S
+  | unitaryComplete (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
+      (hsmall : r=2 → q.order≠2) (e : S ≃* CFSG.Models.TwistedA r q) : Profile S
   | typeB (r : ℕ) (hr : 3 ≤ r) (q : CFSG.PrimePower)
       (hlarge : 2048 ≤ q.order^(r-1)) (e : S ≃* CFSG.Models.B r q) : Profile S
   | oddTypeB (r : ℕ) (hr : 3 ≤ r) (q : CFSG.PrimePower) (hodd : q.prime ≠ 2)
@@ -140,6 +143,9 @@ theorem subnormal_class_cube_gap
   | unitaryLowRankTail r q hwindow e =>
     exact SmallFibreUnitaryLowRankClassGap.subnormal_class_cube_gap_of_unitary_low_rank_tail
       pi hpi c hc hsize E r q hwindow e H hH
+  | unitaryComplete r hr q hsmall e =>
+    exact SmallFibreUnitaryCompleteClassGap.subnormal_class_cube_gap_of_unitary
+      pi hpi c hc hsize E r hr q hsmall e H hH
   | typeB r hr q hlarge e =>
     rcases SmallFibreClassicalLargeParameterGap.subnormal_gap_or_typeB_small_parameter
       pi hpi c hc hsize E r hr q e H hH with h | h
