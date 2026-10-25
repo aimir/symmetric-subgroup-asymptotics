@@ -4,6 +4,8 @@ import SymmetricSubgroupAsymptotics.SmallFibreReeGTwoClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreClassicalLargeParameterGap
 import SymmetricSubgroupAsymptotics.SmallFibreFFourTrialityClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreSuzukiClassGap
+import SymmetricSubgroupAsymptotics.SmallFibreGTwoCompleteClassGap
+import SymmetricSubgroupAsymptotics.SmallFibreReeFFourLargeParameterGap
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockComponentTransport
 
 /-! Concrete original model profiles whose actual binary/ternary-fibre
@@ -25,6 +27,8 @@ inductive Profile (S : Type) [Group S] : Prop
   | fFour (q : CFSG.PrimePower) (e : S ≃* CFSG.Models.F4 q) : Profile S
   | triality (q : CFSG.PrimePower) (e : S ≃* CFSG.Models.TrialityD4 q) : Profile S
   | suzuki (m : ℕ) (hm : 1 ≤ m) (e : S ≃* CFSG.Models.Suzuki m) : Profile S
+  | gTwo (q : CFSG.PrimePower) (hs : q.order ≠ 2) (e : S ≃* CFSG.Models.G2 q) : Profile S
+  | reeFFourLarge (m : ℕ) (hm : 3 ≤ m) (e : S ≃* CFSG.Models.ReeF4 m) : Profile S
   | higherA (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
       (hlarge : 2048 ≤ q.order^r) (e : S ≃* CFSG.Models.A r q) : Profile S
   | pslTwo (q : CFSG.PrimePower) (hlarge : 4096 ≤ q.order)
@@ -75,6 +79,12 @@ theorem subnormal_class_cube_gap
       pi hpi c hc hsize E q e H hH
   | suzuki m hm e =>
     exact SmallFibreSuzukiClassGap.subnormal_class_cube_gap_of_suzuki
+      pi hpi c hc hsize E m hm e H hH
+  | gTwo q hs e =>
+    exact SmallFibreGTwoCompleteClassGap.subnormal_class_cube_gap_of_gTwo
+      pi hpi c hc hsize E q hs e H hH
+  | reeFFourLarge m hm e =>
+    exact SmallFibreReeFFourLargeParameterGap.subnormal_class_cube_gap_of_reeFFour_large_parameter
       pi hpi c hc hsize E m hm e H hH
   | higherA r hr q hlarge e =>
     rcases SmallFibreTypeAUnitaryLargeParameterGap.subnormal_gap_or_higherA_small_parameter
