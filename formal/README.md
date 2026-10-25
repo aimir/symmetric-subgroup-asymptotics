@@ -1153,10 +1153,18 @@ A coupled index also closes every unitary rank at least five and rank
 four over fields larger than two. The proof bounds the whole component
 order, so it needs no class census
 ([`SmallFibreUnitaryHigherCoupledClassGap`](SymmetricSubgroupAsymptotics/SmallFibreUnitaryHigherCoupledClassGap.lean)).
-A sharp PSL2 class bound reduces its remaining field orders to `q < 51`.
-The other complementary classical heads are `q^r < 2048` for higher A,
-unitary ranks two and three with `q^r < 2048` and binary rank four,
-and the binary rank-three B/C model
+A shared exponential envelope and the rank-two class formula close the
+higher-A ranges, including every rank-two field from five. Two further
+field tails close unitary rank two from field order 11 and rank three
+from field order five. The exact complements are proved in Lean:
+**11 higher-A rank/field pairs and 10 unitary pairs**, plus the shared
+binary rank-three B/C pair. These count parameters in this small-fibre
+branch, not action rows or all remaining global obligations
+([`SmallFibreTypeAScaledClassGap`](SymmetricSubgroupAsymptotics/SmallFibreTypeAScaledClassGap.lean),
+[`SmallFibreUnitaryLowRankClassGap`](SymmetricSubgroupAsymptotics/SmallFibreUnitaryLowRankClassGap.lean),
+[`SmallFibreClassicalBoundedHeadParameters`](SymmetricSubgroupAsymptotics/SmallFibreClassicalBoundedHeadParameters.lean)).
+A sharp PSL2 class bound leaves field orders `q < 51` in that separate
+rank-one family
 ([`SmallFibrePSLTwoClassGap`](SymmetricSubgroupAsymptotics/SmallFibrePSLTwoClassGap.lean)).
 The existing global class-count counterexample theorem now excludes
 these **actual top profiles** internally; it takes no new bounded-head
