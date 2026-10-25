@@ -6,6 +6,7 @@ import SymmetricSubgroupAsymptotics.OriginalMinimalBlockExceptionalEComponentCla
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockTypeAComponentClassBound
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockAlternatingAllComponentClassBound
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockUnitaryComponentClassBound
+import SymmetricSubgroupAsymptotics.OriginalMinimalBlockSymplecticComponentClassBound
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockBoundedShapeResidual
 import SymmetricSubgroupAsymptotics.PrimitiveSocleRawONanScottProof
 import SymmetricSubgroupAsymptotics.CFSGClassificationTransport
@@ -37,6 +38,10 @@ def UnitaryProfile (T : Type) [Group T] : Prop :=
   ∃ (r : ℕ) (q : CFSG.PrimePower), 2 ≤ r ∧ (r = 2 → q.order ≠ 2) ∧
     Nonempty (T ≃* CFSG.Models.TwistedA r q)
 
+def SymplecticProfile (T : Type) [Group T] : Prop :=
+  ∃ (r : ℕ) (q : CFSG.PrimePower), 2 ≤ r ∧ (r = 2 → q.order ≠ 2) ∧
+    Nonempty (T ≃* CFSG.Models.C r q)
+
 def BoundedNonaffineComponent : Prop :=
   (Nat.card D.Points = 2 ∨ Nat.card D.Points = 3) ∧
     5 ≤ Nat.card D.Fibre ∧ Nat.card D.Fibre ≤ 4095 ∧
@@ -52,7 +57,8 @@ def BoundedNonaffineComponent : Prop :=
           (∃ q : CFSG.PrimePower, Nonempty (E.Simple ≃* CFSG.Models.E8 q)))) ∧
         (¬ TypeAProfile E.Simple) ∧
         (¬ ∃ m : ℕ, 5 ≤ m ∧ Nonempty (E.Simple ≃* alternatingGroup (Fin m))) ∧
-        ¬ UnitaryProfile E.Simple
+        (¬ UnitaryProfile E.Simple) ∧
+        ¬ SymplecticProfile E.Simple
 
 omit [Finite A] [FaithfulSMul A Ω] in
 theorem bounded_degree_of_nonaffine_component (h : BoundedNonaffineComponent D) :
@@ -118,6 +124,9 @@ theorem class_cube_or_small_fibre_or_nonaffine_component_or_actual_finite_model
       by_cases hU : UnitaryProfile E.Simple
       · obtain ⟨r, q, hr, hsmall, ⟨e⟩⟩ := hU
         exact Or.inl (D.class_cube_le_of_unitary_component E r hr q hsmall e (by omega) hSmaller)
+      by_cases hC : SymplecticProfile E.Simple
+      · obtain ⟨r, q, hr, hsmall, ⟨e⟩⟩ := hC
+        exact Or.inl (D.class_cube_le_of_symplectic_component E r hr q hsmall e (by omega) hSmaller)
       let W := CFSGReduction.simpleModelWitness hCFSG E.Simple
       by_cases hg : ∃ (q : CFSG.PrimePower) (hs : q.order ≠ 2), W.index = .G2 q hs
       · obtain ⟨q, hs, hi⟩ := hg
@@ -128,7 +137,7 @@ theorem class_cube_or_small_fibre_or_nonaffine_component_or_actual_finite_model
         exact Or.inl (D.class_cube_le_of_gTwo_component E q hs e (by omega) hSmaller)
       exact Or.inr (Or.inr (Or.inl
         ⟨hblocks, hsize, by omega, E, W.index, ⟨W.equiv⟩, E.indexForm,
-          hsimple, hsym, hg, hE, hpsl, hAlt, hU⟩))
+          hsimple, hsym, hg, hE, hpsl, hAlt, hU, hC⟩))
   · exact Or.inr (Or.inr (Or.inr hfinite))
 
 end SymmetricSubgroupAsymptotics.OriginalMinimalBlockNonaffineShapeResidual
