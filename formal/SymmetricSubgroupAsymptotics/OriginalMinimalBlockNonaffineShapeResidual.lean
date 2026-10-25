@@ -1,4 +1,5 @@
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockAffineAllTopClassBound
+import SymmetricSubgroupAsymptotics.OriginalMinimalBlockSimpleComponentClassBound
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockBoundedShapeResidual
 import SymmetricSubgroupAsymptotics.PrimitiveSocleRawONanScottProof
 import SymmetricSubgroupAsymptotics.CFSGClassificationTransport
@@ -6,8 +7,8 @@ import SymmetricSubgroupAsymptotics.CFSGClassificationTransport
 /-! The bounded minimal-block frontier retains an actual nonaffine base
 component, rather than an unexplained bounded-degree class callback.
 The checked primitive dichotomy constructs that component or an actual
-affine profile; every affine component of degree at least four is
-discharged by the proved original-action installers. -/
+affine profile; every affine or simple component of degree at least four
+is discharged by the proved original-action installers. -/
 set_option autoImplicit false
 set_option Elab.async false
 noncomputable section
@@ -28,7 +29,8 @@ def BoundedNonaffineComponent : Prop :=
       ∃ E : NonaffineData D.Component D.Fibre, ∃ i : CFSG.Index,
         Nonempty (E.Simple ≃* i.Model) ∧
         ((∃ K : Subgroup E.Simple, K ≠ ⊤ ∧ Nat.card D.Fibre = K.index ^ E.factorCount) ∨
-          (∃ a : ℕ, E.factorCount ≤ 2 * a ∧ Nat.card D.Fibre = (Nat.card E.Simple) ^ a))
+          (∃ a : ℕ, E.factorCount ≤ 2 * a ∧ Nat.card D.Fibre = (Nat.card E.Simple) ^ a)) ∧
+        ¬ IsSimpleGroup D.Component
 
 theorem bounded_degree_of_nonaffine_component (h : BoundedNonaffineComponent D) :
     Nat.card Ω ≤ 12285 := by
@@ -74,9 +76,12 @@ theorem class_cube_or_small_fibre_or_nonaffine_component_or_actual_finite_model
     cases E with
     | inr P => exact Or.inl (D.class_cube_le_of_affine_component P hsize hSmaller)
     | inl E =>
+      by_cases hsimple : IsSimpleGroup D.Component
+      · letI := hsimple
+        exact Or.inl (D.class_cube_le_of_simple_component (by omega) hSmaller)
       let W := CFSGReduction.simpleModelWitness hCFSG E.Simple
       exact Or.inr (Or.inr (Or.inl
-        ⟨hblocks, hsize, by omega, E, W.index, ⟨W.equiv⟩, E.indexForm⟩))
+        ⟨hblocks, hsize, by omega, E, W.index, ⟨W.equiv⟩, E.indexForm, hsimple⟩))
   · exact Or.inr (Or.inr (Or.inr hfinite))
 
 end SymmetricSubgroupAsymptotics.OriginalMinimalBlockNonaffineShapeResidual
