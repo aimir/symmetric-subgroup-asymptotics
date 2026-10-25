@@ -19,6 +19,10 @@ def typeARemainingHeads : Finset (ℕ × ℕ) := {(2,2),(2,4),(3,2)}
 
 theorem typeARemainingHeads_card : typeARemainingHeads.card=3 := by decide +kernel
 
+def pslTwoRemainingOrders : Finset ℕ := {4,5,7,8,9}
+
+theorem pslTwoRemainingOrders_card : pslTwoRemainingOrders.card=5 := by decide +kernel
+
 def unitaryHeads : Finset (ℕ × ℕ) :=
   {(2,3),(2,4),(2,5),(2,7),(2,8),(2,9),(3,2),(3,3),(3,4),(4,2)}
 
@@ -41,6 +45,13 @@ theorem pslTwo_parameters_of_not_closed (q : CFSG.PrimePower) (hq : 4≤q.order)
   rcases CFSGPSLTwoSmallFieldParameters.improved_or_tiny q hq hupper with hp | ht
   · exact (h (.pslTwoImproved q hp e)).elim
   · exact ht
+
+theorem pslTwo_remaining_parameters_of_not_closed (q : CFSG.PrimePower) (hq : 4≤q.order)
+    (e : S ≃* CFSG.Models.A 1 q) (h : ¬Profile S) :
+    q.order∈pslTwoRemainingOrders := by
+  have ht := pslTwo_parameters_of_not_closed q hq e h
+  have h25 : q.order≠25 := fun hq => h (.pslTwoTwentyFive q hq e)
+  simpa [CFSGPSLTwoSmallFieldParameters.tinyOrders,pslTwoRemainingOrders,h25] using ht
 
 theorem typeB_closed (r : ℕ) (hr : 3 ≤ r) (q : CFSG.PrimePower)
     (e : S ≃* CFSG.Models.B r q) : Profile S := by
