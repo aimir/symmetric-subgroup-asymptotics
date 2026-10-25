@@ -1227,7 +1227,14 @@ F4 field order at least three. It gives proper index `p*q^4`, and its
 injection proves original order at least `q^9`. One scalar seed and a
 uniform polynomial tail pay the full component order cube
 ([`PrimitiveAllDegreeFFourHeisenbergCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeFFourHeisenbergCFSGReduction.lean)).
-Only the binary field remains in this family.
+The binary field is now discharged as well. The actual quadratic Levi
+source retains the same central intersection, vector image and join index;
+its normalized annihilator orbit gives proper index at least `128` and
+original order at least `2^15`. The component bound `2^66` pays its full
+order cube since `2^198 <= 5^127`. This closes the entire original F4
+primitive class-count family
+([`CFSGFFourBinaryQuadraticLeviIndex`](SymmetricSubgroupAsymptotics/CFSGFFourBinaryQuadraticLeviIndex.lean),
+[`PrimitiveAllDegreeFFourCompleteCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeFFourCompleteCFSGReduction.lean)).
 The entire ReeG2 family is now discharged at every parameter as well
 ([`PrimitiveAllDegreeReeGTwoCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeReeGTwoCFSGReduction.lean)).
 For an arbitrary subgroup of its actual positive group, the first image,
@@ -1237,9 +1244,8 @@ orthogonality over the prime field. Exact layer cardinalities then give
 proper index at least `3*q`, without torus invariance or full-field
 linearity of the subgroup. The same original fixed/derived group and
 proved outer bound pay the order cube through both primitive degree forms.
-The bounded frontier retains F4 and triality at field order two, G2 at
-field orders three and four, ReeF4, Tits and sporadic
-branches. The global general class-count input
+The bounded frontier retains binary triality, G2 at field order three,
+ReeF4, Tits and sporadic branches. The global general class-count input
 remains explicit.
 A reusable central-extension theorem now proves the sharp bound
 `p*q^m <= [N:L]` from the actual scalar commutator pairing on a
@@ -1274,9 +1280,15 @@ image has order `q^2`. The same original-source stabilizer, full central
 intersection and join index give proper index `3*(q^2-1)`, paying the
 original component-order cube through both primitive degree forms
 ([`PrimitiveAllDegreeGTwoEndpointCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeGTwoEndpointCFSGReduction.lean)).
-Only field orders three and four remain in G2. No averaging, split
-extension or full-field linearity of the stabilizer is assumed in the
-characteristic-three proof.
+No averaging, split extension or full-field linearity of the stabilizer
+is assumed in the characteristic-three proof. The field-four G2 case is
+now discharged separately: actual middle-node torus words realize every
+nonzero scalar on the whole centre, while the full normalizer action
+needs only prime-field linearity. The same central intersection, vector
+image and join give proper index `q^2*(q-1)=48`. The exact component bound
+`192*4^14` pays its cube at this index. Only field order three remains
+in G2, with the whole F4 closure retained in the combined frontier
+([`PrimitiveAllDegreeGTwoFieldFourCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeGTwoFieldFourCFSGReduction.lean)).
 The shared class-count route now constructs the literal fixed-polar
 quadratic-refinement torsor and its actual contragredient affine action.
 Burnside counting of joint fixed sets proves affine inertia domination.
@@ -1462,12 +1474,19 @@ One checked table of 21 prime/dimension pairs pays every composite affine
 degree below 1024 except binary dimensions two through five. These are
 scalar order certificates, not action representatives or a group census
 ([`PrimitiveAffineCoarseBoundedParameters`](SymmetricSubgroupAsymptotics/PrimitiveAffineCoarseBoundedParameters.lean)).
-The actual prime, four-point and eight-point bases are now assembled with
-these estimates, leaving only degrees `16` and `32` in the primitive-affine
-coarse branch
-([`PrimitiveAffineCoarseOrdinaryFrontier`](SymmetricSubgroupAsymptotics/PrimitiveAffineCoarseOrdinaryFrontier.lean)).
-The remaining primitive cases, nonaffine components and global
-coarse-generator assembly remain open.
+The actual prime, four-point and eight-point bases are assembled with
+these estimates. The last degrees `16` and `32` are now proved independently:
+the original complement embeds faithfully in binary GL4 or GL5. An actual
+order-four element saves one generator over the prime-multiplicity bound.
+For GL4, proved simplicity, subgroup-order arithmetic and a 64-tuple
+unitriangular certificate give complement rank at most seven. The original
+affine groups therefore have rank at most eight and fifteen respectively.
+The assembled theorem closes the entire primitive-affine coarse branch,
+without a finite primitive catalogue
+([`PrimitiveAffineSixteenOrdinaryGenerators`](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenOrdinaryGenerators.lean),
+[`PrimitiveAffineThirtyTwoOrdinaryGenerators`](SymmetricSubgroupAsymptotics/PrimitiveAffineThirtyTwoOrdinaryGenerators.lean),
+[`PrimitiveAffineCoarseOrdinaryComplete`](SymmetricSubgroupAsymptotics/PrimitiveAffineCoarseOrdinaryComplete.lean)).
+The nonaffine primitive cases and global coarse-generator assembly remain open.
 These proofs do not use the global Tracey or McIver--Neumann conclusion
 to establish their own premise.
 The simultaneous characteristic-primary and prime-to-characteristic
