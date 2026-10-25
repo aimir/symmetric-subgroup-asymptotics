@@ -1,11 +1,12 @@
 import SymmetricSubgroupAsymptotics.TraceyOrdinaryMonsterLargeResidual
 import SymmetricSubgroupAsymptotics.SporadicPairAllDegreeOrdinary
 import SymmetricSubgroupAsymptotics.PrimitiveSocleJFourCompleteOrdinary
+import SymmetricSubgroupAsymptotics.OriginalNonaffineJFourSmallBlockOrdinaryStep
 
 /-! The twenty displayed sporadic pairs are removed at every actual degree,
-including every original small block fibre. Only Tits and the six models
-without displayed pairs survive in small block fibres. The primitive J4
-branch is now paid at every degree; the remaining primitive cutoffs are
+including every original small block fibre. J4 is also paid in every
+primitive action and original small block fibre. Only Tits and the five
+remaining models without displayed pairs survive; the primitive cutoffs are
 retained on exactly the same socle witness: the four Y-section models below64,
 Tits below128, and Monster unrestricted. The numerical callback already
 present in the CFSG facade is unchanged; this is a reduction, not its discharge. -/
@@ -34,7 +35,8 @@ def ActualResidual : Prop :=
   (¬ MulAction.IsPreprimitive J (Fin n) ∧
     ∃ x₀ : Fin n, ∃ block : OriginalMinimalBlock (A := J) x₀,
       ∃ D : NonaffineData block.Component block.Fibre, Nat.card block.Fibre < 32 ∧
-        ∃ i : CFSG.Index, RemainingPairModel i ∧ Nonempty (D.Simple ≃* i.Model))
+        ∃ i : CFSG.Index, RemainingPairModel i ∧ Nonempty (D.Simple ≃* i.Model) ∧
+          i ≠ .sporadic .j4)
 
 include remaining in
 theorem actual_residual_of_failed_coarse
@@ -83,7 +85,14 @@ theorem actual_residual_of_failed_coarse
         have hbound := SporadicPairAllDegreeOrdinary.original_block_genRank_le_ceiling
           remaining J block D s hs e block.base hbelow
         exact not_lt_of_ge hbound hbad
-    exact Or.inr ⟨hp,x₀,block,D,hlocal,i,hpair,he⟩
+    have hnoj4 : i ≠ .sporadic .j4 := by
+      intro hj
+      subst i
+      obtain ⟨e⟩ := he
+      have hbound := OriginalNonaffineJFourSmallBlockOrdinaryStep.genRank_le_ceiling
+        remaining J block D block.base hlocal e hbelow
+      exact not_lt_of_ge hbound hbad
+    exact Or.inr ⟨hp,x₀,block,D,hlocal,i,hpair,he,hnoj4⟩
 
 include remaining in
 theorem traceyPermutation_or_actual_minimal_seven_model_residual
