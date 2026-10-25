@@ -2,6 +2,8 @@ import SymmetricSubgroupAsymptotics.SmallFibreExceptionalLargeIndexClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreTypeAUnitaryLargeParameterGap
 import SymmetricSubgroupAsymptotics.SmallFibreReeGTwoClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreClassicalLargeParameterGap
+import SymmetricSubgroupAsymptotics.SmallFibreFFourTrialityClassGap
+import SymmetricSubgroupAsymptotics.SmallFibreSuzukiClassGap
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockComponentTransport
 
 /-! Concrete original model profiles whose actual binary/ternary-fibre
@@ -20,6 +22,9 @@ inductive Profile (S : Type) [Group S] : Prop
   | eEight (q : CFSG.PrimePower) (e : S ≃* CFSG.Models.E8 q) : Profile S
   | twistedESix (q : CFSG.PrimePower) (e : S ≃* CFSG.Models.TwistedE6 q) : Profile S
   | reeGTwo (m : ℕ) (hm : 1 ≤ m) (e : S ≃* CFSG.Models.ReeG2 m) : Profile S
+  | fFour (q : CFSG.PrimePower) (e : S ≃* CFSG.Models.F4 q) : Profile S
+  | triality (q : CFSG.PrimePower) (e : S ≃* CFSG.Models.TrialityD4 q) : Profile S
+  | suzuki (m : ℕ) (hm : 1 ≤ m) (e : S ≃* CFSG.Models.Suzuki m) : Profile S
   | higherA (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
       (hlarge : 2048 ≤ q.order^r) (e : S ≃* CFSG.Models.A r q) : Profile S
   | pslTwo (q : CFSG.PrimePower) (hlarge : 4096 ≤ q.order)
@@ -61,6 +66,15 @@ theorem subnormal_class_cube_gap
       pi hpi c hc hsize E q e H hH
   | reeGTwo m hm e =>
     exact SmallFibreReeGTwoClassGap.subnormal_class_cube_gap_of_reeGTwo
+      pi hpi c hc hsize E m hm e H hH
+  | fFour q e =>
+    exact SmallFibreFFourTrialityClassGap.subnormal_class_cube_gap_of_fFour
+      pi hpi c hc hsize E q e H hH
+  | triality q e =>
+    exact SmallFibreFFourTrialityClassGap.subnormal_class_cube_gap_of_triality
+      pi hpi c hc hsize E q e H hH
+  | suzuki m hm e =>
+    exact SmallFibreSuzukiClassGap.subnormal_class_cube_gap_of_suzuki
       pi hpi c hc hsize E m hm e H hH
   | higherA r hr q hlarge e =>
     rcases SmallFibreTypeAUnitaryLargeParameterGap.subnormal_gap_or_higherA_small_parameter
