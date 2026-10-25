@@ -1,0 +1,42 @@
+import SymmetricSubgroupAsymptotics.PrimitiveSocleOrthogonalDAllProperSubnormalClassGap
+import SymmetricSubgroupAsymptotics.SmallTopProperSubnormalClassGapBound
+import SymmetricSubgroupAsymptotics.OriginalMinimalBlockComponentTransport
+
+/-! One native original-action GM induction installer covers both
+actual split and twisted orthogonal D simple socles, at every factor
+count and in every original primitive representation. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace SymmetricSubgroupAsymptotics.OriginalMinimalBlock
+open PrimitiveSocleRawStructure
+variable {A Ω : Type} [Group A] [MulAction A Ω] [MulAction.IsPretransitive A Ω]
+    [Finite A] [Finite Ω] [FaithfulSMul A Ω]
+    {ω₀ : Ω} (D : OriginalMinimalBlock (A := A) ω₀)
+
+theorem class_cube_le_of_orthogonalD_component
+    (E : NonaffineData D.Component D.Fibre) (r : ℕ) (hr : 4 ≤ r)
+    (q : CFSG.PrimePower)
+    (hmodel : Nonempty (E.Simple ≃* CFSG.Models.D r q) ∨
+      Nonempty (E.Simple ≃* CFSG.Models.TwistedD r q))
+    (hdegree : 4 ≤ Nat.card D.Fibre)
+    (hSmaller : ∀ n : ℕ, n < Nat.card Ω → 4 ≤ n →
+      ∀ L : Subgroup (Equiv.Perm (Fin n)),
+        Nat.card (ConjClasses L)^3 ≤ 5^(n-1)) :
+    Nat.card (ConjClasses A)^3 ≤ 5^(Nat.card Ω-1) := by
+  by_cases hlarge : 4 ≤ Nat.card D.Points
+  · exact GaronziMarotiLargeBlockCubeReduction.exact_exponent_large_block_cube_step
+      D.map D.map_equivariant (Nat.card D.Fibre) hdegree hlarge D.fibre_card_at hSmaller
+  have hsmallTop : Nat.card D.Points=2 ∨ Nat.card D.Points=3 := by
+    have htwo := D.degrees_ge_two.2
+    omega
+  apply SmallTopProperSubnormalClassGapBound.class_cube_le_of_proper_subnormal_gaps
+    D.map D.map_equivariant D.base (Nat.card D.Fibre) hdegree rfl hsmallTop _ hSmaller
+  intro L hL hne
+  rcases hmodel with hsplit | htwisted
+  · obtain ⟨e⟩ := hsplit
+    exact E.proper_subnormal_class_cube_le_of_typeD_all_fields r hr q e L hL hne
+  · obtain ⟨e⟩ := htwisted
+    exact E.proper_subnormal_class_cube_le_of_twistedD_all_fields r hr q e L hL hne
+
+end SymmetricSubgroupAsymptotics.OriginalMinimalBlock
