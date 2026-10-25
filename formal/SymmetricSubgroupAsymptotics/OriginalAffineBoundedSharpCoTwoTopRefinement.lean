@@ -2,14 +2,16 @@ import SymmetricSubgroupAsymptotics.OriginalAffineBoundedSharpMathieuTopRefineme
 import SymmetricSubgroupAsymptotics.PrimitiveSocleCoTwoElementarySylowExclusion
 import SymmetricSubgroupAsymptotics.PrimitiveSocleCoThreeDegreeEightExclusion
 import SymmetricSubgroupAsymptotics.PrimitiveSocleCoThreeSmallActionExclusion
+import SymmetricSubgroupAsymptotics.PrimitiveSocleMathieuTwentyTwoSmallActionExclusion
 
 /-! The SAME elementary-Sylow top obstruction also excludes the pinned
 Co2 factor: its actual cyclic involution orbit would force solvability.
 The Mathieu22 and nine prime-product exclusions remain attached to the
 same witness. The final cumulative predicate additionally excludes actual Co3 on8points
 using its checked period14 word. The old Co2 APIs remain compatible.
-The separate cumulative global predicate now excludes Co3 by the checked
-even-permutation period14 obstruction on at most10points. It preserves
+The separate cumulative global predicate excludes Co3 by the checked
+even-permutation period14 obstruction and M22 by its checked prime11
+word orbit on at most10points. It preserves
 the SAME global failed-half action, without an inferred elementary-Sylow
 property, Co2 exclusion or degree8 assumption. All earlier APIs remain
 compatible. -/
@@ -136,10 +138,16 @@ theorem exists_generating_finset_or_cumulative_actual_top_or_refined_global
   · exact Or.inr (Or.inr hglobal)
 
 /-- Only exclusions proved for arbitrary faithful actions on at most10
-points belong to the global predicate. The additional Mathieu22/Co2 top
-exclusions require elementary Sylows and do not occur here. -/
+points belong to the global predicate. The Co2 top exclusion still
+requires elementary Sylows and does not occur here. -/
 def GlobalExcluded (s : CFSG.Sporadic) : Prop :=
-  CFSGSmallActionPrimeProductExclusion.Excluded s ∨ s = CFSG.Sporadic.co3
+  CFSGSmallActionPrimeProductExclusion.Excluded s ∨ s = CFSG.Sporadic.co3 ∨
+    s = CFSG.Sporadic.m22
+
+private def modelEquivMathieuTwentyTwo (s : CFSG.Sporadic)
+    (hs : s = CFSG.Sporadic.m22) : s.Model ≃* CFSG.Models.Mathieu22 := by
+  subst s
+  exact MulEquiv.refl _
 
 abbrev CumulativeGlobalCounterexample (b : ℕ) :=
   {w : EightPointHalfDegreeFiniteModelReduction.PrimitiveSporadicCounterexample b //
@@ -151,11 +159,15 @@ def refine_global_cumulative {b : ℕ} (hb : b ≤ 10) (w : RefinedGlobalCounter
     let v := w.val
     intro hs
     change GlobalExcluded v.sporadic at hs
-    rcases hs with hprime | hco3
+    rcases hs with hprime | hco3 | hm22
     · exact w.property hprime
     · let e : v.socle.Simple ≃* CFSG.Models.MatrixGroups.Co3.Model :=
         v.equiv.trans (modelEquivCoThree v.sporadic hco3)
       exact PrimitiveSocleCoThreeSmallActionExclusion.not_co_three v.socle
+        (by simpa only [Nat.card_fin] using v.degree_le.trans hb) e
+    · let e : v.socle.Simple ≃* CFSG.Models.Mathieu22 :=
+        v.equiv.trans (modelEquivMathieuTwentyTwo v.sporadic hm22)
+      exact PrimitiveSocleMathieuTwentyTwoSmallActionExclusion.not_mathieu_twenty_two v.socle
         (by simpa only [Nat.card_fin] using v.degree_le.trans hb) e⟩
 
 include P in
