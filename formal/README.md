@@ -1158,19 +1158,30 @@ are closed in this small-fibre branch
 ([`TernaryHeisenbergCompatibleNormalizerIndex`](SymmetricSubgroupAsymptotics/TernaryHeisenbergCompatibleNormalizerIndex.lean),
 [`CFSGSymplecticPauliPrimeIndex`](SymmetricSubgroupAsymptotics/CFSGSymplecticPauliPrimeIndex.lean),
 [`SmallFibreCharTwoCompleteClassGap`](SymmetricSubgroupAsymptotics/SmallFibreCharTwoCompleteClassGap.lean)).
-A coupled index also closes every unitary rank at least five and rank
-four over fields larger than two. The proof bounds the whole component
-order, so it needs no class census
-([`SmallFibreUnitaryHigherCoupledClassGap`](SymmetricSubgroupAsymptotics/SmallFibreUnitaryHigherCoupledClassGap.lean)).
 A shared exponential envelope and the rank-two class formula close the
-higher-A ranges, including every rank-two field from five. Two further
-field tails close unitary rank two from field order 11 and rank three
-from field order five. The exact complements are proved in Lean:
-**11 higher-A rank/field pairs and 10 unitary pairs**. These count parameters in this small-fibre
-branch, not action rows or all remaining global obligations
+higher-A ranges, including every rank-two field from five. Their exact
+remaining complement comprises **11 higher-A rank/field pairs**. These
+count parameters in this small-fibre branch, not action rows or all
+remaining global obligations
 ([`SmallFibreTypeAScaledClassGap`](SymmetricSubgroupAsymptotics/SmallFibreTypeAScaledClassGap.lean),
-[`SmallFibreUnitaryLowRankClassGap`](SymmetricSubgroupAsymptotics/SmallFibreUnitaryLowRankClassGap.lean),
 [`SmallFibreClassicalBoundedHeadParameters`](SymmetricSubgroupAsymptotics/SmallFibreClassicalBoundedHeadParameters.lean)).
+The **whole admissible unitary family** is now closed. The existing
+infinite ranges leave ten small parameter pairs, all paid by a shared
+Hermitian frame count and a determinant saving. Gram--Schmidt is proved
+over the actual quadratic field, with a nonzero scalar normalizing the
+original signed form. Scaling one basis vector proves determinant
+surjectivity for the same original isometry group. This gives
+`(q+1)*|TwistedA r q| <= 3*q^((r+1)^2)` without an order formula or a
+class census. Actual coupled indices and the class equation then pay all
+ten scalar capacities. At binary rank three, the faithful Pauli
+normalizer embeds into the original unitary model and gives index 27;
+the proved coprime quotient kernel gives outer order at most two.
+The resulting theorem retains the original source, its actual subnormal
+subgroup, every socle factor and both primitive degree forms
+([`CFSGUnitaryFrameOrderUpper`](SymmetricSubgroupAsymptotics/CFSGUnitaryFrameOrderUpper.lean),
+[`CFSGUnitaryBinaryRankThreePauliIndex`](SymmetricSubgroupAsymptotics/CFSGUnitaryBinaryRankThreePauliIndex.lean),
+[`CFSGUnitaryCompleteScaledClassPacket`](SymmetricSubgroupAsymptotics/CFSGUnitaryCompleteScaledClassPacket.lean),
+[`SmallFibreUnitaryCompleteClassGap`](SymmetricSubgroupAsymptotics/SmallFibreUnitaryCompleteClassGap.lean)).
 A sharp PSL2 class bound leaves field orders `q < 51` in that separate
 rank-one family
 ([`SmallFibrePSLTwoClassGap`](SymmetricSubgroupAsymptotics/SmallFibrePSLTwoClassGap.lean)).
@@ -2238,6 +2249,15 @@ no pair-stabilizer hypothesis is installed as a new T1 assumption
 ([`CFSGReeFFourBinaryDerivedPairAlignment`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryDerivedPairAlignment.lean),
 [`CFSGTitsAmbientPairAlignment`](SymmetricSubgroupAsymptotics/CFSGTitsAmbientPairAlignment.lean),
 [`CFSGTitsPairStabilizerOuterBound`](SymmetricSubgroupAsymptotics/CFSGTitsPairStabilizerOuterBound.lean)).
+The coordinate route toward this missing finite bound now has an actual
+twelve-Boolean ordered cover, literal matrix-prefix semantics and a
+proved first global commutator entry. Four specific probe words are
+proved to belong to the actual positive-derived intersection. These
+lemmas do not yet bound their common centralizer or the pair stabilizer
+([`CFSGReeFFourBinaryOrderedBooleanParameters`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryOrderedBooleanParameters.lean),
+[`CFSGReeFFourBinaryOrderedPrefixMatrices`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryOrderedPrefixMatrices.lean),
+[`CFSGReeFFourBinaryFirstGlobalEntry`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryFirstGlobalEntry.lean),
+[`CFSGReeFFourDerivedPositiveFourProbes`](SymmetricSubgroupAsymptotics/CFSGReeFFourDerivedPositiveFourProbes.lean)).
 The pinned ReeF4 and Tits definitions are now bound to the literal fixed
 group of this automorphism, retaining the actual derived subgroup and
 its full-center quotient
