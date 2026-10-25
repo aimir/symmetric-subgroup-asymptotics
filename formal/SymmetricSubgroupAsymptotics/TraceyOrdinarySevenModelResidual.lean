@@ -1,10 +1,12 @@
 import SymmetricSubgroupAsymptotics.TraceyOrdinaryMonsterLargeResidual
 import SymmetricSubgroupAsymptotics.SporadicPairAllDegreeOrdinary
+import SymmetricSubgroupAsymptotics.PrimitiveSocleJFourCompleteOrdinary
 
 /-! The twenty displayed sporadic pairs are removed at every actual degree,
 including every original small block fibre. Only Tits and the six models
-without displayed pairs survive. Their primitive cutoffs are retained on
-exactly the same socle witness: J4 below32, the four Y-section models below64,
+without displayed pairs survive in small block fibres. The primitive J4
+branch is now paid at every degree; the remaining primitive cutoffs are
+retained on exactly the same socle witness: the four Y-section models below64,
 Tits below128, and Monster unrestricted. The numerical callback already
 present in the CFSG facade is unchanged; this is a reduction, not its discharge. -/
 set_option autoImplicit false
@@ -26,7 +28,7 @@ def ActualResidual : Prop :=
   (MulAction.IsPreprimitive J (Fin n) ∧
     ∃ D : NonaffineData J (Fin n), D.factorCount = 1 ∧
       ∃ i : CFSG.Index, RemainingPairModel i ∧ Nonempty (D.Simple ≃* i.Model) ∧
-        (n < 32 ∨ i ≠ .sporadic .j4) ∧
+        i ≠ .sporadic .j4 ∧
         (n < 64 ∨ i = .tits ∨ i = .sporadic .monster) ∧
         (n < 128 ∨ i = .sporadic .monster)) ∨
   (¬ MulAction.IsPreprimitive J (Fin n) ∧
@@ -54,6 +56,12 @@ theorem actual_residual_of_failed_coarse
         have hbound := SporadicPairAllDegreeOrdinary.primitive_genRank_le_ceiling
           remaining D s hs e (by simpa only [Nat.card_fin] using hbelow)
         exact not_lt_of_ge (by simpa only [Nat.card_fin] using hbound) hbad
+    have hnoj4 : i ≠ .sporadic .j4 := by
+      intro hj
+      subst i
+      obtain ⟨e⟩ := he
+      have hbound := PrimitiveSocleJFourCompleteOrdinary.genRank_le_ceiling remaining D hk e
+      exact not_lt_of_ge (by simpa only [Nat.card_fin] using hbound) hbad
     have h128 : n < 128 ∨ i = .sporadic .monster := by
       by_cases hsmall : n < 128
       · exact Or.inl hsmall
@@ -64,7 +72,7 @@ theorem actual_residual_of_failed_coarse
             D remaining hk e (by simpa only [Nat.card_fin] using (show 128 ≤ n by omega))
           exact (not_lt_of_ge (by simpa only [Nat.card_fin] using hbound) hbad).elim
         · exact Or.inr hm
-    exact Or.inl ⟨hp,D,hk,i,hpair,he,h32.imp_right And.right,h64,h128⟩
+    exact Or.inl ⟨hp,D,hk,i,hpair,he,hnoj4,h64,h128⟩
   · letI : Fintype block.Points := Fintype.ofFinite _
     have hpair : RemainingPairModel i := by
       cases i <;> try { exact False.elim hi }
