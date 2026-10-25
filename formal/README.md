@@ -1068,6 +1068,16 @@ proper-index bounds give the required square capacity. Every factor
 count and both actual degree forms are covered, without identifying
 different models or assuming a numerical endpoint
 ([`OriginalMinimalBlockOrthogonalDComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockOrthogonalDComponentClassBound.lean)).
+One shared installer now also covers all remaining non-Tits exceptional
+families: F4, twisted E6, triality, Suzuki, small Ree and positive-parameter
+Ree F4. Their proved order, outer and proper-index packets supply the
+same actual proper-subnormal reserve
+([`OriginalMinimalBlockExceptionalComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockExceptionalComponentClassBound.lean)).
+Exhausting the literal CFSG index now proves that the bounded nonaffine
+component's surviving simple factor is Tits or sporadic, retaining
+its actual equivalence, factor count and degree form. The separate
+small-fibre branch and these finite-model class bounds remain open
+([`OriginalMinimalBlockBoundedFiniteFactor`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockBoundedFiniteFactor.lean)).
 Every alternating simple socle is also covered, including A6. At its
 minimum faithful degree, the actual group/socle quotient divides
 `6!/360 = 2`; at larger degree the complete outer factor fits the same
@@ -1997,7 +2007,8 @@ signed root parameters and its square equal to field Frobenius
 ([`CFSGFFourOriginalExceptionalModel`](SymmetricSubgroupAsymptotics/CFSGFFourOriginalExceptionalModel.lean)).
 This argument does not assume simplicity of an ambient ordinary F4
 group. The later original ReeF4 results below discharge that family's
-model callbacks; the separate Tits bounds remain open.
+model callbacks. The Tits outer-order budget and two-Sylow generation
+remain separate; its index square is proved below.
 For every ReeF4 parameter, including the Tits value, the actual positive
 intersection with the derived fixed source is now Sylow there. A bound
 on the same abelian image gives intersection order at least `q^9`;
@@ -2017,9 +2028,8 @@ conjugation action also has order five on a literal normal graded
 quotient. A generic finite 2-group argument proves that its fixed
 subgroup has index at least 16 in this kernel. This is an internal
 centralizer bound, not a bound for arbitrary point stabilizers in the
-whole Tits group. The required Tits index, outer and good-Sylow bounds
-remain open; these
-results do not remove that model from any residual callback
+whole Tits group. The later parabolic argument proves the Tits index
+square; the outer-order and good-Sylow bounds remain separate
 ([`CFSGReeFFourAllParameterOrderLower`](SymmetricSubgroupAsymptotics/CFSGReeFFourAllParameterOrderLower.lean),
 [`CFSGReeFFourMiddleDerivedFiveSurvival`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleDerivedFiveSurvival.lean),
 [`CFSGReeFFourMiddleFiveFixedIndex`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleFiveFixedIndex.lean)).
@@ -2040,19 +2050,37 @@ image of order at most six, contained in the raw image of the literal
 soluble constant subgroup. Applying the cover to the actual `U ∩ D`
 and descending its normalizer through the full derived-centre quotient
 therefore constructs **an actual Tits Sylow 2-subgroup with soluble
-normalizer, with no hypotheses**. Two-Sylow generation, the numerical
-index/outer callback and full T1 reduction remain open
+normalizer, with no hypotheses**. Further generation and numerical
+steps retain that same actual Sylow and full quotient
 ([`CFSGReeFFourBinarySylowNormalizerSolvable`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinarySylowNormalizerSolvable.lean)).
 A checked literal selected-root commutator now puts the square of the
 displayed middle order-four element in the actual derived subgroup,
 with the same original fixed-model words. At field order two, every
-abelian image consequently has at most four elements. The actual
-positive-derived intersection and its faithful Tits image have at
-least 1024 elements. The stronger index-two saving and generation by
-two Sylows are still open; no model callback has been removed by this
-first saving
+abelian image consequently has at most four elements
 ([`CFSGReeFFourMiddleSquareCommutator`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleSquareCommutator.lean),
 [`CFSGReeFFourBinaryMiddleSquareSaving`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryMiddleSquareSaving.lean)).
+A second whole-block identity now puts the original outer involution
+in the derived subgroup. Its proof replays two finite root words and
+compares their common literal normal form before returning through
+the faithful original fixed-group map. Only whole fixed blocks and
+their derived square corrections are used. The abelianization now has
+at most two elements, and the actual positive-derived intersection
+and its faithful Tits image each have at least 2048 elements
+([`CFSGReeFFourInnerBracketCommutator`](SymmetricSubgroupAsymptotics/CFSGReeFFourInnerBracketCommutator.lean),
+[`CFSGReeFFourBinaryOuterSaving`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryOuterSaving.lean)).
+Restricting the actual middle parabolic to the derived group and
+mapping it through the full central quotient gives index at most
+1755. Its soluble image is proper under inherited nonabelian
+simplicity. The opposed derived Sylows give order at least `2048^2`,
+and `1755^2 < 2048^2` proves the Tits least-index square. No containment
+of the whole quotient kernel in that parabolic is assumed. Two-Sylow
+generation and the outer-automorphism bound remain separate
+([`CFSGTitsOriginalIndexSquare`](SymmetricSubgroupAsymptotics/CFSGTitsOriginalIndexSquare.lean)).
+This is threaded through both T1 and AllTargets: the Tits numerical
+payload now asks only for its outer-order budget. The four published
+bundles, CFSG, the remaining good-Sylow cases and the sporadic numerical
+payloads remain explicit
+([`CFSGSevenTargetsTitsIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTitsIndexSquare.lean)).
 The pinned ReeF4 and Tits definitions are now bound to the literal fixed
 group of this automorphism, retaining the actual derived subgroup and
 its full-center quotient
@@ -2147,7 +2175,8 @@ central p-element argument preserves their mutual disjointness there
 ([`CFSGReeFFourOriginalOrderLower`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalOrderLower.lean)).
 The later signed-root argument below proves the ReeF4 outer-order bound.
 The whole positive-parameter primitive class-count branch is closed as
-recorded above; the required Tits model bounds remain open.
+recorded above; Tits two-Sylow generation and the outer-order budget
+remain separate.
 An actual outer-root translation and its square-scalar torus action now
 give `q <= [S : H]` for every proper subgroup of the original simple ReeF4
 model, for `m > 0`
