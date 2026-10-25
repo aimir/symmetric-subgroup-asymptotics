@@ -927,11 +927,23 @@ but these sporadic alternatives are still open
 ([`OriginalAffineBoundedSharpSporadicReduction`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpSporadicReduction.lean)).
 A shared prime-product argument now excludes nine pinned sporadic tags
 from faithful actions on at most ten points. A selected actual
-Mathieu22 order-four witness also excludes that model from the
-**elementary-Sylow top**, without excluding it from the separate global
-failed-half witness. This leaves 16 possible tags in the actual-top
-obstruction and 17 in the global small-action obstruction
-([`OriginalAffineBoundedSharpMathieuTopRefinement`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpMathieuTopRefinement.lean)).
+Mathieu22 order-four witness excludes that model from the
+**elementary-Sylow top**. Its literal word `a^3*b^2` now has a checked
+point orbit of prime length eleven, so eleven divides that same
+model's order. This also excludes M22 from the separate global
+failed-half action on at most ten points. The actual Co2 relators exclude Co2 from the
+same top: elementary Sylow 2-subgroups force a commuting cyclic orbit
+of its involution generator, making the whole model soluble. A checked actual Co3 word has order
+divisible by 14. Perfectness forces every faithful image of its simple
+factor into the alternating group; an even permutation with that order
+divisor occupies at least 11 points. Co3 is therefore excluded from
+both small-action alternatives, using the same literal word and fixed
+vector trace. This leaves 14 possible tags in the actual-top obstruction
+and 15 in the global small-action obstruction
+([`OriginalAffineBoundedSharpCoTwoTopRefinement`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpCoTwoTopRefinement.lean),
+[`CFSGCoThreeSelectedWordOrder`](SymmetricSubgroupAsymptotics/CFSGCoThreeSelectedWordOrder.lean),
+[`PrimitiveSocleCoThreeSmallActionExclusion`](SymmetricSubgroupAsymptotics/PrimitiveSocleCoThreeSmallActionExclusion.lean),
+[`PrimitiveSocleMathieuTwentyTwoSmallActionExclusion`](SymmetricSubgroupAsymptotics/PrimitiveSocleMathieuTwentyTwoSmallActionExclusion.lean)).
 All actual transitive 2-groups of degree sixteen separately satisfy the
 six-generator bound
 ([`BinarySixteenTwoGroupSharpStep`](SymmetricSubgroupAsymptotics/BinarySixteenTwoGroupSharpStep.lean)). The small sporadic witness is global and is not asserted
@@ -998,6 +1010,69 @@ so this needs no extra class-capacity premise. The native theorem uses
 only strict-smaller general permutation-degree induction and is
 threaded into the existing global frontier above
 ([`OriginalMinimalBlockSimpleComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockSimpleComponentClassBound.lean)).
+
+The same original induction now pays every component isomorphic to
+`S_m`, `m >= 5`, in any faithful representation. A generic proper
+subnormal subgroup bound retains its intersection with the normal
+simple `A_m` and the actual quotient. Exact small partition counts
+and a three-step partition recurrence prove `k(A_m)^3 <= 5^(m-2)`;
+the actual representation degree is at least `m`. This excludes all
+such symmetric components in the existing global frontier, without
+an action census or subgroup-class monotonicity
+([`OriginalMinimalBlockSymmetricComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockSymmetricComponentClassBound.lean)).
+
+The same strengthened frontier also excludes every original `G2(q)`
+simple-factor profile. A uniform proper-index product bound transfers
+to the extra class exponent for every socle multiplicity: one factor
+uses its proper subnormal intersection, several factors retain the
+full factorial reserve, and the power-degree form uses the actual
+`q^12` lower bound and a common logarithmic order reserve. Both original
+degree forms and the same actual subgroup remain in the proof
+([`OriginalMinimalBlockGTwoComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockGTwoComponentClassBound.lean)).
+The same all-factor reserve now also handles the complete E6/E7/E8
+component family together. Existing actual proper-index lower bounds
+`2048` and order-times-outer bounds of index to power `66` supply its
+entire numerical packet. The same subgroup, full factorial and both
+original degree forms are retained
+([`OriginalMinimalBlockExceptionalEComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockExceptionalEComponentClassBound.lean)).
+The sharper actual subnormal class product now supplies a common
+square-capacity reserve for every admissible type-A simple socle.
+This covers all ranks and fields, every socle multiplicity and both
+original degree forms. The former PSL2 fields `4,5,9` are discharged
+using existing exact small-group metadata and the same actual
+minimum-degree quotient argument. PSL3 and higher ranks reuse their
+proved class-equation, cyclic-code and order packets
+([`OriginalMinimalBlockTypeAComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockTypeAComponentClassBound.lean)).
+The same native transfer is now proved for every admissible unitary
+simple socle, across all ranks and fields. Its existing isometry-order
+tail and coupled small-field class-equation packets supply the common
+proper capacity; no numerical gap is an extra endpoint hypothesis
+([`OriginalMinimalBlockUnitaryComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockUnitaryComponentClassBound.lean)).
+Every admissible symplectic simple socle is now covered as well, at
+every rank, field and multiplicity, in both original degree forms.
+The proved order packets and small-field primary and point-stabilizer
+packets supply the extra proper-subnormal exponent. The same actual
+subgroup is retained, and the whole type-C profile is excluded from
+the existing global frontier
+([`OriginalMinimalBlockSymplecticComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockSymplecticComponentClassBound.lean)).
+The complete type-B family has the same native transfer. Odd fields
+reuse the proved point-radical order capacity. In characteristic two,
+the actual type-B model is transported to the literal symplectic group;
+its checked proper capacities apply with simplicity inherited from
+that same model. No independent type-C simplicity premise is used
+([`OriginalMinimalBlockTypeBComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockTypeBComponentClassBound.lean)).
+Split and twisted orthogonal type D now share one native installer.
+Their existing point-radical packets cover all ranks and fields except
+binary rank four, where each family's own proved class, outer and
+proper-index bounds give the required square capacity. Every factor
+count and both actual degree forms are covered, without identifying
+different models or assuming a numerical endpoint
+([`OriginalMinimalBlockOrthogonalDComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockOrthogonalDComponentClassBound.lean)).
+Every alternating simple socle is also covered, including A6. At its
+minimum faithful degree, the actual group/socle quotient divides
+`6!/360 = 2`; at larger degree the complete outer factor fits the same
+reserve. No action recognition or new model input is needed
+([`OriginalMinimalBlockAlternatingAllComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockAlternatingAllComponentClassBound.lean)).
 
 For the general class-count reduction,
 [`SmallTopGaronziMarotiCubes`](SymmetricSubgroupAsymptotics/SmallTopGaronziMarotiCubes.lean)
@@ -1849,10 +1924,13 @@ The four Y-section presentations supply at most ten generators, and
 the actual proved Tits order upper bound supplies at most 26; these
 pay their respective tails. Thus **only the Monster remains in the
 primitive branch from degree 128**. Original block fibres below 32
-retain only Tits and the six models without displayed pairs. A literal
-order-23 element of the J4 presentation further excludes that model
-from actions or simple socle factors below degree 23. No known J4 order
-formula or action catalogue is assumed. The same numerical callback is
+also exclude J4. Its actual order-23 witness forces one socle factor
+and degree at least 23 in that band. One uniform three-generator-head
+estimate, with at most five actual outer prime factors, pays every
+inherited top. Both branches therefore retain just six tags: Tits,
+Fi22, Fi23, Fi24′, Baby and Monster
+([`OriginalNonaffineJFourSmallBlockOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalNonaffineJFourSmallBlockOrdinaryStep.lean)).
+No known J4 order formula or action catalogue is assumed. The same numerical callback is
 retained throughout, with no new rank hypothesis
 ([`TraceyOrdinarySevenModelResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinarySevenModelResidual.lean),
 [`CFSGJ4TwentyThreeDivisor`](SymmetricSubgroupAsymptotics/CFSGJ4TwentyThreeDivisor.lean)).
@@ -1965,6 +2043,16 @@ therefore constructs **an actual Tits Sylow 2-subgroup with soluble
 normalizer, with no hypotheses**. Two-Sylow generation, the numerical
 index/outer callback and full T1 reduction remain open
 ([`CFSGReeFFourBinarySylowNormalizerSolvable`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinarySylowNormalizerSolvable.lean)).
+A checked literal selected-root commutator now puts the square of the
+displayed middle order-four element in the actual derived subgroup,
+with the same original fixed-model words. At field order two, every
+abelian image consequently has at most four elements. The actual
+positive-derived intersection and its faithful Tits image have at
+least 1024 elements. The stronger index-two saving and generation by
+two Sylows are still open; no model callback has been removed by this
+first saving
+([`CFSGReeFFourMiddleSquareCommutator`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleSquareCommutator.lean),
+[`CFSGReeFFourBinaryMiddleSquareSaving`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryMiddleSquareSaving.lean)).
 The pinned ReeF4 and Tits definitions are now bound to the literal fixed
 group of this automorphism, retaining the actual derived subgroup and
 its full-center quotient
