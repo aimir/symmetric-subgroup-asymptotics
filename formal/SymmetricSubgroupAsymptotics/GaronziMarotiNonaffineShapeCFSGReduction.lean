@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockNonaffineShapeResidual
 import SymmetricSubgroupAsymptotics.GaronziMarotiBoundedShapeCFSGReduction
+import SymmetricSubgroupAsymptotics.SmallFibreKnownModelClassGap
 
 /-! Original-action GM induction with a genuine nonaffine bounded shape.
 Affine minimal components of degree at least four have been proved away.
@@ -17,7 +18,8 @@ def ActualSmallFibreResidual : Prop :=
   ∃ ht : MulAction.IsPretransitive G X,
     letI := ht
     ∃ ω₀ : X, ∃ D : OriginalMinimalBlock (A := G) ω₀,
-      OriginalMinimalBlockNonaffineShapeResidual.SmallFibreShape D
+      OriginalMinimalBlockNonaffineShapeResidual.SmallFibreShape D ∧
+        ¬ SmallFibreKnownModelClassGap.HasClosedTop D
 
 def ActualBoundedNonaffineResidual : Prop :=
   ∃ ht : MulAction.IsPretransitive G X,
@@ -27,7 +29,7 @@ def ActualBoundedNonaffineResidual : Prop :=
 
 theorem degree_le_of_small_fibre_residual (h : ActualSmallFibreResidual G X) :
     Nat.card X ≤ 36855 := by
-  obtain ⟨ht, ω₀, D, hD⟩ := h
+  obtain ⟨ht, ω₀, D, hD, _⟩ := h
   letI := ht
   exact hD.2
 
@@ -63,7 +65,11 @@ theorem class_cube_or_actual_small_fibre_or_nonaffine_component_or_finite_model
       rcases OriginalMinimalBlockNonaffineShapeResidual.class_cube_or_small_fibre_or_nonaffine_component_or_actual_finite_model
           D hCFSG hSmaller with h | h | h | h
       · exact Or.inl h
-      · exact Or.inr (Or.inl ⟨ht, ω₀, D, h⟩)
+      · by_cases hclosed : SmallFibreKnownModelClassGap.HasClosedTop D
+        · have hgap := SmallFibreKnownModelClassGap.class_cube_gap_of_closed_top D h.1 hclosed
+          exact Or.inl (hgap.trans (Nat.pow_le_pow_right (by decide)
+            (by omega : Nat.card X - 2 ≤ Nat.card X - 1)))
+        · exact Or.inr (Or.inl ⟨ht, ω₀, D, h, hclosed⟩)
       · exact Or.inr (Or.inr (Or.inl ⟨ht, ω₀, D, h⟩))
       · have hf : GaronziMarotiBoundedShapeCFSGReduction.ActualFiniteModelResidual G X :=
           Or.inr ⟨ht, ω₀, D, h⟩
