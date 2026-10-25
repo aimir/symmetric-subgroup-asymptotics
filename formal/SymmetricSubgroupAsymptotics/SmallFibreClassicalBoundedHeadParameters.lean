@@ -22,6 +22,18 @@ theorem unitaryHeads_card : unitaryHeads.card=10 := by decide +kernel
 
 variable {S : Type} [Group S]
 
+theorem typeB_closed (r : ℕ) (hr : 3 ≤ r) (q : CFSG.PrimePower)
+    (e : S ≃* CFSG.Models.B r q) : Profile S := by
+  by_cases hp : q.prime=2
+  · exact .charTwoTypeBFull r hr q hp e
+  · exact .oddTypeB r hr q hp e
+
+theorem typeC_closed (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
+    (hsmall : r=2 → q.order≠2) (e : S ≃* CFSG.Models.C r q) : Profile S := by
+  by_cases hp : q.prime=2
+  · exact .charTwoTypeCFull r hr q hp hsmall e
+  · exact .oddTypeC r hr q hp e
+
 private theorem order_ge_two (q : CFSG.PrimePower) : 2 ≤ q.order :=
   q.prime_isPrime.two_le.trans (Nat.le_self_pow q.exponent_pos.ne' q.prime)
 
