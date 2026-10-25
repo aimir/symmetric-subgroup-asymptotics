@@ -1309,14 +1309,21 @@ by an induction from field order 512
 ([`PrimitiveAllDegreeReeFFourTailCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeReeFFourTailCFSGReduction.lean)).
 The actual middle Suzuki Borel in the same original ReeF4 source also
 gives proper index `(q-1)*2^(m+1)`. A single induction beginning at `m=2`
-pays every component cube for `m>=2`, leaving exactly 28 finite models:
-ReeF4(8), Tits and the 26 sporadic groups. This checked reduction retains
-the original action, subnormal subgroup and raw degree forms. It explicitly
-discharges the inherited large-degree ReeG2 witness using its proved
-whole-family bound. The remaining finite-model estimates are open and
-are not installed as new T1 assumptions
-([`PrimitiveAllDegreeReeFFourMiddleSuzukiCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeReeFFourMiddleSuzukiCFSGReduction.lean),
-[`PrimitiveFiniteModelClassResidual`](SymmetricSubgroupAsymptotics/PrimitiveFiniteModelClassResidual.lean)).
+pays every component cube for `m>=2`. The remaining field-eight case is
+also proved: an actual fixed word of 70 signed roots moves a vector of
+period 109 in the original 26-coordinate action. Its 25 consecutive
+transitions and degree-25 annihilator are checked in Lean. The actual
+central quotient kernel lies in the same Borel, whose order is prime to
+109, so every proper subgroup of the original simple ReeF4(8) has index
+at least 109. This pays the full component cube. The combined primitive
+reduction now leaves exactly 27 models: Tits and the 26 sporadic groups.
+It retains the original action, subnormal subgroup, all socle factors
+and both degree forms, and explicitly discharges the inherited
+large-degree ReeG2 witness using its proved whole-family bound.
+The remaining finite-model estimates are open and are not installed
+as new T1 assumptions
+([`CFSGReeFFourFieldEightPrimeIndex`](SymmetricSubgroupAsymptotics/CFSGReeFFourFieldEightPrimeIndex.lean),
+[`PrimitiveAllDegreeReeFFourCompleteCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeReeFFourCompleteCFSGReduction.lean)).
 For an actual nonsplit extension with abelian kernel `N` and quotient `Q`,
 a checked joint commuting-fibre formula bounds `|Q|*k(G)` by the sum of
 `[N : image(mu(s,t))]` over commuting quotient pairs. Each motion map
@@ -1334,13 +1341,32 @@ structural hypotheses
 Every Lie-type model now supplies one of the two required component
 order budgets at every proper subgroup index: the logarithmic power
 `index^(4*log_2(index)+23)` or the fixed power `index^66`. The actual
-primitive-top reduction therefore leaves only alternating, Tits or
-sporadic factors, retaining the same socle, proper-index subgroup and
-both failed budgets
+primitive-top reduction is also complete for alternating factors:
+a checked injection bounds the partition number by
+`(n+1)^4 * 6^((n+4)/5)`, and the resulting class budget pays every
+alternating socle multiplicity. At top degree at least 4096, only
+Tits or sporadic factors remain, retaining the same socle,
+proper-index subgroup and both failed component-order budgets
 ([`CFSGModelComponentIndexOrderBudget`](SymmetricSubgroupAsymptotics/CFSGModelComponentIndexOrderBudget.lean),
-[`LargeTopLieSmallFibreClassBound`](SymmetricSubgroupAsymptotics/LargeTopLieSmallFibreClassBound.lean)).
-The bounded and alternating-top fusion obligations remain open before
-the global Garonzi--Maroti input can be removed.
+[`PartitionFiveSeparatedEncoding`](SymmetricSubgroupAsymptotics/PartitionFiveSeparatedEncoding.lean),
+[`LargeTopFiniteModelResidual`](SymmetricSubgroupAsymptotics/LargeTopFiniteModelResidual.lean)).
+For an actual minimal block component of degree at least 4096, a separate
+reduction pays every top from strictly smaller general permutation cases,
+again retaining only an actual Tits or sporadic component witness.
+The actual four-point minimal component is also complete for every
+top, from strictly smaller general permutation cases. Proper coordinate
+kernels have a proved class saving; saturation instead gives an actual
+equivalence with the full wreath product with the same component and
+top. Ordered cycle products give coarse class codes for noncommutative
+two- and three-cycle wreath actions, closing the small-top seam. These
+lemmas do not compare a proper subgroup's class count monotonically
+with an enlarged base
+([`OriginalMinimalBlockLargeComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockLargeComponentClassBound.lean),
+[`ActualBlockProperClassDichotomy`](SymmetricSubgroupAsymptotics/ActualBlockProperClassDichotomy.lean),
+[`WreathShortCycleClassBound`](SymmetricSubgroupAsymptotics/WreathShortCycleClassBound.lean),
+[`OriginalMinimalBlockFourComponentClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockFourComponentClassBound.lean)).
+The bounded block seams and finite-model estimates remain before the
+global Garonzi--Maroti input can be removed.
 
 The shared class-count route now constructs the literal fixed-polar
 quadratic-refinement torsor and its actual contragredient affine action.
@@ -1387,7 +1413,7 @@ class counts at most `1536` and `3072` for the original split and
 twisted projective models. Their outer bounds and actual proper-index
 lower bounds close both former rank-four binary cases
 ([`PrimitiveSocleOrthogonalBinaryRankFourClassBound`](SymmetricSubgroupAsymptotics/PrimitiveSocleOrthogonalBinaryRankFourClassBound.lean)).
-The twenty-eight finite primitive models listed above and the remaining
+The twenty-seven finite primitive models listed above and the remaining
 imprimitive assembly are still open; the general published class-count
 input is retained.
 
@@ -1619,15 +1645,27 @@ smaller transitive cases unless its actual nonabelian simple factor is
 Tits or sporadic. Both ordinary rank and literal generating-set versions
 are proved; no global Tracey conclusion is used as their premise
 ([`PrimitiveLargeOrdinaryCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveLargeOrdinaryCFSGReduction.lean)).
-The imprimitive nonaffine branch is also proved whenever the actual local
-fibre has degree at least 1024. Compression retains the same chief trace,
-the full socle quotient and both smaller transitive actions. A uniform
-minimum-rate estimate pays every actual top; CFSG supplies the required
-simple-factor packets, leaving only an exact Tits or sporadic factor
-witness. Both rank and generating-set versions are checked
-([`OriginalNonaffineLargeFibreOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalNonaffineLargeFibreOrdinaryStep.lean)).
-Smaller nonaffine fibres, bounded primitive cases and the Tits/sporadic
-factor estimates remain before the global coarse input can be removed.
+The imprimitive nonaffine branch is now proved whenever the actual local
+fibre has degree at least 32, uniformly in the actual top. Compression
+retains the same chief trace, full socle quotient and strictly smaller
+transitive induction calls. The one-factor and multiple-factor bounds
+share a uniform minimum-rate estimate, with only an actual Tits or
+sporadic factor witness remaining. The alternating, A, B, C, D and Suzuki
+families are also proved at every smaller local degree, using their
+actual generating pairs. The nonsplit-D family is proved in every local
+degree by its actual relative-root generators and proper-index bound.
+Both rank and literal generating-set versions are checked
+([`OriginalNonaffineThirtyTwoOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalNonaffineThirtyTwoOrdinaryStep.lean),
+[`OriginalNonaffinePairFamiliesAllDegreeOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalNonaffinePairFamiliesAllDegreeOrdinaryStep.lean),
+[`OriginalNonaffineTwistedDBlockOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalNonaffineTwistedDBlockOrdinaryStep.lean)).
+Actual minimum-index bounds exclude every other exceptional model from
+local degree below 32. Thus the remaining nonaffine block frontier is
+an actual unitary factor with `q^rank <= local degree < 32`, or an actual
+Tits/sporadic factor
+([`OriginalNonaffineOrdinaryUnitarySmallLocalFrontier`](SymmetricSubgroupAsymptotics/OriginalNonaffineOrdinaryUnitarySmallLocalFrontier.lean)).
+These small unitary cases, bounded primitive cases, the Tits/sporadic
+estimates and the final global assembly remain before the coarse input
+can be removed.
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
