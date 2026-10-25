@@ -28,7 +28,7 @@ inductive Profile (S : Type) [Group S] : Prop
   | triality (q : CFSG.PrimePower) (e : S ≃* CFSG.Models.TrialityD4 q) : Profile S
   | suzuki (m : ℕ) (hm : 1 ≤ m) (e : S ≃* CFSG.Models.Suzuki m) : Profile S
   | gTwo (q : CFSG.PrimePower) (hs : q.order ≠ 2) (e : S ≃* CFSG.Models.G2 q) : Profile S
-  | reeFFourLarge (m : ℕ) (hm : 3 ≤ m) (e : S ≃* CFSG.Models.ReeF4 m) : Profile S
+  | reeFFourLarge (m : ℕ) (hm : 2 ≤ m) (e : S ≃* CFSG.Models.ReeF4 m) : Profile S
   | higherA (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
       (hlarge : 2048 ≤ q.order^r) (e : S ≃* CFSG.Models.A r q) : Profile S
   | pslTwo (q : CFSG.PrimePower) (hlarge : 4096 ≤ q.order)

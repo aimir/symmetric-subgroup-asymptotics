@@ -33,4 +33,17 @@ theorem scaled_component_cube (m : ℕ) (hm : 3 ≤ m) :
     _ = 25*fieldOrder m^81 := by ring
     _ ≤ _ := scaled_field_cube m hm
 
+def puncturedIndexBound (m : ℕ) : ℕ := fieldOrder m*2^(m+1)
+
+theorem scaled_component_cube_punctured (m : ℕ) (hm : 2 ≤ m) :
+    25*(fieldOrder m^26*(2*m+1))^3 ≤ 3^puncturedIndexBound m := by
+  by_cases htwo : m=2
+  · subst m
+    decide +kernel
+  · have hlarge : 3 ≤ m := by omega
+    have hi : indexBound m ≤ puncturedIndexBound m :=
+      Nat.mul_le_mul_right _ (Nat.sub_le _ _)
+    exact (scaled_component_cube m hlarge).trans
+      (Nat.pow_le_pow_right (by decide) hi)
+
 end SymmetricSubgroupAsymptotics.ReeFFourScaledClassEnvelopeNumerics
