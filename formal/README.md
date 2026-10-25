@@ -1143,12 +1143,21 @@ assumed transitivity bound
 ([`SmallFibreOddOrthogonalBClassGap`](SymmetricSubgroupAsymptotics/SmallFibreOddOrthogonalBClassGap.lean),
 [`SmallFibreOddSymplecticCompleteClassGap`](SymmetricSubgroupAsymptotics/SmallFibreOddSymplecticCompleteClassGap.lean)).
 In characteristic two, the higher-rank Siegel packet and the rank-two
-tail now close B and C as well, except for the literal binary rank-three
-model. At rank two over the four-element field, puncturing the retained
+tail close B and C as well. At rank two over the four-element field, puncturing the retained
 annihilator improves the actual index to at least 24; no larger-field
 linearity is assumed
 ([`SmallFibreCharTwoClassicalClassGap`](SymmetricSubgroupAsymptotics/SmallFibreCharTwoClassicalClassGap.lean),
 [`SmallFibreBinaryRankTwoClassGap`](SymmetricSubgroupAsymptotics/SmallFibreBinaryRankTwoClassGap.lean)).
+The last binary rank-three case uses a faithful 27-element Heisenberg
+representation over F4, its actual Fourier/phase normalizers, and the
+trace-Hermitian embedding into the binary symplectic group. A generic
+compatible-normalizer argument gives proper index at least 27 without
+assuming that the normalizer splits. The existing class and outer
+bounds then pay the packet. Thus **all admissible B and C parameters**
+are closed in this small-fibre branch
+([`TernaryHeisenbergCompatibleNormalizerIndex`](SymmetricSubgroupAsymptotics/TernaryHeisenbergCompatibleNormalizerIndex.lean),
+[`CFSGSymplecticPauliPrimeIndex`](SymmetricSubgroupAsymptotics/CFSGSymplecticPauliPrimeIndex.lean),
+[`SmallFibreCharTwoCompleteClassGap`](SymmetricSubgroupAsymptotics/SmallFibreCharTwoCompleteClassGap.lean)).
 A coupled index also closes every unitary rank at least five and rank
 four over fields larger than two. The proof bounds the whole component
 order, so it needs no class census
@@ -1157,8 +1166,7 @@ A shared exponential envelope and the rank-two class formula close the
 higher-A ranges, including every rank-two field from five. Two further
 field tails close unitary rank two from field order 11 and rank three
 from field order five. The exact complements are proved in Lean:
-**11 higher-A rank/field pairs and 10 unitary pairs**, plus the shared
-binary rank-three B/C pair. These count parameters in this small-fibre
+**11 higher-A rank/field pairs and 10 unitary pairs**. These count parameters in this small-fibre
 branch, not action rows or all remaining global obligations
 ([`SmallFibreTypeAScaledClassGap`](SymmetricSubgroupAsymptotics/SmallFibreTypeAScaledClassGap.lean),
 [`SmallFibreUnitaryLowRankClassGap`](SymmetricSubgroupAsymptotics/SmallFibreUnitaryLowRankClassGap.lean),
