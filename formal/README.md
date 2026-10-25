@@ -909,8 +909,25 @@ on at most ten points**. The prime-power fibre menu is proved internally;
 local degrees 2, 3, 4, 5, 7 and 9 use the same chief trace and actual
 quotient. At the six-point ternary top, the joint induced capacity pays
 the defining-prime layer without separately maximizing its two parts.
-The remaining coupled degree-16 configurations have fibre/top degrees
-2/8, 4/4 or 8/2. The small sporadic witness is global and is not asserted
+The four-by-four degree-16 configuration is now proved: its actual
+odd-kernel partition has one, two or four classes. Shared translation
+heads and the same odd/sign layers give six generators in every case,
+with no induction, CFSG or published generator premise. The
+8/2 case is now also proved, using its shared translation head and the
+graph-or-axis dichotomy for the two literal complement coordinates.
+The last binary 2/8 case now has a complete structural reduction too:
+nonelementary top Sylow subgroups pay the quarter module bound; an
+elementary top Sylow gives three top generators in the affine, paired
+primitive and both imprimitive branches. The resulting facade retains
+only **an actual primitive sporadic eight-point top of rank greater than
+three**, or **a separate global failed-half sporadic action on at most
+ten points**. The former is the same original top and need not fail the
+half-degree bound. Thus no unexplained affine degree-16 shape remains,
+but these sporadic alternatives are still open
+([`OriginalAffineBoundedSharpSporadicReduction`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpSporadicReduction.lean)).
+All actual transitive 2-groups of degree sixteen separately satisfy the
+six-generator bound
+([`BinarySixteenTwoGroupSharpStep`](SymmetricSubgroupAsymptotics/BinarySixteenTwoGroupSharpStep.lean)). The small sporadic witness is global and is not asserted
 to be a subquotient of the original action. No induction or published
 generator input is assumed by this bounded affine reduction
 ([`OriginalAffineBoundedSharpCFSGReduction`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpCFSGReduction.lean)).
@@ -939,6 +956,31 @@ actual projected complement gives `k(H)^3 <= 5^(9-2)`. The original
 block adapter therefore pays affine degree-nine components under two
 or three blocks, without a splitting or class-count hypothesis
 ([`ActualAffineNineSmallTopClassGap`](SymmetricSubgroupAsymptotics/ActualAffineNineSmallTopClassGap.lean)).
+
+The affine class-count route is now uniform: for every actual primitive
+affine action of degree `a >= 5` and every subgroup `H` of that same group,
+`k(H)^3 <= 5^(a-2)` is proved. Prime, square, cube and large-degree bounds
+share one argument; the binary linear centralizer charts handle the
+remaining degrees 8, 16 and 32. The degree-16 and degree-32 subgroup
+bounds are respectively 1544 and 702480 classes. No affine catalogue,
+Garonzi–Maróti premise or subgroup-class monotonicity is used
+([`PrimitiveAffineAllSubgroupsClassGap`](SymmetricSubgroupAsymptotics/PrimitiveAffineAllSubgroupsClassGap.lean)).
+The native installer transfers this bound from one actual affine base
+profile through **every original block-top size**. Tops of size two or
+three use the stronger gap directly; larger tops use only strict-smaller
+general permutation-degree induction. Together with the existing
+four-point installer, all affine component degrees at least four are
+therefore paid. Small fibres 2 and 3 and the nonaffine class-count
+frontier remain separate
+([`OriginalMinimalBlockAffineAllTopClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockAffineAllTopClassBound.lean)).
+This is now threaded into the actual global least-counterexample
+argument. Its bounded imprimitive alternatives retain either a literal
+fibre of size 2 or 3 at total degree at most 36855, or a literal
+**nonaffine** component of degree 5 through 4095 under two or three
+blocks, at total degree at most 12285. The other alternative retains
+actual Tits/sporadic data in the original component or top. No bounded
+class-count callback is introduced
+([`GaronziMarotiGlobalNonaffineShapeCounterexample`](SymmetricSubgroupAsymptotics/GaronziMarotiGlobalNonaffineShapeCounterexample.lean)).
 
 For the general class-count reduction,
 [`SmallTopGaronziMarotiCubes`](SymmetricSubgroupAsymptotics/SmallTopGaronziMarotiCubes.lean)
@@ -1893,9 +1935,15 @@ normalized by `U`, the actual Bruhat cover now puts its normalizer in
 **one of the two original minimal parabolics**. Exact full positive
 intersections exclude the short Weyl words of weight at least four;
 the literal squares exclude both length-two words. Subgroup-union
-containment selects a parabolic. The outer parabolic's solubility and
-the good-Sylow generation claim are still separate obligations
-([`CFSGReeFFourBinaryNormalizerParabolicCover`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryNormalizerParabolicCover.lean)).
+containment selects a parabolic. The outer parabolic is now also
+proved soluble: its normal graded 2-kernel has an actual associated
+image of order at most six, contained in the raw image of the literal
+soluble constant subgroup. Applying the cover to the actual `U ∩ D`
+and descending its normalizer through the full derived-centre quotient
+therefore constructs **an actual Tits Sylow 2-subgroup with soluble
+normalizer, with no hypotheses**. Two-Sylow generation, the numerical
+index/outer callback and full T1 reduction remain open
+([`CFSGReeFFourBinarySylowNormalizerSolvable`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinarySylowNormalizerSolvable.lean)).
 The pinned ReeF4 and Tits definitions are now bound to the literal fixed
 group of this automorphism, retaining the actual derived subgroup and
 its full-center quotient
