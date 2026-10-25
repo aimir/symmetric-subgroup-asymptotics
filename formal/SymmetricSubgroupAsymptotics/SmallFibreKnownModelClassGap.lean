@@ -17,6 +17,8 @@ import SymmetricSubgroupAsymptotics.SmallFibreTypeAScaledClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreUnitaryLowRankClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreUnitaryCompleteClassGap
 import SymmetricSubgroupAsymptotics.SmallFibrePSLTwoImprovedClassGap
+import SymmetricSubgroupAsymptotics.SmallFibreTypeACoefficientClassGap
+import SymmetricSubgroupAsymptotics.SmallFibreTypeARankTwoThreeClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreCharTwoCompleteClassGap
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockComponentTransport
 
@@ -47,6 +49,11 @@ inductive Profile (S : Type) [Group S] : Prop
       (hwindow : 8 ≤ r ∨ (5 ≤ r ∧ 3 ≤ q.order) ∨ (4 ≤ r ∧ 4 ≤ q.order) ∨
         (r=3 ∧ 5 ≤ q.order) ∨ (r=2 ∧ 5 ≤ q.order))
       (e : S ≃* CFSG.Models.A r q) : Profile S
+  | typeACoefficient (r : ℕ) (q : CFSG.PrimePower)
+      (hwindow : (4 ≤ r ∧ q.order=2) ∨ (r=3 ∧ (q.order=3 ∨ q.order=4)) ∨
+        (r=4 ∧ q.order=3)) (e : S ≃* CFSG.Models.A r q) : Profile S
+  | typeARankTwoThree (q : CFSG.PrimePower) (hq : q.order=3)
+      (e : S ≃* CFSG.Models.A 2 q) : Profile S
   | pslTwo (q : CFSG.PrimePower) (hlarge : 51 ≤ q.order)
       (e : S ≃* CFSG.Models.A 1 q) : Profile S
   | pslTwoImproved (q : CFSG.PrimePower)
@@ -133,6 +140,12 @@ theorem subnormal_class_cube_gap
   | typeAScaled r q hwindow e =>
     exact SmallFibreTypeAScaledClassGap.subnormal_class_cube_gap_of_typeA_scaled_window
       pi hpi c hc hsize E r q hwindow e H hH
+  | typeACoefficient r q hwindow e =>
+    exact SmallFibreTypeACoefficientClassGap.subnormal_class_cube_gap_of_typeA_coefficient_window
+      pi hpi c hc hsize E r q hwindow e H hH
+  | typeARankTwoThree q hq e =>
+    exact SmallFibreTypeARankTwoThreeClassGap.subnormal_class_cube_gap_of_typeA_rank_two_order_three
+      pi hpi c hc hsize E q hq e H hH
   | pslTwo q hlarge e =>
     exact SmallFibrePSLTwoClassGap.subnormal_class_cube_gap_of_pslTwo
       pi hpi c hc hsize E q hlarge e H hH

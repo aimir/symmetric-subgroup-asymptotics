@@ -4,9 +4,9 @@ import SymmetricSubgroupAsymptotics.CFSGPSLTwoSmallFieldParameters
 
 /-! Bounded rank/field parameters and complete small-fibre profiles.
 These are parameter pairs, not actions or subgroup-catalogue rows.
-The eleven higher-A pairs remain outside the proved profile. All B/C
-and unitary parameters are now covered. The former ten unitary heads
-and older conditional exclusions remain available for compatibility. -/
+Three higher-A pairs remain outside the proved profile. All B/C and
+unitary parameters are now covered. The former eleven higher-A and ten
+unitary heads remain available for compatibility. -/
 set_option autoImplicit false
 set_option Elab.async false
 namespace SymmetricSubgroupAsymptotics.SmallFibreClassicalBoundedHeadParameters
@@ -14,6 +14,10 @@ open SmallFibreKnownModelClassGap
 
 def typeAHeads : Finset (ℕ × ℕ) :=
   {(2,2),(2,3),(2,4),(3,2),(3,3),(3,4),(4,2),(4,3),(5,2),(6,2),(7,2)}
+
+def typeARemainingHeads : Finset (ℕ × ℕ) := {(2,2),(2,4),(3,2)}
+
+theorem typeARemainingHeads_card : typeARemainingHeads.card=3 := by decide +kernel
 
 def unitaryHeads : Finset (ℕ × ℕ) :=
   {(2,3),(2,4),(2,5),(2,7),(2,8),(2,9),(3,2),(3,3),(3,4),(4,2)}
@@ -63,6 +67,20 @@ theorem typeA_parameters_of_not_closed (r : ℕ) (hr : 2 ≤ r)
   have hrange : r=2 ∨ r=3 ∨ r=4 ∨ r=5 ∨ r=6 ∨ r=7 := by omega
   rcases hrange with rfl | rfl | rfl | rfl | rfl | rfl <;>
     simp [typeAHeads] <;> omega
+
+theorem typeA_remaining_parameters_of_not_closed (r : ℕ) (hr : 2 ≤ r)
+    (q : CFSG.PrimePower) (e : S ≃* CFSG.Models.A r q) (h : ¬Profile S) :
+    (r,q.order)∈typeARemainingHeads := by
+  have hold := typeA_parameters_of_not_closed r hr q e h
+  by_contra hnot
+  have hw : ((4 ≤ r ∧ q.order=2) ∨ (r=3 ∧ (q.order=3 ∨ q.order=4)) ∨
+      (r=4 ∧ q.order=3)) ∨ (r=2 ∧ q.order=3) := by
+    simp only [typeAHeads,Finset.mem_insert,Finset.mem_singleton,Prod.mk.injEq] at hold
+    simp only [typeARemainingHeads,Finset.mem_insert,Finset.mem_singleton,Prod.mk.injEq] at hnot
+    omega
+  rcases hw with hw | ⟨rfl,hq⟩
+  · exact h (.typeACoefficient r q hw e)
+  · exact h (.typeARankTwoThree q hq e)
 
 theorem unitary_parameters_of_not_closed (r : ℕ) (hr : 2 ≤ r)
     (q : CFSG.PrimePower) (hsmall : r=2 → q.order≠2)
