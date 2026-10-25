@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockAffineAllTopClassBound
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockSimpleComponentClassBound
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockSymmetricComponentClassBound
+import SymmetricSubgroupAsymptotics.OriginalMinimalBlockGTwoComponentClassBound
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockBoundedShapeResidual
 import SymmetricSubgroupAsymptotics.PrimitiveSocleRawONanScottProof
 import SymmetricSubgroupAsymptotics.CFSGClassificationTransport
@@ -32,8 +33,10 @@ def BoundedNonaffineComponent : Prop :=
         ((∃ K : Subgroup E.Simple, K ≠ ⊤ ∧ Nat.card D.Fibre = K.index ^ E.factorCount) ∨
           (∃ a : ℕ, E.factorCount ≤ 2 * a ∧ Nat.card D.Fibre = (Nat.card E.Simple) ^ a)) ∧
         ¬ IsSimpleGroup D.Component ∧
-        ¬ ∃ m : ℕ, 5 ≤ m ∧ Nonempty (D.Component ≃* Equiv.Perm (Fin m))
+        (¬ ∃ m : ℕ, 5 ≤ m ∧ Nonempty (D.Component ≃* Equiv.Perm (Fin m))) ∧
+        ¬ ∃ (q : CFSG.PrimePower) (hs : q.order ≠ 2), i = .G2 q hs
 
+omit [Finite A] [FaithfulSMul A Ω] in
 theorem bounded_degree_of_nonaffine_component (h : BoundedNonaffineComponent D) :
     Nat.card Ω ≤ 12285 := by
   obtain ⟨hblocks, _, hsize, _⟩ := h
@@ -85,8 +88,15 @@ theorem class_cube_or_small_fibre_or_nonaffine_component_or_actual_finite_model
       · obtain ⟨m, hm, ⟨e⟩⟩ := hsym
         exact Or.inl (D.class_cube_le_of_symmetric_component m hm e hSmaller)
       let W := CFSGReduction.simpleModelWitness hCFSG E.Simple
+      by_cases hg : ∃ (q : CFSG.PrimePower) (hs : q.order ≠ 2), W.index = .G2 q hs
+      · obtain ⟨q, hs, hi⟩ := hg
+        have e : E.Simple ≃* CFSG.Models.G2 q := by
+          have he := W.equiv
+          rw [hi] at he
+          exact he
+        exact Or.inl (D.class_cube_le_of_gTwo_component E q hs e (by omega) hSmaller)
       exact Or.inr (Or.inr (Or.inl
-        ⟨hblocks, hsize, by omega, E, W.index, ⟨W.equiv⟩, E.indexForm, hsimple, hsym⟩))
+        ⟨hblocks, hsize, by omega, E, W.index, ⟨W.equiv⟩, E.indexForm, hsimple, hsym, hg⟩))
   · exact Or.inr (Or.inr (Or.inr hfinite))
 
 end SymmetricSubgroupAsymptotics.OriginalMinimalBlockNonaffineShapeResidual
