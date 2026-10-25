@@ -880,10 +880,42 @@ coset action recognizes A5 and supplies the extra saving at degree ten;
 the four-point top uses the actual half-capacity and exact sharp floor
 at degree twenty. Every nonpaired Lie-type factor has proper index at
 least 24, excluding it internally from smaller primitive components.
-This closes the nonaffine imprimitive branch of the bounded sharp field;
-primitive and affine-block sharp cases remain separate
+This closes the nonaffine imprimitive branch of the bounded sharp field
 ([`OriginalNonaffineBoundedSharpCFSGReduction`](SymmetricSubgroupAsymptotics/OriginalNonaffineBoundedSharpCFSGReduction.lean),
 [`PrimitiveSocleNonpairDegreeTwentyFour`](SymmetricSubgroupAsymptotics/PrimitiveSocleNonpairDegreeTwentyFour.lean)).
+The primitive assembler now covers every original primitive action in
+degrees 4 through 21, or retains **an actual affine degree-16 profile or
+an actual Tits/sporadic socle factor**. At degree nine, the faithful
+complement acts on the four projective points of the ternary plane; its
+scalar kernel has order at most two. This gives three complement
+generators and one translation. The small nonaffine cases retain the
+literal socle quotient and its divisibility by both the outer-group
+order and the original permutation quotient order. No primitive
+catalogue or additional model callback is assumed. Affine degree 16
+and the imprimitive affine-block sharp cases remain open
+([`PrimitiveBoundedSharpCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveBoundedSharpCFSGReduction.lean),
+[`PrimitiveAffineNineOrdinaryGenerators`](SymmetricSubgroupAsymptotics/PrimitiveAffineNineOrdinaryGenerators.lean)).
+A further degree-16 adapter uses the actual eight-point action of
+`GL(4,2)`. It either proves rank at most five, or produces a least failed
+primitive sporadic action on at most eight points. The Tits case is
+excluded by its checked order lower bound. This is a global failed
+action witness, not an asserted subquotient of the original complement;
+the sporadic alternative remains to be discharged
+([`PrimitiveAffineSixteenEightPointSharpReduction`](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenEightPointSharpReduction.lean)).
+Within the imprimitive affine sharp branch, every actual local degree
+five or seven is now paid below total degree 22. Prime tops and the
+remaining four-block case retain the same chief trace and local order
+divisibility; no induction or published generator input is needed
+([`OriginalAffineFiveSevenBoundedSharpStep`](SymmetricSubgroupAsymptotics/OriginalAffineFiveSevenBoundedSharpStep.lean)).
+
+For class counts, every subgroup of a faithful semidirect product with
+an abelian translation group of order nine now has at most **39 classes**.
+The literal fixed subgroup of each nonidentity complement element is
+proper and has at most three elements. Keeping this together with the
+actual projected complement gives `k(H)^3 <= 5^(9-2)`. The original
+block adapter therefore pays affine degree-nine components under two
+or three blocks, without a splitting or class-count hypothesis
+([`ActualAffineNineSmallTopClassGap`](SymmetricSubgroupAsymptotics/ActualAffineNineSmallTopClassGap.lean)).
 
 For the general class-count reduction,
 [`SmallTopGaronziMarotiCubes`](SymmetricSubgroupAsymptotics/SmallTopGaronziMarotiCubes.lean)
@@ -1720,6 +1752,17 @@ transitive action carrying a Tits/sporadic factor in its primitive
 structure or its actual minimal-block component. No smaller-degree
 induction or finite-model callback is a premise of this final disjunction
 ([`TraceyOrdinaryGlobalFiniteModelCounterexample`](SymmetricSubgroupAsymptotics/TraceyOrdinaryGlobalFiniteModelCounterexample.lean)).
+Using the numerical callback already retained by the optional endpoint
+above eliminates primitive multifactor failures and nonaffine block
+failures of fibre degree at least 32. The displayed generating pairs
+of twenty sporadic models also pay their one-factor primitive coarse
+bound from degree 32. The literal three-generator J4 presentation pays
+the same range through the proved `log_2(n) + 6` tail. Only Tits and
+**Fi22, Fi23, Fi24', the Baby Monster and the Monster** remain in that
+large-degree primitive branch; the small actions
+and block fibres below 32 remain explicit. This uses the same numerical
+callback and introduces no new rank hypothesis
+([`TraceyOrdinarySporadicSmallRankResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinarySporadicSmallRankResidual.lean)).
 The finite-model estimates remain before the coarse input can be removed.
 The separate small-degree sharp fields of the published bundle also
 remain; T1's explicit assumptions have not changed.
@@ -1789,14 +1832,33 @@ intersection with the derived fixed source is now Sylow there. A bound
 on the same abelian image gives intersection order at least `q^9`;
 disjoint opposed images in the full derived-centre quotient give actual
 model order at least `q^18`, hence Tits order at least 262144. A literal
+surviving positive 2-subgroup also proves that **512 divides the Tits
+order**. Since 512 does not divide `11!`, every faithful Tits action
+has degree at least 12; the same obstruction excludes a Tits simple
+socle factor on at most eleven points
+([`PrimitiveSocleElevenPointTitsExclusion`](SymmetricSubgroupAsymptotics/PrimitiveSocleElevenPointTitsExclusion.lean)). A literal
 middle root/Weyl word also has order five in the derived fixed source
 and now in its **actual full-centre quotient**, including Tits. A checked
 single-vector action detects noncommutation with an element of that
-same derived source, proving noncentrality before quotienting. The
-required Tits index, outer and good-Sylow bounds remain open; these
+same derived source, proving noncentrality before quotienting. Its
+conjugation action also has order five on a literal normal graded
+2-kernel and on that kernel's faithful image in the full-centre
+quotient. A generic finite 2-group argument proves that its fixed
+subgroup has index at least 16 in this kernel. This is an internal
+centralizer bound, not a bound for arbitrary point stabilizers in the
+whole Tits group. The required Tits index, outer and good-Sylow bounds
+remain open; these
 results do not remove that model from any residual callback
 ([`CFSGReeFFourAllParameterOrderLower`](SymmetricSubgroupAsymptotics/CFSGReeFFourAllParameterOrderLower.lean),
-[`CFSGReeFFourMiddleDerivedFiveSurvival`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleDerivedFiveSurvival.lean)).
+[`CFSGReeFFourMiddleDerivedFiveSurvival`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleDerivedFiveSurvival.lean),
+[`CFSGReeFFourMiddleFiveFixedIndex`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleFiveFixedIndex.lean)).
+At field order two, the literal middle parabolic has a normal 2-kernel
+and an actual graded image of order at most 20. Its displayed generators
+satisfy `r^5 = y^4 = 1` and `y*r*y^-1 = r^2`, proving that image soluble.
+The parabolic, its actual derived intersection and its full-centre
+quotient image are therefore soluble. Identifying a Sylow normalizer
+with a subgroup of this parabolic remains a separate obligation
+([`CFSGReeFFourBinaryMiddleParabolicSolvable`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryMiddleParabolicSolvable.lean)).
 The pinned ReeF4 and Tits definitions are now bound to the literal fixed
 group of this automorphism, retaining the actual derived subgroup and
 its full-center quotient
