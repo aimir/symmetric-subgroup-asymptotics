@@ -1,11 +1,14 @@
 import SymmetricSubgroupAsymptotics.OriginalAffineBoundedSharpMathieuTopRefinement
 import SymmetricSubgroupAsymptotics.PrimitiveSocleCoTwoElementarySylowExclusion
+import SymmetricSubgroupAsymptotics.PrimitiveSocleCoThreeDegreeEightExclusion
 
 /-! The SAME elementary-Sylow top obstruction also excludes the pinned
 Co2 factor: its actual cyclic involution orbit would force solvability.
 The Mathieu22 and nine prime-product exclusions remain attached to the
-same witness. The global failed-half witness is unchanged; it carries no
-inferred elementary-Sylow property and no Co2 exclusion. -/
+same witness. The final cumulative predicate additionally excludes actual Co3 on8points
+using its checked period14 word. The old Co2 APIs remain compatible.
+The global failed-half witness is unchanged; it carries no inferred
+elementary-Sylow property, Co2 exclusion or degree8 assumption. -/
 set_option autoImplicit false
 noncomputable section
 namespace SymmetricSubgroupAsymptotics.OriginalAffineBoundedSharpCoTwoTopRefinement
@@ -61,6 +64,67 @@ theorem exists_generating_finset_or_co_two_free_actual_top_or_refined_global
       (n = 16 ∧ Nonempty (CoTwoFreeActualTopObstruction (G := block.Top) (X := block.Points))) ∨
       Nonempty (RefinedGlobalCounterexample 10) := by
   rcases genRank_le_sharpFloor_or_co_two_free_actual_top_or_refined_global J block P hCFSG hsmall with
+    hpaid | htop | hglobal
+  · obtain ⟨S,hcard,hgen⟩ := MarkedC4.genRank_spec (G := J)
+    exact Or.inl ⟨S,hgen,hcard.le.trans hpaid⟩
+  · exact Or.inr (Or.inl htop)
+  · exact Or.inr (Or.inr hglobal)
+
+/-- The single cumulative exclusion predicate for the SAME actual top.
+Further independently proved top exclusions belong here, rather than in
+another label-specific facade. This predicate is not used for the global
+failed-half witness. -/
+def ActualTopExcluded (s : CFSG.Sporadic) : Prop :=
+  CFSGSmallActionPrimeProductExclusion.Excluded s ∨ s = CFSG.Sporadic.m22 ∨
+    s = CFSG.Sporadic.co2 ∨ s = CFSG.Sporadic.co3
+
+abbrev CumulativeActualTopObstruction {G X : Type} [Group G] [Finite G] [Finite X]
+    [MulAction G X] [FaithfulSMul G X] :=
+  {w : ElementarySylowEightFaithfulActionOrdinary.ActualSporadicObstruction (G := G) (X := X) //
+    ¬ActualTopExcluded w.obstruction.sporadic}
+
+private def modelEquivCoThree (s : CFSG.Sporadic) (hs : s = CFSG.Sporadic.co3) :
+    s.Model ≃* CFSG.Models.MatrixGroups.Co3.Model := by
+  subst s
+  exact MulEquiv.refl _
+
+def refine_actual_top_cumulative {G X : Type} [Group G] [Finite G] [Finite X]
+    [MulAction G X] [FaithfulSMul G X]
+    (w : CoTwoFreeActualTopObstruction (G := G) (X := X)) :
+    CumulativeActualTopObstruction (G := G) (X := X) :=
+  ⟨w.val.val.val,by
+    let v := w.val.val.val
+    intro hs
+    change ActualTopExcluded v.obstruction.sporadic at hs
+    rcases hs with hprime | hm22 | hco2 | hco3
+    · exact w.val.val.property hprime
+    · exact w.val.property hm22
+    · exact w.property hco2
+    · let e : v.obstruction.socle.Simple ≃* CFSG.Models.MatrixGroups.Co3.Model :=
+        v.obstruction.equiv.trans (modelEquivCoThree v.obstruction.sporadic hco3)
+      exact PrimitiveSocleCoThreeDegreeEightExclusion.not_co_three v.obstruction.socle
+        (by simpa only [Nat.card_fin] using (le_refl 8)) e⟩
+
+include P in
+theorem genRank_le_sharpFloor_or_cumulative_actual_top_or_refined_global
+    (hCFSG : CFSG.CFSGClassification) (hsmall : n < 22) :
+    MarkedC4.genRank J ≤ sharpFloor n ∨
+      (n = 16 ∧ Nonempty (CumulativeActualTopObstruction (G := block.Top) (X := block.Points))) ∨
+      Nonempty (RefinedGlobalCounterexample 10) := by
+  rcases genRank_le_sharpFloor_or_co_two_free_actual_top_or_refined_global
+    J block P hCFSG hsmall with hpaid | ⟨h16,htop⟩ | hglobal
+  · exact Or.inl hpaid
+  · obtain ⟨w⟩ := htop
+    exact Or.inr (Or.inl ⟨h16,⟨refine_actual_top_cumulative w⟩⟩)
+  · exact Or.inr (Or.inr hglobal)
+
+include P in
+theorem exists_generating_finset_or_cumulative_actual_top_or_refined_global
+    (hCFSG : CFSG.CFSGClassification) (hsmall : n < 22) :
+    (∃ S : Finset J, Subgroup.closure (S : Set J) = ⊤ ∧ S.card ≤ sharpFloor n) ∨
+      (n = 16 ∧ Nonempty (CumulativeActualTopObstruction (G := block.Top) (X := block.Points))) ∨
+      Nonempty (RefinedGlobalCounterexample 10) := by
+  rcases genRank_le_sharpFloor_or_cumulative_actual_top_or_refined_global J block P hCFSG hsmall with
     hpaid | htop | hglobal
   · obtain ⟨S,hcard,hgen⟩ := MarkedC4.genRank_spec (G := J)
     exact Or.inl ⟨S,hgen,hcard.le.trans hpaid⟩
