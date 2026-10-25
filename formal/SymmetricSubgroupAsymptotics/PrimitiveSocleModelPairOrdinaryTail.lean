@@ -13,11 +13,11 @@ open PrimitiveSocleRawStructure
 variable {G X : Type} [Group G] [Finite G] [Finite X] [MulAction G X]
     (D : NonaffineData G X) {M : Type} [Group M]
 
-theorem genRank_le_ceiling (hk : D.factorCount = 1) (e : D.Simple ≃* M)
+theorem genRank_le_ceiling_of_outer_budget (hk : D.factorCount = 1) (e : D.Simple ≃* M)
     (hpair : ∃ S : Finset M, Subgroup.closure (S : Set M) = ⊤ ∧ S.card ≤ 2)
-    (hsharp : ∀ ell : ℕ, LeastProperIndex M ell →
-      (Nat.card (Outer M) : ℝ) ≤ 3*Real.logb 2 ell)
-    (hn : 128 ≤ Nat.card X) :
+    (hbudget : ∀ ell : ℕ, LeastProperIndex M ell →
+      SufficientOuterOrderBudget ell (Nat.card (Outer M)))
+    (hn : 32 ≤ Nat.card X) :
     MarkedC4.genRank G ≤ traceyPermutationGeneratorCeiling (Nat.card X) := by
   obtain ⟨S,hS,hcard⟩ := hpair
   let U := S.image e.symm
@@ -28,20 +28,30 @@ theorem genRank_le_ceiling (hk : D.factorCount = 1) (e : D.Simple ≃* M)
     exact Subgroup.map_top_of_surjective e.symm.toMonoidHom e.symm.surjective
   have hUcard : U.card ≤ 2 := Finset.card_image_le.trans hcard
   obtain ⟨ell,hell⟩ := exists_leastProperIndex D.Simple
-  have hell5 : 5 ≤ ell := nonabelianSimple_leastProperIndex_five_le
-    (fun h => D.noncommutative (isMulCommutative_iff.mpr h)) hell.1
   have houter : SufficientOuterOrderBudget ell (Nat.card (Outer D.Simple)) := by
-    apply SufficientOuterOrderBudget.of_sharp hell5
     rw [CFSGReduction.outer_card_congr e]
-    exact hsharp ell (CFSGReduction.leastProperIndex_of_mulEquiv e ell hell)
+    exact hbudget ell (CFSGReduction.leastProperIndex_of_mulEquiv e ell hell)
   exact PrimitiveSocleOneFactorPairOrdinaryTail.genRank_le_ceiling
     D hk U hU hUcard ell hell houter hn
+
+theorem genRank_le_ceiling (hk : D.factorCount = 1) (e : D.Simple ≃* M)
+    (hpair : ∃ S : Finset M, Subgroup.closure (S : Set M) = ⊤ ∧ S.card ≤ 2)
+    (hsharp : ∀ ell : ℕ, LeastProperIndex M ell →
+      (Nat.card (Outer M) : ℝ) ≤ 3*Real.logb 2 ell)
+    (hn : 32 ≤ Nat.card X) :
+    MarkedC4.genRank G ≤ traceyPermutationGeneratorCeiling (Nat.card X) := by
+  apply genRank_le_ceiling_of_outer_budget D hk e hpair ?_ hn
+  intro ell hell
+  have hellT := CFSGReduction.leastProperIndex_of_mulEquiv e.symm ell hell
+  have hell5 : 5≤ell := nonabelianSimple_leastProperIndex_five_le
+    (fun h => D.noncommutative (isMulCommutative_iff.mpr h)) hellT.1
+  exact SufficientOuterOrderBudget.of_sharp hell5 (hsharp ell hell)
 
 theorem exists_generating_finset (hk : D.factorCount = 1) (e : D.Simple ≃* M)
     (hpair : ∃ S : Finset M, Subgroup.closure (S : Set M) = ⊤ ∧ S.card ≤ 2)
     (hsharp : ∀ ell : ℕ, LeastProperIndex M ell →
       (Nat.card (Outer M) : ℝ) ≤ 3*Real.logb 2 ell)
-    (hn : 128 ≤ Nat.card X) :
+    (hn : 32 ≤ Nat.card X) :
     ∃ U : Finset G, Subgroup.closure (U : Set G) = ⊤ ∧
       U.card ≤ traceyPermutationGeneratorCeiling (Nat.card X) := by
   obtain ⟨U,hU,hgen⟩ := MarkedC4.genRank_spec (G := G)

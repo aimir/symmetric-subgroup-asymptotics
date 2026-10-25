@@ -20,7 +20,7 @@ variable {G X : Type} [Group G] [Finite G] [Finite X] [MulAction G X]
 
 theorem typeA_genRank_le_ceiling (hk : D.factorCount = 1)
     (r : ℕ) (q : CFSG.PrimePower) (hr : 1 ≤ r) (hs : r = 1 → 4 ≤ q.order)
-    (e : D.Simple ≃* CFSG.Models.A r q) (hn : 128 ≤ Nat.card X) :
+    (e : D.Simple ≃* CFSG.Models.A r q) (hn : 32 ≤ Nat.card X) :
     MarkedC4.genRank G ≤ traceyPermutationGeneratorCeiling (Nat.card X) := by
   letI : IsSimpleGroup (CFSG.Models.A r q) := e.symm.isSimpleGroup
   letI : Finite (CFSG.Models.A r q) := Finite.of_equiv D.Simple e.toEquiv
@@ -31,7 +31,7 @@ theorem typeA_genRank_le_ceiling (hk : D.factorCount = 1)
 
 theorem typeA_exists_generating_finset (hk : D.factorCount = 1)
     (r : ℕ) (q : CFSG.PrimePower) (hr : 1 ≤ r) (hs : r = 1 → 4 ≤ q.order)
-    (e : D.Simple ≃* CFSG.Models.A r q) (hn : 128 ≤ Nat.card X) :
+    (e : D.Simple ≃* CFSG.Models.A r q) (hn : 32 ≤ Nat.card X) :
     ∃ U : Finset G, Subgroup.closure (U : Set G) = ⊤ ∧
       U.card ≤ traceyPermutationGeneratorCeiling (Nat.card X) := by
   obtain ⟨U,hU,hgen⟩ := MarkedC4.genRank_spec (G := G)
@@ -39,7 +39,7 @@ theorem typeA_exists_generating_finset (hk : D.factorCount = 1)
 
 theorem typeB_genRank_le_ceiling (hk : D.factorCount = 1)
     (r : ℕ) (q : CFSG.PrimePower) (hr : 3 ≤ r)
-    (e : D.Simple ≃* CFSG.Models.B r q) (hn : 128 ≤ Nat.card X) :
+    (e : D.Simple ≃* CFSG.Models.B r q) (hn : 32 ≤ Nat.card X) :
     MarkedC4.genRank G ≤ traceyPermutationGeneratorCeiling (Nat.card X) := by
   letI : IsSimpleGroup (CFSG.Models.B r q) := e.symm.isSimpleGroup
   letI : Finite (CFSG.Models.B r q) := Finite.of_equiv D.Simple e.toEquiv
@@ -50,7 +50,7 @@ theorem typeB_genRank_le_ceiling (hk : D.factorCount = 1)
 
 theorem typeB_exists_generating_finset (hk : D.factorCount = 1)
     (r : ℕ) (q : CFSG.PrimePower) (hr : 3 ≤ r)
-    (e : D.Simple ≃* CFSG.Models.B r q) (hn : 128 ≤ Nat.card X) :
+    (e : D.Simple ≃* CFSG.Models.B r q) (hn : 32 ≤ Nat.card X) :
     ∃ U : Finset G, Subgroup.closure (U : Set G) = ⊤ ∧
       U.card ≤ traceyPermutationGeneratorCeiling (Nat.card X) := by
   obtain ⟨U,hU,hgen⟩ := MarkedC4.genRank_spec (G := G)
@@ -58,7 +58,7 @@ theorem typeB_exists_generating_finset (hk : D.factorCount = 1)
 
 theorem typeC_genRank_le_ceiling (hk : D.factorCount = 1)
     (r : ℕ) (q : CFSG.PrimePower) (hr : 2 ≤ r) (hs : r = 2 → q.order ≠ 2)
-    (e : D.Simple ≃* CFSG.Models.C r q) (hn : 128 ≤ Nat.card X) :
+    (e : D.Simple ≃* CFSG.Models.C r q) (hn : 32 ≤ Nat.card X) :
     MarkedC4.genRank G ≤ traceyPermutationGeneratorCeiling (Nat.card X) := by
   letI : IsSimpleGroup (CFSG.Models.C r q) := e.symm.isSimpleGroup
   letI : Finite (CFSG.Models.C r q) := Finite.of_equiv D.Simple e.toEquiv
@@ -69,7 +69,7 @@ theorem typeC_genRank_le_ceiling (hk : D.factorCount = 1)
 
 theorem typeC_exists_generating_finset (hk : D.factorCount = 1)
     (r : ℕ) (q : CFSG.PrimePower) (hr : 2 ≤ r) (hs : r = 2 → q.order ≠ 2)
-    (e : D.Simple ≃* CFSG.Models.C r q) (hn : 128 ≤ Nat.card X) :
+    (e : D.Simple ≃* CFSG.Models.C r q) (hn : 32 ≤ Nat.card X) :
     ∃ U : Finset G, Subgroup.closure (U : Set G) = ⊤ ∧
       U.card ≤ traceyPermutationGeneratorCeiling (Nat.card X) := by
   obtain ⟨U,hU,hgen⟩ := MarkedC4.genRank_spec (G := G)

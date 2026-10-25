@@ -3,7 +3,7 @@ import SymmetricSubgroupAsymptotics.PrimitiveSocleLeastIndexDegreeComparison
 import SymmetricSubgroupAsymptotics.CFSGSufficientSimpleIndexBounds
 import SymmetricSubgroupAsymptotics.ActualWreathUniformLocalOrderCost
 import SymmetricSubgroupAsymptotics.CFSGCoarsePrimitiveNumerics
-import SymmetricSubgroupAsymptotics.LinearLogOrdinaryGeneratorTail
+import SymmetricSubgroupAsymptotics.UnitLogOrdinaryGeneratorTail
 
 /-! A displayed generating pair of the SAME simple socle factor pays the
 one-factor ordinary tail. The original quotient is retained in the proved
@@ -64,17 +64,10 @@ theorem genRank_le_ceiling (hk : D.factorCount = 1)
     (S : Finset D.Simple) (hS : Subgroup.closure (S : Set D.Simple) = ⊤)
     (hScard : S.card ≤ 2) (ell : ℕ) (hell : LeastProperIndex D.Simple ell)
     (houter : SufficientOuterOrderBudget ell (Nat.card (Outer D.Simple)))
-    (hn : 128 ≤ Nat.card X) :
+    (hn : 32 ≤ Nat.card X) :
     MarkedC4.genRank G ≤ traceyPermutationGeneratorCeiling (Nat.card X) := by
   have hh := genRank_le_linear_log D hk S hS hScard ell hell houter
-  have hL : (1 : ℝ) ≤ Real.logb 2 (Nat.card X : ℝ) := by
-    have he := Real.logb_le_logb_of_le (by norm_num : (1 : ℝ) < 2)
-      (by norm_num : (0 : ℝ) < 2)
-      (by exact_mod_cast (show 2 ≤ Nat.card X by omega) : (2 : ℝ) ≤ Nat.card X)
-    simpa only [Real.logb_self_eq_one (by norm_num : (1 : ℝ) < 2)] using he
-  have hcost : (MarkedC4.genRank G : ℝ) ≤ 5*Real.logb 2 (Nat.card X : ℝ)+3 := by
-    linarith only [hh,hL]
-  have hreal := (hcost.trans (LinearLogOrdinaryGeneratorTail.aggregate_le (Nat.card X) hn)).trans
+  have hreal := (hh.trans (UnitLogOrdinaryGeneratorTail.aggregate_le (Nat.card X) hn)).trans
     (Nat.le_ceil ((Nat.card X : ℝ)/Real.sqrt (Real.logb 2 (Nat.card X : ℝ))))
   change (MarkedC4.genRank G : ℝ) ≤
     (traceyPermutationGeneratorCeiling (Nat.card X) : ℝ) at hreal
@@ -84,7 +77,7 @@ theorem exists_generating_finset (hk : D.factorCount = 1)
     (S : Finset D.Simple) (hS : Subgroup.closure (S : Set D.Simple) = ⊤)
     (hScard : S.card ≤ 2) (ell : ℕ) (hell : LeastProperIndex D.Simple ell)
     (houter : SufficientOuterOrderBudget ell (Nat.card (Outer D.Simple)))
-    (hn : 128 ≤ Nat.card X) :
+    (hn : 32 ≤ Nat.card X) :
     ∃ U : Finset G, Subgroup.closure (U : Set G) = ⊤ ∧
       U.card ≤ traceyPermutationGeneratorCeiling (Nat.card X) := by
   obtain ⟨U,hU,hgen⟩ := MarkedC4.genRank_spec (G := G)
