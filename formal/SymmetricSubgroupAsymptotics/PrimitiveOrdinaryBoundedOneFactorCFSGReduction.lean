@@ -1,8 +1,11 @@
 import SymmetricSubgroupAsymptotics.PrimitiveLargeOrdinaryCFSGReduction
 import SymmetricSubgroupAsymptotics.PrimitiveMultifactorOrdinaryCFSGReduction
+import SymmetricSubgroupAsymptotics.PrimitiveSocleTwistedDAllDegreeOrdinary
+import SymmetricSubgroupAsymptotics.PrimitiveSocleUnitaryBinaryRankThreeOrdinary
 
 /-! Original primitive ordinary induction at every degree. The entire
-affine and multifactor branches, all proved pair families, and every
+affine and multifactor branches, all proved pair families, every
+nonsplit-D branch, the binary rank-three unitary branch, and every
 large one-factor branch are filled internally. Only a literal finite
 model or a bounded non-pair one-factor action remains. -/
 set_option autoImplicit false
@@ -12,8 +15,16 @@ open PrimitiveSocleRawStructure TraceyStrictlySmallerTransitiveActions
 open PrimitiveSocleLargeOneFactorOrdinaryCFSGReduction
 open OriginalNonaffinePairFamiliesBlockOrdinaryStep (PairFamily)
 
+/-- Already proved one-factor consumers; the last two use actual root
+generators, not an assumed generating pair. -/
+def ClosedOneFactorFamily (j : CFSG.Index) : Prop :=
+  PairFamily j ∨ match j with
+    | .twistedD _ _ _ => True
+    | .twistedA rank q _ _ => rank = 3 ∧ q.order = 2
+    | _ => False
+
 def RemainingAtDegree (n k : ℕ) (j : CFSG.Index) : Prop :=
-  RemainingModel j ∨ (k=1 ∧ n<1024 ∧ ¬ PairFamily j)
+  RemainingModel j ∨ (k=1 ∧ n<1024 ∧ ¬ ClosedOneFactorFamily j)
 
 theorem genRank_le_ceiling_or_actual_remaining_model
     (hCFSG : CFSG.CFSGClassification) (n : ℕ) (hn : 2≤n)
@@ -38,10 +49,22 @@ theorem genRank_le_ceiling_or_actual_remaining_model
         · exact Or.inl (by simpa only [Nat.card_fin] using h)
         · exact Or.inr ⟨D,j,Or.inl hj,e⟩
       · obtain ⟨j,⟨e⟩⟩ := hCFSG.classify D.Simple
-        by_cases hj : PairFamily j
-        · exact Or.inl (by simpa only [Nat.card_fin] using
-            (PrimitiveSoclePairFamiliesCompleteOrdinary.genRank_le_ceiling D j hj e
-              (by simpa only [Nat.card_fin] using hbelow)))
+        by_cases hj : ClosedOneFactorFamily j
+        · rcases hj with hpair | hmodel
+          · exact Or.inl (by simpa only [Nat.card_fin] using
+              (PrimitiveSoclePairFamiliesCompleteOrdinary.genRank_le_ceiling D j hpair e
+                (by simpa only [Nat.card_fin] using hbelow)))
+          · cases j with
+            | twistedD rank q hr =>
+              exact Or.inl (by simpa only [Nat.card_fin] using
+                (PrimitiveSocleTwistedDAllDegreeOrdinary.genRank_le_ceiling D hk rank hr q e))
+            | twistedA rank q hr hs =>
+              obtain ⟨hthree,hbinary⟩ := hmodel
+              have e3 : D.Simple ≃* CFSG.Models.TwistedA 3 q :=
+                (congrArg (fun t : ℕ => D.Simple ≃* CFSG.Models.TwistedA t q) hthree).mp e
+              exact Or.inl (by simpa only [Nat.card_fin] using
+                (PrimitiveSocleUnitaryBinaryRankThreeOrdinary.genRank_le_ceiling D hk q hbinary e3))
+            | _ => exact False.elim hmodel
         · exact Or.inr ⟨D,j,Or.inr ⟨hk,by omega,hj⟩,⟨e⟩⟩
     · rcases PrimitiveMultifactorOrdinaryCFSGReduction.genRank_le_ceiling_or_actual_remaining_model
           D hCFSG (by have hp := D.factorCount_pos; omega)
