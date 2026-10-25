@@ -13,6 +13,8 @@ import SymmetricSubgroupAsymptotics.SmallFibreTwistedDCompleteClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreOddOrthogonalBClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreBinaryRankTwoClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreUnitaryHigherCoupledClassGap
+import SymmetricSubgroupAsymptotics.SmallFibreTypeAScaledClassGap
+import SymmetricSubgroupAsymptotics.SmallFibreUnitaryLowRankClassGap
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockComponentTransport
 
 /-! Concrete original model profiles whose actual binary/ternary-fibre
@@ -38,6 +40,10 @@ inductive Profile (S : Type) [Group S] : Prop
   | reeFFourLarge (m : ℕ) (hm : 2 ≤ m) (e : S ≃* CFSG.Models.ReeF4 m) : Profile S
   | higherA (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
       (hlarge : 2048 ≤ q.order^r) (e : S ≃* CFSG.Models.A r q) : Profile S
+  | typeAScaled (r : ℕ) (q : CFSG.PrimePower)
+      (hwindow : 8 ≤ r ∨ (5 ≤ r ∧ 3 ≤ q.order) ∨ (4 ≤ r ∧ 4 ≤ q.order) ∨
+        (r=3 ∧ 5 ≤ q.order) ∨ (r=2 ∧ 5 ≤ q.order))
+      (e : S ≃* CFSG.Models.A r q) : Profile S
   | pslTwo (q : CFSG.PrimePower) (hlarge : 51 ≤ q.order)
       (e : S ≃* CFSG.Models.A 1 q) : Profile S
   | unitary (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
@@ -45,6 +51,9 @@ inductive Profile (S : Type) [Group S] : Prop
       (e : S ≃* CFSG.Models.TwistedA r q) : Profile S
   | unitaryHigherCoupled (r : ℕ) (hr : 4 ≤ r) (q : CFSG.PrimePower)
       (hhead : r=4 → 3 ≤ q.order) (e : S ≃* CFSG.Models.TwistedA r q) : Profile S
+  | unitaryLowRankTail (r : ℕ) (q : CFSG.PrimePower)
+      (hwindow : (r=2 ∧ 11 ≤ q.order) ∨ (r=3 ∧ 5 ≤ q.order))
+      (e : S ≃* CFSG.Models.TwistedA r q) : Profile S
   | typeB (r : ℕ) (hr : 3 ≤ r) (q : CFSG.PrimePower)
       (hlarge : 2048 ≤ q.order^(r-1)) (e : S ≃* CFSG.Models.B r q) : Profile S
   | oddTypeB (r : ℕ) (hr : 3 ≤ r) (q : CFSG.PrimePower) (hodd : q.prime ≠ 2)
@@ -109,6 +118,9 @@ theorem subnormal_class_cube_gap
       pi hpi c hc hsize E r hr q e H hH with h | h
     · exact h
     · omega
+  | typeAScaled r q hwindow e =>
+    exact SmallFibreTypeAScaledClassGap.subnormal_class_cube_gap_of_typeA_scaled_window
+      pi hpi c hc hsize E r q hwindow e H hH
   | pslTwo q hlarge e =>
     exact SmallFibrePSLTwoClassGap.subnormal_class_cube_gap_of_pslTwo
       pi hpi c hc hsize E q hlarge e H hH
@@ -120,6 +132,9 @@ theorem subnormal_class_cube_gap
   | unitaryHigherCoupled r hr q hhead e =>
     exact SmallFibreUnitaryHigherCoupledClassGap.subnormal_class_cube_gap_of_unitary_higher_coupled
       pi hpi c hc hsize E r hr q hhead e H hH
+  | unitaryLowRankTail r q hwindow e =>
+    exact SmallFibreUnitaryLowRankClassGap.subnormal_class_cube_gap_of_unitary_low_rank_tail
+      pi hpi c hc hsize E r q hwindow e H hH
   | typeB r hr q hlarge e =>
     rcases SmallFibreClassicalLargeParameterGap.subnormal_gap_or_typeB_small_parameter
       pi hpi c hc hsize E r hr q e H hH with h | h
