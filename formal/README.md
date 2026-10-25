@@ -1109,10 +1109,55 @@ or class-table assumption
 [`NonabelianSimpleClassOrderHalf`](SymmetricSubgroupAsymptotics/NonabelianSimpleClassOrderHalf.lean),
 [`SmallFibreFFourTrialityClassGap`](SymmetricSubgroupAsymptotics/SmallFibreFFourTrialityClassGap.lean),
 [`SmallFibreSuzukiClassGap`](SymmetricSubgroupAsymptotics/SmallFibreSuzukiClassGap.lean)).
-One logarithmic envelope also covers the large parameter ranges of A,
-unitary, B, C, split D and twisted D. The complementary heads are explicit:
-`q^r < 2048` for higher A/unitary, `q < 4096` for PSL2,
-`q^(r-1) < 2048` for B/C/D, and `q^(r-2) < 2048` for twisted D.
+The whole G2 family is now included as well. Deleting zero from the
+retained dual annihilator strengthens the same scalar-word index bound
+to `|K|^(m+1)`, without asserting larger-field linearity of the stabilizer.
+On the original G2 middle source this gives `q^3` in characteristic
+other than three. In particular the actual field-four index is at least
+64; its class equation pays the last scaled packet
+([`PuncturedAnnihilatorScalarWordIndex`](SymmetricSubgroupAsymptotics/PuncturedAnnihilatorScalarWordIndex.lean),
+[`CFSGGTwoPuncturedScalarClassPacket`](SymmetricSubgroupAsymptotics/CFSGGTwoPuncturedScalarClassPacket.lean),
+[`SmallFibreGTwoCompleteClassGap`](SymmetricSubgroupAsymptotics/SmallFibreGTwoCompleteClassGap.lean)).
+The same punctured argument bounds a proper scalar-invariant subspace
+by the index of its preserving subgroup. Applied to the literal Suzuki
+stabilizer and its quadratic vector-image bound, it improves the index
+from `(q-1)*2^(m+1)` to `q*2^(m+1)`
+([`ScalarInvariantSubspaceCardIndex`](SymmetricSubgroupAsymptotics/ScalarInvariantSubspaceCardIndex.lean),
+[`CFSGReeFFourPuncturedMiddleSuzukiIndex`](SymmetricSubgroupAsymptotics/CFSGReeFFourPuncturedMiddleSuzukiIndex.lean)).
+The positive-parameter ReeF4 small-fibre branch is therefore closed for
+`m >= 2` by this actual index and a scaled order envelope. Its field-32
+seed has index at least 256. Only `m=1` remains in that positive family;
+Tits is separate
+([`SmallFibreReeFFourLargeParameterGap`](SymmetricSubgroupAsymptotics/SmallFibreReeFFourLargeParameterGap.lean)).
+The class equation and the actual point-radical indices now close the
+whole split-D and twisted-D families. The last twisted binary rank-four
+head uses the punctured annihilator on the same arbitrary prime-field
+kernel: its index improves from 24 to 32, and the existing class/outer
+ceilings 3072 and 8 then pay the scaled packet
+([`SmallFibreOrthogonalDClassGap`](SymmetricSubgroupAsymptotics/SmallFibreOrthogonalDClassGap.lean),
+[`SmallFibreTwistedDCompleteClassGap`](SymmetricSubgroupAsymptotics/SmallFibreTwistedDCompleteClassGap.lean)).
+The whole odd-characteristic B and C families are closed as well. The
+small B3(3) head uses the same punctured argument to improve its index
+from 72 to 81; C2 uses a constructed actual SL2 quotient action, not an
+assumed transitivity bound
+([`SmallFibreOddOrthogonalBClassGap`](SymmetricSubgroupAsymptotics/SmallFibreOddOrthogonalBClassGap.lean),
+[`SmallFibreOddSymplecticCompleteClassGap`](SymmetricSubgroupAsymptotics/SmallFibreOddSymplecticCompleteClassGap.lean)).
+In characteristic two, the higher-rank Siegel packet and the rank-two
+tail now close B and C as well, except for the literal binary rank-three
+model. At rank two over the four-element field, puncturing the retained
+annihilator improves the actual index to at least 24; no larger-field
+linearity is assumed
+([`SmallFibreCharTwoClassicalClassGap`](SymmetricSubgroupAsymptotics/SmallFibreCharTwoClassicalClassGap.lean),
+[`SmallFibreBinaryRankTwoClassGap`](SymmetricSubgroupAsymptotics/SmallFibreBinaryRankTwoClassGap.lean)).
+A coupled index also closes every unitary rank at least five and rank
+four over fields larger than two. The proof bounds the whole component
+order, so it needs no class census
+([`SmallFibreUnitaryHigherCoupledClassGap`](SymmetricSubgroupAsymptotics/SmallFibreUnitaryHigherCoupledClassGap.lean)).
+A sharp PSL2 class bound reduces its remaining field orders to `q < 51`.
+The other complementary classical heads are `q^r < 2048` for higher A,
+unitary ranks two and three with `q^r < 2048` and binary rank four,
+and the binary rank-three B/C model
+([`SmallFibrePSLTwoClassGap`](SymmetricSubgroupAsymptotics/SmallFibrePSLTwoClassGap.lean)).
 The existing global class-count counterexample theorem now excludes
 these **actual top profiles** internally; it takes no new bounded-head
 estimate as a hypothesis
@@ -1984,15 +2029,26 @@ No known J4 order formula or action catalogue is assumed. The same numerical cal
 retained throughout, with no new rank hypothesis
 ([`TraceyOrdinarySevenModelResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinarySevenModelResidual.lean),
 [`CFSGJ4TwentyThreeDivisor`](SymmetricSubgroupAsymptotics/CFSGJ4TwentyThreeDivisor.lean)).
-The newest conditional refinement retains that same numerical callback
-and the same failed action, but uses the actual presentation heads to
-reduce the four Fischer/Baby tags to primitive degrees below 32 and
-original local degrees below 20. The actual seven-generator Tits head
+The original Y presentations now have a shared four-generator proof:
+the central involution and three complete arm products recover every
+individual generator by stripping one arm at a time. Actual arm periods
+and coprime-product recovery improve the full-group heads to 3/2/3/3,
+and their derived/full-centre heads to **4/2/4/4** for Fi22, Fi23, Fi24′
+and Baby, respectively. No finite-model identification or order formula
+is used
+([`CFSGYCoprimeOrdinaryGenerators`](SymmetricSubgroupAsymptotics/CFSGYCoprimeOrdinaryGenerators.lean)).
+The newest conditional refinement retains the same numerical callback
+and failed action. The actual Fi23 pair now pays **every primitive degree
+and every original block degree/top**. Fi22, Fi24′ and Baby remain only
+below primitive degree 12 and original local degree 18. The actual seven-generator Tits head
 and its order divisor leave primitive degrees 14 through 127 and local
 degrees 14 through 17. Monster is unchanged. These are degree guards
 on the retained witnesses, not a proof of the remaining finite-model
-bounds or of the coarse input
-([`TraceyOrdinaryBoundedHeadModelResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinaryBoundedHeadModelResidual.lean)).
+bounds or of the coarse input. The retained tags are therefore Tits,
+Fi22, Fi24′, Baby and Monster
+([`FischerTwentyThreeOrdinaryClosure`](SymmetricSubgroupAsymptotics/FischerTwentyThreeOrdinaryClosure.lean),
+[`PrimitiveSocleYSectionOrdinaryFromTwelve`](SymmetricSubgroupAsymptotics/PrimitiveSocleYSectionOrdinaryFromTwelve.lean),
+[`TraceyOrdinaryBoundedHeadModelResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinaryBoundedHeadModelResidual.lean)).
 The finite-model estimates remain before the coarse input can be removed.
 The separate small-degree sharp fields of the published bundle also
 remain; T1's explicit assumptions have not changed.

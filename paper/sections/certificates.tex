@@ -621,12 +621,24 @@ three-generator-head estimate with at most five outer prime factors
 pays every inherited top. Both branches therefore retain six tags:
 Tits, the four Fischer/Baby models, and the Monster. No known-order
 formula or action catalogue is used. The numerical callback is unchanged.
-The latest conditional refinement, retaining the same callback and the
-same failed action, improves the four Fischer/Baby tags to primitive
-degrees below $32$ and original local degrees below $20$. The actual
+The actual Y presentations now admit a common arm-product proof.
+Write one arm product as $c=tu$, where the preceding involution $r$
+commutes with every factor of $u$. Then $crc^{-1}=trt$, and the braid
+relation $(tr)^3=1$ gives $r(trt)r=t$. This recovers the first arm
+generator, then strips the entire arm. The central involution and three
+arm products therefore generate the full group. Their actual periods
+and coprime-product recovery improve its heads to $3,2,3,3$; involutory
+Schreier generation gives derived/full-centre heads $4,2,4,4$ for
+Fi22, Fi23, Fi24$'$, and Baby, respectively. No model identification or
+order formula is assumed.
+The latest conditional refinement retains the same numerical callback
+and failed action. The actual Fi23 pair pays every primitive degree
+and every original block degree/top. Fi22, Fi24$'$ and Baby remain only
+below primitive degree $12$ and original local degree $18$. The actual
 seven-generator Tits head and order divisor leave primitive degrees
 $14$ through $127$ and local degrees $14$ through $17$; the Monster
-is unchanged. These are guards on the retained witnesses, not proofs
+is unchanged. The retained tags are now Tits, Fi22, Fi24$'$, Baby and
+Monster. These are guards on the retained witnesses, not proofs
 of the remaining finite-model bounds or of the coarse input.
 The finite-model bounds and separate small-degree sharp fields remain;
 T1's explicit assumptions have not changed.
@@ -817,9 +829,37 @@ The same scaled method closes the whole small-Ree, $F_4$, triality and Suzuki
 families. A generic nonabelian-simple class-equation argument gives
 $2k(S)\leq|S|$, supplying the binary triality saving without an order
 or class-table assumption. One logarithmic envelope also covers the
-large classical ranges. The complementary parameter heads are explicit:
-$q^r<2048$ for higher $A$ and unitary, $q<4096$ for $\mathrm{PSL}_2$,
-$q^{r-1}<2048$ for $B,C,D$, and $q^{r-2}<2048$ for twisted $D$.
+large classical ranges. The whole $G_2$ small-fibre family is now covered
+as well: deleting zero from the retained dual annihilator strengthens
+the same scalar-word index to $|K|^{m+1}$. It requires only prime-field
+linearity of the stabilizer. The original $G_2$ middle source therefore
+has proper index at least $q^3$ in characteristic other than three.
+At field four this gives index $64$, and the actual class equation pays
+the last scaled packet. The positive-parameter Ree $F_4$ small-fibre
+branch is also closed for $m\geq2$: the same punctured argument bounds
+a proper scalar-invariant subspace by its preserving subgroup's index.
+On the literal Suzuki stabilizer this improves the index to
+$q2^{m+1}$, giving $256$ at field order $32$. A scaled order envelope
+then pays this seed and the entire tail; only $m=1$ remains there,
+with Tits separate.
+The class equation and actual point-radical indices also close every
+split-$D$ and twisted-$D$ parameter. The last twisted binary rank-four
+head uses the same punctured annihilator, improving its index from
+$24$ to $32$; the existing class and outer ceilings $3072$ and $8$
+then pay the scaled packet. The whole odd-characteristic $B$ and $C$
+families are closed as well. The $B_3(3)$ head similarly improves its
+index from $72$ to $81$; the $C_2$ argument constructs the required
+actual $\mathrm{SL}_2$ quotient action. In characteristic two, the
+higher-rank Siegel packet and rank-two tail close $B$ and $C$ as well,
+except for the literal binary rank-three model. At rank two over the
+four-element field, puncturing the retained annihilator improves the
+actual index to at least $24$, without assuming larger-field linearity.
+A coupled index closes every unitary rank at least five and rank four
+over fields larger than two; the estimate charges the whole component
+order and needs no class census. The remaining classical heads are
+$q^r<2048$ for higher $A$, unitary ranks two and three with $q^r<2048$
+and binary rank four, $q<51$ for $\mathrm{PSL}_2$, and the binary
+rank-three $B,C$ model.
 The existing global class-count counterexample theorem excludes these
 actual top profiles internally, without a new bounded-head estimate
 as a hypothesis.
