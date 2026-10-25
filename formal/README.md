@@ -872,6 +872,19 @@ must also avoid using the global MN consequence to establish its own
 Tracey premise. The canonical endpoint and its seven-input table remain
 unchanged.
 
+The bounded ordinary-generator route now proves **every original
+nonaffine imprimitive sharp case below degree 22**, or retains an actual
+Tits/sporadic factor witness. Simultaneous prime-index capacities pay
+prime tops through the same chief trace. An actual least-index-five
+coset action recognizes A5 and supplies the extra saving at degree ten;
+the four-point top uses the actual half-capacity and exact sharp floor
+at degree twenty. Every nonpaired Lie-type factor has proper index at
+least 24, excluding it internally from smaller primitive components.
+This closes the nonaffine imprimitive branch of the bounded sharp field;
+primitive and affine-block sharp cases remain separate
+([`OriginalNonaffineBoundedSharpCFSGReduction`](SymmetricSubgroupAsymptotics/OriginalNonaffineBoundedSharpCFSGReduction.lean),
+[`PrimitiveSocleNonpairDegreeTwentyFour`](SymmetricSubgroupAsymptotics/PrimitiveSocleNonpairDegreeTwentyFour.lean)).
+
 For the general class-count reduction,
 [`SmallTopGaronziMarotiCubes`](SymmetricSubgroupAsymptotics/SmallTopGaronziMarotiCubes.lean)
 proves `k(A)^3 <= 5^(n-1)` for every faithful action on its original
@@ -905,6 +918,33 @@ kernel when `b >= 12`
 ([`BinarySymmetricTopClassBound`](SymmetricSubgroupAsymptotics/BinarySymmetricTopClassBound.lean)).
 An explicit shrink-and-restore injection on partitions proves the needed
 Fibonacci bound, so no finite partition census is assumed.
+
+The cycle code now works for **every finite coefficient group C**, retaining
+ordered products rather than replacing noncommutative coefficients by an
+abelian quotient. A reversible colored-partition encoding proves
+`k(C wreath S_b) <= (b+1)^k(C) * Fibonacci(b+1)`
+([`FullSymmetricWreathColoredPartitionBound`](SymmetricSubgroupAsymptotics/FullSymmetricWreathColoredPartitionBound.lean)).
+Combining the two bounds on the same actual projection range proves
+`k(H)^3 <= 5^(2b-2)` for binary coefficients and `b >= 10`, and
+`k(H)^3 <= 5^(3b-2)` for coefficient order at most six, at most three
+classes and `b >= 28`, whenever that range is subnormal in the full
+symmetric group on the same `b` coordinates. No transitivity, full-base
+or splitting assumption is made on H. Original binary and ternary block
+actions and their actual nested-block consumers are checked
+([`OriginalBinaryBlockSubnormalClassGap`](SymmetricSubgroupAsymptotics/OriginalBinaryBlockSubnormalClassGap.lean),
+[`OriginalTernaryBlockSubnormalClassGap`](SymmetricSubgroupAsymptotics/OriginalTernaryBlockSubnormalClassGap.lean),
+[`NestedTernarySubnormalSymmetricTopClassBound`](SymmetricSubgroupAsymptotics/NestedTernarySubnormalSymmetricTopClassBound.lean)).
+For alternating socles, the sharper actual subnormal cap `4*p(m)` pays
+**every multiplicity at least two** in the original binary/ternary
+source, without a large-degree cutoff. The single-factor branch is paid
+when the actual index is at least `2m+2`; literal degree-m actions are
+recognized before the preceding wreath bounds are used. The resulting
+same-action residual has multiplicity one and
+`m <= actualIndex < 2m+2`. Natural equality can remain only at `m <= 9`
+in the binary case or `m <= 27` in the ternary case
+([`AlternatingSmallFibreRefinedShortIndexResidual`](SymmetricSubgroupAsymptotics/AlternatingSmallFibreRefinedShortIndexResidual.lean)).
+This narrows the class-count proof frontier; it does not certify the
+remaining interval or remove the published global class-count input.
 
 For every actual affine profile, every subgroup now satisfies the
 class-count cube bound except possibly at degrees `8,16,32`
@@ -1749,12 +1789,14 @@ intersection with the derived fixed source is now Sylow there. A bound
 on the same abelian image gives intersection order at least `q^9`;
 disjoint opposed images in the full derived-centre quotient give actual
 model order at least `q^18`, hence Tits order at least 262144. A literal
-middle root/Weyl word also has order five in the derived fixed source.
-Its survival through the derived centre and the required Tits index and
-outer bounds remain unproved; these prefix results do not remove that
-model from any residual callback
+middle root/Weyl word also has order five in the derived fixed source
+and now in its **actual full-centre quotient**, including Tits. A checked
+single-vector action detects noncommutation with an element of that
+same derived source, proving noncentrality before quotienting. The
+required Tits index, outer and good-Sylow bounds remain open; these
+results do not remove that model from any residual callback
 ([`CFSGReeFFourAllParameterOrderLower`](SymmetricSubgroupAsymptotics/CFSGReeFFourAllParameterOrderLower.lean),
-[`CFSGReeFFourMiddleDerivedFiveWord`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleDerivedFiveWord.lean)).
+[`CFSGReeFFourMiddleDerivedFiveSurvival`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleDerivedFiveSurvival.lean)).
 The pinned ReeF4 and Tits definitions are now bound to the literal fixed
 group of this automorphism, retaining the actual derived subgroup and
 its full-center quotient
