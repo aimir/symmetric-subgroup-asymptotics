@@ -891,8 +891,8 @@ scalar kernel has order at most two. This gives three complement
 generators and one translation. The small nonaffine cases retain the
 literal socle quotient and its divisibility by both the outer-group
 order and the original permutation quotient order. No primitive
-catalogue or additional model callback is assumed. Affine degree 16
-and the imprimitive affine-block sharp cases remain open
+catalogue or additional model callback is assumed. The primitive affine
+degree-16 case remains open
 ([`PrimitiveBoundedSharpCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveBoundedSharpCFSGReduction.lean),
 [`PrimitiveAffineNineOrdinaryGenerators`](SymmetricSubgroupAsymptotics/PrimitiveAffineNineOrdinaryGenerators.lean)).
 A further degree-16 adapter uses the actual eight-point action of
@@ -902,11 +902,34 @@ excluded by its checked order lower bound. This is a global failed
 action witness, not an asserted subquotient of the original complement;
 the sporadic alternative remains to be discharged
 ([`PrimitiveAffineSixteenEightPointSharpReduction`](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenEightPointSharpReduction.lean)).
-Within the imprimitive affine sharp branch, every actual local degree
-five or seven is now paid below total degree 22. Prime tops and the
-remaining four-block case retain the same chief trace and local order
-divisibility; no induction or published generator input is needed
-([`OriginalAffineFiveSevenBoundedSharpStep`](SymmetricSubgroupAsymptotics/OriginalAffineFiveSevenBoundedSharpStep.lean)).
+The imprimitive affine sharp assembler now covers **every original
+minimal-block affine component below total degree 22**, or retains
+**total degree 16 or a genuine global primitive sporadic counterexample
+on at most ten points**. The prime-power fibre menu is proved internally;
+local degrees 2, 3, 4, 5, 7 and 9 use the same chief trace and actual
+quotient. At the six-point ternary top, the joint induced capacity pays
+the defining-prime layer without separately maximizing its two parts.
+The remaining coupled degree-16 configurations have fibre/top degrees
+2/8, 4/4 or 8/2. The small sporadic witness is global and is not asserted
+to be a subquotient of the original action. No induction or published
+generator input is assumed by this bounded affine reduction
+([`OriginalAffineBoundedSharpCFSGReduction`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpCFSGReduction.lean)).
+
+For binary translations of order eight, every subgroup of the actual
+faithful semidirect product now has at most **24 conjugacy classes**.
+The proper translation kernel is retained as a prime-field submodule
+of the same projected group. For a full translation kernel, the exact
+dual commuting-pair identity gives at most 14 classes in the irreducible
+case; the reducible case gives 24. This uses no action census, splitting
+of a proper-kernel subgroup, or subgroup-class monotonicity. Transferring
+the bound through the original affine profile gives
+`k(H)^3 <= 5^(8-2)`, paying the original two/three-block actions
+([`ActualAffineEightSmallTopClassGap`](SymmetricSubgroupAsymptotics/ActualAffineEightSmallTopClassGap.lean)).
+The native minimal-block installer needs just **one actual base affine
+profile**, for fibre degree eight or nine. Literal component conjugation
+embeds every coordinate subgroup into that base component, where the
+all-subgroup bound applies. No profile family or supplied capacity remains
+([`OriginalMinimalBlockAffineSmallTopClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockAffineSmallTopClassBound.lean)).
 
 For class counts, every subgroup of a faithful semidirect product with
 an abelian translation group of order nine now has at most **39 classes**.
@@ -1755,14 +1778,21 @@ induction or finite-model callback is a premise of this final disjunction
 Using the numerical callback already retained by the optional endpoint
 above eliminates primitive multifactor failures and nonaffine block
 failures of fibre degree at least 32. The displayed generating pairs
-of twenty sporadic models also pay their one-factor primitive coarse
-bound from degree 32. The literal three-generator J4 presentation pays
-the same range through the proved `log_2(n) + 6` tail. Only Tits and
-**Fi22, Fi23, Fi24', the Baby Monster and the Monster** remain in that
-large-degree primitive branch; the small actions
-and block fibres below 32 remain explicit. This uses the same numerical
-callback and introduces no new rank hypothesis
-([`TraceyOrdinarySporadicSmallRankResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinarySporadicSmallRankResidual.lean)).
+of twenty sporadic models now pay **every primitive degree and every
+original block component/top**, including small actions. The remaining
+primitive possibilities are J4 below degree 32, Fi22/Fi23/Fi24' and the
+Baby Monster below degree 64, Tits below degree 128, and the Monster.
+The four Y-section presentations supply at most ten generators, and
+the actual proved Tits order upper bound supplies at most 26; these
+pay their respective tails. Thus **only the Monster remains in the
+primitive branch from degree 128**. Original block fibres below 32
+retain only Tits and the six models without displayed pairs. A literal
+order-23 element of the J4 presentation further excludes that model
+from actions or simple socle factors below degree 23. No known J4 order
+formula or action catalogue is assumed. The same numerical callback is
+retained throughout, with no new rank hypothesis
+([`TraceyOrdinarySevenModelResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinarySevenModelResidual.lean),
+[`CFSGJ4TwentyThreeDivisor`](SymmetricSubgroupAsymptotics/CFSGJ4TwentyThreeDivisor.lean)).
 The finite-model estimates remain before the coarse input can be removed.
 The separate small-degree sharp fields of the published bundle also
 remain; T1's explicit assumptions have not changed.
@@ -1856,9 +1886,16 @@ At field order two, the literal middle parabolic has a normal 2-kernel
 and an actual graded image of order at most 20. Its displayed generators
 satisfy `r^5 = y^4 = 1` and `y*r*y^-1 = r^2`, proving that image soluble.
 The parabolic, its actual derived intersection and its full-centre
-quotient image are therefore soluble. Identifying a Sylow normalizer
-with a subgroup of this parabolic remains a separate obligation
+quotient image are therefore soluble
 ([`CFSGReeFFourBinaryMiddleParabolicSolvable`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryMiddleParabolicSolvable.lean)).
+For the same positive subgroup `S <= U` with order at least 512 and
+normalized by `U`, the actual Bruhat cover now puts its normalizer in
+**one of the two original minimal parabolics**. Exact full positive
+intersections exclude the short Weyl words of weight at least four;
+the literal squares exclude both length-two words. Subgroup-union
+containment selects a parabolic. The outer parabolic's solubility and
+the good-Sylow generation claim are still separate obligations
+([`CFSGReeFFourBinaryNormalizerParabolicCover`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryNormalizerParabolicCover.lean)).
 The pinned ReeF4 and Tits definitions are now bound to the literal fixed
 group of this automorphism, retaining the actual derived subgroup and
 its full-center quotient
