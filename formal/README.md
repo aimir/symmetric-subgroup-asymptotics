@@ -1237,8 +1237,8 @@ orthogonality over the prime field. Exact layer cardinalities then give
 proper index at least `3*q`, without torus invariance or full-field
 linearity of the subgroup. The same original fixed/derived group and
 proved outer bound pay the order cube through both primitive degree forms.
-The bounded frontier retains F4 and triality at field order two, G2 in
-characteristic three or at field order four, ReeF4, Tits and sporadic
+The bounded frontier retains F4 and triality at field order two, G2 at
+field orders three and four, ReeF4, Tits and sporadic
 branches. The global general class-count input
 remains explicit.
 A reusable central-extension theorem now proves the sharp bound
@@ -1268,8 +1268,15 @@ Together with the sharper component order ceiling, this pays every
 `q>=5` in characteristic other than three, with the full original socle
 and both degree forms retained
 ([`PrimitiveAllDegreeGTwoGoodCharacteristicCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeGTwoGoodCharacteristicCFSGReduction.lean)).
-The characteristic-three degeneration and field order four remain open;
-no averaging argument is applied in characteristic three.
+The characteristic-three degeneration is now handled at every field
+order at least nine. Its full centre has order `q^3`; the actual endpoint
+image has order `q^2`. The same original-source stabilizer, full central
+intersection and join index give proper index `3*(q^2-1)`, paying the
+original component-order cube through both primitive degree forms
+([`PrimitiveAllDegreeGTwoEndpointCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveAllDegreeGTwoEndpointCFSGReduction.lean)).
+Only field orders three and four remain in G2. No averaging, split
+extension or full-field linearity of the stabilizer is assumed in the
+characteristic-three proof.
 The shared class-count route now constructs the literal fixed-polar
 quadratic-refinement torsor and its actual contragredient affine action.
 Burnside counting of joint fixed sets proves affine inertia domination.
@@ -1447,8 +1454,20 @@ the remaining scalar degrees. The resulting dispatcher closes the entire
 original affine imprimitive branch for every prime, translation dimension
 and top action, using only strictly smaller transitive cases
 ([`OriginalAffineArbitraryTopOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalAffineArbitraryTopOrdinaryStep.lean)).
-Primitive actions, nonaffine components and the global coarse-generator
-assembly remain open.
+The primitive-affine tail is also proved independently at every degree
+`n>=1024`: the actual complement gives ordinary rank at most
+`log_2(n)^2+1`, which a uniform dyadic estimate pays
+([`PrimitiveAffineCoarseOrdinaryTail`](SymmetricSubgroupAsymptotics/PrimitiveAffineCoarseOrdinaryTail.lean)).
+One checked table of 21 prime/dimension pairs pays every composite affine
+degree below 1024 except binary dimensions two through five. These are
+scalar order certificates, not action representatives or a group census
+([`PrimitiveAffineCoarseBoundedParameters`](SymmetricSubgroupAsymptotics/PrimitiveAffineCoarseBoundedParameters.lean)).
+The actual prime, four-point and eight-point bases are now assembled with
+these estimates, leaving only degrees `16` and `32` in the primitive-affine
+coarse branch
+([`PrimitiveAffineCoarseOrdinaryFrontier`](SymmetricSubgroupAsymptotics/PrimitiveAffineCoarseOrdinaryFrontier.lean)).
+The remaining primitive cases, nonaffine components and global
+coarse-generator assembly remain open.
 These proofs do not use the global Tracey or McIver--Neumann conclusion
 to establish their own premise.
 The simultaneous characteristic-primary and prime-to-characteristic
@@ -1473,6 +1492,23 @@ the almost-simple minimum-degree case remains explicit
 [`SimpleLeastIndexStrictOrdinaryGenerators`](SymmetricSubgroupAsymptotics/SimpleLeastIndexStrictOrdinaryGenerators.lean)).
 No simple two-generation or global generator bound is assumed in these
 structural theorems.
+The same actual quotient recurrence now pays primitive actions with at
+least two socle factors and degree at least 1024, once that same simple
+factor supplies its index-square and outer-order budgets
+([`PrimitiveSocleMultipleFactorOrdinaryTail`](SymmetricSubgroupAsymptotics/PrimitiveSocleMultipleFactorOrdinaryTail.lean)).
+This is an action-level installer; it does not remove those model-level
+premises from the global endpoint. Independently, a literal prime-field
+basis and the actual simple-root parameter homomorphisms give at most
+`2*r*f` ordinary generators in the canonical quadratic elementary group
+and its original norm-two projection. The pinned-field adapter retains
+the actual Cartan equality; it does not identify the pinned natural PSL
+model with a Serre model by name
+([`CFSGNormTwoPrimePowerOrdinaryGenerators`](SymmetricSubgroupAsymptotics/CFSGNormTwoPrimePowerOrdinaryGenerators.lean)).
+The actual one-factor type-D consumer also closes every rank at least
+four and degree at least 128, supplying its proved generating pair,
+root-index bound and outer-order budget internally. This is a family
+result, not a global simple two-generation assumption
+([`PrimitiveSocleTypeDCompleteOneFactorOrdinaryTail`](SymmetricSubgroupAsymptotics/PrimitiveSocleTypeDCompleteOneFactorOrdinaryTail.lean)).
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
