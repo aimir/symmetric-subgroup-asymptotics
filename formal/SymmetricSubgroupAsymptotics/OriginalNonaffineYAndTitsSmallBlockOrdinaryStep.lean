@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.OriginalNonaffineBoundedHeadSmallLocalOrdinaryStep
 import SymmetricSubgroupAsymptotics.PrimitiveSocleYSectionOrdinaryTail
+import SymmetricSubgroupAsymptotics.PrimitiveSocleYSectionOrdinaryFromSeventeen
 import SymmetricSubgroupAsymptotics.CFSGTitsSevenOrdinaryGenerators
 
 /-! Thin SAME-source Y/Tits block consumers. The genuine original model
@@ -39,23 +40,23 @@ private theorem actual_packet (j : CFSG.Index)
   have hp : ModelSufficientSimpleIndexBounds j := hshape.mp (remaining j hni hj)
   exact sufficientSimpleIndexBounds_of_mulEquiv e hp
 
-/-- All four actual Y-derived FULL central quotients, local degrees20..31,
+/-- All four actual Y-derived FULL central quotients, local degrees18..31,
 with EVERY inherited top and strictly-smaller transitive induction. -/
 theorem y_genRank_le_ceiling (i : block.Points)
-    (hr : 20 ≤ Nat.card block.Fibre) (hsmall : Nat.card block.Fibre < 32)
+    (hr : 18 ≤ Nat.card block.Fibre) (hsmall : Nat.card block.Fibre < 32)
     (s : CFSG.Sporadic) (hs : PrimitiveSocleYSectionOrdinaryTail.IsYSectionModel s)
     (e : D.Simple ≃* (CFSG.Index.sporadic s).Model)
     (hbelow : SmallerTransitiveRankBound n) :
     MarkedC4.genRank J ≤ traceyPermutationGeneratorCeiling n := by
-  have hsimple : MarkedC4.genRank D.Simple ≤ 10 := by
+  have hsimple : MarkedC4.genRank D.Simple ≤ 6 := by
     obtain ⟨S,hS,hcard⟩ := CFSGGeneration.generators_card_le_of_surjective
       e.symm.toMonoidHom e.symm.surjective
-      (PrimitiveSocleYSectionOrdinaryTail.ySection_generators s hs)
+      (PrimitiveSocleYSectionOrdinaryFromSeventeen.ySection_six_generators s hs)
     exact (MarkedC4.genRank_le hS).trans hcard
   obtain ⟨ell,hell⟩ := exists_leastProperIndex D.Simple
   obtain ⟨horder,houter⟩ := actual_packet remaining J block D (.sporadic s) (by trivial) (by rfl) e ell hell
   exact OriginalNonaffineBoundedHeadSmallLocalOrdinaryStep.genRank_le_ceiling J block D i
-    hsmall (Or.inl ⟨hr,hsimple⟩) hbelow ell hell horder houter
+    hsmall (Or.inr ⟨hr,by omega⟩) hbelow ell hell horder houter
 
 /-- Actual Tits, local degrees18..31. The bound uses the checked original
 seven-generator family and FULL central quotient, not a generating pair. -/
