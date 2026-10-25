@@ -1,6 +1,7 @@
 import SymmetricSubgroupAsymptotics.SmallFibreExceptionalLargeIndexClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreTypeAUnitaryLargeParameterGap
 import SymmetricSubgroupAsymptotics.SmallFibreReeGTwoClassGap
+import SymmetricSubgroupAsymptotics.SmallFibreClassicalLargeParameterGap
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockComponentTransport
 
 /-! Concrete original model profiles whose actual binary/ternary-fibre
@@ -26,6 +27,15 @@ inductive Profile (S : Type) [Group S] : Prop
   | unitary (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
       (hsmall : r=2 → q.order≠2) (hlarge : 2048 ≤ q.order^r)
       (e : S ≃* CFSG.Models.TwistedA r q) : Profile S
+  | typeB (r : ℕ) (hr : 3 ≤ r) (q : CFSG.PrimePower)
+      (hlarge : 2048 ≤ q.order^(r-1)) (e : S ≃* CFSG.Models.B r q) : Profile S
+  | typeC (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
+      (hsmall : r=2 → q.order≠2) (hlarge : 2048 ≤ q.order^(r-1))
+      (e : S ≃* CFSG.Models.C r q) : Profile S
+  | typeD (r : ℕ) (hr : 4 ≤ r) (q : CFSG.PrimePower)
+      (hlarge : 2048 ≤ q.order^(r-1)) (e : S ≃* CFSG.Models.D r q) : Profile S
+  | twistedD (r : ℕ) (hr : 4 ≤ r) (q : CFSG.PrimePower)
+      (hlarge : 2048 ≤ q.order^(r-2)) (e : S ≃* CFSG.Models.TwistedD r q) : Profile S
 
 theorem subnormal_class_cube_gap
     {A Ω X : Type} [Group A] [MulAction A Ω] [MulAction A X]
@@ -65,6 +75,26 @@ theorem subnormal_class_cube_gap
   | unitary r hr q hsmall hlarge e =>
     rcases SmallFibreTypeAUnitaryLargeParameterGap.subnormal_gap_or_unitary_small_parameter
       pi hpi c hc hsize E r hr q hsmall e H hH with h | h
+    · exact h
+    · omega
+  | typeB r hr q hlarge e =>
+    rcases SmallFibreClassicalLargeParameterGap.subnormal_gap_or_typeB_small_parameter
+      pi hpi c hc hsize E r hr q e H hH with h | h
+    · exact h
+    · omega
+  | typeC r hr q hsmall hlarge e =>
+    rcases SmallFibreClassicalLargeParameterGap.subnormal_gap_or_typeC_small_parameter
+      pi hpi c hc hsize E r hr q hsmall e H hH with h | h
+    · exact h
+    · omega
+  | typeD r hr q hlarge e =>
+    rcases SmallFibreClassicalLargeParameterGap.subnormal_gap_or_typeD_small_parameter
+      pi hpi c hc hsize E r hr q e H hH with h | h
+    · exact h
+    · omega
+  | twistedD r hr q hlarge e =>
+    rcases SmallFibreClassicalLargeParameterGap.subnormal_gap_or_twistedD_small_parameter
+      pi hpi c hc hsize E r hr q e H hH with h | h
     · exact h
     · omega
 
