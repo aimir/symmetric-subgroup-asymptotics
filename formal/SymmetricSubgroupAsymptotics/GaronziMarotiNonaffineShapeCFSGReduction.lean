@@ -1,6 +1,8 @@
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockNonaffineShapeResidual
 import SymmetricSubgroupAsymptotics.GaronziMarotiBoundedShapeCFSGReduction
 import SymmetricSubgroupAsymptotics.SmallFibreKnownModelGlobalClassGap
+import SymmetricSubgroupAsymptotics.OriginalSmallTopClassCubeBound
+import SymmetricSubgroupAsymptotics.OriginalBinaryFourTopClassCubeBound
 
 /-! Original-action GM induction with a genuine nonaffine bounded shape.
 Affine minimal components of degree at least four have been proved away.
@@ -19,7 +21,9 @@ def ActualSmallFibreResidual : Prop :=
     letI := ht
     ∃ ω₀ : X, ∃ D : OriginalMinimalBlock (A := G) ω₀,
       OriginalMinimalBlockNonaffineShapeResidual.SmallFibreShape D ∧
-        ¬ SmallFibreKnownModelGlobalClassGap.HasClosedTop D
+        ¬ SmallFibreKnownModelGlobalClassGap.HasClosedTop D ∧
+        4 ≤ Nat.card D.Points ∧
+        (Nat.card D.Fibre=2 → 5 ≤ Nat.card D.Points)
 
 def ActualBoundedNonaffineResidual : Prop :=
   ∃ ht : MulAction.IsPretransitive G X,
@@ -65,9 +69,19 @@ theorem class_cube_or_actual_small_fibre_or_nonaffine_component_or_finite_model
       rcases OriginalMinimalBlockNonaffineShapeResidual.class_cube_or_small_fibre_or_nonaffine_component_or_actual_finite_model
           D hCFSG hSmaller with h | h | h | h
       · exact Or.inl h
-      · by_cases hclosed : SmallFibreKnownModelGlobalClassGap.HasClosedTop D
+      · by_cases hsmallTop : Nat.card D.Points=2 ∨ Nat.card D.Points=3
+        · exact Or.inl (D.class_cube_le_of_two_or_three_blocks h.1 hsmallTop)
+        by_cases hfourbinary : Nat.card D.Points=4 ∧ Nat.card D.Fibre=2
+        · exact Or.inl (D.class_cube_le_of_four_binary_blocks hfourbinary.2 hfourbinary.1)
+        by_cases hclosed : SmallFibreKnownModelGlobalClassGap.HasClosedTop D
         · exact Or.inl (SmallFibreKnownModelGlobalClassGap.class_cube_gap_of_closed_top D h.1 hclosed)
-        · exact Or.inr (Or.inl ⟨ht, ω₀, D, h, hclosed⟩)
+        · have htop : 4 ≤ Nat.card D.Points := by
+            have := D.degrees_ge_two.2
+            omega
+          have hbinary : Nat.card D.Fibre=2 → 5 ≤ Nat.card D.Points := by
+            intro h2
+            omega
+          exact Or.inr (Or.inl ⟨ht, ω₀, D, h, hclosed, htop, hbinary⟩)
       · exact Or.inr (Or.inr (Or.inl ⟨ht, ω₀, D, h⟩))
       · have hf : GaronziMarotiBoundedShapeCFSGReduction.ActualFiniteModelResidual G X :=
           Or.inr ⟨ht, ω₀, D, h⟩

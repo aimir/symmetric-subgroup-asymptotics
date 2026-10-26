@@ -41,14 +41,12 @@ theorem subnormal_class_cube_le_at_original_degree
     (c : ℕ) (hc : c = 2 ∨ c = 3)
     (hsize : ∀ x, Nat.card (originalBlockFibre π x) = c)
     (P : PrimitiveAffineProfile (Top (A := A) (X := X)) X)
-    (hprimitive : MulAction.IsPreprimitive (Top (A := A) (X := X)) X)
     (hdegree : Nat.card X = 25)
     (H : Subgroup A) (hH : H.IsSubnormal) :
     Nat.card (ConjClasses H) ^ 3 ≤ 5 ^ (Nat.card Ω - 1) := by
   have ho := order_le_fifteenThousandSixTwentyFive P hdegree
-  apply PrimitiveTopSmallFibreClassBudget.subnormal_class_cube_le_at_original_degree
-    π hπ c hc hsize (by omega) hprimitive
-    (ho.trans_lt (by rw [hdegree]; decide +kernel)) 15625 (by decide)
+  apply PrimitiveTopSmallFibreClassBudget.subnormal_class_cube_le_of_regular_top
+    π hπ c hc hsize P (by omega) 15625 (by decide)
     ?_ ?_ ?_ H hH
   · intro L _
     exact (Nat.card_le_card_of_surjective ConjClasses.mk ConjClasses.mk_surjective).trans
@@ -68,11 +66,10 @@ variable {A Ω : Type} [Group A] [MulAction A Ω] [MulAction.IsPretransitive A �
 theorem subnormal_class_cube_le_of_primitive_twentyFive_affine_top
     (hc : Nat.card D.Fibre = 2 ∨ Nat.card D.Fibre = 3)
     (P : PrimitiveAffineProfile D.Top D.Points)
-    (hprimitive : MulAction.IsPreprimitive D.Top D.Points)
     (hdegree : Nat.card D.Points = 25)
     (H : Subgroup A) (hH : H.IsSubnormal) :
     Nat.card (ConjClasses H) ^ 3 ≤ 5 ^ (Nat.card Ω - 1) :=
   PrimitiveAffineTwentyFiveTopSmallFibreClassBound.subnormal_class_cube_le_at_original_degree
-    D.map D.map_equivariant (Nat.card D.Fibre) hc D.fibre_card_at P hprimitive hdegree H hH
+    D.map D.map_equivariant (Nat.card D.Fibre) hc D.fibre_card_at P hdegree H hH
 
 end SymmetricSubgroupAsymptotics.OriginalMinimalBlock

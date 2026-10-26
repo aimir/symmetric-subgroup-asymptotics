@@ -18,19 +18,13 @@ theorem subnormal_class_cube_le_at_original_degree
     (c : ℕ) (hc : c = 2 ∨ c = 3)
     (hsize : ∀ x, Nat.card (originalBlockFibre π x) = c)
     (P : PrimitiveAffineProfile (Top (A := A) (X := X)) X)
-    (hprimitive : MulAction.IsPreprimitive (Top (A := A) (X := X)) X)
     (hdegree : Nat.card X = 9)
     (H : Subgroup A) (hH : H.IsSubnormal) :
     Nat.card (ConjClasses H) ^ 3 ≤ 5 ^ (Nat.card Ω - 1) := by
   letI : Nonempty X := Finite.card_pos_iff.mp (by omega)
   let x : X := Classical.arbitrary X
-  have ho := P.card_le_domain_pow_log x
-  have horder : Nat.card (Top (A := A) (X := X)) < (Nat.card X).factorial := by
-    apply ho.trans_lt
-    rw [hdegree]
-    decide +kernel
-  apply PrimitiveTopSmallFibreClassBudget.subnormal_class_cube_le_at_original_degree
-    π hπ c hc hsize (by omega) hprimitive horder 39 (by decide) ?_ ?_ ?_ H hH
+  apply PrimitiveTopSmallFibreClassBudget.subnormal_class_cube_le_of_regular_top
+    π hπ c hc hsize P (by omega) 39 (by decide) ?_ ?_ ?_ H hH
   · intro L _
     exact AffineDegreeNineSubgroupClassGap.subgroup_class_card_le_thirtyNine P x hdegree L
   · rw [hdegree]
@@ -48,11 +42,10 @@ variable {A Ω : Type} [Group A] [MulAction A Ω] [MulAction.IsPretransitive A �
 theorem subnormal_class_cube_le_of_primitive_nine_affine_top
     (hc : Nat.card D.Fibre = 2 ∨ Nat.card D.Fibre = 3)
     (P : PrimitiveAffineProfile D.Top D.Points)
-    (hprimitive : MulAction.IsPreprimitive D.Top D.Points)
     (hdegree : Nat.card D.Points = 9)
     (H : Subgroup A) (hH : H.IsSubnormal) :
     Nat.card (ConjClasses H) ^ 3 ≤ 5 ^ (Nat.card Ω - 1) :=
   PrimitiveAffineNineTopSmallFibreClassBound.subnormal_class_cube_le_at_original_degree
-    D.map D.map_equivariant (Nat.card D.Fibre) hc D.fibre_card_at P hprimitive hdegree H hH
+    D.map D.map_equivariant (Nat.card D.Fibre) hc D.fibre_card_at P hdegree H hH
 
 end SymmetricSubgroupAsymptotics.OriginalMinimalBlock
