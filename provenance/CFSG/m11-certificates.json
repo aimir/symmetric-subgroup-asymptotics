@@ -1,0 +1,105 @@
+{
+  "repository": "https://github.com/KitaKen1/finite-simple-groups-lean",
+  "revision": "7f09e33a9ceef6b59ce03e34cd4f0558c763e325",
+  "license": "Apache-2.0",
+  "license_sha256": "cd0d0380162a321c1655b67f726483c98b37b34903f0419a9bc8298a13ecf368",
+  "publication_license_path": "provenance/CFSG/Apache-2.0.txt",
+  "publication_license_sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+  "authors": [
+    "Kenta"
+  ],
+  "namespace": "CFSG.Certificates.Mathieu11",
+  "actual_type": "CFSG.Certificates.Mathieu11.M11",
+  "actual_subgroup": "CFSG.Certificates.Mathieu11.M11Subgroup",
+  "cardinality_theorem": "CFSG.Certificates.Mathieu11.M11Cardinality.card_M11",
+  "cardinality": 7920,
+  "model_separation": "The original a/b permutation-generated group is retained. This port does not identify it with the pinned abstract presentation model.",
+  "publication_changes": [
+    "add Apache/provenance/change notice to each preserved upstream header",
+    "rewrite upstream module imports to publication certificate imports",
+    "namespace Sporadic -> CFSG.Certificates.Mathieu11",
+    "nested Certificates -> M11Certificates to match the committed Mathieu22 certificate style"
+  ],
+  "mechanical_reversal_check": "passed for all7files: removing added notices and reversing namespace/import substitutions restores upstream source bytes exactly",
+  "excluded_upstream_modules": [
+    "Simplicity.lean",
+    "Statement.lean",
+    "Certificates/ConjugacyClasses.lean",
+    "Certificates/ClassPartition.lean",
+    "Certificates/TwoA.lean",
+    "Certificates/ThreeA.lean",
+    "Certificates/FourA.lean",
+    "Certificates/SplitClasses.lean"
+  ],
+  "files": [
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/Basic.lean",
+      "source_sha256": "2885adc6bee5b31d36c6ed54451ae4d212237efb8e304eaa17457c4c7572eee9",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/Basic.lean",
+      "publication_sha256": "d26ee8df441704b514e0e92cf75ccfd31b6705926773b1c907423bca0e790670",
+      "imports": [
+        "Mathlib.GroupTheory.Perm.Fin",
+        "Mathlib.GroupTheory.Subgroup.Simple"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/Permutations.lean",
+      "source_sha256": "79683fda6f546bc352c486e3948e5325b2dfd076469cdea144a36b1ff7de284f",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/Permutations.lean",
+      "publication_sha256": "ecf5b2ca83fa66f8a97ce7c39a4349c20f15e869fcb28350d80c776a098e6faf",
+      "imports": [
+        "Mathlib.GroupTheory.Perm.Cycle.Concrete",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.Basic"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/GeneratedSubgroup.lean",
+      "source_sha256": "ad4cfe4420c4395f65847911dd6b0e9b1edb04d98e5968310b76523953ccab89",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/GeneratedSubgroup.lean",
+      "publication_sha256": "0a9a3ef3771c1df8b66c2bf7205589e695f6716bcdd9d29a2d0fc9e6e43f1bb4",
+      "imports": [
+        "Mathlib.Algebra.Group.Subgroup.Finite",
+        "Mathlib.GroupTheory.SpecificGroups.Alternating",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.Permutations"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/Certificates/Words.lean",
+      "source_sha256": "30f4d30ea35fb87b74714c581489f57d459ee8fc07669d2c4da79509af85dc97",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/Certificates/Words.lean",
+      "publication_sha256": "1714d671c998b1a936f616d63bb464ba815d41652eeb08c0a33eefcad6945130",
+      "imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.GeneratedSubgroup"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/Certificates/StabilizerChain.lean",
+      "source_sha256": "4a9066d5f089aebb45ca1b68e0670e49a070caf72462af86a3ef737a803da67f",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/Certificates/StabilizerChain.lean",
+      "publication_sha256": "38e856f6b3ae7cc08564cac6c43fa9c4c5279141d10ce1f8c1e2c8cef9696855",
+      "imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.Certificates.Words"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/Certificates/WittDesign.lean",
+      "source_sha256": "c846f6b85009f79c52afc0806738c6bd616e0bea61c349c75ba7fd0581758b5c",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/Certificates/WittDesign.lean",
+      "publication_sha256": "ebfe8d2425d70c2615344b40945d8376a2bfe6b61c1c57d1a221eed4ffb899b5",
+      "imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.GeneratedSubgroup"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/Cardinality.lean",
+      "source_sha256": "36f393bfff2fedaf532c5c6b95eda0c7c3222f257ad1b6ef663fd6f9227f865f",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/Cardinality.lean",
+      "publication_sha256": "92500c6f99c4bb88b5d3511832a8df04d5ea90f76bcd9760bd3b311a854a7652",
+      "imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.GeneratedSubgroup",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.Certificates.StabilizerChain",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.Certificates.WittDesign"
+      ]
+    }
+  ]
+}
