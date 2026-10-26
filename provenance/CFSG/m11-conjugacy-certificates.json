@@ -1,0 +1,84 @@
+{
+  "repository": "https://github.com/KitaKen1/finite-simple-groups-lean",
+  "revision": "7f09e33a9ceef6b59ce03e34cd4f0558c763e325",
+  "license": "Apache-2.0",
+  "license_sha256": "cd0d0380162a321c1655b67f726483c98b37b34903f0419a9bc8298a13ecf368",
+  "publication_license_path": "provenance/CFSG/Apache-2.0.txt",
+  "publication_license_sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+  "authors": [
+    "Kenta"
+  ],
+  "namespace": "CFSG.Certificates.Mathieu11.M11Certificates.ConjugacyClasses",
+  "prerequisite_original_order_provenance": "provenance/CFSG/m11-certificates.json",
+  "publication_changes": [
+    "add Apache/provenance/change notices while retaining original copyright/author/AI notices",
+    "publication import paths",
+    "namespace Sporadic -> CFSG.Certificates.Mathieu11; nested Certificates -> M11Certificates"
+  ],
+  "mechanical_reversal_check": "All six ported sources restore exact upstream bytes on reversing only the added notices and import/namespace substitutions.",
+  "excluded_upstream_modules": [
+    "Simplicity.lean",
+    "Statement.lean"
+  ],
+  "semantic_boundary": "The six files prove class-orbit rows, disjointness and coverage for the original a/b permutation subgroup. They neither assume the candidate table is exhaustive nor identify it with the pinned presentation. The separate native consumer uses the checked actual equivalence and retains inherited pinned simplicity.",
+  "files": [
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/Certificates/ConjugacyClasses.lean",
+      "source_sha256": "5e122b4394d9f174094b25c4fcc20535972de365a404b5e37852c171190ec299",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/Certificates/ConjugacyClasses.lean",
+      "publication_sha256": "5ba122ae02e282ebcf22bb5dcb33db3496cce10ab7ddc00b51efc4ad67cbff98",
+      "imports": [
+        "Mathlib.GroupTheory.Perm.Centralizer",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.Cardinality",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.Certificates.Words"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/Certificates/FourA.lean",
+      "source_sha256": "b21e45faf9ebd706eacd18fcac91f1367226ef99e898ba1ce67cc71c04b6c69a",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/Certificates/FourA.lean",
+      "publication_sha256": "a1f3f295b80ee195ae83a013da2c34666d6b3627d574f0500a3cb5b5eac068fe",
+      "imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.Certificates.ConjugacyClasses"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/Certificates/ThreeA.lean",
+      "source_sha256": "d69b0535e00e352913e768b18be53c6b40f74ccd2ac46963274c0e6970b7dd02",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/Certificates/ThreeA.lean",
+      "publication_sha256": "b204274261f10b590a63809f3b339850cdbb412112f445933ac42c8403d969d1",
+      "imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.Certificates.FourA"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/Certificates/TwoA.lean",
+      "source_sha256": "23ea15920a96279da17a5be39eb5b2349062c9fc3fea211765e7e7cf2e8d950e",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/Certificates/TwoA.lean",
+      "publication_sha256": "5949edf621805fe73ad654d928b9944f0d6c83a656c7a5de428f4f8442ee6cee",
+      "imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.Certificates.ThreeA"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/Certificates/ClassPartition.lean",
+      "source_sha256": "3c060a047fb7da096687453ea9c5acedd49c99a65e4878804d8f52676f7293b3",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/Certificates/ClassPartition.lean",
+      "publication_sha256": "3a9ee8cecb66eb87a42525daf64de1376b40e096b2fefafa956bb23fe00fcaa9",
+      "imports": [
+        "Mathlib.Data.Set.Card.Arithmetic",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.Certificates.TwoA"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M11/Certificates/SplitClasses.lean",
+      "source_sha256": "ced3f6756a34bdab9a8cfa2f561e0eee4b5e415381a4c2eb87c14324275508b4",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu11/Certificates/SplitClasses.lean",
+      "publication_sha256": "ce63f8b4fcfc2c1defefdccede94060ddfc044f2c3b9d9b5801bb0bf323b7fdf",
+      "imports": [
+        "Mathlib.GroupTheory.SpecificGroups.Alternating.Centralizer",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu11.Certificates.ClassPartition"
+      ]
+    }
+  ]
+}
