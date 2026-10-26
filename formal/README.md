@@ -1000,6 +1000,37 @@ four-point installer, all affine component degrees at least four are
 therefore paid. Small fibres 2 and 3 and the nonaffine class-count
 frontier remain separate
 ([`OriginalMinimalBlockAffineAllTopClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockAffineAllTopClassBound.lean)).
+Every primitive affine **top** of degree at least five above binary or
+ternary fibres is now paid. The infinite ranges and the exact
+prime-power exhaustion reduce to degrees 8, 9, 16, 25, 27, 32 and 64,
+which share the same native proof. The degree-16 and
+degree-32 parabolic arguments improve their all-subgroup class budgets
+to 772 and 351240. The binary proof retains the actual unsigned motion
+reserve `(B+1)*2^(n-2)`; the ternary proof uses `3^n*B`. Degree 9 reuses
+its 39-class theorem, degree 25 needs only its actual prime-log order
+bound, degree 27 uses the retained line/plane parabolic budget 12247,
+and degree 64 uses the uniform sparse centralizer bound
+([`PrimitiveTopSmallFibreClassBudget`](SymmetricSubgroupAsymptotics/PrimitiveTopSmallFibreClassBudget.lean),
+[`PrimitiveAffineBinaryTopSmallFibreClassBound`](SymmetricSubgroupAsymptotics/PrimitiveAffineBinaryTopSmallFibreClassBound.lean),
+[`PrimitiveAffineNineTopSmallFibreClassBound`](SymmetricSubgroupAsymptotics/PrimitiveAffineNineTopSmallFibreClassBound.lean),
+[`PrimitiveAffineTwentyFiveTopSmallFibreClassBound`](SymmetricSubgroupAsymptotics/PrimitiveAffineTwentyFiveTopSmallFibreClassBound.lean),
+[`PrimitiveAffineTernaryTopSmallFibreClassBound`](SymmetricSubgroupAsymptotics/PrimitiveAffineTernaryTopSmallFibreClassBound.lean),
+[`PrimitiveAffineSixtyFourTopSmallFibreClassBound`](SymmetricSubgroupAsymptotics/PrimitiveAffineSixtyFourTopSmallFibreClassBound.lean)).
+Degrees 9 and 25 also allow an imprimitive original top. A faithful
+regular-normal action on at least five points contains no transposition:
+its commutator with a regular translation moves at most four points,
+so regularity makes that commutator trivial. Thus the same unsigned
+reserve applies without primitivity. The other bounded elementary
+translation charts retain the original top's explicit primitivity
+([`RegularNormalActionNoSwap`](SymmetricSubgroupAsymptotics/RegularNormalActionNoSwap.lean),
+[`OriginalMinimalBlockSupportedAffineTopClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockSupportedAffineTopClassBound.lean)).
+The global reduction now also discharges every original two- or
+three-block source, and every four-block source with binary fibres.
+The latter keeps the actual weighted fixed-kernel sum and proves at
+most 42 classes. These are bounds on the original transitive source;
+they do not assert transitivity for arbitrary subnormal subgroups
+([`OriginalSmallTopClassCubeBound`](SymmetricSubgroupAsymptotics/OriginalSmallTopClassCubeBound.lean),
+[`OriginalBinaryFourTopClassCubeBound`](SymmetricSubgroupAsymptotics/OriginalBinaryFourTopClassCubeBound.lean)).
 This is now threaded into the actual global least-counterexample
 argument. Its bounded imprimitive alternatives retain either a literal
 fibre of size 2 or 3 at total degree at most 36855, or a literal
@@ -1129,21 +1160,33 @@ The positive-parameter ReeF4 small-fibre branch is therefore closed for
 seed has index at least 256. Only `m=1` remains in that positive family;
 Tits is separate
 ([`SmallFibreReeFFourLargeParameterGap`](SymmetricSubgroupAsymptotics/SmallFibreReeFFourLargeParameterGap.lean)).
-At `m=1`, the original small-fibre estimate now leaves only one socle
-factor and the same proper subgroup of index exactly 109. The actual
+At `m=1`, the original small-fibre branch is now closed as well. Its
+order argument first reduces to one socle factor and the same proper
+subgroup of index exactly 109. The actual
 sixteen Bruhat cells form a bijection, giving the fixed-group order and
 proving that 11 does not divide the original model's order. The proved
 Jordan multiple-primitivity theorem would force 110 to divide that
 order at any index strictly between 109 and 218. The scaled class
 packet pays all larger indices. The whole ternary branch is also closed:
 the actual simple-group half-class saving gives component budget
-`3*2^77`, whose scalar seed pays every degree from 109. Thus only the
-binary one-factor, index-109 case remains. No action catalogue or
-group-order premise is assumed
+`3*2^77`, whose scalar seed pays every degree from 109. The final binary
+case is excluded by an actual Sylow orbit congruence: its fixed-point
+count divides 49, and every nonfixed orbit has size divisible by 8.
+Degree 109 is incongruent modulo 8 to every divisor of 49. Consequently
+every proper subgroup has index at least 218, and both fibre sizes and
+all socle multiplicities are paid. No action catalogue or group-order
+premise is assumed
 ([`PrimitivePrimeCycleCardinalityBand`](SymmetricSubgroupAsymptotics/PrimitivePrimeCycleCardinalityBand.lean),
 [`CFSGReeFFourSixteenCellCardinality`](SymmetricSubgroupAsymptotics/CFSGReeFFourSixteenCellCardinality.lean),
 [`SmallFibreReeFFourFieldEightSingleIndexResidual`](SymmetricSubgroupAsymptotics/SmallFibreReeFFourFieldEightSingleIndexResidual.lean),
-[`SmallFibreReeFFourFieldEightTernaryClassGap`](SymmetricSubgroupAsymptotics/SmallFibreReeFFourFieldEightTernaryClassGap.lean)).
+[`SmallFibreReeFFourFieldEightTernaryClassGap`](SymmetricSubgroupAsymptotics/SmallFibreReeFFourFieldEightTernaryClassGap.lean),
+[`SylowIntersectionDegreeObstruction`](SymmetricSubgroupAsymptotics/SylowIntersectionDegreeObstruction.lean),
+[`CFSGReeFFourFieldEightSylowIndexObstruction`](SymmetricSubgroupAsymptotics/CFSGReeFFourFieldEightSylowIndexObstruction.lean),
+[`SmallFibreReeFFourFieldEightCompleteClassGap`](SymmetricSubgroupAsymptotics/SmallFibreReeFFourFieldEightCompleteClassGap.lean)).
+The global profile and both original-action GM consumers include this
+closure. Any selected nonaffine simple model outside the paid global
+profiles is now literally Tits or sporadic
+([`SmallFibreNonaffineFiniteModelNormalization`](SymmetricSubgroupAsymptotics/SmallFibreNonaffineFiniteModelNormalization.lean)).
 The class equation and the actual point-radical indices now close the
 whole split-D and twisted-D families. The last twisted binary rank-four
 head uses the punctured annihilator on the same arbitrary prime-field
@@ -2448,6 +2491,22 @@ neither a prescribed Frattini-head dimension nor the final automorphism
 bound is inferred
 ([`CFSGTitsIntrinsicFiveFaithful`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicFiveFaithful.lean),
 [`CFSGTitsIntrinsicFirstLayer`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicFirstLayer.lean)).
+The whole middle commutator now has the same second graded layer as its
+literal `D*E` correction. Dividing by that whole correction leaves an
+actual element of this same `R` whose matrix entries vanish through
+height two. The whole middle difference and the two middle squares
+also lie in `R`; this does not assert that the unsquared middle blocks
+lie there, or that their squares are squares of elements of `R`
+([`CFSGReeFFourMiddleTailCommutatorSecondLayer`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleTailCommutatorSecondLayer.lean),
+[`CFSGTitsIntrinsicThirdCorrection`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicThirdCorrection.lean),
+[`CFSGTitsIntrinsicMiddleCorrections`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicMiddleCorrections.lean)).
+The actual radical has between 512 and 1024 elements. Literal root and
+wedge-coordinate actions also prove the whole-word relation
+`y*x*y⁻¹ = r*x*r⁻¹`, retaining every higher matrix term. These results
+constrain the next generation and automorphism steps without specifying
+a Frattini-head dimension
+([`CFSGTitsIntrinsicRadicalCardinalityBounds`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicRadicalCardinalityBounds.lean),
+[`CFSGReeFFourWholeOuterMiddleRelation`](SymmetricSubgroupAsymptotics/CFSGReeFFourWholeOuterMiddleRelation.lean)).
 These are checked statements about the original groups; the
 pair-stabilizer cardinality and the resulting outer budget remain open
 ([`CFSGReeFFourBinaryOrderedBooleanParameters`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryOrderedBooleanParameters.lean),

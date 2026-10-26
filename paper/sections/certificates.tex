@@ -750,7 +750,28 @@ base profile now pays every original block-top size: two or three
 blocks use the stronger gap directly, and larger tops use only
 strict-smaller general permutation-degree induction. Together with
 the four-point installer, this pays all affine component degrees at
-least four. The actual global least-counterexample argument now
+least four.
+For binary and ternary fibres, a common native proof now pays every
+actual primitive affine top of degree at least five. The infinite
+ranges and exact prime-power exhaustion leave the seven degrees
+$8,9,16,25,27,32,64$.
+The parabolic recursion gives all-subgroup class budgets $772$ and
+$351240$ in degrees $16$ and $32$. For a top budget $B$ on $n$ points,
+the binary proof retains the unsigned motion reserve
+$(B+1)2^{n-2}$, while the ternary proof uses $3^nB$.
+Degree $9$ reuses its $39$-class theorem, degree $25$ needs only the
+actual prime-log order bound, degree $27$ uses the retained line/plane
+parabolic budget $12247$, and degree $64$ uses uniform sparse
+centralizer evaluation. Degrees $9$ and $25$ also allow imprimitive
+tops: a transposition's commutator with a regular normal translation
+moves at most four points, hence is trivial by regularity on at least
+five points. Commuting with every translation then excludes the
+transposition itself. The remaining elementary translation charts
+retain the original top's explicit primitivity.
+Every original two- or three-block source is paid by the actual
+small-top fusion bounds. Four binary blocks are paid by a weighted
+fixed-kernel count giving at most $42$ classes; $42^3\leq5^7$.
+The actual global least-counterexample argument now
 retains, in its bounded imprimitive branch, either fibres of size two
 or three at total degree at most $36855$, or a literal nonaffine,
 nonsimple component of degree $5$ through $4095$ under two or three blocks,
@@ -849,9 +870,15 @@ model's order. The proved Jordan multiple-primitivity theorem would
 force $110$ to divide that order at an index strictly between $109$ and
 $218$; the scaled class packet pays every index from $218$. The
 nonabelian-simple half-class saving gives component budget $3\cdot2^{77}$
-and pays the entire ternary branch from degree $109$. Thus only the
-binary one-factor index-$109$ case remains, without an action catalogue
-or an assumed group order.
+and pays the entire ternary branch from degree $109$. The last binary
+case is also excluded. In the same coset action, the actual positive
+Sylow subgroup has a nonempty fixed-point set, whose cardinality $d$
+divides its normalizer quotient $49$. Every nonfixed orbit has size
+divisible by $8$, from the exact conjugate-Sylow intersection indices.
+Thus $109\equiv d\pmod8$, impossible for $d\in\{1,7,49\}$.
+Every proper subgroup consequently has index at least $218$; this
+closes the whole field-eight branch, with all socle multiplicities and
+both fibre sizes, without an action catalogue or an assumed group order.
 The class equation and actual point-radical indices also close every
 split-$D$ and twisted-$D$ parameter. The last twisted binary rank-four
 head uses the same punctured annihilator, improving its index from
@@ -1223,6 +1250,16 @@ on this same $R$. A first-layer homomorphism is constructed through its
 faithful source intersection, with squares and commutators in the
 kernel. Reverse kernel inclusion and characteristicity remain to be
 proved; no prescribed Frattini-head dimension is inferred.
+The whole middle commutator has the same second graded layer as its
+literal two-block correction. Their quotient is an element of this
+same $R$ vanishing through height two. The whole middle difference
+and the two middle squares also belong to $R$; this does not put the
+unsquared middle blocks in $R$ or identify its Frattini subgroup.
+The literal source intersection gives $512\leq |R|\leq1024$.
+Root and wedge-coordinate actions also prove the whole relation
+$yxy^{-1}=rxr^{-1}$ for the displayed original words, with every higher
+matrix term retained. This supplies a generation relation without a
+prescribed Frattini-head dimension.
 The pair-stabilizer cardinality and the resulting outer budget remain
 open.
 For $q\geq8$, the actual outer-root translation and its square-scalar
