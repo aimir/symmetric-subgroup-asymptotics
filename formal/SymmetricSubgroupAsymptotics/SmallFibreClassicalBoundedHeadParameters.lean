@@ -4,7 +4,7 @@ import SymmetricSubgroupAsymptotics.CFSGPSLTwoSmallFieldParameters
 
 /-! Bounded rank/field parameters and complete small-fibre profiles.
 These are parameter pairs, not actions or subgroup-catalogue rows.
-Three higher-A pairs remain outside the proved profile. All B/C and
+Two higher-A pairs remain outside the proved profile. All B/C and
 unitary parameters are now covered. The former eleven higher-A and ten
 unitary heads remain available for compatibility. -/
 set_option autoImplicit false
@@ -15,9 +15,9 @@ open SmallFibreKnownModelClassGap
 def typeAHeads : Finset (ℕ × ℕ) :=
   {(2,2),(2,3),(2,4),(3,2),(3,3),(3,4),(4,2),(4,3),(5,2),(6,2),(7,2)}
 
-def typeARemainingHeads : Finset (ℕ × ℕ) := {(2,2),(2,4),(3,2)}
+def typeARemainingHeads : Finset (ℕ × ℕ) := {(2,2),(3,2)}
 
-theorem typeARemainingHeads_card : typeARemainingHeads.card=3 := by decide +kernel
+theorem typeARemainingHeads_card : typeARemainingHeads.card=2 := by decide +kernel
 
 def pslTwoRemainingOrders : Finset ℕ := {4,5,7,8,9}
 
@@ -85,13 +85,14 @@ theorem typeA_remaining_parameters_of_not_closed (r : ℕ) (hr : 2 ≤ r)
   have hold := typeA_parameters_of_not_closed r hr q e h
   by_contra hnot
   have hw : ((4 ≤ r ∧ q.order=2) ∨ (r=3 ∧ (q.order=3 ∨ q.order=4)) ∨
-      (r=4 ∧ q.order=3)) ∨ (r=2 ∧ q.order=3) := by
+      (r=4 ∧ q.order=3)) ∨ (r=2 ∧ q.order=3) ∨ (r=2 ∧ q.order=4) := by
     simp only [typeAHeads,Finset.mem_insert,Finset.mem_singleton,Prod.mk.injEq] at hold
     simp only [typeARemainingHeads,Finset.mem_insert,Finset.mem_singleton,Prod.mk.injEq] at hnot
     omega
-  rcases hw with hw | ⟨rfl,hq⟩
+  rcases hw with hw | ⟨rfl,hq⟩ | ⟨rfl,hq⟩
   · exact h (.typeACoefficient r q hw e)
   · exact h (.typeARankTwoThree q hq e)
+  · exact h (.typeARankTwoFour q hq e)
 
 theorem unitary_parameters_of_not_closed (r : ℕ) (hr : 2 ≤ r)
     (q : CFSG.PrimePower) (hsmall : r=2 → q.order≠2)
