@@ -1159,12 +1159,40 @@ are closed in this small-fibre branch
 [`CFSGSymplecticPauliPrimeIndex`](SymmetricSubgroupAsymptotics/CFSGSymplecticPauliPrimeIndex.lean),
 [`SmallFibreCharTwoCompleteClassGap`](SymmetricSubgroupAsymptotics/SmallFibreCharTwoCompleteClassGap.lean)).
 A shared exponential envelope and the rank-two class formula close the
-higher-A ranges, including every rank-two field from five. Their exact
-remaining complement comprises **11 higher-A rank/field pairs**. These
-count parameters in this small-fibre branch, not action rows or all
-remaining global obligations
+higher-A ranges, including every rank-two field from five. A shared
+coefficient-word code bounds `k(GL_n(q))` by `(q-1)*(2q-1)^(n-1)`;
+the actual special-linear class fibres cost `gcd(q-1,n)`, and classes
+then descend through the full projective quotient. This closes all
+binary ranks from four and three more small nonbinary parameters.
+For rank two over the three-element field, the prime divisor 13
+survives the determinant and centre quotients and gives proper index
+at least 13. Over the four-element field, the refined normal-key cover
+gives `k(SL_3(4)) <= 28`. Multiplication by an actual central scalar of
+order three fixes at most one class: its trace and inverse trace must
+both vanish, placing it in the same determinant-surjective origin fibre.
+The proved central-quotient Burnside formula then gives `k(PSL_3(4)) <= 10`.
+Together with outer order at most 12 and proper index at least 16,
+the tighter 24-reserve packet closes this case as well. The exact
+remaining complement is therefore the two pairs **`(2,2), (3,2)`**.
+These count parameters in this
+small-fibre branch, not action rows or all remaining global obligations
 ([`SmallFibreTypeAScaledClassGap`](SymmetricSubgroupAsymptotics/SmallFibreTypeAScaledClassGap.lean),
+[`FiniteFieldProjectiveLinearClassBound`](SymmetricSubgroupAsymptotics/FiniteFieldProjectiveLinearClassBound.lean),
+[`SmallFibreTypeACoefficientClassGap`](SymmetricSubgroupAsymptotics/SmallFibreTypeACoefficientClassGap.lean),
+[`SmallFibreTypeARankTwoThreeClassGap`](SymmetricSubgroupAsymptotics/SmallFibreTypeARankTwoThreeClassGap.lean),
+[`CentralOrderThreeConjugacyClasses`](SymmetricSubgroupAsymptotics/CentralOrderThreeConjugacyClasses.lean),
+[`ProjectiveSLThreeQuaternaryClassBound`](SymmetricSubgroupAsymptotics/ProjectiveSLThreeQuaternaryClassBound.lean),
+[`SmallFibreTypeARankTwoQuaternaryClassGap`](SymmetricSubgroupAsymptotics/SmallFibreTypeARankTwoQuaternaryClassGap.lean),
 [`SmallFibreClassicalBoundedHeadParameters`](SymmetricSubgroupAsymptotics/SmallFibreClassicalBoundedHeadParameters.lean)).
+Within the remaining binary rank-three parameter, the original
+single-factor degree-eight action is already closed. Its actual socle
+has order 20160, so the actual permutation top has index at most two
+in the symmetric group on eight points. The proved half-factorial
+recognition identifies that same top as alternating or symmetric,
+and the native binary degree-eight bound applies. This requires no
+constructed `PSL_4(2) ≃ A_8` isomorphism or relabelled action
+([`PrimitivePermutationHalfOrderRecognition`](SymmetricSubgroupAsymptotics/PrimitivePermutationHalfOrderRecognition.lean),
+[`OriginalBinaryTypeARankThreeEightClassGap`](SymmetricSubgroupAsymptotics/OriginalBinaryTypeARankThreeEightClassGap.lean)).
 The **whole admissible unitary family** is now closed. The existing
 infinite ranges leave ten small parameter pairs, all paid by a shared
 Hermitian frame count and a determinant saving. Gram--Schmidt is proved
@@ -1182,15 +1210,27 @@ subgroup, every socle factor and both primitive degree forms
 [`CFSGUnitaryBinaryRankThreePauliIndex`](SymmetricSubgroupAsymptotics/CFSGUnitaryBinaryRankThreePauliIndex.lean),
 [`CFSGUnitaryCompleteScaledClassPacket`](SymmetricSubgroupAsymptotics/CFSGUnitaryCompleteScaledClassPacket.lean),
 [`SmallFibreUnitaryCompleteClassGap`](SymmetricSubgroupAsymptotics/SmallFibreUnitaryCompleteClassGap.lean)).
-A sharp PSL2 class bound leaves field orders `q < 51` in that separate
-rank-one family
-([`SmallFibrePSLTwoClassGap`](SymmetricSubgroupAsymptotics/SmallFibrePSLTwoClassGap.lean)).
+For the separate PSL2 family, the characteristic-prime index bound
+closes every prime field from 11. The sharper binary outer bound and a
+power induction close every binary field from 16, and the same class
+packet pays the odd powers 27 and 49. At order 25, the same actual fixed
+counts in Burnside's formula and the modulo-five orbit congruence give
+proper index at least 15; the original class and outer bounds then pay
+the packet. Together with the existing tail, this leaves exactly five
+field parameters `{4,5,7,8,9}` outside the proved profiles. Their finite
+prime-power complement is checked in Lean; no action census is used
+([`CFSGPSLTwoCharacteristicIndex`](SymmetricSubgroupAsymptotics/CFSGPSLTwoCharacteristicIndex.lean),
+[`SmallFibrePSLTwoImprovedClassGap`](SymmetricSubgroupAsymptotics/SmallFibrePSLTwoImprovedClassGap.lean),
+[`CFSGPSLTwoTwentyFiveIndex`](SymmetricSubgroupAsymptotics/CFSGPSLTwoTwentyFiveIndex.lean),
+[`SmallFibrePSLTwoTwentyFiveClassGap`](SymmetricSubgroupAsymptotics/SmallFibrePSLTwoTwentyFiveClassGap.lean),
+[`CFSGPSLTwoSmallFieldParameters`](SymmetricSubgroupAsymptotics/CFSGPSLTwoSmallFieldParameters.lean)).
 The existing global class-count counterexample theorem now excludes
 these **actual top profiles** internally; it takes no new bounded-head
 estimate as a hypothesis
 ([`SmallFibreKnownModelClassGap`](SymmetricSubgroupAsymptotics/SmallFibreKnownModelClassGap.lean),
 [`GaronziMarotiNonaffineShapeCFSGReduction`](SymmetricSubgroupAsymptotics/GaronziMarotiNonaffineShapeCFSGReduction.lean)).
-Every alternating simple socle is also covered, including A6. At its
+On the separate original-component branch, every alternating simple
+socle is covered, including A6. At its
 minimum faithful degree, the actual group/socle quotient divides
 `6!/360 = 2`; at larger degree the complete outer factor fits the same
 reserve. No action recognition or new model input is needed
@@ -2250,14 +2290,28 @@ no pair-stabilizer hypothesis is installed as a new T1 assumption
 [`CFSGTitsAmbientPairAlignment`](SymmetricSubgroupAsymptotics/CFSGTitsAmbientPairAlignment.lean),
 [`CFSGTitsPairStabilizerOuterBound`](SymmetricSubgroupAsymptotics/CFSGTitsPairStabilizerOuterBound.lean)).
 The coordinate route toward this missing finite bound now has an actual
-twelve-Boolean ordered cover, literal matrix-prefix semantics and a
-proved first global commutator entry. Four specific probe words are
-proved to belong to the actual positive-derived intersection. These
-lemmas do not yet bound their common centralizer or the pair stabilizer
+twelve-Boolean ordered cover, literal matrix-prefix semantics and
+proved global commutator entries. Three literal probe words cut their
+common centralizer in the actual positive group down to at most two
+elements: commuting forces eleven of the twelve ordered coordinates
+to vanish. All probes belong to the actual positive-derived intersection.
+Its centre therefore has order exactly two, and this equality descends
+through the full central quotient to the actual Tits Sylow subgroup.
+The same literal Bruhat intersections, together with the checked
+2048-element lower bound, identify the normalizer of the derived-positive
+intersection in the full fixed group with the whole positive group.
+After passage to the derived group and its full central quotient, the
+actual Tits Sylow subgroup is self-normalizing.
+These are checked statements about the original groups; the
+pair-stabilizer cardinality and the resulting outer budget remain open
 ([`CFSGReeFFourBinaryOrderedBooleanParameters`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryOrderedBooleanParameters.lean),
 [`CFSGReeFFourBinaryOrderedPrefixMatrices`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryOrderedPrefixMatrices.lean),
 [`CFSGReeFFourBinaryFirstGlobalEntry`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryFirstGlobalEntry.lean),
-[`CFSGReeFFourDerivedPositiveFourProbes`](SymmetricSubgroupAsymptotics/CFSGReeFFourDerivedPositiveFourProbes.lean)).
+[`CFSGReeFFourDerivedPositiveFourProbes`](SymmetricSubgroupAsymptotics/CFSGReeFFourDerivedPositiveFourProbes.lean),
+[`CFSGReeFFourBinaryPositiveCommonCentralizer`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryPositiveCommonCentralizer.lean),
+[`CFSGReeFFourBinaryPositiveCentre`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryPositiveCentre.lean),
+[`CFSGReeFFourBinaryExactPositiveNormalizer`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryExactPositiveNormalizer.lean),
+[`CFSGTitsPositiveSelfNormalizer`](SymmetricSubgroupAsymptotics/CFSGTitsPositiveSelfNormalizer.lean)).
 The pinned ReeF4 and Tits definitions are now bound to the literal fixed
 group of this automorphism, retaining the actual derived subgroup and
 its full-center quotient
