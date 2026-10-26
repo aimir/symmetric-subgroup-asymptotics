@@ -21,6 +21,7 @@ import SymmetricSubgroupAsymptotics.SmallFibrePSLTwoTwentyFiveClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreTypeACoefficientClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreTypeARankTwoThreeClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreTypeARankTwoQuaternaryClassGap
+import SymmetricSubgroupAsymptotics.SmallFibreTypeARankTwoBinaryCompleteClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreCharTwoCompleteClassGap
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockComponentTransport
 
@@ -57,6 +58,8 @@ inductive Profile (S : Type) [Group S] : Prop
   | typeARankTwoThree (q : CFSG.PrimePower) (hq : q.order=3)
       (e : S ≃* CFSG.Models.A 2 q) : Profile S
   | typeARankTwoFour (q : CFSG.PrimePower) (hq : q.order=4)
+      (e : S ≃* CFSG.Models.A 2 q) : Profile S
+  | typeARankTwoBinary (q : CFSG.PrimePower) (hq : q.order=2)
       (e : S ≃* CFSG.Models.A 2 q) : Profile S
   | pslTwo (q : CFSG.PrimePower) (hlarge : 51 ≤ q.order)
       (e : S ≃* CFSG.Models.A 1 q) : Profile S
@@ -154,6 +157,9 @@ theorem subnormal_class_cube_gap
       pi hpi c hc hsize E q hq e H hH
   | typeARankTwoFour q hq e =>
     exact SmallFibreTypeARankTwoQuaternaryClassGap.subnormal_class_cube_gap_of_typeA_rank_two_order_four
+      pi hpi c hc hsize E q hq e H hH
+  | typeARankTwoBinary q hq e =>
+    exact SmallFibreTypeARankTwoBinaryCompleteClassGap.subnormal_class_cube_gap
       pi hpi c hc hsize E q hq e H hH
   | pslTwo q hlarge e =>
     exact SmallFibrePSLTwoClassGap.subnormal_class_cube_gap_of_pslTwo
