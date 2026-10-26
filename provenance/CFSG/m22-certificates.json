@@ -1,0 +1,60 @@
+{
+  "repository": "https://github.com/KitaKen1/finite-simple-groups-lean",
+  "revision": "7f09e33a9ceef6b59ce03e34cd4f0558c763e325",
+  "license": "Apache-2.0",
+  "license_sha256": "cd0d0380162a321c1655b67f726483c98b37b34903f0419a9bc8298a13ecf368",
+  "files": [
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M22/GeneratedSubgroup.lean",
+      "source_sha256": "8ff50f8a2b979cdef04630228baa66b57fc43937bcf32c44089f5bcb16e31f72",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu22/GeneratedSubgroup.lean",
+      "prior_adapted_path": "CFSG/Certificates/Mathieu22/GeneratedSubgroup.lean",
+      "publication_sha256": "a11e27732bd99c80e5ff404e49dc017560a76e71f5ed84149882f388964d4aca"
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M22/Certificates/Words.lean",
+      "source_sha256": "026d5b6ee59a4e08dfa6d51b7c8b4c64bddb8743156c5dc217bdfd72447f7d7c",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu22/Certificates/Words.lean",
+      "prior_adapted_path": "CFSG/Certificates/Mathieu22/Certificates/Words.lean",
+      "publication_sha256": "99be5750b6936736d2818b758435903e6575a10fb786bb3b2660f4eb824ffb84"
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M22/Certificates/SteinerSystem.lean",
+      "source_sha256": "7b490bc39a5fce3d8d58ca3ecde94492ed228acee7a6e44e9b5f6e4f07cda220",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu22/Certificates/SteinerSystem.lean",
+      "prior_adapted_path": "CFSG/Certificates/Mathieu22/Certificates/SteinerSystem.lean",
+      "publication_sha256": "39b7420eba51f7b7886b43121d3f3395396a9d5e09c78c3a35b0fa4eaca2fb71"
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M22/Certificates/StabilizerChain.lean",
+      "source_sha256": "56665444f0e78aa57a4abfe9fdf9fb5565b212b0f9e006875e201109617707b1",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu22/Certificates/StabilizerChain.lean",
+      "prior_adapted_path": "CFSG/Certificates/Mathieu22/Certificates/StabilizerChain.lean",
+      "publication_sha256": "6aeee37242adce65bc34ebfeeacb73e5f05a6ce4c9199414a1ddc054097d08b1"
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M22/Certificates/ChainOrbits.lean",
+      "source_sha256": "1930666670892c27baffb7d39b0272470f072b61c67672c9ca6d74a3bd11a3c4",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu22/Certificates/ChainOrbits.lean",
+      "prior_adapted_path": "CFSG/Certificates/Mathieu22/Certificates/ChainOrbits.lean",
+      "publication_sha256": "32fcbd41aebb38e302a875a287942997763124af009cb84c6f5615bb5b6f1f11"
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M22/Certificates/FinalStabilizer.lean",
+      "source_sha256": "91958532271e7fc5bfe6d4ec8b30ecd0fc077ae6f347240e530148ab6b3c6a08",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu22/Certificates/FinalStabilizer.lean",
+      "prior_adapted_path": "CFSG/Certificates/Mathieu22/Certificates/FinalStabilizer.lean",
+      "publication_sha256": "9f9ca932bdd49b020de97d1d06e06141383caa9f19ffd7d85dedac6b83c591cc"
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M22/Cardinality.lean",
+      "source_sha256": "7a4eeb892cfde2c99b7edc7ff3feaa1b7e811dd39fbd03663aabdde2fd0e72bc",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu22/Cardinality.lean",
+      "prior_adapted_path": "CFSG/Certificates/Mathieu22/Cardinality.lean",
+      "publication_sha256": "b50a8d2911f48cda1a3052bcb2c6cb43c6daffa266c1b568167a3ba0e8ed11dc"
+    }
+  ],
+  "adapted_from_local_commit": "afa3cdd0a7a3cfd901913d2ec43b243cbc67faac",
+  "publication_changes": "Only publication import prefixes and an additional adaptation notice; proof bodies and pinned Mathieu22 model/permutation definitions unchanged.",
+  "publication_license_path": "provenance/CFSG/Apache-2.0.txt"
+}
