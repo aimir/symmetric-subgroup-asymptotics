@@ -126,8 +126,8 @@ This discharges the outer-order budget as well, so both residual model
 hypotheses exclude ${}^2G_2$. The ${}^2F_4$ good-Sylow case is now also
 proved on its original derived-centre model, by the torus-filtration
 argument below. The Tits two-Sylow argument below also closes that
-good-Sylow case. The M22 argument below further reduces that callback
-to 25 sporadic groups. The original ${}^2F_4$ least-index square and
+good-Sylow case. The M22 and M11 arguments below further reduce that
+callback to 24 sporadic groups. The original ${}^2F_4$ least-index square and
 outer-order budget are proved below, so its numerical callback also
 retains only Tits and sporadic groups. The Tits least-index square is
 also proved below and threaded into the optional endpoint, so that
@@ -1390,10 +1390,29 @@ ported from Kenta's Apache-2.0 formalization, with attribution and exact
 source hashes recorded in the repository. Each Sylow $11$-subgroup is
 therefore cyclic and acts without fixed points. A generator has two
 $11$-cycles, so its permutation centralizer and its cyclic normalizer
-are soluble. The newest optional endpoint consequently retains
+are soluble. Its optional endpoint consequently retains
 $25$ sporadic tags in the good-Sylow callback and $26$ in the numerical
 callback, with only the outer budget required for M22. Both callbacks,
 the four published bundles and CFSG remain explicit parameters.
+The pinned M11 presentation is now also bound to the original
+$11$-point generated subgroup. All five defining relations hold on a
+literal pair; a recovery word gives surjectivity, and inherited
+simplicity gives injectivity. The resulting equivalence transfers
+the exact order $7920$ from the separately ported Apache-2.0
+certificates. An actual order-four element has two four-cycles.
+A Sylow $2$-subgroup containing it has order at most $16$ and
+Frattini rank at most three. The kernel of the automorphism action on
+the binary Frattini quotient is a $2$-group, so its automorphism order divides
+$2^a\cdot168$ for some $a$. Its centralizer order divides $192$;
+intersecting the resulting normalizer divisor with $7920$ leaves
+a divisor of $144$. The internally proved Burnside theorem gives
+solubility. The two original presentation generators give a generating
+Sylow pair, proving the M11 good-Sylow case. A proper point stabilizer
+has index at most $11$, whose square is less than $7920$.
+The newest optional endpoint therefore retains $24$ sporadic
+good-Sylow cases and $26$ numerical cases, with only outer budgets
+required for M11 and M22. The four published bundles and CFSG remain
+explicit; this is not a CFSG-only endpoint.
 No whole rank-one Suzuki identification or lift to the ambient $F_4$
 automorphism group is assumed.
 The actual outer and middle fixed inversion blocks now have cardinalities

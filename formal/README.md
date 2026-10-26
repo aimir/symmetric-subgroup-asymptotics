@@ -874,7 +874,7 @@ other explicit inputs remain; this is a reduction of one payload field,
 not a discharge of the whole sporadic callback
 ([`CFSGMathieuTwentyTwoActualIndexSquare`](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoActualIndexSquare.lean)).
 
-The newest checked endpoint,
+The checked endpoint
 [`CFSGSevenTargetsMathieuTwentyTwoGoodSylow`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuTwentyTwoGoodSylow.lean),
 also proves the actual M22 good-Sylow case at the prime 11. Two literal
 conjugate words of order dividing 11 recover both original generators,
@@ -891,6 +891,29 @@ callback still retains all 26, with only the outer budget required on
 M22. The four published bundles and pinned CFSG remain explicit; this
 is not a CFSG-only endpoint. All 21 audited exports use only the
 standard Lean axioms, while these theorem parameters remain visible.
+
+The newest checked endpoint,
+[`CFSGSevenTargetsMathieuElevenIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuElevenIndexSquare.lean),
+also installs M11's good-Sylow case and least-index square. All five
+relations of the pinned presentation are checked on an actual pair in
+the original 11-point action. A literal recovery word proves
+surjectivity; inherited simplicity proves injectivity. The resulting
+equivalence gives exact order 7920, using the separately ported
+Apache-2.0 order certificates
+([provenance](../provenance/CFSG/m11-certificates.json)).
+The same faithful action has an order-four element with two four-cycles.
+A Sylow 2-subgroup containing it has Frattini rank at most three; its
+automorphism and centralizer divisors force the normalizer order to
+divide 144. The internally proved Burnside theorem makes this
+normalizer soluble, and the original presentation generators supply
+the generating Sylow pair. A proper point stabilizer gives least index
+at most 11, hence its square is strictly less than 7920.
+The **good-Sylow callback now retains 24 sporadic tags**. The numerical
+callback retains 26, with only outer budgets required on M11 and M22.
+The four published bundles and CFSG remain explicit. The combined
+25-export Good-Sylow audit and nine-export index-square audit use only
+the standard Lean axioms; the endpoint is still conditional on its
+displayed inputs.
 
 A further optional endpoint,
 [`CFSGSevenTargetsTraceyPublished2018Bundle`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTraceyPublished2018Bundle.lean),
