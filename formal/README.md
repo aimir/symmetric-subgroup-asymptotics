@@ -1129,6 +1129,21 @@ The positive-parameter ReeF4 small-fibre branch is therefore closed for
 seed has index at least 256. Only `m=1` remains in that positive family;
 Tits is separate
 ([`SmallFibreReeFFourLargeParameterGap`](SymmetricSubgroupAsymptotics/SmallFibreReeFFourLargeParameterGap.lean)).
+At `m=1`, the original small-fibre estimate now leaves only one socle
+factor and the same proper subgroup of index exactly 109. The actual
+sixteen Bruhat cells form a bijection, giving the fixed-group order and
+proving that 11 does not divide the original model's order. The proved
+Jordan multiple-primitivity theorem would force 110 to divide that
+order at any index strictly between 109 and 218. The scaled class
+packet pays all larger indices. The whole ternary branch is also closed:
+the actual simple-group half-class saving gives component budget
+`3*2^77`, whose scalar seed pays every degree from 109. Thus only the
+binary one-factor, index-109 case remains. No action catalogue or
+group-order premise is assumed
+([`PrimitivePrimeCycleCardinalityBand`](SymmetricSubgroupAsymptotics/PrimitivePrimeCycleCardinalityBand.lean),
+[`CFSGReeFFourSixteenCellCardinality`](SymmetricSubgroupAsymptotics/CFSGReeFFourSixteenCellCardinality.lean),
+[`SmallFibreReeFFourFieldEightSingleIndexResidual`](SymmetricSubgroupAsymptotics/SmallFibreReeFFourFieldEightSingleIndexResidual.lean),
+[`SmallFibreReeFFourFieldEightTernaryClassGap`](SymmetricSubgroupAsymptotics/SmallFibreReeFFourFieldEightTernaryClassGap.lean)).
 The class equation and the actual point-radical indices now close the
 whole split-D and twisted-D families. The last twisted binary rank-four
 head uses the punctured annihilator on the same arbitrary prime-field
@@ -1292,15 +1307,42 @@ bound with the small degrees five through seven. For ternary fibres,
 `3^n*fib(n+1)` pays the ordinary margin from eight, since
 `3*fib(n+2) <= 5*fib(n+1)`; the three smaller degrees use actual
 partition counts. Thus literal natural alternating/symmetric tops are
-also excluded internally. Abstract alternating factors with a
-nonnatural short-index action remain a separate frontier
-([`OriginalNaturalSymmetricTopOrdinaryClassBound`](SymmetricSubgroupAsymptotics/OriginalNaturalSymmetricTopOrdinaryClassBound.lean),
-[`AlternatingSmallFibreOrdinaryShortIndexResidual`](SymmetricSubgroupAsymptotics/AlternatingSmallFibreOrdinaryShortIndexResidual.lean)).
+also excluded internally
+([`OriginalNaturalSymmetricTopOrdinaryClassBound`](SymmetricSubgroupAsymptotics/OriginalNaturalSymmetricTopOrdinaryClassBound.lean)).
+Abstract alternating factors are now closed at **every original degree**,
+including nonnatural short-index actions. The finite restricted-partition
+recurrence proves `p(m)*5^m <= 64*7^m`: its finite Euler product at `5/7`
+is at least `1/64`. Local integer recurrence certificates cover masses
+7 through 99, and a symbolic induction handles the tail from 100.
+The actual nonsplit binary reserve and ternary coordinates then pay
+every degree above the natural one. Degree six uses the same literal
+even/split partition fibres, giving seven classes and outer budget four;
+degree five was already covered. No small-index subgroup classification,
+action census, or new numerical premise is used
+([`PartitionGeometricCoefficientBound`](SymmetricSubgroupAsymptotics/PartitionGeometricCoefficientBound.lean),
+[`PartitionAllDegreeSmallFibreCapacity`](SymmetricSubgroupAsymptotics/PartitionAllDegreeSmallFibreCapacity.lean),
+[`SmallFibreAlternatingSixOrdinaryClassGap`](SymmetricSubgroupAsymptotics/SmallFibreAlternatingSixOrdinaryClassGap.lean),
+[`SmallFibreAlternatingOrdinaryClassGap`](SymmetricSubgroupAsymptotics/SmallFibreAlternatingOrdinaryClassGap.lean)).
 The existing global class-count counterexample theorem now excludes
 these **actual top profiles** internally; it takes no new bounded-head
 estimate as a hypothesis
 ([`SmallFibreKnownModelClassGap`](SymmetricSubgroupAsymptotics/SmallFibreKnownModelClassGap.lean),
 [`GaronziMarotiNonaffineShapeCFSGReduction`](SymmetricSubgroupAsymptotics/GaronziMarotiNonaffineShapeCFSGReduction.lean)).
+Every actual affine top with at least 128 blocks is also paid, for both
+small fibre sizes. The faithful affine order bound
+`|Top| <= n^(log₂(n)+1)` feeds one dyadic scalar induction, retaining
+the same original projection and subnormal source. Consequently any
+surviving affine-top small-fibre counterexample has at most 127 blocks
+and at most 381 original points. No supplied primitive-top class bound
+or finite action census enters this cutoff
+([`AffineTopSmallFibreOrderNumerics`](SymmetricSubgroupAsymptotics/AffineTopSmallFibreOrderNumerics.lean),
+[`OriginalMinimalBlockAffineTopClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockAffineTopClassBound.lean)).
+The same native installer also covers every prime block count at least
+five, every block count at least 49 with `log_p(n) <= 3`, and every
+block count at least 64 with `log_p(n) <= 4`. Here `p` belongs to the
+same actual regular normal subgroup; no elementary-abelian conclusion
+or primitive-top assumption is inserted
+([`OriginalMinimalBlockSupportedAffineTopClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockSupportedAffineTopClassBound.lean)).
 On the separate original-component branch, every alternating simple
 socle is covered, including A6. At its
 minimum faithful degree, the actual group/socle quotient divides
@@ -2398,6 +2440,14 @@ It is an invariant normal 2-subgroup of the intrinsic carrier
 elementary-abelian head is assumed
 ([`CFSGReeFFourMiddlePositiveKernelIntersection`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddlePositiveKernelIntersection.lean),
 [`CFSGTitsIntrinsicMiddleRadical`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicMiddleRadical.lean)).
+The actual order-five element of `M` now acts faithfully on this same
+`R`. A first-layer homomorphism is constructed through the faithful
+source intersection; its kernel contains commutators and squares.
+The reverse inclusion and characteristicity are not yet proved, so
+neither a prescribed Frattini-head dimension nor the final automorphism
+bound is inferred
+([`CFSGTitsIntrinsicFiveFaithful`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicFiveFaithful.lean),
+[`CFSGTitsIntrinsicFirstLayer`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicFirstLayer.lean)).
 These are checked statements about the original groups; the
 pair-stabilizer cardinality and the resulting outer budget remain open
 ([`CFSGReeFFourBinaryOrderedBooleanParameters`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryOrderedBooleanParameters.lean),
