@@ -3,6 +3,7 @@ import SymmetricSubgroupAsymptotics.SmallFibreTypeARankThreeBinaryOrdinaryClassG
 import SymmetricSubgroupAsymptotics.CFSGPSLTwoEightClassGap
 import SymmetricSubgroupAsymptotics.CFSGPSLTwoNineOrdinaryClassGap
 import SymmetricSubgroupAsymptotics.SmallFibrePSLTwoAlternatingFiveOrdinaryClassGap
+import SymmetricSubgroupAsymptotics.OriginalNaturalSymmetricTopOrdinaryClassBound
 
 /-! The original global class-count induction needs the exponent
 `card Ω - 1`. Keep the stronger local `card Ω - 2` API intact, and
@@ -103,15 +104,20 @@ variable {A Ω : Type} [Group A] [MulAction A Ω] [MulAction.IsPretransitive A �
     {w : Ω} (D : OriginalMinimalBlock (A := A) w)
 
 def HasClosedTop : Prop :=
-  ∃ E : NonaffineData (Top (A := A) (X := D.Points)) D.Points, Profile E.Simple
+  (∃ E : NonaffineData (Top (A := A) (X := D.Points)) D.Points, Profile E.Simple) ∨
+    (5≤Nat.card D.Points ∧ (Top (A := A) (X := D.Points)).IsSubnormal)
 
 theorem class_cube_gap_of_closed_top
     (hc : Nat.card D.Fibre=2 ∨ Nat.card D.Fibre=3) (htop : HasClosedTop D) :
     Nat.card (ConjClasses A)^3 ≤ 5^(Nat.card Ω-1) := by
-  obtain ⟨E,hprofile⟩ := htop
-  have h := subnormal_class_cube_gap_at_original_degree D.map D.map_equivariant
-    (Nat.card D.Fibre) hc D.fibre_card_at E hprofile ⊤
-      (Subgroup.Normal.isSubnormal inferInstance)
+  have h : Nat.card (ConjClasses (⊤ : Subgroup A))^3≤5^(Nat.card Ω-1) := by
+    rcases htop with ⟨E,hprofile⟩ | ⟨hn,hTop⟩
+    · exact subnormal_class_cube_gap_at_original_degree D.map D.map_equivariant
+        (Nat.card D.Fibre) hc D.fibre_card_at E hprofile ⊤
+          (Subgroup.Normal.isSubnormal inferInstance)
+    · exact OriginalNaturalSymmetricTopOrdinaryClassBound.subnormal_class_cube_le_at_original_degree
+        D.map D.map_equivariant D.base (Nat.card D.Fibre) hc (D.fibre_card_at D.base)
+        hn hTop ⊤ (Subgroup.Normal.isSubnormal inferInstance)
   have he := conjugacyClass_card_congr (Subgroup.topEquiv : (⊤ : Subgroup A) ≃* A)
   rwa [he] at h
 
