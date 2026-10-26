@@ -915,7 +915,7 @@ The four published bundles and CFSG remain explicit. The combined
 the standard Lean axioms; the endpoint is still conditional on its
 displayed inputs.
 
-The newest checked endpoint,
+The full M11 endpoint,
 [`CFSGSevenTargetsMathieuElevenComplete`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuElevenComplete.lean),
 also supplies the actual M11 outer budget. The original action has a
 complete factorized cover with `11 * 10 * 9 * 8 = 7920` labels, built
@@ -939,6 +939,46 @@ absent from both. The four published bundles and pinned CFSG remain
 explicit; this is still not a CFSG-only endpoint. The capacity,
 outer/T1, and closed-consumer audits check 24, six, and six exports,
 respectively, using only the standard Lean axioms.
+
+The newest checked endpoint,
+[`CFSGSevenTargetsMathieuTwelveIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuTwelveIndexSquare.lean),
+also proves M12's good-Sylow-three case. Seven original Apache-2.0
+certificate modules prove order 95040 for the actual twelve-point group
+([provenance](../provenance/CFSG/m12-certificates.json)). All six pinned
+presentation relators hold on a certified literal pair; inherited
+simplicity makes the resulting representation injective. Its
+fixed-point-free order-three generator has four three-cycles. A Sylow
+three-subgroup containing it has Frattini rank at most three, so its
+automorphism order divides a power of three times 11232. The actual
+permutation centralizer divisor 1944 and source-order divisor 95040
+then force the normalizer order to divide 1728. Internal Burnside
+solubility and the involution-conjugate generation lemma finish the case
+([generic normalizer](SymmetricSubgroupAsymptotics/TwelvePointTernarySylowNormalizerSolvable.lean),
+[actual assembly](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveGoodSylowThree.lean)).
+Literal recovery words of lengths 25, 31 and 33 also recover all three
+original generators. Their kernel checks prove surjectivity, actual
+equivalence and exact order 95040. A proper point stabilizer gives least
+index at most 12, hence its square is strictly below 95040
+([equivalence](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveActualEquivalence.lean),
+[index square](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveActualIndexSquare.lean)).
+The good-Sylow callback now retains **23 sporadic tags**; the numerical
+callback retains **25**, with only outer budgets required on M12 and M22. The
+four published bundles and pinned CFSG remain explicit. The 22-export
+representation audit, 12-export good-Sylow audit, 12-export
+equivalence/index-square audit, and independent source reviews
+introduce no further premise.
+
+For M22, the actual Sylow-eleven normalizer and centralizer orders are
+now proved to be 55 and 11. A checked five-transversal cover has 443520
+labels and uses 82 original seeds. Exact inner normalization gives
+`55 * |Out(M22)| = |S|`, where `S` is the subgroup of automorphisms
+preserving the selected Sylow subgroup. The dependent incidence bound
+retains a separate accepted-second-image set for each literal first
+image. Its total capacity is still open; these results do not discharge
+M22's outer budget
+([normalizer](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoElevenNormalizerCard.lean),
+[cover](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoFiveTransversalCover.lean),
+[normalization](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoSylowOuterNormalization.lean)).
 
 A further optional endpoint,
 [`CFSGSevenTargetsTraceyPublished2018Bundle`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTraceyPublished2018Bundle.lean),
@@ -1973,6 +2013,14 @@ removes M11 as well, leaving 26 models: Tits and the other 25 sporadic groups.
 It retains the original action, subnormal subgroup, all socle factors
 and both degree forms, and explicitly discharges the inherited
 large-degree ReeG2 witness using its proved whole-family bound.
+The cumulative original-action adapter
+[`GaronziMarotiMathieuElevenResidualReduction`](SymmetricSubgroupAsymptotics/GaronziMarotiMathieuElevenResidualReduction.lean)
+also excludes M11 on the same actual nonaffine top or bounded component,
+while retaining every earlier affine and shape exclusion. Its unbounded
+original-action residual is unchanged syntactically; a separate checked
+metadata lemma excludes M11 whenever its literal proper-subgroup witness
+satisfies the retained index-order failure. No primitive structure is
+inferred for an imprimitive top.
 The remaining finite-model estimates are open and are not installed
 as new T1 assumptions
 ([`CFSGReeFFourFieldEightPrimeIndex`](SymmetricSubgroupAsymptotics/CFSGReeFFourFieldEightPrimeIndex.lean),
