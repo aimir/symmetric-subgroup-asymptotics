@@ -856,13 +856,23 @@ and its sufficient numerical budget. Both callbacks now retain only
 remain explicit parameters, as do those residual model obligations;
 this is not a CFSG-only endpoint.
 
-The newest checked endpoint,
-[`CFSGSevenTargetsTitsGoodSylow`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTitsGoodSylow.lean),
-also installs the actual Tits least-index square and two-Sylow generation.
-Its good-Sylow callback retains **only the 26 sporadic tags**. Its separate
-numerical callback retains the Tits outer-order budget and the sporadic
-index/outer payloads. The four published bundles and CFSG remain explicit;
+The checked endpoint
+[`CFSGSevenTargetsTitsComplete`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTitsComplete.lean),
+installs the actual Tits least-index square, two-Sylow generation and
+outer-order budget. **Both model callbacks retain only the 26 sporadic
+tags.** The four published bundles and CFSG remain explicit;
 this is not a CFSG-only proof.
+
+The newest checked endpoint,
+[`CFSGSevenTargetsMathieuTwentyTwoIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuTwentyTwoIndexSquare.lean),
+also supplies the actual M22 least-index square. Its literal 22-point
+action and elements with orders divisible by 5, 8 and 11 imply that the
+group order is divisible by 440. Simplicity and Sylow arithmetic exclude
+order 440, so the order exceeds `22^2`. Its numerical callback therefore
+asks only for the outer budget on M22. The 26 sporadic tags and all
+other explicit inputs remain; this is a reduction of one payload field,
+not a discharge of the whole sporadic callback
+([`CFSGMathieuTwentyTwoActualIndexSquare`](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoActualIndexSquare.lean)).
 
 A further optional endpoint,
 [`CFSGSevenTargetsTraceyPublished2018Bundle`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTraceyPublished2018Bundle.lean),
@@ -1016,14 +1026,26 @@ and degree 64 uses the uniform sparse centralizer bound
 [`PrimitiveAffineTwentyFiveTopSmallFibreClassBound`](SymmetricSubgroupAsymptotics/PrimitiveAffineTwentyFiveTopSmallFibreClassBound.lean),
 [`PrimitiveAffineTernaryTopSmallFibreClassBound`](SymmetricSubgroupAsymptotics/PrimitiveAffineTernaryTopSmallFibreClassBound.lean),
 [`PrimitiveAffineSixtyFourTopSmallFibreClassBound`](SymmetricSubgroupAsymptotics/PrimitiveAffineSixtyFourTopSmallFibreClassBound.lean)).
-Degrees 9 and 25 also allow an imprimitive original top. A faithful
+The original top may now be imprimitive in all of these degrees. A faithful
 regular-normal action on at least five points contains no transposition:
 its commutator with a regular translation moves at most four points,
 so regularity makes that commutator trivial. Thus the same unsigned
-reserve applies without primitivity. The other bounded elementary
-translation charts retain the original top's explicit primitivity
+reserve applies without primitivity. If a regular normal `p`-group `N`
+has order `p^d` and Frattini quotient rank `r`, its actual affine map
+on that quotient has kernel at most `p^((d-r)*(r+1))`. Each original
+subgroup keeps its actual image in the elementary holomorph, so the
+proved elementary budgets cover nonabelian translation groups too.
+In degree 8, rank 3 recovers the 24-class bound. Lower rank supplies
+a characteristic subgroup of order 2, whose actual orbits coarsen
+ternary fibres to six-point fibres over four blocks. Strict-smaller
+general permutation induction pays this source. Thus every original
+binary/ternary action with a regular normal prime-group top of degree
+at least five is paid. This last induction statement concerns the whole
+original action; it does not assert that induction for every subnormal subgroup
 ([`RegularNormalActionNoSwap`](SymmetricSubgroupAsymptotics/RegularNormalActionNoSwap.lean),
-[`OriginalMinimalBlockSupportedAffineTopClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockSupportedAffineTopClassBound.lean)).
+[`FrattiniAffineSmallClassBound`](SymmetricSubgroupAsymptotics/FrattiniAffineSmallClassBound.lean),
+[`RegularAffineEightTernaryCoarsening`](SymmetricSubgroupAsymptotics/RegularAffineEightTernaryCoarsening.lean),
+[`OriginalMinimalBlockRegularAffineTopCompleteClassBound`](SymmetricSubgroupAsymptotics/OriginalMinimalBlockRegularAffineTopCompleteClassBound.lean)).
 The global reduction now also discharges every original two- or
 three-block source, and every four-block source with binary fibres.
 The latter keeps the actual weighted fixed-kernel sum and proves at
@@ -1031,6 +1053,20 @@ most 42 classes. These are bounds on the original transitive source;
 they do not assert transitivity for arbitrary subnormal subgroups
 ([`OriginalSmallTopClassCubeBound`](SymmetricSubgroupAsymptotics/OriginalSmallTopClassCubeBound.lean),
 [`OriginalBinaryFourTopClassCubeBound`](SymmetricSubgroupAsymptotics/OriginalBinaryFourTopClassCubeBound.lean)).
+Four ternary blocks are now paid for **every transitive top**. The actual
+signed-coordinate action retains its translation subspace `W` and sign
+kernel `E`. For nonzero proper `W`, self-dual orthogonal coordinates give
+the coupled bound `|W|*|E| <= 54`, hence at most 270 classes. For full `W`,
+the exact dual stabilizer weights give 330 with full symmetric top, and
+at most 360 with binary top. A sign kernel of size above four doubles
+the pair-support index, keeping that last weighted sum below the same
+capacity. The actual alternating-top case has at most 324 classes.
+Since `360^3 <= 5^11`, the original degree-12 source is paid without a
+primitive-top premise. The global small-fibre residual now has at least
+five blocks and excludes all regular normal prime-group tops
+([`OriginalTernaryFourTopClassCubeBound`](SymmetricSubgroupAsymptotics/OriginalTernaryFourTopClassCubeBound.lean),
+[`TernaryFourTransitiveProperKernelCapacity`](SymmetricSubgroupAsymptotics/TernaryFourTransitiveProperKernelCapacity.lean),
+[`TernaryFourBinaryTopFixedClassWeight`](SymmetricSubgroupAsymptotics/TernaryFourBinaryTopFixedClassWeight.lean)).
 This is now threaded into the actual global least-counterexample
 argument. Its bounded imprimitive alternatives retain either a literal
 fibre of size 2 or 3 at total degree at most 36855, or a literal
@@ -2273,9 +2309,33 @@ Fi22, Fi24′, Baby and Monster
 ([`FischerTwentyThreeOrdinaryClosure`](SymmetricSubgroupAsymptotics/FischerTwentyThreeOrdinaryClosure.lean),
 [`PrimitiveSocleYSectionOrdinaryFromTwelve`](SymmetricSubgroupAsymptotics/PrimitiveSocleYSectionOrdinaryFromTwelve.lean),
 [`TraceyOrdinaryBoundedHeadModelResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinaryBoundedHeadModelResidual.lean)).
+The actual Tits four-generator theorem and proved outer bound now pay
+**every primitive action and every original block row**, with only
+strictly smaller transitive induction. Its least index is at least 14;
+below local degree 32 there is one socle factor and at most two outer
+prime factors, so one uniform four-head estimate pays the entire band.
+The cumulative coarse residual therefore retains only **Fi22, Fi24′,
+Baby and Monster**. The first three still require primitive degree below
+12 or original local degree below 18; Monster is unrestricted. This
+refinement takes only the existing sporadic numerical callback and CFSG,
+and retains the same socle and action witnesses
+([`PrimitiveSocleTitsCompleteOrdinary`](SymmetricSubgroupAsymptotics/PrimitiveSocleTitsCompleteOrdinary.lean),
+[`OriginalNonaffineTitsCompleteOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalNonaffineTitsCompleteOrdinaryStep.lean),
+[`TraceyOrdinaryFourSporadicResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinaryFourSporadicResidual.lean)).
 The finite-model estimates remain before the coarse input can be removed.
 The separate small-degree sharp fields of the published bundle also
 remain; T1's explicit assumptions have not changed.
+Tits is now removed from the bounded sharp frontier too. The actual
+four-generator and outer-multiplicity bounds give at most six generators
+in every primitive Tits action of degree at most 21; its least index is
+at least 14, which pays the exact sharp floor. The cumulative original
+action reduction retains only sporadic witnesses. It preserves the
+twelve exclusions on actual affine tops, the eleven on independent
+global small-action witnesses, and the degree-eight witness behind the
+primitive affine degree-16 case. Those distinct witnesses remain
+explicit; no bounded-sharp input is inferred from the coarse ceiling
+([`PrimitiveSocleTitsBoundedSharp`](SymmetricSubgroupAsymptotics/PrimitiveSocleTitsBoundedSharp.lean),
+[`BoundedSharpTitsCompleteActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpTitsCompleteActualResidual.lean)).
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
@@ -2336,8 +2396,8 @@ signed root parameters and its square equal to field Frobenius
 ([`CFSGFFourOriginalExceptionalModel`](SymmetricSubgroupAsymptotics/CFSGFFourOriginalExceptionalModel.lean)).
 This argument does not assume simplicity of an ambient ordinary F4
 group. The later original ReeF4 results below discharge that family's
-model callbacks. The Tits outer-order budget remains separate; its index
-square and two-Sylow generation are proved below.
+model callbacks. The Tits index square, two-Sylow generation and
+outer-order budget are also proved below.
 For every ReeF4 parameter, including the Tits value, the actual positive
 intersection with the derived fixed source is now Sylow there. A bound
 on the same abelian image gives intersection order at least `q^9`;
@@ -2359,8 +2419,8 @@ quotient. A generic finite 2-group argument proves that its fixed
 subgroup has index at least 16 in this kernel. This is an internal
 centralizer bound, not a bound for arbitrary point stabilizers in the
 whole Tits group. The later parabolic argument proves the Tits index
-square; the outer-order budget remains separate, while the later generation
-argument closes its good-Sylow case
+square; the later generation argument closes its good-Sylow case, and the
+finite retained-word argument below proves its outer-order budget
 ([`CFSGReeFFourAllParameterOrderLower`](SymmetricSubgroupAsymptotics/CFSGReeFFourAllParameterOrderLower.lean),
 [`CFSGReeFFourMiddleDerivedFiveSurvival`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleDerivedFiveSurvival.lean),
 [`CFSGReeFFourMiddleFiveFixedIndex`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddleFiveFixedIndex.lean)).
@@ -2428,8 +2488,10 @@ A separate generic Schreier count bounds the derived group's ordinary
 generator number by `2*d+1` when the original group is generated by `d`
 derived elements and one element whose square is derived. Applying it
 to the three actual derived generators and the displayed order-four
-element gives **seven ordinary generators for the actual Tits model**,
-through the full central quotient. This does not bound its outer quotient
+element gives seven ordinary generators for the actual Tits model,
+through the full central quotient. The whole-word relations below sharpen
+this to **four ordinary generators**. The generator count alone does not
+bound its outer quotient
 ([`DerivedOneCosetOrdinaryGenerators`](SymmetricSubgroupAsymptotics/DerivedOneCosetOrdinaryGenerators.lean),
 [`CFSGTitsSevenOrdinaryGenerators`](SymmetricSubgroupAsymptotics/CFSGTitsSevenOrdinaryGenerators.lean)).
 The separate outer-bound route now proves that disjoint actual derived
@@ -2440,13 +2502,13 @@ involution. The aligning element is not asserted to lie in the derived
 group. Actual quotient Sylows are lifted separately through the full centre,
 and their images are aligned without lifting an automorphism. The resulting
 count proves `|Out(Tits)| <= 2*|pairStabilizer|`. The actual least index is
-at least 14, so a pair-stabilizer cardinality of at most four would supply
-the full sufficient outer budget. **That finite bound remains unproved**;
-no pair-stabilizer hypothesis is installed as a new T1 assumption
+at least 14. The finite coordinate certificate below now proves
+`|pairStabilizer| <= 3`, hence `|Out(Tits)| <= 6` and the full sufficient
+outer budget; no pair-stabilizer hypothesis is retained
 ([`CFSGReeFFourBinaryDerivedPairAlignment`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryDerivedPairAlignment.lean),
 [`CFSGTitsAmbientPairAlignment`](SymmetricSubgroupAsymptotics/CFSGTitsAmbientPairAlignment.lean),
 [`CFSGTitsPairStabilizerOuterBound`](SymmetricSubgroupAsymptotics/CFSGTitsPairStabilizerOuterBound.lean)).
-The coordinate route toward this missing finite bound now has an actual
+The coordinate proof of this finite bound has an actual
 twelve-Boolean ordered cover, literal matrix-prefix semantics and
 proved global commutator entries. Three literal probe words cut their
 common centralizer in the actual positive group down to at most two
@@ -2486,9 +2548,9 @@ elementary-abelian head is assumed
 The actual order-five element of `M` now acts faithfully on this same
 `R`. A first-layer homomorphism is constructed through the faithful
 source intersection; its kernel contains commutators and squares.
-The reverse inclusion and characteristicity are not yet proved, so
-neither a prescribed Frattini-head dimension nor the final automorphism
-bound is inferred
+The final finite count uses these containments directly; it requires
+neither reverse inclusion, characteristicity of this kernel, nor a
+prescribed Frattini-head dimension
 ([`CFSGTitsIntrinsicFiveFaithful`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicFiveFaithful.lean),
 [`CFSGTitsIntrinsicFirstLayer`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicFirstLayer.lean)).
 The whole middle commutator now has the same second graded layer as its
@@ -2507,8 +2569,33 @@ constrain the next generation and automorphism steps without specifying
 a Frattini-head dimension
 ([`CFSGTitsIntrinsicRadicalCardinalityBounds`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicRadicalCardinalityBounds.lean),
 [`CFSGReeFFourWholeOuterMiddleRelation`](SymmetricSubgroupAsymptotics/CFSGReeFFourWholeOuterMiddleRelation.lean)).
-These are checked statements about the original groups; the
-pair-stabilizer cardinality and the resulting outer budget remain open
+The middle element also commutes with the negative outer root, by twelve
+actual E6 root pairings. This recovers the remaining Schreier conjugate
+and proves that `x, w_o, w_m, y^2` generate the actual derived group and
+Tits. Intrinsic opposition recovers `w_o` from `x`; the other two generators
+are already fixed by the pair stabilizer. Evaluation at the actual outer
+root therefore determines such an automorphism. Self-normalization also
+puts the full central quotient kernel inside the positive Sylow, where
+the quotient is injective. The derived centre is consequently trivial.
+Under the existing simple-model hypothesis, the genuine 26-dimensional
+representation is faithful because it is nontrivial on the outer root
+([`CFSGTitsFourOrdinaryGenerators`](SymmetricSubgroupAsymptotics/CFSGTitsFourOrdinaryGenerators.lean),
+[`CFSGTitsPairStabilizerOuterEvaluation`](SymmetricSubgroupAsymptotics/CFSGTitsPairStabilizerOuterEvaluation.lean),
+[`CFSGTitsDerivedCentralQuotientEquivalence`](SymmetricSubgroupAsymptotics/CFSGTitsDerivedCentralQuotientEquivalence.lean),
+[`CFSGTitsSimpleNormFaithfulness`](SymmetricSubgroupAsymptotics/CFSGTitsSimpleNormFaithfulness.lean)).
+The exact ordered cover gives ten free bits for each possible outer-root
+image. Its original involution, retained-centralizer and opposed-product
+relations transfer to the proved faithful norm action. A kernel-checked
+compact binary-matrix certificate classifies all 1024 masks: exactly
+`64, 512, 864` satisfy the necessary conditions. The literal source word
+and the proved evaluation injection give at most three elements in the
+actual opposed-pair stabilizer, hence `|Out(Tits)| <= 6`. This proves
+the Tits outer budget and removes Tits from the
+optional T1 and AllTargets numerical callback
+([`CFSGReeFFourPackedTailClassification`](SymmetricSubgroupAsymptotics/CFSGReeFFourPackedTailClassification.lean),
+[`CFSGTitsCompleteOuterBudget`](SymmetricSubgroupAsymptotics/CFSGTitsCompleteOuterBudget.lean),
+[`CFSGSevenTargetsTitsComplete`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTitsComplete.lean)).
+The original-group coordinate and centralizer ingredients are proved in
 ([`CFSGReeFFourBinaryOrderedBooleanParameters`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryOrderedBooleanParameters.lean),
 [`CFSGReeFFourBinaryOrderedPrefixMatrices`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryOrderedPrefixMatrices.lean),
 [`CFSGReeFFourBinaryFirstGlobalEntry`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryFirstGlobalEntry.lean),
@@ -2611,8 +2698,8 @@ central p-element argument preserves their mutual disjointness there
 ([`CFSGReeFFourOriginalOrderLower`](SymmetricSubgroupAsymptotics/CFSGReeFFourOriginalOrderLower.lean)).
 The later signed-root argument below proves the ReeF4 outer-order bound.
 The whole positive-parameter primitive class-count branch is closed as
-recorded above; Tits two-Sylow generation is also proved above, while its
-outer-order budget remains open.
+recorded above; Tits two-Sylow generation and its outer-order budget are
+also proved above.
 An actual outer-root translation and its square-scalar torus action now
 give `q <= [S : H]` for every proper subgroup of the original simple ReeF4
 model, for `m > 0`
@@ -2694,7 +2781,7 @@ The original proper-index lower bound then gives the full outer budget,
 now threaded through T1 and AllTargets
 ([`CFSGSevenTargetsReeFFourOuter`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsReeFFourOuter.lean)).
 No automorphism lift to the ambient F4 group is assumed. The Tits
-outer-order budget remains a separate obligation.
+outer-order budget is proved by the finite retained-word argument above.
 
 For the original simple G2 model over every finite field with `q >= 3`,
 the natural root group is now proved equivalent to that same model.

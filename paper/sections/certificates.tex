@@ -640,6 +640,14 @@ $14$ through $127$ and local degrees $14$ through $17$; the Monster
 is unchanged. The retained tags are now Tits, Fi22, Fi24$'$, Baby and
 Monster. These are guards on the retained witnesses, not proofs
 of the remaining finite-model bounds or of the coarse input.
+The actual four-generator Tits theorem and its proved outer bound now
+pay every primitive action and every original block row. Its least
+index is at least $14$; below local degree $32$ the socle has one factor
+and the outer group has at most two prime factors, so a uniform
+four-head estimate pays that entire band. The cumulative coarse
+residual thus retains only Fi22, Fi24$'$, Baby and Monster, preserving
+the degree guards above on the first three. This uses the existing
+sporadic numerical callback and strict-smaller transitive induction.
 The finite-model bounds and separate small-degree sharp fields remain;
 T1's explicit assumptions have not changed.
 For product actions with at least two
@@ -673,6 +681,14 @@ therefore suffice. The small nonaffine cases keep the actual socle
 quotient, whose order divides both the outer-group order and the
 original permutation quotient order. No primitive catalogue is assumed
 in this reduction. Its affine degree-$16$ case is reduced further below.
+The actual Tits rank and outer bounds now remove its bounded-sharp
+primitive branch as well. Degree at most $21$ and least index at least
+$14$ force a single socle factor; the actual one-factor recurrence
+gives at most six generators and pays the exact sharp floor. The
+cumulative original-action reduction retains only sporadic witnesses,
+preserving the twelve exclusions on actual affine tops and the eleven
+on independent global small-action witnesses. These are separate
+witnesses; the latter need not be subquotients of the original top.
 A further degree-$16$ adapter uses the actual
 eight-point action of $\mathrm{GL}_4(2)$: it either proves rank at most
 five or produces a least failed primitive sporadic action on at most
@@ -766,11 +782,32 @@ centralizer evaluation. Degrees $9$ and $25$ also allow imprimitive
 tops: a transposition's commutator with a regular normal translation
 moves at most four points, hence is trivial by regularity on at least
 five points. Commuting with every translation then excludes the
-transposition itself. The remaining elementary translation charts
-retain the original top's explicit primitivity.
+transposition itself. The remaining degrees now allow imprimitive tops
+as well. If a regular normal $p$-group $N$ has order $p^d$ and Frattini
+quotient rank $r$, the actual affine map on that quotient has kernel
+at most $p^{(d-r)(r+1)}$. Every original subgroup keeps its actual
+image in the elementary holomorph, so the proved elementary class
+budgets apply even when $N$ is nonabelian. In degree $8$, rank $3$
+recovers the $24$-class bound; lower rank gives a characteristic
+subgroup of order two. Its actual orbits coarsen ternary fibres to
+six-point fibres over four blocks, paid by strict-smaller general
+permutation induction. This proves the whole original action bound
+for every regular normal prime-group top of degree at least five.
 Every original two- or three-block source is paid by the actual
 small-top fusion bounds. Four binary blocks are paid by a weighted
 fixed-kernel count giving at most $42$ classes; $42^3\leq5^7$.
+Four ternary blocks are paid for every transitive top. In the actual
+signed four-coordinate action, a nonzero proper translation subspace
+$W$ and the sign kernel $E$ satisfy the coupled bound $|W||E|\leq54$,
+by self-dual orthogonal coordinates, giving at most $270$ classes.
+For full $W$, the exact dual stabilizer weights give $330$ with full
+symmetric top and at most $360$ with binary top. A sign kernel larger
+than four doubles the pair-support stabilizer index; this retains the
+joint weight instead of multiplying independent worst cases. The actual
+alternating-top case gives $324$. Since $360^3\leq5^{11}$, every
+original degree-$12$ source is paid. The global small-fibre residual
+therefore has at least five blocks and excludes all regular normal
+prime-group tops.
 The actual global least-counterexample argument now
 retains, in its bounded imprimitive branch, either fibres of size two
 or three at total degree at most $36855$, or a literal nonaffine,
@@ -1085,8 +1122,8 @@ has all six ambient simple-root leading coordinates equal to one.
 The fixed-positive subgroup is proved Sylow in the full fixed group,
 with soluble normalizer, using its faithful ambient preimage and that
 regular element. Tits two-Sylow generation and its index square are
-proved below; its outer-order budget remains separate, and the later
-signed-root argument pays the Ree outer bound.
+proved below; the finite retained-word argument also pays its outer-order
+budget, and the later signed-root argument pays the Ree outer bound.
 For Ree field order $q\geq8$, an actual torus commutator places a
 regular positive element in the derived subgroup itself. This gives a
 Sylow subgroup with soluble normalizer in the pinned original model;
@@ -1195,16 +1232,17 @@ positive and negative intersections. Sylow conjugacy supplies an
 internal conjugator, without asserting that ambient opposition belongs
 to the derived group. Generation and the soluble normalizer descend
 through the full central quotient. Thus the actual Tits good-Sylow
-witness is proved and installed in T1 and AllTargets; only the
-outer-automorphism budget for this model remains in their numerical
-callback.
+witness is proved and installed in T1 and AllTargets. The finite
+retained-word argument below also removes this model from their
+numerical callback.
 A separate generic Schreier count gives at most $2d+1$ ordinary
 generators for a derived group when the original group is generated
 by $d$ derived elements and one further element whose square is
 derived. The three actual derived generators and the displayed
 order-four element therefore give seven ordinary generators for the
-actual Tits model through its full central quotient. This does not
-supply a bound on its outer quotient.
+actual Tits model through its full central quotient. The whole-word
+relations below improve this to four; the generator count alone does
+not supply an outer-quotient bound.
 Disjoint actual derived Sylow pairs can now be aligned by conjugation
 in the full fixed group. Every non-opposite relative position has a
 nontrivial derived intersection; the next-to-longest position retains
@@ -1213,11 +1251,11 @@ asserted to belong to the derived group. Actual quotient Sylows are
 lifted separately through the full centre, without lifting an automorphism.
 The resulting count proves
 $|\operatorname{Out}(\mathrm{Tits})|\leq2|\mathrm{pairStabilizer}|$.
-The actual least index is at least $14$, so a pair-stabilizer cardinality
-of at most four would supply the full sufficient outer budget. That
-finite bound remains unproved; no pair-stabilizer hypothesis is installed
-as a new T1 assumption.
-The coordinate route toward this bound now has an actual twelve-Boolean
+The actual least index is at least $14$. The finite coordinate
+certificate below proves that the pair stabilizer has order at most
+three, hence $|\operatorname{Out}(\mathrm{Tits})|\leq6$ and the required
+sufficient outer budget. No pair-stabilizer hypothesis is retained.
+The coordinate proof of this bound has an actual twelve-Boolean
 ordered cover, literal matrix-prefix semantics and proved global
 commutator entries. Three literal probe words in the positive-derived
 intersection have common centralizer of order at most two in the actual
@@ -1248,8 +1286,9 @@ no equality with the full $2$-core or a prescribed elementary-abelian
 head is assumed. The actual order-five element of $M$ acts faithfully
 on this same $R$. A first-layer homomorphism is constructed through its
 faithful source intersection, with squares and commutators in the
-kernel. Reverse kernel inclusion and characteristicity remain to be
-proved; no prescribed Frattini-head dimension is inferred.
+kernel. The final finite count uses these containments directly; it
+requires neither reverse kernel inclusion, characteristicity of this
+kernel, nor a prescribed Frattini-head dimension.
 The whole middle commutator has the same second graded layer as its
 literal two-block correction. Their quotient is an element of this
 same $R$ vanishing through height two. The whole middle difference
@@ -1260,8 +1299,28 @@ Root and wedge-coordinate actions also prove the whole relation
 $yxy^{-1}=rxr^{-1}$ for the displayed original words, with every higher
 matrix term retained. This supplies a generation relation without a
 prescribed Frattini-head dimension.
-The pair-stabilizer cardinality and the resulting outer budget remain
-open.
+The middle element also commutes with the negative outer root, by
+twelve actual $E_6$ root pairings. Writing
+$n=w_oxw_o^{-1}$ and $q=rxr^{-1}$ gives
+$yw_oy^{-1}=qnq$. The remaining Schreier conjugate is therefore
+recovered, and $x,w_o,w_m,y^2$ generate both the original derived
+group and Tits. Intrinsic opposition recovers $w_o$ from $x$, while
+$w_m$ and $y^2$ are already fixed by each pair stabilizer. Evaluation
+at the actual outer root consequently determines such an automorphism.
+Self-normalization of the actual positive Sylow also puts the full
+central quotient kernel inside that Sylow, where the quotient is
+injective. The original derived centre is thus trivial. Under the
+existing simple-model hypothesis the genuine norm representation is
+faithful, since a checked outer-root entry makes it nontrivial.
+The literal ordered cover gives ten free bits for each possible
+outer-root image. Its involution, retained-centralizer and opposed-product
+relations transfer to the faithful norm action. A compact binary-matrix
+certificate checks all $1024$ masks in the kernel: exactly $64,512,864$
+satisfy these necessary conditions. Retaining the same original source
+word, evaluation injectivity gives at most three elements in the actual
+opposed-pair stabilizer, hence $|\operatorname{Out}(\mathrm{Tits})|\leq6$.
+This closes the outer budget and removes Tits from the optional numerical
+callback.
 For $q\geq8$, the actual outer-root translation and its square-scalar
 torus action also give $q\leq[S:H]$ for every proper subgroup of the
 original simple model. An actual proper middle parabolic, transported
@@ -1269,9 +1328,9 @@ with the full quotient kernel retained, gives
 $\ell\leq(1+q)(1+q^3)(1+q^6)$. This squares strictly below $q^{24}$,
 proving the required least-index square on the original model.
 The signed-root argument below supplies the outer-order budget and
-removes this family from the numerical callback as well. The Tits and
-sporadic model callbacks and four published bundles remain explicit
-parameters.
+removes this family from the numerical callback as well. With the Tits
+argument above, only the 26 sporadic model callbacks and four published
+bundles remain explicit parameters, alongside CFSG.
 Every automorphism of the original positive-parameter Ree model can
 now be adjusted by an inner automorphism to preserve the literal two
 opposed Sylow images. Their normalizers meet in the actual fixed
@@ -1314,16 +1373,22 @@ uniqueness for each field label now prove
 $|\operatorname{Out}({}^2F_4(2^{2m+1}))|\leq2m+1$ for $m>0$.
 Together with the original proper-index lower bound, this pays the
 full outer budget. Together with the Tits results above, the optional
-T1 endpoint now retains only the 26 sporadic models in its good-Sylow
-callback, and the Tits outer-order budget and sporadic index/outer
-payloads in its numerical callback, alongside the four published
+T1 endpoint now retains only the 26 sporadic models in both its good-Sylow
+and numerical callbacks, alongside the four published
 bundles and CFSG. It is not a CFSG-only endpoint.
+The actual M22 least-index square is also proved. Its literal 22-point
+action bounds the least index by $22$; actual element periods give
+$440\mid|\mathrm{M22}|$. Simplicity and Sylow arithmetic exclude order
+$440$, hence $22^2<|\mathrm{M22}|$. The newest optional endpoint supplies
+that field internally, retaining only M22's outer budget in its
+numerical payload. Both sporadic callbacks and the four published
+bundles remain explicit.
 No whole rank-one Suzuki identification or lift to the ambient $F_4$
 automorphism group is assumed.
 The actual outer and middle fixed inversion blocks now have cardinalities
 $q$ and $q^2$, respectively. These statements hold inside the original
 fixed group, including at the Tits parameter. The required Tits model
-bounds remain separate obligations.
+bounds are proved by the arguments above.
 
 The coarse all-subgroup estimate is derived internally from the retained
 soluble-generation input alone. For soluble primitive actions, the
