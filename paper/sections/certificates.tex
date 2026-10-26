@@ -283,9 +283,9 @@ commutator makes the first and middle prime-field subspaces orthogonal
 under multiplication modulo the central intersection. Exact three-layer
 counting gives proper index at least $3q$. The original fixed/derived
 order and outer bound then pay every parameter and both primitive degree
-forms. With the complete triality, $G_2$ and Ree closures below, the
-primitive class-count frontier retains only Tits and the 26 sporadic
-models; the global class-count input remains explicit.
+forms. With the complete triality, $G_2$, Ree and M11 closures below,
+the primitive class-count frontier retains only Tits and the other
+25 sporadic models; the global class-count input remains explicit.
 A reusable central-extension argument now gives $pq^m\leq[N:L]$
 from an actual nondegenerate scalar commutator pairing on a quotient of
 dimension $2m$, when $L$ does not contain the central field line. Exact
@@ -342,8 +342,9 @@ Lean checks its twenty-five consecutive transitions and degree-$25$
 annihilator. The actual central quotient kernel lies in the same Borel,
 whose order is prime to $109$, so every proper subgroup of the original
 simple ${}^2F_4(8)$ has index at least $109$. This pays the full component
-cube. The combined checked reduction leaves exactly twenty-seven
-models: Tits and the twenty-six sporadic groups. It retains the original
+cube. Including the M11 refinement below, the combined checked reduction
+leaves twenty-six models: Tits and the other twenty-five sporadic groups.
+It retains the original
 action, subnormal subgroup, all socle factors and both degree forms,
 and explicitly pays an inherited large-degree Ree ${}^2G_2$ witness
 using its whole-family bound. The remaining finite-model estimates are
@@ -1409,10 +1410,35 @@ a divisor of $144$. The internally proved Burnside theorem gives
 solubility. The two original presentation generators give a generating
 Sylow pair, proving the M11 good-Sylow case. A proper point stabilizer
 has index at most $11$, whose square is less than $7920$.
-The newest optional endpoint therefore retains $24$ sporadic
+That optional endpoint therefore retains $24$ sporadic
 good-Sylow cases and $26$ numerical cases, with only outer budgets
 required for M11 and M22. The four published bundles and CFSG remain
 explicit; this is not a CFSG-only endpoint.
+The actual M11 outer budget is now proved as well. Its original
+stabilizer transversals give a complete factorized cover with
+$11\cdot10\cdot9\cdot8=7920$ labels, using only $38$ certified seed
+words. For every label, a kernel-checked certificate either places it
+in a whitelist of eight possible images or gives a moved point in one
+of the five necessary defining relators. All eleven finite batches
+are checked. The actual ten-class cover shows that every order-four
+element is conjugate to the chosen generator, whose centralizer has
+order eight. Inner normalization therefore fixes that generator.
+Evaluation on the other generator is injective on the remaining
+automorphisms. The exact restricted outer-quotient kernel is the
+original centralizer, so
+\[
+  8\,|\operatorname{Out}(\mathrm{M11})|
+  =|\{\alpha\in\operatorname{Aut}(\mathrm{M11}):\alpha(b)=b\}|
+  \leq8.
+\]
+Thus $|\operatorname{Out}(\mathrm{M11})|\leq1$. The same checked class
+cover gives $k(\mathrm{M11})\leq10$, and divisibility by $11$ in every
+faithful proper coset action identifies the least index as $11$.
+These budgets discharge the M11 primitive and original binary/ternary
+block class consumers for every socle multiplicity. The newest optional
+T1 endpoint retains $24$ sporadic good-Sylow cases and $25$ numerical
+cases; M11 is absent from both, and M22 requires only its outer budget.
+The four published bundles and pinned CFSG remain explicit parameters.
 No whole rank-one Suzuki identification or lift to the ambient $F_4$
 automorphism group is assumed.
 The actual outer and middle fixed inversion blocks now have cardinalities

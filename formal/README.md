@@ -892,7 +892,7 @@ M22. The four published bundles and pinned CFSG remain explicit; this
 is not a CFSG-only endpoint. All 21 audited exports use only the
 standard Lean axioms, while these theorem parameters remain visible.
 
-The newest checked endpoint,
+The checked endpoint
 [`CFSGSevenTargetsMathieuElevenIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuElevenIndexSquare.lean),
 also installs M11's good-Sylow case and least-index square. All five
 relations of the pinned presentation are checked on an actual pair in
@@ -914,6 +914,31 @@ The four published bundles and CFSG remain explicit. The combined
 25-export Good-Sylow audit and nine-export index-square audit use only
 the standard Lean axioms; the endpoint is still conditional on its
 displayed inputs.
+
+The newest checked endpoint,
+[`CFSGSevenTargetsMathieuElevenComplete`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuElevenComplete.lean),
+also supplies the actual M11 outer budget. The original action has a
+complete factorized cover with `11 * 10 * 9 * 8 = 7920` labels, built
+from 38 certified stabilizer-transversal seeds. For each label, a kernel
+certificate either places it in an eight-element whitelist or exhibits
+a moved point in one of the five necessary relators. All eleven finite
+batches are checked. Inner normalization fixes the order-four
+generator, whose centralizer has order eight. Evaluation on the other
+generator is injective on the remaining automorphisms; retaining that
+centralizer factor proves `|Out(M11)| <= 1`
+([capacity](SymmetricSubgroupAsymptotics/CFSGMathieuElevenAcceptedCodeCapacity.lean),
+[outer bound](SymmetricSubgroupAsymptotics/CFSGMathieuElevenOuterBound.lean)).
+The separately checked original ten-class cover and exact least index
+11 also give closed M11 primitive, proper-subnormal, and original
+binary/ternary block class consumers, with all factor counts retained
+([class certificates](../provenance/CFSG/m11-conjugacy-certificates.json),
+[consumers](SymmetricSubgroupAsymptotics/CFSGMathieuElevenCompleteClassConsumers.lean)).
+The good-Sylow callback retains **24 sporadic tags** and the numerical
+callback **25**, with only the outer budget required on M22. M11 is
+absent from both. The four published bundles and pinned CFSG remain
+explicit; this is still not a CFSG-only endpoint. The capacity,
+outer/T1, and closed-consumer audits check 24, six, and six exports,
+respectively, using only the standard Lean axioms.
 
 A further optional endpoint,
 [`CFSGSevenTargetsTraceyPublished2018Bundle`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTraceyPublished2018Bundle.lean),
@@ -1869,8 +1894,9 @@ orthogonality over the prime field. Exact layer cardinalities then give
 proper index at least `3*q`, without torus invariance or full-field
 linearity of the subgroup. The same original fixed/derived group and
 proved outer bound pay the order cube through both primitive degree forms.
-With the complete triality, G2 and ReeF4 closures below, the primitive
-class-count frontier retains only Tits and the 26 sporadic models.
+With the complete triality, G2 and ReeF4 closures below and the actual
+M11 closure above, the primitive class-count frontier retains only Tits
+and the other 25 sporadic models.
 The global general class-count input remains explicit.
 A reusable central-extension theorem now proves the sharp bound
 `p*q^m <= [N:L]` from the actual scalar commutator pairing on a
@@ -1941,7 +1967,9 @@ transitions and degree-25 annihilator are checked in Lean. The actual
 central quotient kernel lies in the same Borel, whose order is prime to
 109, so every proper subgroup of the original simple ReeF4(8) has index
 at least 109. This pays the full component cube. The combined primitive
-reduction now leaves exactly 27 models: Tits and the 26 sporadic groups.
+reduction leaves 27 models before the M11 refinement. The cumulative
+[`CFSGMathieuElevenClassResidualReduction`](SymmetricSubgroupAsymptotics/CFSGMathieuElevenClassResidualReduction.lean)
+removes M11 as well, leaving 26 models: Tits and the other 25 sporadic groups.
 It retains the original action, subnormal subgroup, all socle factors
 and both degree forms, and explicitly discharges the inherited
 large-degree ReeG2 witness using its proved whole-family bound.
