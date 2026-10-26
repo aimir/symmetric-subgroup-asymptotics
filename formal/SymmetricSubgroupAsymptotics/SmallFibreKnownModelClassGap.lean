@@ -18,6 +18,7 @@ import SymmetricSubgroupAsymptotics.SmallFibreUnitaryLowRankClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreUnitaryCompleteClassGap
 import SymmetricSubgroupAsymptotics.SmallFibrePSLTwoImprovedClassGap
 import SymmetricSubgroupAsymptotics.SmallFibrePSLTwoTwentyFiveClassGap
+import SymmetricSubgroupAsymptotics.CFSGPSLTwoSevenClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreTypeACoefficientClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreTypeARankTwoThreeClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreTypeARankTwoQuaternaryClassGap
@@ -67,6 +68,8 @@ inductive Profile (S : Type) [Group S] : Prop
       (hprofile : CFSGPSLTwoImprovedScaledClassPacket.FieldProfile q)
       (e : S ≃* CFSG.Models.A 1 q) : Profile S
   | pslTwoTwentyFive (q : CFSG.PrimePower) (hq : q.order=25)
+      (e : S ≃* CFSG.Models.A 1 q) : Profile S
+  | pslTwoSeven (q : CFSG.PrimePower) (hq : q.order=7)
       (e : S ≃* CFSG.Models.A 1 q) : Profile S
   | unitary (r : ℕ) (hr : 2 ≤ r) (q : CFSG.PrimePower)
       (hsmall : r=2 → q.order≠2) (hlarge : 2048 ≤ q.order^r)
@@ -169,6 +172,9 @@ theorem subnormal_class_cube_gap
       pi hpi c hc hsize E q hprofile e H hH
   | pslTwoTwentyFive q hq e =>
     exact SmallFibrePSLTwoTwentyFiveClassGap.subnormal_class_cube_gap_of_pslTwo
+      pi hpi c hc hsize E q hq e H hH
+  | pslTwoSeven q hq e =>
+    exact CFSGPSLTwoSevenClassGap.subnormal_class_cube_gap
       pi hpi c hc hsize E q hq e H hH
   | unitary r hr q hsmall hlarge e =>
     rcases SmallFibreTypeAUnitaryLargeParameterGap.subnormal_gap_or_unitary_small_parameter
