@@ -1172,8 +1172,18 @@ order three fixes at most one class: its trace and inverse trace must
 both vanish, placing it in the same determinant-surjective origin fibre.
 The proved central-quotient Burnside formula then gives `k(PSL_3(4)) <= 10`.
 Together with outer order at most 12 and proper index at least 16,
-the tighter 24-reserve packet closes this case as well. The exact
-remaining complement is therefore the two pairs **`(2,2), (3,2)`**.
+the tighter 24-reserve packet closes this case as well. Rank two over
+the two-element field is also complete. Its six-class bound leaves only
+the original binary seven- and eight-block actions. Their actual top
+has order at most 336. The one-factor full transitive socle makes that
+top quasiprimitive, so a transposition would force the full symmetric
+group and contradict its order. The actual binary kernel embeds
+equivariantly into the unsigned permutation module, including for a
+nonsplit extension and for each actual subnormal top image. Counting
+the identity contribution before taking maxima gives
+`k(H) <= 13*2^(n-2)`, which pays both degrees. Thus ten of the eleven
+former higher-A heads are closed; the exact remaining parameter is
+**`(3,2)`**.
 These count parameters in this
 small-fibre branch, not action rows or all remaining global obligations
 ([`SmallFibreTypeAScaledClassGap`](SymmetricSubgroupAsymptotics/SmallFibreTypeAScaledClassGap.lean),
@@ -1183,9 +1193,19 @@ small-fibre branch, not action rows or all remaining global obligations
 [`CentralOrderThreeConjugacyClasses`](SymmetricSubgroupAsymptotics/CentralOrderThreeConjugacyClasses.lean),
 [`ProjectiveSLThreeQuaternaryClassBound`](SymmetricSubgroupAsymptotics/ProjectiveSLThreeQuaternaryClassBound.lean),
 [`SmallFibreTypeARankTwoQuaternaryClassGap`](SymmetricSubgroupAsymptotics/SmallFibreTypeARankTwoQuaternaryClassGap.lean),
+[`BinaryBlockUnsignedGeneralClassReserve`](SymmetricSubgroupAsymptotics/BinaryBlockUnsignedGeneralClassReserve.lean),
+[`SmallFibreTypeARankTwoBinaryCompleteClassGap`](SymmetricSubgroupAsymptotics/SmallFibreTypeARankTwoBinaryCompleteClassGap.lean),
 [`SmallFibreClassicalBoundedHeadParameters`](SymmetricSubgroupAsymptotics/SmallFibreClassicalBoundedHeadParameters.lean)).
 Within the remaining binary rank-three parameter, the original
-single-factor degree-eight action is already closed. Its actual socle
+general-linear class bound is now refined to 14. Each actual positive
+primary factor has one of seven nonzero-constant irreducible coefficient
+words; the weighted multiset has total degree four and exactly 14
+possible codes. Equality of codes gives an actual intertwiner, and the
+literal special-linear and full projective quotient maps preserve the
+class bound. No 14-class premise or group-element census is used
+([`BinaryFourPrimaryClassCode`](SymmetricSubgroupAsymptotics/BinaryFourPrimaryClassCode.lean),
+[`CFSGTypeARankThreeBinaryClassPacket`](SymmetricSubgroupAsymptotics/CFSGTypeARankThreeBinaryClassPacket.lean)).
+The single-factor degree-eight binary action is already closed. Its actual socle
 has order 20160, so the actual permutation top has index at most two
 in the symmetric group on eight points. The proved half-factorial
 recognition identifies that same top as alternating or symmetric,
@@ -1193,6 +1213,18 @@ and the native binary degree-eight bound applies. This requires no
 constructed `PSL_4(2) ≃ A_8` isomorphism or relabelled action
 ([`PrimitivePermutationHalfOrderRecognition`](SymmetricSubgroupAsymptotics/PrimitivePermutationHalfOrderRecognition.lean),
 [`OriginalBinaryTypeARankThreeEightClassGap`](SymmetricSubgroupAsymptotics/OriginalBinaryTypeARankThreeEightClassGap.lean)).
+The same unsigned reserve now pays every other binary action over this
+model; the ordinary 28-class envelope pays ternary actions from nine
+blocks. The sole stronger local seam is the actual one-factor ternary
+eight-block action. The global GM induction needs exponent `|Ω|-1`,
+and `(3^8*28)^3 <= 5^23` pays this action directly. A separate global
+profile installs that exact margin, retaining the stronger local API
+without asserting its missing margin. Thus **all higher-A parameters**
+are closed in the global small-fibre GM branch, including every socle
+factor and both degree forms. The global consumer no longer retains
+`(3,2)` as an obstruction
+([`SmallFibreTypeARankThreeBinaryOrdinaryClassGap`](SymmetricSubgroupAsymptotics/SmallFibreTypeARankThreeBinaryOrdinaryClassGap.lean),
+[`SmallFibreKnownModelGlobalClassGap`](SymmetricSubgroupAsymptotics/SmallFibreKnownModelGlobalClassGap.lean)).
 The **whole admissible unitary family** is now closed. The existing
 infinite ranges leave ten small parameter pairs, all paid by a shared
 Hermitian frame count and a determinant saving. Gram--Schmidt is proved
@@ -1216,14 +1248,54 @@ power induction close every binary field from 16, and the same class
 packet pays the odd powers 27 and 49. At order 25, the same actual fixed
 counts in Burnside's formula and the modulo-five orbit congruence give
 proper index at least 15; the original class and outer bounds then pay
-the packet. Together with the existing tail, this leaves exactly five
-field parameters `{4,5,7,8,9}` outside the proved profiles. Their finite
+the packet. The field-seven model also closes: its actual order 168,
+outer bound two and six-class bound feed the same original binary
+seven/eight reserve, without an exceptional isomorphism. Together with
+the existing tail, this leaves exactly four
+field parameters `{4,5,8,9}` outside the stronger local profiles. Their finite
 prime-power complement is checked in Lean; no action census is used
 ([`CFSGPSLTwoCharacteristicIndex`](SymmetricSubgroupAsymptotics/CFSGPSLTwoCharacteristicIndex.lean),
 [`SmallFibrePSLTwoImprovedClassGap`](SymmetricSubgroupAsymptotics/SmallFibrePSLTwoImprovedClassGap.lean),
 [`CFSGPSLTwoTwentyFiveIndex`](SymmetricSubgroupAsymptotics/CFSGPSLTwoTwentyFiveIndex.lean),
 [`SmallFibrePSLTwoTwentyFiveClassGap`](SymmetricSubgroupAsymptotics/SmallFibrePSLTwoTwentyFiveClassGap.lean),
+[`CFSGPSLTwoSevenClassGap`](SymmetricSubgroupAsymptotics/CFSGPSLTwoSevenClassGap.lean),
 [`CFSGPSLTwoSmallFieldParameters`](SymmetricSubgroupAsymptotics/CFSGPSLTwoSmallFieldParameters.lean)).
+At field eight, scalar determinants are all squares, so each actual
+general-linear class contains at most one special-linear class. The
+trace fibres and the single scalar class give `k(SL_2(q)) <= q+1` in
+characteristic two. The actual field-eight model therefore has at most
+nine classes and outer order at most three. The unsigned reserve pays
+binary actions from eight blocks, and the ternary eight-block action
+pays the exact global `|Ω|-1` margin. Thus the global profile retains
+only the final small fields `{4,5,9}`, handled next, with no assumed
+index-nine exclusion
+([`SLTwoCharacteristicTwoClassBound`](SymmetricSubgroupAsymptotics/SLTwoCharacteristicTwoClassBound.lean),
+[`CFSGPSLTwoEightClassGap`](SymmetricSubgroupAsymptotics/CFSGPSLTwoEightClassGap.lean),
+[`SmallFibreKnownModelGlobalClassGap`](SymmetricSubgroupAsymptotics/SmallFibreKnownModelGlobalClassGap.lean)).
+Those three fields are now closed as well. One shared actual natural
+degree-five/six template counts binary wreath classes by the genuine
+square bound and ternary classes by the coordinate capacity. The
+field-four/five models use the proved literal A5 equivalences; the
+field-nine model has actual socle order 360, so its six-point top is
+alternating or symmetric on those same points. The other degrees use
+the unsigned reserve or ternary capacity, with all socle factors and
+both degree forms retained. Consequently **every admissible PSL2
+parameter is closed at the global GM margin**. Its global remaining
+field set is empty; the older stronger local inventory is kept separate
+([`NaturalFiveSixSmallFibreOrdinaryClassBound`](SymmetricSubgroupAsymptotics/NaturalFiveSixSmallFibreOrdinaryClassBound.lean),
+[`SmallFibrePSLTwoAlternatingFiveOrdinaryClassGap`](SymmetricSubgroupAsymptotics/SmallFibrePSLTwoAlternatingFiveOrdinaryClassGap.lean),
+[`CFSGPSLTwoNineOrdinaryClassGap`](SymmetricSubgroupAsymptotics/CFSGPSLTwoNineOrdinaryClassGap.lean)).
+A further uniform installer handles every actual top subnormal in the
+full symmetric group on at least five original blocks, for binary and
+ternary fibres. The binary proof combines the existing paired class
+bound with the small degrees five through seven. For ternary fibres,
+`3^n*fib(n+1)` pays the ordinary margin from eight, since
+`3*fib(n+2) <= 5*fib(n+1)`; the three smaller degrees use actual
+partition counts. Thus literal natural alternating/symmetric tops are
+also excluded internally. Abstract alternating factors with a
+nonnatural short-index action remain a separate frontier
+([`OriginalNaturalSymmetricTopOrdinaryClassBound`](SymmetricSubgroupAsymptotics/OriginalNaturalSymmetricTopOrdinaryClassBound.lean),
+[`AlternatingSmallFibreOrdinaryShortIndexResidual`](SymmetricSubgroupAsymptotics/AlternatingSmallFibreOrdinaryShortIndexResidual.lean)).
 The existing global class-count counterexample theorem now excludes
 these **actual top profiles** internally; it takes no new bounded-head
 estimate as a hypothesis
@@ -2302,6 +2374,30 @@ The same literal Bruhat intersections, together with the checked
 intersection in the full fixed group with the whole positive group.
 After passage to the derived group and its full central quotient, the
 actual Tits Sylow subgroup is self-normalizing.
+The two intrinsic opposed centre involutions also recover an actual
+reflection: their product has order five, and the odd-dihedral word
+recovers the same element in the full derived-centre quotient. Every
+actual pair stabilizer fixes this reflection. Its conjugate Sylow
+intersection is identified inside the original derived group, without
+declaring the ambient cyclic-four subgroup characteristic or lifting
+an automorphism to it
+([`CFSGTitsCentralReflection`](SymmetricSubgroupAsymptotics/CFSGTitsCentralReflection.lean),
+[`CFSGReeFFourBinaryReflectionMiddleFlag`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryReflectionMiddleFlag.lean)).
+The two intrinsic quotient flags embed back into the corresponding
+original middle cyclic-four subgroups. Their unique involutions are
+fixed without asserting that those ambient groups are characteristic.
+A second order-five recovery then fixes the actual middle Weyl element
+and opposition element
+([`CFSGTitsIntrinsicMiddleSquare`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicMiddleSquare.lean),
+[`CFSGTitsOpposedMiddleSquare`](SymmetricSubgroupAsymptotics/CFSGTitsOpposedMiddleSquare.lean),
+[`CFSGTitsMiddleWeylRecovery`](SymmetricSubgroupAsymptotics/CFSGTitsMiddleWeylRecovery.lean)).
+The actual intersection `R = P ∩ w_m⁻¹ P w_m` is now identified with
+the image of the same original positive graded-kernel intersection.
+It is an invariant normal 2-subgroup of the intrinsic carrier
+`M = ⟨P,w_m⟩`. No equality with the full 2-core or a prescribed
+elementary-abelian head is assumed
+([`CFSGReeFFourMiddlePositiveKernelIntersection`](SymmetricSubgroupAsymptotics/CFSGReeFFourMiddlePositiveKernelIntersection.lean),
+[`CFSGTitsIntrinsicMiddleRadical`](SymmetricSubgroupAsymptotics/CFSGTitsIntrinsicMiddleRadical.lean)).
 These are checked statements about the original groups; the
 pair-stabilizer cardinality and the resulting outer budget remain open
 ([`CFSGReeFFourBinaryOrderedBooleanParameters`](SymmetricSubgroupAsymptotics/CFSGReeFFourBinaryOrderedBooleanParameters.lean),
