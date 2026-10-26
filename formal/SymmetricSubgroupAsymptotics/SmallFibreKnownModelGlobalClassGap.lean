@@ -4,6 +4,8 @@ import SymmetricSubgroupAsymptotics.CFSGPSLTwoEightClassGap
 import SymmetricSubgroupAsymptotics.CFSGPSLTwoNineOrdinaryClassGap
 import SymmetricSubgroupAsymptotics.SmallFibrePSLTwoAlternatingFiveOrdinaryClassGap
 import SymmetricSubgroupAsymptotics.OriginalNaturalSymmetricTopOrdinaryClassBound
+import SymmetricSubgroupAsymptotics.SmallFibreAlternatingSixOrdinaryClassGap
+import SymmetricSubgroupAsymptotics.SmallFibreAlternatingOrdinaryClassGap
 
 /-! The original global class-count induction needs the exponent
 `card Ω - 1`. Keep the stronger local `card Ω - 2` API intact, and
@@ -28,6 +30,8 @@ inductive Profile (S : Type) [Group S] : Prop
   | pslTwoAlternatingFive (q : CFSG.PrimePower) (hq : q.order=4 ∨ q.order=5)
       (e : S ≃* CFSG.Models.A 1 q) : Profile S
   | alternatingFive (e : S ≃* alternatingGroup (Fin 5)) : Profile S
+  | alternating (m : ℕ) (hm : 5 ≤ m)
+      (e : S ≃* alternatingGroup (Fin m)) : Profile S
 
 theorem subnormal_class_cube_gap_at_original_degree
     {A Ω X : Type} [Group A] [MulAction A Ω] [MulAction A X]
@@ -58,6 +62,24 @@ theorem subnormal_class_cube_gap_at_original_degree
   | alternatingFive e =>
     exact SmallFibreAlternatingFiveOrdinaryClassGap.subnormal_class_cube_le_at_original_degree
       pi hpi c hc hsize E e H hH
+  | alternating m hm e =>
+    by_cases h5 : m=5
+    · subst m
+      exact SmallFibreAlternatingFiveOrdinaryClassGap.subnormal_class_cube_le_at_original_degree
+        pi hpi c hc hsize E e H hH
+    by_cases h6 : m=6
+    · subst m
+      exact SmallFibreAlternatingSixOrdinaryClassGap.subnormal_ordinary_class_cube_gap
+        pi hpi c hc hsize E e H hH
+    exact SmallFibreAlternatingOrdinaryClassGap.subnormal_class_cube_le_at_original_degree
+      pi hpi c hc hsize E m (by omega) e H hH
+
+/-- Every alternating model is paid on the original action, including
+the nonnatural short-index degrees. No subgroup-index classification
+or action-catalogue premise is retained. -/
+theorem alternating_closed {S : Type} [Group S] (m : ℕ) (hm : 5 ≤ m)
+    (e : S ≃* alternatingGroup (Fin m)) : Profile S :=
+  .alternating m hm e
 
 /-- All higher type-A parameters are paid at the degree required by the
 global GM induction. This does not assert the stronger local margin. -/
