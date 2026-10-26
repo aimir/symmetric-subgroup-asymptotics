@@ -7,6 +7,7 @@ import SymmetricSubgroupAsymptotics.OriginalNaturalSymmetricTopOrdinaryClassBoun
 import SymmetricSubgroupAsymptotics.SmallFibreAlternatingSixOrdinaryClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreAlternatingOrdinaryClassGap
 import SymmetricSubgroupAsymptotics.SmallFibreReeFFourFieldEightBinaryResidual
+import SymmetricSubgroupAsymptotics.SmallFibreReeFFourFieldEightCompleteClassGap
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockSupportedAffineTopClassBound
 
 /-! The original global class-count induction needs the exponent
@@ -34,6 +35,7 @@ inductive Profile (S : Type) [Group S] : Prop
   | alternatingFive (e : S ≃* alternatingGroup (Fin 5)) : Profile S
   | alternating (m : ℕ) (hm : 5 ≤ m)
       (e : S ≃* alternatingGroup (Fin m)) : Profile S
+  | reeFFourFieldEight (e : S ≃* CFSG.Models.ReeF4 1) : Profile S
 
 theorem subnormal_class_cube_gap_at_original_degree
     {A Ω X : Type} [Group A] [MulAction A Ω] [MulAction A X]
@@ -75,6 +77,10 @@ theorem subnormal_class_cube_gap_at_original_degree
         pi hpi c hc hsize E e H hH
     exact SmallFibreAlternatingOrdinaryClassGap.subnormal_class_cube_le_at_original_degree
       pi hpi c hc hsize E m (by omega) e H hH
+  | reeFFourFieldEight e =>
+    exact (SmallFibreReeFFourFieldEightCompleteClassGap.subnormal_class_cube_gap
+      pi hpi c hc hsize E e H hH).trans
+        (Nat.pow_le_pow_right (by decide) (by omega))
 
 /-- Every alternating model is paid on the original action, including
 the nonnatural short-index degrees. No subgroup-index classification
@@ -82,6 +88,13 @@ or action-catalogue premise is retained. -/
 theorem alternating_closed {S : Type} [Group S] (m : ℕ) (hm : 5 ≤ m)
     (e : S ≃* alternatingGroup (Fin m)) : Profile S :=
   .alternating m hm e
+
+/-- The original field-eight Ree model is paid for both fibre sizes and
+every socle multiplicity. Its former same-subgroup index-109 exception
+is excluded by the actual Sylow intersection congruence. -/
+theorem reeFFourFieldEight_closed {S : Type} [Group S]
+    (e : S ≃* CFSG.Models.ReeF4 1) : Profile S :=
+  .reeFFourFieldEight e
 
 /-- All higher type-A parameters are paid at the degree required by the
 global GM induction. This does not assert the stronger local margin. -/
