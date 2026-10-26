@@ -1,5 +1,6 @@
 import SymmetricSubgroupAsymptotics.SmallFibreClassicalBoundedHeadParameters
 import SymmetricSubgroupAsymptotics.SmallFibreTypeARankThreeBinaryOrdinaryClassGap
+import SymmetricSubgroupAsymptotics.CFSGPSLTwoEightClassGap
 
 /-! The original global class-count induction needs the exponent
 `card Ω - 1`. Keep the stronger local `card Ω - 2` API intact, and
@@ -17,6 +18,8 @@ inductive Profile (S : Type) [Group S] : Prop
   | strong (h : SmallFibreKnownModelClassGap.Profile S) : Profile S
   | typeARankThreeBinary (q : CFSG.PrimePower) (hq : q.order=2)
       (e : S ≃* CFSG.Models.A 3 q) : Profile S
+  | pslTwoEight (q : CFSG.PrimePower) (hq : q.order=8)
+      (e : S ≃* CFSG.Models.A 1 q) : Profile S
 
 theorem subnormal_class_cube_gap_at_original_degree
     {A Ω X : Type} [Group A] [MulAction A Ω] [MulAction A X]
@@ -35,6 +38,9 @@ theorem subnormal_class_cube_gap_at_original_degree
   | typeARankThreeBinary q hq e =>
     exact SmallFibreTypeARankThreeBinaryOrdinaryClassGap.subnormal_class_cube_gap_at_original_degree
       pi hpi c hc hsize E q hq e H hH
+  | pslTwoEight q hq e =>
+    exact CFSGPSLTwoEightClassGap.subnormal_ordinary_class_cube_gap
+      pi hpi c hc hsize E q hq e H hH
 
 /-- All higher type-A parameters are paid at the degree required by the
 global GM induction. This does not assert the stronger local margin. -/
@@ -50,6 +56,20 @@ theorem typeA_closed {S : Type} [Group S] (r : ℕ) (hr : 2≤r)
         Finset.mem_singleton,Prod.mk.injEq] using h
     rcases hp with ⟨rfl,hq⟩
     exact .typeARankThreeBinary q hq e
+
+def pslTwoRemainingOrders : Finset ℕ := {4,5,9}
+
+theorem pslTwoRemainingOrders_card : pslTwoRemainingOrders.card=3 := by decide +kernel
+
+theorem pslTwo_remaining_parameters_of_not_closed {S : Type} [Group S]
+    (q : CFSG.PrimePower) (hq : 4≤q.order) (e : S ≃* CFSG.Models.A 1 q)
+    (h : ¬Profile S) : q.order∈pslTwoRemainingOrders := by
+  have hs : ¬SmallFibreKnownModelClassGap.Profile S := fun hs => h (.strong hs)
+  have ht := SmallFibreClassicalBoundedHeadParameters.pslTwo_remaining_parameters_of_not_closed
+    q hq e hs
+  have h8 : q.order≠8 := fun hq => h (.pslTwoEight q hq e)
+  simpa [SmallFibreClassicalBoundedHeadParameters.pslTwoRemainingOrders,
+    pslTwoRemainingOrders,h8] using ht
 
 variable {A Ω : Type} [Group A] [MulAction A Ω] [MulAction.IsPretransitive A Ω]
     [Finite A] [Finite Ω] [FaithfulSMul A Ω]
