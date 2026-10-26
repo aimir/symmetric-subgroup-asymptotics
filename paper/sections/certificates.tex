@@ -126,8 +126,8 @@ This discharges the outer-order budget as well, so both residual model
 hypotheses exclude ${}^2G_2$. The ${}^2F_4$ good-Sylow case is now also
 proved on its original derived-centre model, by the torus-filtration
 argument below. The Tits two-Sylow argument below also closes that
-good-Sylow case, so the newest callback retains only the 26 sporadic
-groups. The original ${}^2F_4$ least-index square and
+good-Sylow case. The M22 argument below further reduces that callback
+to 25 sporadic groups. The original ${}^2F_4$ least-index square and
 outer-order budget are proved below, so its numerical callback also
 retains only Tits and sporadic groups. The Tits least-index square is
 also proved below and threaded into the optional endpoint, so that
@@ -1379,10 +1379,21 @@ bundles and CFSG. It is not a CFSG-only endpoint.
 The actual M22 least-index square is also proved. Its literal 22-point
 action bounds the least index by $22$; actual element periods give
 $440\mid|\mathrm{M22}|$. Simplicity and Sylow arithmetic exclude order
-$440$, hence $22^2<|\mathrm{M22}|$. The newest optional endpoint supplies
+$440$, hence $22^2<|\mathrm{M22}|$. The index-square endpoint supplies
 that field internally, retaining only M22's outer budget in its
-numerical payload. Both sporadic callbacks and the four published
-bundles remain explicit.
+numerical payload. The actual M22 good-Sylow case is now also proved,
+at the prime $11$. Two literal conjugate words of order dividing $11$
+recover both original generators, so suitable conjugate Sylow
+$11$-subgroups generate the group. Kernel-checked certificates for the
+same $22$-point action give order $443520$ and transitivity; these are
+ported from Kenta's Apache-2.0 formalization, with attribution and exact
+source hashes recorded in the repository. Each Sylow $11$-subgroup is
+therefore cyclic and acts without fixed points. A generator has two
+$11$-cycles, so its permutation centralizer and its cyclic normalizer
+are soluble. The newest optional endpoint consequently retains
+$25$ sporadic tags in the good-Sylow callback and $26$ in the numerical
+callback, with only the outer budget required for M22. Both callbacks,
+the four published bundles and CFSG remain explicit parameters.
 No whole rank-one Suzuki identification or lift to the ambient $F_4$
 automorphism group is assumed.
 The actual outer and middle fixed inversion blocks now have cardinalities

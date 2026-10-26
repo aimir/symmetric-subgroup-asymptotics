@@ -863,7 +863,7 @@ outer-order budget. **Both model callbacks retain only the 26 sporadic
 tags.** The four published bundles and CFSG remain explicit;
 this is not a CFSG-only proof.
 
-The newest checked endpoint,
+The checked endpoint
 [`CFSGSevenTargetsMathieuTwentyTwoIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuTwentyTwoIndexSquare.lean),
 also supplies the actual M22 least-index square. Its literal 22-point
 action and elements with orders divisible by 5, 8 and 11 imply that the
@@ -873,6 +873,24 @@ asks only for the outer budget on M22. The 26 sporadic tags and all
 other explicit inputs remain; this is a reduction of one payload field,
 not a discharge of the whole sporadic callback
 ([`CFSGMathieuTwentyTwoActualIndexSquare`](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoActualIndexSquare.lean)).
+
+The newest checked endpoint,
+[`CFSGSevenTargetsMathieuTwentyTwoGoodSylow`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuTwentyTwoGoodSylow.lean),
+also proves the actual M22 good-Sylow case at the prime 11. Two literal
+conjugate words of order dividing 11 recover both original generators,
+so suitable conjugate Sylow 11-subgroups generate the group. The exact
+order 443520 and transitivity of the same 22-point action imply that
+each Sylow 11-subgroup is cyclic and acts without fixed points. Its
+generator has two 11-cycles; its permutation centralizer and cyclic
+normalizer are soluble. The exact order and transitivity certificates
+are ported from Kenta's Apache-2.0 formalization, with source hashes and
+attribution recorded in
+[`m22-certificates.json`](../provenance/CFSG/m22-certificates.json).
+The **good-Sylow callback now retains 25 sporadic tags**. The numerical
+callback still retains all 26, with only the outer budget required on
+M22. The four published bundles and pinned CFSG remain explicit; this
+is not a CFSG-only endpoint. All 21 audited exports use only the
+standard Lean axioms, while these theorem parameters remain visible.
 
 A further optional endpoint,
 [`CFSGSevenTargetsTraceyPublished2018Bundle`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTraceyPublished2018Bundle.lean),
