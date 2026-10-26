@@ -1,13 +1,15 @@
 import SymmetricSubgroupAsymptotics.SmallFibreClassicalBoundedHeadParameters
 import SymmetricSubgroupAsymptotics.SmallFibreTypeARankThreeBinaryOrdinaryClassGap
 import SymmetricSubgroupAsymptotics.CFSGPSLTwoEightClassGap
+import SymmetricSubgroupAsymptotics.CFSGPSLTwoNineOrdinaryClassGap
+import SymmetricSubgroupAsymptotics.SmallFibrePSLTwoAlternatingFiveOrdinaryClassGap
 
 /-! The original global class-count induction needs the exponent
 `card Ω - 1`. Keep the stronger local `card Ω - 2` API intact, and
 install the actual rank-three binary model using precisely the global
-margin. Its ternary eight-block case therefore needs no extra local
-fusion estimate. All original kernels, subnormal sources and degree
-forms are retained. -/
+margin. The rank-three ternary eight-block case and the remaining
+small rank-one fields therefore need no extra stronger local estimate.
+All original kernels, subnormal sources and degree forms are retained. -/
 set_option autoImplicit false
 set_option Elab.async false
 noncomputable section
@@ -20,6 +22,11 @@ inductive Profile (S : Type) [Group S] : Prop
       (e : S ≃* CFSG.Models.A 3 q) : Profile S
   | pslTwoEight (q : CFSG.PrimePower) (hq : q.order=8)
       (e : S ≃* CFSG.Models.A 1 q) : Profile S
+  | pslTwoNine (q : CFSG.PrimePower) (hq : q.order=9)
+      (e : S ≃* CFSG.Models.A 1 q) : Profile S
+  | pslTwoAlternatingFive (q : CFSG.PrimePower) (hq : q.order=4 ∨ q.order=5)
+      (e : S ≃* CFSG.Models.A 1 q) : Profile S
+  | alternatingFive (e : S ≃* alternatingGroup (Fin 5)) : Profile S
 
 theorem subnormal_class_cube_gap_at_original_degree
     {A Ω X : Type} [Group A] [MulAction A Ω] [MulAction A X]
@@ -41,6 +48,15 @@ theorem subnormal_class_cube_gap_at_original_degree
   | pslTwoEight q hq e =>
     exact CFSGPSLTwoEightClassGap.subnormal_ordinary_class_cube_gap
       pi hpi c hc hsize E q hq e H hH
+  | pslTwoNine q hq e =>
+    exact CFSGPSLTwoNineOrdinaryClassGap.subnormal_ordinary_class_cube_gap
+      pi hpi c hc hsize E q hq e H hH
+  | pslTwoAlternatingFive q hq e =>
+    exact SmallFibrePSLTwoAlternatingFiveOrdinaryClassGap.subnormal_class_cube_le_of_typeA_rank_one_order_four_or_five
+      pi hpi c hc hsize E q hq e H hH
+  | alternatingFive e =>
+    exact SmallFibreAlternatingFiveOrdinaryClassGap.subnormal_class_cube_le_at_original_degree
+      pi hpi c hc hsize E e H hH
 
 /-- All higher type-A parameters are paid at the degree required by the
 global GM induction. This does not assert the stronger local margin. -/
@@ -57,19 +73,30 @@ theorem typeA_closed {S : Type} [Group S] (r : ℕ) (hr : 2≤r)
     rcases hp with ⟨rfl,hq⟩
     exact .typeARankThreeBinary q hq e
 
-def pslTwoRemainingOrders : Finset ℕ := {4,5,9}
+/-- The entire admissible rank-one family is paid at the original GM degree. -/
+theorem pslTwo_closed {S : Type} [Group S]
+    (q : CFSG.PrimePower) (hq : 4≤q.order) (e : S ≃* CFSG.Models.A 1 q) : Profile S := by
+  classical
+  by_cases hs : SmallFibreKnownModelClassGap.Profile S
+  · exact .strong hs
+  · have ht := SmallFibreClassicalBoundedHeadParameters.pslTwo_remaining_parameters_of_not_closed
+      q hq e hs
+    simp only [SmallFibreClassicalBoundedHeadParameters.pslTwoRemainingOrders,
+      Finset.mem_insert,Finset.mem_singleton] at ht
+    rcases ht with h4 | h5 | h8 | h9
+    · exact .pslTwoAlternatingFive q (Or.inl h4) e
+    · exact .pslTwoAlternatingFive q (Or.inr h5) e
+    · exact .pslTwoEight q h8 e
+    · exact .pslTwoNine q h9 e
 
-theorem pslTwoRemainingOrders_card : pslTwoRemainingOrders.card=3 := by decide +kernel
+def pslTwoRemainingOrders : Finset ℕ := ∅
+
+theorem pslTwoRemainingOrders_card : pslTwoRemainingOrders.card=0 := by decide +kernel
 
 theorem pslTwo_remaining_parameters_of_not_closed {S : Type} [Group S]
     (q : CFSG.PrimePower) (hq : 4≤q.order) (e : S ≃* CFSG.Models.A 1 q)
     (h : ¬Profile S) : q.order∈pslTwoRemainingOrders := by
-  have hs : ¬SmallFibreKnownModelClassGap.Profile S := fun hs => h (.strong hs)
-  have ht := SmallFibreClassicalBoundedHeadParameters.pslTwo_remaining_parameters_of_not_closed
-    q hq e hs
-  have h8 : q.order≠8 := fun hq => h (.pslTwoEight q hq e)
-  simpa [SmallFibreClassicalBoundedHeadParameters.pslTwoRemainingOrders,
-    pslTwoRemainingOrders,h8] using ht
+  exact (h (pslTwo_closed q hq e)).elim
 
 variable {A Ω : Type} [Group A] [MulAction A Ω] [MulAction.IsPretransitive A Ω]
     [Finite A] [Finite Ω] [FaithfulSMul A Ω]
