@@ -1,0 +1,133 @@
+{
+  "repository": "https://github.com/KitaKen1/finite-simple-groups-lean",
+  "revision": "7f09e33a9ceef6b59ce03e34cd4f0558c763e325",
+  "license": "Apache-2.0",
+  "upstream_license_sha256": "cd0d0380162a321c1655b67f726483c98b37b34903f0419a9bc8298a13ecf368",
+  "publication_license_path": "provenance/CFSG/Apache-2.0.txt",
+  "publication_license_sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+  "namespace": "CFSG.Certificates.Mathieu23",
+  "publication_changes": "Only publication import prefixes, isolated original-model namespace, and additional adaptation notice. Original permutation definitions, certificate data, proof bodies and upstream scoped settings are retained.",
+  "scope": "Full minimal nine-source original actual M23 cardinality/transitivity import closure. No simplicity, point-stabilizer equivalence, presentation bridge, M24 port, duplicate M22 model, or CFSG pin change.",
+  "files": [
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M23/Basic.lean",
+      "source_sha256": "1feaac403c8ce474ec8f7ccd4cc4a8b5306d261eeeaa3f4612b3c60423b8895b",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu23/Basic.lean",
+      "publication_sha256": "13def78f5e502744b432241f5be2714608d9d5f15b6a408bda15ba09525036d5",
+      "source_imports": [
+        "Mathlib.GroupTheory.Perm.Fin",
+        "Mathlib.GroupTheory.Subgroup.Simple"
+      ],
+      "publication_imports": [
+        "Mathlib.GroupTheory.Perm.Fin",
+        "Mathlib.GroupTheory.Subgroup.Simple"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M23/Permutations.lean",
+      "source_sha256": "96ac4b94effaa0892cde4c47156f7d7e3443787109a13e6437399c8a3cff032e",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu23/Permutations.lean",
+      "publication_sha256": "12af9c7cf255483efde64bc57e1298ad42bfa6bfefe6e98f8de4a982f5cb6a3b",
+      "source_imports": [
+        "Mathlib.GroupTheory.Perm.Cycle.Concrete",
+        "FiniteSimpleGroups.Sporadic.M23.Basic"
+      ],
+      "publication_imports": [
+        "Mathlib.GroupTheory.Perm.Cycle.Concrete",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu23.Basic"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M23/GeneratedSubgroup.lean",
+      "source_sha256": "8b5e4db01dddefe441c04a63affc25be904028b88f1db6e415af0278d3f953ca",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu23/GeneratedSubgroup.lean",
+      "publication_sha256": "989018daa1aa93cd74e0346252ab60c95cd0a5c94120d4baf3c64499de05660a",
+      "source_imports": [
+        "Mathlib.Algebra.Group.Subgroup.Finite",
+        "FiniteSimpleGroups.Sporadic.M23.Permutations"
+      ],
+      "publication_imports": [
+        "Mathlib.Algebra.Group.Subgroup.Finite",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu23.Permutations"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M23/Certificates/Words.lean",
+      "source_sha256": "d6456c3f01f2ff156eb0334108a2230e896acf5b91c3eb1102300deef03f8117",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu23/Certificates/Words.lean",
+      "publication_sha256": "486a56434203bab553e716e36b2abbf3dbf9c50cf1edf7d3e9e2516f31e05b42",
+      "source_imports": [
+        "FiniteSimpleGroups.Sporadic.M23.GeneratedSubgroup"
+      ],
+      "publication_imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu23.GeneratedSubgroup"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M23/Certificates/SteinerSystem.lean",
+      "source_sha256": "a81164c252e6328245b12d7f3e69a6efe812df5c85e1d196b0037d493cca4a24",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu23/Certificates/SteinerSystem.lean",
+      "publication_sha256": "17c088c9e64aa6c561f9f386e306858c1bc3059e8eb94daf2b199a3108904ce5",
+      "source_imports": [
+        "FiniteSimpleGroups.Sporadic.M23.GeneratedSubgroup"
+      ],
+      "publication_imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu23.GeneratedSubgroup"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M23/Certificates/StabilizerChain.lean",
+      "source_sha256": "ab091146655e6a391e1a99d83a10caa81a1c0fe342db7ebbc645a3ea57158990",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu23/Certificates/StabilizerChain.lean",
+      "publication_sha256": "8163eac4d1a524a8d4b238ce0d9d57b8802d546277888e546de7c90f9e281abf",
+      "source_imports": [
+        "FiniteSimpleGroups.Sporadic.M23.Certificates.Words",
+        "FiniteSimpleGroups.Sporadic.M23.Certificates.SteinerSystem"
+      ],
+      "publication_imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu23.Certificates.Words",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu23.Certificates.SteinerSystem"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M23/Certificates/ChainOrbits.lean",
+      "source_sha256": "ea2608c5c220ec0652662421cfdc3f78f06d80b0d0fd909edb432f59d17682a3",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu23/Certificates/ChainOrbits.lean",
+      "publication_sha256": "9bf7237f95996f9304d777d4a32bc80a3dfb74c5753f76c691fae668d9d6c26a",
+      "source_imports": [
+        "FiniteSimpleGroups.Sporadic.M23.Certificates.StabilizerChain"
+      ],
+      "publication_imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu23.Certificates.StabilizerChain"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M23/Certificates/FinalStabilizer.lean",
+      "source_sha256": "4ca33632a38debef4df5341eefb51eae3681ed9a88344a406d6757d648d123ce",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu23/Certificates/FinalStabilizer.lean",
+      "publication_sha256": "98843f715379672ac27b402e50f4cbcd0dbd64132db94c940c64f69b35f134b0",
+      "source_imports": [
+        "FiniteSimpleGroups.Sporadic.M23.Certificates.SteinerSystem"
+      ],
+      "publication_imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu23.Certificates.SteinerSystem"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M23/Cardinality.lean",
+      "source_sha256": "25e42e2e5fc877521bdfa41996d97d1185361207f3805db07a7e415a68201d7a",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu23/Cardinality.lean",
+      "publication_sha256": "c3a47ea8a4c662fbcfa56414f3a487af96025220f360e309ba40668dbcce983a",
+      "source_imports": [
+        "FiniteSimpleGroups.Sporadic.M23.GeneratedSubgroup",
+        "FiniteSimpleGroups.Sporadic.M23.Certificates.ChainOrbits",
+        "FiniteSimpleGroups.Sporadic.M23.Certificates.FinalStabilizer"
+      ],
+      "publication_imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu23.GeneratedSubgroup",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu23.Certificates.ChainOrbits",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu23.Certificates.FinalStabilizer"
+      ]
+    }
+  ]
+}
