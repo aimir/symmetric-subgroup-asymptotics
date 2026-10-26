@@ -3,6 +3,8 @@ import SymmetricSubgroupAsymptotics.GaronziMarotiBoundedShapeCFSGReduction
 import SymmetricSubgroupAsymptotics.SmallFibreKnownModelGlobalClassGap
 import SymmetricSubgroupAsymptotics.OriginalSmallTopClassCubeBound
 import SymmetricSubgroupAsymptotics.OriginalBinaryFourTopClassCubeBound
+import SymmetricSubgroupAsymptotics.OriginalTernaryFourPrimitiveTopClassCubeBound
+import SymmetricSubgroupAsymptotics.OriginalMinimalBlockRegularAffineTopCompleteClassBound
 
 /-! Original-action GM induction with a genuine nonaffine bounded shape.
 Affine minimal components of degree at least four have been proved away.
@@ -23,7 +25,9 @@ def ActualSmallFibreResidual : Prop :=
       OriginalMinimalBlockNonaffineShapeResidual.SmallFibreShape D ∧
         ¬ SmallFibreKnownModelGlobalClassGap.HasClosedTop D ∧
         4 ≤ Nat.card D.Points ∧
-        (Nat.card D.Fibre=2 → 5 ≤ Nat.card D.Points)
+        (Nat.card D.Fibre=2 → 5 ≤ Nat.card D.Points) ∧
+        (Nat.card D.Points=4 → ¬ MulAction.IsPreprimitive D.Top D.Points) ∧
+        (5 ≤ Nat.card D.Points → ¬ Nonempty (PrimitiveAffineProfile D.Top D.Points))
 
 def ActualBoundedNonaffineResidual : Prop :=
   ∃ ht : MulAction.IsPretransitive G X,
@@ -73,15 +77,36 @@ theorem class_cube_or_actual_small_fibre_or_nonaffine_component_or_finite_model
         · exact Or.inl (D.class_cube_le_of_two_or_three_blocks h.1 hsmallTop)
         by_cases hfourbinary : Nat.card D.Points=4 ∧ Nat.card D.Fibre=2
         · exact Or.inl (D.class_cube_le_of_four_binary_blocks hfourbinary.2 hfourbinary.1)
+        have htop : 4 ≤ Nat.card D.Points := by
+          have := D.degrees_ge_two.2
+          omega
+        by_cases hfourprimitive : Nat.card D.Points=4 ∧
+            MulAction.IsPreprimitive D.Top D.Points
+        · have hthree : Nat.card D.Fibre=3 := by
+            rcases h.1 with htwo|hthree
+            · exact False.elim (hfourbinary ⟨hfourprimitive.1,htwo⟩)
+            · exact hthree
+          exact Or.inl (D.class_cube_le_of_four_ternary_blocks_with_primitive_top
+            hthree hfourprimitive.1 hfourprimitive.2)
+        by_cases haffine : 5 ≤ Nat.card D.Points ∧
+            Nonempty (PrimitiveAffineProfile D.Top D.Points)
+        · obtain ⟨hn,⟨P⟩⟩ := haffine
+          exact Or.inl (D.class_cube_le_of_regular_affine_top_complete h.1 P hn hSmaller)
         by_cases hclosed : SmallFibreKnownModelGlobalClassGap.HasClosedTop D
         · exact Or.inl (SmallFibreKnownModelGlobalClassGap.class_cube_gap_of_closed_top D h.1 hclosed)
-        · have htop : 4 ≤ Nat.card D.Points := by
-            have := D.degrees_ge_two.2
-            omega
-          have hbinary : Nat.card D.Fibre=2 → 5 ≤ Nat.card D.Points := by
+        · have hbinary : Nat.card D.Fibre=2 → 5 ≤ Nat.card D.Points := by
             intro h2
             omega
-          exact Or.inr (Or.inl ⟨ht, ω₀, D, h, hclosed, htop, hbinary⟩)
+          have hnotprimitive : Nat.card D.Points=4 →
+              ¬ MulAction.IsPreprimitive D.Top D.Points := by
+            intro hn hp
+            exact hfourprimitive ⟨hn,hp⟩
+          have hnotaffine : 5 ≤ Nat.card D.Points →
+              ¬ Nonempty (PrimitiveAffineProfile D.Top D.Points) := by
+            intro hn hP
+            exact haffine ⟨hn,hP⟩
+          exact Or.inr (Or.inl ⟨ht, ω₀, D, h, hclosed, htop, hbinary,
+            hnotprimitive,hnotaffine⟩)
       · exact Or.inr (Or.inr (Or.inl ⟨ht, ω₀, D, h⟩))
       · have hf : GaronziMarotiBoundedShapeCFSGReduction.ActualFiniteModelResidual G X :=
           Or.inr ⟨ht, ω₀, D, h⟩
