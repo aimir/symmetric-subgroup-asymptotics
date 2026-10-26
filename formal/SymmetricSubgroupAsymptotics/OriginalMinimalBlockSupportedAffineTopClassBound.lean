@@ -1,6 +1,10 @@
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockAffineTopClassBound
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockPrimeAffineTopClassBound
 import SymmetricSubgroupAsymptotics.OriginalMinimalBlockLowDimensionAffineTopClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveAffineBinaryTopSmallFibreClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveAffineNineTopSmallFibreClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveAffineTwentyFiveTopSmallFibreClassBound
+import SymmetricSubgroupAsymptotics.PrimitiveAffineSixtyFourTopSmallFibreClassBound
 
 /-! One native predicate assembles the proved affine-top ranges.
 Every branch retains a literal regular normal prime-power subgroup;
@@ -19,15 +23,27 @@ def HasSupportedAffineTop : Prop :=
     128≤Nat.card D.Points ∨
       ((Nat.card D.Points).Prime ∧ 5 ≤ Nat.card D.Points) ∨
       ((49 ≤ Nat.card D.Points ∧ Nat.log P.p (Nat.card D.Points) ≤ 3) ∨
-        (64 ≤ Nat.card D.Points ∧ Nat.log P.p (Nat.card D.Points) ≤ 4))
+        (64 ≤ Nat.card D.Points ∧ Nat.log P.p (Nat.card D.Points) ≤ 4)) ∨
+      (MulAction.IsPreprimitive D.Top D.Points ∧
+        ((Nat.card D.Points=8 ∨ Nat.card D.Points=16 ∨ Nat.card D.Points=32) ∨
+          Nat.card D.Points=9 ∨ Nat.card D.Points=25 ∨ Nat.card D.Points=64))
 
 theorem subnormal_class_cube_le_of_supported_affine_top
     (hc : Nat.card D.Fibre=2 ∨ Nat.card D.Fibre=3)
     (h : D.HasSupportedAffineTop) (H : Subgroup A) (hH : H.IsSubnormal) :
     Nat.card (ConjClasses H)^3≤5^(Nat.card Ω-1) := by
-  rcases h with ⟨P,hn|⟨hp,hn⟩|hd⟩
+  rcases h with ⟨P,hn|⟨hp,hn⟩|hd|⟨hprimitive,hdegree⟩⟩
   · exact D.subnormal_class_cube_le_of_large_affine_top hc hn P H hH
   · exact D.subnormal_class_cube_le_of_prime_affine_top hc hp hn P H hH
   · exact D.subnormal_class_cube_le_of_low_dimension_affine_top hc P hd H hH
+  · rcases hdegree with hbinary | h9 | h25 | h64
+    · exact D.subnormal_class_cube_le_of_primitive_binary_affine_top
+        hc P hprimitive hbinary H hH
+    · exact D.subnormal_class_cube_le_of_primitive_nine_affine_top
+        hc P hprimitive h9 H hH
+    · exact D.subnormal_class_cube_le_of_primitive_twentyFive_affine_top
+        hc P hprimitive h25 H hH
+    · exact D.subnormal_class_cube_le_of_primitive_sixtyFour_affine_top
+        hc P hprimitive h64 H hH
 
 end SymmetricSubgroupAsymptotics.OriginalMinimalBlock
