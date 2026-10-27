@@ -16,3 +16,5 @@ through their own module imports.
 -/
 import SymmetricSubgroupAsymptotics.CFSGJankoTwoDihedralT1Reduction
 import SymmetricSubgroupAsymptotics.TraceyExceptionalMersenneDegreeArithmetic
+import SymmetricSubgroupAsymptotics.CFSGSolubleSylowNormalizerT1Reduction
+import SymmetricSubgroupAsymptotics.CFSGSymplecticOriginalProjectiveEquivalence

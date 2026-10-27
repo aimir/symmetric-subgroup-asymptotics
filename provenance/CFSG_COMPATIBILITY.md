@@ -116,6 +116,39 @@ simplicity. Its binary dihedral subgroup and actual conjugate recover
 the original second generator. This uses no additional external matrix
 dataset, group-order assertion, or named-model recognition hypothesis.
 
+`CFSGJankoOnePerm266Pilot.lean` records two permutations derived from Kenta's
+[`FiniteSimpleGroups/Sporadic/J1/Permutations.lean`](https://github.com/KitaKen1/finite-simple-groups-lean/blob/7f09e33a9ceef6b59ce03e34cd4f0558c763e325/FiniteSimpleGroups/Sporadic/J1/Permutations.lean),
+at revision `7f09e33a9ceef6b59ce03e34cd4f0558c763e325`, using fixed words
+and an opposite-action translation. The Apache-2.0
+attribution is retained. The new reflection certificates check the two
+inverse tables and all five original J1 presentation relations at every
+point. The induced action yields a proper point stabilizer of index at
+most 266. Neither its order nor recognition as the whole J1 group is
+assumed. This supplies only the stated index bound, not J1's complete
+numerical callback.
+
+## Project bridge proofs
+
+The uniform symplectic root-coordinate, integral splitting, saturation,
+and primitive-image lemmas are project proofs for the original rational
+Serre quotient and its integral lattice. They do not import a source-basis
+or faithfulness assertion from a similarly named matrix model.
+`CFSGSymplecticOriginalFirstActionSpan.lean` proves spanning of that
+actual lattice and injectivity after every commutative base change.
+`CFSGSymplecticOriginalProjectiveEquivalence.lean` then identifies the
+original projective Serre group with the independent natural elementary
+symplectic projective group, without an old-model simplicity premise.
+These checked results do not assert that the full common-toolchain CFSG
+bridge has been completed.
+
+`SolubleSylowNormalizerPrime.lean` and its semisimple and Suzuki
+assemblers are also project proofs. They replace the stronger requirement
+of generation by two Sylow conjugates with generation by two conjugates
+of a soluble Sylow normalizer. The accompanying maximality and
+two-overgroup criteria require actual Sylow normalizers and actual
+overgroup data. The strongest T1 endpoint still explicitly takes the
+concrete classification and the twelve remaining sporadic witnesses.
+
 ## Literal nonsplit-torus lemmas
 
 `PSLTwoLiteralNonsplitTorusCyclic.lean` uses the actual Mathlib SL₂ and PSL₂

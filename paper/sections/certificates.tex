@@ -2133,3 +2133,59 @@ The original cutoff, action weights, character restrictions and terminal
 attachment are preserved. Recursive local source/object verification and
 exported-declaration axiom audits accompany the kernel checks; detailed
 build records are kept outside the publication repository.
+
+\paragraph{Soluble Sylow-normalizer conjugates.}
+The optional CFSG generation reduction needs less than generation by two
+Sylow subgroups. For a prime $p$, let $P$ be an actual Sylow $p$-subgroup
+of a finite group $G$ and put $N=N_G(P)$. Sylow conjugacy implies that
+$N$ is intravariant and self-normalizing. If $N$ is soluble and
+$\langle N,gNg^{-1}\rangle=G$ for some $g$, these are precisely the
+properties used by the simple-factor and semisimple steps of Suzuki's
+induction. Choosing the least qualifying prime makes the choice
+compatible with isomorphisms between the actual simple factors. This
+weaker criterion is now checked through the complete global induction
+and the T1 endpoint; every previously proved good-Sylow witness supplies it.
+
+\begin{lemma}\label{lem:soluble-sylow-normalizer-pairs}
+If $N_G(P)$ is soluble and maximal among proper subgroups of $G$,
+then two conjugates of $N_G(P)$ generate $G$.
+\end{lemma}
+\begin{proof}
+Choose $g\notin N$. If $gNg^{-1}\leq N$, finiteness makes these
+subgroups equal, whence $g\in N_G(N)=N$, a contradiction. Thus
+$N<\langle N,gNg^{-1}\rangle$, and maximality gives $G$.
+\end{proof}
+
+A second checked criterion applies if every proper overgroup of $N$ is
+one of $N,A,B$, for fixed proper subgroups $A,B$ containing $N$.
+A group is not the union of two proper subgroups, so choose
+$g\notin A\cup B$. If $N\leq K$ and $gPg^{-1}\leq K$, Sylow
+conjugacy inside $K$ implies $g\in K$, since $N_G(P)\leq K$.
+Apply this to $K=\langle N,gNg^{-1}\rangle$; the overgroup list
+forces $K=G$. The current callback still has the same twelve sporadic
+labels. The numerical callback still has twenty-one labels, and the
+three published bundles and concrete CFSG classification remain explicit.
+Thus this interface improvement does not assert a proof of T1 from CFSG alone.
+
+The literal five-relator J1 presentation also now has a checked action
+on $266$ points. Both permutations and their inverse tables, followed by
+all five relations, are checked on every point. The first generator
+sends $0$ to $238$, so its point stabilizer is proper and has index at
+most $266$. This bound uses no group-order or representation-recognition
+premise. The complete J1 numerical payload remains in the callback above.
+
+\paragraph{Faithfulness of the original type-C realization.}
+We prove the original integral Serre realization is faithful before using
+any group simplicity theorem. Integral Cartan tails and explicit signed
+divided-power root paths form a finite family with primitive natural-matrix
+coordinates. The original Serre relations, root-height induction, Jacobi
+coefficient identities and the actual diagonal grading prove its
+first-action stability. Saturation then gives divided-power stability
+and spanning of the same original integral lattice. The coordinate
+splitting remains injective after every commutative scalar extension,
+including characteristic two. Together with the original-root range
+calculation, this yields an unconditional equivalence between the original
+projective Serre group and the independent natural elementary symplectic
+projective group. No old-model simplicity, source faithfulness or
+recognition premise enters this equivalence. The complete CFSG catalogue
+transport and the remaining T1 callbacks are separate obligations.

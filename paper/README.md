@@ -37,9 +37,11 @@ This verifies the three targets relative to those explicit published inputs;
 it does not formalize the retained literature itself. The optional CFSG
 backend now proves the weak labelled transitive-count input internally.
 Its successor T1 endpoint retains three published bundles, pinned CFSG,
-and two restricted model callbacks. The shared Y-derived, original J1
-and original Suz binary-frame proofs reduce the GoodSylow callback to 13
-sporadic cases; the numerical callback retains 21. A CFSG-only proof of T1
+and two restricted model callbacks. The shared Y-derived, original J1,
+Suz and J2 proofs leave 12 sporadic generation cases. The strongest checked
+endpoint asks for soluble Sylow normalizers with generating conjugates;
+the earlier GoodSylow condition implies this weaker requirement. The
+numerical callback retains 21 cases. A CFSG-only proof of T1
 remains open.
 
 The exact target and normalization are also recorded in [SPEC.md](../SPEC.md).

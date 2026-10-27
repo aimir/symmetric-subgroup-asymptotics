@@ -189,9 +189,9 @@ not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
 The strongest optional CFSG endpoint is now
-[`CFSGJankoTwoDihedralT1Reduction`](SymmetricSubgroupAsymptotics/CFSGJankoTwoDihedralT1Reduction.lean).
-Its `T1_of_three_published_inputs_cfsg_and_remaining_after_janko_two_dihedral`
-and `allTargets_of_three_published_inputs_cfsg_and_remaining_after_janko_two_dihedral`
+[`CFSGSolubleSylowNormalizerT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSolubleSylowNormalizerT1Reduction.lean).
+Its `T1_of_three_published_inputs_cfsg_and_remaining_soluble_normalizer_pairs`
+and `allTargets_of_three_published_inputs_cfsg_and_remaining_soluble_normalizer_pairs`
 construct both the labelled transitive-count input and the bounded-sharp
 Tracey field internally. Their six explicit parameters are:
 
@@ -201,7 +201,7 @@ Tracey field internally. Their six explicit parameters are:
 | `hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput` | The actual soluble subgroup and binomial orbit partition in the exceptional `3·2^m` action, including its retained exponent restriction. |
 | `hTracey : TraceyPermutationGeneratorInput` | The coarse transitive generator bound. |
 | `hCFSG : CFSG.CFSGClassification` | The unchanged classification statement at commit `25507f8795f2e499b392f3312a576538e1c5ef78`. |
-| `remainingGoodSylow` | `RemainingGoodSylowIndexAfterJankoTwoDihedral`, the previous callback with J2 removed, on 12 sporadic tags. |
+| `remainingNormalizerPairs` | On the same 12 tags of `RemainingGoodSylowIndexAfterJankoTwoDihedral`, an actual prime Sylow subgroup whose normalizer is soluble and has two conjugates generating the group. |
 | `remainingSimpleIndex` | The unchanged `RemainingSufficientSimpleIndexAfterMathieuTwentyFourComplete` numerical callback on 21 tags. |
 
 These six formal arguments represent five mathematical requirements beyond
@@ -212,6 +212,47 @@ small-degree bases, large-degree comparison and intransitive induction
 derive McIver–Neumann from CFSG and coarse Tracey
 ([bundle adapter](SymmetricSubgroupAsymptotics/TraceyPublished2018BoundedSharpCFSG.lean)).
 The LMM input is absent. This is still not a CFSG-only proof of T1.
+The twelve labels are J3, J4, Co1, Co2, Co3, HS, McL, He, HN, Ly, Th
+and Monster. The new callback requires generation by conjugates of the
+normalizer. The former GoodSylow condition, which requires generation by
+the Sylow conjugates themselves, implies it. Finite Sylow normalizers are
+self-normalizing and intravariant, so the proved semisimple routing and
+Suzuki induction retain both properties
+([global assembler](SymmetricSubgroupAsymptotics/SolubleSylowNormalizerSuzuki.lean)).
+A soluble maximal Sylow normalizer supplies such a pair automatically;
+an actual overgroup cover by two proper subgroups supplies a second
+criterion
+([maximal criterion](SymmetricSubgroupAsymptotics/SolubleCoatomNormalizerPairs.lean),
+[two-overgroup criterion](SymmetricSubgroupAsymptotics/SylowNormalizerTwoOvergroups.lean)).
+The earlier GoodSylow endpoint remains available. No sporadic label has
+been removed by this interface change.
+
+Two further checked constructions support the remaining bridge work.
+The literal five-relator J1 presentation has a proper subgroup of index at
+most 266, through explicit permutations with a moved point
+([index bound](SymmetricSubgroupAsymptotics/CFSGJankoOnePerm266MinimumIndex.lean)).
+The original J3, HS, McL and He presentations admit soluble subgroups
+whose two conjugates generate; these direct pairs alone do not supply
+the intravariance needed by the global induction
+([J3](SymmetricSubgroupAsymptotics/CFSGJankoThreeAbelianPair.lean),
+[HS, McL and He](SymmetricSubgroupAsymptotics/CFSGThreeSporadicAbelianPairs.lean)).
+Neither construction removes its complete numerical or normalizer callback.
+
+The original type-C Serre realization is now proved faithful on its actual
+integral lattice, with injectivity preserved by every commutative base
+change, including characteristic two
+([spanning and faithfulness](SymmetricSubgroupAsymptotics/CFSGSymplecticOriginalFirstActionSpan.lean)).
+This gives an unconditional equivalence between the original projective
+Serre group and the independent natural elementary symplectic projective
+group
+([group equivalence](SymmetricSubgroupAsymptotics/CFSGSymplecticOriginalProjectiveEquivalence.lean)).
+The proof uses the original Serre relations, root-height induction,
+primitive integral coordinates, and the signed Chevalley involution;
+it assumes no source faithfulness, old-model simplicity or recognition.
+All sixty declarations audited in this proof packet use only the three
+standard axioms listed above. Transport from every completed-CFSG carrier
+and the full classification integration remain separate obligations.
+
 The local geometry underlying `hExceptionalOrbits` is now proved on the
 single actual correlated quotient `(PSL₂(F)^e)/H`, for `H` normal of index
 three in the Borel power and `card F` coprime to three. The full orbit
