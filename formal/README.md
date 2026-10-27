@@ -988,7 +988,7 @@ The four published bundles and pinned CFSG remain explicit. The
 and seven-export strict-square audit retain only the standard axioms;
 independent source reviews add no premise.
 
-The newest checked endpoint is
+The M24 refinement is
 [`CFSGSevenTargetsMathieuTwentyFourIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuTwentyFourIndexSquare.lean).
 It also supplies M24's good-Sylow-23 witness and strict least-index square.
 Only four small original Apache modules are needed: the actual generators
@@ -1016,6 +1016,35 @@ M23 and M24. The four published bundles and pinned CFSG remain explicit.
 The 19-export bridge, seven-export good-Sylow, five-export generic transfer,
 and six-export M24 square audits use only the standard axioms.
 
+The complete M12 continuation is
+[`CFSGSevenTargetsMathieuTwelveComplete`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuTwelveComplete.lean)
+(commit `37ee5f09`). It supplies M12's outer budget internally. The same
+actual twelve-point group has a complete cover with
+`12 * 11 * 10 * 9 * 8 = 95040` labels from 50 certified stabilizer seeds.
+For `A=x*y` and `U=x*A*x^-1`, the short words
+`X=A^-1*U^-1*A^-1` and `Y=A^-1*U^-1` recover the original pair. Every
+automorphism fixing `A` sends `U` to a candidate satisfying the six pinned
+relators on `X,Y` and the separate link `X*Y=A`. All twelve prefix
+certificates are checked, using eleven 720-label cohorts per prefix.
+Their local whitelist bounds are
+`[1,1,0,4,1,1,1,1,0,1,0,0]`, with sum 11. Evaluation on `U` is injective
+for automorphisms fixing `A`, so the checked dependent-sum count gives
+`|Aut(M12) fixing A| <= 11`
+([capacity](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveAcceptedCodeCapacity.lean)).
+The prime-order Sylow normalizer inequality retains the factor 22:
+`22 * |Out(M12)| <= 10 * |Aut(M12) fixing A| <= 110`.
+Thus `|Out(M12)| <= 5`. The checked actual equivalence transports this
+bound to the pinned presentation. Every proper index is at least 11;
+hence `log_2(ell) >= 2` pays the sufficient outer-order budget
+([outer bound](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveOuterBound.lean)).
+No capacity, parity or odd-order-solubility premise is added to T1.
+The good-Sylow callback retains **21 sporadic tags** and the numerical
+callback **24**, with only outer budgets needed for M22, M23 and M24.
+M11 and M12 are absent from both callbacks. The signature still has seven
+explicit parameters: four published bundles, pinned CFSG, and two residual
+model callbacks. The Tracey 2018 bundle retains both its coarse and bounded
+sharp conclusions. This is not a CFSG-only endpoint.
+
 For M22, the actual Sylow-eleven normalizer and centralizer orders are
 now proved to be 55 and 11. A checked five-transversal cover has 443520
 labels and uses 82 original seeds. Exact inner normalization gives
@@ -1024,14 +1053,68 @@ preserving the selected Sylow subgroup. The dependent incidence bound
 retains a separate accepted-second-image set for each literal first
 image. Cyclic restriction further reduces the requirement to the one
 fixed-generator fibre: `11 * |Out(M22)| <= 2 * |Aut fixing x|`.
-An internal conditional consumer proves that capacity at most 44 suffices
-for the outer budget. This capacity bound remains open; it is not added
-as a new T1 premise
+All 21 nonzero first-prefix certificates are now checked. Each uses 21
+cohorts of 960 labels and bounds its accepted-image set by two. Prefix
+zero is excluded for genuine automorphism images by the checked
+fixed-point argument. The dependent-sum theorem therefore gives
+`|Aut(M22) fixing x| <= 44`, hence `|Out(M22)| <= 8` and the required
+outer budget. No finite-capacity premise remains
 ([one-fibre reduction](SymmetricSubgroupAsymptotics/AutomorphismCyclicRestrictionCardinality.lean),
-[conditional consumer](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoOuterBudgetOfFixedCapacity.lean))
+[complete capacity](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoPackedFullCapacity.lean),
+[outer bound](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoOuterComplete.lean))
 ([normalizer](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoElevenNormalizerCard.lean),
 [cover](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoFiveTransversalCover.lean),
 [normalization](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoSylowOuterNormalization.lean)).
+
+The newest checked endpoint is
+[`CFSGSevenTargetsMathieuTwentyTwoComplete`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuTwentyTwoComplete.lean).
+It composes over the complete M12 endpoint, retaining **21 sporadic
+good-Sylow cases** and **23 numerical cases**. M11, M12 and M22 are
+absent from the numerical callback; M23 and M24 require only outer
+budgets. Four published bundles, pinned CFSG and both residual model
+callbacks remain explicit. The final assembly's ten-export audit uses
+only the standard axioms; it does not discharge these parameters.
+
+For M23 and M24, certified odd permutations normalize their literal
+23-cycles. A shared parity and transfer argument proves actual Sylow
+normalizer order 253 and sharpens the remaining incidence target to
+`23 * |Out| <= 2 * |Aut fixing the product|`. This is an internal
+reduction, with no finite-capacity premise added to T1
+([literal witnesses](SymmetricSubgroupAsymptotics/MathieuPrimeCycleOddNormalizerWitnesses.lean),
+[actual reductions](SymmetricSubgroupAsymptotics/MathieuTwentyThreeTwentyFourParityOuterReduction.lean)).
+Generic fixed-point and moved-image fibre normalizations are also proved
+using genuine inner conjugation by powers of the fixed product. They
+provide double-counting and equal-fibre identities for supplied original
+permutation representations; the remaining actual finite capacities are
+still required
+([finite incidence](SymmetricSubgroupAsymptotics/FiniteHomogeneousIncidence.lean),
+[automorphism normalization](SymmetricSubgroupAsymptotics/FixedProductAutomorphismIncidence.lean)).
+Their actual Mathieu applications give `3 * |Out(M23)| <= 2 * C_point`
+and `|Out(M24)| <= 2 * C_swap`. Here `C_point` counts automorphisms
+fixing the product whose involution image fixes point 0. An even
+involution on 23 points has at least three fixed points, so finite
+incidence gives the first bound. For M24, `C_swap` is the literal fibre
+whose involution image sends the product's unique fixed point 8 to 11;
+inner conjugation gives `|Aut fixing the product| = 23 * C_swap`.
+The numerical bounds on these two actual fibres remain open
+([M23](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreeNormalizedFixedPointFibre.lean),
+[M24](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourSwapFibreOuterReduction.lean)).
+
+Separately, Co3's checked selected word has element order divisible by
+14, so its actual group has even order. For Co1, the first literal
+matrix generator moves one basis vector and returns it after two steps;
+the certified vector period proves even element order in the actual
+model. The same shared vector-period bridge also proves even order
+for Ru from its first generator on one basis vector. Cumulative wrappers
+preserve all earlier Lie-family parity reductions and remove these
+three tags, leaving six sporadic tags in that
+residual. This advances the odd-order solubility reduction; it does not
+close either T1 model callback
+([Co3 parity](SymmetricSubgroupAsymptotics/CFSGCoThreeEvenOrder.lean),
+[Co1 certificate](SymmetricSubgroupAsymptotics/CFSGCoOneSelectedInvolutionPeriod.lean),
+[shared bridge](SymmetricSubgroupAsymptotics/MatrixModelSelectedPointPeriodTwo.lean),
+[Ru certificate](SymmetricSubgroupAsymptotics/CFSGRuSelectedVectorPeriodTwo.lean),
+[cumulative reduction](SymmetricSubgroupAsymptotics/CFSGEvenOrderAfterRu.lean)).
 
 A further optional endpoint,
 [`CFSGSevenTargetsTraceyPublished2018Bundle`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTraceyPublished2018Bundle.lean),

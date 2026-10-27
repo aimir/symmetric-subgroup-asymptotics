@@ -1329,9 +1329,10 @@ with the full quotient kernel retained, gives
 $\ell\leq(1+q)(1+q^3)(1+q^6)$. This squares strictly below $q^{24}$,
 proving the required least-index square on the original model.
 The signed-root argument below supplies the outer-order budget and
-removes this family from the numerical callback as well. With the Tits
-argument above, only the 26 sporadic model callbacks and four published
-bundles remain explicit parameters, alongside CFSG.
+removes this family from the numerical callback as well. Together with
+the Tits argument, these proofs discharge the nonsporadic model branches.
+The Mathieu reductions below further restrict the finite residual;
+the four published bundles and CFSG remain explicit.
 Every automorphism of the original positive-parameter Ree model can
 now be adjusted by an inner automorphism to preserve the literal two
 opposed Sylow images. Their normalizers meet in the actual fixed
@@ -1373,10 +1374,8 @@ these generate the original quotient. Actual inner normalization and
 uniqueness for each field label now prove
 $|\operatorname{Out}({}^2F_4(2^{2m+1}))|\leq2m+1$ for $m>0$.
 Together with the original proper-index lower bound, this pays the
-full outer budget. Together with the Tits results above, the optional
-T1 endpoint now retains only the 26 sporadic models in both its good-Sylow
-and numerical callbacks, alongside the four published
-bundles and CFSG. It is not a CFSG-only endpoint.
+full outer budget. The Tits results above supply both model budgets
+in the optional CFSG reduction.
 The actual M22 least-index square is also proved. Its literal 22-point
 action bounds the least index by $22$; actual element periods give
 $440\mid|\mathrm{M22}|$. Simplicity and Sylow arithmetic exclude order
@@ -1391,10 +1390,7 @@ ported from Kenta's Apache-2.0 formalization, with attribution and exact
 source hashes recorded in the repository. Each Sylow $11$-subgroup is
 therefore cyclic and acts without fixed points. A generator has two
 $11$-cycles, so its permutation centralizer and its cyclic normalizer
-are soluble. Its optional endpoint consequently retains
-$25$ sporadic tags in the good-Sylow callback and $26$ in the numerical
-callback, with only the outer budget required for M22. Both callbacks,
-the four published bundles and CFSG remain explicit parameters.
+are soluble. This supplies M22's good-Sylow witness internally.
 The pinned M11 presentation is now also bound to the original
 $11$-point generated subgroup. All five defining relations hold on a
 literal pair; a recovery word gives surjectivity, and inherited
@@ -1410,10 +1406,6 @@ a divisor of $144$. The internally proved Burnside theorem gives
 solubility. The two original presentation generators give a generating
 Sylow pair, proving the M11 good-Sylow case. A proper point stabilizer
 has index at most $11$, whose square is less than $7920$.
-That optional endpoint therefore retains $24$ sporadic
-good-Sylow cases and $26$ numerical cases, with only outer budgets
-required for M11 and M22. The four published bundles and CFSG remain
-explicit; this is not a CFSG-only endpoint.
 The actual M11 outer budget is now proved as well. Its original
 stabilizer transversals give a complete factorized cover with
 $11\cdot10\cdot9\cdot8=7920$ labels, using only $38$ certified seed
@@ -1435,10 +1427,8 @@ Thus $|\operatorname{Out}(\mathrm{M11})|\leq1$. The same checked class
 cover gives $k(\mathrm{M11})\leq10$, and divisibility by $11$ in every
 faithful proper coset action identifies the least index as $11$.
 These budgets discharge the M11 primitive and original binary/ternary
-block class consumers for every socle multiplicity. The M11 optional
-T1 endpoint retains $24$ sporadic good-Sylow cases and $25$ numerical
-cases; M11 is absent from both, and M22 requires only its outer budget.
-The four published bundles and pinned CFSG remain explicit parameters.
+block class consumers for every socle multiplicity, supplying both
+M11 model budgets internally.
 The cumulative original-action reduction applies the same M11 budgets
 to an actual nonaffine top or bounded component, preserving all previous
 affine and shape exclusions. Its unbounded residual is retained
@@ -1485,10 +1475,32 @@ centralizes it. Its normalizer therefore has order at least $2p$.
 Sylow congruence gives at least $p+1$ conjugates, so the group order
 exceeds $(p+1)^2$ for $p\geq3$. A moved-point stabilizer in degree
 $p+1$ supplies the required index bound.
-The newest optional T1 endpoint retains $21$ sporadic good-Sylow
-cases and $25$ numerical cases; M12, M22, M23 and M24 require only
-their outer budgets. The four published bundles and pinned CFSG
-remain explicit.
+The checked M12 continuation also supplies its outer budget internally.
+Its complete actual cover has $12\cdot11\cdot10\cdot9\cdot8=95040$
+labels from $50$ certified stabilizer-transversal seeds. Put $A=xy$ and
+$U=xAx^{-1}$. The short recovery words are
+$X=A^{-1}U^{-1}A^{-1}$ and $Y=A^{-1}U^{-1}$.
+An automorphism fixing $A$ sends $U$ to a candidate satisfying all six
+pinned relators on $X,Y$, together with $XY=A$. All twelve prefix
+certificates are checked, with eleven $720$-label cohorts per prefix.
+Their local whitelist bounds are
+$(1,1,0,4,1,1,1,1,0,1,0,0)$, whose sum is $11$.
+Since $A,U$ generate the same actual group, evaluation on $U$ is
+injective among automorphisms fixing $A$. The checked dependent-sum
+count therefore gives $|\operatorname{Aut}(\mathrm{M12})_A|\leq11$.
+The prime-order Sylow normalizer bound yields
+\[
+ 22\,|\operatorname{Out}(\mathrm{M12})|
+ \leq10\,|\operatorname{Aut}(\mathrm{M12})_A|\leq110,
+\]
+so $|\operatorname{Out}(\mathrm{M12})|\leq5$. The checked actual
+equivalence transports this bound to the pinned presentation.
+Divisibility by $11$ in every faithful proper coset action gives
+$\ell\geq11$, hence $\log_2\ell\geq2$; this pays the sufficient
+outer-order budget. No capacity, parity or odd-order-solubility premise
+is added to T1.
+This supplies M12's complete numerical payload in the optional CFSG
+reduction.
 
 For M22, Sylow congruence and actual centralizer divisibility now give
 normalizer order $55$ and centralizer order $11$. Its complete
@@ -1500,8 +1512,47 @@ An indexed incidence bound retains the sum of the accepted-image
 capacities over the literal first images. Cyclic restriction further
 gives $11|\operatorname{Out}(\mathrm{M22})|\leq2|\operatorname{Aut}(\mathrm{M22})_x|$,
 where the subscript denotes the automorphisms fixing the chosen generator.
-A fixed-generator capacity at most $44$ would suffice for the required
-outer budget. This capacity estimate remains open.
+All $21$ nonzero first-prefix certificates are now checked, each using
+$21$ cohorts of $960$ labels and bounding its accepted-image set by two.
+The zero prefix is excluded for genuine automorphism images by the
+checked fixed-point argument. The dependent-sum count gives
+$|\operatorname{Aut}(\mathrm{M22})_x|\leq44$, hence
+$|\operatorname{Out}(\mathrm{M22})|\leq8$, which pays the required
+outer budget. The newest checked optional T1 endpoint composes this with
+the complete M12 endpoint. It retains $21$ sporadic good-Sylow cases and
+$23$ numerical cases; M11, M12 and M22 are absent from the latter,
+while M23 and M24 need only outer budgets. No capacity premise is added.
+The four published bundles, pinned CFSG and both residual model callbacks
+remain explicit; the standard-axiom audit does not discharge them.
+
+For M23 and M24, certified odd permutations normalize the literal
+$23$-cycles. The shared parity and transfer argument gives actual
+Sylow normalizer order $253$ and
+$23|\operatorname{Out}|\leq2|\operatorname{Aut}_A|$.
+This is an internal reduction of the remaining capacity target.
+Generic fixed-point and moved-image fibre normalizations use genuine
+inner conjugation by powers of the fixed product, giving finite
+double-counting and equal-fibre identities. The remaining actual finite
+capacities are still required.
+The actual applications give
+\[
+ 3|\operatorname{Out}(\mathrm{M23})|\leq2C_{\mathrm{point}},\qquad
+ |\operatorname{Out}(\mathrm{M24})|\leq2C_{\mathrm{swap}}.
+\]
+The first fibre requires the involution image to fix point $0$; every
+even involution on $23$ points has at least three fixed points. The
+second fibre requires the involution image to send $8$ to $11$, where
+$8$ is the product's unique fixed point. Inner conjugation gives
+$|\operatorname{Aut}(\mathrm{M24})_A|=23C_{\mathrm{swap}}$.
+The numerical bounds on these literal fibres remain open.
+Separately, Co3's checked selected word has order divisible by $14$.
+For Co1, one basis vector is moved by the first literal matrix generator
+and returns after two steps. These certificates prove even order for
+both actual groups. A shared genuine-unit bridge applies the same
+vector-period argument to Ru. The cumulative wrappers preserve all earlier
+Lie-family parity reductions, leaving six sporadic tags in that
+residual. This advances the odd-order-solubility reduction without
+closing either T1 model callback.
 No whole rank-one Suzuki identification or lift to the ambient $F_4$
 automorphism group is assumed.
 The actual outer and middle fixed inversion blocks now have cardinalities
