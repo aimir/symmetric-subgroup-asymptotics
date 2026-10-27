@@ -189,11 +189,11 @@ not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
 The strongest optional CFSG endpoint is now
-[`CFSGSporadicBinaryFramesT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSporadicBinaryFramesT1Reduction.lean).
-Its `T1_of_three_published_inputs_cfsg_and_remaining_after_binary_frames` and
-`allTargets_of_three_published_inputs_cfsg_and_remaining_after_binary_frames`
+[`CFSGSuzBrayT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSuzBrayT1Reduction.lean).
+Its `T1_of_three_published_inputs_cfsg_and_remaining_after_suz_bray` and
+`allTargets_of_three_published_inputs_cfsg_and_remaining_after_suz_bray`
 construct the labelled transitive-count input from CFSG internally and
-supply the original J1 and four Y-section GoodSylow cases. Their
+supply the original J1, four Y-section and Suz GoodSylow cases. Their
 six explicit parameters are:
 
 | Parameter | Remaining mathematical requirement |
@@ -202,7 +202,7 @@ six explicit parameters are:
 | `hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput` | The actual soluble subgroup and binomial orbit partition in the exceptional `3·2^m` action, including its retained exponent restriction. |
 | `hTracey : TraceyPublished2018PermutationInputBundle` | The coarse transitive generator bound and the sharp generator bound in degrees 4 through 21. These remain two separate mathematical requirements. |
 | `hCFSG : CFSG.CFSGClassification` | The pinned classification statement, at commit `25507f8795f2e499b392f3312a576538e1c5ef78`. |
-| `remainingGoodSylow` | The exact `RemainingGoodSylowIndexAfterBinaryFrames` callback on 14 sporadic tags. |
+| `remainingGoodSylow` | The exact `RemainingGoodSylowIndexAfterSuzBray` callback on 13 sporadic tags. |
 | `remainingSimpleIndex` | The exact `RemainingSufficientSimpleIndexAfterMathieuTwentyFourComplete` numerical callback on 21 tags. |
 
 The theorem statements link these last two requirements to their literal
@@ -1097,13 +1097,13 @@ outer budget. No finite-capacity premise remains
 [normalization](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoSylowOuterNormalization.lean)).
 
 The latest refinement is
-[`CFSGSporadicBinaryFramesT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSporadicBinaryFramesT1Reduction.lean),
-which retains **14 sporadic good-Sylow cases** and **21 numerical cases**.
+[`CFSGSuzBrayT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSuzBrayT1Reduction.lean),
+which retains **13 sporadic good-Sylow cases** and **21 numerical cases**.
 The remaining good-Sylow tags are J2, J3, J4, Co1, Co2, Co3, HS, McL, He,
-Suz, HN, Ly, Th and Monster. J1, Fi22, Fi23, Fi24′ and Baby Monster are now
+HN, Ly, Th and Monster. Suz, J1, Fi22, Fi23, Fi24′ and Baby Monster are now
 supplied internally, in addition to the earlier Mathieu, Ru and ON cases.
 The three published bundles, pinned CFSG and both residual callbacks
-remain explicit. J1's numerical case is not discharged by this step.
+remain explicit. The numerical cases for these six models are unchanged.
 
 For all four Y-section models, one theorem works for every arm triple.
 Color the involution diagram in two commuting colors. Even products within
@@ -1130,9 +1130,22 @@ supplies every literal certificate internally
 ([faithful presentation map](SymmetricSubgroupAsymptotics/CFSGJankoOneLiteralRepresentation.lean),
 [whole matrix certificates](SymmetricSubgroupAsymptotics/CFSGJankoOneSevenMatrixCertificates.lean),
 [original J1 theorem](SymmetricSubgroupAsymptotics/CFSGJankoOneBinaryFrameGoodSylow.lean)).
-The separate generic
+For the original 64-dimensional Suz model over the field with three
+elements, let `a,b` be its actual generating units. Whole matrix identities
+prove `a^2=1`, `b^3=1`, `r^15=1` and `c^4=1`, where
+`r=a*b^2*a*b` and `c=r^8*b^2`. The generic
 [odd-rotation recovery theorem](SymmetricSubgroupAsymptotics/CFSGOddRotationBinaryFrames.lean)
-retains its whole binary-power premise and claims no further model case.
+shows that `c` commutes with `a`, and that the two binary subgroups
+`P=⟨a,c⟩` and `P^b` generate the same original model: their join contains
+`r=a*(b⁻¹*a*b)`, hence `b⁻¹=r⁻⁸*c`. Soluble Sylow-2 normalizers finish
+the good-Sylow conclusion. Each of the 14 fixed matrix products retains
+all 4096 entry checks. Shared row/column caches and a proved no-carry
+base-512 packing reduce each dot product to one natural-number product;
+all computations use kernel reflection. No matrix-power or generation
+hypothesis remains in the model theorem or T1 successor
+([whole identities](SymmetricSubgroupAsymptotics/CFSGSuzOddRotationBrayMatrixIdentities.lean),
+[original Suz theorem](SymmetricSubgroupAsymptotics/CFSGSuzOddRotationGoodSylow.lean),
+[packed reflection](SymmetricSubgroupAsymptotics/MatrixKroneckerProductReflection.lean)).
 
 The preceding ON refinement is
 [`CFSGSevenTargetsONBinaryGoodSylow`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsONBinaryGoodSylow.lean),

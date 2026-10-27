@@ -1825,7 +1825,26 @@ matrix operations retain their complete $49$-entry checks, including
 inverse uniqueness for genuine units. CFSG-only soluble Sylow-$2$
 normalizers finish the good-Sylow conclusion.
 
-The resulting T1 endpoint retains $14$ sporadic good-Sylow cases and
+The original $64$-dimensional Suz model over $\mathbb F_3$ admits a
+similar construction without a named-model identification. For its actual
+unit generators $a,b$, whole matrix certificates give
+\[
+ a^2=1,\qquad b^3=1,\qquad r^{15}=1,\qquad c^4=1,
+ \qquad r=ab^2ab,\quad c=r^8b^2.
+\]
+The odd-rotation identities show that $c$ commutes with $a$. Thus
+$P=\langle a,c\rangle$ is a binary subgroup. The join of $P$ and its
+conjugate by $b$ contains $r=a(b^{-1}ab)$, and then
+$b^{-1}=r^{-8}c$, so these two binary subgroups generate the original
+model. The proved soluble Sylow-$2$ normalizer theorem supplies its
+good-Sylow conclusion. Every one of the $14$ fixed matrix products
+retains all $4096$ entry checks. Shared row and column caches, together
+with a proved no-carry base-$512$ packing identity, replace each dot
+product by one natural-number product checked by kernel reflection.
+The concrete model theorem and T1 successor require no matrix-power
+or generation hypothesis.
+
+The resulting T1 endpoint retains $13$ sporadic good-Sylow cases and
 $21$ numerical cases. It supplies the LMM input internally, retaining
 three published bundles, pinned CFSG and both restricted callbacks.
 The coarse and bounded sharp Tracey fields remain distinct requirements.
