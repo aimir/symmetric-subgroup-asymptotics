@@ -1066,69 +1066,71 @@ outer budget. No finite-capacity premise remains
 [cover](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoFiveTransversalCover.lean),
 [normalization](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoSylowOuterNormalization.lean)).
 
-The newest checked endpoint is
-[`CFSGSevenTargetsMathieuTwentyTwoComplete`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuTwentyTwoComplete.lean).
-It composes over the complete M12 endpoint, retaining **21 sporadic
-good-Sylow cases** and **23 numerical cases**. M11, M12 and M22 are
-absent from the numerical callback; M23 and M24 require only outer
-budgets. Four published bundles, pinned CFSG and both residual model
-callbacks remain explicit. The final assembly's ten-export audit uses
-only the standard axioms; it does not discharge these parameters.
+The latest refinement is
+[`CFSGSevenTargetsRuBinaryGoodSylow`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsRuBinaryGoodSylow.lean),
+which retains **20 sporadic good-Sylow cases** and **21 numerical cases**.
+For the original 28-dimensional binary Ru model, the kernel checks every
+row of the literal identities `A^2 = I` and `B^4 = I`. A shared row-power
+reflection theorem separates source coefficients from modular arithmetic;
+the final matrix equalities assemble the 56 checked rows. Actual unit
+generators then give two generating binary subgroups. CFSG-only odd-order
+solubility supplies soluble Sylow-2 normalizers, yielding GoodSylow-2
+without a matrix-power or generation premise at the endpoint
+([row reflection](SymmetricSubgroupAsymptotics/MatrixNaturalRowPowerReflection.lean),
+[whole matrix powers](SymmetricSubgroupAsymptotics/CFSGRuBinaryMatrixPowerIdentities.lean),
+[actual Ru theorem](SymmetricSubgroupAsymptotics/CFSGRuBinaryPowerGoodSylow.lean)).
+The two matrix exports and five final exports pass standard-axiom audits.
+Ru's numerical obligation, the four published bundles, pinned CFSG and
+both residual callbacks remain explicit.
 
-For M23 and M24, certified odd permutations normalize their literal
-23-cycles. A shared parity and transfer argument proves actual Sylow
-normalizer order 253 and sharpens the remaining incidence target to
-`23 * |Out| <= 2 * |Aut fixing the product|`. This is an internal
-reduction, with no finite-capacity premise added to T1
-([literal witnesses](SymmetricSubgroupAsymptotics/MathieuPrimeCycleOddNormalizerWitnesses.lean),
-[actual reductions](SymmetricSubgroupAsymptotics/MathieuTwentyThreeTwentyFourParityOuterReduction.lean)).
-Generic fixed-point and moved-image fibre normalizations are also proved
-using genuine inner conjugation by powers of the fixed product. They
-provide double-counting and equal-fibre identities for supplied original
-permutation representations; the remaining actual finite capacities are
-still required
-([finite incidence](SymmetricSubgroupAsymptotics/FiniteHomogeneousIncidence.lean),
-[automorphism normalization](SymmetricSubgroupAsymptotics/FixedProductAutomorphismIncidence.lean)).
-Their actual Mathieu applications give `3 * |Out(M23)| <= 2 * C_point`
-and `|Out(M24)| <= 2 * C_swap`. Here `C_point` counts automorphisms
-fixing the product whose involution image fixes point 0. An even
-involution on 23 points has at least three fixed points, so finite
-incidence gives the first bound. For M24, `C_swap` is the literal fibre
-whose involution image sends the product's unique fixed point 8 to 11;
-inner conjugation gives `|Aut fixing the product| = 23 * C_swap`.
-The numerical bounds on these two actual fibres remain open
-([M23](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreeNormalizedFixedPointFibre.lean),
-[M24](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourSwapFibreOuterReduction.lean)).
-M23's fibre now has a checked complete carrier with 443520 labels:
-the actual stabilizer of point 22 is covered by 82 original words,
-with factors `22 * 21 * 20 * 16 * 3`. A literal conjugating word carries
-this chart to the represented involution images fixing point 0. The
-49-export audit checks this same-fibre binding without requiring a
-presentation-model recovery
-([tail cover](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreeStabilizerTransversalCover.lean),
-[normalized chart](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreeNormalizedFibreChart.lean)).
-The same checked M22 packed maps extend to this actual chart by fixing
-one new point. A checked raw evaluator handles every valid M23 chart
-address and all nine exact pinned relators, including the two
-unexponentiated words. This proves necessary point tests; the finite
-capacity bound still requires a separate checked enumeration
-([word transport](SymmetricSubgroupAsymptotics/CFSGMathieuTailWordTransport.lean),
-[all-code encoding](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreePackedPointEncoding.lean)).
-The variable-whitelist semantic template and the first selected block
-(first address 0, second address 1, 960 tails) are checked and audited.
-This block has no accepted images; no bound on another prefix is inferred
-([template](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreePackedPrefixCertificate.lean),
-[first block](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreeFirstZeroSecondOneCapacity.lean)).
-M24 now has a constructive 443520-label cover of its actual two-point
-stabilizer, using the four original attributed tail certificates.
-An actual frame carries that cover to the swap fibre. Its scalar forward
-and inverse maps reuse the same checked M22 packed rows by fixing two
-new points, with no whole-group enumeration or presentation recovery.
-The cover and frame transports pass 8 + 5 + 7-export standard-axiom
-audits; the numerical capacity remains open
-([cover](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourTwoPointTailCover.lean),
-[actual fibre](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourSwapFibreChart.lean),
-[shared packed chart](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourSharedSwapChart.lean)).
+The preceding complete Mathieu endpoint is
+[`CFSGSevenTargetsMathieuTwentyFourComplete`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuTwentyFourComplete.lean).
+It composes the complete M11, M12, M22, M23 and M24 refinements, retaining
+**21 sporadic good-Sylow cases** and **21 numerical cases**. Four published
+bundles, the pinned CFSG classification and both residual model callbacks
+remain explicit. No finite-capacity premise is added. The canonical
+seven-published-input endpoint is unchanged.
+
+For M23 and M24, certified odd permutations normalize the literal
+23-cycles. The shared parity and transfer argument proves actual Sylow
+normalizer order 253. Genuine inner conjugation by powers of the fixed
+product then gives
+`3 * |Out(M23)| <= 2 * C_point` and `|Out(M24)| <= 2 * C_swap`.
+Here `C_point` counts fixed-product automorphisms whose involution image
+fixes point 0; `C_swap` counts those whose involution image sends the
+product's unique fixed point 8 to 11
+([parity reductions](SymmetricSubgroupAsymptotics/MathieuTwentyThreeTwentyFourParityOuterReduction.lean),
+[M23 normalization](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreeNormalizedFixedPointFibre.lean),
+[M24 normalization](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourSwapFibreOuterReduction.lean)).
+
+Both actual fibres now have complete checked 443520-label covers with
+factors `22 * 21 * 20 * 16 * 3`, using 82 original stabilizer-word seeds.
+M23's point-stabilizer chart is conjugated to point 0. M24's two-point
+stabilizer chart is transported by an actual frame to the 8/11 swap
+fibre. Their forward and inverse evaluators reuse the same checked M22
+packed tail maps, extended by one or two fixed points. Neither argument
+requires a presentation-model recovery, a whole M24 group enumeration,
+or an extension of an abstract automorphism to the point set
+([M23 chart](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreeNormalizedFibreChart.lean),
+[M24 cover](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourTwoPointTailCover.lean),
+[M24 shared chart](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourSharedSwapChart.lean)).
+
+The complete finite checks use all nine exact pinned M23 relators and
+all seven exact pinned M24 relators. Each of the 22 first addresses has
+21 independently checked 960-label cohorts. Variable-whitelist semantic
+consumers cover every genuine automorphism image; no converse from a
+surviving permutation to an automorphism is assumed. The literal
+whitelist totals are **7 for M23** and **1 for M24**, yielding
+`C_point <= 7`, `C_swap <= 1`, `|Out(M23)| <= 4` and `|Out(M24)| <= 2`.
+These internally proved bounds discharge both remaining Mathieu outer
+budgets
+([M23 full capacity](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreePackedFullPointFibreCapacity.lean),
+[M23 outer budget](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreeOuterComplete.lean),
+[M24 full capacity](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourCompleteWhitelistCapacity.lean),
+[M24 outer budget](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourOuterComplete.lean)).
+The M24 dispatcher six-export and final eight-export audits use only the
+standard axioms. These audits do not discharge the four published
+bundles, pinned CFSG or the two remaining 21-case callbacks.
 
 Separately, Co3's checked selected word has element order divisible by
 14, so its actual group has even order. For Co1, the first literal
@@ -1154,7 +1156,16 @@ centralizer defining the model. If that product were trivial, the
 Coxeter relations would collapse all 16 bimonster generators to one,
 contradicting inherited noncommutativity. The selected square identity
 therefore proves even order (12 audited exports including the cumulative
-wrapper). Five Lie-family branches remain open in this parity reduction. This advances the odd-order
+wrapper). The remaining twisted-A, Ree, Tits and triality parity branches
+are also proved in their original full-centre quotients. Exhaustion of
+the literal index leaves no parity callback. The resulting
+`odd_order_solvable_of_cfsg` theorem assumes only the pinned CFSG
+classification; its three-export audit uses the standard axioms.
+A generic consequence proves that every Sylow-2 normalizer in a finite
+group is soluble, by applying this theorem to its odd-order quotient.
+Together with two generating binary subgroups this supplies the
+GoodSylow-2 certificate; the group-specific generation requirement is
+still explicit. This advances the odd-order
 solubility reduction; it does not close either T1 model callback
 ([Co3 parity](SymmetricSubgroupAsymptotics/CFSGCoThreeEvenOrder.lean),
 [Co1 certificate](SymmetricSubgroupAsymptotics/CFSGCoOneSelectedInvolutionPeriod.lean),
@@ -1168,7 +1179,8 @@ solubility reduction; it does not close either T1 model callback
 [Th certificate](SymmetricSubgroupAsymptotics/CFSGThSelectedNegativeRow.lean),
 [Ly certificate](SymmetricSubgroupAsymptotics/CFSGLySelectedRowCombination.lean),
 [Monster certificate](SymmetricSubgroupAsymptotics/CFSGMonsterSelectedDerivedInvolution.lean),
-[cumulative reduction](SymmetricSubgroupAsymptotics/CFSGEvenOrderAfterMonster.lean)).
+[odd-order endpoint](SymmetricSubgroupAsymptotics/CFSGOddOrderSolvabilityComplete.lean),
+[Sylow-2 normalizers](SymmetricSubgroupAsymptotics/CFSGSylowTwoNormalizerSolvable.lean)).
 
 A further optional endpoint,
 [`CFSGSevenTargetsTraceyPublished2018Bundle`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTraceyPublished2018Bundle.lean),

@@ -1518,23 +1518,17 @@ The zero prefix is excluded for genuine automorphism images by the
 checked fixed-point argument. The dependent-sum count gives
 $|\operatorname{Aut}(\mathrm{M22})_x|\leq44$, hence
 $|\operatorname{Out}(\mathrm{M22})|\leq8$, which pays the required
-outer budget. The newest checked optional T1 endpoint composes this with
-the complete M12 endpoint. It retains $21$ sporadic good-Sylow cases and
-$23$ numerical cases; M11, M12 and M22 are absent from the latter,
-while M23 and M24 need only outer budgets. No capacity premise is added.
-The four published bundles, pinned CFSG and both residual model callbacks
-remain explicit; the standard-axiom audit does not discharge them.
+outer budget. The newest checked optional CFSG endpoint now also
+includes the complete M23 and M24 refinements. It retains $21$ sporadic
+good-Sylow cases and $21$ numerical cases. The four published input
+bundles, pinned CFSG classification and both residual model callbacks
+remain explicit; no finite-capacity premise is added. The canonical
+seven-published-input endpoint is unchanged.
 
 For M23 and M24, certified odd permutations normalize the literal
 $23$-cycles. The shared parity and transfer argument gives actual
-Sylow normalizer order $253$ and
-$23|\operatorname{Out}|\leq2|\operatorname{Aut}_A|$.
-This is an internal reduction of the remaining capacity target.
-Generic fixed-point and moved-image fibre normalizations use genuine
-inner conjugation by powers of the fixed product, giving finite
-double-counting and equal-fibre identities. The remaining actual finite
-capacities are still required.
-The actual applications give
+Sylow normalizer order $253$. Genuine inner conjugation by powers of
+the fixed product yields
 \[
  3|\operatorname{Out}(\mathrm{M23})|\leq2C_{\mathrm{point}},\qquad
  |\operatorname{Out}(\mathrm{M24})|\leq2C_{\mathrm{swap}}.
@@ -1542,24 +1536,45 @@ The actual applications give
 The first fibre requires the involution image to fix point $0$; every
 even involution on $23$ points has at least three fixed points. The
 second fibre requires the involution image to send $8$ to $11$, where
-$8$ is the product's unique fixed point. Inner conjugation gives
+$8$ is the product's unique fixed point, and
 $|\operatorname{Aut}(\mathrm{M24})_A|=23C_{\mathrm{swap}}$.
-The numerical bounds on these literal fibres remain open.
-The M23 fibre has a checked complete carrier of
+
+Both actual fibres have complete checked covers with
 $22\cdot21\cdot20\cdot16\cdot3=443520$ labels, using $82$ original
-stabilizer words. A literal conjugating word transports the actual
-point-$22$ stabilizer chart to the represented involution images fixing
-point $0$, without presentation-model recovery.
-The checked M22 packed maps extend to this chart by fixing the new
-point. A raw evaluator is proved sound at every valid chart address
-for all nine exact pinned relators, including the two unexponentiated
-words. It supplies necessary point tests, while the finite capacity
-bound still requires a checked enumeration.
-M24 has a constructive cover of its actual two-point stabilizer with
-the same number of labels. An actual frame transports it to the swap
-fibre. The forward and inverse maps reuse the checked M22 packed rows
-by fixing two new points. These are checked same-fibre transports;
-the numerical capacity remains open.
+stabilizer-word seeds. A literal conjugating word transports the M23
+point-stabilizer chart to point $0$. An actual frame transports the M24
+two-point stabilizer chart to the swap fibre. The forward and inverse
+evaluators reuse the same checked M22 packed tail maps, extended by one
+or two fixed points. No presentation-model recovery, whole M24 group
+enumeration or automorphism extension to the point set is assumed.
+
+The complete checks use all nine exact pinned M23 relators and all seven
+exact pinned M24 relators. Each of the $22$ first addresses is covered
+by $21$ independently checked $960$-label cohorts. The semantic consumer
+bounds genuine automorphism images by variable literal whitelists; it
+needs no converse from a surviving permutation to an automorphism.
+The checked whitelist totals are $7$ and $1$, respectively, giving
+\[
+ C_{\mathrm{point}}\leq7,\quad C_{\mathrm{swap}}\leq1,\quad
+ |\operatorname{Out}(\mathrm{M23})|\leq4,\quad
+ |\operatorname{Out}(\mathrm{M24})|\leq2.
+\]
+These internally proved bounds discharge both remaining Mathieu outer
+budgets. The M24 dispatcher six-export and final eight-export audits use
+only the standard axioms; they do not discharge the displayed published
+and CFSG inputs or either remaining $21$-case callback.
+
+A further refinement discharges the original binary $28$-dimensional Ru
+model's good-Sylow case. A shared row-power reflection theorem checks all
+$56$ rows of the literal matrix identities $A^2=I$ and $B^4=I$; matrix
+extensionality then assembles the full equalities. The actual unit
+generators supply two generating binary subgroups, and the CFSG-only
+odd-order theorem supplies soluble Sylow-$2$ normalizers. The resulting
+auxiliary T1 endpoint retains $20$ sporadic good-Sylow cases and $21$
+numerical cases, with the four published bundles and pinned CFSG still
+explicit. Ru's numerical case is unchanged; no matrix-power or generation
+premise is added to T1.
+
 Separately, Co3's checked selected word has order divisible by $14$.
 For Co1, one basis vector is moved by the first literal matrix generator
 and returns after two steps. These certificates prove even order for
@@ -1577,9 +1592,15 @@ a product of arm involutions is proved to lie in the actual derived
 centralizer defining the model. Its triviality would force all sixteen
 bimonster generators to coincide by the Coxeter relations, contradicting
 inherited noncommutativity. Thus this product is a nontrivial involution.
-No sporadic tags remain in the parity residual; five Lie-family branches
-remain open. This advances the
-odd-order-solubility reduction without closing either T1 model callback.
+The remaining twisted-A, Ree, Tits and triality parity branches are
+also proved in their actual full-centre quotients. Exhausting the
+literal model index leaves no parity callback, so odd-order solubility
+now follows from the pinned classification alone. A generic consequence
+proves that every finite Sylow-$2$ normalizer is soluble: its quotient
+by the Sylow subgroup has odd order. Generation by two binary
+subgroups then gives the required good-Sylow certificate when that
+generation is supplied. This does not by itself close either T1 model
+callback.
 No whole rank-one Suzuki identification or lift to the ambient $F_4$
 automorphism group is assumed.
 The actual outer and middle fixed inversion blocks now have cardinalities
