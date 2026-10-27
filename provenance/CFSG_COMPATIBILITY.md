@@ -16,6 +16,26 @@ replacement backend with the required quantitative theorems proved for its
 own models. These compatibility modules do not assert that this integration
 has been completed.
 
+Selected checks in the pinned upstream toolchain now prove transports
+for the actual cyclic and alternating carriers, all valid untwisted-A
+and type-C carriers, and all valid type-B carriers of rank two or
+characteristic two. The last family is mapped to a literal old type-C
+entry of the non-disjoint historical catalogue. It uses the actual spin
+fixed-point comparison and symplectic perfectness, followed by the proved
+original-C equivalence. Its 18 audited exports use only `propext`,
+`Classical.choice`, and `Quot.sound`. It does not identify odd
+higher-rank B with an old B entry. These selected checks have not yet
+been composed with the full completed-classification theorem or the T1
+endpoint, and no cross-version proof object is reused.
+
+In the publication toolchain, the original odd-characteristic B and D
+projective equivalences and the actual integral/tensor Lie structures
+are now proved. Their common source-spanning and doubled-coordinate
+arguments require no old-model simplicity or source-recognition input.
+They provide the original-model side of further concrete transports;
+the remaining upstream field/form comparisons and bad-characteristic
+kernel arguments must still be checked and composed.
+
 ## Definition and presentation ports
 
 `Axiom69NativeMatrixDefinitionPort.lean` retains the formulas for

@@ -253,6 +253,32 @@ All sixty declarations audited in this proof packet use only the three
 standard axioms listed above. Transport from every completed-CFSG carrier
 and the full classification integration remain separate obligations.
 
+The original type-B and type-D projective Serre groups are also identified
+with their literal natural elementary projective groups in odd
+characteristic
+([B](SymmetricSubgroupAsymptotics/CFSGOrthogonalBOriginalProjectiveRecognition.lean),
+[D](SymmetricSubgroupAsymptotics/CFSGOrthogonalDOriginalProjectiveEquivalence.lean)).
+Actual source root-height induction proves rational spanning. Full integer
+coordinates give an integral retraction up to multiplication by two; this
+remains injective after field extension when two is nonzero. These theorems
+take no source-faithfulness, group-simplicity, or recognition hypothesis.
+
+The literal integral lattice now has a proved Lie bracket, inherited by
+its actual tensor space in every characteristic
+([Lie structures](SymmetricSubgroupAsymptotics/CFSGSerreIntegralLieAlgebra.lean)).
+The divided Leibniz identity proves bracket closure by lattice minimality.
+If every Cartan column has an entry equal to minus one, the integral
+lattice and every field extension are perfect
+([perfectness](SymmetricSubgroupAsymptotics/CFSGSerreBaseChangePerfect.lean)).
+Root-polynomial Lie preservation follows from the actual integral
+degree-four vanishing condition
+([root Lie homomorphisms](SymmetricSubgroupAsymptotics/CFSGSerreRootLieHom.lean));
+the degree-four, five and six Leibniz identities account for all cross
+terms. The orthogonal foundations and the subsequent odd-group/Lie packets
+have respectively 150 and 114 audited exports, using only the same three
+standard axioms. These results support the remaining catalogue transport;
+the five mathematical requirements in the T1 signature remain explicit.
+
 The local geometry underlying `hExceptionalOrbits` is now proved on the
 single actual correlated quotient `(PSL₂(F)^e)/H`, for `H` normal of index
 three in the Borel power and `card F` coprime to three. The full orbit
