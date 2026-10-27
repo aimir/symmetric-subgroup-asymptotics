@@ -1,0 +1,209 @@
+import Mathlib.GroupTheory.IsPerfect
+import Mathlib.GroupTheory.GroupAction.Quotient
+import Mathlib.Algebra.Group.Subgroup.ZPowers.Basic
+import Mathlib.Data.Fintype.EquivFin
+import Mathlib.Data.Finite.Card
+import Lean.Elab.Tactic.Omega
+
+/-! A perfect transitive permutation image has trivial centralizer below
+twice its nontrivial-action degree gap. The gap is expressed only for
+literal finite actions; no faithfulness, simplicity, or order hypothesis
+on the acting group is needed. A nonidentity centralizing permutation
+generates a free cyclic action. Its actual orbit quotient has degree
+below the gap, so the original image is abelian and hence trivial. -/
+set_option autoImplicit false
+noncomputable section
+open scoped commutatorElement
+
+namespace SymmetricSubgroupAsymptotics.PerfectTransitiveActionCentralizer
+
+universe u v w
+
+/-- Every permutation action on fewer than `d` points is trivial. -/
+def FiniteActionGap (L : Type u) [Group L] (d : ℕ) : Prop :=
+  ∀ (n : ℕ) (rho : L →* Equiv.Perm (Fin n)), n < d → rho = 1
+
+/-- The finite-carrier form of the gap, including arbitrary universes. -/
+theorem finite_action_eq_one_of_gap {L : Type u} [Group L] {d : ℕ}
+    (hgap : FiniteActionGap L d) {X : Type v} [Finite X]
+    (rho : L →* Equiv.Perm X) (hcard : Nat.card X < d) : rho = 1 := by
+  classical
+  letI : Fintype X := Fintype.ofFinite X
+  let e := Fintype.equivFin X
+  let sigma : L →* Equiv.Perm (Fin (Fintype.card X)) :=
+    e.permCongrHom.toMonoidHom.comp rho
+  have hsigma : sigma = 1 := hgap _ sigma (by
+    simpa only [Nat.card_eq_fintype_card] using hcard)
+  apply MonoidHom.ext
+  intro g
+  apply e.permCongrHom.injective
+  have hg : e.permCongrHom (rho g) = 1 := DFunLike.congr_fun hsigma g
+  exact hg.trans (map_one e.permCongrHom).symm
+
+/-- A centralizing permutation of a transitive action fixing one point
+fixes every point. This does not require finiteness. -/
+theorem centralizing_perm_eq_one_of_fixed {L : Type u} [Group L]
+    {X : Type v} [MulAction L X] [MulAction.IsPretransitive L X]
+    (c : Equiv.Perm X) (hc : ∀ (g : L) (x : X), c (g • x) = g • c x)
+    (x : X) (hx : c x = x) : c = 1 := by
+  apply Equiv.ext
+  intro y
+  obtain ⟨g, hg⟩ := MulAction.exists_smul_eq L x y
+  calc
+    c y = c (g • x) := congrArg c hg.symm
+    _ = g • c x := hc g x
+    _ = g • x := congrArg (fun z : X => g • z) hx
+    _ = y := hg
+
+/-- A perfect group has no nontrivial abelian permutation image. -/
+theorem hom_eq_one_of_commuting {L : Type u} {G : Type v}
+    [Group L] [Group G] [Group.IsPerfect L]
+    (f : L →* G) (hc : ∀ g h : L, Commute (f g) (f h)) : f = 1 := by
+  have hker : commutator L ≤ f.ker := by
+    rw [commutator_def]
+    apply Subgroup.commutator_le.mpr
+    intro g _ h _
+    change f ⁅g, h⁆ = 1
+    rw [map_commutatorElement]
+    exact (hc g h).commutator_eq
+  have htop : f.ker = ⊤ := top_le_iff.mp (by
+    rw [← Group.IsPerfect.commutator_eq_top (G := L)]
+    exact hker)
+  exact MonoidHom.ker_eq_top_iff.mp htop
+
+/-- The actual action on orbits of a commuting auxiliary group. -/
+@[reducible]
+def commutingOrbitMulAction {L : Type u} {P : Type w} {X : Type v}
+    [Group L] [Group P] [MulAction L X] [MulAction P X]
+    (hc : ∀ (g : L) (p : P) (x : X), g • (p • x) = p • (g • x)) :
+    MulAction L (MulAction.orbitRel.Quotient P X) where
+  smul g := Quotient.map' (fun x : X => g • x) (by
+    intro x y hxy
+    rcases hxy with ⟨p, hp⟩
+    exact ⟨p, (hc g p y).symm.trans (congrArg (fun z : X => g • z) hp)⟩)
+  one_smul q := by
+    refine Quotient.inductionOn' q (fun x => ?_)
+    change (Quotient.mk'' ((1 : L) • x) : MulAction.orbitRel.Quotient P X) =
+      Quotient.mk'' x
+    rw [one_smul]
+  mul_smul g h q := by
+    refine Quotient.inductionOn' q (fun x => ?_)
+    change (Quotient.mk'' ((g * h) • x) : MulAction.orbitRel.Quotient P X) =
+      Quotient.mk'' (g • (h • x))
+    rw [mul_smul]
+
+/-- If a perfect action preserves every orbit of a commuting abelian
+action, then the perfect action is trivial. -/
+theorem action_eq_one_of_orbitwise {L : Type u} {P : Type w} {X : Type v}
+    [Group L] [Group P] [Group.IsPerfect L] [IsMulCommutative P]
+    [MulAction L X] [MulAction P X]
+    (hc : ∀ (g : L) (p : P) (x : X), g • (p • x) = p • (g • x))
+    (horbit : ∀ (g : L) (x : X), MulAction.orbitRel P X (g • x) x) :
+    MulAction.toPermHom L X = 1 := by
+  apply hom_eq_one_of_commuting
+  intro g h
+  apply Equiv.ext
+  intro x
+  change g • (h • x) = h • (g • x)
+  obtain ⟨p, hp⟩ := horbit g x
+  obtain ⟨q, hq⟩ := horbit h x
+  calc
+    g • (h • x) = g • (q • x) := congrArg (fun z : X => g • z) hq.symm
+    _ = q • (g • x) := hc g q x
+    _ = q • (p • x) := congrArg (fun z : X => q • z) hp.symm
+    _ = p • (q • x) := by
+      rw [smul_smul, smul_smul, IsMulCommutative.is_comm.comm q p]
+    _ = p • (h • x) := congrArg (fun z : X => p • z) hq
+    _ = h • (p • x) := (hc h p x).symm
+    _ = h • (g • x) := congrArg (fun z : X => h • z) hp
+
+/-- Below twice the action gap, the centralizer is trivial. The cyclic
+group here is the genuine subgroup generated by the proposed centralizer
+element, and the quotient is its actual orbit quotient. -/
+theorem centralizing_perm_eq_one_of_card_lt_twice_gap
+    {L : Type u} [Group L] [Group.IsPerfect L] {d : ℕ}
+    (hgap : FiniteActionGap L d) {X : Type v} [Finite X]
+    [MulAction L X] [MulAction.IsPretransitive L X]
+    (hcard : Nat.card X < 2 * d) (c : Equiv.Perm X)
+    (hc : ∀ (g : L) (x : X), c (g • x) = g • c x) : c = 1 := by
+  classical
+  by_contra hne
+  letI : Fintype X := Fintype.ofFinite X
+  let P := Subgroup.zpowers c
+  let O := MulAction.orbitRel.Quotient P X
+  have hcperm (g : L) : Commute c (MulAction.toPermHom L X g) := by
+    apply Equiv.ext
+    exact hc g
+  have hpperm (p : P) (g : L) :
+      Commute (p : Equiv.Perm X) (MulAction.toPermHom L X g) := by
+    obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp p.property
+    rw [← hk]
+    exact (hcperm g).zpow_left k
+  have hcomm (g : L) (p : P) (x : X) :
+      g • (p • x) = p • (g • x) := by
+    change (MulAction.toPermHom L X g) ((p : Equiv.Perm X) x) =
+      (p : Equiv.Perm X) (MulAction.toPermHom L X g x)
+    exact congrArg (fun f : Equiv.Perm X => f x) (hpperm p g).eq.symm
+  have hfree (x : X) : MulAction.stabilizer P x = ⊥ := by
+    apply le_antisymm ?_ bot_le
+    intro p hp
+    change p = 1
+    apply Subtype.ext
+    apply centralizing_perm_eq_one_of_fixed (p : Equiv.Perm X)
+      (fun g y => (hcomm g p y).symm) x
+    exact hp
+  have hcp : (⟨c, Subgroup.mem_zpowers c⟩ : P) ≠ 1 := by
+    intro he
+    exact hne (congrArg Subtype.val he)
+  letI : Nontrivial P := ⟨⟨⟨c, Subgroup.mem_zpowers c⟩, 1, hcp⟩⟩
+  have hp2 : 2 ≤ Nat.card P := by
+    have := Finite.one_lt_card (α := P)
+    omega
+  have hfactor : Nat.card X = Nat.card O * Nat.card P := by
+    calc
+      Nat.card X = Nat.card (O × P) :=
+        Nat.card_congr (MulAction.selfEquivOrbitsQuotientProd hfree)
+      _ = Nat.card O * Nat.card P := by rw [Nat.card_prod]
+  have htwice : 2 * Nat.card O ≤ Nat.card X := by
+    calc
+      2 * Nat.card O = Nat.card O * 2 := Nat.mul_comm _ _
+      _ ≤ Nat.card O * Nat.card P := Nat.mul_le_mul_left _ hp2
+      _ = Nat.card X := hfactor.symm
+  have hsmall : Nat.card O < d := by omega
+  letI : MulAction L O := commutingOrbitMulAction hcomm
+  have hquotient : MulAction.toPermHom L O = 1 :=
+    finite_action_eq_one_of_gap hgap (MulAction.toPermHom L O) hsmall
+  have horbit (g : L) (x : X) : MulAction.orbitRel P X (g • x) x := by
+    have he : g • (Quotient.mk'' x : O) = (Quotient.mk'' x : O) :=
+      congrArg (fun f : Equiv.Perm O => f (Quotient.mk'' x))
+        (DFunLike.congr_fun hquotient g)
+    change (Quotient.mk'' (g • x) : O) = Quotient.mk'' x at he
+    exact Quotient.exact he
+  have himage : MulAction.toPermHom L X = 1 :=
+    action_eq_one_of_orbitwise hcomm horbit
+  have hsub : Subsingleton X := ⟨by
+    intro x y
+    obtain ⟨g, hg⟩ := MulAction.exists_smul_eq L x y
+    have hfix : g • x = x := congrArg (fun f : Equiv.Perm X => f x)
+      (DFunLike.congr_fun himage g)
+    exact hfix.symm.trans hg⟩
+  apply hne
+  apply Equiv.ext
+  intro x
+  exact hsub.elim (c x) x
+
+/-- Subgroup formulation for the centralizer of the permutation image. -/
+theorem centralizer_range_eq_bot {L : Type u} [Group L] [Group.IsPerfect L]
+    {d : ℕ} (hgap : FiniteActionGap L d) {X : Type v} [Finite X]
+    [MulAction L X] [MulAction.IsPretransitive L X]
+    (hcard : Nat.card X < 2 * d) :
+    Subgroup.centralizer (Set.range (MulAction.toPermHom L X)) = ⊥ := by
+  apply le_antisymm ?_ bot_le
+  intro c hc
+  change c = 1
+  apply centralizing_perm_eq_one_of_card_lt_twice_gap hgap hcard c
+  intro g x
+  have he := Subgroup.mem_centralizer_iff.mp hc _ ⟨g, rfl⟩
+  exact congrArg (fun f : Equiv.Perm X => f x) he.symm
+
+end SymmetricSubgroupAsymptotics.PerfectTransitiveActionCentralizer
