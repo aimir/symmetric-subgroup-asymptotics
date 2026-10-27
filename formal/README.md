@@ -1099,22 +1099,76 @@ inner conjugation gives `|Aut fixing the product| = 23 * C_swap`.
 The numerical bounds on these two actual fibres remain open
 ([M23](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreeNormalizedFixedPointFibre.lean),
 [M24](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourSwapFibreOuterReduction.lean)).
+M23's fibre now has a checked complete carrier with 443520 labels:
+the actual stabilizer of point 22 is covered by 82 original words,
+with factors `22 * 21 * 20 * 16 * 3`. A literal conjugating word carries
+this chart to the represented involution images fixing point 0. The
+49-export audit checks this same-fibre binding without requiring a
+presentation-model recovery
+([tail cover](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreeStabilizerTransversalCover.lean),
+[normalized chart](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreeNormalizedFibreChart.lean)).
+The same checked M22 packed maps extend to this actual chart by fixing
+one new point. A checked raw evaluator handles every valid M23 chart
+address and all nine exact pinned relators, including the two
+unexponentiated words. This proves necessary point tests; the finite
+capacity bound still requires a separate checked enumeration
+([word transport](SymmetricSubgroupAsymptotics/CFSGMathieuTailWordTransport.lean),
+[all-code encoding](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreePackedPointEncoding.lean)).
+The variable-whitelist semantic template and the first selected block
+(first address 0, second address 1, 960 tails) are checked and audited.
+This block has no accepted images; no bound on another prefix is inferred
+([template](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreePackedPrefixCertificate.lean),
+[first block](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyThreeFirstZeroSecondOneCapacity.lean)).
+M24 now has a constructive 443520-label cover of its actual two-point
+stabilizer, using the four original attributed tail certificates.
+An actual frame carries that cover to the swap fibre. Its scalar forward
+and inverse maps reuse the same checked M22 packed rows by fixing two
+new points, with no whole-group enumeration or presentation recovery.
+The cover and frame transports pass 8 + 5 + 7-export standard-axiom
+audits; the numerical capacity remains open
+([cover](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourTwoPointTailCover.lean),
+[actual fibre](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourSwapFibreChart.lean),
+[shared packed chart](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourSharedSwapChart.lean)).
 
 Separately, Co3's checked selected word has element order divisible by
 14, so its actual group has even order. For Co1, the first literal
 matrix generator moves one basis vector and returns it after two steps;
 the certified vector period proves even element order in the actual
 model. The same shared vector-period bridge also proves even order
-for Ru from its first generator on one basis vector. Cumulative wrappers
-preserve all earlier Lie-family parity reductions and remove these
-three tags, leaving six sporadic tags in that
-residual. This advances the odd-order solubility reduction; it does not
-close either T1 model callback
+for Ru and sporadic Suz from their first generators on one basis vector.
+Suz's 64-coordinate return is checked using a reusable natural-number
+row-dot reflection theorem: literal coefficient bindings are proved
+separately from the packed arithmetic modulo 3. Its eight fixed row
+modules and final assembly pass a 262-export standard-axiom audit.
+A contragredient action extends the bridge to row periods: HN and ON
+have certified swaps of two basis rows, and Th has one certified
+negative eigenrow. These proofs use positive matrix coefficients and
+abstract row multiplication, without inverse-matrix certificates.
+The 3 + 27 + 30 + 4 + 40-export audits for the row bridge, selected
+certificates and cumulative wrappers use only the standard axioms.
+Cumulative wrappers preserve all earlier Lie-family parity reductions,
+leaving no sporadic tags in that residual. Ly is closed by a checked
+two-row combination with eigenvalue 4 over F5 (23 audited exports).
+For Monster, a product of two arm involutions lies in the actual derived
+centralizer defining the model. If that product were trivial, the
+Coxeter relations would collapse all 16 bimonster generators to one,
+contradicting inherited noncommutativity. The selected square identity
+therefore proves even order (12 audited exports including the cumulative
+wrapper). Five Lie-family branches remain open in this parity reduction. This advances the odd-order
+solubility reduction; it does not close either T1 model callback
 ([Co3 parity](SymmetricSubgroupAsymptotics/CFSGCoThreeEvenOrder.lean),
 [Co1 certificate](SymmetricSubgroupAsymptotics/CFSGCoOneSelectedInvolutionPeriod.lean),
 [shared bridge](SymmetricSubgroupAsymptotics/MatrixModelSelectedPointPeriodTwo.lean),
 [Ru certificate](SymmetricSubgroupAsymptotics/CFSGRuSelectedVectorPeriodTwo.lean),
-[cumulative reduction](SymmetricSubgroupAsymptotics/CFSGEvenOrderAfterRu.lean)).
+[arithmetic reflection](SymmetricSubgroupAsymptotics/MatrixNaturalRowDotReflection.lean),
+[Suz certificate](SymmetricSubgroupAsymptotics/CFSGSuzPackedSelectedVectorPeriodTwo.lean),
+[row bridge](SymmetricSubgroupAsymptotics/MatrixModelSelectedRowPeriodTwo.lean),
+[HN certificate](SymmetricSubgroupAsymptotics/CFSGHNSelectedRowBasisSwap.lean),
+[ON certificate](SymmetricSubgroupAsymptotics/CFSGONSelectedRowBasisSwap.lean),
+[Th certificate](SymmetricSubgroupAsymptotics/CFSGThSelectedNegativeRow.lean),
+[Ly certificate](SymmetricSubgroupAsymptotics/CFSGLySelectedRowCombination.lean),
+[Monster certificate](SymmetricSubgroupAsymptotics/CFSGMonsterSelectedDerivedInvolution.lean),
+[cumulative reduction](SymmetricSubgroupAsymptotics/CFSGEvenOrderAfterMonster.lean)).
 
 A further optional endpoint,
 [`CFSGSevenTargetsTraceyPublished2018Bundle`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsTraceyPublished2018Bundle.lean),
