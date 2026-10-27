@@ -218,7 +218,20 @@ torus transport fills the original fibres, and the acting Borel power is
 proved soluble. No independent three-point coordinate action is assumed
 ([complete binomial geometry](SymmetricSubgroupAsymptotics/CFSGPSLTwoCorrelatedCoverBinomialOrbits.lean),
 [soluble acting group](SymmetricSubgroupAsymptotics/CFSGPSLTwoProductBorelSolvable.lean)).
-Reducing arbitrary exceptional actions to that structure, including their
+Several global structural steps are also now proved. A nonabelian minimal
+normal subgroup of a faithful minimally transitive group has no orbit of
+prime-power size. In degree `3 * 2^m`, its actual homogeneous simple-factor
+chart therefore supplies a nontrivial proper axis intersection `K` with
+`[T : K] = 3 * 2^a`. Its actual projected stabilizer `P` satisfies
+`K ≤ P ≤ normalizer K`; the coordinate coupling is retained
+([actual intersection reduction](SymmetricSubgroupAsymptotics/MinimalTransitiveActualSimpleIntersectionStructure.lean)).
+A separate quadratic-field construction embeds the actual norm-one group,
+of order `card F + 1`, faithfully in `SL₂(F)` and retains the exact central
+kernel on passage to `PSL₂(F)`
+([norm-one embedding](SymmetricSubgroupAsymptotics/FiniteFieldQuadraticNormOneEmbedding.lean)).
+These facts do not yet prove the required subgroup classification or
+nonsplit-torus normalizer and intravariance statements.
+Reducing arbitrary exceptional actions to the correlated structure, including their
 binary-layer lifts and retained Mersenne restriction, is still open;
 `hExceptionalOrbits` therefore remains an explicit input. The new
 three-export callback/T1 audit and its concrete certificate audits use only `propext`,
@@ -2875,11 +2888,24 @@ returns it after 19 applications. All 95 original matrix-vector steps
 are separately kernel checked; no whole-word order or representation
 surjectivity is needed. The original generating pair and the shared
 large-prime normalizer theorem then pay J1's primitive branch, and its
-small block branch is impossible. All prior guards are retained; **seven
-sporadic tags remain: J2, Co1, Co2, HN, Ly, Th and ON**
+small block branch is impossible
 ([selected original prime divisor](SymmetricSubgroupAsymptotics/CFSGJankoOneSelectedPrimeNineteen.lean),
 [same-action sharp consumer](SymmetricSubgroupAsymptotics/PrimitiveSocleJankoOnePrimeNineteenBoundedSharp.lean),
-[seven-tag residual](SymmetricSubgroupAsymptotics/BoundedSharpJankoOnePrimeNineteenExcludedActualResidual.lean))
+[J1 residual refinement](SymmetricSubgroupAsymptotics/BoundedSharpJankoOnePrimeNineteenExcludedActualResidual.lean)).
+The same method now closes HN and Th. In the original HN model over `F₅`,
+`(A*B)^2` has a selected vector period of 11; in the original Th model over
+`F₃`, `A*B` has a selected vector period of 19. Full coefficient bindings
+and respectively 44 and 38 matrix-vector steps are kernel checked.
+The prime divisors and actual generating pairs pay their primitive
+branches through the shared normalizer theorem, while their small-block
+branches are impossible. Every original action, socle, block and prior
+exclusion guard is preserved. **Five sporadic tags remain: J2, Co1, Co2,
+Ly and ON**
+([HN certificate](SymmetricSubgroupAsymptotics/CFSGHNSelectedProductSquarePrimeEleven.lean),
+[Th certificate](SymmetricSubgroupAsymptotics/CFSGThSelectedProductPrimeNineteen.lean),
+[five-tag residual](SymmetricSubgroupAsymptotics/BoundedSharpThPrimeNineteenExcludedActualResidual.lean)).
+These are original-model order divisors, with no supplied matrix-period,
+whole-operator order or representation-identification premise
 ([`LargePrimeSocleQuotientGenerators`](SymmetricSubgroupAsymptotics/LargePrimeSocleQuotientGenerators.lean),
 [`PrimitiveSocleLargePrimePairBoundedSharp`](SymmetricSubgroupAsymptotics/PrimitiveSocleLargePrimePairBoundedSharp.lean),
 [`CFSGRuSelectedProductPrimeThirteen`](SymmetricSubgroupAsymptotics/CFSGRuSelectedProductPrimeThirteen.lean),
