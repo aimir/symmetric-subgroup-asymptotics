@@ -646,10 +646,23 @@ and shear normalizers, and the proved normalizer-index argument gives
 $27$. Transport through the original socle isomorphism excludes the
 previously retained primitive degrees below $12$ and local degrees
 below $18$. Thus only Monster remains in this coarse conditional
-reduction. Its model is the derived subgroup of an involution
-centralizer, so the Y-section argument does not apply automatically.
-The numerical callback is unchanged; neither the coarse input nor the
-separate bounded-sharp input is yet discharged.
+reduction. Its actual model, the derived subgroup of an involution
+centralizer, now has a separate checked index-$27$ argument. Six literal
+reflections centralize the distinguished node and satisfy the E6 braid
+relations. Their even words lie in the actual derived group, and the
+selected order-three word is nontrivial. The generic Heisenberg
+normalizer theorem applies to that same group; no identification with
+a full Y section is used. Independently, for any fixed finite simple
+model $M$, the one-factor generator cost is at most
+$K=d(M)+\Omega(|\operatorname{Out}(M)|)$. The exact coarse ceiling
+exceeds $K$ from degree $\max(128,2^K)$. Infinite model branches cannot
+occur as finite simple factors. Consequently the remaining coarse
+witness has bounded primitive Monster degree, at least $27$, or an
+actual Monster block fibre of degree $27$ through $31$. The cutoff is
+not computed, and these small fibres can occur at unbounded total
+degree. Whole-Monster generation and the all-degree transitive bound
+are not established. The numerical callback is unchanged; neither the
+coarse input nor the separate bounded-sharp input is yet discharged.
 Both eight-point obstructions in the bounded sharp route are now
 discharged. The checked canonical action cover gives generator rank at
 most three for every primitive eight-point group. Elementary Sylow
@@ -672,8 +685,16 @@ five. The same independent global witness is therefore impossible.
 Only original primitive and nonaffine-block sporadic witnesses remain.
 The index-$27$ theorem excludes their four Y tags; a common actual-pair
 packet pays M11, M12 and M22, and prime-$23$ witnesses exclude M23, M24
-and J4. No replacement callback is introduced; the full bounded-sharp
-input remains open on the remaining sporadic witnesses. Independently, the
+and J4. A shared Sylow-normalizer argument also pays J3, He, HS and McL:
+conjugation on an actual large prime cycle and evaluation on its fixed
+points detect the normalizer modulo the original socle quotient.
+The fixed-point action has degree at most ten and uses the proved
+half-degree generator bound. A selected vector orbit of prime length
+$13$ in the original Rudvalis matrix model pays Ru through the same
+argument. The actual Monster index-$27$ bound excludes its bounded
+cases too. All earlier guards are retained, leaving ten sporadic tags
+in this reduction. No replacement callback is introduced; the full
+bounded-sharp input remains open. Independently, the
 raw primitive degree forms and the proved minimum order $60$ show that
 the nonaffine socle has a single simple factor in every degree below
 $25$, without using a simple-index estimate.
@@ -683,8 +704,37 @@ four signed generators. Distinct point encodings and closure under the
 original generating pair prove that the selected involution has class
 size $495$ and centralizer order $192$. All finite row checks and their
 symbolic assembly are kernel-checked, with no supplied class-size
-premise. The remaining class-profile bounds stay in the stated numerical
-interface.
+premise. For the selected original order-three element, all $1944$
+literal cyclic-centralizer coordinates have also been checked, giving
+centralizer order at most $36$. One symbolic point decoder and a bitmap
+of the $132$ original Witt hexads replace repeated coordinate and
+hexad-membership computations. Only necessary preservation conditions
+are used. Nine other centralizer ceilings follow from a shared
+five-point-base argument. The actual order $95040$ transports one rigid
+base to every five-point tuple; a commuting element is then determined
+by images of a few cycle seeds. Small literal assignment counts prove
+the ceilings $54,32,32,10,12,6,8,8,10$, together with their cycle profiles
+and separation. The complete class-profile assembly remains open.
+There is also a reusable census for the primitive sector whose actual
+simple factors belong to any fixed finite family. A single finite
+constant $C$ gives
+\[
+ d(G)\le (L+2)C+L^2,\qquad L=\lfloor\log_2 n\rfloor.
+\]
+Raw degree geometry bounds the socle factor count, and the original
+outer-wreath quotient bounds the remaining generator cost. No known
+model order, generating pair, numerical outer bound or smaller-action
+coarse hypothesis is used. Padded ordinary generator tuples determine
+their exact ambient subgroup, so for $n\ge2$ the labelled count is at most
+\[
+ (n!)^{(L+2)C+L^2}
+ \le 2^{(3C+1)n(\log_2 n)^3}=2^{o(n^2)}.
+\]
+The all-width formal interface pays the finite initial range explicitly.
+This covers, in particular, the sporadic primitive sector. The full
+transitive counting input still needs the infinite-model sectors and
+complete block-kernel and extension accounting; it is not discharged
+by this primitive-sector result.
 For product actions with at least two
 socle factors, the component order budget pays the generator bound with
 the full factorial retained. The general class-count and nonnilpotent

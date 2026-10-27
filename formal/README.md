@@ -2675,10 +2675,28 @@ isomorphism excludes the three previously retained small Y actions
 [`CFSGYE6ActualNormalizerIndex`](SymmetricSubgroupAsymptotics/CFSGYE6ActualNormalizerIndex.lean),
 [`PrimitiveSocleYSectionSmallActionExclusion`](SymmetricSubgroupAsymptotics/PrimitiveSocleYSectionSmallActionExclusion.lean),
 [`TraceyOrdinaryMonsterOnlyResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinaryMonsterOnlyResidual.lean)).
-The numerical callback is unchanged. The actual Monster model is the
-derived subgroup of an involution centralizer, so it needs its own
-argument. The coarse and bounded-sharp published inputs remain explicit;
-CFSG-only T1 is still open.
+The actual Monster model, the derived subgroup of an involution
+centralizer, now has its own checked index-27 theorem. Six literal
+reflections in that centralizer satisfy the E6 relations; their even words
+lie in the actual derived group, with a nontrivial order-three anchor.
+The same Heisenberg normalizer argument therefore applies there without
+identifying Monster with a full Y section
+([`CFSGMonsterE6ActualNormalizerIndex`](SymmetricSubgroupAsymptotics/CFSGMonsterE6ActualNormalizerIndex.lean),
+[`PrimitiveSocleMonsterSmallActionExclusion`](SymmetricSubgroupAsymptotics/PrimitiveSocleMonsterSmallActionExclusion.lean)).
+A separate finite-model argument proves an eventual exact coarse bound
+for every fixed one-factor simple model, without knowing its order or a
+generating pair. When the model is finite, put
+`K = genRank(M) + cardFactors(card(Outer(M)))`; the cutoff
+`max 128 (2^K)` suffices. If the model is infinite, no finite actual simple
+factor can be equivalent to it. Thus the remaining coarse witness has
+either a primitive Monster degree between 27 and a fixed finite cutoff,
+or an actual Monster block fibre of degree **27 through 31**
+([`FiniteModelOneFactorOrdinaryTail`](SymmetricSubgroupAsymptotics/FiniteModelOneFactorOrdinaryTail.lean),
+[`TraceyOrdinaryFiniteMonsterResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinaryFiniteMonsterResidual.lean)).
+That cutoff is not computed. Small block fibres can occur at unbounded
+total degree; this does not finish the transitive induction or prove
+whole-Monster generation. The numerical callback is unchanged. The coarse
+and bounded-sharp published inputs remain explicit; CFSG-only T1 is open.
 Tits is now removed from the bounded sharp frontier too. The actual
 four-generator and outer-multiplicity bounds give at most six generators
 in every primitive Tits action of degree at most 21; its least index is
@@ -2724,9 +2742,23 @@ the same independent global witness through degree ten
 The index-27 theorem excludes all four Y sections from both remaining
 original-action branches. A shared pair/index/outer packet pays M11, M12
 and M22; actual prime-23 witnesses exclude M23, M24 and J4. All earlier
-socle, block and exclusion guards are retained. The full bounded-sharp
-input remains open on the remaining sporadic witnesses
-([`BoundedSharpMathieuAndJFourExcludedActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpMathieuAndJFourExcludedActualResidual.lean)). Separately, the raw primitive
+socle, block and exclusion guards are retained. A further shared theorem
+bounds the original socle quotient using the normalizer of an actual
+large prime cycle. Conjugation gives one cyclic coordinate; evaluation on
+the cycle's actual fixed points gives the other. Their joint kernel is
+killed by the same socle quotient. The proved generator bound through
+degree ten pays that fixed-point action. This closes **J3, He, HS and
+McL** without a whole outer-order bound. One selected vector orbit of
+length 13 in the original Rudvalis matrix model supplies its prime
+divisor and closes **Ru** through the same theorem. The Monster index-27
+bound excludes it from the bounded-sharp branches as well. All prior
+guards are retained; ten sporadic tags remain: J1, J2, Co1, Co2, Co3, Suz,
+HN, Ly, Th and ON
+([`LargePrimeSocleQuotientGenerators`](SymmetricSubgroupAsymptotics/LargePrimeSocleQuotientGenerators.lean),
+[`PrimitiveSocleLargePrimePairBoundedSharp`](SymmetricSubgroupAsymptotics/PrimitiveSocleLargePrimePairBoundedSharp.lean),
+[`CFSGRuSelectedProductPrimeThirteen`](SymmetricSubgroupAsymptotics/CFSGRuSelectedProductPrimeThirteen.lean),
+[`BoundedSharpRuPrimeThirteenExcludedActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpRuPrimeThirteenExcludedActualResidual.lean)).
+The full bounded-sharp input remains open. Separately, the raw primitive
 degree forms and the proved simple-group order lower bound 60 show that
 the nonaffine socle has one simple factor in every degree below 25,
 without a simple-index estimate
@@ -2737,10 +2769,44 @@ and centralizer order **192**. Sixteen fixed proof blocks establish
 all actual conjugating words, signed-generator transitions and distinct
 point encodings; their symbolic assembly uses the original generating
 pair. These unconditional auxiliary exports introduce no class-size
-premise or new input. The rest of the M12 class-profile assembly remains
-open
+premise or new input. For the selected original order-three element, all
+1,944 literal cyclic-centralizer coordinates are now covered, proving
+centralizer order **at most 36**. A symbolic decoder handles every point
+coordinate; a bitmap of the 132 original Witt hexads rejects impossible
+images. Only the necessary direction of Witt preservation is used.
+Nine further centralizer bounds now follow from one shared base argument:
+commuting elements are determined by images of enough cycle seeds to
+cover five points. The actual order 95,040 and one rigid five-point base
+prove rigidity on every five-point tuple. Small literal cycle-assignment
+counts then give the nine bounds
+`54, 32, 32, 10, 12, 6, 8, 8, 10`, with the corresponding cycle profiles
+and their separation proved in the same module. The full M12 class-profile
+assembly remains open
 ([`CFSGMathieuTwelveSelectedInvolutionOrbitComplete`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveSelectedInvolutionOrbitComplete.lean),
-[`CFSGMathieuTwelveSelectedInvolutionCentralizerCard`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveSelectedInvolutionCentralizerCard.lean)).
+[`CFSGMathieuTwelveSelectedInvolutionCentralizerCard`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveSelectedInvolutionCentralizerCard.lean),
+[`CFSGMathieuTwelveYRawPointMaskCoding`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveYRawPointMaskCoding.lean),
+[`CFSGMathieuTwelveYMaskFullWhitelist`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveYMaskFullWhitelist.lean),
+[`CFSGMathieuTwelveSharpFiveRigidity`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveSharpFiveRigidity.lean),
+[`CFSGMathieuTwelveCycleSeedClassBounds`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveCycleSeedClassBounds.lean)).
+A reusable primitive-sector census is also proved. For any fixed finite
+family of actual simple models there is one finite constant `C` such that,
+with `L = Nat.log 2 n`, every primitive action in that sector satisfies
+`genRank(G) ≤ (L+2)*C + L^2`. The raw degree forms control the number of
+socle factors, and the original outer-wreath quotient controls its rank.
+No model order, generating pair, numerical outer bound or smaller-action
+coarse hypothesis is needed. Ordinary padded generator tuples then give
+the literal labelled count
+`(n!)^((L+2)*C+L^2) ≤ 2^((3*C+1)*n*(log₂ n)^3)` for `n ≥ 2`.
+The analytic conversion proves the exact all-width
+`SubquadraticMenuIndexCount` interface, including the finite initial range
+([`FiniteModelPrimitiveOrdinaryBudget`](SymmetricSubgroupAsymptotics/FiniteModelPrimitiveOrdinaryBudget.lean),
+[`FiniteSubgroupSmallOrderCount`](SymmetricSubgroupAsymptotics/FiniteSubgroupSmallOrderCount.lean),
+[`FiniteModelPrimitiveLabelledCount`](SymmetricSubgroupAsymptotics/FiniteModelPrimitiveLabelledCount.lean),
+[`FiniteModelPrimitiveSubquadraticCount`](SymmetricSubgroupAsymptotics/FiniteModelPrimitiveSubquadraticCount.lean)).
+This covers finite model families, including the sporadic primitive
+sector. The full transitive LMM count still needs the infinite-model
+sectors and complete block-kernel/extension accounting; it remains an
+explicit T1 input.
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
