@@ -1067,6 +1067,20 @@ outer budget. No finite-capacity premise remains
 [normalization](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoSylowOuterNormalization.lean)).
 
 The latest refinement is
+[`CFSGSevenTargetsONBinaryGoodSylow`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsONBinaryGoodSylow.lean),
+which retains **19 sporadic good-Sylow cases** and **21 numerical cases**.
+For the literal 154-dimensional ON matrices over the field with three
+elements, all 308 rows of `A^2 = I` and `B^4 = I` are kernel checked.
+The full equalities then give two generating binary subgroups of the
+original model. The same CFSG-only soluble-normalizer argument used for
+Ru proves GoodSylow-2
+([whole matrix powers](SymmetricSubgroupAsymptotics/CFSGONBinaryMatrixPowerIdentities.lean),
+[actual ON theorem](SymmetricSubgroupAsymptotics/CFSGONBinaryPowerGoodSylow.lean)).
+All seven final exports pass standard-axiom audits. The four published
+bundles, pinned CFSG and both remaining callbacks are explicit; ON's
+numerical case remains open in this endpoint.
+
+The preceding Ru refinement is
 [`CFSGSevenTargetsRuBinaryGoodSylow`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsRuBinaryGoodSylow.lean),
 which retains **20 sporadic good-Sylow cases** and **21 numerical cases**.
 For the original 28-dimensional binary Ru model, the kernel checks every
@@ -1218,20 +1232,23 @@ generators and one translation. The small nonaffine cases retain the
 literal socle quotient and its divisibility by both the outer-group
 order and the original permutation quotient order. No primitive
 catalogue or additional model callback is assumed. The primitive affine
-degree-16 case remains open
+degree-16 case is now closed from CFSG alone
 ([`PrimitiveBoundedSharpCFSGReduction`](SymmetricSubgroupAsymptotics/PrimitiveBoundedSharpCFSGReduction.lean),
-[`PrimitiveAffineNineOrdinaryGenerators`](SymmetricSubgroupAsymptotics/PrimitiveAffineNineOrdinaryGenerators.lean)).
+[`PrimitiveAffineNineOrdinaryGenerators`](SymmetricSubgroupAsymptotics/PrimitiveAffineNineOrdinaryGenerators.lean),
+[`PrimitiveAffineSixteenSharpCompleteCFSG`](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenSharpCompleteCFSG.lean)).
 A further degree-16 adapter uses the actual eight-point action of
 `GL(4,2)`. It either proves rank at most five, or produces a least failed
 primitive sporadic action on at most eight points. The Tits case is
 excluded by its checked order lower bound. This is a global failed
 action witness, not an asserted subquotient of the original complement;
-the sporadic alternative remains to be discharged
-([`PrimitiveAffineSixteenEightPointSharpReduction`](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenEightPointSharpReduction.lean)).
-The imprimitive affine sharp assembler now covers **every original
+the sporadic alternative is now excluded by the completed eight-point theorem
+([`PrimitiveAffineSixteenEightPointSharpReduction`](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenEightPointSharpReduction.lean),
+[`EightPointHalfDegreeCompleteCFSG`](SymmetricSubgroupAsymptotics/EightPointHalfDegreeCompleteCFSG.lean)).
+The strengthened imprimitive affine sharp assembler covers **every original
 minimal-block affine component below total degree 22**, or retains
-**total degree 16 or a genuine global primitive sporadic counterexample
-on at most ten points**. The prime-power fibre menu is proved internally;
+**a genuine global primitive sporadic counterexample on at most ten points**
+([`OriginalAffineBoundedSharpActualTopComplete`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpActualTopComplete.lean)).
+The prime-power fibre menu is proved internally;
 local degrees 2, 3, 4, 5, 7 and 9 use the same chief trace and actual
 quotient. At the six-point ternary top, the joint induced capacity pays
 the defining-prime layer without separately maximizing its two parts.
@@ -1244,13 +1261,15 @@ graph-or-axis dichotomy for the two literal complement coordinates.
 The last binary 2/8 case now has a complete structural reduction too:
 nonelementary top Sylow subgroups pay the quarter module bound; an
 elementary top Sylow gives three top generators in the affine, paired
-primitive and both imprimitive branches. The resulting facade retains
-only **an actual primitive sporadic eight-point top of rank greater than
-three**, or **a separate global failed-half sporadic action on at most
-ten points**. The former is the same original top and need not fail the
-half-degree bound. Thus no unexplained affine degree-16 shape remains,
-but these sporadic alternatives are still open
-([`OriginalAffineBoundedSharpSporadicReduction`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpSporadicReduction.lean)).
+primitive and both imprimitive branches. The earlier facade retained
+an actual primitive sporadic eight-point top of rank greater than three,
+separately from a global failed-half sporadic action on at most ten points.
+The first was the same original top and did not need to fail the
+half-degree bound. Its rank-three obstruction is now impossible by the
+checked primitive eight-point cover. Only the independent ten-point
+global alternative remains in this affine-block route
+([`OriginalAffineBoundedSharpSporadicReduction`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpSporadicReduction.lean),
+[`ElementarySylowEightActualTopObstructionFalse`](SymmetricSubgroupAsymptotics/ElementarySylowEightActualTopObstructionFalse.lean)).
 A shared prime-product argument now excludes nine pinned sporadic tags
 from faithful actions on at most ten points. A selected actual
 Mathieu22 order-four witness excludes that model from the
@@ -1264,8 +1283,9 @@ divisible by 14. Perfectness forces every faithful image of its simple
 factor into the alternating group; an even permutation with that order
 divisor occupies at least 11 points. Co3 is therefore excluded from
 both small-action alternatives, using the same literal word and fixed
-vector trace. This leaves 14 possible tags in the actual-top obstruction
-and 15 in the global small-action obstruction
+vector trace. These exclusions leave 15 tags in the global small-action
+obstruction. All 14 formerly retained actual-top tags are now excluded
+by the primitive eight-point cover
 ([`OriginalAffineBoundedSharpCoTwoTopRefinement`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpCoTwoTopRefinement.lean),
 [`CFSGCoThreeSelectedWordOrder`](SymmetricSubgroupAsymptotics/CFSGCoThreeSelectedWordOrder.lean),
 [`PrimitiveSocleCoThreeSmallActionExclusion`](SymmetricSubgroupAsymptotics/PrimitiveSocleCoThreeSmallActionExclusion.lean),
@@ -2648,13 +2668,37 @@ Tits is now removed from the bounded sharp frontier too. The actual
 four-generator and outer-multiplicity bounds give at most six generators
 in every primitive Tits action of degree at most 21; its least index is
 at least 14, which pays the exact sharp floor. The cumulative original
-action reduction retains only sporadic witnesses. It preserves the
-twelve exclusions on actual affine tops, the eleven on independent
-global small-action witnesses, and the degree-eight witness behind the
-primitive affine degree-16 case. Those distinct witnesses remain
-explicit; no bounded-sharp input is inferred from the coarse ceiling
+action reduction retains only sporadic witnesses. That earlier reduction
+preserves twelve exclusions on actual affine tops, eleven on independent
+global small-action witnesses, and a degree-eight witness behind the
+primitive affine degree-16 case. No bounded-sharp input is inferred from
+the coarse ceiling
 ([`PrimitiveSocleTitsBoundedSharp`](SymmetricSubgroupAsymptotics/PrimitiveSocleTitsBoundedSharp.lean),
 [`BoundedSharpTitsCompleteActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpTitsCompleteActualResidual.lean)).
+Both eight-point obstructions are now removed. Every actual primitive
+eight-point group has generator rank at most three, using the checked
+canonical action cover and its original generating tuples. Elementary
+Sylow arguments prove rank at most three for the actual nonaffine
+six- and seven-point actions, including their original outer extensions;
+this closes the independent global failed eight-point action from CFSG
+alone. In particular, every subgroup of `GL(4,2)` has rank at most four,
+and every primitive affine group of degree 16 has rank at most five and
+satisfies the required sharp bound
+([`EightPointHalfDegreeCompleteCFSG`](SymmetricSubgroupAsymptotics/EightPointHalfDegreeCompleteCFSG.lean),
+[`PrimitiveAffineSixteenSharpCompleteCFSG`](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenSharpCompleteCFSG.lean)).
+The actual primitive eight-point top has the same rank-three bound, so
+its original-block obstruction is also impossible. The strengthened
+bounded-sharp reduction retains only an actual primitive sporadic
+action, an independent global failed action of degree at most 10, or an
+actual nonaffine block sporadic action. No eight-point estimate or
+replacement callback is assumed
+([`ElementarySylowEightActualTopObstructionFalse`](SymmetricSubgroupAsymptotics/ElementarySylowEightActualTopObstructionFalse.lean),
+[`BoundedSharpEightClosedActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpEightClosedActualResidual.lean)).
+The full bounded-sharp input remains open. Separately, the raw primitive
+degree forms and the proved simple-group order lower bound 60 show that
+the nonaffine socle has one simple factor in every degree below 25,
+without a simple-index estimate
+([`PrimitiveSocleBelowTwentyFiveSingleFactorWithoutIndexInput`](SymmetricSubgroupAsymptotics/PrimitiveSocleBelowTwentyFiveSingleFactorWithoutIndexInput.lean)).
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
