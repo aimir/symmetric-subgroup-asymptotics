@@ -203,7 +203,7 @@ def run_monitored(command, cwd, log_path, *, rss_limit_mb, seconds,
 
 
 def direct_imports(source):
-    imports, depth = [], 0
+    imports, depth, pending = [], 0, ""
     with source.open() as f:
         for line in f:
             clean, i = [], 0
@@ -222,9 +222,17 @@ def direct_imports(source):
             text = "".join(clean).strip()
             if not text or text in ("module", "prelude"):
                 continue
-            match = re.fullmatch(r"(?:(?:public|private)\s+)?import\s+(.+)", text)
+            if pending:
+                text = pending + " " + text
+                pending = ""
+            if re.fullmatch(r"(?:(?:public|private)\s+)?(?:meta\s+)?import(?:\s+all)?", text):
+                pending = text
+                continue
+            # Lean 4.35 permits both `meta import` and `import all`.  These
+            # modifiers are not module names and must not truncate the header.
+            match = re.fullmatch(r"(?:(?:public|private)\s+)?(?:meta\s+)?import\s+(?:all\s+)?(.+)", text)
             if not match:
-                if re.match(r"(?:(?:public|private)\s+)?import\b", text):
+                if re.match(r"(?:(?:public|private)\s+)?(?:meta\s+)?import\b", text):
                     raise ValueError(f"unsupported import syntax in {source}: {text}")
                 break
             names = match.group(1).split()
@@ -232,6 +240,8 @@ def direct_imports(source):
                        for n in names):
                 raise ValueError(f"unsupported module name in {source}: {text}")
             imports.extend(names)
+    if pending:
+        raise ValueError(f"unfinished import syntax in {source}: {pending}")
     return imports
 
 

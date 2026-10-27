@@ -184,6 +184,19 @@ Path('result.json').write_text(json.dumps(result))
         receipt = json.loads((logs / "SymmetricSubgroupAsymptotics.B.json").read_text())
         self.assertIn("stale or unsuccessful", receipt["reason"])
 
+    def test_module_header_visibility_and_meta_import_modifiers(self):
+        source = self.path / "NewHeader.lean"
+        source.write_text("module\nprelude\npublic import Bridge.A\n"
+                          "import all Bridge.B\npublic meta import Bridge.Meta\n"
+                          "public import\n/- across lines -/\n  Bridge.Multiline\n"
+                          "private import Bridge.C Bridge.D -- comment\n"
+                          "def body := 0\n-- import Ignored.AfterBody\n")
+        self.assertEqual(runner.direct_imports(source),
+                         ["Bridge.A", "Bridge.B", "Bridge.Meta", "Bridge.Multiline", "Bridge.C", "Bridge.D"])
+        source.write_text("public import\n")
+        with self.assertRaisesRegex(ValueError, "unfinished import"):
+            runner.direct_imports(source)
+
     def test_isolated_project_keeps_shared_lock_and_checks_its_own_dependencies(self):
         publication = self.path / "publication"
         original = publication / "formal"
