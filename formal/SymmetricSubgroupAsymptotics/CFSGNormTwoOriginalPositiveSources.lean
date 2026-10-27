@@ -152,4 +152,25 @@ theorem source_parent (neg : Bool) (k : Positive A) (hn : ¬IsSimple A hd k) :
     rfl
   rw [he,integralOperator_one_coe_apply,LieAlgebra.ad_apply]
 
+
+/-- Both signs use ONE identical selected parent. This is proved from the
+same private parent definition, not by combining independently chosen
+existential witnesses at the two signs. -/
+theorem source_parent_all_signs (k : Positive A) (hn : ¬IsSimple A hd k) :
+    ∃ (i : Fin r) (p : Positive A),
+      rootHeight A p+1=rootHeight A k ∧
+      k.val.val=p.val.val+Pi.single i 1 ∧
+      integerPairing A p.val.val (Pi.single i 1)= -1 ∧
+      ∀neg,⁅rootVector A neg i,(source A hd hs hp neg p).val⁆=
+        (source A hd hs hp neg k).val := by
+  let p := parent A hd hs hp k hn
+  refine ⟨p.node,p.root,parent_rootHeight A hd hs hp k hn,p.coordinates,p.pairing,?_⟩
+  intro neg
+  have he : source A hd hs hp neg k=
+      integralOperator A neg p.node 1 (source A hd hs hp neg p.root) := by
+    conv_lhs => rw [source,←parent_rootHeight A hd hs hp k hn]
+    simp only [sourceAux,dif_neg hn]
+    rfl
+  rw [he,integralOperator_one_coe_apply,LieAlgebra.ad_apply]
+
 end SymmetricSubgroupAsymptotics.CFSGNormTwoOriginalPositiveSources
