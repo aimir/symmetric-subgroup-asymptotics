@@ -657,12 +657,32 @@ model $M$, the one-factor generator cost is at most
 $K=d(M)+\Omega(|\operatorname{Out}(M)|)$. The exact coarse ceiling
 exceeds $K$ from degree $\max(128,2^K)$. Infinite model branches cannot
 occur as finite simple factors. Consequently the remaining coarse
-witness has bounded primitive Monster degree, at least $27$, or an
-actual Monster block fibre of degree $27$ through $31$. The cutoff is
-not computed, and these small fibres can occur at unbounded total
-degree. Whole-Monster generation and the all-degree transitive bound
-are not established. The numerical callback is unchanged; neither the
-coarse input nor the separate bounded-sharp input is yet discharged.
+witness initially had bounded primitive Monster degree, at least $27$,
+or an actual Monster block fibre of degree $27$ through $31$.
+
+A stronger actual-model argument excludes that imprimitive branch.
+The derived subgroup of the six-reflection E6 image is perfect, and
+every nontrivial finite permutation action of it has degree at least
+$27$. Two independent ternary tails in the same original Monster model
+centralize this image and generate an injected $C_3\times C_3$.
+Suppose a faithful Monster action had at most $32$ points. A nontrivial
+E6 orbit has at least $27$ points, is unique, and is preserved by these
+tails. For a perfect transitive action of size below twice its
+nontrivial-action degree gap, the permutation centralizer is trivial:
+a nonidentity centralizing permutation generates a free cyclic action;
+the resulting orbit quotient lies below the gap and has trivial action,
+forcing the original image to be abelian and hence trivial.
+Thus the tails fix the large orbit pointwise. Their faithful action on
+its complement would embed a group of order nine into a symmetric group
+on at most five points, contradicting $9\nmid m!$ for $m\leq5$.
+Every faithful action of the original Monster therefore has degree at
+least $33$. The same-socle transport now excludes all of the remaining
+small block fibres. Only a primitive Monster minimal counterexample of
+degree at least $33$ and below the fixed cutoff remains. That cutoff
+is chosen before the counterexample and is not computed. The bounded
+primitive head, whole-Monster generation and the all-degree transitive
+bound are not established. The numerical callback is unchanged; neither
+the coarse input nor the separate bounded-sharp input is yet discharged.
 Both eight-point obstructions in the bounded sharp route are now
 discharged. The checked canonical action cover gives generator rank at
 most three for every primitive eight-point group. Elementary Sylow

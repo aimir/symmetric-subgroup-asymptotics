@@ -2774,9 +2774,29 @@ either a primitive Monster degree between 27 and a fixed finite cutoff,
 or an actual Monster block fibre of degree **27 through 31**
 ([`FiniteModelOneFactorOrdinaryTail`](SymmetricSubgroupAsymptotics/FiniteModelOneFactorOrdinaryTail.lean),
 [`TraceyOrdinaryFiniteMonsterResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinaryFiniteMonsterResidual.lean)).
-That cutoff is not computed. Small block fibres can occur at unbounded
-total degree; this does not finish the transitive induction or prove
-whole-Monster generation. The numerical callback is unchanged. The coarse
+That preceding cutoff is not computed. A stronger argument now proves
+that every faithful action of the original Monster model has degree at
+least **33**. Inside the same model, the derived image of the six E6
+reflections is perfect and every nontrivial finite action of it has at
+least 27 points. Two independent commuting ternary tails give an actual
+`C3 × C3` that centralizes this image. In a faithful action on at most 32
+points, there is a unique nontrivial E6 orbit, of size at least 27. A
+proved perfect-action centralizer theorem forces the tails to fix that
+orbit pointwise. Their faithful action on the complement would then
+embed a group of order nine into a symmetric group on at most five points,
+contradicting divisibility of its factorial order. This uses actual subgroup
+embeddings and no whole-Monster generating tuple or order formula
+([actual embeddings](SymmetricSubgroupAsymptotics/CFSGMonsterE6RemoteTernaryEmbedding.lean),
+[action packing](SymmetricSubgroupAsymptotics/PerfectActionTernaryPairPacking.lean),
+[original index theorem](SymmetricSubgroupAsymptotics/CFSGMonsterRemoteTailIndex.lean)).
+The new same-socle consumer excludes **all** small imprimitive Monster
+fibres from the coarse reduction. Its sole remaining minimal-counterexample
+branch is a primitive Monster action of degree at least 33 and below a
+fixed cutoff chosen before the counterexample
+([same-action degree transport](SymmetricSubgroupAsymptotics/PrimitiveSocleMonsterRemoteTailDegree.lean),
+[primitive-head residual](SymmetricSubgroupAsymptotics/TraceyOrdinaryPrimitiveMonsterHeadResidual.lean)).
+That bounded primitive head is not proved. The numerical callback is
+unchanged, and no whole-Monster generation theorem is claimed. The coarse
 and bounded-sharp published inputs remain explicit; CFSG-only T1 is open.
 Tits is now removed from the bounded sharp frontier too. The actual
 four-generator and outer-multiplicity bounds give at most six generators
