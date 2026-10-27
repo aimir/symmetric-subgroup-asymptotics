@@ -968,7 +968,7 @@ its separately proved Frattini and normalizer-divisibility lemmas
 ([ternary normalizer](SymmetricSubgroupAsymptotics/TwelvePointTernarySylowNormalizerSolvable.lean),
 [ternary application](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveGoodSylowThree.lean)).
 
-The newest checked endpoint,
+The subsequent checked endpoint,
 [`CFSGSevenTargetsMathieuTwentyThreeIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuTwentyThreeIndexSquare.lean),
 also supplies M23's least-index square. Its nine original Apache
 certificate modules prove actual order 10200960, and all nine pinned
@@ -987,6 +987,34 @@ The four published bundles and pinned CFSG remain explicit. The
 20-export representation audit, shared prime-cycle and Mathieu audits,
 and seven-export strict-square audit retain only the standard axioms;
 independent source reviews add no premise.
+
+The newest checked endpoint is
+[`CFSGSevenTargetsMathieuTwentyFourIndexSquare`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsMathieuTwentyFourIndexSquare.lean).
+It also supplies M24's good-Sylow-23 witness and strict least-index square.
+Only four small original Apache modules are needed: the actual generators
+and subgroup, with their word definitions
+([provenance](../provenance/CFSG/m24-certificates.json)).
+All seven pinned relators hold on the selected actual pair
+`x=(a*c*d)^6`, `y=c^9*z^-1*c^-9`, where
+`z=(c^3*b^4*c^-3*b^4)^2`; their product is a single 23-cycle
+([literal bridge](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourPresentationWords.lean)).
+Inherited pinned simplicity gives a faithful 24-point representation.
+The prime-square nondivisibility needed for good-Sylow follows internally
+from the factorial of the action degree
+([prime-degree wrapper](SymmetricSubgroupAsymptotics/SimpleInvolutionPrimeDegreeGoodSylow.lean)).
+For the strict square, the internally proved transfer theorem excludes
+a prime-order Sylow subgroup whose normalizer centralizes it. Thus the
+normalizer has order at least `2*p`; Sylow congruence gives at least
+`p+1` conjugates, so the group order exceeds `(p+1)^2` for `p>=3`.
+A moved-point stabilizer in degree `p+1` then proves the strict square
+([generic transfer argument](SymmetricSubgroupAsymptotics/SimplePrimeSylowSuccessorIndexSquare.lean),
+[M24 application](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyFourActualIndexSquare.lean)).
+No actual M24 order certificate, model equivalence or recovery word is
+needed. The good-Sylow callback now retains **21 sporadic tags** and the
+numerical callback **25**, with only outer budgets needed for M12, M22,
+M23 and M24. The four published bundles and pinned CFSG remain explicit.
+The 19-export bridge, seven-export good-Sylow, five-export generic transfer,
+and six-export M24 square audits use only the standard axioms.
 
 For M22, the actual Sylow-eleven normalizer and centralizer orders are
 now proved to be 55 and 11. A checked five-transversal cover has 443520
