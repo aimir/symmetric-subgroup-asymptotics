@@ -769,8 +769,8 @@ retained in strictly smaller-degree induction. Both affine and
 nonaffine block steps have a quadratic local logarithmic charge, which
 is absorbed using logarithmic decay and a finite initial range. This
 uses no exact Tracey bound or finite-model callback. It supplies an
-auxiliary lift budget; the exact Tracey bounds and the full transitive
-counting input remain separate obligations.
+auxiliary lift budget for the completed transitive counting argument
+below; the exact Tracey bounds remain separate obligations.
 Separate structural counts retain complete extension fibres. At a fixed
 quotient image and fixed literal kernel intersection, all lifts cost at
 most $|\ker\pi|^d$, including nonsplit extensions. For an elementary
@@ -805,10 +805,33 @@ exponent subquadratic uniformly in local degree $r$ and block count $t$:
 The numerical half-degree induction is also proved: an eventual
 recurrence $a(n)\le w(n)(1+\sum_{k\le n/2}a(k))$ with subquadratic
 node weight implies the exact all-width subquadratic counting interface.
-The actual subgroup cover and kernel estimates must still instantiate it.
-The full transitive counting input still needs the
-imprimitive block-chain cover and global kernel/lift budget; these
-structural results do not yet discharge it.
+The actual subgroup cover and complete kernel estimates now instantiate
+this recurrence. For bounded local degree, an actual finite chief trace
+combines induced-module elementary layers with nonabelian layers retaining
+every simple-coordinate support. Each layer counts whole lifts over its
+fixed quotient image; one threshold works for all faithful transitive
+tops. For large local degree, the affine order bound or the actual full
+socle and its outer quotient bound the entire full-component wreath
+family uniformly. Both possible minimal normal socle components are
+retained.
+
+The labelled minimal-block code retains one primitive local group, one
+transitive top, the whole wreath subgroup and an actual point bijection.
+Its decoder recovers the original labelled subgroup. At $n=rt$ each
+point-chart family has exactly $n!$ elements and $t\le n/2$. The local
+wreath-family count is maximized over tops, so the count of tops is paid
+exactly once, by the smaller-degree sum in the recurrence. Polynomial
+width choices and all frame costs are absorbed by the factorial-polylog
+node weight. The two local-size regimes and the finite initial range
+are therefore paid internally.
+
+Consequently CFSG alone now proves the weak labelled transitive count
+$2^{o(n^2)}$ in the exact all-width interface needed by T1. This proof
+does not assert an explicit rate or the optimal LMM constant. The
+successor formal endpoint supplies the transitive-count input internally,
+leaving three published bundles, CFSG, and the two restricted simple-model
+callbacks. The coarse and bounded sharp Tracey fields remain distinct
+mathematical obligations; this is not a CFSG-only proof of T1.
 For product actions with at least two
 socle factors, the component order budget pays the generator bound with
 the full factorial retained. The general class-count and nonnilpotent

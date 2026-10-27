@@ -188,6 +188,31 @@ abelian-quotient statements are now supplied by checked proofs. These are explic
 not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
+The strongest optional CFSG endpoint is now
+[`CFSGTransitiveCountT1Reduction`](SymmetricSubgroupAsymptotics/CFSGTransitiveCountT1Reduction.lean).
+Its `T1_of_three_published_inputs_cfsg_and_remaining_after_ON_binary` and
+`allTargets_of_three_published_inputs_cfsg_and_remaining_after_ON_binary`
+construct the labelled transitive-count input from CFSG internally. Their
+six explicit parameters are:
+
+| Parameter | Remaining mathematical requirement |
+|---|---|
+| `lit : PreE7CharacterPublishedInputs` | Garonzi–Maróti's general permutation class-number bound. |
+| `hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput` | The actual soluble subgroup and binomial orbit partition in the exceptional `3·2^m` action, including its retained exponent restriction. |
+| `hTracey : TraceyPublished2018PermutationInputBundle` | The coarse transitive generator bound and the sharp generator bound in degrees 4 through 21. These remain two separate mathematical requirements. |
+| `hCFSG : CFSG.CFSGClassification` | The pinned classification statement, at commit `25507f8795f2e499b392f3312a576538e1c5ef78`. |
+| `remainingGoodSylow` | The exact `RemainingGoodSylowIndexAfterONBinary` callback on 19 sporadic tags. |
+| `remainingSimpleIndex` | The exact `RemainingSufficientSimpleIndexAfterMathieuTwentyFourComplete` numerical callback on 21 tags. |
+
+The theorem statements link these last two requirements to their literal
+model types and guards. Thus six mathematical obligations beyond CFSG
+remain when the coarse and sharp Tracey requirements are counted separately.
+The LMM input is absent. This is not yet a CFSG-only proof of T1. Final
+three-export counting and two-export T1 audits use only `propext`,
+`Classical.choice` and `Quot.sound`; the explicit parameters above are
+not discharged by an axiom audit. The original seven-published-input
+exports remain available without choosing the CFSG backend.
+
 Formerly external requirements are now discharged by checked proofs
 or proved consumer replacements on the same pinned toolchain:
 
@@ -294,7 +319,9 @@ chooses one actual containing soluble group, records the same relative
 tuple there, and retains the original character restrictions and bounded
 source moment. The [global assembly](SymmetricSubgroupAsymptotics/CFSGConstructedContainersGlobal.lean)
 therefore needs neither `h86` nor a transitive-count premise. The separate
-nonsoluble pre-E7 menu still uses `hLMM`. This does not assert Pyber's
+nonsoluble pre-E7 menu retains the `hLMM` interface, now filled by
+[`CFSGTransitiveSubquadraticCount.transitiveCountInput_proved`](SymmetricSubgroupAsymptotics/CFSGTransitiveSubquadraticCount.lean)
+in the optional CFSG endpoint. This does not assert Pyber's
 stronger `2^(13n)` conjugacy-class estimate. The final [catalogue adapter](SymmetricSubgroupAsymptotics/T1CatalogueFromMarkedMoment.lean)
 uses this proved moment directly. The character bundle's binary field is
 also filled internally. The mixed-prime abelianization and faithful-character
@@ -339,7 +366,9 @@ version conventions appear in the [literature register](../provenance/LITERATURE
 The remaining inputs are ordinary published mathematical theorems.
 No action-catalogue correspondence, project capacity, marked moment,
 complete source or asymptotic target is included in them. The labelled
-transitive-count theorem remains a counting input. The coarse
+transitive-count theorem remains a counting input in the canonical
+seven-published-input API; the optional CFSG endpoint proves that input
+internally. The coarse
 all-subgroup upper bound is proved from `hAG` alone. The actual soluble
 primitive bounds and large-orbit generation theorem are now unconditional
 (`CFSGSolublePrimitiveCoarse.lean`, `CFSGSolubleOrbitFinal.lean`).
@@ -2846,8 +2875,8 @@ strictly smaller-degree induction. A quadratic local logarithmic charge
 handles both affine and nonaffine block components; a finite initial
 range and logarithmic decay absorb that charge. No exact Tracey bound,
 McIver–Neumann input, or finite-model callback is used. This auxiliary
-theorem supplies a lift budget; it does not discharge the exact Tracey
-or transitive-count inputs
+theorem supplies a lift budget for the completed transitive-count proof
+below; it does not discharge the exact Tracey bounds
 ([`CFSGWeakTransitiveGeneratorBound`](SymmetricSubgroupAsymptotics/CFSGWeakTransitiveGeneratorBound.lean),
 [`WeakTransitiveDegreeInduction`](SymmetricSubgroupAsymptotics/WeakTransitiveDegreeInduction.lean)).
 
@@ -2900,11 +2929,39 @@ and block count `t`: `C*t^2*r*log₂(r)/sqrt(log₂(t)) = o((r*t)^2)` for
 The numerical half-degree recurrence is proved as well: an eventual
 bound `a(n) ≤ w(n)*(1 + Σ_{k ≤ n/2} a(k))` with subquadratic node weight
 implies the exact all-width `SubquadraticMenuIndexCount` interface.
-The actual subgroup cover and kernel estimates still have to instantiate
+The complete actual subgroup cover and kernel estimates now instantiate
 that recurrence
-([`LMMHalfDegreeCountRecurrence`](SymmetricSubgroupAsymptotics/LMMHalfDegreeCountRecurrence.lean)).
-The full transitive LMM theorem still requires the imprimitive block-chain
-cover and complete global kernel/lift budget; it remains an explicit T1 input.
+([`LMMHalfDegreeCountRecurrence`](SymmetricSubgroupAsymptotics/LMMHalfDegreeCountRecurrence.lean),
+[`CFSGTransitiveSubquadraticCount`](SymmetricSubgroupAsymptotics/CFSGTransitiveSubquadraticCount.lean)).
+For bounded local degree, a finite chief trace of the actual local group
+combines induced-module elementary layers with all-support nonabelian
+layers. Every layer counts whole lifts over the same quotient image;
+the resulting threshold is uniform over all faithful transitive tops.
+For large local degree, the affine order bound or the actual full socle
+and outer quotient give a uniform bound for the complete full-component
+wreath family. The socle may have two minimal normal subgroups, and all
+inactive simple-coordinate supports are retained
+([`ActualFullWreathFiniteChiefCount`](SymmetricSubgroupAsymptotics/ActualFullWreathFiniteChiefCount.lean),
+[`ActualFullWreathFiniteLocalMenuSubquadratic`](SymmetricSubgroupAsymptotics/ActualFullWreathFiniteLocalMenuSubquadratic.lean),
+[`CFSGActualPrimitiveWreathLargeLocal`](SymmetricSubgroupAsymptotics/CFSGActualPrimitiveWreathLargeLocal.lean)).
+
+The literal minimal-block cover records one primitive local group, one
+transitive top, the whole wreath subgroup and a point bijection whose
+decoder recovers the original labelled subgroup. For `n = r*t`, each
+point-chart family has exactly `n!` elements and `t ≤ n/2`. The complete
+local-family count is maximized over tops, so the top count enters only
+once, in the smaller-degree sum. Polynomial width choices and all frame
+costs are absorbed in the factorial-polylog node weight. Both counting
+regimes and the finite initial range are paid internally. Consequently
+CFSG alone proves `SubquadraticMenuIndexCount LabelledTransitiveSubgroup`,
+and hence the exact existing `LucchiniMenegazzoMorigiTransitiveCountInput`.
+This is the weak subquadratic interface needed by T1; no explicit rate
+or optimal LMM constant is asserted
+([`LabelledTransitiveBlockCode`](SymmetricSubgroupAsymptotics/LabelledTransitiveBlockCode.lean),
+[`LabelledTransitiveBlockCodeCardinality`](SymmetricSubgroupAsymptotics/LabelledTransitiveBlockCodeCardinality.lean),
+[`CFSGUniformPrimitiveWreathFamilyCount`](SymmetricSubgroupAsymptotics/CFSGUniformPrimitiveWreathFamilyCount.lean)).
+The successor T1 endpoint supplies this proved input and omits `hLMM`
+([`CFSGTransitiveCountT1Reduction`](SymmetricSubgroupAsymptotics/CFSGTransitiveCountT1Reduction.lean)).
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
