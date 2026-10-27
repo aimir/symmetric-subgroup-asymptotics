@@ -35,6 +35,15 @@ syntax, its interpretation and compiler correctness, the presentation
 carrier, and the literal Co₂ presentation. It omits unrelated algorithms,
 metadata checks, and theorems about the order and recognition of Co₂.
 
+`CFSGJankoThreeTauCetiPresentationCore.lean` adds the literal J3 row
+from TauCeti's `GroupTheory/SpecificGroups/CFSG/Sporadic/Janko/Three.lean`
+at the same revision, reusing that checked presentation compiler. Its
+metadata and attribution are retained. The companion
+`CFSGJankoThreeTauCetiPresentationEquiv.lean` proves equality of all eight
+interpreted and compiled relators and gives a generator-preserving
+isomorphism from the original presentation. This is a presentation
+transport, not a port of J3's order or outer-automorphism theorems.
+
 `CFSGCoTwoTauCetiPresentationEquiv.lean` proves equality of the interpreted
 relator lists and defining sets, then constructs an equivalence from the
 original project Co₂ presentation to this port of the TauCeti presentation.
@@ -76,6 +85,17 @@ certificates. The selected word is `A * B^3 * A * B * A * B^2`.
 for the original presented group from an actual homomorphism and selected
 vector period, without asserting equality with the whole matrix group or
 using its claimed order. The external-data notice above applies here too.
+
+The J2 certificate uses the explicit 14-dimensional seeds over `F₅`
+and the fixed 24-instruction local program in
+`Certificates/Data/CFSGNative/SectionRank/J2Local.lean` at the AxiomMath
+revision above. `CFSGJankoTwoSelectedMatrixIdentities.lean` retains all
+five original relators and the exact Heisenberg/Singer identities through
+100 checked matrix products. `CFSGJankoTwoActualHeisenbergFrame.lean`
+pulls the configuration back through a nontrivial homomorphism from the
+original simple presentation. It assumes no target recognition, whole
+group order, or order of the normalizing element. The external-data notice
+above continues to apply.
 
 ## Literal nonsplit-torus lemmas
 

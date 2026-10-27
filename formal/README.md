@@ -189,26 +189,29 @@ not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
 The strongest optional CFSG endpoint is now
-[`CFSGSuzBrayT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSuzBrayT1Reduction.lean).
-Its `T1_of_three_published_inputs_cfsg_and_remaining_after_suz_bray` and
-`allTargets_of_three_published_inputs_cfsg_and_remaining_after_suz_bray`
-construct the labelled transitive-count input from CFSG internally and
-supply the original J1, four Y-section and Suz GoodSylow cases. Their
-six explicit parameters are:
+[`CFSGSuzBrayBoundedSharpT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSuzBrayBoundedSharpT1Reduction.lean).
+Its `T1_of_three_published_inputs_cfsg_and_remaining_after_suz_bray_bounded_sharp`
+and `allTargets_of_three_published_inputs_cfsg_and_remaining_after_suz_bray_bounded_sharp`
+construct both the labelled transitive-count input and the bounded-sharp
+Tracey field internally. Their six explicit parameters are:
 
 | Parameter | Remaining mathematical requirement |
 |---|---|
 | `lit : PreE7CharacterPublishedInputs` | Garonzi–Maróti's general permutation class-number bound. |
 | `hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput` | The actual soluble subgroup and binomial orbit partition in the exceptional `3·2^m` action, including its retained exponent restriction. |
-| `hTracey : TraceyPublished2018PermutationInputBundle` | The coarse transitive generator bound and the sharp generator bound in degrees 4 through 21. These remain two separate mathematical requirements. |
-| `hCFSG : CFSG.CFSGClassification` | The pinned classification statement, at commit `25507f8795f2e499b392f3312a576538e1c5ef78`. |
-| `remainingGoodSylow` | The exact `RemainingGoodSylowIndexAfterSuzBray` callback on 13 sporadic tags. |
-| `remainingSimpleIndex` | The exact `RemainingSufficientSimpleIndexAfterMathieuTwentyFourComplete` numerical callback on 21 tags. |
+| `hTracey : TraceyPermutationGeneratorInput` | The coarse transitive generator bound. |
+| `hCFSG : CFSG.CFSGClassification` | The unchanged classification statement at commit `25507f8795f2e499b392f3312a576538e1c5ef78`. |
+| `remainingGoodSylow` | The unchanged `RemainingGoodSylowIndexAfterSuzBray` callback on 13 sporadic tags. |
+| `remainingSimpleIndex` | The unchanged `RemainingSufficientSimpleIndexAfterMathieuTwentyFourComplete` numerical callback on 21 tags. |
 
-The theorem statements link these last two requirements to their literal
-model types and guards. Thus six mathematical obligations beyond CFSG
-remain when the coarse and sharp Tracey requirements are counted separately.
-The LMM input is absent. This is not yet a CFSG-only proof of T1.
+These six formal arguments represent five mathematical requirements beyond
+CFSG. The bounded-sharp field has no remaining callback: its last J2 case
+is excluded through a genuine Heisenberg/Singer frame in the original
+presentation, transported to the same actual simple factor. The existing
+small-degree bases, large-degree comparison and intransitive induction
+derive McIver–Neumann from CFSG and coarse Tracey
+([bundle adapter](SymmetricSubgroupAsymptotics/TraceyPublished2018BoundedSharpCFSG.lean)).
+The LMM input is absent. This is still not a CFSG-only proof of T1.
 The local geometry underlying `hExceptionalOrbits` is now proved on the
 single actual correlated quotient `(PSL₂(F)^e)/H`, for `H` normal of index
 three in the Borel power and `card F` coprime to three. The full orbit
@@ -1141,13 +1144,14 @@ outer budget. No finite-capacity premise remains
 [normalization](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoSylowOuterNormalization.lean)).
 
 The latest refinement is
-[`CFSGSuzBrayT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSuzBrayT1Reduction.lean),
+[`CFSGSuzBrayBoundedSharpT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSuzBrayBoundedSharpT1Reduction.lean),
 which retains **13 sporadic good-Sylow cases** and **21 numerical cases**.
 The remaining good-Sylow tags are J2, J3, J4, Co1, Co2, Co3, HS, McL, He,
 HN, Ly, Th and Monster. Suz, J1, Fi22, Fi23, Fi24′ and Baby Monster are now
 supplied internally, in addition to the earlier Mathieu, Ru and ON cases.
-The three published bundles, pinned CFSG and both residual callbacks
-remain explicit. The numerical cases for these six models are unchanged.
+The three published inputs (GM, exceptional orbits and coarse Tracey),
+pinned CFSG and both residual callbacks remain explicit. The bounded-sharp
+field is proved internally. The numerical cases for these six models are unchanged.
 
 For all four Y-section models, one theorem works for every arm triple.
 Color the involution diagram in two commuting colors. Even products within
@@ -1331,11 +1335,12 @@ cannot occur. A proved numerical adapter and the original small-degree
 bases derive the full McIver--Neumann conclusion from that bundle.
 This endpoint has four published parameters, CFSG and two
 residual model callbacks; the newer ReeF4 endpoint above uses the same
-published bundle and the reduced good-Sylow callback. The additional sharp field is published input;
-it is not proved from the old coarse field or from CFSG. Future proofs
-must also avoid using the global MN consequence to establish its own
-Tracey premise. The canonical endpoint and its seven-input table remain
-unchanged.
+published bundle and the reduced good-Sylow callback. These historical
+endpoints retain the additional sharp field as published input. The strongest
+successor now supplies that field from CFSG; coarse Tracey remains explicit.
+Its proof avoids using the global McIver–Neumann consequence to establish
+its own Tracey premise. The canonical endpoint and its seven-input table
+remain unchanged.
 
 The bounded ordinary-generator route now proves **every original
 nonaffine imprimitive sharp case below degree 22**, or retains an actual
@@ -2841,7 +2846,8 @@ fixed cutoff chosen before the counterexample
 [primitive-head residual](SymmetricSubgroupAsymptotics/TraceyOrdinaryPrimitiveMonsterHeadResidual.lean)).
 That bounded primitive head is not proved. The numerical callback is
 unchanged, and no whole-Monster generation theorem is claimed. The coarse
-and bounded-sharp published inputs remain explicit; CFSG-only T1 is open.
+input remains explicit; the bounded-sharp field is proved below.
+CFSG-only T1 is open.
 Tits is now removed from the bounded sharp frontier too. The actual
 four-generator and outer-multiplicity bounds give at most six generators
 in every primitive Tits action of degree at most 21; its least index is
@@ -2940,7 +2946,7 @@ application, finiteness is transported from `D.Simple`; no supplied group
 order or representation identification is used. This excludes both its
 degree-at-most-21 primitive branch and its small-block branch. The
 strongest combined refinement retains all original witnesses and guards:
-**J2 is the sole remaining bounded-sharp sporadic tag**
+the intermediate residual has only the J2 bounded-sharp sporadic tag
 ([original Co2 divisor](SymmetricSubgroupAsymptotics/CFSGCoTwoSelectedWordTwentyThreePrimeDivisor.lean),
 [same-action exclusion](SymmetricSubgroupAsymptotics/PrimitiveSocleCoTwoPrimeTwentyThreeExclusion.lean),
 [one-tag residual](SymmetricSubgroupAsymptotics/BoundedSharpCoTwoPrimeTwentyThreeExcludedActualResidual.lean)).
@@ -2954,8 +2960,20 @@ whole-operator order or representation-identification premise
 [`BoundedSharpSuzPrimeThirteenExcludedActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpSuzPrimeThirteenExcludedActualResidual.lean),
 [`CFSGCoThreeSelectedPositiveThirtyTwoPrimeTwentyThree`](SymmetricSubgroupAsymptotics/CFSGCoThreeSelectedPositiveThirtyTwoPrimeTwentyThree.lean),
 [`BoundedSharpCoThreePrimeTwentyThreeExcludedActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpCoThreePrimeTwentyThreeExcludedActualResidual.lean)).
-The full bounded-sharp input remains open. Separately, the raw primitive
-degree forms and the proved simple-group order lower bound 60 show that
+The final J2 case is now excluded as well. A genuine Heisenberg subgroup
+of order 27 and compatible Singer normalizer are constructed in the
+original five-relator presentation. The Singer action is transitive on
+the eight nonzero quotient vectors, and every proper subgroup has index
+at least 27 under the inherited finite/simple instances. All 100 fixed
+products of the 14-dimensional matrices over `F₅` are kernel-checked;
+no target-group order, recognition or normalizer-splitting premise is used.
+The same-factor transport closes both remaining branches
+([original frame](SymmetricSubgroupAsymptotics/CFSGJankoTwoActualHeisenbergFrame.lean),
+[same-action exclusion](SymmetricSubgroupAsymptotics/PrimitiveSocleJankoTwoHeisenbergSingerExclusion.lean),
+[bounded-sharp closure](SymmetricSubgroupAsymptotics/BoundedSharpJankoTwoHeisenbergSingerCompleteCFSG.lean)).
+Consequently CFSG proves the full bounded-sharp field in degrees 4 through
+21. Only coarse Tracey remains explicit in its generator bundle.
+Separately, the raw primitive degree forms and the proved simple-group order lower bound 60 show that
 the nonaffine socle has one simple factor in every degree below 25,
 without a simple-index estimate
 ([`PrimitiveSocleBelowTwentyFiveSingleFactorWithoutIndexInput`](SymmetricSubgroupAsymptotics/PrimitiveSocleBelowTwentyFiveSingleFactorWithoutIndexInput.lean)).
@@ -3160,14 +3178,12 @@ degree at least 22 and in every even degree at least 16. Strong induction
 and the proved intransitive step reduce the full McIver--Neumann input
 to transitive degrees below 16 or equal to 17, 19 or 21
 ([`McIverNeumannFromTraceyBounded`](SymmetricSubgroupAsymptotics/McIverNeumannFromTraceyBounded.lean)).
-Under that unchanged coarse input, the unpaid imprimitive possibilities
-have nonaffine fibre/top degrees `(6,2)`, `(5,3)` and `(7,3)`; the latter
-two require the actual full symmetric three-point top. This degree list
-is not a classification of its actions. The bounded primitive nonaffine
-branch for this sharper bound also remains open.
-The separately defined published-2018 bundle above pays these remaining
-cases through its sharper floor field. That consolidates published
-inputs; proving the bundle from CFSG remains a separate obligation.
+That intermediate reduction isolates imprimitive possibilities with
+nonaffine fibre/top degrees `(6,2)`, `(5,3)` and `(7,3)`; the latter two
+retain the actual full symmetric three-point top. This degree list is
+not a classification of its actions. The final J2 closure now supplies
+all the remaining bounded imprimitive and primitive cases from CFSG.
+The bundle adapter retains only its coarse field as an explicit input.
 
 Two further shared ordinary-generation lemmas are proved. A group
 actually generated by a Sylow subgroup and one conjugate needs at most
@@ -3178,7 +3194,8 @@ component **order** cube pays the half-degree bound for every subgroup,
 including the full factorial cost
 ([`GoodSylowPermutationOrdinaryGenerators`](SymmetricSubgroupAsymptotics/GoodSylowPermutationOrdinaryGenerators.lean),
 [`PrimitiveSocleProductOrdinaryGenerators`](SymmetricSubgroupAsymptotics/PrimitiveSocleProductOrdinaryGenerators.lean)).
-The general nonnilpotent ordinary-generator input is still retained.
+The canonical endpoint retains the general ordinary-generator input;
+the strongest CFSG successor derives it from CFSG and coarse Tracey.
 
 For a homogeneous minimal normal subgroup, ordinary generators of one
 literal coordinate factor and lifts of generators of the ambient quotient

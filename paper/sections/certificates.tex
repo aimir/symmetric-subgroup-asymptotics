@@ -132,8 +132,8 @@ outer-order budget are proved below, so its numerical callback also
 retains only Tits and sporadic groups. The Tits least-index square is
 also proved below and threaded into the optional endpoint, so that
 model's numerical payload now asks only for the outer-order budget.
-The newest optional endpoint uses the explicit published Tracey 2018
-bundle and retains four published inputs, CFSG and two residual model
+The newest optional endpoint proves the bounded-sharp Tracey field
+internally and retains three published inputs, CFSG and two residual model
 hypotheses; it is not a proof from CFSG alone. The seven-input theorem stated above remains the canonical
 formalization of the asymptotic results.
 
@@ -681,8 +681,9 @@ small block fibres. Only a primitive Monster minimal counterexample of
 degree at least $33$ and below the fixed cutoff remains. That cutoff
 is chosen before the counterexample and is not computed. The bounded
 primitive head, whole-Monster generation and the all-degree transitive
-bound are not established. The numerical callback is unchanged; neither
-the coarse input nor the separate bounded-sharp input is yet discharged.
+bound are not established. The numerical callback is unchanged; the
+coarse input is not discharged. The separate bounded-sharp field is
+proved below.
 Both eight-point obstructions in the bounded sharp route are now
 discharged. The checked canonical action cover gives generator rank at
 most three for every primitive eight-point group. Elementary Sylow
@@ -743,10 +744,20 @@ In the actual socle application, finiteness is transported from the
 original simple factor; no group-order or representation-identification
 premise is supplied. Co2 is therefore excluded from both bounded
 branches. All earlier guards and original action witnesses are retained,
-leaving J2 as the sole sporadic tag in this reduction.
-No replacement callback is introduced;
-the full bounded-sharp input remains open. Independently, the
-raw primitive degree forms and the proved minimum order $60$ show that
+leaving only J2 in that intermediate reduction.
+The final J2 case is now excluded too. One hundred checked products of
+explicit $14$-dimensional matrices over $\mathbb F_5$ verify all five
+original presentation relations and a Heisenberg/Singer configuration.
+Original simplicity and a nontrivial generator make the representation
+injective; the configuration therefore pulls back to the original group.
+The genuine Heisenberg subgroup has order $27$, and its compatible
+normalizer acts transitively on the eight nonzero quotient vectors.
+The resulting proper-index bound is $27$, excluding both original
+bounded branches on the same actual simple factor. No target-group
+order, recognition or normalizer-splitting hypothesis is supplied.
+Thus CFSG proves the full bounded-sharp field in degrees $4$ through
+$21$. Independently, the raw primitive degree forms and the proved
+minimum order $60$ show that
 the nonaffine socle has a single simple factor in every degree below
 $25$, without using a simple-index estimate.
 For the original M12 permutation group, an exact selected conjugacy
@@ -897,8 +908,8 @@ $2^{o(n^2)}$ in the exact all-width interface needed by T1. This proof
 does not assert an explicit rate or the optimal LMM constant. The
 successor formal endpoint supplies the transitive-count input internally,
 leaving three published bundles, CFSG, and the two restricted simple-model
-callbacks. The coarse and bounded sharp Tracey fields remain distinct
-mathematical obligations; this is not a CFSG-only proof of T1.
+callbacks. The strongest successor supplies the bounded-sharp field
+internally; coarse Tracey remains explicit. This is not a CFSG-only proof of T1.
 For product actions with at least two
 socle factors, the component order budget pays the generator bound with
 the full factorial retained. The general class-count and nonnilpotent
@@ -912,7 +923,8 @@ retains both conclusions of Tracey's published Theorem~1.1
 4 to 21, outside the possible exceptional degrees. A numerical proof
 and the small-degree bases derive the full ordinary-generator input
 from this stronger published bundle. This consolidates published
-assumptions; it does not prove the Tracey bundle from CFSG.
+assumptions. The final J2 closure above now supplies this bundle's
+bounded-sharp field from CFSG; its coarse field remains explicit.
 Actual prime-index induced capacities and the original chief trace now
 pay every nonaffine imprimitive sharp case below degree $22$, or retain
 an actual Tits/sporadic factor. A genuine least-index-five coset action
@@ -1893,9 +1905,14 @@ The concrete model theorem and T1 successor require no matrix-power
 or generation hypothesis.
 
 The resulting T1 endpoint retains $13$ sporadic good-Sylow cases and
-$21$ numerical cases. It supplies the LMM input internally, retaining
-three published bundles, pinned CFSG and both restricted callbacks.
-The coarse and bounded sharp Tracey fields remain distinct requirements.
+$21$ numerical cases, with their original guards and payloads unchanged.
+It supplies both LMM and the bounded-sharp Tracey field internally.
+Its six formal arguments comprise CFSG and five remaining mathematical
+requirements: the Garonzi--Mar\'oti bound, exceptional orbit data, coarse
+Tracey, and the two restricted model callbacks. The original J2
+Heisenberg/Singer frame closes the last bounded-sharp branch on the
+same actual simple factor. No independent sharp or McIver--Neumann
+input remains.
 All new final exports pass standard-axiom audits; these audits do not
 discharge the explicit inputs. This is still not a CFSG-only proof of T1.
 
