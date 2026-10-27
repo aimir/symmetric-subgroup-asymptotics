@@ -32,9 +32,14 @@ In the publication toolchain, the original odd-characteristic B and D
 projective equivalences and the actual integral/tensor Lie structures
 are now proved. Their common source-spanning and doubled-coordinate
 arguments require no old-model simplicity or source-recognition input.
-They provide the original-model side of further concrete transports;
-the remaining upstream field/form comparisons and bad-characteristic
-kernel arguments must still be checked and composed.
+The type-D continuation now proves the original-model equivalence over
+EVERY field, using the actual intrinsic integral parity lattice, a proved
+basis, centrality of the possible ambient kernel, and source perfectness.
+Its 54 audited exports use only the three standard axioms above; it does
+not assume original-model simplicity or source faithfulness. These results
+provide the original-model side of further concrete transports. The actual
+upstream type-D comparison, the other remaining family comparisons, and
+the full classification/T1 composition still require their own checks.
 
 ## Definition and presentation ports
 

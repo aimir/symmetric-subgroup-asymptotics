@@ -263,6 +263,16 @@ coordinates give an integral retraction up to multiplication by two; this
 remains injective after field extension when two is nonzero. These theorems
 take no source-faithfulness, group-simplicity, or recognition hypothesis.
 
+The type-D equivalence now holds over every field, including characteristic
+two ([all-fields equivalence](SymmetricSubgroupAsymptotics/CFSGOrthogonalDOriginalProjectiveEquivalenceAllFields.lean)).
+An intrinsic integral parity lattice gives a genuine basis of the original
+source. Primitive root coordinates detect the non-Cartan coefficients after
+base change; the possible remaining Cartan kernel is central. Proved source
+perfectness and actual model Lie preservation detect every original group
+action, even when its ambient matrix realization has a kernel. The thirteen
+modules in this continuation have 54 audited exports, all using only
+`propext`, `Classical.choice`, and `Quot.sound`.
+
 The literal integral lattice now has a proved Lie bracket, inherited by
 its actual tensor space in every characteristic
 ([Lie structures](SymmetricSubgroupAsymptotics/CFSGSerreIntegralLieAlgebra.lean)).
@@ -278,6 +288,13 @@ terms. The orthogonal foundations and the subsequent odd-group/Lie packets
 have respectively 150 and 114 audited exports, using only the same three
 standard axioms. These results support the remaining catalogue transport;
 the five mathematical requirements in the T1 signature remain explicit.
+
+The shared matrix-realization and model-automorphism continuation has 22
+standard-axiom audit exports. For the exceptional source comparison, the
+actual image-lattice theorem and uniform norm-two parent construction are
+also checked, with 20 audited exports including the literal 78-member E6
+source family. This is a source family with proved parent brackets and
+weights; its full spanning and recognition proof is still open.
 
 The local geometry underlying `hExceptionalOrbits` is now proved on the
 single actual correlated quotient `(PSL₂(F)^e)/H`, for `H` normal of index
