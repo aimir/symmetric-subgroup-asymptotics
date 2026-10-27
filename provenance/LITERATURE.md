@@ -438,6 +438,12 @@ cited here through that explicit statement in Roney-Dougal–Tracey; the
 publisher link supplies the original paper's bibliographic record. This is
 the precise transitive-count input used in the argument: it concerns actual
 subgroups. Its statement locator is RDT's introduction, p.2.
+The optional CFSG backend now proves the weaker subquadratic labelled
+interface required by T1 in
+`CFSGTransitiveSubquadraticCount.transitiveCountInput_proved` and supplies
+it in `CFSGTransitiveCountT1Reduction`. That endpoint has no separate LMM
+parameter; it does not claim the quantitative rate displayed above.
+The canonical seven-published-input API remains available.
 
 **LIT-TRANSITIVE-CATALOGUE.**
 D. F. Holt and G. Royle, *A census of small transitive groups and
@@ -841,11 +847,15 @@ KP fields and the nilpotent class-number bound are supplied internally;
 the character bundle retains only the Garonzi–Maróti general class bound.
 `CFSGSolubleOrbitFinal` proves Proposition 6.2's exact interface from unconditional soluble primitive bounds and the internally proved refined induced-module theorem; no sharp primitive composition or normal-generator input is used. The Pyber/Theorem 8.6 representative
 estimate remains a valid historical reference but is not required by the
-current T1 signature: `LMMSubquadraticSolubleContainers` supplies the weaker
-subquadratic container count from the already retained labelled transitive
-count, and `MarkedC4SubquadraticContainersGlobal` proves the same marked
-moment from it. This is a requirement reduction, not a proof of Pyber's
-stronger class-count assertion. The complete current input list is in
+current T1 signature. The older `LMMSubquadraticSolubleContainers` adapter
+supplies a weaker subquadratic container count from labelled transitive
+counting, and `MarkedC4SubquadraticContainersGlobal` proves the marked
+moment from it. The current `CFSGConstructedContainersGlobal` replacement
+instead uses a proved soluble cover and needs no transitive-count premise
+for that moment. The nonsoluble pre-E7 menu keeps the labelled-count
+interface, supplied internally from CFSG in the optional endpoint above.
+These are requirement reductions, not a proof of Pyber's stronger
+class-count assertion. The complete current input list is in
 `formal/README.md`.
 
 

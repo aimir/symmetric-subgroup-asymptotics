@@ -2838,6 +2838,31 @@ component, top, nested-refinement and failed-index witnesses. The full
 Garonzi–Maróti input remains open
 ([`CFSGMathieuTwelveCompleteClassConsumers`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveCompleteClassConsumers.lean),
 [`GaronziMarotiMathieuTwelveResidualReduction`](SymmetricSubgroupAsymptotics/GaronziMarotiMathieuTwelveResidualReduction.lean)).
+A generic fixed-model class tail now applies to **every actual subgroup**
+of the same primitive component. For a finite model `M` and fixed reserve
+`c`, the threshold `max 1024 (max (8*c) (|M|*|Out M|))` gives
+`k(H)^3 ≤ 5^(n-c)`. The proof bounds the original group order and uses
+`4^8 ≤ 5^7`; it makes no class-count monotonicity assumption. One threshold
+works for the exact 25 remaining Tits/sporadic tags. The actual component,
+small-fibre and nested installers retain the original subgroup, its own
+kernel and quotient image. In the nested case, the descriptor belongs to
+the inner-block quotient while the counted subgroup stays upstairs
+([`FiniteModelPrimitiveClassTail`](SymmetricSubgroupAsymptotics/FiniteModelPrimitiveClassTail.lean),
+[`FiniteModelPrimitiveClassReserveTail`](SymmetricSubgroupAsymptotics/FiniteModelPrimitiveClassReserveTail.lean),
+[`FiniteModelOriginalClassTailInstallers`](SymmetricSubgroupAsymptotics/FiniteModelOriginalClassTailInstallers.lean),
+[`FiniteModelNestedClassTailInstaller`](SymmetricSubgroupAsymptotics/FiniteModelNestedClassTailInstaller.lean)).
+
+The cumulative theorem now proves, under CFSG, that either Garonzi–Maróti
+holds or an actual **minimal** counterexample has degree below the named
+`GaronziMarotiFiniteBoundedCounterexample.classTailCutoff`. This cutoff
+is constructed from fixed model thresholds before any counterexample is
+chosen. The original witnesses and proved strict-smaller induction bound
+are retained. The bounded cases are unverified and the cutoff has not
+been evaluated numerically. This is a finite-prefix reduction; it does
+not remove the Garonzi–Maróti parameter from T1
+([`GaronziMarotiFinitePrimitiveBoundedResidual`](SymmetricSubgroupAsymptotics/GaronziMarotiFinitePrimitiveBoundedResidual.lean),
+[`GaronziMarotiOriginalFiniteTailResidual`](SymmetricSubgroupAsymptotics/GaronziMarotiOriginalFiniteTailResidual.lean),
+[`GaronziMarotiFiniteBoundedCounterexample`](SymmetricSubgroupAsymptotics/GaronziMarotiFiniteBoundedCounterexample.lean)).
 A reusable primitive-sector census is also proved. For any fixed finite
 family of actual simple models there is one finite constant `C` such that,
 with `L = Nat.log 2 n`, every primitive action in that sector satisfies
