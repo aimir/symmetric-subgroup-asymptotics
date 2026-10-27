@@ -1,0 +1,13 @@
+import SymmetricSubgroupAsymptotics.CFSGJankoTwoBinaryRecoveryWords
+import SymmetricSubgroupAsymptotics.CFSGJankoTwoBinaryRecoveryProducts04
+import Mathlib.Tactic.FinCases
+
+/-! Selected whole-matrix equality only; no faithfulness or full generation assumed. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+open scoped Matrix BigOperators
+namespace SymmetricSubgroupAsymptotics.CFSGJankoTwoBinaryRecoveryMatrixEquality
+theorem recovery_matrix : CFSGJankoTwoBinaryRecoveryWords.node034 CFSGJankoTwoSelectedBaseCaches.matrixA CFSGJankoTwoSelectedBaseCaches.matrixB=CFSGJankoTwoSelectedBaseCaches.matrixB :=
+  (CFSGJankoTwoBinaryRecoveryProducts04.matrix_node034).trans CFSGJankoTwoSelectedBaseCaches.B_source_binding.symm
+end SymmetricSubgroupAsymptotics.CFSGJankoTwoBinaryRecoveryMatrixEquality
