@@ -229,8 +229,16 @@ A separate quadratic-field construction embeds the actual norm-one group,
 of order `card F + 1`, faithfully in `SL₂(F)` and retains the exact central
 kernel on passage to `PSL₂(F)`
 ([norm-one embedding](SymmetricSubgroupAsymptotics/FiniteFieldQuadraticNormOneEmbedding.lean)).
-These facts do not yet prove the required subgroup classification or
-nonsplit-torus normalizer and intravariance statements.
+The literal nonsplit torus is now also proved cyclic. For an odd finite
+field `F` with `5 ≤ card F`, and an actual nonsquare `ν`, its order in the
+original Mathlib `PSL₂(F)` is `(card F + 1) / 2`. Its actual normalizer is
+isomorphic to `DihedralGroup ((card F + 1) / 2)` and has order `card F + 1`.
+The proof derives the central factor two and the required noncentral
+matrix from the norm-kernel cardinality; no torus-order, chosen-element
+or normalizer-classification premise remains
+([exact local normalizer](SymmetricSubgroupAsymptotics/PSLTwoLiteralNonsplitNormalizerComplete.lean)).
+The required arbitrary-subgroup classification and intravariance statements
+remain open in this backend.
 Reducing arbitrary exceptional actions to the correlated structure, including their
 binary-layer lifts and retained Mersenne restriction, is still open;
 `hExceptionalOrbits` therefore remains an explicit input. The new
@@ -238,6 +246,17 @@ three-export callback/T1 audit and its concrete certificate audits use only `pro
 `Classical.choice` and `Quot.sound`; the explicit parameters above are
 not discharged by an axiom audit. The original seven-published-input
 exports remain available without choosing the CFSG backend.
+
+Compatibility with the completed AxiomMath CFSG formalization is pinned to
+revision `69cb972f587a3ecc035e092253167ff2e303c962`. The finite-monoid units
+bridge, the literal Co2 presentation equivalence, and the Co1 decoder/model
+equivalence are checked on our current Lean version. The upstream theorem
+uses Lean 4.35 and TauCeti's catalogue, whereas this project still uses Lean
+4.30 and the older concrete catalogue. The full new classification proof
+has not been imported, and these adapters do not discharge that explicit
+classification input. Exact source pins, retained definitions, attribution,
+and the model-transport boundary are recorded in
+[CFSG_COMPATIBILITY.md](../provenance/CFSG_COMPATIBILITY.md).
 
 Formerly external requirements are now discharged by checked proofs
 or proved consumer replacements on the same pinned toolchain:
@@ -2899,11 +2918,32 @@ and respectively 44 and 38 matrix-vector steps are kernel checked.
 The prime divisors and actual generating pairs pay their primitive
 branches through the shared normalizer theorem, while their small-block
 branches are impossible. Every original action, socle, block and prior
-exclusion guard is preserved. **Five sporadic tags remain: J2, Co1, Co2,
-Ly and ON**
+exclusion guard is preserved
 ([HN certificate](SymmetricSubgroupAsymptotics/CFSGHNSelectedProductSquarePrimeEleven.lean),
 [Th certificate](SymmetricSubgroupAsymptotics/CFSGThSelectedProductPrimeNineteen.lean),
-[five-tag residual](SymmetricSubgroupAsymptotics/BoundedSharpThPrimeNineteenExcludedActualResidual.lean)).
+[intermediate five-tag residual](SymmetricSubgroupAsymptotics/BoundedSharpThPrimeNineteenExcludedActualResidual.lean)).
+The original Ly model has a checked selected vector period of 67 for
+`ABABABB`, excluding it from every faithful action of degree at most 21.
+ON's `AB` and a fixed 23-letter word in Co1 have checked selected vector
+periods of 11. Respectively 469, 22 and 253 original matrix-vector steps
+and their coefficient bindings are checked in the kernel. The same-action
+consumers pay ON and Co1 through the large-prime normalizer argument and
+exclude their small blocks
+([Ly exclusion](SymmetricSubgroupAsymptotics/PrimitiveSocleLyPrimeSixtySevenExclusion.lean),
+[ON consumer](SymmetricSubgroupAsymptotics/PrimitiveSocleONPrimeElevenBoundedSharp.lean),
+[Co1 consumer](SymmetricSubgroupAsymptotics/PrimitiveSocleCoOnePrimeElevenBoundedSharp.lean)).
+For Co2, 67 checked products of explicit 22-dimensional binary matrices
+verify all ten relations of the original presentation. The resulting
+homomorphism and one selected period-23 vector prove that 23 divides the
+order of that original group whenever it is finite. In the actual socle
+application, finiteness is transported from `D.Simple`; no supplied group
+order or representation identification is used. This excludes both its
+degree-at-most-21 primitive branch and its small-block branch. The
+strongest combined refinement retains all original witnesses and guards:
+**J2 is the sole remaining bounded-sharp sporadic tag**
+([original Co2 divisor](SymmetricSubgroupAsymptotics/CFSGCoTwoSelectedWordTwentyThreePrimeDivisor.lean),
+[same-action exclusion](SymmetricSubgroupAsymptotics/PrimitiveSocleCoTwoPrimeTwentyThreeExclusion.lean),
+[one-tag residual](SymmetricSubgroupAsymptotics/BoundedSharpCoTwoPrimeTwentyThreeExcludedActualResidual.lean)).
 These are original-model order divisors, with no supplied matrix-period,
 whole-operator order or representation-identification premise
 ([`LargePrimeSocleQuotientGenerators`](SymmetricSubgroupAsymptotics/LargePrimeSocleQuotientGenerators.lean),
