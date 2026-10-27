@@ -1244,10 +1244,11 @@ action witness, not an asserted subquotient of the original complement;
 the sporadic alternative is now excluded by the completed eight-point theorem
 ([`PrimitiveAffineSixteenEightPointSharpReduction`](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenEightPointSharpReduction.lean),
 [`EightPointHalfDegreeCompleteCFSG`](SymmetricSubgroupAsymptotics/EightPointHalfDegreeCompleteCFSG.lean)).
-The strengthened imprimitive affine sharp assembler covers **every original
-minimal-block affine component below total degree 22**, or retains
-**a genuine global primitive sporadic counterexample on at most ten points**
-([`OriginalAffineBoundedSharpActualTopComplete`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpActualTopComplete.lean)).
+The strengthened imprimitive affine sharp assembler's independent global
+counterexample on at most ten points is now excluded. Every original
+minimal-block affine component below total degree 22 is therefore paid
+([`OriginalAffineBoundedSharpActualTopComplete`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpActualTopComplete.lean),
+[`TenPointGlobalCounterexampleCompleteCFSG`](SymmetricSubgroupAsymptotics/TenPointGlobalCounterexampleCompleteCFSG.lean)).
 The prime-power fibre menu is proved internally;
 local degrees 2, 3, 4, 5, 7 and 9 use the same chief trace and actual
 quotient. At the six-point ternary top, the joint induced capacity pays
@@ -1266,8 +1267,8 @@ an actual primitive sporadic eight-point top of rank greater than three,
 separately from a global failed-half sporadic action on at most ten points.
 The first was the same original top and did not need to fail the
 half-degree bound. Its rank-three obstruction is now impossible by the
-checked primitive eight-point cover. Only the independent ten-point
-global alternative remains in this affine-block route
+checked primitive eight-point cover. The independent ten-point global
+alternative is also excluded by the proved nine/ten-point bounds
 ([`OriginalAffineBoundedSharpSporadicReduction`](SymmetricSubgroupAsymptotics/OriginalAffineBoundedSharpSporadicReduction.lean),
 [`ElementarySylowEightActualTopObstructionFalse`](SymmetricSubgroupAsymptotics/ElementarySylowEightActualTopObstructionFalse.lean)).
 A shared prime-product argument now excludes nine pinned sporadic tags
@@ -2607,7 +2608,7 @@ Using the numerical callback already retained by the optional endpoint
 above eliminates primitive multifactor failures and nonaffine block
 failures of fibre degree at least 32. The displayed generating pairs
 of twenty sporadic models now pay **every primitive degree and every
-original block component/top**, including small actions. The remaining
+original block component/top**, including small actions. At that intermediate stage, the remaining
 primitive possibilities are Fi22/Fi23/Fi24' and the Baby Monster
 below degree 64, Tits below degree 128, and the Monster. The primitive
 J4 branch is now paid at every degree: its literal order-23 witness
@@ -2621,7 +2622,7 @@ primitive branch from degree 128**. Original block fibres below 32
 also exclude J4. Its actual order-23 witness forces one socle factor
 and degree at least 23 in that band. One uniform three-generator-head
 estimate, with at most five actual outer prime factors, pays every
-inherited top. Both branches therefore retain just six tags: Tits,
+inherited top. That intermediate reduction retains six tags: Tits,
 Fi22, Fi23, Fi24′, Baby and Monster
 ([`OriginalNonaffineJFourSmallBlockOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalNonaffineJFourSmallBlockOrdinaryStep.lean)).
 No known J4 order formula or action catalogue is assumed. The same numerical callback is
@@ -2636,7 +2637,7 @@ and their derived/full-centre heads to **4/2/4/4** for Fi22, Fi23, Fi24′
 and Baby, respectively. No finite-model identification or order formula
 is used
 ([`CFSGYCoprimeOrdinaryGenerators`](SymmetricSubgroupAsymptotics/CFSGYCoprimeOrdinaryGenerators.lean)).
-The newest conditional refinement retains the same numerical callback
+An intermediate conditional refinement retains the same numerical callback
 and failed action. The actual Fi23 pair now pays **every primitive degree
 and every original block degree/top**. Fi22, Fi24′ and Baby remain only
 below primitive degree 12 and original local degree 18. The actual seven-generator Tits head
@@ -2653,7 +2654,7 @@ The actual Tits four-generator theorem and proved outer bound now pay
 strictly smaller transitive induction. Its least index is at least 14;
 below local degree 32 there is one socle factor and at most two outer
 prime factors, so one uniform four-head estimate pays the entire band.
-The cumulative coarse residual therefore retains only **Fi22, Fi24′,
+That four-tag coarse refinement retains only **Fi22, Fi24′,
 Baby and Monster**. The first three still require primitive degree below
 12 or original local degree below 18; Monster is unrestricted. This
 refinement takes only the existing sporadic numerical callback and CFSG,
@@ -2661,9 +2662,23 @@ and retains the same socle and action witnesses
 ([`PrimitiveSocleTitsCompleteOrdinary`](SymmetricSubgroupAsymptotics/PrimitiveSocleTitsCompleteOrdinary.lean),
 [`OriginalNonaffineTitsCompleteOrdinaryStep`](SymmetricSubgroupAsymptotics/OriginalNonaffineTitsCompleteOrdinaryStep.lean),
 [`TraceyOrdinaryFourSporadicResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinaryFourSporadicResidual.lean)).
-The finite-model estimates remain before the coarse input can be removed.
-The separate small-degree sharp fields of the published bundle also
-remain; T1's explicit assumptions have not changed.
+The latest coarse refinement retains **only Monster**. A uniform theorem
+for the actual four Y sections proves that every proper subgroup has
+index at least 27. Literal E6 braid certificates construct three commuting
+order-three elements and a cycler in the original derived group; paired
+inversions prove the Heisenberg central word survives the full centre
+quotient. The resulting faithful Heisenberg subgroup has compatible
+Fourier and shear normalizers given by actual even words. The existing
+normalizer-index argument then gives 27. Transport through the same socle
+isomorphism excludes the three previously retained small Y actions
+([`CFSGYE6ActualHeisenberg`](SymmetricSubgroupAsymptotics/CFSGYE6ActualHeisenberg.lean),
+[`CFSGYE6ActualNormalizerIndex`](SymmetricSubgroupAsymptotics/CFSGYE6ActualNormalizerIndex.lean),
+[`PrimitiveSocleYSectionSmallActionExclusion`](SymmetricSubgroupAsymptotics/PrimitiveSocleYSectionSmallActionExclusion.lean),
+[`TraceyOrdinaryMonsterOnlyResidual`](SymmetricSubgroupAsymptotics/TraceyOrdinaryMonsterOnlyResidual.lean)).
+The numerical callback is unchanged. The actual Monster model is the
+derived subgroup of an involution centralizer, so it needs its own
+argument. The coarse and bounded-sharp published inputs remain explicit;
+CFSG-only T1 is still open.
 Tits is now removed from the bounded sharp frontier too. The actual
 four-generator and outer-multiplicity bounds give at most six generators
 in every primitive Tits action of degree at most 21; its least index is
@@ -2688,17 +2703,44 @@ satisfies the required sharp bound
 [`PrimitiveAffineSixteenSharpCompleteCFSG`](SymmetricSubgroupAsymptotics/PrimitiveAffineSixteenSharpCompleteCFSG.lean)).
 The actual primitive eight-point top has the same rank-three bound, so
 its original-block obstruction is also impossible. The strengthened
-bounded-sharp reduction retains only an actual primitive sporadic
-action, an independent global failed action of degree at most 10, or an
-actual nonaffine block sporadic action. No eight-point estimate or
-replacement callback is assumed
+bounded-sharp reduction initially retained an actual primitive sporadic
+action, an independent global failure through degree ten, or an actual
+nonaffine block sporadic action
 ([`ElementarySylowEightActualTopObstructionFalse`](SymmetricSubgroupAsymptotics/ElementarySylowEightActualTopObstructionFalse.lean),
 [`BoundedSharpEightClosedActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpEightClosedActualResidual.lean)).
-The full bounded-sharp input remains open. Separately, the raw primitive
+The independent ten-point alternative is now impossible. A primitive
+nine-point group with a five- or seven-divisor is at least three-transitive
+by the proved prime-cycle criterion; its point stabilizer is primitive
+of degree eight, giving rank at most four. Without either divisor,
+Burnside and the actual affine-nine bound give the same result. The
+intransitive and three-by-three block steps cover every subgroup of S9.
+A primitive ten-point group's maximal stabilizer acts faithfully on nine
+points, so one additional generator gives rank at most five. This closes
+the same independent global witness through degree ten
+([`PrimitiveNineOrdinaryGeneratorsWithoutClassification`](SymmetricSubgroupAsymptotics/PrimitiveNineOrdinaryGeneratorsWithoutClassification.lean),
+[`NinePointHalfDegreeCompleteCFSG`](SymmetricSubgroupAsymptotics/NinePointHalfDegreeCompleteCFSG.lean),
+[`TenPointGlobalCounterexampleCompleteCFSG`](SymmetricSubgroupAsymptotics/TenPointGlobalCounterexampleCompleteCFSG.lean),
+[`BoundedSharpTenClosedActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpTenClosedActualResidual.lean)).
+The index-27 theorem excludes all four Y sections from both remaining
+original-action branches. A shared pair/index/outer packet pays M11, M12
+and M22; actual prime-23 witnesses exclude M23, M24 and J4. All earlier
+socle, block and exclusion guards are retained. The full bounded-sharp
+input remains open on the remaining sporadic witnesses
+([`BoundedSharpMathieuAndJFourExcludedActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpMathieuAndJFourExcludedActualResidual.lean)). Separately, the raw primitive
 degree forms and the proved simple-group order lower bound 60 show that
 the nonaffine socle has one simple factor in every degree below 25,
 without a simple-index estimate
 ([`PrimitiveSocleBelowTwentyFiveSingleFactorWithoutIndexInput`](SymmetricSubgroupAsymptotics/PrimitiveSocleBelowTwentyFiveSingleFactorWithoutIndexInput.lean)).
+An exact conjugacy-orbit certificate is also complete in the original
+M12 permutation group: the selected involution has class size **495**
+and centralizer order **192**. Sixteen fixed proof blocks establish
+all actual conjugating words, signed-generator transitions and distinct
+point encodings; their symbolic assembly uses the original generating
+pair. These unconditional auxiliary exports introduce no class-size
+premise or new input. The rest of the M12 class-profile assembly remains
+open
+([`CFSGMathieuTwelveSelectedInvolutionOrbitComplete`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveSelectedInvolutionOrbitComplete.lean),
+[`CFSGMathieuTwelveSelectedInvolutionCentralizerCard`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveSelectedInvolutionCentralizerCard.lean)).
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
