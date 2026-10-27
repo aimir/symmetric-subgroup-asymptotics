@@ -691,9 +691,12 @@ points detect the normalizer modulo the original socle quotient.
 The fixed-point action has degree at most ten and uses the proved
 half-degree generator bound. A selected vector orbit of prime length
 $13$ in the original Rudvalis matrix model pays Ru through the same
-argument. The actual Monster index-$27$ bound excludes its bounded
-cases too. All earlier guards are retained, leaving ten sporadic tags
-in this reduction. No replacement callback is introduced; the full
+argument. A separately checked prime-$13$ vector orbit in the original
+Suzuki model pays Suz as well. The actual Monster index-$27$ bound
+excludes its bounded cases too. A $32$-letter word in the original Co3
+matrix generators has a checked vector period of $23$, excluding that
+model from both bounded-sharp branches. All earlier guards are retained,
+leaving eight sporadic tags in this reduction. No replacement callback is introduced; the full
 bounded-sharp input remains open. Independently, the
 raw primitive degree forms and the proved minimum order $60$ show that
 the nonaffine socle has a single simple factor in every degree below
@@ -714,7 +717,17 @@ five-point-base argument. The actual order $95040$ transports one rigid
 base to every five-point tuple; a commuting element is then determined
 by images of a few cycle seeds. Small literal assignment counts prove
 the ceilings $54,32,32,10,12,6,8,8,10$, together with their cycle profiles
-and separation. The complete class-profile assembly remains open.
+and separation. The fixed-point-free involution has centralizer at most
+$240$, certified by all $960$ actual completion candidates. The fifteen
+separated original classes saturate the actual order $95040$, giving
+complete class coverage, exact centralizer orders for the selected
+representatives and class count at most $15$, without a class-table input.
+Together with the proved outer-order bound $5$, this gives the joint
+class envelope $75$ and pays the primitive subnormal, proper subnormal,
+small-fibre and original-component class steps for M12. The cumulative
+class-count residual removes M12 from the original component, top and
+nested-refinement witnesses, retaining their failed index budgets. The
+full Garonzi--Mar\'oti input remains open.
 There is also a reusable census for the primitive sector whose actual
 simple factors belong to any fixed finite family. A single finite
 constant $C$ gives
@@ -731,10 +744,71 @@ their exact ambient subgroup, so for $n\ge2$ the labelled count is at most
  \le 2^{(3C+1)n(\log_2 n)^3}=2^{o(n^2)}.
 \]
 The all-width formal interface pays the finite initial range explicitly.
-This covers, in particular, the sporadic primitive sector. The full
-transitive counting input still needs the infinite-model sectors and
-complete block-kernel and extension accounting; it is not discharged
-by this primitive-sector result.
+This covers, in particular, the sporadic primitive sector. A stronger
+universal primitive census is now proved from CFSG alone. There is one
+finite constant $A$ such that every actual primitive group of degree
+$n\ge2$, affine or nonaffine, satisfies
+\[
+ d(G)\le A(\lfloor\log_2 n\rfloor+2)^2.
+\]
+The infinite model families use their actual pair, root and Sylow
+constructions; the finite Tits/sporadic menu uses the finite-family
+budget. No numerical-model callback or coarse induction hypothesis is
+needed. Ordinary tuples give the literal labelled count
+\[
+ (n!)^{A(\lfloor\log_2 n\rfloor+2)^2}
+ \le 2^{9An(\log_2 n)^3}=2^{o(n^2)}.
+\]
+There is also a uniform transitive generator bound from CFSG alone:
+one finite real constant $C\ge1$ satisfies
+\[
+ d(G)\le Cn/\sqrt{\log_2 n}\qquad(n\ge2)
+\]
+for every actual transitive group of degree $n$. The same constant is
+retained in strictly smaller-degree induction. Both affine and
+nonaffine block steps have a quadratic local logarithmic charge, which
+is absorbed using logarithmic decay and a finite initial range. This
+uses no exact Tracey bound or finite-model callback. It supplies an
+auxiliary lift budget; the exact Tracey bounds and the full transitive
+counting input remain separate obligations.
+Separate structural counts retain complete extension fibres. At a fixed
+quotient image and fixed literal kernel intersection, all lifts cost at
+most $|\ker\pi|^d$, including nonsplit extensions. For an elementary
+layer, the kernel intersection is invariant under the whole preimage
+extension, and the actual quotient-module chart gives the joint count
+$|V|^{H+d}$. The internally proved induced-module theorem constructs $H$
+from the actual induced embedding. Every quotient image is then summed
+explicitly. For a centerless finite simple group $T$, a complete Goursat
+code bounds the labelled subdirect subgroups of $T^r$ by
+$(2(1+r|\operatorname{Aut}(T)|))^r$, retaining the actual tail and every
+automorphism twist. Allowing inactive simple coordinates costs a further
+factor at most $2^r$; the literal support code still recovers the whole
+subgroup and proves every omitted coordinate trivial. The actual wreath
+adapter derives normal coordinate images from the full-component action,
+without a single-orbit assumption on the socle. A full subdirect kernel is self-normalizing in
+the actual simple power, so complete lifts with the same quotient image
+and kernel intersection are unique. Their full-kernel count therefore
+needs no separate $|\ker\pi|^d$ factor. Actual complement sections also
+give injective cocycle codes; a monomial frame retains the coordinate
+twists and the root cocycle on the actual point stabilizer. The
+semisimple outer-fibre bound pays that root only when its associated
+local map is onto, with this fullness condition retained. The
+actual wreath installer constructs the twists and derives that local
+surjectivity from its full-component action. Its genuine kernel-product
+chart and literal coordinate alignment are retained. Separately, the
+uniform transitive generator bound makes the coarse whole-base lift
+exponent subquadratic uniformly in local degree $r$ and block count $t$:
+\[
+ \frac{Ct^2r\log_2 r}{\sqrt{\log_2 t}}=o((rt)^2)
+ \qquad(r,t\ge2,\ rt\longrightarrow\infty).
+\]
+The numerical half-degree induction is also proved: an eventual
+recurrence $a(n)\le w(n)(1+\sum_{k\le n/2}a(k))$ with subquadratic
+node weight implies the exact all-width subquadratic counting interface.
+The actual subgroup cover and kernel estimates must still instantiate it.
+The full transitive counting input still needs the
+imprimitive block-chain cover and global kernel/lift budget; these
+structural results do not yet discharge it.
 For product actions with at least two
 socle factors, the component order budget pays the generator bound with
 the full factorial retained. The general class-count and nonnilpotent

@@ -2750,14 +2750,21 @@ killed by the same socle quotient. The proved generator bound through
 degree ten pays that fixed-point action. This closes **J3, He, HS and
 McL** without a whole outer-order bound. One selected vector orbit of
 length 13 in the original Rudvalis matrix model supplies its prime
-divisor and closes **Ru** through the same theorem. The Monster index-27
-bound excludes it from the bounded-sharp branches as well. All prior
-guards are retained; ten sporadic tags remain: J1, J2, Co1, Co2, Co3, Suz,
-HN, Ly, Th and ON
+divisor and closes **Ru** through the same theorem. A separate selected
+prime-13 vector orbit in the original Suzuki model closes **Suz** too.
+The Monster index-27 bound excludes it from the bounded-sharp branches
+as well. A 32-letter word in the original Co3 matrix generators has a
+checked vector period of 23. Its prime divisor excludes Co3 from both
+bounded-sharp branches. All prior guards are retained; eight sporadic
+tags remain: J1, J2, Co1, Co2, HN, Ly, Th and ON
 ([`LargePrimeSocleQuotientGenerators`](SymmetricSubgroupAsymptotics/LargePrimeSocleQuotientGenerators.lean),
 [`PrimitiveSocleLargePrimePairBoundedSharp`](SymmetricSubgroupAsymptotics/PrimitiveSocleLargePrimePairBoundedSharp.lean),
 [`CFSGRuSelectedProductPrimeThirteen`](SymmetricSubgroupAsymptotics/CFSGRuSelectedProductPrimeThirteen.lean),
-[`BoundedSharpRuPrimeThirteenExcludedActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpRuPrimeThirteenExcludedActualResidual.lean)).
+[`BoundedSharpRuPrimeThirteenExcludedActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpRuPrimeThirteenExcludedActualResidual.lean),
+[`CFSGSuzSelectedProductPrimeThirteen`](SymmetricSubgroupAsymptotics/CFSGSuzSelectedProductPrimeThirteen.lean),
+[`BoundedSharpSuzPrimeThirteenExcludedActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpSuzPrimeThirteenExcludedActualResidual.lean),
+[`CFSGCoThreeSelectedPositiveThirtyTwoPrimeTwentyThree`](SymmetricSubgroupAsymptotics/CFSGCoThreeSelectedPositiveThirtyTwoPrimeTwentyThree.lean),
+[`BoundedSharpCoThreePrimeTwentyThreeExcludedActualResidual`](SymmetricSubgroupAsymptotics/BoundedSharpCoThreePrimeTwentyThreeExcludedActualResidual.lean)).
 The full bounded-sharp input remains open. Separately, the raw primitive
 degree forms and the proved simple-group order lower bound 60 show that
 the nonaffine socle has one simple factor in every degree below 25,
@@ -2780,14 +2787,28 @@ cover five points. The actual order 95,040 and one rigid five-point base
 prove rigidity on every five-point tuple. Small literal cycle-assignment
 counts then give the nine bounds
 `54, 32, 32, 10, 12, 6, 8, 8, 10`, with the corresponding cycle profiles
-and their separation proved in the same module. The full M12 class-profile
-assembly remains open
+and their separation proved in the same module. The remaining fixed-point-free
+involution has centralizer at most **240**, proved from all 960 actual
+five-tuple completion candidates. Fifteen separated original classes now
+saturate the actual order 95,040. This proves complete class coverage,
+exact centralizer orders for every listed representative, and the
+original class-count bound **at most 15**, with no class-table premise
 ([`CFSGMathieuTwelveSelectedInvolutionOrbitComplete`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveSelectedInvolutionOrbitComplete.lean),
 [`CFSGMathieuTwelveSelectedInvolutionCentralizerCard`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveSelectedInvolutionCentralizerCard.lean),
 [`CFSGMathieuTwelveYRawPointMaskCoding`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveYRawPointMaskCoding.lean),
 [`CFSGMathieuTwelveYMaskFullWhitelist`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveYMaskFullWhitelist.lean),
 [`CFSGMathieuTwelveSharpFiveRigidity`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveSharpFiveRigidity.lean),
-[`CFSGMathieuTwelveCycleSeedClassBounds`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveCycleSeedClassBounds.lean)).
+[`CFSGMathieuTwelveCycleSeedClassBounds`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveCycleSeedClassBounds.lean),
+[`CFSGMathieuTwelveFixedPointFreeCentralizerBound`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveFixedPointFreeCentralizerBound.lean),
+[`CFSGMathieuTwelveActualClassCount`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveActualClassCount.lean)).
+The class count and the proved outer-order bound 5 now supply the
+primitive subnormal, proper subnormal, small-fibre and original-component
+class estimates. Their joint class envelope is 75. A cumulative
+Garonzi–Maróti residual theorem removes M12 while preserving the original
+component, top, nested-refinement and failed-index witnesses. The full
+Garonzi–Maróti input remains open
+([`CFSGMathieuTwelveCompleteClassConsumers`](SymmetricSubgroupAsymptotics/CFSGMathieuTwelveCompleteClassConsumers.lean),
+[`GaronziMarotiMathieuTwelveResidualReduction`](SymmetricSubgroupAsymptotics/GaronziMarotiMathieuTwelveResidualReduction.lean)).
 A reusable primitive-sector census is also proved. For any fixed finite
 family of actual simple models there is one finite constant `C` such that,
 with `L = Nat.log 2 n`, every primitive action in that sector satisfies
@@ -2803,10 +2824,87 @@ The analytic conversion proves the exact all-width
 [`FiniteSubgroupSmallOrderCount`](SymmetricSubgroupAsymptotics/FiniteSubgroupSmallOrderCount.lean),
 [`FiniteModelPrimitiveLabelledCount`](SymmetricSubgroupAsymptotics/FiniteModelPrimitiveLabelledCount.lean),
 [`FiniteModelPrimitiveSubquadraticCount`](SymmetricSubgroupAsymptotics/FiniteModelPrimitiveSubquadraticCount.lean)).
-This covers finite model families, including the sporadic primitive
-sector. The full transitive LMM count still needs the infinite-model
-sectors and complete block-kernel/extension accounting; it remains an
-explicit T1 input.
+The stronger universal primitive census is also proved **from CFSG alone**.
+There is a finite constant `A` such that every actual primitive action of
+degree `n ≥ 2`, affine or nonaffine, has
+`genRank(G) ≤ A*(Nat.log 2 n + 2)^2`. The infinite model families use
+actual pair, root and Sylow data; the finite Tits/sporadic menu uses the
+proved finite-family budget. There is no numerical-model callback or
+smaller-degree coarse hypothesis. Consequently the number of literal
+primitive subgroups of `S_n` is at most
+`(n!)^(A*(Nat.log 2 n + 2)^2) ≤ 2^(9*A*n*(log₂ n)^3)`.
+The exact all-width `SubquadraticMenuIndexCount` interface follows
+([`CFSGNonaffinePrimitivePolylogRank`](SymmetricSubgroupAsymptotics/CFSGNonaffinePrimitivePolylogRank.lean),
+[`CFSGPrimitiveSubquadraticCount`](SymmetricSubgroupAsymptotics/CFSGPrimitiveSubquadraticCount.lean),
+[`FactorialUniformPolylogSubquadraticCount`](SymmetricSubgroupAsymptotics/FactorialUniformPolylogSubquadraticCount.lean)).
+
+A weaker uniform transitive generator theorem is now also proved from
+CFSG alone: there exists one finite real `C ≥ 1` such that every actual
+transitive subgroup of `S_n`, for `n ≥ 2`, satisfies
+`genRank(G) ≤ C*n/sqrt(log₂ n)`. The proof uses the same constant in
+strictly smaller-degree induction. A quadratic local logarithmic charge
+handles both affine and nonaffine block components; a finite initial
+range and logarithmic decay absorb that charge. No exact Tracey bound,
+McIver–Neumann input, or finite-model callback is used. This auxiliary
+theorem supplies a lift budget; it does not discharge the exact Tracey
+or transitive-count inputs
+([`CFSGWeakTransitiveGeneratorBound`](SymmetricSubgroupAsymptotics/CFSGWeakTransitiveGeneratorBound.lean),
+[`WeakTransitiveDegreeInduction`](SymmetricSubgroupAsymptotics/WeakTransitiveDegreeInduction.lean)).
+
+Complete extension counting is retained separately. At a fixed quotient
+image, all subgroups with the same literal kernel intersection cost at
+most `|ker π|^d`, including nonsplit extensions. In an elementary layer,
+the intersection is invariant under the **whole preimage extension**;
+its actual quotient-action chart gives the joint bound `|A|^(H+d)`.
+The closed induced-module theorem constructs `H` from a literal induced
+embedding, including its logarithmic ceiling. A separate injection sums
+these complete fibres over every actual quotient image
+([`FiniteExtensionSubgroupLiftCount`](SymmetricSubgroupAsymptotics/FiniteExtensionSubgroupLiftCount.lean),
+[`OriginalKernelInducedWholeLayerCount`](SymmetricSubgroupAsymptotics/OriginalKernelInducedWholeLayerCount.lean),
+[`FiniteElementaryExtensionSubgroupCount`](SymmetricSubgroupAsymptotics/FiniteElementaryExtensionSubgroupCount.lean)).
+For a finite centerless simple group `T`, the complete labelled subdirect
+count in `T^r` is at most `(2*(1+r*|Aut T|))^r`. The code retains the
+actual tail subgroup and all automorphism twists
+([`SimplePowerFullSubdirectCount`](SymmetricSubgroupAsymptotics/SimplePowerFullSubdirectCount.lean)).
+Allowing inactive coordinates multiplies this bound by at most `2^r`.
+The support code recovers the whole original subgroup, with every
+inactive coordinate proved trivial. The actual wreath-kernel adapter
+derives normal simple-coordinate images from `FullComponent`; it makes
+no single-orbit assertion about the socle
+([`SimpleCoordinateSupportCount`](SymmetricSubgroupAsymptotics/SimpleCoordinateSupportCount.lean),
+[`ActualWreathKernelSupportCover`](SymmetricSubgroupAsymptotics/ActualWreathKernelSupportCover.lean)).
+Every such full subdirect kernel is self-normalizing in the actual
+simple power. Complete lifts over a fixed quotient image and the same
+kernel intersection are therefore unique. The complete full-kernel
+lift count has the same bound, without a separate `|ker π|^d` factor
+([`SimplePowerSubdirectSelfNormalizer`](SymmetricSubgroupAsymptotics/SimplePowerSubdirectSelfNormalizer.lean),
+[`ActualSimplePowerFullKernelLiftCount`](SymmetricSubgroupAsymptotics/ActualSimplePowerFullKernelLiftCount.lean)).
+For complements, actual baseline sections produce injective cocycle
+codes. A monomial cocycle frame retains the coordinate twists and the
+root cocycle on the actual point stabilizer. When the associated local
+root map is onto, the root fibre is bounded by the actual semisimple
+outer fibre; this fullness condition is retained throughout
+([`ActualComplementSubgroupCocycleCode`](SymmetricSubgroupAsymptotics/ActualComplementSubgroupCocycleCode.lean),
+[`TwistedMonomialCocycleFrame`](SymmetricSubgroupAsymptotics/TwistedMonomialCocycleFrame.lean),
+[`TwistedFullLocalCocycleCount`](SymmetricSubgroupAsymptotics/TwistedFullLocalCocycleCount.lean)).
+The actual wreath installer constructs its coordinate twists and derives
+the onto-root predicate from the literal full-component action. It
+retains a genuine kernel-product chart and its literal coordinate
+alignment; coordinatewise surjectivity is not substituted for that chart
+([`ActualWreathFullComplementFrameBound`](SymmetricSubgroupAsymptotics/ActualWreathFullComplementFrameBound.lean)).
+Separately, the uniform transitive generator theorem makes the coarse
+whole-base lift exponent subquadratic uniformly over local degree `r`
+and block count `t`: `C*t^2*r*log₂(r)/sqrt(log₂(t)) = o((r*t)^2)` for
+`r,t ≥ 2` as `r*t` tends to infinity
+([`LMMUniformRectangularLiftCost`](SymmetricSubgroupAsymptotics/LMMUniformRectangularLiftCost.lean)).
+The numerical half-degree recurrence is proved as well: an eventual
+bound `a(n) ≤ w(n)*(1 + Σ_{k ≤ n/2} a(k))` with subquadratic node weight
+implies the exact all-width `SubquadraticMenuIndexCount` interface.
+The actual subgroup cover and kernel estimates still have to instantiate
+that recurrence
+([`LMMHalfDegreeCountRecurrence`](SymmetricSubgroupAsymptotics/LMMHalfDegreeCountRecurrence.lean)).
+The full transitive LMM theorem still requires the imprimitive block-chain
+cover and complete global kernel/lift budget; it remains an explicit T1 input.
 The degree-eight affine block is now complete independently: every
 actual subnormal subgroup of its primitive local component has ordinary
 generator rank at most three. Literal translation charts absorb the
