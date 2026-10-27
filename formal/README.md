@@ -208,7 +208,19 @@ six explicit parameters are:
 The theorem statements link these last two requirements to their literal
 model types and guards. Thus six mathematical obligations beyond CFSG
 remain when the coarse and sharp Tracey requirements are counted separately.
-The LMM input is absent. This is not yet a CFSG-only proof of T1. The new
+The LMM input is absent. This is not yet a CFSG-only proof of T1.
+The local geometry underlying `hExceptionalOrbits` is now proved on the
+single actual correlated quotient `(PSL₂(F)^e)/H`, for `H` normal of index
+three in the Borel power and `card F` coprime to three. The full orbit
+partition has an equivalence with `Σ k, Fin (e.choose k)`, and its literal
+orbit sizes are `3 * (card F)^k`; the total orbit count is `2^e`. Actual
+torus transport fills the original fibres, and the acting Borel power is
+proved soluble. No independent three-point coordinate action is assumed
+([complete binomial geometry](SymmetricSubgroupAsymptotics/CFSGPSLTwoCorrelatedCoverBinomialOrbits.lean),
+[soluble acting group](SymmetricSubgroupAsymptotics/CFSGPSLTwoProductBorelSolvable.lean)).
+Reducing arbitrary exceptional actions to that structure, including their
+binary-layer lifts and retained Mersenne restriction, is still open;
+`hExceptionalOrbits` therefore remains an explicit input. The new
 three-export callback/T1 audit and its concrete certificate audits use only `propext`,
 `Classical.choice` and `Quot.sound`; the explicit parameters above are
 not discharged by an axiom audit. The original seven-published-input
@@ -2856,8 +2868,18 @@ prime-13 vector orbit in the original Suzuki model closes **Suz** too.
 The Monster index-27 bound excludes it from the bounded-sharp branches
 as well. A 32-letter word in the original Co3 matrix generators has a
 checked vector period of 23. Its prime divisor excludes Co3 from both
-bounded-sharp branches. All prior guards are retained; eight sporadic
-tags remain: J1, J2, Co1, Co2, HN, Ly, Th and ON
+bounded-sharp branches. A further fixed vector certificate in the faithful
+7-dimensional J1 representation proves that 19 divides the order of the
+original presentation: the word `x*y*x*y^2` moves one selected vector and
+returns it after 19 applications. All 95 original matrix-vector steps
+are separately kernel checked; no whole-word order or representation
+surjectivity is needed. The original generating pair and the shared
+large-prime normalizer theorem then pay J1's primitive branch, and its
+small block branch is impossible. All prior guards are retained; **seven
+sporadic tags remain: J2, Co1, Co2, HN, Ly, Th and ON**
+([selected original prime divisor](SymmetricSubgroupAsymptotics/CFSGJankoOneSelectedPrimeNineteen.lean),
+[same-action sharp consumer](SymmetricSubgroupAsymptotics/PrimitiveSocleJankoOnePrimeNineteenBoundedSharp.lean),
+[seven-tag residual](SymmetricSubgroupAsymptotics/BoundedSharpJankoOnePrimeNineteenExcludedActualResidual.lean))
 ([`LargePrimeSocleQuotientGenerators`](SymmetricSubgroupAsymptotics/LargePrimeSocleQuotientGenerators.lean),
 [`PrimitiveSocleLargePrimePairBoundedSharp`](SymmetricSubgroupAsymptotics/PrimitiveSocleLargePrimePairBoundedSharp.lean),
 [`CFSGRuSelectedProductPrimeThirteen`](SymmetricSubgroupAsymptotics/CFSGRuSelectedProductPrimeThirteen.lean),
