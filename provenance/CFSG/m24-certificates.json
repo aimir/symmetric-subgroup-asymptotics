@@ -1,0 +1,67 @@
+{
+  "repository": "https://github.com/KitaKen1/finite-simple-groups-lean",
+  "revision": "7f09e33a9ceef6b59ce03e34cd4f0558c763e325",
+  "license": "Apache-2.0",
+  "upstream_license_sha256": "cd0d0380162a321c1655b67f726483c98b37b34903f0419a9bc8298a13ecf368",
+  "publication_license_path": "provenance/CFSG/Apache-2.0.txt",
+  "publication_license_sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+  "namespace": "CFSG.Certificates.Mathieu24",
+  "publication_changes": "Only publication import prefixes, isolated original-model namespace, and additional adaptation notice. Original permutation definitions, certificate data, proof bodies and upstream scoped settings are retained.",
+  "scope": "Only the four checked small original actual M24 prerequisites: Basic, Permutations, GeneratedSubgroup, and Certificates/Words. The five larger order/transitivity sources remain uncredited and outside this provenance scope; full-nine source provenance is preserved in external preparation. No actual-order, simplicity, model identification, point-stabilizer equivalence, or CFSG pin change is asserted.",
+  "files": [
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M24/Basic.lean",
+      "source_sha256": "5956a177be967fc0090232487b2baae5c552fadd43470b64f289b6eb89b6eecd",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu24/Basic.lean",
+      "publication_sha256": "525b049c2392323372a6864e6a048becc9d3cba972137c973ae8f5e830cb84ad",
+      "source_imports": [
+        "Mathlib.GroupTheory.Perm.Fin",
+        "Mathlib.GroupTheory.Subgroup.Simple"
+      ],
+      "publication_imports": [
+        "Mathlib.GroupTheory.Perm.Fin",
+        "Mathlib.GroupTheory.Subgroup.Simple"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M24/Permutations.lean",
+      "source_sha256": "1c6353483bf4012077c608a811f13c48a953b246be08c2889089292acac8ba76",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu24/Permutations.lean",
+      "publication_sha256": "560be20728740c9712a83c78103aedff5721b0373b3ad5d72e0ee4582d210397",
+      "source_imports": [
+        "Mathlib.GroupTheory.Perm.Cycle.Concrete",
+        "FiniteSimpleGroups.Sporadic.M24.Basic"
+      ],
+      "publication_imports": [
+        "Mathlib.GroupTheory.Perm.Cycle.Concrete",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu24.Basic"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M24/GeneratedSubgroup.lean",
+      "source_sha256": "953d08a3c1b347fcf3484c5f7e8632ce5607e26bc22e3973a5ed3b975fd6931f",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu24/GeneratedSubgroup.lean",
+      "publication_sha256": "010e46c36500ff3c4e87fd159b0eac9e45a16c52e2afee2ff3ba5e71c9039285",
+      "source_imports": [
+        "Mathlib.Algebra.Group.Subgroup.Finite",
+        "FiniteSimpleGroups.Sporadic.M24.Permutations"
+      ],
+      "publication_imports": [
+        "Mathlib.Algebra.Group.Subgroup.Finite",
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu24.Permutations"
+      ]
+    },
+    {
+      "source": "FiniteSimpleGroups/Sporadic/M24/Certificates/Words.lean",
+      "source_sha256": "fd9ea4b1fc43d26dce189ec6066c80434cdbd6190a389c3e2377dff6468ce572",
+      "adapted_path": "formal/SymmetricSubgroupAsymptotics/External/CFSG/Certificates/Mathieu24/Certificates/Words.lean",
+      "publication_sha256": "07d8f5e2157bfb4f60581f097ae6e5cb4831624086bfc3e57e48376ac13fbb44",
+      "source_imports": [
+        "FiniteSimpleGroups.Sporadic.M24.GeneratedSubgroup"
+      ],
+      "publication_imports": [
+        "SymmetricSubgroupAsymptotics.External.CFSG.Certificates.Mathieu24.GeneratedSubgroup"
+      ]
+    }
+  ]
+}
