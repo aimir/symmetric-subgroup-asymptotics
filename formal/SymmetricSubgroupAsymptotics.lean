@@ -14,3 +14,5 @@ from Section 5 of the specification are also exported here.
 Optional regression fixtures and alternative certificates remain available
 through their own module imports.
 -/
+import SymmetricSubgroupAsymptotics.CFSGJankoTwoDihedralT1Reduction
+import SymmetricSubgroupAsymptotics.TraceyExceptionalMersenneDegreeArithmetic

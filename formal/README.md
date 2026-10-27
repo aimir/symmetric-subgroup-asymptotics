@@ -189,9 +189,9 @@ not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
 The strongest optional CFSG endpoint is now
-[`CFSGSuzBrayBoundedSharpT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSuzBrayBoundedSharpT1Reduction.lean).
-Its `T1_of_three_published_inputs_cfsg_and_remaining_after_suz_bray_bounded_sharp`
-and `allTargets_of_three_published_inputs_cfsg_and_remaining_after_suz_bray_bounded_sharp`
+[`CFSGJankoTwoDihedralT1Reduction`](SymmetricSubgroupAsymptotics/CFSGJankoTwoDihedralT1Reduction.lean).
+Its `T1_of_three_published_inputs_cfsg_and_remaining_after_janko_two_dihedral`
+and `allTargets_of_three_published_inputs_cfsg_and_remaining_after_janko_two_dihedral`
 construct both the labelled transitive-count input and the bounded-sharp
 Tracey field internally. Their six explicit parameters are:
 
@@ -201,7 +201,7 @@ Tracey field internally. Their six explicit parameters are:
 | `hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput` | The actual soluble subgroup and binomial orbit partition in the exceptional `3·2^m` action, including its retained exponent restriction. |
 | `hTracey : TraceyPermutationGeneratorInput` | The coarse transitive generator bound. |
 | `hCFSG : CFSG.CFSGClassification` | The unchanged classification statement at commit `25507f8795f2e499b392f3312a576538e1c5ef78`. |
-| `remainingGoodSylow` | The unchanged `RemainingGoodSylowIndexAfterSuzBray` callback on 13 sporadic tags. |
+| `remainingGoodSylow` | `RemainingGoodSylowIndexAfterJankoTwoDihedral`, the previous callback with J2 removed, on 12 sporadic tags. |
 | `remainingSimpleIndex` | The unchanged `RemainingSufficientSimpleIndexAfterMathieuTwentyFourComplete` numerical callback on 21 tags. |
 
 These six formal arguments represent five mathematical requirements beyond
@@ -1144,14 +1144,26 @@ outer budget. No finite-capacity premise remains
 [normalization](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoSylowOuterNormalization.lean)).
 
 The latest refinement is
-[`CFSGSuzBrayBoundedSharpT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSuzBrayBoundedSharpT1Reduction.lean),
-which retains **13 sporadic good-Sylow cases** and **21 numerical cases**.
-The remaining good-Sylow tags are J2, J3, J4, Co1, Co2, Co3, HS, McL, He,
-HN, Ly, Th and Monster. Suz, J1, Fi22, Fi23, Fi24′ and Baby Monster are now
+[`CFSGJankoTwoDihedralT1Reduction`](SymmetricSubgroupAsymptotics/CFSGJankoTwoDihedralT1Reduction.lean),
+which retains **12 sporadic good-Sylow cases** and **21 numerical cases**.
+The remaining good-Sylow tags are J3, J4, Co1, Co2, Co3, HS, McL, He,
+HN, Ly, Th and Monster. J2, Suz, J1, Fi22, Fi23, Fi24′ and Baby Monster are now
 supplied internally, in addition to the earlier Mathieu, Ru and ON cases.
 The three published inputs (GM, exceptional orbits and coarse Tracey),
 pinned CFSG and both residual callbacks remain explicit. The bounded-sharp
-field is proved internally. The numerical cases for these six models are unchanged.
+field is proved internally. The numerical cases for these seven models are unchanged.
+
+For the original five-relator J2 presentation, put `r=a*(b⁻¹*a*b)` and
+`z=r^3`. The original relations give `a^2=1` and `r^12=1`, so
+`U=⟨a,z⟩` is a binary dihedral subgroup. All 32 whole-matrix product
+certificates in the checked 14-dimensional representation over F₅ recover
+the original generator `b` from `a,z,b⁻¹*a*b,b⁻¹*z*b`. Inherited simplicity
+makes that representation injective. Thus `U` and its actual conjugate
+generate the original group; the proved soluble Sylow-two normalizer
+theorem completes the witness. No matrix identity, recovery, model-order
+or generation premise appears in the T1 facade
+([matrix equality](SymmetricSubgroupAsymptotics/CFSGJankoTwoBinaryRecoveryMatrixEquality.lean),
+[original-group consumer](SymmetricSubgroupAsymptotics/CFSGJankoTwoDihedralBinaryGoodSylow.lean)).
 
 For all four Y-section models, one theorem works for every arm triple.
 Color the involution diagram in two commuting colors. Even products within

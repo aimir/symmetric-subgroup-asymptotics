@@ -44,6 +44,17 @@ interpreted and compiled relators and gives a generator-preserving
 isomorphism from the original presentation. This is a presentation
 transport, not a port of J3's order or outer-automorphism theorems.
 
+The same checked compiler is reused by the narrow presentation cores for
+J1, J4, HS, McL, He, M23 and M24. Each records the literal corresponding
+TauCeti row at the same pinned revision and retains its Apache-2.0
+attribution. Their companion `*TauCetiPresentationEquiv.lean` modules
+prove generator-preserving equivalences to the original project
+presentations, without finiteness or simplicity hypotheses. For He, the
+same seven relation words have a different order; an explicit list
+permutation proves equality of their defining sets. These ports do not
+import the actual TauCeti package alongside duplicate local definitions,
+and do not by themselves import its numerical sporadic theorems.
+
 `CFSGCoTwoTauCetiPresentationEquiv.lean` proves equality of the interpreted
 relator lists and defining sets, then constructs an equivalence from the
 original project Co₂ presentation to this port of the TauCeti presentation.
@@ -96,6 +107,14 @@ pulls the configuration back through a nontrivial homomorphism from the
 original simple presentation. It assumes no target recognition, whole
 group order, or order of the normalizing element. The external-data notice
 above continues to apply.
+
+`CFSGJankoTwoBinaryRecoveryMatrixEquality.lean` reuses these same original
+J2 seeds and proves a further fixed recovery word through 32 whole
+14-by-14 matrix products. `CFSGJankoTwoDihedralBinaryGoodSylow.lean`
+pulls this equality back to the original presentation using inherited
+simplicity. Its binary dihedral subgroup and actual conjugate recover
+the original second generator. This uses no additional external matrix
+dataset, group-order assertion, or named-model recognition hypothesis.
 
 ## Literal nonsplit-torus lemmas
 

@@ -1904,7 +1904,26 @@ product by one natural-number product checked by kernel reflection.
 The concrete model theorem and T1 successor require no matrix-power
 or generation hypothesis.
 
-The resulting T1 endpoint retains $13$ sporadic good-Sylow cases and
+The original five-relator J2 presentation admits another binary dihedral
+certificate. Put
+\[
+ r=a(b^{-1}ab),\qquad z=r^3,\qquad
+ (q_0,q_1,q_2,q_3)=(a,z,b^{-1}ab,b^{-1}zb).
+\]
+The relations give $a^2=1$ and $r^{12}=1$, so
+$U=\langle a,z\rangle$ is a $2$-group. In the checked
+$14$-dimensional representation over $\mathbb F_5$, the $32$ fixed
+whole-matrix products prove
+\[
+ b=q_2q_3^3q_0q_1q_2q_3q_0q_1^3q_3^{-3}q_1^{-1}q_0^{-1}
+   q_3^{-1}q_2^{-1}q_1^{-1}.
+\]
+Inherited simplicity makes the representation injective, so this is an
+identity in the original presentation. It recovers $b$ in
+$U\vee b^{-1}Ub$; since $a$ is already in $U$, their join is the whole
+group. Soluble Sylow-$2$ normalizers then supply the good-Sylow witness.
+
+The resulting T1 endpoint retains $12$ sporadic good-Sylow cases and
 $21$ numerical cases, with their original guards and payloads unchanged.
 It supplies both LMM and the bounded-sharp Tracey field internally.
 Its six formal arguments comprise CFSG and five remaining mathematical
@@ -1929,6 +1948,13 @@ no independent coordinate three-point action is introduced. The acting
 Borel power is proved soluble. The global reduction of arbitrary
 exceptional actions to this structure, including binary-layer lifts,
 remains open, so the full exceptional orbit theorem is still an input.
+Its Mersenne arithmetic is independently checked on the retained degree
+factorization: if $q$ is an odd prime power, $e\ge1$, and
+$3(q+1)^e2^t=3\cdot2^m$, then $q+1=2^a$ and $m=ea+t$.
+For $q\ge4$, the prime-power exponent of $q$ must be one, so $q=2^a-1$
+is prime and $a\ge3$. This supplies the arithmetic restrictions in that
+local construction; it does not classify arbitrary exceptional actions
+or construct their binary lifts.
 
 Some global structural steps are now elementary checked theorems.
 A nonabelian minimal normal subgroup of a faithful minimally transitive
