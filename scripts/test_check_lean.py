@@ -184,6 +184,76 @@ Path('result.json').write_text(json.dumps(result))
         receipt = json.loads((logs / "SymmetricSubgroupAsymptotics.B.json").read_text())
         self.assertIn("stale or unsuccessful", receipt["reason"])
 
+    def test_isolated_project_keeps_shared_lock_and_checks_its_own_dependencies(self):
+        publication = self.path / "publication"
+        original = publication / "formal"
+        original.mkdir(parents=True)
+        isolated = self.path / "isolated"
+        (isolated / "Bridge").mkdir(parents=True)
+        (isolated / "lean-toolchain").write_text("isolated-test-toolchain\n")
+        (isolated / "lakefile.toml").write_text('name = "bridge"\n')
+        (isolated / "Bridge/A.lean").write_text("def a := 1\n")
+        (isolated / "Bridge/B.lean").write_text("import Bridge.A\ndef b := 1\n")
+        sentinel = original / "preserved.olean"
+        sentinel.write_text("original toolchain artifact")
+        logs = self.path / "isolated-logs"
+        fake = self.path / "fake-isolated-lake"
+        fake.write_text(f"#!{sys.executable}\nimport sys\nfrom pathlib import Path\n"
+                        "Path(sys.argv[sys.argv.index('-o')+1]).write_text('isolated object')\n")
+        fake.chmod(0o700)
+
+        def check(name):
+            argv = [str(Path(runner.__file__)), f"Bridge/{name}.lean",
+                    "--project-dir", str(isolated), "--local-module-prefix", "Bridge",
+                    "--log-dir", str(logs), "--lake", str(fake)]
+            with patch.object(runner, "ROOT", publication), \
+                 patch.object(runner, "FORMAL", original), patch.object(sys, "argv", argv), \
+                 contextlib.redirect_stdout(io.StringIO()):
+                return runner.main()
+
+        self.assertEqual(check("B"), 1)
+        self.assertEqual(check("A"), 0)
+        self.assertEqual(check("B"), 0)
+        receipt = json.loads((logs / "Bridge.B.json").read_text())
+        self.assertEqual(receipt["project_dir"], str(isolated))
+        self.assertEqual(receipt["compiler_lock"], str(original / ".lake/one-lean-compiler.lock"))
+        self.assertEqual(receipt["local_module_prefixes"], ["Bridge"])
+        self.assertEqual(receipt["legacy_unverified_dependencies"], [])
+        self.assertIn(str(isolated / "Bridge/A.lean"), receipt["dependency_source_sha256"])
+        self.assertIn(str(isolated / "lakefile.toml"), receipt["toolchain_fingerprints"])
+        (isolated / "Bridge/A.lean").write_text("def a := 2\n")
+        self.assertEqual(check("B"), 1)
+        self.assertEqual(sentinel.read_text(), "original toolchain artifact")
+
+    def test_utility_execution_cannot_replace_a_checked_object_or_receipt(self):
+        project = self.path / "publication"
+        formal = project / "formal"
+        (formal / "Utility").mkdir(parents=True)
+        (formal / "Utility/Main.lean").write_text('def main : IO Unit := pure ()\n')
+        objects = formal / ".lake/build/lib/lean/Utility"
+        objects.mkdir(parents=True)
+        obj = objects / "Main.olean"
+        obj.write_text("preserved checked object")
+        logs = self.path / "execution-logs"
+        logs.mkdir()
+        checked = logs / "Utility.Main.json"
+        checked.write_text('{"preserved":"checked receipt"}\n')
+        fake = self.path / "fake-utility-lake"
+        fake.write_text(f"#!{sys.executable}\nimport sys\nassert '--run' in sys.argv\n"
+                        "assert '-o' not in sys.argv\nassert sys.argv[-1]=='get'\nprint('utility ran')\n")
+        fake.chmod(0o700)
+        argv = [str(Path(runner.__file__)), "Utility/Main.lean", "--local-module-prefix", "Utility",
+                "--execute-main", "--run-arg", "get", "--log-dir", str(logs), "--lake", str(fake)]
+        with patch.object(runner, "ROOT", project), patch.object(runner, "FORMAL", formal), \
+             patch.object(sys, "argv", argv), contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(runner.main(), 0)
+        result = json.loads((logs / "Utility.Main.execution.json").read_text())
+        self.assertEqual(result["mode"], "execution")
+        self.assertEqual(result["run_args"], ["get"])
+        self.assertEqual(result["output_hashes"], {})
+        self.assertEqual(obj.read_text(), "preserved checked object")
+        self.assertEqual(checked.read_text(), '{"preserved":"checked receipt"}\n')
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -7,6 +7,8 @@ The user-authorized defaults and ceiling are 16 GiB for both the allocator and
 the process-group RSS watchdog. The single-compiler lock applies to both.
 Successful objects replace existing objects only after checking completes.
 Logs and receipts must be kept outside the publication repository.
+An isolated project may select another toolchain without changing the default
+project; it still uses this repository's same single-compiler lock and limits.
 """
 from pathlib import Path
 import argparse
@@ -239,7 +241,15 @@ def fingerprints_unchanged(files):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("source", help="Lean source relative to formal/")
+    parser.add_argument("source", help="Lean source relative to the selected project")
+    parser.add_argument("--project-dir", type=Path,
+                        help="Isolated Lake project (default: this repository's formal/)")
+    parser.add_argument("--local-module-prefix", action="append",
+                        help="Local module root to fingerprint; repeat for multiple roots")
+    parser.add_argument("--execute-main", action="store_true",
+                        help="Run a Lean utility's main under the same caps; emits no proof object")
+    parser.add_argument("--run-arg", action="append", default=[],
+                        help="Argument to an executed Lean utility; repeat for multiple arguments")
     parser.add_argument("--log-dir", type=Path, required=True)
     parser.add_argument("--lake", default="lake")
     parser.add_argument("--memory-mb", type=int, default=16384)
@@ -247,6 +257,8 @@ def main():
     parser.add_argument("--seconds", type=int, default=900)
     parser.add_argument("--log-limit-mb", type=int, default=16)
     args = parser.parse_args()
+    if args.run_arg and not args.execute_main:
+        parser.error("--run-arg requires --execute-main")
     if not 64 <= args.memory_mb <= 16384:
         parser.error("--memory-mb must be between 64 and 16384")
     if not args.memory_mb <= args.rss_limit_mb <= 16384:
@@ -255,27 +267,46 @@ def main():
         parser.error("--seconds must be between1 and3600")
     if not 1 <= args.log_limit_mb <= 64:
         parser.error("--log-limit-mb must be between1 and64")
-    source = (FORMAL / args.source).resolve()
-    if not source.is_relative_to(FORMAL) or source.suffix != ".lean" or not source.is_file():
-        parser.error("source must be an existing .lean file inside formal/")
+    formal = args.project_dir.resolve() if args.project_dir else FORMAL.resolve()
+    if args.project_dir and (not (formal / "lean-toolchain").is_file() or
+                            not any((formal / name).is_file() for name in
+                                    ("lakefile.lean", "lakefile.toml"))):
+        parser.error("--project-dir must have lean-toolchain and a Lake configuration")
+    local_prefixes = args.local_module_prefix or ["SymmetricSubgroupAsymptotics"]
+    if any(not re.fullmatch(r"[A-Za-z_][A-Za-z_0-9]*(?:\.[A-Za-z_][A-Za-z_0-9]*)*", p)
+           for p in local_prefixes):
+        parser.error("--local-module-prefix must be a dotted Lean module name")
+    source = (formal / args.source).resolve()
+    if not source.is_relative_to(formal) or source.suffix != ".lean" or not source.is_file():
+        parser.error("source must be an existing .lean file inside the selected project")
     logs = args.log_dir.resolve()
-    if logs.is_relative_to(ROOT):
-        parser.error("logs must be outside the publication repository")
+    if logs.is_relative_to(ROOT) or logs.is_relative_to(formal):
+        parser.error("logs must be outside the publication repository and selected project")
     logs.mkdir(parents=True, exist_ok=True)
-    relative = source.relative_to(FORMAL)
+    relative = source.relative_to(formal)
     tag = str(relative.with_suffix("")).replace(os.sep, ".")
-    output = FORMAL / ".lake/build/lib/lean" / relative.with_suffix(".olean")
+    if args.execute_main:
+        tag += ".execution"
+    output = formal / ".lake/build/lib/lean" / relative.with_suffix(".olean")
     output.parent.mkdir(parents=True, exist_ok=True)
     lock_path = FORMAL / ".lake/one-lean-compiler.lock"
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
     cancellation = Cancellation()
     receipt = {"schema": 2, "source": str(relative), "success": False,
+               "mode": "execution" if args.execute_main else "check",
                "status": "waiting", "reason": None,
                "memory_mb": args.memory_mb, "rss_limit_mb": args.rss_limit_mb,
                "log_limit_bytes": args.log_limit_mb * 1024 * 1024,
                "rss_enforcement": "sampled watchdog, nominal 0.1s interval; not an OS hard allocation limit",
                "proof_boundary": "Current source and direct local object/source fingerprints only. Schema-2 dependency receipts in this log directory are validated. Other local dependencies are legacy/unverified; their existing objects do not certify current source correspondence. External/transitive installed object contents are not recursively verified.",
                "runner_sha256": digest(Path(__file__)),
-               "environment": {k: os.environ.get(k) for k in ("LEAN_PATH", "LEAN_SRC_PATH", "ELAN_TOOLCHAIN")}}
+               "project_dir": str(formal), "compiler_lock": str(lock_path.resolve()),
+               "local_module_prefixes": local_prefixes,
+               "environment": {k: os.environ.get(k) for k in
+                               ("LEAN_PATH", "LEAN_SRC_PATH", "ELAN_TOOLCHAIN", "ELAN_HOME")}}
+    if args.execute_main:
+        receipt["proof_boundary"] = "Utility execution only; no checked proof object is emitted or replaced."
+        receipt["run_args"] = args.run_arg
     with cancellation.installed(), lock_path.open("a+") as lock:
         print("Waiting for the shared single-compiler lock", flush=True)
         while True:
@@ -294,10 +325,10 @@ def main():
             group_rss_kib(os.getpgrp())  # Fail closed before launching the compiler.
             imports, dependency_sources, legacy = {}, {}, []
             for module in direct_imports(source):
-                if not (module == "SymmetricSubgroupAsymptotics" or module.startswith("SymmetricSubgroupAsymptotics.")):
+                if not any(module == p or module.startswith(p + ".") for p in local_prefixes):
                     continue
-                dep_source = FORMAL / Path(module.replace(".", "/")).with_suffix(".lean")
-                obj = FORMAL / ".lake/build/lib/lean" / Path(module.replace(".", "/")).with_suffix(".olean")
+                dep_source = formal / Path(module.replace(".", "/")).with_suffix(".lean")
+                obj = formal / ".lake/build/lib/lean" / Path(module.replace(".", "/")).with_suffix(".olean")
                 if not obj.is_file() or not dep_source.is_file():
                     raise ValueError(f"missing local dependency source/object: {module}")
                 objects = [obj, Path(str(obj) + ".private"), Path(str(obj) + ".server")]
@@ -307,7 +338,7 @@ def main():
                 dep_receipt = logs / (module + ".json")
                 previous = json.loads(dep_receipt.read_text()) if dep_receipt.is_file() else {}
                 if previous.get("schema") == 2:
-                    if (not previous.get("success") or
+                    if (previous.get("mode", "check") != "check" or not previous.get("success") or
                             previous.get("source_sha256") != dependency_sources[str(dep_source)] or
                             any(previous.get("output_hashes", {}).get(p) != h for p, h in hashes.items()) or
                             not fingerprints_unchanged(previous.get("import_olean_hashes", {})) or
@@ -316,18 +347,21 @@ def main():
                 else:
                     legacy.append(module)
             toolchain = {str(p): digest(p) for p in
-                         [FORMAL / "lean-toolchain", FORMAL / "lake-manifest.json"] if p.is_file()}
+                         [formal / n for n in ("lean-toolchain", "lake-manifest.json",
+                                               "lakefile.lean", "lakefile.toml")] if p.is_file()}
             receipt.update(import_olean_hashes=imports, dependency_source_sha256=dependency_sources,
                            legacy_unverified_dependencies=legacy, toolchain_fingerprints=toolchain)
             with tempfile.TemporaryDirectory(prefix="lean-check-", dir=output.parent) as temp:
                 temporary = Path(temp) / output.name
                 command = [args.lake, "--no-cache", "env", "lean", "-M", str(args.memory_mb),
-                           "-j", "1", str(relative), "-o", str(temporary)]
+                           "-j", "1"]
+                command += (["--run", str(relative), *args.run_arg] if args.execute_main else
+                            [str(relative), "-o", str(temporary)])
                 def started(pid):
                     receipt["child_pgid"] = pid
                     atomic_json(logs / (tag + ".json"), receipt)
                     print(f"Checking {relative}, pgid={pid}, allocator={args.memory_mb}MB, RSS threshold={args.rss_limit_mb}MB", flush=True)
-                receipt.update(run_monitored(command, FORMAL, logs / (tag + ".log"),
+                receipt.update(run_monitored(command, formal, logs / (tag + ".log"),
                     rss_limit_mb=args.rss_limit_mb, seconds=args.seconds,
                     log_limit_bytes=receipt["log_limit_bytes"], cancellation=cancellation,
                     lock_fd=lock.fileno(), on_started=started))
@@ -338,8 +372,9 @@ def main():
                     receipt["reason"] = f"interrupted by signal {cancellation.signum}"
                 if not unchanged:
                     receipt["reason"] = "input fingerprint changed during check"
-                success = receipt.get("returncode") == 0 and not receipt["reason"] and unchanged and temporary.is_file()
-                if success:
+                success = (receipt.get("returncode") == 0 and not receipt["reason"] and unchanged
+                           and (args.execute_main or temporary.is_file()))
+                if success and not args.execute_main:
                     artifacts = sorted(Path(temp).iterdir(), key=lambda p: p == temporary)
                     for artifact in artifacts:
                         artifact.replace(output.parent / artifact.name)
@@ -350,6 +385,8 @@ def main():
                             companion.unlink(missing_ok=True)
                     receipt["output_hashes"] = {str(output.parent / p.name): digest(output.parent / p.name)
                                                 for p in artifacts}
+                elif success:
+                    receipt["output_hashes"] = {}
                 elif not receipt["reason"]:
                     receipt["reason"] = "compiler failed or produced no object"
                 receipt["success"] = success
