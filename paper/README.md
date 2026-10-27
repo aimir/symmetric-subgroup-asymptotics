@@ -37,7 +37,9 @@ This verifies the three targets relative to those explicit published inputs;
 it does not formalize the retained literature itself. The optional CFSG
 backend now proves the weak labelled transitive-count input internally.
 Its successor T1 endpoint retains three published bundles, pinned CFSG,
-and two restricted model callbacks; a CFSG-only proof of T1 remains open.
+and two restricted model callbacks. The shared Y-derived and original J1
+binary-frame proofs reduce the GoodSylow callback to 14 sporadic cases;
+the numerical callback retains 21. A CFSG-only proof of T1 remains open.
 
 The exact target and normalization are also recorded in [SPEC.md](../SPEC.md).
 Preparation notes and the manuscript reconstruction record are maintained

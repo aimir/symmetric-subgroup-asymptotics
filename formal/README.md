@@ -189,10 +189,11 @@ not new Lean axioms. The kernel audit of both exports uses only `propext`,
 `Classical.choice`, and `Quot.sound` in addition to the stated parameters.
 
 The strongest optional CFSG endpoint is now
-[`CFSGTransitiveCountT1Reduction`](SymmetricSubgroupAsymptotics/CFSGTransitiveCountT1Reduction.lean).
-Its `T1_of_three_published_inputs_cfsg_and_remaining_after_ON_binary` and
-`allTargets_of_three_published_inputs_cfsg_and_remaining_after_ON_binary`
-construct the labelled transitive-count input from CFSG internally. Their
+[`CFSGSporadicBinaryFramesT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSporadicBinaryFramesT1Reduction.lean).
+Its `T1_of_three_published_inputs_cfsg_and_remaining_after_binary_frames` and
+`allTargets_of_three_published_inputs_cfsg_and_remaining_after_binary_frames`
+construct the labelled transitive-count input from CFSG internally and
+supply the original J1 and four Y-section GoodSylow cases. Their
 six explicit parameters are:
 
 | Parameter | Remaining mathematical requirement |
@@ -201,14 +202,14 @@ six explicit parameters are:
 | `hExceptionalOrbits : TraceyCorollaryThreeTwelveRawInput` | The actual soluble subgroup and binomial orbit partition in the exceptional `3·2^m` action, including its retained exponent restriction. |
 | `hTracey : TraceyPublished2018PermutationInputBundle` | The coarse transitive generator bound and the sharp generator bound in degrees 4 through 21. These remain two separate mathematical requirements. |
 | `hCFSG : CFSG.CFSGClassification` | The pinned classification statement, at commit `25507f8795f2e499b392f3312a576538e1c5ef78`. |
-| `remainingGoodSylow` | The exact `RemainingGoodSylowIndexAfterONBinary` callback on 19 sporadic tags. |
+| `remainingGoodSylow` | The exact `RemainingGoodSylowIndexAfterBinaryFrames` callback on 14 sporadic tags. |
 | `remainingSimpleIndex` | The exact `RemainingSufficientSimpleIndexAfterMathieuTwentyFourComplete` numerical callback on 21 tags. |
 
 The theorem statements link these last two requirements to their literal
 model types and guards. Thus six mathematical obligations beyond CFSG
 remain when the coarse and sharp Tracey requirements are counted separately.
-The LMM input is absent. This is not yet a CFSG-only proof of T1. Final
-three-export counting and two-export T1 audits use only `propext`,
+The LMM input is absent. This is not yet a CFSG-only proof of T1. The new
+three-export callback/T1 audit and its concrete certificate audits use only `propext`,
 `Classical.choice` and `Quot.sound`; the explicit parameters above are
 not discharged by an axiom audit. The original seven-published-input
 exports remain available without choosing the CFSG backend.
@@ -1096,6 +1097,44 @@ outer budget. No finite-capacity premise remains
 [normalization](SymmetricSubgroupAsymptotics/CFSGMathieuTwentyTwoSylowOuterNormalization.lean)).
 
 The latest refinement is
+[`CFSGSporadicBinaryFramesT1Reduction`](SymmetricSubgroupAsymptotics/CFSGSporadicBinaryFramesT1Reduction.lean),
+which retains **14 sporadic good-Sylow cases** and **21 numerical cases**.
+The remaining good-Sylow tags are J2, J3, J4, Co1, Co2, Co3, HS, McL, He,
+Suz, HN, Ly, Th and Monster. J1, Fi22, Fi23, Fi24′ and Baby Monster are now
+supplied internally, in addition to the earlier Mathieu, Ru and ON cases.
+The three published bundles, pinned CFSG and both residual callbacks
+remain explicit. J1's numerical case is not discharged by this step.
+
+For all four Y-section models, one theorem works for every arm triple.
+Color the involution diagram in two commuting colors. Even products within
+each color give two binary subgroups **inside the actual derived group**.
+One isolated-edge four-node configuration recovers an adjacent cross-color
+product, then every even node product. Thus the two subgroups generate the
+whole derived group. Their images generate its literal full-center quotient;
+only that quotient is assumed finite at the model application, not the
+ambient Y group
+([generic theorem](SymmetricSubgroupAsymptotics/BicoloredInvolutionDerivedBinaryFrames.lean),
+[original quotient consumer](SymmetricSubgroupAsymptotics/CFSGYBinaryDerivedFrames.lean)).
+
+For the original five-relator J1 presentation, two explicit 7-by-7 matrices
+modulo 11 satisfy all five whole relators and one is nonidentity. Inherited
+simplicity makes the resulting homomorphism injective; no identification
+with a named matrix group, model-order statement or surjectivity is assumed.
+With original generators `a,b`, put `w=b*a*b*a*b^2`,
+`r=a*(w⁻¹*a*w)` and `z=r^5`. The kernel checks `r^10=1` and recovers `b`
+from the exact 13-letter word on `a,z,b⁻¹*a*b,b⁻¹*z*b`. These two commuting
+involution pairs therefore generate the original presentation. All 64
+straight-line matrix operations retain whole 49-entry dot-product checks;
+inverse caches use uniqueness for genuine units. The final GoodSylow theorem
+supplies every literal certificate internally
+([faithful presentation map](SymmetricSubgroupAsymptotics/CFSGJankoOneLiteralRepresentation.lean),
+[whole matrix certificates](SymmetricSubgroupAsymptotics/CFSGJankoOneSevenMatrixCertificates.lean),
+[original J1 theorem](SymmetricSubgroupAsymptotics/CFSGJankoOneBinaryFrameGoodSylow.lean)).
+The separate generic
+[odd-rotation recovery theorem](SymmetricSubgroupAsymptotics/CFSGOddRotationBinaryFrames.lean)
+retains its whole binary-power premise and claims no further model case.
+
+The preceding ON refinement is
 [`CFSGSevenTargetsONBinaryGoodSylow`](SymmetricSubgroupAsymptotics/CFSGSevenTargetsONBinaryGoodSylow.lean),
 which retains **19 sporadic good-Sylow cases** and **21 numerical cases**.
 For the literal 154-dimensional ON matrices over the field with three

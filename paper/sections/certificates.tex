@@ -1788,6 +1788,50 @@ final exports pass standard-axiom audits; the four published bundles,
 pinned CFSG and both residual callbacks remain explicit. In particular,
 this step does not discharge ON's numerical case.
 
+A shared binary-frame theorem now removes four more good-Sylow cases
+at once. Color the original Y-diagram in two colors, so nodes within
+each color commute. Even products within each color lie in the actual
+derived group and generate binary subgroups $U,V$. Choose an adjacent
+pair $a,b$ and auxiliary nodes $c,d$ of the corresponding colors so
+that the only edge among these four nodes is $a$--$b$. Then
+\[
+  ((ac)(bd))^2=(ab)^2,\qquad (ab)^3=1.
+\]
+Thus $U\vee V$ contains $ab$, hence every cross-color product and every
+even node product. The two subgroups generate the original derived group,
+and their images generate its full-center quotient. This argument works
+for every retained arm triple, including the literal Fi22, Fi23, Fi24$'$
+and Baby Monster sections. It requires finiteness only of the final
+quotient, not of the ambient Y group.
+
+The original J1 presentation is also handled by concrete binary frames.
+Two explicit $7$-dimensional matrices over $\mathbb F_{11}$ satisfy all
+five original relators and one is nonidentity. Inherited simplicity
+makes the resulting presentation homomorphism injective; no named-model
+identification or model-order assertion is used. In the original
+presentation generators $a,b$, set
+\[
+  w=babab^2,\qquad r=a(w^{-1}aw),\qquad z=r^5,
+  \qquad(q_0,q_1,q_2,q_3)=(a,z,b^{-1}ab,b^{-1}zb).
+\]
+Whole matrix checks prove $r^{10}=1$ and
+\[
+  b=\prod_{j\in L}q_j,\qquad L=(2,1,2,0,3,1,2,1,0,2,0,3,0),
+\]
+where the product follows the displayed list order. Consequently
+$\langle a,z\rangle$ and its conjugate by $b$ are binary subgroups
+generating the original J1 group. All $64$ straight-line
+matrix operations retain their complete $49$-entry checks, including
+inverse uniqueness for genuine units. CFSG-only soluble Sylow-$2$
+normalizers finish the good-Sylow conclusion.
+
+The resulting T1 endpoint retains $14$ sporadic good-Sylow cases and
+$21$ numerical cases. It supplies the LMM input internally, retaining
+three published bundles, pinned CFSG and both restricted callbacks.
+The coarse and bounded sharp Tracey fields remain distinct requirements.
+All new final exports pass standard-axiom audits; these audits do not
+discharge the explicit inputs. This is still not a CFSG-only proof of T1.
+
 Separately, Co3's checked selected word has order divisible by $14$.
 For Co1, one basis vector is moved by the first literal matrix generator
 and returns after two steps. These certificates prove even order for

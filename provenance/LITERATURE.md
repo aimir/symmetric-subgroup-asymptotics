@@ -904,3 +904,22 @@ arguments retain the original Clifford constituents, scalar fields, minimal
 normal subgroups and arbitrary chief traces. The seven-input final facade
 therefore takes no `PrimitiveCompositionLengthInput`. This replaces its
 needed consumers; it does not assert the stronger sharp composition theorem.
+
+
+## Literal J1 representation certificates
+
+The selected 7-dimensional coefficient arrays are mathematical witness data
+from the [ATLAS J1 representation page](https://brauer.maths.qmul.ac.uk/Atlas/spor/J1/):
+[raw first matrix](https://brauer.maths.qmul.ac.uk/Atlas/spor/J1/mtx/J1G1-f11r7B0.m1)
+and [raw second matrix](https://brauer.maths.qmul.ac.uk/Atlas/spor/J1/mtx/J1G1-f11r7B0.m2),
+retrieved 27 October 2026. The raw Meataxe entries are residues modulo 11;
+the GAP-format arrays have a different scalar encoding and are not imported.
+No ATLAS program or claimed order, faithfulness or named-model recognition
+is taken as a theorem input. `CFSGJankoOneSevenMatricesPilot` and
+`CFSGJankoOneSevenMatrixCertificates` check all five original presentation
+relations, nontriviality, the whole tenth power and the explicit generator
+recovery equation in the Lean kernel. `CFSGJankoOneLiteralRepresentation`
+constructs a homomorphism from the exact pinned presentation and derives
+injectivity from inherited simplicity. The GoodSylow theorem then applies
+to that original presentation. Search scripts and numerical diagnostics are
+kept outside the publication repository; the checked certificate is complete.
