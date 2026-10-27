@@ -1,5 +1,5 @@
 import SymmetricSubgroupAsymptotics.CFSGSevenTargetsMathieuElevenComplete
-import SymmetricSubgroupAsymptotics.CFSGMathieuTwelveGoodSylowThree
+import SymmetricSubgroupAsymptotics.CFSGMathieuTwelveGoodSylowEleven
 
 /-! The actual pinned M12 good-Sylow proof supplies its good-Sylow tag.
 The numerical M12 payload and the four published bundles remain explicit.
@@ -25,7 +25,7 @@ theorem goodSylow_callback_after_Mathieu12
       inferInstanceAs (Finite ((CFSG.Index.sporadic .m12).Model))
     letI : IsSimpleGroup CFSG.Models.Presentations.M12.Model :=
       inferInstanceAs (IsSimpleGroup ((CFSG.Index.sporadic .m12).Model))
-    exact ⟨3, CFSGMathieuTwelveGoodSylowThree.goodSylowPrime⟩
+    exact ⟨11, CFSGMathieuTwelveGoodSylowEleven.goodSylowPrime⟩
   · exact remaining i hn ⟨hi, hm⟩
 
 end SymmetricSubgroupAsymptotics.CFSGReduction
