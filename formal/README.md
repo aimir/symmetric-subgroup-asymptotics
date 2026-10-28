@@ -403,6 +403,18 @@ turns a proper-index lower bound into a uniform subgroup class bound.
 These five modules have ten standard-axiom audit exports; their concrete
 sporadic consumers remain separate checks.
 
+Seven further checked modules provide the common orbit machinery for these
+consumers. [Normalizer transport](SymmetricSubgroupAsymptotics/CharacteristicSubgroupAmbientNormalizer.lean)
+retains characteristic subgroups; [central-kernel orbit packing](SymmetricSubgroupAsymptotics/CentralKernelNormalizerOrbitPacking.lean)
+and [compatible orbit packing](SymmetricSubgroupAsymptotics/PrimeCubeCompatibleOrbitPacking.lean)
+bound several distinct translates of the same orbit. A
+[coprime flag theorem](SymmetricSubgroupAsymptotics/CoprimeFlagAutomorphism.lean)
+proves the required automorphism rigidity without a whole-group classification.
+The supporting prime-fifth-order center bound, nine-point order-eight orbit
+lemma, and point-stabilizer return lemma are also checked. All 20 exports
+pass standard-axiom audits. The concrete sporadic joins and public T1
+assumptions remain unchanged.
+
 The local geometry underlying `hExceptionalOrbits` is now proved on the
 single actual correlated quotient `(PSL₂(F)^e)/H`, for `H` normal of index
 three in the Borel power and `card F` coprime to three. The full orbit
