@@ -346,6 +346,15 @@ proved perfectness and central kernels. These three modules have ten
 standard-axiom audit exports; their concrete remaining installers are
 separate obligations.
 
+In the isolated pinned upstream toolchain, the actual odd-characteristic
+type-B classifier carrier of rank at least three is now compared to the
+literal original B-transpose projective Serre group. All 1,150 selected
+source checks and 32 standard-axiom audit exports pass; 6,339 unique
+fingerprints are verified. This complements the earlier rank-two and
+characteristic-two route to the old type-C entry. The full classifier
+and common-toolchain T1 composition remain open; see
+[the compatibility boundary](../provenance/CFSG_COMPATIBILITY.md).
+
 A further reusable [central-extension lemma](SymmetricSubgroupAsymptotics/CentralKernelDerivedFullCenterEquivalence.lean)
 identifies a quotient by the full center with a centerless target when
 an onto map has central kernel. It also proves the corresponding result

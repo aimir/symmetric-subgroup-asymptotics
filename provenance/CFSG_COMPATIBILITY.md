@@ -17,16 +17,22 @@ own models. These compatibility modules do not assert that this integration
 has been completed.
 
 Selected checks in the pinned upstream toolchain now prove transports
-for the actual cyclic and alternating carriers, all valid untwisted-A,
-type-C and type-D carriers, and all valid type-B carriers of rank two or
-characteristic two. The last family is mapped to a literal old type-C
-entry of the non-disjoint historical catalogue. It uses the actual spin
-fixed-point comparison and symplectic perfectness, followed by the proved
-original-C equivalence. Its 18 audited exports use only `propext`,
-`Classical.choice`, and `Quot.sound`. It does not identify odd
-higher-rank B with an old B entry. These selected checks have not yet
-been composed with the full completed-classification theorem or the T1
-endpoint, and no cross-version proof object is reused.
+for the actual cyclic and alternating carriers and all valid untwisted-A,
+type-C and type-D carriers. The type-B rank-two and characteristic-two
+route maps to a literal old type-C entry of the non-disjoint historical
+catalogue. It uses the actual spin fixed-point comparison and symplectic
+perfectness, followed by the proved original-C equivalence; its 18 audited
+exports use only `propext`, `Classical.choice`, and `Quot.sound`.
+The remaining odd-characteristic, rank-at-least-three type-B route is also
+checked. It preserves the actual Frobenius fixed field, root subgroups,
+quadratic frame and full-center quotients through the literal original
+B-transpose projective Serre group. Its selected closure has 1,150 checked
+source modules, 32 standard-axiom audit exports and 6,339 verified unique
+source, object, dependency and toolchain fingerprints. It assumes no
+source simplicity, order or model-recognition statement.
+These selected comparisons have not yet been composed with the full
+completed-classification theorem or the T1 endpoint, and no cross-version
+proof object is reused.
 
 In the publication toolchain, the original odd-characteristic B and D
 projective equivalences and the actual integral/tensor Lie structures
