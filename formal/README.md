@@ -272,6 +272,11 @@ perfectness and actual model Lie preservation detect every original group
 action, even when its ambient matrix realization has a kernel. The thirteen
 modules in this continuation have 54 audited exports, all using only
 `propext`, `Classical.choice`, and `Quot.sound`.
+A separate check in the pinned upstream toolchain now identifies every
+actual valid type-D constructor with this literal original model, also
+in characteristic two. Its complete selected 1,172-source closure and
+two-export standard-axiom audit pass. The complete classifier and the
+T1 endpoint still require the other carrier comparisons and composition.
 
 The literal integral lattice now has a proved Lie bracket, inherited by
 its actual tensor space in every characteristic

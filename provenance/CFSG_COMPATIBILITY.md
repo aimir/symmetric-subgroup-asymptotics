@@ -17,8 +17,8 @@ own models. These compatibility modules do not assert that this integration
 has been completed.
 
 Selected checks in the pinned upstream toolchain now prove transports
-for the actual cyclic and alternating carriers, all valid untwisted-A
-and type-C carriers, and all valid type-B carriers of rank two or
+for the actual cyclic and alternating carriers, all valid untwisted-A,
+type-C and type-D carriers, and all valid type-B carriers of rank two or
 characteristic two. The last family is mapped to a literal old type-C
 entry of the non-disjoint historical catalogue. It uses the actual spin
 fixed-point comparison and symplectic perfectness, followed by the proved
@@ -38,8 +38,12 @@ basis, centrality of the possible ambient kernel, and source perfectness.
 Its 54 audited exports use only the three standard axioms above; it does
 not assume original-model simplicity or source faithfulness. These results
 provide the original-model side of further concrete transports. The actual
-upstream type-D comparison, the other remaining family comparisons, and
-the full classification/T1 composition still require their own checks.
+upstream type-D comparison now also passes over every valid coefficient
+field: its selected closure has 1,172 checked source modules, with two
+standard-axiom audit exports and current source, object, dependency and
+toolchain fingerprints. It retains the actual validated constructor and
+coefficient field. The other remaining family comparisons and the full
+classification/T1 composition still require their own checks.
 
 ## Definition and presentation ports
 
