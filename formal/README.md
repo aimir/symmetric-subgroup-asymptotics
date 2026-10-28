@@ -308,6 +308,25 @@ its concrete native-basis installer and the exceptional group comparisons
 still require their own checks. No T1 assumption is removed by this
 reusable source theorem alone.
 
+Further checked helpers preserve literal matrix support under every
+commutative base change and derive faithful original-image actions from
+source perfectness and a central Lie kernel
+([support](SymmetricSubgroupAsymptotics/CFSGSerreLiteralSupportBaseChange.lean),
+[faithfulness](SymmetricSubgroupAsymptotics/CFSGSerreQuadraticImageFaithfulness.lean)).
+Their three-module packet has six standard-axiom audit exports. The reusable
+graded-kernel and coarse-generator continuation has twenty.
+
+The soluble-normalizer assembly is also checked over an internal extended
+catalogue that excludes the historical Monster entry and retains the actual
+raw Y443-derived carrier
+([assembly](SymmetricSubgroupAsymptotics/ExtendedCatalogueSolubleNormalizerGeneration.lean)).
+It constructs odd-order solvability internally and reuses the same twelve
+unresolved normalizer cases. Its five new proof modules have 24 audited
+exports using only the standard axioms. The extended classification field
+is still an unconstructed internal bridge target; it is not a proved
+classification or a replacement assumption in public T1. The global CFSG
+bridge and all five mathematical requirements remain open.
+
 The local geometry underlying `hExceptionalOrbits` is now proved on the
 single actual correlated quotient `(PSL₂(F)^e)/H`, for `H` normal of index
 three in the Borel power and `card F` coprime to three. The full orbit

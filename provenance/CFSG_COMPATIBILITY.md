@@ -210,3 +210,24 @@ matrix-group equivalence with four audited exports using the standard three
 axioms. This identifies the actual native matrix carrier, not yet the
 classified TauCeti presentation. No order, simplicity or model-recognition
 premise enters the matrix equivalence, and no T1 callback is removed by it.
+
+## Internal extended-catalogue assembly
+
+`CFSGCatalogueWithAxiomMonster.lean` defines an internal construction target:
+historical non-Monster carriers together with the actual raw Y443-derived
+carrier. It does not construct classification or identify the historical
+Monster with that carrier. The checked
+`ExtendedCatalogueSolubleNormalizerGeneration.lean` derives its soluble
+normalizer assembly from this internal target and the unchanged twelve-case
+callback, using internally derived odd-order solvability and the already
+proved literal binary-model certificates. Its five new modules have 24
+standard-axiom audit exports. No public T1 assumption is discharged by this
+conditional internal assembly.
+
+`CFSGSerreLiteralSupportBaseChange.lean` and
+`CFSGSerreQuadraticImageFaithfulness.lean` supply checked generic support and
+perfect-source central-kernel tools for the remaining exceptional-family
+comparisons. Literal integer zero entries survive base change without
+field-eigenvalue separation in small characteristic. The three-module
+prerequisite packet has six standard-axiom audit exports; the concrete E6
+installer still needs its own checks.
