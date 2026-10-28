@@ -346,6 +346,14 @@ proved perfectness and central kernels. These three modules have ten
 standard-axiom audit exports; their concrete remaining installers are
 separate obligations.
 
+A further reusable [central-extension lemma](SymmetricSubgroupAsymptotics/CentralKernelDerivedFullCenterEquivalence.lean)
+identifies a quotient by the full center with a centerless target when
+an onto map has central kernel. It also proves the corresponding result
+on the derived subgroup when the target is perfect, and proves directly
+that a normal subgroup of order two is central. All five exports pass
+standard-axiom audits. The concrete Fi23 presentation comparison that
+uses this lemma is still awaiting its own kernel checks.
+
 The local geometry underlying `hExceptionalOrbits` is now proved on the
 single actual correlated quotient `(PSL₂(F)^e)/H`, for `H` normal of index
 three in the Borel power and `card F` coprime to three. The full orbit
