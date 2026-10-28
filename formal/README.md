@@ -290,11 +290,18 @@ standard axioms. These results support the remaining catalogue transport;
 the five mathematical requirements in the T1 signature remain explicit.
 
 The shared matrix-realization and model-automorphism continuation has 22
-standard-axiom audit exports. For the exceptional source comparison, the
-actual image-lattice theorem and uniform norm-two parent construction are
-also checked, with 20 audited exports including the literal 78-member E6
-source family. This is a source family with proved parent brackets and
-weights; its full spanning and recognition proof is still open.
+standard-axiom audit exports. The signed original-source and weight-support
+continuation has 30. A further seven modules prove uniform ADE positive-half
+raising/lowering stability and whole rational source spanning
+([stability](SymmetricSubgroupAsymptotics/CFSGNormTwoNativePositiveSourceStability.lean),
+[spanning](SymmetricSubgroupAsymptotics/CFSGNormTwoSignedSourceSpan.lean)).
+They use an actual target root/Cartan basis, its Cartan weights, and nonzero
+primitive source-image scalars; they do not assume source faithfulness or
+a source action table. Their 26 audited exports use only the same three
+standard axioms. The literal 78-member E6 source family is defined, but
+its concrete native-basis installer and the exceptional group comparisons
+still require their own checks. No T1 assumption is removed by this
+reusable source theorem alone.
 
 The local geometry underlying `hExceptionalOrbits` is now proved on the
 single actual correlated quotient `(PSL₂(F)^e)/H`, for `H` normal of index

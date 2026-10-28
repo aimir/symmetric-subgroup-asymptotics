@@ -187,3 +187,22 @@ under Apache-2.0. Imports are narrowed and the proof is adapted to this
 project's Mathlib APIs and literal torus. Its normalizer statement retains
 the explicit noncentral torus-element hypothesis. It does not assume a
 classification of PSL₂ subgroups or import the full CFSG proof.
+
+## Reusable original ADE source proofs
+
+The publication toolchain checks the original norm-two source construction,
+its signed involution, primitive-image induction and weight support. The
+seven-module continuation ending in
+`CFSGNormTwoNativePositiveSourceStability.lean` and
+`CFSGNormTwoSignedSourceSpan.lean` has 26 audited exports with only the
+standard three axioms. It derives the source action and spanning statements
+from an actual target basis and primitive image data; it assumes neither
+source faithfulness nor an action table. Concrete exceptional installers
+and the final common-toolchain group comparisons remain separate checks.
+
+A selected common-toolchain check also proves equality of both literal
+original Co3 matrices with the actual native decoder outputs, giving the
+matrix-group equivalence with four audited exports using the standard three
+axioms. This identifies the actual native matrix carrier, not yet the
+classified TauCeti presentation. No order, simplicity or model-recognition
+premise enters the matrix equivalence, and no T1 callback is removed by it.
