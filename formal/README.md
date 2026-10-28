@@ -355,6 +355,15 @@ characteristic-two route to the old type-C entry. The full classifier
 and common-toolchain T1 composition remain open; see
 [the compatibility boundary](../provenance/CFSG_COMPATIBILITY.md).
 
+The E6 linear comparison also passes in that toolchain: all 199 selected
+sources and 83 audited exports, with 841 verified fingerprints. It retains
+the original signed integral source and its intrinsic retraction. The later
+group equivalence is a separate check and remains open. For the actual
+native Higman–Sims model, 1,403 selected checks and four audited exports
+establish a faithful action of degree 3,850, its strict degree-square/order
+inequality, and outer-automorphism order at most two. Its original-model
+numerical installer still needs its own checks.
+
 A further reusable [central-extension lemma](SymmetricSubgroupAsymptotics/CentralKernelDerivedFullCenterEquivalence.lean)
 identifies a quotient by the full center with a centerless target when
 an onto map has central kernel. It also proves the corresponding result
@@ -381,6 +390,18 @@ this gives the subgroup class cube bound from degree 1024 onward for
 both degree forms. Its six audited exports use only the standard axioms.
 Concrete sporadic cap installers and the remaining bounded primitive
 prefix still need their own checks; the Garonzi–Maróti input remains.
+
+The checked [prime-cube action theorem](SymmetricSubgroupAsymptotics/PrimeCubeHalfTurnActionBound.lean)
+uses a group of order `p^3`, derived subgroup of order `p`, and a compatible
+automorphism that fixes no index-`p` subgroup containing the derived group.
+A moved derived element then forces degree at least `2*p^2`.
+[Ambient actions](SymmetricSubgroupAsymptotics/PrimeCubeHalfTurnAmbientAction.lean)
+and [proper coset actions](SymmetricSubgroupAsymptotics/PrimeCubeHalfTurnSimpleIndex.lean)
+retain the literal subgroup and normalizer. Separately, a checked
+[normal centerless subgroup class bound](SymmetricSubgroupAsymptotics/NormalCenterlessIndexSubgroupClassBound.lean)
+turns a proper-index lower bound into a uniform subgroup class bound.
+These five modules have ten standard-axiom audit exports; their concrete
+sporadic consumers remain separate checks.
 
 The local geometry underlying `hExceptionalOrbits` is now proved on the
 single actual correlated quotient `(PSL₂(F)^e)/H`, for `H` normal of index

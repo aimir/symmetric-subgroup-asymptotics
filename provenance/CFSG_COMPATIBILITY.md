@@ -34,6 +34,17 @@ These selected comparisons have not yet been composed with the full
 completed-classification theorem or the T1 endpoint, and no cross-version
 proof object is reused.
 
+The E6 original signed integral-source comparison and intrinsic retraction
+now pass their complete 199-source selected closure, with 83 standard-axiom
+audit exports and 841 verified fingerprints. This is the linear prerequisite;
+the subsequent group-level model equivalence remains unchecked.
+
+The actual native Higman–Sims numerical leaf also passes: 1,403 selected
+sources, four standard-axiom audit exports and 8,425 verified fingerprints.
+It proves a faithful degree-3,850 action, the strict square/order inequality
+and the outer-order bound of two. Transporting this payload to the original
+model and installing its T1 consumer are separate obligations.
+
 In the publication toolchain, the original odd-characteristic B and D
 projective equivalences and the actual integral/tensor Lie structures
 are now proved. Their common source-spanning and doubled-coordinate
