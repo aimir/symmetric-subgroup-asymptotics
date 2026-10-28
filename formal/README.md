@@ -363,6 +363,16 @@ that a normal subgroup of order two is central. All five exports pass
 standard-axiom audits. The concrete Fi23 presentation comparison that
 uses this lemma is still awaiting its own kernel checks.
 
+The checked [derived fixed-image theorem](SymmetricSubgroupAsymptotics/CentralSurjectionDerivedFixedImage.lean)
+handles an equivariant central surjection without assuming that every
+fixed point lifts. The image of the source fixed group contains the target
+fixed derived subgroup. When that target derived subgroup is perfect,
+the derived images agree. A [full-center theorem](SymmetricSubgroupAsymptotics/CentralSurjectionPerfectTargetCenter.lean)
+and its [derived fixed-group application](SymmetricSubgroupAsymptotics/CentralSurjectionDerivedFixedCenterEquivalence.lean)
+then compare the actual quotients by their full centers. All ten exports
+pass standard-axiom audits. Concrete twisted-carrier comparisons must
+still supply their actual equivariant map and the stated perfectness proof.
+
 The checked [order-cap class bound](SymmetricSubgroupAsymptotics/FiniteSimpleOrderCapClassGap.lean)
 provides a reusable way to eliminate failed component budgets: a proved
 proper-index lower bound `L` and `|S| * |Out(S)| <= L^66` imply the
