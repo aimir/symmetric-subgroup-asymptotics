@@ -354,6 +354,15 @@ that a normal subgroup of order two is central. All five exports pass
 standard-axiom audits. The concrete Fi23 presentation comparison that
 uses this lemma is still awaiting its own kernel checks.
 
+The checked [order-cap class bound](SymmetricSubgroupAsymptotics/FiniteSimpleOrderCapClassGap.lean)
+provides a reusable way to eliminate failed component budgets: a proved
+proper-index lower bound `L` and `|S| * |Out(S)| <= L^66` imply the
+literal component-index budget. On the same original primitive action,
+this gives the subgroup class cube bound from degree 1024 onward for
+both degree forms. Its six audited exports use only the standard axioms.
+Concrete sporadic cap installers and the remaining bounded primitive
+prefix still need their own checks; the Garonzi–Maróti input remains.
+
 The local geometry underlying `hExceptionalOrbits` is now proved on the
 single actual correlated quotient `(PSL₂(F)^e)/H`, for `H` normal of index
 three in the Borel power and `card F` coprime to three. The full orbit
