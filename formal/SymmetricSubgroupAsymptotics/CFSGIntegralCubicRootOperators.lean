@@ -54,14 +54,34 @@ theorem map_operator {C : Type*} [Ring C] [Algebra R C]
 
 def exponential (e d c : B) (t : R) : B := 1+t • e+t^2 • d+t^3 • c
 
-theorem operator_sum_eq_conjugation (t : R) (e d c x : B) :
-    (∑k∈Finset.range 7,t^k • operator R e d c k x)=
+/-- This identity holds in EVERY associative algebra and keeps every
+coefficient; it assumes neither nilpotence nor a quadratic truncation. -/
+theorem polynomial_eq_conjugation (t : R) (e d c x : B) :
+    x+t • (e*x-x*e)+t^2 • (d*x+x*d-e*x*e)+
+      t^3 • (c*x-x*c+e*x*d-d*x*e)+
+      t^4 • (d*x*d-e*x*c-c*x*e)+t^5 • (c*x*d-d*x*c)+t^6 • (-(c*x*c))=
       exponential R e d c t*x*exponential R e d c (-t) := by
-  simp only [Finset.sum_range_succ,Finset.sum_range_zero,zero_add,operator_zero,operator_one,
-    operator_two,operator_three,operator_four,operator_five,operator_six,pow_zero,pow_one,one_smul]
   simp only [exponential,add_mul,mul_add,one_mul,mul_one,smul_mul_assoc,
     mul_smul_comm,smul_smul,neg_smul,mul_neg,neg_mul,neg_neg,
     smul_add,smul_sub,smul_neg,pow_succ,pow_zero,mul_one,mul_assoc]
   abel
+
+theorem operator_sum_eq_conjugation (t : R) (e d c x : B) :
+    (∑k∈Finset.range 7,t^k • operator R e d c k x)=
+      exponential R e d c t*x*exponential R e d c (-t) := by
+  simp only [Finset.sum_range_succ,Finset.sum_range_zero,zero_add,
+    operator_zero,operator_one,operator_two,operator_three,operator_four,operator_five,operator_six,
+    pow_zero,pow_one,one_smul]
+  exact polynomial_eq_conjugation R t e d c x
+
+/-- Truncation is authorized ONLY by genuine image coefficient vanishings.
+The cubic term survives; there is no discarded G2 third divided power. -/
+theorem truncated_sum_eq_conjugation (t : R) (e d c x : B)
+    (h4 : operator R e d c 4 x=0) (h5 : operator R e d c 5 x=0)
+    (h6 : operator R e d c 6 x=0) :
+    (∑k∈Finset.range 4,t^k • operator R e d c k x)=
+      exponential R e d c t*x*exponential R e d c (-t) := by
+  have h := operator_sum_eq_conjugation R t e d c x
+  simpa only [Finset.sum_range_succ,h4,h5,h6,smul_zero,add_zero] using h
 
 end SymmetricSubgroupAsymptotics.CFSGIntegralCubicRootOperators

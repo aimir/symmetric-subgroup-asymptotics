@@ -308,6 +308,19 @@ its concrete native-basis installer and the exceptional group comparisons
 still require their own checks. No T1 assumption is removed by this
 reusable source theorem alone.
 
+The original G2 quotient now has its own checked fourteen-word rational
+spanning family, derived from the literal Serre relations
+([rational span](SymmetricSubgroupAsymptotics/CFSGG2OriginalRationalSourceSpan.lean)).
+All fourteen words belong to its actual integral lattice
+([integral family](SymmetricSubgroupAsymptotics/CFSGG2OriginalIntegralSourceFamily.lean)).
+The [cubic image action](SymmetricSubgroupAsymptotics/CFSGSerreCubicImageAction.lean)
+retains the third divided-power term, including in characteristics two and
+three. Its higher conjugation coefficients vanish only after the actual
+source cutoff and divided-power intertwining are proved. These five proof
+modules have 45 standard-axiom audit exports. Native integral recognition,
+the exceptional group comparisons, and the final classifier remain separate
+obligations; this does not remove a public T1 input.
+
 Further checked helpers preserve literal matrix support under every
 commutative base change and derive faithful original-image actions from
 source perfectness and a central Lie kernel
