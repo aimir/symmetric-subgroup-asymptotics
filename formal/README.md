@@ -326,6 +326,25 @@ exports using only the standard axioms. The extended classification field
 is still an unconstructed internal bridge target; it is not a proved
 classification or a replacement assumption in public T1. The global CFSG
 bridge and all five mathematical requirements remain open.
+The complete bounded-sharp generator assembly is now checked over the same
+internal target
+([bounded sharp bounds](SymmetricSubgroupAsymptotics/ExtendedCatalogueBoundedSharp.lean)).
+It retains the original action and block witnesses, excludes the actual raw
+Monster at degrees below 27, and constructs the bounded-sharp field and its
+McIver–Neumann consequence once coarse generation is supplied. The four
+modules have ninety standard-axiom audit exports. This conditional internal
+assembly does not construct the actual classifier or discharge coarse
+generation.
+The extended finite-menu primitive rank and automorphism/outer budgets are
+also checked
+([finite budgets](SymmetricSubgroupAsymptotics/ExtendedCatalogueFiniteSimpleBudgets.lean)).
+They absorb the actual raw Monster as one fixed menu member, without a
+global finiteness hypothesis on every model. A separate checked
+[full-centre descent](SymmetricSubgroupAsymptotics/CFSGSerreQuadraticSourceCenterEquivalence.lean)
+compares faithful original-image and canonical elementary actions using
+proved perfectness and central kernels. These three modules have ten
+standard-axiom audit exports; their concrete remaining installers are
+separate obligations.
 
 The local geometry underlying `hExceptionalOrbits` is now proved on the
 single actual correlated quotient `(PSL₂(F)^e)/H`, for `H` normal of index
